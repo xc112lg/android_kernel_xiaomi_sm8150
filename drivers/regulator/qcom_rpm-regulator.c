@@ -158,7 +158,7 @@ static const struct rpm_reg_parts rpm8960_ncp_parts = {
  */
 static const struct regulator_linear_range pldo_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 750000,   0,  59, 12500),
-	REGULATOR_LINEAR_RANGE(1500000,  60, 123, 25000),
+	REGULATOR_LINEAR_RANGE(1475000,  60, 123, 25000),
 	REGULATOR_LINEAR_RANGE(3100000, 124, 160, 50000),
 };
 
@@ -174,24 +174,24 @@ static const struct regulator_linear_range nldo1200_ranges[] = {
 static const struct regulator_linear_range smps_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 375000,   0,  29, 12500),
 	REGULATOR_LINEAR_RANGE( 750000,  30,  89, 12500),
-	REGULATOR_LINEAR_RANGE(1500000,  90, 153, 25000),
+	REGULATOR_LINEAR_RANGE(1475000,  90, 153, 25000),
 };
 
 static const struct regulator_linear_range ftsmps_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 350000,   0,   6, 50000),
 	REGULATOR_LINEAR_RANGE( 700000,   7,  63, 12500),
-	REGULATOR_LINEAR_RANGE(1500000,  64, 100, 50000),
+	REGULATOR_LINEAR_RANGE(1475000,  64, 100, 50000),
 };
 
 static const struct regulator_linear_range smb208_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 375000,   0,  29, 12500),
 	REGULATOR_LINEAR_RANGE( 750000,  30,  89, 12500),
-	REGULATOR_LINEAR_RANGE(1500000,  90, 153, 25000),
+	REGULATOR_LINEAR_RANGE(1475000,  90, 153, 25000),
 	REGULATOR_LINEAR_RANGE(3100000, 154, 234, 25000),
 };
 
 static const struct regulator_linear_range ncp_ranges[] = {
-	REGULATOR_LINEAR_RANGE(1500000,   0,  31, 50000),
+	REGULATOR_LINEAR_RANGE(1475000,   0,  31, 50000),
 };
 
 static int rpm_reg_write(struct qcom_rpm_reg *vreg,

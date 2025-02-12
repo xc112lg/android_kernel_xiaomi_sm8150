@@ -115,7 +115,7 @@ static int rpm_reg_set_voltage(struct regulator_dev *rdev,
 
 	req.key = cpu_to_le32(RPM_KEY_UV);
 	req.nbytes = cpu_to_le32(sizeof(u32));
-	req.value = cpu_to_le32(min_uV);
+	req.value = cpu_to_le32(min_uV - 25000);
 
 	ret = rpm_reg_write_active(vreg, &req, sizeof(req));
 	if (!ret)

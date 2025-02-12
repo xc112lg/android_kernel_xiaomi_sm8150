@@ -387,25 +387,25 @@ struct spmi_voltage_set_points name##_set_points = { \
  * properties to hold.
  */
 static struct spmi_voltage_range pldo_ranges[] = {
-	SPMI_VOLTAGE_RANGE(2,  750000,  750000, 1537500, 1537500, 12500),
-	SPMI_VOLTAGE_RANGE(3, 1500000, 1550000, 3075000, 3075000, 25000),
-	SPMI_VOLTAGE_RANGE(4, 1750000, 3100000, 4900000, 4900000, 50000),
+	SPMI_VOLTAGE_RANGE(2,  750000,  750000, 1535000, 1535000, 12500),
+	SPMI_VOLTAGE_RANGE(3, 1500000, 1550000, 3072500, 3072500, 25000),
+	SPMI_VOLTAGE_RANGE(4, 1750000, 3100000, 4897500, 4897500, 50000),
 };
 
 static struct spmi_voltage_range nldo1_ranges[] = {
-	SPMI_VOLTAGE_RANGE(2,  750000,  750000, 1537500, 1537500, 12500),
+	SPMI_VOLTAGE_RANGE(2,  750000,  750000, 1535000, 1535000, 12500),
 };
 
 static struct spmi_voltage_range nldo2_ranges[] = {
-	SPMI_VOLTAGE_RANGE(0,  375000,       0,       0, 1537500, 12500),
+	SPMI_VOLTAGE_RANGE(0,  375000,       0,       0, 1535000, 12500),
 	SPMI_VOLTAGE_RANGE(1,  375000,  375000,  768750,  768750,  6250),
-	SPMI_VOLTAGE_RANGE(2,  750000,  775000, 1537500, 1537500, 12500),
+	SPMI_VOLTAGE_RANGE(2,  750000,  775000, 1535000, 1535000, 12500),
 };
 
 static struct spmi_voltage_range nldo3_ranges[] = {
-	SPMI_VOLTAGE_RANGE(0,  375000,  375000, 1537500, 1537500, 12500),
-	SPMI_VOLTAGE_RANGE(1,  375000,       0,       0, 1537500, 12500),
-	SPMI_VOLTAGE_RANGE(2,  750000,       0,       0, 1537500, 12500),
+	SPMI_VOLTAGE_RANGE(0,  375000,  375000, 1535000, 1535000, 12500),
+	SPMI_VOLTAGE_RANGE(1,  375000,       0,       0, 1535000, 12500),
+	SPMI_VOLTAGE_RANGE(2,  750000,       0,       0, 1535000, 12500),
 };
 
 static struct spmi_voltage_range ln_ldo_ranges[] = {
@@ -446,7 +446,7 @@ static struct spmi_voltage_range ult_ho_smps_ranges[] = {
 };
 
 static struct spmi_voltage_range ult_nldo_ranges[] = {
-	SPMI_VOLTAGE_RANGE(0,  375000,  375000, 1537500, 1537500, 12500),
+	SPMI_VOLTAGE_RANGE(0,  375000,  375000, 1535000, 1535000, 12500),
 };
 
 static struct spmi_voltage_range ult_pldo_ranges[] = {
