@@ -25,7 +25,7 @@
 #define __TARGET_IF_REG_H__
 
 /**
- * tgt_if_regulatory_modify_freq_range() - Modify low and high freq ranges based
+* tgt_if_regulatory_modify_freq_range() - Modify low and high freq ranges based
  * on wireless mode.
  * @psoc: psoc pointer
  *

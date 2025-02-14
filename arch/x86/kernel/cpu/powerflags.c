@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Strings for the various x86 power flags
+* Strings for the various x86 power flags
  *
  * This file must not contain any executable code.
  */
@@ -9,8 +9,8 @@
 
 const char *const x86_power_flags[32] = {
 	"ts",	/* temperature sensor */
-	"fid",  /* frequency id control */
-	"vid",  /* voltage id control */
+"fid",  /* frequency id control */
+"vid",  /* voltage id control */
 	"ttp",  /* thermal trip */
 	"tm",	/* hardware thermal control */
 	"stc",	/* software thermal control */
@@ -18,7 +18,7 @@ const char *const x86_power_flags[32] = {
 	"hwpstate", /* hardware P-state control */
 	"",	/* tsc invariant mapped to constant_tsc */
 	"cpb",  /* core performance boost */
-	"eff_freq_ro", /* Readonly aperf/mperf */
+"eff_freq_ro", /* Readonly aperf/mperf */
 	"proc_feedback", /* processor feedback interface */
-	"acc_power", /* accumulated power mechanism */
+"acc_power", /* accumulated power mechanism */
 };

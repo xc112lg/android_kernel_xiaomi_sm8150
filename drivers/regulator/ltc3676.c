@@ -86,7 +86,7 @@ static int ltc3676_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 	int sel;
 
 	dev_dbg(dev, "%s id=%d uV=%d\n", __func__, dcdc, uV);
-	sel = regulator_map_voltage_linear(rdev, uV, uV);
+sel = regulator_map_voltage_linear(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -146,9 +146,9 @@ static int ltc3676_of_parse_cb(struct device_node *np,
 	if (desc->id == LTC3676_LDO3)
 		return 0;
 
-	ret = of_property_read_u32_array(np, "lltc,fb-voltage-divider", r, 2);
+ret = of_property_read_u32_array(np, "lltc,fb-voltage-divider", r, 2);
 	if (ret) {
-		dev_err(ltc3676->dev, "Failed to parse voltage divider: %d\n",
+dev_err(ltc3676->dev, "Failed to parse voltage divider: %d\n",
 			ret);
 		return ret;
 	}
@@ -165,10 +165,10 @@ static const struct regulator_ops ltc3676_linear_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_suspend_voltage = ltc3676_set_suspend_voltage,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_suspend_voltage = ltc3676_set_suspend_voltage,
 	.set_suspend_mode = ltc3676_set_suspend_mode,
 };
 
@@ -189,13 +189,13 @@ static const struct regulator_ops ltc3676_fixed_regulator_ops = {
 		.of_match = of_match_ptr(#_name),              \
 		.regulators_node = of_match_ptr("regulators"), \
 		.of_parse_cb = ltc3676_of_parse_cb,            \
-		.n_voltages = (dvb_mask) + 1,                  \
+.n_voltages = (dvb_mask) + 1,                  \
 		.min_uV = (dvba_reg) ? 412500 : 0,             \
 		.uV_step = (dvba_reg) ? 12500 : 0,             \
 		.ramp_delay = (dvba_reg) ? 800 : 0,            \
 		.fixed_uV = (dvb_mask) ? 0 : 725000,           \
 		.ops = &ltc3676_ ## _ops ## _regulator_ops,    \
-		.type = REGULATOR_VOLTAGE,                     \
+.type = REGULATOR_VOLTAGE,                     \
 		.id = LTC3676_ ## _id,                         \
 		.owner = THIS_MODULE,                          \
 		.vsel_reg = (dvba_reg),                        \
@@ -325,8 +325,8 @@ static irqreturn_t ltc3676_isr(int irq, void *dev_id)
 	}
 
 	if (irqstat & LTC3676_IRQSTAT_UNDERVOLT_WARN) {
-		dev_info(dev, "Undervoltage Warning\n");
-		event = REGULATOR_EVENT_UNDER_VOLTAGE;
+dev_info(dev, "Undervoltage Warning\n");
+event = REGULATOR_EVENT_UNDER_VOLTAGE;
 		for (i = 0; i < LTC3676_NUM_REGULATORS; i++)
 			regulator_notifier_call_chain(ltc3676->regulators[i],
 						      event, NULL);

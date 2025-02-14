@@ -79,7 +79,7 @@ struct da9150_fg {
 
 	struct mutex io_lock;
 
-	struct power_supply *battery;
+struct power_supply *battery;
 	struct delayed_work work;
 	u32 interval;
 
@@ -225,7 +225,7 @@ static void da9150_fg_write_attr_sync(struct da9150_fg *fg, u8 code, u8 size,
 
 /* Power Supply attributes */
 static int da9150_fg_capacity(struct da9150_fg *fg,
-			      union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	val->intval = da9150_fg_read_attr_sync(fg, DA9150_QIF_SOC_PCT,
 					       DA9150_QIF_SOC_PCT_SIZE);
@@ -237,7 +237,7 @@ static int da9150_fg_capacity(struct da9150_fg *fg,
 }
 
 static int da9150_fg_current_avg(struct da9150_fg *fg,
-				 union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u32 iavg, sd_gain, shunt_val;
 	u64 div, res;
@@ -262,7 +262,7 @@ static int da9150_fg_current_avg(struct da9150_fg *fg,
 }
 
 static int da9150_fg_voltage_avg(struct da9150_fg *fg,
-				 union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u64 res;
 
@@ -277,7 +277,7 @@ static int da9150_fg_voltage_avg(struct da9150_fg *fg,
 }
 
 static int da9150_fg_charge_full(struct da9150_fg *fg,
-				 union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	val->intval = da9150_fg_read_attr_sync(fg, DA9150_QIF_FCC_MAH,
 					       DA9150_QIF_FCC_MAH_SIZE);
@@ -292,7 +292,7 @@ static int da9150_fg_charge_full(struct da9150_fg *fg,
  * valid NTC to associated pin of DA9150 chip.
  */
 static int da9150_fg_temp(struct da9150_fg *fg,
-			  union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	val->intval = da9150_fg_read_attr_sync(fg, DA9150_QIF_NTCAVG,
 					       DA9150_QIF_NTCAVG_SIZE);
@@ -303,34 +303,34 @@ static int da9150_fg_temp(struct da9150_fg *fg,
 }
 
 static enum power_supply_property da9150_fg_props[] = {
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_CHARGE_FULL,
-	POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_CHARGE_FULL,
+POWER_SUPPLY_PROP_TEMP,
 };
 
 static int da9150_fg_get_prop(struct power_supply *psy,
-			      enum power_supply_property psp,
-			      union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct da9150_fg *fg = dev_get_drvdata(psy->dev.parent);
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = da9150_fg_capacity(fg, val);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		ret = da9150_fg_current_avg(fg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
-		ret = da9150_fg_voltage_avg(fg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+ret = da9150_fg_voltage_avg(fg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		ret = da9150_fg_charge_full(fg, val);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		ret = da9150_fg_temp(fg, val);
 		break;
 	default:
@@ -344,7 +344,7 @@ static int da9150_fg_get_prop(struct power_supply *psy,
 /* Repeated SOC check */
 static bool da9150_fg_soc_changed(struct da9150_fg *fg)
 {
-	union power_supply_propval val;
+union power_supply_propval val;
 
 	da9150_fg_capacity(fg, &val);
 	if (val.intval != fg->soc) {
@@ -361,7 +361,7 @@ static void da9150_fg_work(struct work_struct *work)
 
 	/* Report if SOC has changed */
 	if (da9150_fg_soc_changed(fg))
-		power_supply_changed(fg->battery);
+power_supply_changed(fg->battery);
 
 	schedule_delayed_work(&fg->work, msecs_to_jiffies(fg->interval));
 }
@@ -440,7 +440,7 @@ static struct da9150_fg_pdata *da9150_fg_dt_pdata(struct device *dev)
 
 static const struct power_supply_desc fg_desc = {
 	.name		= "da9150-fg",
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.properties	= da9150_fg_props,
 	.num_properties	= ARRAY_SIZE(da9150_fg_props),
 	.get_property	= da9150_fg_get_prop,
@@ -468,7 +468,7 @@ static int da9150_fg_probe(struct platform_device *pdev)
 	da9150_set_bits(da9150, DA9150_CORE2WIRE_CTRL_A, DA9150_FG_QIF_EN_MASK,
 			DA9150_FG_QIF_EN_MASK);
 
-	fg->battery = devm_power_supply_register(dev, &fg_desc, NULL);
+fg->battery = devm_power_supply_register(dev, &fg_desc, NULL);
 	if (IS_ERR(fg->battery)) {
 		ret = PTR_ERR(fg->battery);
 		return ret;

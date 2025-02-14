@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/asp834x.c
+* arch/powerpc/platforms/83xx/asp834x.c
  *
  * Analogue & Micro ASP8347 board specific routines
  * clone of mpc834x_itx

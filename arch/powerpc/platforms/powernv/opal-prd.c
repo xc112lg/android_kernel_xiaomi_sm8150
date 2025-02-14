@@ -1,6 +1,6 @@
 /*
  * OPAL Runtime Diagnostics interface driver
- * Supported on POWERNV platform
+* Supported on POWERNV platform
  *
  * Copyright IBM Corporation 2015
  *

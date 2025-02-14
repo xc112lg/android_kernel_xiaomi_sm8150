@@ -1,7 +1,7 @@
 #ifndef _ASM_UPROBES_H
 #define _ASM_UPROBES_H
 /*
- * User-space Probes (UProbes) for powerpc
+* User-space Probes (UProbes) for powerpc
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

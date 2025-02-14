@@ -5,7 +5,7 @@
 /*
  * heathrow.h: definitions for using the "Heathrow" I/O controller chip.
  *
- * Grabbed from Open Firmware definitions on a PowerBook G3 Series
+* Grabbed from Open Firmware definitions on a PowerBook G3 Series
  *
  * Copyright (C) 1997 Paul Mackerras.
  */

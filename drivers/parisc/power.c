@@ -1,6 +1,6 @@
 /*
- * linux/drivers/parisc/power.c
- * HP PARISC soft power switch support driver
+* linux/drivers/parisc/power.c
+* HP PARISC soft power switch support driver
  *
  * Copyright (c) 2001-2007 Helge Deller <deller@gmx.de>
  * All rights reserved.
@@ -30,8 +30,8 @@
  *
  *
  *  HINT:
- *  Support of the soft power switch button may be enabled or disabled at
- *  runtime through the "/proc/sys/kernel/power" procfs entry.
+*  Support of the soft power switch button may be enabled or disabled at
+*  runtime through the "/proc/sys/kernel/power" procfs entry.
  */ 
 
 #include <linux/module.h>
@@ -87,7 +87,7 @@ static void process_shutdown(void)
 	shutdown_timer++;
 	
 	/* wait until the button was pressed for 1 second */
-	if (shutdown_timer == (POWERSWITCH_DOWN_SEC*POWERSWITCH_POLL_PER_SEC)) {
+if (shutdown_timer == (POWERSWITCH_DOWN_SEC*POWERSWITCH_POLL_PER_SEC)) {
 		static const char msg[] = "Shutting down...";
 		printk(KERN_INFO KTHREAD_NAME ": %s\n", msg);
 		lcd_print(msg);
@@ -95,8 +95,8 @@ static void process_shutdown(void)
 		/* send kill signal */
 		if (kill_cad_pid(SIGINT, 1)) {
 			/* just in case killing init process failed */
-			if (pm_power_off)
-				pm_power_off();
+if (pm_power_off)
+pm_power_off();
 		}
 	}
 }
@@ -118,26 +118,26 @@ static int kpowerswd(void *param)
 
 	do {
 		int button_not_pressed;
-		unsigned long soft_power_reg = (unsigned long) param;
+unsigned long soft_power_reg = (unsigned long) param;
 
-		schedule_timeout_interruptible(pwrsw_enabled ? HZ : HZ/POWERSWITCH_POLL_PER_SEC);
+schedule_timeout_interruptible(pwrsw_enabled ? HZ : HZ/POWERSWITCH_POLL_PER_SEC);
 
 		if (unlikely(!pwrsw_enabled))
 			continue;
 
-		if (soft_power_reg) {
+if (soft_power_reg) {
 			/*
 			 * Non-Gecko-style machines:
-			 * Check the power switch status which is read from the
-			 * real I/O location at soft_power_reg.
-			 * Bit 31 ("the lowest bit) is the status of the power switch.
+* Check the power switch status which is read from the
+* real I/O location at soft_power_reg.
+* Bit 31 ("the lowest bit) is the status of the power switch.
 			 * This bit is "1" if the button is NOT pressed.
 			 */
-			button_not_pressed = (gsc_readl(soft_power_reg) & 0x1);
+button_not_pressed = (gsc_readl(soft_power_reg) & 0x1);
 		} else {
 			/*
 			 * On gecko style machines (e.g. 712/xx and 715/xx) 
-			 * the power switch status is stored in Bit 0 ("the highest bit")
+* the power switch status is stored in Bit 0 ("the highest bit")
 			 * of CPU diagnose register 25.
 			 * Warning: Some machines never reset the DIAG flag, even if
 			 * the button has been released again.
@@ -147,7 +147,7 @@ static int kpowerswd(void *param)
 
 		if (likely(button_not_pressed)) {
 			if (unlikely(shutdown_timer && /* avoid writing if not necessary */
-				shutdown_timer < (POWERSWITCH_DOWN_SEC*POWERSWITCH_POLL_PER_SEC))) {
+shutdown_timer < (POWERSWITCH_DOWN_SEC*POWERSWITCH_POLL_PER_SEC))) {
 				shutdown_timer = 0;
 				printk(KERN_INFO KTHREAD_NAME ": Shutdown request aborted.\n");
 			}
@@ -162,13 +162,13 @@ static int kpowerswd(void *param)
 
 
 /*
- * powerfail interruption handler (irq IRQ_FROM_REGION(CPU_IRQ_REGION)+2) 
+* powerfail interruption handler (irq IRQ_FROM_REGION(CPU_IRQ_REGION)+2)
  */
 #if 0
 static void powerfail_interrupt(int code, void *x)
 {
-	printk(KERN_CRIT "POWERFAIL INTERRUPTION !\n");
-	poweroff();
+printk(KERN_CRIT "POWERFAIL INTERRUPTION !\n");
+poweroff();
 }
 #endif
 
@@ -178,13 +178,13 @@ static void powerfail_interrupt(int code, void *x)
 /* parisc_panic_event() is called by the panic handler.
  * As soon as a panic occurs, our tasklets above will not be
  * executed any longer. This function then re-enables the 
- * soft-power switch and allows the user to switch off the system
+* soft-power switch and allows the user to switch off the system
  */
 static int parisc_panic_event(struct notifier_block *this,
 		unsigned long event, void *ptr)
 {
-	/* re-enable the soft-power switch */
-	pdc_soft_power_button(0);
+/* re-enable the soft-power switch */
+pdc_soft_power_button(0);
 	return NOTIFY_DONE;
 }
 
@@ -197,35 +197,35 @@ static struct notifier_block parisc_panic_block = {
 static int __init power_init(void)
 {
 	unsigned long ret;
-	unsigned long soft_power_reg;
+unsigned long soft_power_reg;
 
 #if 0
-	request_irq( IRQ_FROM_REGION(CPU_IRQ_REGION)+2, &powerfail_interrupt,
-		0, "powerfail", NULL);
+request_irq( IRQ_FROM_REGION(CPU_IRQ_REGION)+2, &powerfail_interrupt,
+0, "powerfail", NULL);
 #endif
 
-	/* enable the soft power switch if possible */
-	ret = pdc_soft_power_info(&soft_power_reg);
+/* enable the soft power switch if possible */
+ret = pdc_soft_power_info(&soft_power_reg);
 	if (ret == PDC_OK)
-		ret = pdc_soft_power_button(1);
+ret = pdc_soft_power_button(1);
 	if (ret != PDC_OK)
-		soft_power_reg = -1UL;
+soft_power_reg = -1UL;
 	
-	switch (soft_power_reg) {
-	case 0:		printk(KERN_INFO DRIVER_NAME ": Gecko-style soft power switch enabled.\n");
+switch (soft_power_reg) {
+case 0:		printk(KERN_INFO DRIVER_NAME ": Gecko-style soft power switch enabled.\n");
 			break;
 			
-	case -1UL:	printk(KERN_INFO DRIVER_NAME ": Soft power switch support not available.\n");
+case -1UL:	printk(KERN_INFO DRIVER_NAME ": Soft power switch support not available.\n");
 			return -ENODEV;
 	
-	default:	printk(KERN_INFO DRIVER_NAME ": Soft power switch at 0x%08lx enabled.\n",
-				soft_power_reg);
+default:	printk(KERN_INFO DRIVER_NAME ": Soft power switch at 0x%08lx enabled.\n",
+soft_power_reg);
 	}
 
-	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
-	if (IS_ERR(power_task)) {
+power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
+if (IS_ERR(power_task)) {
 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
-		pdc_soft_power_button(0);
+pdc_soft_power_button(0);
 		return -EIO;
 	}
 
@@ -238,12 +238,12 @@ static int __init power_init(void)
 
 static void __exit power_exit(void)
 {
-	kthread_stop(power_task);
+kthread_stop(power_task);
 
 	atomic_notifier_chain_unregister(&panic_notifier_list,
 			&parisc_panic_block);
 
-	pdc_soft_power_button(0);
+pdc_soft_power_button(0);
 }
 
 arch_initcall(power_init);

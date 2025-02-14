@@ -49,9 +49,9 @@ int cz_phm_set_asic_block_gating(struct pp_hwmgr *hwmgr, enum PHM_AsicBlock bloc
 	case PHM_AsicBlock_UVD_HD:
 	case PHM_AsicBlock_UVD_SD:
 		if (gating == PHM_ClockGateSetting_StaticOff)
-			ret = cz_dpm_powerdown_uvd(hwmgr);
+ret = cz_dpm_powerdown_uvd(hwmgr);
 		else
-			ret = cz_dpm_powerup_uvd(hwmgr);
+ret = cz_dpm_powerup_uvd(hwmgr);
 		break;
 	case PHM_AsicBlock_GFX:
 	default:
@@ -120,7 +120,7 @@ int cz_enable_disable_uvd_dpm(struct pp_hwmgr *hwmgr, bool enable)
 
 	if (enable &&
 		phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-				  PHM_PlatformCaps_UVDDPM)) {
+PHM_PlatformCaps_UVDDPM)) {
 		cz_hwmgr->dpm_flags |= DPMFlags_UVD_Enabled;
 		dpm_features |= UVD_DPM_MASK;
 		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
@@ -161,23 +161,23 @@ int cz_dpm_powergate_uvd(struct pp_hwmgr *hwmgr, bool bgate)
 {
 	struct cz_hwmgr *cz_hwmgr = (struct cz_hwmgr *)(hwmgr->backend);
 
-	cz_hwmgr->uvd_power_gated = bgate;
+cz_hwmgr->uvd_power_gated = bgate;
 
 	if (bgate) {
-		cgs_set_powergating_state(hwmgr->device,
+cgs_set_powergating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_UVD,
 						AMD_PG_STATE_GATE);
 		cgs_set_clockgating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_UVD,
 						AMD_CG_STATE_GATE);
 		cz_dpm_update_uvd_dpm(hwmgr, true);
-		cz_dpm_powerdown_uvd(hwmgr);
+cz_dpm_powerdown_uvd(hwmgr);
 	} else {
-		cz_dpm_powerup_uvd(hwmgr);
+cz_dpm_powerup_uvd(hwmgr);
 		cgs_set_clockgating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_UVD,
 						AMD_CG_STATE_UNGATE);
-		cgs_set_powergating_state(hwmgr->device,
+cgs_set_powergating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_UVD,
 						AMD_PG_STATE_UNGATE);
 		cz_dpm_update_uvd_dpm(hwmgr, false);
@@ -191,7 +191,7 @@ int cz_dpm_powergate_vce(struct pp_hwmgr *hwmgr, bool bgate)
 	struct cz_hwmgr *cz_hwmgr = (struct cz_hwmgr *)(hwmgr->backend);
 
 	if (bgate) {
-		cgs_set_powergating_state(
+cgs_set_powergating_state(
 					hwmgr->device,
 					AMD_IP_BLOCK_TYPE_VCE,
 					AMD_PG_STATE_GATE);
@@ -200,16 +200,16 @@ int cz_dpm_powergate_vce(struct pp_hwmgr *hwmgr, bool bgate)
 					AMD_IP_BLOCK_TYPE_VCE,
 					AMD_CG_STATE_GATE);
 		cz_enable_disable_vce_dpm(hwmgr, false);
-		cz_dpm_powerdown_vce(hwmgr);
-		cz_hwmgr->vce_power_gated = true;
+cz_dpm_powerdown_vce(hwmgr);
+cz_hwmgr->vce_power_gated = true;
 	} else {
-		cz_dpm_powerup_vce(hwmgr);
-		cz_hwmgr->vce_power_gated = false;
+cz_dpm_powerup_vce(hwmgr);
+cz_hwmgr->vce_power_gated = false;
 		cgs_set_clockgating_state(
 					hwmgr->device,
 					AMD_IP_BLOCK_TYPE_VCE,
 					AMD_CG_STATE_UNGATE);
-		cgs_set_powergating_state(
+cgs_set_powergating_state(
 					hwmgr->device,
 					AMD_IP_BLOCK_TYPE_VCE,
 					AMD_PG_STATE_UNGATE);
@@ -225,19 +225,19 @@ int cz_dpm_powergate_vce(struct pp_hwmgr *hwmgr, bool bgate)
 static const struct phm_master_table_item cz_enable_clock_power_gatings_list[] = {
 	/*we don't need an exit table here, because there is only D3 cold on Kv*/
 	{
-	  .isFunctionNeededInRuntimeTable = phm_cf_want_uvd_power_gating,
-	  .tableFunction = cz_tf_uvd_power_gating_initialize
+.isFunctionNeededInRuntimeTable = phm_cf_want_uvd_power_gating,
+.tableFunction = cz_tf_uvd_power_gating_initialize
 	},
 	{
-	  .isFunctionNeededInRuntimeTable = phm_cf_want_vce_power_gating,
-	  .tableFunction = cz_tf_vce_power_gating_initialize
+.isFunctionNeededInRuntimeTable = phm_cf_want_vce_power_gating,
+.tableFunction = cz_tf_vce_power_gating_initialize
 	},
-	/* to do { NULL, cz_tf_xdma_power_gating_enable }, */
+/* to do { NULL, cz_tf_xdma_power_gating_enable }, */
 	{ }
 };
 
 const struct phm_master_table_header cz_phm_enable_clock_power_gatings_master = {
 	0,
 	PHM_MasterTableFlag_None,
-	cz_enable_clock_power_gatings_list
+cz_enable_clock_power_gatings_list
 };

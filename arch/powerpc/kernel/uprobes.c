@@ -1,5 +1,5 @@
 /*
- * User-space Probes (UProbes) for powerpc
+* User-space Probes (UProbes) for powerpc
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ int arch_uprobe_post_xol(struct arch_uprobe *auprobe, struct pt_regs *regs)
 	current->thread.trap_nr = utask->autask.saved_trap_nr;
 
 	/*
-	 * On powerpc, except for loads and stores, most instructions
+* On powerpc, except for loads and stores, most instructions
 	 * including ones that alter code flow (branches, calls, returns)
 	 * are emulated in the kernel. We get here only if the emulation
 	 * support doesn't exist and have to fix-up the next instruction

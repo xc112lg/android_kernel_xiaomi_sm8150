@@ -1,5 +1,5 @@
 /*
- * Support PCI/PCIe on PowerNV platforms
+* Support PCI/PCIe on PowerNV platforms
  *
  * Copyright 2011 Benjamin Herrenschmidt, IBM Corp.
  *
@@ -110,10 +110,10 @@ int pnv_pci_get_power_state(uint64_t id, uint8_t *state)
 {
 	int64_t rc;
 
-	if (!opal_check_token(OPAL_PCI_GET_POWER_STATE))
+if (!opal_check_token(OPAL_PCI_GET_POWER_STATE))
 		return -ENXIO;
 
-	rc = opal_pci_get_power_state(id, (uint64_t)state);
+rc = opal_pci_get_power_state(id, (uint64_t)state);
 	if (rc != OPAL_SUCCESS)
 		return -EIO;
 
@@ -127,14 +127,14 @@ int pnv_pci_set_power_state(uint64_t id, uint8_t state, struct opal_msg *msg)
 	int token, ret;
 	int64_t rc;
 
-	if (!opal_check_token(OPAL_PCI_SET_POWER_STATE))
+if (!opal_check_token(OPAL_PCI_SET_POWER_STATE))
 		return -ENXIO;
 
 	token = opal_async_get_token_interruptible();
 	if (unlikely(token < 0))
 		return token;
 
-	rc = opal_pci_set_power_state(token, id, (uint64_t)&state);
+rc = opal_pci_set_power_state(token, id, (uint64_t)&state);
 	if (rc == OPAL_SUCCESS) {
 		ret = 0;
 		goto exit;
@@ -1116,7 +1116,7 @@ void __init pnv_pci_init(void)
 
 #ifdef CONFIG_PCIEPORTBUS
 	/*
-	 * On PowerNV PCIe devices are (currently) managed in cooperation
+* On PowerNV PCIe devices are (currently) managed in cooperation
 	 * with firmware. This isn't *strictly* required, but there's enough
 	 * assumptions baked into both firmware and the platform code that
 	 * it's unwise to allow the portbus services to be used.

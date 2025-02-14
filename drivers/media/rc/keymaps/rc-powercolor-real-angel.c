@@ -14,7 +14,7 @@
 #include <linux/module.h>
 
 /*
- * Remote control for Powercolor Real Angel 330
+* Remote control for Powercolor Real Angel 330
  * Daniel Fraga <fragabr@gmail.com>
  */
 
@@ -53,26 +53,26 @@ static struct rc_map_table powercolor_real_angel[] = {
 	{ 0x2d, KEY_SETUP },
 	{ 0x0f, KEY_SCREEN },		/* full screen */
 	{ 0x14, KEY_RADIO },		/* FM radio */
-	{ 0x25, KEY_POWER },		/* power */
+{ 0x25, KEY_POWER },		/* power */
 };
 
 static struct rc_map_list powercolor_real_angel_map = {
 	.map = {
-		.scan     = powercolor_real_angel,
-		.size     = ARRAY_SIZE(powercolor_real_angel),
+.scan     = powercolor_real_angel,
+.size     = ARRAY_SIZE(powercolor_real_angel),
 		.rc_proto = RC_PROTO_UNKNOWN,	/* Legacy IR type */
-		.name     = RC_MAP_POWERCOLOR_REAL_ANGEL,
+.name     = RC_MAP_POWERCOLOR_REAL_ANGEL,
 	}
 };
 
 static int __init init_rc_map_powercolor_real_angel(void)
 {
-	return rc_map_register(&powercolor_real_angel_map);
+return rc_map_register(&powercolor_real_angel_map);
 }
 
 static void __exit exit_rc_map_powercolor_real_angel(void)
 {
-	rc_map_unregister(&powercolor_real_angel_map);
+rc_map_unregister(&powercolor_real_angel_map);
 }
 
 module_init(init_rc_map_powercolor_real_angel)

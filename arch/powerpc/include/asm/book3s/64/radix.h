@@ -149,7 +149,7 @@ static inline unsigned long radix__pte_update(struct mm_struct *mm,
 {
 	unsigned long old_pte;
 
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 
 		unsigned long new_pte;
 
@@ -202,7 +202,7 @@ static inline void radix__ptep_set_access_flags(struct mm_struct *mm,
 	unsigned long set = pte_val(entry) & (_PAGE_DIRTY | _PAGE_ACCESSED |
 					      _PAGE_RW | _PAGE_EXEC);
 
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 
 		unsigned long old_pte, new_pte;
 
@@ -265,7 +265,7 @@ static inline int radix__pmd_trans_huge(pmd_t pmd)
 
 static inline pmd_t radix__pmd_mkhuge(pmd_t pmd)
 {
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 		return __pmd(pmd_val(pmd) | _PAGE_PTE | R_PAGE_LARGE);
 	return __pmd(pmd_val(pmd) | _PAGE_PTE);
 }
@@ -314,7 +314,7 @@ static inline unsigned long radix__get_tree_size(void)
 	 * bits 0 - 3 of rts -> bits 6 - 8 unsigned long
 	 * bits 4 - 5 of rts -> bits 62 - 63 of unsigned long
 	 */
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 		rts_field = (0x3UL << 61);
 	else {
 		rts_field = (0x5UL << 5); /* 6 - 8 bits */

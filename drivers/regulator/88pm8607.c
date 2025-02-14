@@ -212,7 +212,7 @@ static int pm8607_list_voltage(struct regulator_dev *rdev, unsigned index)
 	struct pm8607_regulator_info *info = rdev_get_drvdata(rdev);
 	int ret = -EINVAL;
 
-	if (info->vol_table && (index < rdev->desc->n_voltages)) {
+if (info->vol_table && (index < rdev->desc->n_voltages)) {
 		ret = info->vol_table[index];
 		if (info->slope_double)
 			ret <<= 1;
@@ -221,9 +221,9 @@ static int pm8607_list_voltage(struct regulator_dev *rdev, unsigned index)
 }
 
 static const struct regulator_ops pm8607_regulator_ops = {
-	.list_voltage	= pm8607_list_voltage,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage	= pm8607_list_voltage,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -254,10 +254,10 @@ static const struct regulator_ops pm8606_preg_ops = {
 	.desc	= {							\
 		.name	= #vreg,					\
 		.ops	= &pm8607_regulator_ops,			\
-		.type	= REGULATOR_VOLTAGE,				\
+.type	= REGULATOR_VOLTAGE,				\
 		.id	= PM8607_ID_##vreg,				\
 		.owner	= THIS_MODULE,					\
-		.n_voltages = ARRAY_SIZE(vreg##_table),			\
+.n_voltages = ARRAY_SIZE(vreg##_table),			\
 		.vsel_reg = PM8607_##vreg,				\
 		.vsel_mask = ARRAY_SIZE(vreg##_table) - 1,		\
 		.apply_reg = PM8607_##ureg,				\
@@ -275,10 +275,10 @@ static const struct regulator_ops pm8606_preg_ops = {
 	.desc	= {							\
 		.name	= "LDO" #_id,					\
 		.ops	= &pm8607_regulator_ops,			\
-		.type	= REGULATOR_VOLTAGE,				\
+.type	= REGULATOR_VOLTAGE,				\
 		.id	= PM8607_ID_LDO##_id,				\
 		.owner	= THIS_MODULE,					\
-		.n_voltages = ARRAY_SIZE(LDO##_id##_table),		\
+.n_voltages = ARRAY_SIZE(LDO##_id##_table),		\
 		.vsel_reg = PM8607_##vreg,				\
 		.vsel_mask = (ARRAY_SIZE(LDO##_id##_table) - 1) << (shift), \
 		.enable_reg = PM8607_##ereg,				\

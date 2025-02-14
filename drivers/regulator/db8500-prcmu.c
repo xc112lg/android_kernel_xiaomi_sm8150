@@ -5,7 +5,7 @@
  * Authors: Sundar Iyer <sundar.iyer@stericsson.com> for ST-Ericsson
  *          Bengt Jonsson <bengt.g.jonsson@stericsson.com> for ST-Ericsson
  *
- * Power domain regulators on DB8500
+* Power domain regulators on DB8500
  */
 
 #include <linux/kernel.h>
@@ -34,8 +34,8 @@ static int db8500_regulator_enable(struct regulator_dev *rdev)
 
 	if (!info->is_enabled) {
 		info->is_enabled = true;
-		if (!info->exclude_from_power_state)
-			power_state_active_enable();
+if (!info->exclude_from_power_state)
+power_state_active_enable();
 	}
 
 	return 0;
@@ -54,8 +54,8 @@ static int db8500_regulator_disable(struct regulator_dev *rdev)
 
 	if (info->is_enabled) {
 		info->is_enabled = false;
-		if (!info->exclude_from_power_state)
-			ret = power_state_active_disable();
+if (!info->exclude_from_power_state)
+ret = power_state_active_disable();
 	}
 
 	return ret;
@@ -216,7 +216,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-vape",
 			.id	= DB8500_REGULATOR_VAPE,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -225,7 +225,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-varm",
 			.id	= DB8500_REGULATOR_VARM,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -234,7 +234,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-vmodem",
 			.id	= DB8500_REGULATOR_VMODEM,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -243,7 +243,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-vpll",
 			.id	= DB8500_REGULATOR_VPLL,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -252,7 +252,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-vsmps1",
 			.id	= DB8500_REGULATOR_VSMPS1,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -261,19 +261,19 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-vsmps2",
 			.id	= DB8500_REGULATOR_VSMPS2,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 			.fixed_uV = 1800000,
-			.n_voltages = 1,
+.n_voltages = 1,
 		},
-		.exclude_from_power_state = true,
+.exclude_from_power_state = true,
 	},
 	[DB8500_REGULATOR_VSMPS3] = {
 		.desc = {
 			.name	= "db8500-vsmps3",
 			.id	= DB8500_REGULATOR_VSMPS3,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -282,7 +282,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-vrf1",
 			.id	= DB8500_REGULATOR_VRF1,
 			.ops	= &db8500_regulator_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 	},
@@ -291,7 +291,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sva-mmdsp",
 			.id	= DB8500_REGULATOR_SWITCH_SVAMMDSP,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SVAMMDSP,
@@ -301,7 +301,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sva-mmdsp-ret",
 			.id	= DB8500_REGULATOR_SWITCH_SVAMMDSPRET,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SVAMMDSP,
@@ -312,7 +312,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sva-pipe",
 			.id	= DB8500_REGULATOR_SWITCH_SVAPIPE,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SVAPIPE,
@@ -322,7 +322,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sia-mmdsp",
 			.id	= DB8500_REGULATOR_SWITCH_SIAMMDSP,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SIAMMDSP,
@@ -332,7 +332,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sia-mmdsp-ret",
 			.id	= DB8500_REGULATOR_SWITCH_SIAMMDSPRET,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SIAMMDSP,
@@ -343,7 +343,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sia-pipe",
 			.id	= DB8500_REGULATOR_SWITCH_SIAPIPE,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SIAPIPE,
@@ -353,7 +353,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-sga",
 			.id	= DB8500_REGULATOR_SWITCH_SGA,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_SGA,
@@ -363,7 +363,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-b2r2-mcde",
 			.id	= DB8500_REGULATOR_SWITCH_B2R2_MCDE,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_B2R2_MCDE,
@@ -373,7 +373,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-esram12",
 			.id	= DB8500_REGULATOR_SWITCH_ESRAM12,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id	= EPOD_ID_ESRAM12,
@@ -384,7 +384,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-esram12-ret",
 			.id	= DB8500_REGULATOR_SWITCH_ESRAM12RET,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_ESRAM12,
@@ -395,7 +395,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-esram34",
 			.id	= DB8500_REGULATOR_SWITCH_ESRAM34,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id	= EPOD_ID_ESRAM34,
@@ -406,7 +406,7 @@ dbx500_regulator_info[DB8500_NUM_REGULATORS] = {
 			.name	= "db8500-esram34-ret",
 			.id	= DB8500_REGULATOR_SWITCH_ESRAM34RET,
 			.ops	= &db8500_regulator_switch_ops,
-			.type	= REGULATOR_VOLTAGE,
+.type	= REGULATOR_VOLTAGE,
 			.owner	= THIS_MODULE,
 		},
 		.epod_id = EPOD_ID_ESRAM34,

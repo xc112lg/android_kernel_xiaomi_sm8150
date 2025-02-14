@@ -182,7 +182,7 @@ void *of_vmlinux_alloc(unsigned long size)
 	unsigned long addr;
 	void *p;
 
-	/* With some older POWER4 firmware we need to claim the area the kernel
+/* With some older POWER4 firmware we need to claim the area the kernel
 	 * will reside in.  Newer firmwares don't need this so we just ignore
 	 * the return value.
 	 */

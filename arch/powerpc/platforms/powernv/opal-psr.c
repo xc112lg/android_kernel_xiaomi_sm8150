@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL Power-Shift-Ratio interface
+* PowerNV OPAL Power-Shift-Ratio interface
  *
  * Copyright 2017 IBM Corp.
  *
@@ -43,7 +43,7 @@ static ssize_t psr_show(struct kobject *kobj, struct kobj_attribute *attr,
 	if (ret)
 		goto out_token;
 
-	ret = opal_get_power_shift_ratio(psr_attr->handle, token,
+ret = opal_get_power_shift_ratio(psr_attr->handle, token,
 					    (u32 *)__pa(&psr));
 	switch (ret) {
 	case OPAL_ASYNC_COMPLETION:
@@ -97,7 +97,7 @@ static ssize_t psr_store(struct kobject *kobj, struct kobj_attribute *attr,
 	if (ret)
 		goto out_token;
 
-	ret = opal_set_power_shift_ratio(psr_attr->handle, token, psr);
+ret = opal_set_power_shift_ratio(psr_attr->handle, token, psr);
 	switch (ret) {
 	case OPAL_ASYNC_COMPLETION:
 		ret = opal_async_wait_response(token, &msg);
@@ -130,9 +130,9 @@ void __init opal_psr_init(void)
 	int i = 0;
 
 	psr = of_find_compatible_node(NULL, NULL,
-				      "ibm,opal-power-shift-ratio");
+"ibm,opal-power-shift-ratio");
 	if (!psr) {
-		pr_devel("Power-shift-ratio node not found\n");
+pr_devel("Power-shift-ratio node not found\n");
 		return;
 	}
 

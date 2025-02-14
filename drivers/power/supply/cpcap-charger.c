@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2017 Tony Lindgren <tony@atomide.com>
  *
- * Rewritten for Linux power framework with some parts based on
+* Rewritten for Linux power framework with some parts based on
  * on earlier driver found in the Motorola Linux kernel:
  *
  * Copyright (C) 2009-2010 Motorola, Inc.
@@ -40,7 +40,7 @@
 
 /*
  * CPCAP_REG_CRM register bits. For documentation of somewhat similar hardware,
- * see NXP "MC13783 Power Management and Audio Circuit Users's Guide"
+* see NXP "MC13783 Power Management and Audio Circuit Users's Guide"
  * MC13783UG.pdf chapter "8.5 Battery Interface Register Summary". The registers
  * and values for CPCAP are different, but some of the internal components seem
  * similar. Also see the Motorola Linux kernel cpcap-regbits.h. CPCAP_REG_CHRGR_1
@@ -71,7 +71,7 @@
 #define CPCAP_REG_CRM_TR_0A72		CPCAP_REG_CRM_TR(0x4)
 
 /*
- * CPCAP_REG_CRM charge voltages based on the ADC channel 1 values.
+* CPCAP_REG_CRM charge voltages based on the ADC channel 1 values.
  * Note that these register bits don't match MC13783UG.pdf VCHRG
  * register bits.
  */
@@ -118,7 +118,7 @@
 
 enum {
 	CPCAP_CHARGER_IIO_BATTDET,
-	CPCAP_CHARGER_IIO_VOLTAGE,
+CPCAP_CHARGER_IIO_VOLTAGE,
 	CPCAP_CHARGER_IIO_VBUS,
 	CPCAP_CHARGER_IIO_CHRG_CURRENT,
 	CPCAP_CHARGER_IIO_BATT_CURRENT,
@@ -135,7 +135,7 @@ struct cpcap_charger_ddata {
 
 	struct iio_channel *channels[CPCAP_CHARGER_IIO_NR];
 
-	struct power_supply *usb;
+struct power_supply *usb;
 
 	struct phy_companion comparator;	/* For USB VBUS */
 	bool vbus_enabled;
@@ -164,10 +164,10 @@ struct cpcap_charger_ints_state {
 };
 
 static enum power_supply_property cpcap_charger_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
 };
 
 static bool cpcap_charger_battery_found(struct cpcap_charger_ddata *ddata)
@@ -191,7 +191,7 @@ static int cpcap_charger_get_charge_voltage(struct cpcap_charger_ddata *ddata)
 	struct iio_channel *channel;
 	int error, value = 0;
 
-	channel = ddata->channels[CPCAP_CHARGER_IIO_VOLTAGE];
+channel = ddata->channels[CPCAP_CHARGER_IIO_VOLTAGE];
 	error = iio_read_channel_processed(channel, &value);
 	if (error < 0) {
 		dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
@@ -219,31 +219,31 @@ static int cpcap_charger_get_charge_current(struct cpcap_charger_ddata *ddata)
 }
 
 static int cpcap_charger_get_property(struct power_supply *psy,
-				      enum power_supply_property psp,
-				      union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct cpcap_charger_ddata *ddata = dev_get_drvdata(psy->dev.parent);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = ddata->status;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		if (ddata->status == POWER_SUPPLY_STATUS_CHARGING)
-			val->intval = cpcap_charger_get_charge_voltage(ddata) *
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+if (ddata->status == POWER_SUPPLY_STATUS_CHARGING)
+val->intval = cpcap_charger_get_charge_voltage(ddata) *
 				1000;
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
-		if (ddata->status == POWER_SUPPLY_STATUS_CHARGING)
+case POWER_SUPPLY_PROP_CURRENT_NOW:
+if (ddata->status == POWER_SUPPLY_STATUS_CHARGING)
 			val->intval = cpcap_charger_get_charge_current(ddata) *
 				1000;
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
-		val->intval = ddata->status == POWER_SUPPLY_STATUS_CHARGING;
+case POWER_SUPPLY_PROP_ONLINE:
+val->intval = ddata->status == POWER_SUPPLY_STATUS_CHARGING;
 		break;
 	default:
 		return -EINVAL;
@@ -271,7 +271,7 @@ static void cpcap_charger_set_inductive_path(struct cpcap_charger_ddata *ddata,
 }
 
 static int cpcap_charger_set_state(struct cpcap_charger_ddata *ddata,
-				   int max_voltage, int charge_current,
+int max_voltage, int charge_current,
 				   int trickle_current)
 {
 	bool enable;
@@ -286,11 +286,11 @@ static int cpcap_charger_set_state(struct cpcap_charger_ddata *ddata,
 					   CPCAP_REG_CRM_FET_OVRD |
 					   CPCAP_REG_CRM_FET_CTRL);
 		if (error) {
-			ddata->status = POWER_SUPPLY_STATUS_UNKNOWN;
+ddata->status = POWER_SUPPLY_STATUS_UNKNOWN;
 			goto out_err;
 		}
 
-		ddata->status = POWER_SUPPLY_STATUS_DISCHARGING;
+ddata->status = POWER_SUPPLY_STATUS_DISCHARGING;
 
 		return 0;
 	}
@@ -300,14 +300,14 @@ static int cpcap_charger_set_state(struct cpcap_charger_ddata *ddata,
 				   trickle_current |
 				   CPCAP_REG_CRM_FET_OVRD |
 				   CPCAP_REG_CRM_FET_CTRL |
-				   max_voltage |
+max_voltage |
 				   charge_current);
 	if (error) {
-		ddata->status = POWER_SUPPLY_STATUS_UNKNOWN;
+ddata->status = POWER_SUPPLY_STATUS_UNKNOWN;
 		goto out_err;
 	}
 
-	ddata->status = POWER_SUPPLY_STATUS_CHARGING;
+ddata->status = POWER_SUPPLY_STATUS_CHARGING;
 
 	return 0;
 
@@ -458,7 +458,7 @@ static void cpcap_usb_detect(struct work_struct *work)
 			goto out_err;
 	}
 
-	power_supply_changed(ddata->usb);
+power_supply_changed(ddata->usb);
 	return;
 
 out_err:
@@ -582,7 +582,7 @@ out_err:
 
 static const struct power_supply_desc cpcap_charger_usb_desc = {
 	.name		= "usb",
-	.type		= POWER_SUPPLY_TYPE_USB,
+.type		= POWER_SUPPLY_TYPE_USB,
 	.properties	= cpcap_charger_props,
 	.num_properties	= ARRAY_SIZE(cpcap_charger_props),
 	.get_property	= cpcap_charger_get_property,
@@ -602,7 +602,7 @@ static int cpcap_charger_probe(struct platform_device *pdev)
 {
 	struct cpcap_charger_ddata *ddata;
 	const struct of_device_id *of_id;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	int error;
 
 	of_id = of_match_device(of_match_ptr(cpcap_charger_id_table),
@@ -634,7 +634,7 @@ static int cpcap_charger_probe(struct platform_device *pdev)
 	psy_cfg.of_node = pdev->dev.of_node;
 	psy_cfg.drv_data = ddata;
 
-	ddata->usb = devm_power_supply_register(ddata->dev,
+ddata->usb = devm_power_supply_register(ddata->dev,
 						&cpcap_charger_usb_desc,
 						&psy_cfg);
 	if (IS_ERR(ddata->usb)) {

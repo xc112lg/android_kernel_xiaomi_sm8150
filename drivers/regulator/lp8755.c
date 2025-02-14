@@ -1,5 +1,5 @@
 /*
- * LP8755 High Performance Power Management Unit : System Interface Driver
+* LP8755 High Performance Power Management Unit : System Interface Driver
  * (based on rev. 0.26)
  * Copyright 2012 Texas Instruments
  *
@@ -228,10 +228,10 @@ err_i2c:
 }
 
 static const struct regulator_ops lp8755_buck_ops = {
-	.map_voltage = regulator_map_voltage_linear,
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.map_voltage = regulator_map_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -246,7 +246,7 @@ static const struct regulator_ops lp8755_buck_ops = {
 {\
 	.constraints = {\
 		.name = lp8755_rail(_id),\
-		.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,\
+.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE,\
 		.min_uV = 500000,\
 		.max_uV = 1675000,\
 	},\
@@ -304,10 +304,10 @@ out_i2c_error:
 	.name = lp8755_rail(_id),\
 	.id   = LP8755_BUCK##_id,\
 	.ops  = &lp8755_buck_ops,\
-	.n_voltages = LP8755_BUCK_LINEAR_OUT_MAX+1,\
+.n_voltages = LP8755_BUCK_LINEAR_OUT_MAX+1,\
 	.uV_step = 10000,\
 	.min_uV = 500000,\
-	.type = REGULATOR_VOLTAGE,\
+.type = REGULATOR_VOLTAGE,\
 	.owner = THIS_MODULE,\
 	.enable_reg = LP8755_REG_BUCK##_id,\
 	.enable_mask = LP8755_BUCK_EN_M,\
@@ -368,7 +368,7 @@ static irqreturn_t lp8755_irq_handler(int irq, void *data)
 	if (ret < 0)
 		goto err_i2c;
 
-	/* sent power fault detection event to specific regulator */
+/* sent power fault detection event to specific regulator */
 	for (icnt = 0; icnt < LP8755_BUCK_MAX; icnt++)
 		if ((flag0 & (0x4 << icnt))
 		    && (pchip->irqmask & (0x04 << icnt))

@@ -47,8 +47,8 @@ struct anatop_regulator {
 	int delay_bit_shift;
 	int delay_bit_width;
 	int min_bit_val;
-	int min_voltage;
-	int max_voltage;
+int min_voltage;
+int max_voltage;
 	struct regulator_desc rdesc;
 	struct regulator_init_data *initdata;
 	bool bypass;
@@ -75,7 +75,7 @@ static int anatop_regmap_set_voltage_time_sel(struct regulator_dev *reg,
 		val = (val >> anatop_reg->delay_bit_shift) &
 			((1 << anatop_reg->delay_bit_width) - 1);
 		ret = (new_sel - old_sel) * (LDO_RAMP_UP_UNIT_IN_CYCLES <<
-			val) / LDO_RAMP_UP_FREQ_IN_MHZ + 1;
+val) / LDO_RAMP_UP_FREQ_IN_MHZ + 1;
 	}
 
 	return ret;
@@ -87,17 +87,17 @@ static int anatop_regmap_enable(struct regulator_dev *reg)
 	int sel;
 
 	sel = anatop_reg->bypass ? LDO_FET_FULL_ON : anatop_reg->sel;
-	return regulator_set_voltage_sel_regmap(reg, sel);
+return regulator_set_voltage_sel_regmap(reg, sel);
 }
 
 static int anatop_regmap_disable(struct regulator_dev *reg)
 {
-	return regulator_set_voltage_sel_regmap(reg, LDO_POWER_GATE);
+return regulator_set_voltage_sel_regmap(reg, LDO_POWER_GATE);
 }
 
 static int anatop_regmap_is_enabled(struct regulator_dev *reg)
 {
-	return regulator_get_voltage_sel_regmap(reg) != LDO_POWER_GATE;
+return regulator_get_voltage_sel_regmap(reg) != LDO_POWER_GATE;
 }
 
 static int anatop_regmap_core_set_voltage_sel(struct regulator_dev *reg,
@@ -111,7 +111,7 @@ static int anatop_regmap_core_set_voltage_sel(struct regulator_dev *reg,
 		return 0;
 	}
 
-	ret = regulator_set_voltage_sel_regmap(reg, selector);
+ret = regulator_set_voltage_sel_regmap(reg, selector);
 	if (!ret)
 		anatop_reg->sel = selector;
 	return ret;
@@ -124,7 +124,7 @@ static int anatop_regmap_core_get_voltage_sel(struct regulator_dev *reg)
 	if (anatop_reg->bypass || !anatop_regmap_is_enabled(reg))
 		return anatop_reg->sel;
 
-	return regulator_get_voltage_sel_regmap(reg);
+return regulator_get_voltage_sel_regmap(reg);
 }
 
 static int anatop_regmap_get_bypass(struct regulator_dev *reg, bool *enable)
@@ -132,10 +132,10 @@ static int anatop_regmap_get_bypass(struct regulator_dev *reg, bool *enable)
 	struct anatop_regulator *anatop_reg = rdev_get_drvdata(reg);
 	int sel;
 
-	sel = regulator_get_voltage_sel_regmap(reg);
+sel = regulator_get_voltage_sel_regmap(reg);
 	if (sel == LDO_FET_FULL_ON)
 		WARN_ON(!anatop_reg->bypass);
-	else if (sel != LDO_POWER_GATE)
+else if (sel != LDO_POWER_GATE)
 		WARN_ON(anatop_reg->bypass);
 
 	*enable = anatop_reg->bypass;
@@ -153,25 +153,25 @@ static int anatop_regmap_set_bypass(struct regulator_dev *reg, bool enable)
 	sel = enable ? LDO_FET_FULL_ON : anatop_reg->sel;
 	anatop_reg->bypass = enable;
 
-	return regulator_set_voltage_sel_regmap(reg, sel);
+return regulator_set_voltage_sel_regmap(reg, sel);
 }
 
 static struct regulator_ops anatop_rops = {
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 };
 
 static struct regulator_ops anatop_core_rops = {
 	.enable = anatop_regmap_enable,
 	.disable = anatop_regmap_disable,
 	.is_enabled = anatop_regmap_is_enabled,
-	.set_voltage_sel = anatop_regmap_core_set_voltage_sel,
-	.set_voltage_time_sel = anatop_regmap_set_voltage_time_sel,
-	.get_voltage_sel = anatop_regmap_core_get_voltage_sel,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.set_voltage_sel = anatop_regmap_core_set_voltage_sel,
+.set_voltage_time_sel = anatop_regmap_set_voltage_time_sel,
+.get_voltage_sel = anatop_regmap_core_get_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 	.get_bypass = anatop_regmap_get_bypass,
 	.set_bypass = anatop_regmap_set_bypass,
 };
@@ -194,7 +194,7 @@ static int anatop_regulator_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	rdesc = &sreg->rdesc;
-	rdesc->type = REGULATOR_VOLTAGE;
+rdesc->type = REGULATOR_VOLTAGE;
 	rdesc->owner = THIS_MODULE;
 
 	of_property_read_string(np, "regulator-name", &rdesc->name);
@@ -242,16 +242,16 @@ static int anatop_regulator_probe(struct platform_device *pdev)
 		dev_err(dev, "no anatop-min-bit-val property set\n");
 		return ret;
 	}
-	ret = of_property_read_u32(np, "anatop-min-voltage",
-				   &sreg->min_voltage);
+ret = of_property_read_u32(np, "anatop-min-voltage",
+&sreg->min_voltage);
 	if (ret) {
-		dev_err(dev, "no anatop-min-voltage property set\n");
+dev_err(dev, "no anatop-min-voltage property set\n");
 		return ret;
 	}
-	ret = of_property_read_u32(np, "anatop-max-voltage",
-				   &sreg->max_voltage);
+ret = of_property_read_u32(np, "anatop-max-voltage",
+&sreg->max_voltage);
 	if (ret) {
-		dev_err(dev, "no anatop-max-voltage property set\n");
+dev_err(dev, "no anatop-max-voltage property set\n");
 		return ret;
 	}
 
@@ -263,9 +263,9 @@ static int anatop_regulator_probe(struct platform_device *pdev)
 	of_property_read_u32(np, "anatop-delay-bit-shift",
 			     &sreg->delay_bit_shift);
 
-	rdesc->n_voltages = (sreg->max_voltage - sreg->min_voltage) / 25000 + 1
+rdesc->n_voltages = (sreg->max_voltage - sreg->min_voltage) / 25000 + 1
 			    + sreg->min_bit_val;
-	rdesc->min_uV = sreg->min_voltage;
+rdesc->min_uV = sreg->min_voltage;
 	rdesc->uV_step = 25000;
 	rdesc->linear_min_sel = sreg->min_bit_val;
 	rdesc->vsel_reg = sreg->control_reg;
@@ -296,19 +296,19 @@ static int anatop_regulator_probe(struct platform_device *pdev)
 		}
 
 		/*
-		 * In case vddpu was disabled by the bootloader, we need to set
-		 * a sane default until imx6-cpufreq was probed and changes the
-		 * voltage to the correct value. In this case we set 1.25V.
+* In case vddpu was disabled by the bootloader, we need to set
+* a sane default until imx6-cpufreq was probed and changes the
+* voltage to the correct value. In this case we set 1.25V.
 		 */
-		if (!sreg->sel && !strcmp(rdesc->name, "vddpu"))
+if (!sreg->sel && !strcmp(rdesc->name, "vddpu"))
 			sreg->sel = 22;
 
-		/* set the default voltage of the pcie phy to be 1.100v */
-		if (!sreg->sel && !strcmp(rdesc->name, "vddpcie"))
+/* set the default voltage of the pcie phy to be 1.100v */
+if (!sreg->sel && !strcmp(rdesc->name, "vddpcie"))
 			sreg->sel = 0x10;
 
 		if (!sreg->bypass && !sreg->sel) {
-			dev_err(&pdev->dev, "Failed to read a valid default voltage selector.\n");
+dev_err(&pdev->dev, "Failed to read a valid default voltage selector.\n");
 			return -EINVAL;
 		}
 	} else {

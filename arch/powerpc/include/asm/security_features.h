@@ -26,17 +26,17 @@ void setup_count_cache_flush(void);
 
 static inline void security_ftr_set(unsigned long feature)
 {
-	powerpc_security_features |= feature;
+powerpc_security_features |= feature;
 }
 
 static inline void security_ftr_clear(unsigned long feature)
 {
-	powerpc_security_features &= ~feature;
+powerpc_security_features &= ~feature;
 }
 
 static inline bool security_ftr_enabled(unsigned long feature)
 {
-	return !!(powerpc_security_features & feature);
+return !!(powerpc_security_features & feature);
 }
 
 

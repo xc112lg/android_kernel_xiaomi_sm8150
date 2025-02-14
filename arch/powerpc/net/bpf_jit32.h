@@ -65,7 +65,7 @@
 #ifndef __ASSEMBLY__
 
 /*
- * Assembly helpers from arch/powerpc/net/bpf_jit.S:
+* Assembly helpers from arch/powerpc/net/bpf_jit.S:
  */
 #define DECLARE_LOAD_FUNC(func)	\
 	extern u8 func[], func##_negative_offset[], func##_positive_offset[]

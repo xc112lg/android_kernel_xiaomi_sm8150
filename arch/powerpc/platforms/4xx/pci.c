@@ -166,7 +166,7 @@ static int __init ppc4xx_parse_dma_ranges(struct pci_controller *hose,
 		return -ENXIO;
 	}
 
-	/* Check we are a power of 2 size and that base is a multiple of size*/
+/* Check we are a power of 2 size and that base is a multiple of size*/
 	if ((size & (size - 1)) != 0  ||
 	    (res->start & (size - 1)) != 0) {
 		printk(KERN_ERR "%pOF: dma-ranges unaligned\n", hose->dn);
@@ -229,7 +229,7 @@ static int __init ppc4xx_setup_one_pci_PMM(struct pci_controller	*hose,
 	 * if you address is above 4G, but it tests that address and
 	 * (address + size) are both contained in the same 4G
 	 */
-	if ((plb_addr + size) > 0xffffffffull || !is_power_of_2(size) ||
+if ((plb_addr + size) > 0xffffffffull || !is_power_of_2(size) ||
 	    size < 0x1000 || (plb_addr & (size - 1)) != 0) {
 		printk(KERN_WARNING "%pOF: Resource out of range\n", hose->dn);
 		return -1;
@@ -416,7 +416,7 @@ static int __init ppc4xx_setup_one_pcix_POM(struct pci_controller	*hose,
 {
 	u32 lah, lal, pciah, pcial, sa;
 
-	if (!is_power_of_2(size) || size < 0x1000 ||
+if (!is_power_of_2(size) || size < 0x1000 ||
 	    (plb_addr & (size - 1)) != 0) {
 		printk(KERN_WARNING "%pOF: Resource out of range\n",
 		       hose->dn);
@@ -1717,7 +1717,7 @@ static int __init ppc4xx_setup_one_pciex_POM(struct ppc4xx_pciex_port	*port,
 {
 	u32 lah, lal, pciah, pcial, sa;
 
-	if (!is_power_of_2(size) ||
+if (!is_power_of_2(size) ||
 	    (index < 2 && size < 0x100000) ||
 	    (index == 2 && size < 0x100) ||
 	    (plb_addr & (size - 1)) != 0) {

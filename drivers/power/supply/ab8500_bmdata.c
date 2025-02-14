@@ -193,12 +193,12 @@ static const struct batres_vs_temp temp_to_batres_tbl_9100[] = {
 static struct abx500_battery_type bat_type_thermistor[] = {
 	[BATTERY_UNKNOWN] = {
 		/* First element always represent the UNKNOWN battery */
-		.name = POWER_SUPPLY_TECHNOLOGY_UNKNOWN,
+.name = POWER_SUPPLY_TECHNOLOGY_UNKNOWN,
 		.resis_high = 0,
 		.resis_low = 0,
 		.battery_resistance = 300,
 		.charge_full_design = 612,
-		.nominal_voltage = 3700,
+.nominal_voltage = 3700,
 		.termination_vol = 4050,
 		.termination_curr = 200,
 		.recharge_cap = 95,
@@ -220,12 +220,12 @@ static struct abx500_battery_type bat_type_thermistor[] = {
 		.batres_tbl = temp_to_batres_tbl_thermistor,
 	},
 	{
-		.name = POWER_SUPPLY_TECHNOLOGY_LIPO,
+.name = POWER_SUPPLY_TECHNOLOGY_LIPO,
 		.resis_high = 53407,
 		.resis_low = 12500,
 		.battery_resistance = 300,
 		.charge_full_design = 900,
-		.nominal_voltage = 3600,
+.nominal_voltage = 3600,
 		.termination_vol = 4150,
 		.termination_curr = 80,
 		.recharge_cap = 95,
@@ -248,12 +248,12 @@ static struct abx500_battery_type bat_type_thermistor[] = {
 
 	},
 	{
-		.name = POWER_SUPPLY_TECHNOLOGY_LIPO,
+.name = POWER_SUPPLY_TECHNOLOGY_LIPO,
 		.resis_high = 200000,
 		.resis_low = 82869,
 		.battery_resistance = 300,
 		.charge_full_design = 900,
-		.nominal_voltage = 3600,
+.nominal_voltage = 3600,
 		.termination_vol = 4150,
 		.termination_curr = 80,
 		.recharge_cap = 95,
@@ -279,12 +279,12 @@ static struct abx500_battery_type bat_type_thermistor[] = {
 static struct abx500_battery_type bat_type_ext_thermistor[] = {
 	[BATTERY_UNKNOWN] = {
 		/* First element always represent the UNKNOWN battery */
-		.name = POWER_SUPPLY_TECHNOLOGY_UNKNOWN,
+.name = POWER_SUPPLY_TECHNOLOGY_UNKNOWN,
 		.resis_high = 0,
 		.resis_low = 0,
 		.battery_resistance = 300,
 		.charge_full_design = 612,
-		.nominal_voltage = 3700,
+.nominal_voltage = 3700,
 		.termination_vol = 4050,
 		.termination_curr = 200,
 		.recharge_cap = 95,
@@ -311,12 +311,12 @@ static struct abx500_battery_type bat_type_ext_thermistor[] = {
  * near the battery but on the PCB.
  */
 	{
-		.name = POWER_SUPPLY_TECHNOLOGY_LIPO,
+.name = POWER_SUPPLY_TECHNOLOGY_LIPO,
 		.resis_high = 76000,
 		.resis_low = 53000,
 		.battery_resistance = 300,
 		.charge_full_design = 900,
-		.nominal_voltage = 3700,
+.nominal_voltage = 3700,
 		.termination_vol = 4150,
 		.termination_curr = 100,
 		.recharge_cap = 95,
@@ -338,12 +338,12 @@ static struct abx500_battery_type bat_type_ext_thermistor[] = {
 		.batres_tbl = temp_to_batres_tbl_thermistor,
 	},
 	{
-		.name = POWER_SUPPLY_TECHNOLOGY_LION,
+.name = POWER_SUPPLY_TECHNOLOGY_LION,
 		.resis_high = 30000,
 		.resis_low = 10000,
 		.battery_resistance = 300,
 		.charge_full_design = 950,
-		.nominal_voltage = 3700,
+.nominal_voltage = 3700,
 		.termination_vol = 4150,
 		.termination_curr = 100,
 		.recharge_cap = 95,
@@ -365,12 +365,12 @@ static struct abx500_battery_type bat_type_ext_thermistor[] = {
 		.batres_tbl = temp_to_batres_tbl_thermistor,
 	},
 	{
-		.name = POWER_SUPPLY_TECHNOLOGY_LION,
+.name = POWER_SUPPLY_TECHNOLOGY_LION,
 		.resis_high = 95000,
 		.resis_low = 76001,
 		.battery_resistance = 300,
 		.charge_full_design = 950,
-		.nominal_voltage = 3700,
+.nominal_voltage = 3700,
 		.termination_vol = 4150,
 		.termination_curr = 100,
 		.recharge_cap = 95,

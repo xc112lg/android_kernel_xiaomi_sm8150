@@ -29,8 +29,8 @@
 
 struct cdspl3 {
 	struct device_node *of_node;
-	struct devfreq *df;
-	unsigned int l3_freq_hz;
+struct devfreq *df;
+unsigned int l3_freq_hz;
 };
 
 static struct cdspl3 p_me;
@@ -39,25 +39,25 @@ static int cdsp_l3_request_callback(unsigned int freq_khz)
 {
 	if (p_me.df) {
 		mutex_lock(&p_me.df->lock);
-		p_me.l3_freq_hz = freq_khz * 1000;
-		update_devfreq(p_me.df);
+p_me.l3_freq_hz = freq_khz * 1000;
+update_devfreq(p_me.df);
 		mutex_unlock(&p_me.df->lock);
 	} else {
-		pr_err("CDSP L3 request for %dKHz not served", freq_khz);
+pr_err("CDSP L3 request for %dKHz not served", freq_khz);
 		return -ENODEV;
 	}
 	return 0;
 }
 
 static struct cdsprm_l3 cdsprm = {
-	.set_l3_freq = cdsp_l3_request_callback,
+.set_l3_freq = cdsp_l3_request_callback,
 };
 
 static int devfreq_get_target_freq(struct devfreq *df,
-			unsigned long *freq)
+unsigned long *freq)
 {
-	if (freq)
-		*freq = (unsigned long)p_me.l3_freq_hz;
+if (freq)
+*freq = (unsigned long)p_me.l3_freq_hz;
 	return 0;
 }
 
@@ -65,11 +65,11 @@ static int gov_start(struct devfreq *df)
 {
 	if (p_me.of_node != df->dev.parent->of_node) {
 		dev_err(df->dev.parent,
-		"Device match error in CDSP L3 frequency governor\n");
+"Device match error in CDSP L3 frequency governor\n");
 		return -ENODEV;
 	}
 	p_me.df = df;
-	p_me.l3_freq_hz = 0;
+p_me.l3_freq_hz = 0;
 	/*
 	 * Send governor start message to CDSP RM driver
 	 */
@@ -80,7 +80,7 @@ static int gov_start(struct devfreq *df)
 static int gov_stop(struct devfreq *df)
 {
 	p_me.df = 0;
-	p_me.l3_freq_hz = 0;
+p_me.l3_freq_hz = 0;
 	/*
 	 * Send governor stop message to CDSP RM driver
 	 */
@@ -94,14 +94,14 @@ static int devfreq_event_handler(struct devfreq *df,
 	int ret;
 
 	switch (event) {
-	case DEVFREQ_GOV_START:
+case DEVFREQ_GOV_START:
 		ret = gov_start(df);
 		if (ret)
 			return ret;
 		dev_info(df->dev.parent,
 			"Successfully started CDSP L3 governor\n");
 		break;
-	case DEVFREQ_GOV_STOP:
+case DEVFREQ_GOV_STOP:
 		dev_info(df->dev.parent,
 			"Received stop CDSP L3 governor event\n");
 		ret = gov_stop(df);
@@ -116,8 +116,8 @@ static int devfreq_event_handler(struct devfreq *df,
 
 static struct devfreq_governor cdsp_l3_gov = {
 	.name = "cdspl3",
-	.get_target_freq = devfreq_get_target_freq,
-	.event_handler = devfreq_event_handler,
+.get_target_freq = devfreq_get_target_freq,
+.event_handler = devfreq_event_handler,
 };
 
 static int cdsp_l3_driver_probe(struct platform_device *pdev)
@@ -130,7 +130,7 @@ static int cdsp_l3_driver_probe(struct platform_device *pdev)
 		dev_err(dev, "Couldn't find a target device\n");
 		return -ENODEV;
 	}
-	ret = devfreq_add_governor(&cdsp_l3_gov);
+ret = devfreq_add_governor(&cdsp_l3_gov);
 	if (ret)
 		dev_err(dev, "Failed registering CDSP L3 requests %d\n",
 			ret);
@@ -159,7 +159,7 @@ module_init(cdsp_l3_gov_module_init);
 
 static void __exit cdsp_l3_gov_module_exit(void)
 {
-	devfreq_remove_governor(&cdsp_l3_gov);
+devfreq_remove_governor(&cdsp_l3_gov);
 	platform_driver_unregister(&cdsp_l3);
 }
 module_exit(cdsp_l3_gov_module_exit);

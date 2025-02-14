@@ -29,15 +29,15 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8248@0 {
+PowerPC,8248@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <16384>;
 			i-cache-size = <16384>;
-			timebase-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+clock-frequency = <0>;
 		};
 	};
 

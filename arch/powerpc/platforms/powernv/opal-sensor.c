@@ -1,5 +1,5 @@
 /*
- * PowerNV sensor code
+* PowerNV sensor code
  *
  * Copyright (C) 2013 IBM
  *
@@ -28,7 +28,7 @@ static DEFINE_MUTEX(opal_sensor_mutex);
 
 /*
  * This will return sensor information to driver based on the requested sensor
- * handle. A handle is an opaque id for the powernv, read by the driver from the
+* handle. A handle is an opaque id for the powernv, read by the driver from the
  * device tree..
  */
 int opal_get_sensor_data(u32 sensor_hndl, u32 *sensor_data)

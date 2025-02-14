@@ -1,5 +1,5 @@
 /*
- * Definitions for measuring cputime on powerpc machines.
+* Definitions for measuring cputime on powerpc machines.
  *
  * Copyright (C) 2006 Paul Mackerras, IBM Corp.
  *

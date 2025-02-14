@@ -1,5 +1,5 @@
 /*
- * Power Management and GPIO expander driver for MPC8349E-mITX-compatible MCU
+* Power Management and GPIO expander driver for MPC8349E-mITX-compatible MCU
  *
  * Copyright (c) 2008  MontaVista Software, Inc.
  *
@@ -90,7 +90,7 @@ static void mcu_power_off(void)
 {
 	struct mcu *mcu = glob_mcu;
 
-	pr_info("Sending power-off request to the MCU...\n");
+pr_info("Sending power-off request to the MCU...\n");
 	mutex_lock(&mcu->lock);
 	i2c_smbus_write_byte_data(mcu->client, MCU_REG_CTRL,
 				  mcu->reg_ctrl | MCU_CTRL_POFF);
@@ -168,11 +168,11 @@ static int mcu_probe(struct i2c_client *client, const struct i2c_device_id *id)
 	if (ret)
 		goto err;
 
-	/* XXX: this is potentially racy, but there is no lock for pm_power_off */
-	if (!pm_power_off) {
+/* XXX: this is potentially racy, but there is no lock for pm_power_off */
+if (!pm_power_off) {
 		glob_mcu = mcu;
-		pm_power_off = mcu_power_off;
-		dev_info(&client->dev, "will provide power-off service\n");
+pm_power_off = mcu_power_off;
+dev_info(&client->dev, "will provide power-off service\n");
 	}
 
 	if (device_create_file(&client->dev, &dev_attr_status))
@@ -198,7 +198,7 @@ static int mcu_remove(struct i2c_client *client)
 	device_remove_file(&client->dev, &dev_attr_status);
 
 	if (glob_mcu == mcu) {
-		pm_power_off = NULL;
+pm_power_off = NULL;
 		glob_mcu = NULL;
 	}
 

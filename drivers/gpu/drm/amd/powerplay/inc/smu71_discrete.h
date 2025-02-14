@@ -35,9 +35,9 @@
 
 struct SMU71_Discrete_VoltageLevel
 {
-    uint16_t    Voltage;
-    uint16_t    StdVoltageHiSidd;
-    uint16_t    StdVoltageLoSidd;
+uint16_t    Voltage;
+uint16_t    StdVoltageHiSidd;
+uint16_t    StdVoltageLoSidd;
     uint8_t     Smio;
     uint8_t     padding;
 };
@@ -46,10 +46,10 @@ typedef struct SMU71_Discrete_VoltageLevel SMU71_Discrete_VoltageLevel;
 
 struct SMU71_Discrete_GraphicsLevel
 {
-    uint32_t    MinVddc;
-    uint32_t    MinVddcPhases;
+uint32_t    MinVddc;
+uint32_t    MinVddcPhases;
 
-    uint32_t    SclkFrequency;
+uint32_t    SclkFrequency;
 
     uint8_t     pcieDpmLevel;
     uint8_t     DeepSleepDivId;
@@ -67,8 +67,8 @@ struct SMU71_Discrete_GraphicsLevel
     uint8_t     EnabledForThrottle;
     uint8_t     UpHyst;
     uint8_t     DownHyst;
-    uint8_t     VoltageDownHyst;
-    uint8_t     PowerThrottle;
+uint8_t     VoltageDownHyst;
+uint8_t     PowerThrottle;
 };
 
 typedef struct SMU71_Discrete_GraphicsLevel SMU71_Discrete_GraphicsLevel;
@@ -76,9 +76,9 @@ typedef struct SMU71_Discrete_GraphicsLevel SMU71_Discrete_GraphicsLevel;
 struct SMU71_Discrete_ACPILevel
 {
     uint32_t    Flags;
-    uint32_t    MinVddc;
-    uint32_t    MinVddcPhases;
-    uint32_t    SclkFrequency;
+uint32_t    MinVddc;
+uint32_t    MinVddcPhases;
+uint32_t    SclkFrequency;
     uint8_t     SclkDid;
     uint8_t     DisplayWatermark;
     uint8_t     DeepSleepDivId;
@@ -99,9 +99,9 @@ struct SMU71_Discrete_Ulv
 {
     uint32_t    CcPwrDynRm;
     uint32_t    CcPwrDynRm1;
-    uint16_t    VddcOffset;
-    uint8_t     VddcOffsetVid;
-    uint8_t     VddcPhase;
+uint16_t    VddcOffset;
+uint8_t     VddcOffsetVid;
+uint8_t     VddcPhase;
     uint32_t    Reserved;
 };
 
@@ -109,12 +109,12 @@ typedef struct SMU71_Discrete_Ulv SMU71_Discrete_Ulv;
 
 struct SMU71_Discrete_MemoryLevel
 {
-    uint32_t    MinVddc;
-    uint32_t    MinVddcPhases;
-    uint32_t    MinVddci;
-    uint32_t    MinMvdd;
+uint32_t    MinVddc;
+uint32_t    MinVddcPhases;
+uint32_t    MinVddci;
+uint32_t    MinMvdd;
 
-    uint32_t    MclkFrequency;
+uint32_t    MclkFrequency;
 
     uint8_t     EdcReadEnable;
     uint8_t     EdcWriteEnable;
@@ -128,7 +128,7 @@ struct SMU71_Discrete_MemoryLevel
 
     uint8_t     UpHyst;
     uint8_t     DownHyst;
-    uint8_t     VoltageDownHyst;
+uint8_t     VoltageDownHyst;
     uint8_t     padding;
 
     uint16_t    ActivityLevel;
@@ -185,10 +185,10 @@ typedef struct SMU71_Discrete_MCArbDramTimingTable SMU71_Discrete_MCArbDramTimin
 // UVD VCLK/DCLK state (level) definition.
 struct SMU71_Discrete_UvdLevel
 {
-    uint32_t VclkFrequency;
-    uint32_t DclkFrequency;
-    uint16_t MinVddc;
-    uint8_t  MinVddcPhases;
+uint32_t VclkFrequency;
+uint32_t DclkFrequency;
+uint16_t MinVddc;
+uint8_t  MinVddcPhases;
     uint8_t  VclkDivider;
     uint8_t  DclkDivider;
     uint8_t  padding[3];
@@ -199,8 +199,8 @@ typedef struct SMU71_Discrete_UvdLevel SMU71_Discrete_UvdLevel;
 // Clocks for other external blocks (VCE, ACP, SAMU).
 struct SMU71_Discrete_ExtClkLevel
 {
-    uint32_t Frequency;
-    uint16_t MinVoltage;
+uint32_t Frequency;
+uint16_t MinVoltage;
     uint8_t  MinPhases;
     uint8_t  Divider;
 };
@@ -213,14 +213,14 @@ typedef struct SMU71_Discrete_ExtClkLevel SMU71_Discrete_ExtClkLevel;
 // We don't need to cache everything about a state, just a few parameters.
 struct SMU71_Discrete_StateInfo
 {
-    uint32_t SclkFrequency;
-    uint32_t MclkFrequency;
-    uint32_t VclkFrequency;
-    uint32_t DclkFrequency;
-    uint32_t SamclkFrequency;
-    uint32_t AclkFrequency;
-    uint32_t EclkFrequency;
-    uint16_t MvddVoltage;
+uint32_t SclkFrequency;
+uint32_t MclkFrequency;
+uint32_t VclkFrequency;
+uint32_t DclkFrequency;
+uint32_t SamclkFrequency;
+uint32_t AclkFrequency;
+uint32_t EclkFrequency;
+uint16_t MvddVoltage;
     uint16_t padding16;
     uint8_t  DisplayWatermark;
     uint8_t  McArbIndex;
@@ -245,19 +245,19 @@ struct SMU71_Discrete_DpmTable
 
     uint32_t                            SystemFlags;
 
-    // SMIO masks for voltage and phase controls
-    uint32_t                            SmioMaskVddcVid;
-    uint32_t                            SmioMaskVddcPhase;
-    uint32_t                            SmioMaskVddciVid;
-    uint32_t                            SmioMaskMvddVid;
+// SMIO masks for voltage and phase controls
+uint32_t                            SmioMaskVddcVid;
+uint32_t                            SmioMaskVddcPhase;
+uint32_t                            SmioMaskVddciVid;
+uint32_t                            SmioMaskMvddVid;
 
-    uint32_t                            VddcLevelCount;
-    uint32_t                            VddciLevelCount;
-    uint32_t                            MvddLevelCount;
+uint32_t                            VddcLevelCount;
+uint32_t                            VddciLevelCount;
+uint32_t                            MvddLevelCount;
 
-    SMU71_Discrete_VoltageLevel          VddcLevel               [SMU71_MAX_LEVELS_VDDC];
-    SMU71_Discrete_VoltageLevel          VddciLevel              [SMU71_MAX_LEVELS_VDDCI];
-    SMU71_Discrete_VoltageLevel          MvddLevel               [SMU71_MAX_LEVELS_MVDD];
+SMU71_Discrete_VoltageLevel          VddcLevel               [SMU71_MAX_LEVELS_VDDC];
+SMU71_Discrete_VoltageLevel          VddciLevel              [SMU71_MAX_LEVELS_VDDCI];
+SMU71_Discrete_VoltageLevel          MvddLevel               [SMU71_MAX_LEVELS_MVDD];
 
     uint8_t                             GraphicsDpmLevelCount;
     uint8_t                             MemoryDpmLevelCount;
@@ -277,24 +277,24 @@ struct SMU71_Discrete_DpmTable
     uint32_t                            Smio                    [SMU71_MAX_ENTRIES_SMIO];
 
     uint8_t                             GraphicsBootLevel;
-    uint8_t                             GraphicsVoltageChangeEnable;
+uint8_t                             GraphicsVoltageChangeEnable;
     uint8_t                             GraphicsThermThrottleEnable;
     uint8_t                             GraphicsInterval;
 
-    uint8_t                             VoltageInterval;
+uint8_t                             VoltageInterval;
     uint8_t                             ThermalInterval;
     uint16_t                            TemperatureLimitHigh;
 
     uint16_t                            TemperatureLimitLow;
     uint8_t                             MemoryBootLevel;
-    uint8_t                             MemoryVoltageChangeEnable;
+uint8_t                             MemoryVoltageChangeEnable;
 
     uint8_t                             MemoryInterval;
     uint8_t                             MemoryThermThrottleEnable;
-    uint8_t                             MergedVddci;
+uint8_t                             MergedVddci;
     uint8_t                             padding2;
 
-    uint16_t                            VoltageResponseTime;
+uint16_t                            VoltageResponseTime;
     uint16_t                            PhaseResponseTime;
 
     uint8_t                             PCIeBootLinkLevel;
@@ -323,16 +323,16 @@ struct SMU71_Discrete_DpmTable
     uint8_t                             GpuTjMax;
     uint8_t                             GpuTjHyst;
 
-    uint16_t                            BootVddc;
-    uint16_t                            BootVddci;
+uint16_t                            BootVddc;
+uint16_t                            BootVddci;
 
-    uint16_t                            BootMVdd;
+uint16_t                            BootMVdd;
     uint16_t                            padding;
 
     uint32_t                            BAPM_TEMP_GRADIENT;
 
     uint32_t                            LowSclkInterruptThreshold;
-    uint32_t                            VddGfxReChkWait;
+uint32_t                            VddGfxReChkWait;
 
     uint16_t                            PPM_PkgPwrLimit;
     uint16_t                            PPM_TemperatureLimit;
@@ -419,7 +419,7 @@ struct SMU71_MclkDpmScoreboard
     uint8_t  TdpClampMode;
     uint8_t  TdcClampMode;
     uint8_t  ThermClampMode;
-    uint8_t  VoltageBusy;
+uint8_t  VoltageBusy;
 
     int8_t   CurrLevel;
     int8_t   TargLevel;
@@ -427,7 +427,7 @@ struct SMU71_MclkDpmScoreboard
     uint8_t  UpHyst;
 
     uint8_t  DownHyst;
-    uint8_t  VoltageDownHyst;
+uint8_t  VoltageDownHyst;
     uint8_t  DpmEnable;
     uint8_t  DpmRunning;
 
@@ -444,7 +444,7 @@ struct SMU71_MclkDpmScoreboard
     uint8_t  MclkSwitchCritical;
 
     uint8_t  TargetMclkIndex;
-    uint8_t  TargetMvddIndex;
+uint8_t  TargetMvddIndex;
     uint8_t  MclkSwitchResult;
 
     uint8_t  EnabledLevelsChange;
@@ -482,12 +482,12 @@ typedef struct SMU71_UlvScoreboard SMU71_UlvScoreboard;
 
 struct SMU71_VddGfxScoreboard
 {
-    uint8_t     VddGfxEnable;
-    uint8_t     VddGfxActive;
+uint8_t     VddGfxEnable;
+uint8_t     VddGfxActive;
     uint8_t     padding[2];
 
-    uint32_t    VddGfxEnteredCount;
-    uint32_t    VddGfxAbortedCount;
+uint32_t    VddGfxEnteredCount;
+uint32_t    VddGfxAbortedCount;
 };
 
 typedef struct SMU71_VddGfxScoreboard SMU71_VddGfxScoreboard;
@@ -506,23 +506,23 @@ typedef struct SMU71_AcpiScoreboard SMU71_AcpiScoreboard;
 
 struct SMU71_Discrete_PmFuses {
   // dw0-dw1
-  uint8_t BapmVddCVidHiSidd[8];
+uint8_t BapmVddCVidHiSidd[8];
 
   // dw2-dw3
-  uint8_t BapmVddCVidLoSidd[8];
+uint8_t BapmVddCVidLoSidd[8];
 
   // dw4-dw5
-  uint8_t VddCVid[8];
+uint8_t VddCVid[8];
 
   // dw6
   uint8_t SviLoadLineEn;
-  uint8_t SviLoadLineVddC;
-  uint8_t SviLoadLineTrimVddC;
-  uint8_t SviLoadLineOffsetVddC;
+uint8_t SviLoadLineVddC;
+uint8_t SviLoadLineTrimVddC;
+uint8_t SviLoadLineOffsetVddC;
 
   // dw7
-  uint16_t TDC_VDDC_PkgLimit;
-  uint8_t TDC_VDDC_ThrottleReleaseLimitPerc;
+uint16_t TDC_VDDC_PkgLimit;
+uint8_t TDC_VDDC_ThrottleReleaseLimitPerc;
   uint8_t TDC_MAWt;
 
   // dw8
@@ -549,8 +549,8 @@ struct SMU71_Discrete_PmFuses {
   uint8_t Reserved1[2];
 
   // dw16
-  uint16_t BapmVddCBaseLeakageHiSidd;
-  uint16_t BapmVddCBaseLeakageLoSidd;
+uint16_t BapmVddCBaseLeakageHiSidd;
+uint16_t BapmVddCBaseLeakageLoSidd;
 };
 
 typedef struct SMU71_Discrete_PmFuses SMU71_Discrete_PmFuses;
@@ -597,25 +597,25 @@ struct SMU71_Discrete_Cac_Collection_Table {
 typedef struct SMU71_Discrete_Cac_Collection_Table SMU71_Discrete_Cac_Collection_Table;
 
 struct SMU71_Discrete_Cac_Verification_Table {
-  uint32_t VddcTotalPower;
-  uint32_t VddcLeakagePower;
-  uint32_t VddcConstantPower;
-  uint32_t VddcGfxDynamicPower;
-  uint32_t VddcUvdDynamicPower;
-  uint32_t VddcVceDynamicPower;
-  uint32_t VddcAcpDynamicPower;
-  uint32_t VddcPcieDynamicPower;
-  uint32_t VddcDceDynamicPower;
-  uint32_t VddcCurrent;
-  uint32_t VddcVoltage;
-  uint32_t VddciTotalPower;
-  uint32_t VddciLeakagePower;
-  uint32_t VddciConstantPower;
-  uint32_t VddciDynamicPower;
-  uint32_t Vddr1TotalPower;
-  uint32_t Vddr1LeakagePower;
-  uint32_t Vddr1ConstantPower;
-  uint32_t Vddr1DynamicPower;
+uint32_t VddcTotalPower;
+uint32_t VddcLeakagePower;
+uint32_t VddcConstantPower;
+uint32_t VddcGfxDynamicPower;
+uint32_t VddcUvdDynamicPower;
+uint32_t VddcVceDynamicPower;
+uint32_t VddcAcpDynamicPower;
+uint32_t VddcPcieDynamicPower;
+uint32_t VddcDceDynamicPower;
+uint32_t VddcCurrent;
+uint32_t VddcVoltage;
+uint32_t VddciTotalPower;
+uint32_t VddciLeakagePower;
+uint32_t VddciConstantPower;
+uint32_t VddciDynamicPower;
+uint32_t Vddr1TotalPower;
+uint32_t Vddr1LeakagePower;
+uint32_t Vddr1ConstantPower;
+uint32_t Vddr1DynamicPower;
   uint32_t spare[8];
   uint32_t temperature;
 };

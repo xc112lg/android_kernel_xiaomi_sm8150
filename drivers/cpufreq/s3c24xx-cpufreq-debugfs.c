@@ -3,7 +3,7 @@
  *	http://armlinux.simtec.co.uk/
  *	Ben Dooks <ben@simtec.co.uk>
  *
- * S3C24XX CPU Frequency scaling - debugfs status support
+* S3C24XX CPU Frequency scaling - debugfs status support
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -38,10 +38,10 @@ static void show_max(struct seq_file *seq, struct s3c_freq *f)
 
 static int board_show(struct seq_file *seq, void *p)
 {
-	struct s3c_cpufreq_config *cfg;
-	struct s3c_cpufreq_board *brd;
+struct s3c_cpufreq_config *cfg;
+struct s3c_cpufreq_board *brd;
 
-	cfg = s3c_cpufreq_getconfig();
+cfg = s3c_cpufreq_getconfig();
 	if (!cfg) {
 		seq_printf(seq, "no configuration registered\n");
 		return 0;
@@ -78,19 +78,19 @@ static const struct file_operations fops_board = {
 
 static int info_show(struct seq_file *seq, void *p)
 {
-	struct s3c_cpufreq_config *cfg;
+struct s3c_cpufreq_config *cfg;
 
-	cfg = s3c_cpufreq_getconfig();
+cfg = s3c_cpufreq_getconfig();
 	if (!cfg) {
 		seq_printf(seq, "no configuration registered\n");
 		return 0;
 	}
 
-	seq_printf(seq, "  FCLK %ld Hz\n", cfg->freq.fclk);
+seq_printf(seq, "  FCLK %ld Hz\n", cfg->freq.fclk);
 	seq_printf(seq, "  HCLK %ld Hz (%lu.%lu ns)\n",
-		   cfg->freq.hclk, print_ns(cfg->freq.hclk_tns));
-	seq_printf(seq, "  PCLK %ld Hz\n", cfg->freq.hclk);
-	seq_printf(seq, "ARMCLK %ld Hz\n", cfg->freq.armclk);
+cfg->freq.hclk, print_ns(cfg->freq.hclk_tns));
+seq_printf(seq, "  PCLK %ld Hz\n", cfg->freq.hclk);
+seq_printf(seq, "ARMCLK %ld Hz\n", cfg->freq.armclk);
 	seq_printf(seq, "\n");
 
 	show_max(seq, &cfg->max);
@@ -120,13 +120,13 @@ static const struct file_operations fops_info = {
 
 static int io_show(struct seq_file *seq, void *p)
 {
-	void (*show_bank)(struct seq_file *, struct s3c_cpufreq_config *, union s3c_iobank *);
-	struct s3c_cpufreq_config *cfg;
+void (*show_bank)(struct seq_file *, struct s3c_cpufreq_config *, union s3c_iobank *);
+struct s3c_cpufreq_config *cfg;
 	struct s3c_iotimings *iot;
 	union s3c_iobank *iob;
 	int bank;
 
-	cfg = s3c_cpufreq_getconfig();
+cfg = s3c_cpufreq_getconfig();
 	if (!cfg) {
 		seq_printf(seq, "no configuration registered\n");
 		return 0;
@@ -138,13 +138,13 @@ static int io_show(struct seq_file *seq, void *p)
 		return 0;
 	}
 
-	iot = s3c_cpufreq_getiotimings();
+iot = s3c_cpufreq_getiotimings();
 	if (!iot) {
 		seq_printf(seq, "no io timings registered\n");
 		return 0;
 	}
 
-	seq_printf(seq, "hclk period is %lu.%lu ns\n", print_ns(cfg->freq.hclk_tns));
+seq_printf(seq, "hclk period is %lu.%lu ns\n", print_ns(cfg->freq.hclk_tns));
 
 	for (bank = 0; bank < MAX_BANKS; bank++) {
 		iob = &iot->bank[bank];
@@ -178,7 +178,7 @@ static const struct file_operations fops_io = {
 
 static int __init s3c_freq_debugfs_init(void)
 {
-	dbgfs_root = debugfs_create_dir("s3c-cpufreq", NULL);
+dbgfs_root = debugfs_create_dir("s3c-cpufreq", NULL);
 	if (IS_ERR(dbgfs_root)) {
 		pr_err("%s: error creating debugfs root\n", __func__);
 		return PTR_ERR(dbgfs_root);

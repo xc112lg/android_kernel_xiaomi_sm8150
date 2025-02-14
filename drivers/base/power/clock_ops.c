@@ -1,5 +1,5 @@
 /*
- * drivers/base/power/clock_ops.c - Generic clock manipulation PM callbacks
+* drivers/base/power/clock_ops.c - Generic clock manipulation PM callbacks
  *
  * Copyright (c) 2011 Rafael J. Wysocki <rjw@sisk.pl>, Renesas Electronics Corp.
  *
@@ -110,12 +110,12 @@ static int __pm_clk_add(struct device *dev, const char *con_id,
 }
 
 /**
- * pm_clk_add - Start using a device clock for power management.
- * @dev: Device whose clock is going to be used for power management.
+* pm_clk_add - Start using a device clock for power management.
+* @dev: Device whose clock is going to be used for power management.
  * @con_id: Connection ID of the clock.
  *
  * Add the clock represented by @con_id to the list of clocks used for
- * the power management of @dev.
+* the power management of @dev.
  */
 int pm_clk_add(struct device *dev, const char *con_id)
 {
@@ -124,12 +124,12 @@ int pm_clk_add(struct device *dev, const char *con_id)
 EXPORT_SYMBOL_GPL(pm_clk_add);
 
 /**
- * pm_clk_add_clk - Start using a device clock for power management.
- * @dev: Device whose clock is going to be used for power management.
+* pm_clk_add_clk - Start using a device clock for power management.
+* @dev: Device whose clock is going to be used for power management.
  * @clk: Clock pointer
  *
- * Add the clock to the list of clocks used for the power management of @dev.
- * The power-management code will take control of the clock reference, so
+* Add the clock to the list of clocks used for the power management of @dev.
+* The power-management code will take control of the clock reference, so
  * callers should not call clk_put() on @clk after this function sucessfully
  * returned.
  */
@@ -141,12 +141,12 @@ EXPORT_SYMBOL_GPL(pm_clk_add_clk);
 
 
 /**
- * of_pm_clk_add_clk - Start using a device clock for power management.
- * @dev: Device whose clock is going to be used for power management.
- * @name: Name of clock that is going to be used for power management.
+* of_pm_clk_add_clk - Start using a device clock for power management.
+* @dev: Device whose clock is going to be used for power management.
+* @name: Name of clock that is going to be used for power management.
  *
  * Add the clock described in the 'clocks' device-tree node that matches
- * with the 'name' provided, to the list of clocks used for the power
+* with the 'name' provided, to the list of clocks used for the power
  * management of @dev. On success, returns 0. Returns a negative error
  * code if the clock is not found or cannot be added.
  */
@@ -173,11 +173,11 @@ int of_pm_clk_add_clk(struct device *dev, const char *name)
 EXPORT_SYMBOL_GPL(of_pm_clk_add_clk);
 
 /**
- * of_pm_clk_add_clks - Start using device clock(s) for power management.
- * @dev: Device whose clock(s) is going to be used for power management.
+* of_pm_clk_add_clks - Start using device clock(s) for power management.
+* @dev: Device whose clock(s) is going to be used for power management.
  *
  * Add a series of clocks described in the 'clocks' device-tree node for
- * a device to the list of clocks used for the power management of @dev.
+* a device to the list of clocks used for the power management of @dev.
  * On success, returns the number of clocks added. Returns a negative
  * error code if there are no clocks in the device node for the device
  * or if adding a clock fails.
@@ -252,12 +252,12 @@ static void __pm_clk_remove(struct pm_clock_entry *ce)
 }
 
 /**
- * pm_clk_remove - Stop using a device clock for power management.
+* pm_clk_remove - Stop using a device clock for power management.
  * @dev: Device whose clock should not be used for PM any more.
  * @con_id: Connection ID of the clock.
  *
  * Remove the clock represented by @con_id from the list of clocks used for
- * the power management of @dev.
+* the power management of @dev.
  */
 void pm_clk_remove(struct device *dev, const char *con_id)
 {
@@ -290,12 +290,12 @@ void pm_clk_remove(struct device *dev, const char *con_id)
 EXPORT_SYMBOL_GPL(pm_clk_remove);
 
 /**
- * pm_clk_remove_clk - Stop using a device clock for power management.
+* pm_clk_remove_clk - Stop using a device clock for power management.
  * @dev: Device whose clock should not be used for PM any more.
  * @clk: Clock pointer
  *
  * Remove the clock pointed to by @clk from the list of clocks used for
- * the power management of @dev.
+* the power management of @dev.
  */
 void pm_clk_remove_clk(struct device *dev, struct clk *clk)
 {
@@ -324,7 +324,7 @@ void pm_clk_remove_clk(struct device *dev, struct clk *clk)
 EXPORT_SYMBOL_GPL(pm_clk_remove_clk);
 
 /**
- * pm_clk_init - Initialize a device's list of power management clocks.
+* pm_clk_init - Initialize a device's list of power management clocks.
  * @dev: Device to initialize the list of PM clocks for.
  *
  * Initialize the lock and clock_list members of the device's pm_subsys_data
@@ -343,7 +343,7 @@ EXPORT_SYMBOL_GPL(pm_clk_init);
  * @dev: Device to create and initialize the list of PM clocks for.
  *
  * Allocate a struct pm_subsys_data object, initialize its lock and clock_list
- * members and make the @dev's power.subsys_data field point to it.
+* members and make the @dev's power.subsys_data field point to it.
  */
 int pm_clk_create(struct device *dev)
 {
@@ -352,10 +352,10 @@ int pm_clk_create(struct device *dev)
 EXPORT_SYMBOL_GPL(pm_clk_create);
 
 /**
- * pm_clk_destroy - Destroy a device's list of power management clocks.
+* pm_clk_destroy - Destroy a device's list of power management clocks.
  * @dev: Device to destroy the list of PM clocks for.
  *
- * Clear the @dev's power.subsys_data field, remove the list of clock entries
+* Clear the @dev's power.subsys_data field, remove the list of clock entries
  * from the struct pm_subsys_data object pointed to by it before and free
  * that object.
  */
@@ -624,7 +624,7 @@ static int pm_clk_notify(struct notifier_block *nb,
 #endif /* !CONFIG_PM_CLK */
 
 /**
- * pm_clk_add_notifier - Add bus type notifier for power management clocks.
+* pm_clk_add_notifier - Add bus type notifier for power management clocks.
  * @bus: Bus type to add the notifier to.
  * @clknb: Notifier to be added to the given bus type.
  *

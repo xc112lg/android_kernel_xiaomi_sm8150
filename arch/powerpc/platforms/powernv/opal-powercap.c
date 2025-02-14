@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL Powercap interface
+* PowerNV OPAL Powercap interface
  *
  * Copyright 2017 IBM Corp.
  *
@@ -28,14 +28,14 @@ struct powercap_attr {
 
 static struct pcap {
 	struct attribute_group pg;
-	struct powercap_attr *pattrs;
+struct powercap_attr *pattrs;
 } *pcaps;
 
 static ssize_t powercap_show(struct kobject *kobj, struct kobj_attribute *attr,
 			     char *buf)
 {
-	struct powercap_attr *pcap_attr = container_of(attr,
-						struct powercap_attr, attr);
+struct powercap_attr *pcap_attr = container_of(attr,
+struct powercap_attr, attr);
 	struct opal_msg msg;
 	u32 pcap;
 	int ret, token;
@@ -46,11 +46,11 @@ static ssize_t powercap_show(struct kobject *kobj, struct kobj_attribute *attr,
 		return token;
 	}
 
-	ret = mutex_lock_interruptible(&powercap_mutex);
+ret = mutex_lock_interruptible(&powercap_mutex);
 	if (ret)
 		goto out_token;
 
-	ret = opal_get_powercap(pcap_attr->handle, token, (u32 *)__pa(&pcap));
+ret = opal_get_powercap(pcap_attr->handle, token, (u32 *)__pa(&pcap));
 	switch (ret) {
 	case OPAL_ASYNC_COMPLETION:
 		ret = opal_async_wait_response(token, &msg);
@@ -76,7 +76,7 @@ static ssize_t powercap_show(struct kobject *kobj, struct kobj_attribute *attr,
 	}
 
 out:
-	mutex_unlock(&powercap_mutex);
+mutex_unlock(&powercap_mutex);
 out_token:
 	opal_async_release_token(token);
 	return ret;
@@ -86,8 +86,8 @@ static ssize_t powercap_store(struct kobject *kobj,
 			      struct kobj_attribute *attr, const char *buf,
 			      size_t count)
 {
-	struct powercap_attr *pcap_attr = container_of(attr,
-						struct powercap_attr, attr);
+struct powercap_attr *pcap_attr = container_of(attr,
+struct powercap_attr, attr);
 	struct opal_msg msg;
 	u32 pcap;
 	int ret, token;
@@ -102,11 +102,11 @@ static ssize_t powercap_store(struct kobject *kobj,
 		return token;
 	}
 
-	ret = mutex_lock_interruptible(&powercap_mutex);
+ret = mutex_lock_interruptible(&powercap_mutex);
 	if (ret)
 		goto out_token;
 
-	ret = opal_set_powercap(pcap_attr->handle, token, pcap);
+ret = opal_set_powercap(pcap_attr->handle, token, pcap);
 	switch (ret) {
 	case OPAL_ASYNC_COMPLETION:
 		ret = opal_async_wait_response(token, &msg);
@@ -127,66 +127,66 @@ static ssize_t powercap_store(struct kobject *kobj,
 	}
 
 out:
-	mutex_unlock(&powercap_mutex);
+mutex_unlock(&powercap_mutex);
 out_token:
 	opal_async_release_token(token);
 	return ret;
 }
 
 static void powercap_add_attr(int handle, const char *name,
-			      struct powercap_attr *attr)
+struct powercap_attr *attr)
 {
 	attr->handle = handle;
 	sysfs_attr_init(&attr->attr.attr);
 	attr->attr.attr.name = name;
 	attr->attr.attr.mode = 0444;
-	attr->attr.show = powercap_show;
+attr->attr.show = powercap_show;
 }
 
 void __init opal_powercap_init(void)
 {
-	struct device_node *powercap, *node;
+struct device_node *powercap, *node;
 	int i = 0;
 
-	powercap = of_find_compatible_node(NULL, NULL, "ibm,opal-powercap");
-	if (!powercap) {
-		pr_devel("Powercap node not found\n");
+powercap = of_find_compatible_node(NULL, NULL, "ibm,opal-powercap");
+if (!powercap) {
+pr_devel("Powercap node not found\n");
 		return;
 	}
 
-	pcaps = kcalloc(of_get_child_count(powercap), sizeof(*pcaps),
+pcaps = kcalloc(of_get_child_count(powercap), sizeof(*pcaps),
 			GFP_KERNEL);
 	if (!pcaps)
 		return;
 
-	powercap_kobj = kobject_create_and_add("powercap", opal_kobj);
-	if (!powercap_kobj) {
-		pr_warn("Failed to create powercap kobject\n");
+powercap_kobj = kobject_create_and_add("powercap", opal_kobj);
+if (!powercap_kobj) {
+pr_warn("Failed to create powercap kobject\n");
 		goto out_pcaps;
 	}
 
 	i = 0;
-	for_each_child_of_node(powercap, node) {
+for_each_child_of_node(powercap, node) {
 		u32 cur, min, max;
 		int j = 0;
 		bool has_cur = false, has_min = false, has_max = false;
 
-		if (!of_property_read_u32(node, "powercap-min", &min)) {
+if (!of_property_read_u32(node, "powercap-min", &min)) {
 			j++;
 			has_min = true;
 		}
 
-		if (!of_property_read_u32(node, "powercap-max", &max)) {
+if (!of_property_read_u32(node, "powercap-max", &max)) {
 			j++;
 			has_max = true;
 		}
 
-		if (!of_property_read_u32(node, "powercap-current", &cur)) {
+if (!of_property_read_u32(node, "powercap-current", &cur)) {
 			j++;
 			has_cur = true;
 		}
 
-		pcaps[i].pattrs = kcalloc(j, sizeof(struct powercap_attr),
+pcaps[i].pattrs = kcalloc(j, sizeof(struct powercap_attr),
 					  GFP_KERNEL);
 		if (!pcaps[i].pattrs)
 			goto out_pcaps_pattrs;
@@ -201,30 +201,30 @@ void __init opal_powercap_init(void)
 		j = 0;
 		pcaps[i].pg.name = node->name;
 		if (has_min) {
-			powercap_add_attr(min, "powercap-min",
+powercap_add_attr(min, "powercap-min",
 					  &pcaps[i].pattrs[j]);
 			pcaps[i].pg.attrs[j] = &pcaps[i].pattrs[j].attr.attr;
 			j++;
 		}
 
 		if (has_max) {
-			powercap_add_attr(max, "powercap-max",
+powercap_add_attr(max, "powercap-max",
 					  &pcaps[i].pattrs[j]);
 			pcaps[i].pg.attrs[j] = &pcaps[i].pattrs[j].attr.attr;
 			j++;
 		}
 
 		if (has_cur) {
-			powercap_add_attr(cur, "powercap-current",
+powercap_add_attr(cur, "powercap-current",
 					  &pcaps[i].pattrs[j]);
 			pcaps[i].pattrs[j].attr.attr.mode |= 0220;
-			pcaps[i].pattrs[j].attr.store = powercap_store;
+pcaps[i].pattrs[j].attr.store = powercap_store;
 			pcaps[i].pg.attrs[j] = &pcaps[i].pattrs[j].attr.attr;
 			j++;
 		}
 
-		if (sysfs_create_group(powercap_kobj, &pcaps[i].pg)) {
-			pr_warn("Failed to create powercap attribute group %s\n",
+if (sysfs_create_group(powercap_kobj, &pcaps[i].pg)) {
+pr_warn("Failed to create powercap attribute group %s\n",
 				pcaps[i].pg.name);
 			goto out_pcaps_pattrs;
 		}
@@ -238,7 +238,7 @@ out_pcaps_pattrs:
 		kfree(pcaps[i].pattrs);
 		kfree(pcaps[i].pg.attrs);
 	}
-	kobject_put(powercap_kobj);
+kobject_put(powercap_kobj);
 out_pcaps:
 	kfree(pcaps);
 }

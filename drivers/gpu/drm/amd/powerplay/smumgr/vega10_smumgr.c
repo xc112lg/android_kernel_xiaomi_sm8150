@@ -77,7 +77,7 @@ static bool vega10_is_smc_ram_running(struct pp_smumgr *smumgr)
 /*
  * Check if SMC has responded to previous message.
  *
- * @param    smumgr  the address of the powerplay hardware manager.
+* @param    smumgr  the address of the powerplay hardware manager.
  * @return   TRUE    SMC has responded, FALSE otherwise.
  */
 static uint32_t vega10_wait_for_response(struct pp_smumgr *smumgr)
@@ -98,7 +98,7 @@ static uint32_t vega10_wait_for_response(struct pp_smumgr *smumgr)
 
 /*
  * Send a message to the SMC, and do not wait for its response.
- * @param    smumgr  the address of the powerplay hardware manager.
+* @param    smumgr  the address of the powerplay hardware manager.
  * @param    msg the message to send.
  * @return   Always return 0.
  */
@@ -119,7 +119,7 @@ int vega10_send_msg_to_smc_without_waiting(struct pp_smumgr *smumgr,
 
 /*
  * Send a message to the SMC, and wait for its response.
- * @param    smumgr  the address of the powerplay hardware manager.
+* @param    smumgr  the address of the powerplay hardware manager.
  * @param    msg the message to send.
  * @return   Always return 0.
  */
@@ -146,7 +146,7 @@ int vega10_send_msg_to_smc(struct pp_smumgr *smumgr, uint16_t msg)
 
 /*
  * Send a message to the SMC with parameter
- * @param    smumgr:  the address of the powerplay hardware manager.
+* @param    smumgr:  the address of the powerplay hardware manager.
  * @param    msg: the message to send.
  * @param    parameter: the parameter to send
  * @return   Always return 0.
@@ -180,7 +180,7 @@ int vega10_send_msg_to_smc_with_parameter(struct pp_smumgr *smumgr,
 
 /*
  * Send a message to the SMC with parameter, do not wait for response
- * @param    smumgr:  the address of the powerplay hardware manager.
+* @param    smumgr:  the address of the powerplay hardware manager.
  * @param    msg: the message to send.
  * @param    parameter: the parameter to send
  * @return   The response that came from the SMC.
@@ -199,7 +199,7 @@ int vega10_send_msg_to_smc_with_parameter_without_waiting(
 
 /*
  * Retrieve an argument from SMC.
- * @param    smumgr  the address of the powerplay hardware manager.
+* @param    smumgr  the address of the powerplay hardware manager.
  * @param    arg     pointer to store the argument from SMC.
  * @return   Always return 0.
  */

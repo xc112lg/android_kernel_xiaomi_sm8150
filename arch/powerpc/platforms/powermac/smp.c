@@ -1,8 +1,8 @@
 /*
- * SMP support for power macintosh.
+* SMP support for power macintosh.
  *
- * We support both the old "powersurge" SMP architecture
- * and the current Core99 (G4 PowerMac) machines.
+* We support both the old "powersurge" SMP architecture
+* and the current Core99 (G4 PowerMac) machines.
  *
  * Note that we don't support the very first rev. of
  * Apple/DayStar 2 CPUs board, the one with the funky
@@ -74,7 +74,7 @@ static int tb_req;
 #ifdef CONFIG_PPC_PMAC32_PSURGE
 
 /*
- * Powersurge (old powermac SMP) support.
+* Powersurge (old powermac SMP) support.
  */
 
 /* Addresses for powersurge registers */
@@ -130,7 +130,7 @@ static struct irq_domain *psurge_host;
 int psurge_secondary_virq;
 
 /*
- * Set and clear IPIs for powersurge.
+* Set and clear IPIs for powersurge.
  */
 static inline void psurge_set_ipi(int cpu)
 {
@@ -159,7 +159,7 @@ static inline void psurge_clr_ipi(int cpu)
 }
 
 /*
- * On powersurge (old SMP powermac architecture) we don't have
+* On powersurge (old SMP powermac architecture) we don't have
  * separate IPIs for separate messages like openpic does.  Instead
  * use the generic demux helpers
  *  -- paulus.
@@ -279,14 +279,14 @@ static void __init smp_psurge_probe(void)
 		return;
 
 	/*
-	 * The powersurge cpu board can be used in the generation
-	 * of powermacs that have a socket for an upgradeable cpu card,
+* The powersurge cpu board can be used in the generation
+* of powermacs that have a socket for an upgradeable cpu card,
 	 * including the 7500, 8500, 9500, 9600.
 	 * The device tree doesn't tell you if you have 2 cpus because
 	 * OF doesn't know anything about the 2nd processor.
 	 * Instead we look for magic bits in magic registers,
 	 * in the hammerhead memory controller in the case of the
-	 * dual-cpu powersurge board.  -- paulus.
+* dual-cpu powersurge board.  -- paulus.
 	 */
 	dn = of_find_node_by_name(NULL, "hammerhead");
 	if (dn == NULL)
@@ -705,8 +705,8 @@ static void __init smp_core99_setup(int ncpus)
 #ifdef CONFIG_PPC64
 
 	/* i2c based HW sync on some G5s */
-	if (of_machine_is_compatible("PowerMac7,2") ||
-	    of_machine_is_compatible("PowerMac7,3") ||
+if (of_machine_is_compatible("PowerMac7,2") ||
+of_machine_is_compatible("PowerMac7,3") ||
 	    of_machine_is_compatible("RackMac3,1"))
 		smp_core99_setup_i2c_hwsync(ncpus);
 
@@ -763,7 +763,7 @@ static void __init smp_core99_setup(int ncpus)
 
 	/* 32 bits SMP can't NAP */
 	if (!of_machine_is_compatible("MacRISC4"))
-		powersave_nap = 0;
+powersave_nap = 0;
 }
 
 static void __init smp_core99_probe(void)
@@ -777,7 +777,7 @@ static void __init smp_core99_probe(void)
        	for (cpus = NULL; (cpus = of_find_node_by_type(cpus, "cpu")) != NULL;)
 	       	++ncpus;
 
-	printk(KERN_INFO "PowerMac SMP probe found %d cpus\n", ncpus);
+printk(KERN_INFO "PowerMac SMP probe found %d cpus\n", ncpus);
 
 	/* Nothing more to do if less than 2 of them */
 	if (ncpus <= 1)
@@ -900,10 +900,10 @@ static void __init smp_core99_bringup_done(void)
 		g5_phy_disable_cpu1();
 	}
 #ifdef CONFIG_HOTPLUG_CPU
-	cpuhp_setup_state_nocalls(CPUHP_POWERPC_PMAC_PREPARE,
-				  "powerpc/pmac:prepare", smp_core99_cpu_prepare,
+cpuhp_setup_state_nocalls(CPUHP_POWERPC_PMAC_PREPARE,
+"powerpc/pmac:prepare", smp_core99_cpu_prepare,
 				  NULL);
-	cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "powerpc/pmac:online",
+cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN, "powerpc/pmac:online",
 				  smp_core99_cpu_online, NULL);
 #endif
 
@@ -973,7 +973,7 @@ static void pmac_cpu_die(void)
 		set_dec(0x7fffffff);
 
 		/* Enter NAP mode */
-		power4_idle();
+power4_idle();
 	}
 }
 

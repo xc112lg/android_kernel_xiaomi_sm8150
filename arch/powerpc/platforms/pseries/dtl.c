@@ -356,7 +356,7 @@ static int dtl_init(void)
 	/* set up common debugfs structure */
 
 	rc = -ENOMEM;
-	dtl_dir = debugfs_create_dir("dtl", powerpc_debugfs_root);
+dtl_dir = debugfs_create_dir("dtl", powerpc_debugfs_root);
 	if (!dtl_dir) {
 		printk(KERN_WARNING "%s: can't create dtl root dir\n",
 				__func__);

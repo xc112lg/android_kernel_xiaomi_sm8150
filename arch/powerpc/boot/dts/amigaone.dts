@@ -30,9 +30,9 @@
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <32768>;		// L1, 32K
 			i-cache-size = <32768>;		// L1, 32K
-			timebase-frequency = <0>;	// 33.3 MHz, from U-boot
-			clock-frequency = <0>;		// From U-boot
-			bus-frequency = <0>;		// From U-boot
+timebase-frequency = <0>;	// 33.3 MHz, from U-boot
+clock-frequency = <0>;		// From U-boot
+bus-frequency = <0>;		// From U-boot
 		};
 	};
 
@@ -44,7 +44,7 @@
 	pci@80000000 {
 		device_type = "pci";
 		compatible = "mai-logic,articia-s";
-		bus-frequency = <33333333>;
+bus-frequency = <33333333>;
 		bus-range = <0 0xff>;
 		ranges = <0x01000000 0 0x00000000 0xfe000000 0 0x00c00000	// PCI I/O
 		          0x02000000 0 0x80000000 0x80000000 0 0x7d000000	// PCI memory
@@ -131,7 +131,7 @@
 				compatible = "pnpPNP,501","pnpPNP,500";
 				reg = <1 0x000003f8 0x00000008>;
 				interrupts = <4 3>;
-				clock-frequency = <1843200>;
+clock-frequency = <1843200>;
 				current-speed = <115200>;
 			};
 
@@ -140,7 +140,7 @@
 				compatible = "pnpPNP,501","pnpPNP,500";
 				reg = <1 0x000002f8 0x00000008>;
 				interrupts = <3 3>;
-				clock-frequency = <1843200>;
+clock-frequency = <1843200>;
 				current-speed = <115200>;
 			};
 

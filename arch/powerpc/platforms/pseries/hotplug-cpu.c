@@ -1,8 +1,8 @@
 /*
  * pseries CPU Hotplug infrastructure.
  *
- * Split out from arch/powerpc/platforms/pseries/setup.c
- *  arch/powerpc/kernel/rtas.c, and arch/powerpc/platforms/pseries/smp.c
+* Split out from arch/powerpc/platforms/pseries/setup.c
+*  arch/powerpc/kernel/rtas.c, and arch/powerpc/platforms/pseries/smp.c
  *
  * Peter Bergner, IBM	March 2001.
  * Copyright (C) 2001 IBM.

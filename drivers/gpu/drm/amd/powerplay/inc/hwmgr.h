@@ -76,9 +76,9 @@ enum PP_FEATURE_MASK {
 	PP_MCLK_DPM_MASK = 0x2,
 	PP_PCIE_DPM_MASK = 0x4,
 	PP_SCLK_DEEP_SLEEP_MASK = 0x8,
-	PP_POWER_CONTAINMENT_MASK = 0x10,
+PP_POWER_CONTAINMENT_MASK = 0x10,
 	PP_UVD_HANDSHAKE_MASK = 0x20,
-	PP_SMC_VOLTAGE_CONTROL_MASK = 0x40,
+PP_SMC_VOLTAGE_CONTROL_MASK = 0x40,
 	PP_VBI_TIME_SUPPORT_MASK = 0x80,
 	PP_ULV_MASK = 0x100,
 	PP_ENABLE_GFX_CG_THRU_SMU = 0x200,
@@ -115,8 +115,8 @@ typedef int (*phm_table_function)(struct pp_hwmgr *hwmgr, void *input,
 typedef bool (*phm_check_function)(struct pp_hwmgr *hwmgr);
 
 struct phm_set_power_state_input {
-	const struct pp_hw_power_state *pcurrent_state;
-	const struct pp_hw_power_state *pnew_state;
+const struct pp_hw_power_state *pcurrent_state;
+const struct pp_hw_power_state *pnew_state;
 };
 
 struct phm_acp_arbiter {
@@ -207,11 +207,11 @@ struct phm_acpclock_voltage_dependency_record {
 
 struct phm_clock_voltage_dependency_table {
 	uint32_t count;										/* Number of entries. */
-	struct phm_clock_voltage_dependency_record entries[1];		/* Dynamically allocate count entries. */
+struct phm_clock_voltage_dependency_record entries[1];		/* Dynamically allocate count entries. */
 };
 
 struct phm_phase_shedding_limits_record {
-	uint32_t  Voltage;
+uint32_t  Voltage;
 	uint32_t    Sclk;
 	uint32_t    Mclk;
 };
@@ -237,7 +237,7 @@ struct phm_uvd_clock_voltage_dependency_record {
 
 struct phm_uvd_clock_voltage_dependency_table {
 	uint8_t count;
-	struct phm_uvd_clock_voltage_dependency_record entries[1];
+struct phm_uvd_clock_voltage_dependency_record entries[1];
 };
 
 struct phm_acp_clock_voltage_dependency_record {
@@ -247,7 +247,7 @@ struct phm_acp_clock_voltage_dependency_record {
 
 struct phm_acp_clock_voltage_dependency_table {
 	uint32_t count;
-	struct phm_acp_clock_voltage_dependency_record entries[1];
+struct phm_acp_clock_voltage_dependency_record entries[1];
 };
 
 struct phm_vce_clock_voltage_dependency_record {
@@ -263,38 +263,38 @@ struct phm_phase_shedding_limits_table {
 
 struct phm_vceclock_voltage_dependency_table {
 	uint8_t count;                                    /* Number of entries. */
-	struct phm_vceclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
+struct phm_vceclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
 };
 
 struct phm_uvdclock_voltage_dependency_table {
 	uint8_t count;                                    /* Number of entries. */
-	struct phm_uvdclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
+struct phm_uvdclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
 };
 
 struct phm_samuclock_voltage_dependency_table {
 	uint8_t count;                                    /* Number of entries. */
-	struct phm_samuclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
+struct phm_samuclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
 };
 
 struct phm_acpclock_voltage_dependency_table {
 	uint32_t count;                                    /* Number of entries. */
-	struct phm_acpclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
+struct phm_acpclock_voltage_dependency_record entries[1]; /* Dynamically allocate count entries. */
 };
 
 struct phm_vce_clock_voltage_dependency_table {
 	uint8_t count;
-	struct phm_vce_clock_voltage_dependency_record entries[1];
+struct phm_vce_clock_voltage_dependency_record entries[1];
 };
 
 struct pp_hwmgr_func {
 	int (*backend_init)(struct pp_hwmgr *hw_mgr);
 	int (*backend_fini)(struct pp_hwmgr *hw_mgr);
 	int (*asic_setup)(struct pp_hwmgr *hw_mgr);
-	int (*get_power_state_size)(struct pp_hwmgr *hw_mgr);
+int (*get_power_state_size)(struct pp_hwmgr *hw_mgr);
 
 	int (*apply_state_adjust_rules)(struct pp_hwmgr *hwmgr,
-				struct pp_power_state  *prequest_ps,
-			const struct pp_power_state *pcurrent_ps);
+struct pp_power_state  *prequest_ps,
+const struct pp_power_state *pcurrent_ps);
 
 	int (*force_dpm_level)(struct pp_hwmgr *hw_mgr,
 					enum amd_dpm_forced_level level);
@@ -305,22 +305,22 @@ struct pp_hwmgr_func {
 						struct pp_hwmgr *hw_mgr);
 
 	int (*patch_boot_state)(struct pp_hwmgr *hwmgr,
-				     struct pp_hw_power_state *hw_ps);
+struct pp_hw_power_state *hw_ps);
 
 	int (*get_pp_table_entry)(struct pp_hwmgr *hwmgr,
-			    unsigned long, struct pp_power_state *);
+unsigned long, struct pp_power_state *);
 	int (*get_num_of_pp_table_entries)(struct pp_hwmgr *hwmgr);
-	int (*powerdown_uvd)(struct pp_hwmgr *hwmgr);
-	int (*powergate_vce)(struct pp_hwmgr *hwmgr, bool bgate);
-	int (*powergate_uvd)(struct pp_hwmgr *hwmgr, bool bgate);
+int (*powerdown_uvd)(struct pp_hwmgr *hwmgr);
+int (*powergate_vce)(struct pp_hwmgr *hwmgr, bool bgate);
+int (*powergate_uvd)(struct pp_hwmgr *hwmgr, bool bgate);
 	int (*get_mclk)(struct pp_hwmgr *hwmgr, bool low);
 	int (*get_sclk)(struct pp_hwmgr *hwmgr, bool low);
-	int (*power_state_set)(struct pp_hwmgr *hwmgr,
+int (*power_state_set)(struct pp_hwmgr *hwmgr,
 						const void *state);
-	int (*enable_clock_power_gating)(struct pp_hwmgr *hwmgr);
+int (*enable_clock_power_gating)(struct pp_hwmgr *hwmgr);
 	int (*notify_smc_display_config_after_ps_adjustment)(struct pp_hwmgr *hwmgr);
 	int (*display_config_changed)(struct pp_hwmgr *hwmgr);
-	int (*disable_clock_power_gating)(struct pp_hwmgr *hwmgr);
+int (*disable_clock_power_gating)(struct pp_hwmgr *hwmgr);
 	int (*update_clock_gatings)(struct pp_hwmgr *hwmgr,
 						const uint32_t *msg_id);
 	int (*set_max_fan_rpm_output)(struct pp_hwmgr *hwmgr, uint16_t us_max_fan_pwm);
@@ -340,41 +340,41 @@ struct pp_hwmgr_func {
 					const void *thermal_interrupt_info);
 	bool (*check_smc_update_required_for_display_configuration)(struct pp_hwmgr *hwmgr);
 	int (*check_states_equal)(struct pp_hwmgr *hwmgr,
-					const struct pp_hw_power_state *pstate1,
-					const struct pp_hw_power_state *pstate2,
+const struct pp_hw_power_state *pstate1,
+const struct pp_hw_power_state *pstate2,
 					bool *equal);
-	int (*set_cpu_power_state)(struct pp_hwmgr *hwmgr);
+int (*set_cpu_power_state)(struct pp_hwmgr *hwmgr);
 	int (*store_cc6_data)(struct pp_hwmgr *hwmgr, uint32_t separation_time,
 				bool cc6_disable, bool pstate_disable,
 				bool pstate_switch_disable);
-	int (*get_dal_power_level)(struct pp_hwmgr *hwmgr,
+int (*get_dal_power_level)(struct pp_hwmgr *hwmgr,
 			struct amd_pp_simple_clock_info *info);
-	int (*get_performance_level)(struct pp_hwmgr *, const struct pp_hw_power_state *,
+int (*get_performance_level)(struct pp_hwmgr *, const struct pp_hw_power_state *,
 			PHM_PerformanceLevelDesignation, uint32_t, PHM_PerformanceLevel *);
 	int (*get_current_shallow_sleep_clocks)(struct pp_hwmgr *hwmgr,
-				const struct pp_hw_power_state *state, struct pp_clock_info *clock_info);
+const struct pp_hw_power_state *state, struct pp_clock_info *clock_info);
 	int (*get_clock_by_type)(struct pp_hwmgr *hwmgr, enum amd_pp_clock_type type, struct amd_pp_clocks *clocks);
 	int (*get_clock_by_type_with_latency)(struct pp_hwmgr *hwmgr,
 			enum amd_pp_clock_type type,
 			struct pp_clock_levels_with_latency *clocks);
-	int (*get_clock_by_type_with_voltage)(struct pp_hwmgr *hwmgr,
+int (*get_clock_by_type_with_voltage)(struct pp_hwmgr *hwmgr,
 			enum amd_pp_clock_type type,
-			struct pp_clock_levels_with_voltage *clocks);
+struct pp_clock_levels_with_voltage *clocks);
 	int (*set_watermarks_for_clocks_ranges)(struct pp_hwmgr *hwmgr,
 			struct pp_wm_sets_with_clock_ranges_soc15 *wm_with_clock_ranges);
-	int (*display_clock_voltage_request)(struct pp_hwmgr *hwmgr,
+int (*display_clock_voltage_request)(struct pp_hwmgr *hwmgr,
 			struct pp_display_clock_request *clock);
 	int (*get_max_high_clocks)(struct pp_hwmgr *hwmgr, struct amd_pp_simple_clock_info *clocks);
-	int (*power_off_asic)(struct pp_hwmgr *hwmgr);
+int (*power_off_asic)(struct pp_hwmgr *hwmgr);
 	int (*force_clock_level)(struct pp_hwmgr *hwmgr, enum pp_clock_type type, uint32_t mask);
 	int (*print_clock_levels)(struct pp_hwmgr *hwmgr, enum pp_clock_type type, char *buf);
-	int (*enable_per_cu_power_gating)(struct pp_hwmgr *hwmgr, bool enable);
+int (*enable_per_cu_power_gating)(struct pp_hwmgr *hwmgr, bool enable);
 	int (*get_sclk_od)(struct pp_hwmgr *hwmgr);
 	int (*set_sclk_od)(struct pp_hwmgr *hwmgr, uint32_t value);
 	int (*get_mclk_od)(struct pp_hwmgr *hwmgr);
 	int (*set_mclk_od)(struct pp_hwmgr *hwmgr, uint32_t value);
 	int (*read_sensor)(struct pp_hwmgr *hwmgr, int idx, void *value, int *size);
-	int (*set_power_profile_state)(struct pp_hwmgr *hwmgr,
+int (*set_power_profile_state)(struct pp_hwmgr *hwmgr,
 			struct amd_pp_profile *request);
 	int (*avfs_control)(struct pp_hwmgr *hwmgr, bool enable);
 	int (*disable_smc_firmware_ctf)(struct pp_hwmgr *hwmgr);
@@ -394,13 +394,13 @@ struct pp_table_func {
 
 union phm_cac_leakage_record {
 	struct {
-		uint16_t Vddc;          /* in CI, we use it for StdVoltageHiSidd */
-		uint32_t Leakage;       /* in CI, we use it for StdVoltageLoSidd */
+uint16_t Vddc;          /* in CI, we use it for StdVoltageHiSidd */
+uint32_t Leakage;       /* in CI, we use it for StdVoltageLoSidd */
 	};
 	struct {
-		uint16_t Vddc1;
-		uint16_t Vddc2;
-		uint16_t Vddc3;
+uint16_t Vddc1;
+uint16_t Vddc2;
+uint16_t Vddc3;
 	};
 };
 
@@ -417,18 +417,18 @@ struct phm_samu_clock_voltage_dependency_record {
 
 struct phm_samu_clock_voltage_dependency_table {
 	uint8_t count;
-	struct phm_samu_clock_voltage_dependency_record entries[1];
+struct phm_samu_clock_voltage_dependency_record entries[1];
 };
 
 struct phm_cac_tdp_table {
 	uint16_t usTDP;
 	uint16_t usConfigurableTDP;
 	uint16_t usTDC;
-	uint16_t usBatteryPowerLimit;
-	uint16_t usSmallPowerLimit;
+uint16_t usBatteryPowerLimit;
+uint16_t usSmallPowerLimit;
 	uint16_t usLowCACLeakage;
 	uint16_t usHighCACLeakage;
-	uint16_t usMaximumPowerDeliveryLimit;
+uint16_t usMaximumPowerDeliveryLimit;
 	uint16_t usEDCLimit;
 	uint16_t usOperatingTempMinLimit;
 	uint16_t usOperatingTempMaxLimit;
@@ -436,14 +436,14 @@ struct phm_cac_tdp_table {
 	uint16_t usOperatingTempHyst;
 	uint16_t usDefaultTargetOperatingTemp;
 	uint16_t usTargetOperatingTemp;
-	uint16_t usPowerTuneDataSetID;
+uint16_t usPowerTuneDataSetID;
 	uint16_t usSoftwareShutdownTemp;
 	uint16_t usClockStretchAmount;
 	uint16_t usTemperatureLimitHotspot;
 	uint16_t usTemperatureLimitLiquid1;
 	uint16_t usTemperatureLimitLiquid2;
-	uint16_t usTemperatureLimitVrVddc;
-	uint16_t usTemperatureLimitVrMvdd;
+uint16_t usTemperatureLimitVrVddc;
+uint16_t usTemperatureLimitVrMvdd;
 	uint16_t usTemperatureLimitPlx;
 	uint8_t  ucLiquid1_I2C_address;
 	uint8_t  ucLiquid2_I2C_address;
@@ -452,7 +452,7 @@ struct phm_cac_tdp_table {
 	uint8_t  ucVr_I2C_Line;
 	uint8_t  ucPlx_I2C_address;
 	uint8_t  ucPlx_I2C_Line;
-	uint32_t usBoostPowerLimit;
+uint32_t usBoostPowerLimit;
 	uint8_t  ucCKS_LDO_REFSEL;
 };
 
@@ -460,11 +460,11 @@ struct phm_tdp_table {
 	uint16_t usTDP;
 	uint16_t usConfigurableTDP;
 	uint16_t usTDC;
-	uint16_t usBatteryPowerLimit;
-	uint16_t usSmallPowerLimit;
+uint16_t usBatteryPowerLimit;
+uint16_t usSmallPowerLimit;
 	uint16_t usLowCACLeakage;
 	uint16_t usHighCACLeakage;
-	uint16_t usMaximumPowerDeliveryLimit;
+uint16_t usMaximumPowerDeliveryLimit;
 	uint16_t usEDCLimit;
 	uint16_t usOperatingTempMinLimit;
 	uint16_t usOperatingTempMaxLimit;
@@ -472,7 +472,7 @@ struct phm_tdp_table {
 	uint16_t usOperatingTempHyst;
 	uint16_t usDefaultTargetOperatingTemp;
 	uint16_t usTargetOperatingTemp;
-	uint16_t usPowerTuneDataSetID;
+uint16_t usPowerTuneDataSetID;
 	uint16_t usSoftwareShutdownTemp;
 	uint16_t usClockStretchAmount;
 	uint16_t usTemperatureLimitTedge;
@@ -480,8 +480,8 @@ struct phm_tdp_table {
 	uint16_t usTemperatureLimitLiquid1;
 	uint16_t usTemperatureLimitLiquid2;
 	uint16_t usTemperatureLimitHBM;
-	uint16_t usTemperatureLimitVrVddc;
-	uint16_t usTemperatureLimitVrMvdd;
+uint16_t usTemperatureLimitVrVddc;
+uint16_t usTemperatureLimitVrMvdd;
 	uint16_t usTemperatureLimitPlx;
 	uint8_t  ucLiquid1_I2C_address;
 	uint8_t  ucLiquid2_I2C_address;
@@ -493,7 +493,7 @@ struct phm_tdp_table {
 	uint8_t  ucLiquid_I2C_LineSDA;
 	uint8_t  ucVr_I2C_LineSDA;
 	uint8_t  ucPlx_I2C_LineSDA;
-	uint32_t usBoostPowerLimit;
+uint32_t usBoostPowerLimit;
 	uint16_t usBoostStartTemperature;
 	uint16_t usBoostStopTemperature;
 	uint32_t  ulBoostClock;
@@ -508,14 +508,14 @@ struct phm_ppm_table {
 	uint32_t  small_ac_platform_tdc;
 	uint32_t  apu_tdp;
 	uint32_t  dgpu_tdp;
-	uint32_t  dgpu_ulv_power;
+uint32_t  dgpu_ulv_power;
 	uint32_t  tj_max;
 };
 
 struct phm_vq_budgeting_record {
 	uint32_t ulCUs;
-	uint32_t ulSustainableSOCPowerLimitLow;
-	uint32_t ulSustainableSOCPowerLimitHigh;
+uint32_t ulSustainableSOCPowerLimitLow;
+uint32_t ulSustainableSOCPowerLimitHigh;
 	uint32_t ulMinSclkLow;
 	uint32_t ulMinSclkHigh;
 	uint8_t  ucDispConfig;
@@ -534,119 +534,119 @@ struct phm_clock_and_voltage_limits {
 	uint32_t sclk;
 	uint32_t mclk;
 	uint32_t gfxclk;
-	uint16_t vddc;
-	uint16_t vddci;
-	uint16_t vddgfx;
-	uint16_t vddmem;
+uint16_t vddc;
+uint16_t vddci;
+uint16_t vddgfx;
+uint16_t vddmem;
 };
 
 /* Structure to hold PPTable information */
 
 struct phm_ppt_v1_information {
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_sclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_mclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_socclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_dcefclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_sclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_mclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_socclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_dcefclk;
 	struct phm_clock_array *valid_sclk_values;
 	struct phm_clock_array *valid_mclk_values;
 	struct phm_clock_array *valid_socclk_values;
 	struct phm_clock_array *valid_dcefclk_values;
-	struct phm_clock_and_voltage_limits max_clock_voltage_on_dc;
-	struct phm_clock_and_voltage_limits max_clock_voltage_on_ac;
-	struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
+struct phm_clock_and_voltage_limits max_clock_voltage_on_dc;
+struct phm_clock_and_voltage_limits max_clock_voltage_on_ac;
+struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
 	struct phm_ppm_table *ppm_parameter_table;
 	struct phm_cac_tdp_table *cac_dtp_table;
 	struct phm_tdp_table *tdp_table;
-	struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_dep_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddc_lookup_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddgfx_lookup_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddmem_lookup_table;
+struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_dep_table;
+struct phm_ppt_v1_voltage_lookup_table *vddc_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddgfx_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddmem_lookup_table;
 	struct phm_ppt_v1_pcie_table *pcie_table;
 	struct phm_ppt_v1_gpio_table *gpio_table;
-	uint16_t us_ulv_voltage_offset;
+uint16_t us_ulv_voltage_offset;
 	uint16_t us_ulv_smnclk_did;
 	uint16_t us_ulv_mp1clk_did;
 	uint16_t us_ulv_gfxclk_bypass;
 	uint16_t us_gfxclk_slew_rate;
-	uint16_t us_min_gfxclk_freq_limit;
+uint16_t us_min_gfxclk_freq_limit;
 };
 
 struct phm_ppt_v2_information {
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_sclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_mclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_socclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_dcefclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_pixclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_dispclk;
-	struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_phyclk;
-	struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_dep_table;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_sclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_mclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_socclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_dcefclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_pixclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_dispclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *vdd_dep_on_phyclk;
+struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_dep_table;
 
-	struct phm_clock_voltage_dependency_table *vddc_dep_on_dalpwrl;
+struct phm_clock_voltage_dependency_table *vddc_dep_on_dalpwrl;
 
 	struct phm_clock_array *valid_sclk_values;
 	struct phm_clock_array *valid_mclk_values;
 	struct phm_clock_array *valid_socclk_values;
 	struct phm_clock_array *valid_dcefclk_values;
 
-	struct phm_clock_and_voltage_limits max_clock_voltage_on_dc;
-	struct phm_clock_and_voltage_limits max_clock_voltage_on_ac;
+struct phm_clock_and_voltage_limits max_clock_voltage_on_dc;
+struct phm_clock_and_voltage_limits max_clock_voltage_on_ac;
 
 	struct phm_ppm_table *ppm_parameter_table;
 	struct phm_cac_tdp_table *cac_dtp_table;
 	struct phm_tdp_table *tdp_table;
 
-	struct phm_ppt_v1_voltage_lookup_table *vddc_lookup_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddgfx_lookup_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddmem_lookup_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddci_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddc_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddgfx_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddmem_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddci_lookup_table;
 
 	struct phm_ppt_v1_pcie_table *pcie_table;
 
-	uint16_t us_ulv_voltage_offset;
+uint16_t us_ulv_voltage_offset;
 	uint16_t us_ulv_smnclk_did;
 	uint16_t us_ulv_mp1clk_did;
 	uint16_t us_ulv_gfxclk_bypass;
 	uint16_t us_gfxclk_slew_rate;
-	uint16_t us_min_gfxclk_freq_limit;
+uint16_t us_min_gfxclk_freq_limit;
 
-	uint8_t  uc_gfx_dpm_voltage_mode;
-	uint8_t  uc_soc_dpm_voltage_mode;
-	uint8_t  uc_uclk_dpm_voltage_mode;
-	uint8_t  uc_uvd_dpm_voltage_mode;
-	uint8_t  uc_vce_dpm_voltage_mode;
-	uint8_t  uc_mp0_dpm_voltage_mode;
-	uint8_t  uc_dcef_dpm_voltage_mode;
+uint8_t  uc_gfx_dpm_voltage_mode;
+uint8_t  uc_soc_dpm_voltage_mode;
+uint8_t  uc_uclk_dpm_voltage_mode;
+uint8_t  uc_uvd_dpm_voltage_mode;
+uint8_t  uc_vce_dpm_voltage_mode;
+uint8_t  uc_mp0_dpm_voltage_mode;
+uint8_t  uc_dcef_dpm_voltage_mode;
 };
 
 struct phm_dynamic_state_info {
-	struct phm_clock_voltage_dependency_table *vddc_dependency_on_sclk;
-	struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
-	struct phm_clock_voltage_dependency_table *vddc_dependency_on_mclk;
-	struct phm_clock_voltage_dependency_table *mvdd_dependency_on_mclk;
-	struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
+struct phm_clock_voltage_dependency_table *vddc_dependency_on_sclk;
+struct phm_clock_voltage_dependency_table *vddci_dependency_on_mclk;
+struct phm_clock_voltage_dependency_table *vddc_dependency_on_mclk;
+struct phm_clock_voltage_dependency_table *mvdd_dependency_on_mclk;
+struct phm_clock_voltage_dependency_table *vddc_dep_on_dal_pwrl;
 	struct phm_clock_array                    *valid_sclk_values;
 	struct phm_clock_array                    *valid_mclk_values;
-	struct phm_clock_and_voltage_limits       max_clock_voltage_on_dc;
-	struct phm_clock_and_voltage_limits       max_clock_voltage_on_ac;
+struct phm_clock_and_voltage_limits       max_clock_voltage_on_dc;
+struct phm_clock_and_voltage_limits       max_clock_voltage_on_ac;
 	uint32_t                                  mclk_sclk_ratio;
 	uint32_t                                  sclk_mclk_delta;
-	uint32_t                                  vddc_vddci_delta;
-	uint32_t                                  min_vddc_for_pcie_gen2;
+uint32_t                                  vddc_vddci_delta;
+uint32_t                                  min_vddc_for_pcie_gen2;
 	struct phm_cac_leakage_table              *cac_leakage_table;
-	struct phm_phase_shedding_limits_table  *vddc_phase_shed_limits_table;
+struct phm_phase_shedding_limits_table  *vddc_phase_shed_limits_table;
 
-	struct phm_vce_clock_voltage_dependency_table
-					    *vce_clock_voltage_dependency_table;
-	struct phm_uvd_clock_voltage_dependency_table
-					    *uvd_clock_voltage_dependency_table;
-	struct phm_acp_clock_voltage_dependency_table
-					    *acp_clock_voltage_dependency_table;
-	struct phm_samu_clock_voltage_dependency_table
-					   *samu_clock_voltage_dependency_table;
+struct phm_vce_clock_voltage_dependency_table
+*vce_clock_voltage_dependency_table;
+struct phm_uvd_clock_voltage_dependency_table
+*uvd_clock_voltage_dependency_table;
+struct phm_acp_clock_voltage_dependency_table
+*acp_clock_voltage_dependency_table;
+struct phm_samu_clock_voltage_dependency_table
+*samu_clock_voltage_dependency_table;
 
 	struct phm_ppm_table                          *ppm_parameter_table;
 	struct phm_cac_tdp_table                      *cac_dtp_table;
-	struct phm_clock_voltage_dependency_table	*vdd_gfx_dependency_on_sclk;
+struct phm_clock_voltage_dependency_table	*vdd_gfx_dependency_on_sclk;
 	struct phm_vq_budgeting_table				*vq_budgeting_table;
 };
 
@@ -684,20 +684,20 @@ struct pp_advance_fan_control_parameters {
 	uint16_t  usFanCurrentHigh;                /* High current */
 	uint16_t  usFanRPMLow;                     /* Low RPM */
 	uint16_t  usFanRPMHigh;                    /* High RPM */
-	uint32_t   ulMinFanSCLKAcousticLimit;      /* Minimum Fan Controller SCLK Frequency Acoustic Limit. */
+uint32_t   ulMinFanSCLKAcousticLimit;      /* Minimum Fan Controller SCLK Frequency Acoustic Limit. */
 	uint8_t   ucTargetTemperature;             /* Advanced fan controller target temperature. */
 	uint8_t   ucMinimumPWMLimit;               /* The minimum PWM that the advanced fan controller can set.  This should be set to the highest PWM that will run the fan at its lowest RPM. */
 	uint16_t  usFanGainEdge;                   /* The following is added for Fiji */
 	uint16_t  usFanGainHotspot;
 	uint16_t  usFanGainLiquid;
-	uint16_t  usFanGainVrVddc;
-	uint16_t  usFanGainVrMvdd;
+uint16_t  usFanGainVrVddc;
+uint16_t  usFanGainVrMvdd;
 	uint16_t  usFanGainPlx;
 	uint16_t  usFanGainHbm;
 	uint8_t   ucEnableZeroRPM;
 	uint8_t   ucFanStopTemperature;
 	uint8_t   ucFanStartTemperature;
-	uint32_t  ulMaxFanSCLKAcousticLimit;       /* Maximum Fan Controller SCLK Frequency Acoustic Limit. */
+uint32_t  ulMaxFanSCLKAcousticLimit;       /* Maximum Fan Controller SCLK Frequency Acoustic Limit. */
 	uint32_t  ulTargetGfxClk;
 	uint16_t  usZeroRPMStartTemperature;
 	uint16_t  usZeroRPMStopTemperature;
@@ -754,21 +754,21 @@ struct pp_hwmgr {
 	void *pptable;
 	struct phm_platform_descriptor platform_descriptor;
 	void *backend;
-	enum PP_DAL_POWERLEVEL dal_power_level;
+enum PP_DAL_POWERLEVEL dal_power_level;
 	struct phm_dynamic_state_info dyn_state;
 	struct phm_runtime_table_header setup_asic;
-	struct phm_runtime_table_header power_down_asic;
+struct phm_runtime_table_header power_down_asic;
 	struct phm_runtime_table_header disable_dynamic_state_management;
 	struct phm_runtime_table_header enable_dynamic_state_management;
-	struct phm_runtime_table_header set_power_state;
-	struct phm_runtime_table_header enable_clock_power_gatings;
+struct phm_runtime_table_header set_power_state;
+struct phm_runtime_table_header enable_clock_power_gatings;
 	struct phm_runtime_table_header display_configuration_changed;
 	struct phm_runtime_table_header start_thermal_controller;
 	struct phm_runtime_table_header set_temperature_range;
 	const struct pp_hwmgr_func *hwmgr_func;
 	const struct pp_table_func *pptable_func;
-	struct pp_power_state    *ps;
-	enum pp_power_source  power_source;
+struct pp_power_state    *ps;
+enum pp_power_source  power_source;
 	uint32_t num_ps;
 	struct pp_thermal_controller_info thermal_controller;
 	bool fan_ctrl_is_in_default_mode;
@@ -777,19 +777,19 @@ struct pp_hwmgr {
 	uint32_t tmin;
 	struct phm_microcode_version_info microcode_version_info;
 	uint32_t ps_size;
-	struct pp_power_state    *current_ps;
-	struct pp_power_state    *request_ps;
-	struct pp_power_state    *boot_ps;
-	struct pp_power_state    *uvd_ps;
+struct pp_power_state    *current_ps;
+struct pp_power_state    *request_ps;
+struct pp_power_state    *boot_ps;
+struct pp_power_state    *uvd_ps;
 	struct amd_pp_display_configuration display_config;
 	uint32_t feature_mask;
 
-	/* power profile */
-	struct amd_pp_profile gfx_power_profile;
-	struct amd_pp_profile compute_power_profile;
-	struct amd_pp_profile default_gfx_power_profile;
-	struct amd_pp_profile default_compute_power_profile;
-	enum amd_pp_profile_type current_power_profile;
+/* power profile */
+struct amd_pp_profile gfx_power_profile;
+struct amd_pp_profile compute_power_profile;
+struct amd_pp_profile default_gfx_power_profile;
+struct amd_pp_profile default_compute_power_profile;
+enum amd_pp_profile_type current_power_profile;
 };
 
 extern int hwmgr_early_init(struct pp_instance *handle);
@@ -819,12 +819,12 @@ extern int phm_reset_single_dpm_table(void *table, uint32_t count, int max);
 extern void phm_setup_pcie_table_entry(void *table, uint32_t index, uint32_t pcie_gen, uint32_t pcie_lanes);
 extern int32_t phm_get_dpm_level_enable_mask_value(void *table);
 extern uint8_t phm_get_voltage_id(struct pp_atomctrl_voltage_table *voltage_table,
-		uint32_t voltage);
+uint32_t voltage);
 extern uint8_t phm_get_voltage_index(struct phm_ppt_v1_voltage_lookup_table *lookup_table, uint16_t voltage);
 extern uint16_t phm_find_closest_vddci(struct pp_atomctrl_voltage_table *vddci_table, uint16_t vddci);
 extern int phm_find_boot_level(void *table, uint32_t value, uint32_t *boot_level);
 extern int phm_get_sclk_for_voltage_evv(struct pp_hwmgr *hwmgr, phm_ppt_v1_voltage_lookup_table *lookup_table,
-								uint16_t virtual_voltage_id, int32_t *sclk);
+uint16_t virtual_voltage_id, int32_t *sclk);
 extern int phm_initializa_dynamic_state_adjustment_rule_settings(struct pp_hwmgr *hwmgr);
 extern uint32_t phm_get_lowest_enabled_level(struct pp_hwmgr *hwmgr, uint32_t mask);
 extern void phm_apply_dal_min_voltage_request(struct pp_hwmgr *hwmgr);
@@ -834,7 +834,7 @@ extern int vega10_hwmgr_init(struct pp_hwmgr *hwmgr);
 extern int rv_init_function_pointers(struct pp_hwmgr *hwmgr);
 
 extern int phm_get_voltage_evv_on_sclk(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
-				uint32_t sclk, uint16_t id, uint16_t *voltage);
+uint32_t sclk, uint16_t id, uint16_t *voltage);
 
 #define PHM_ENTIRE_REGISTER_MASK 0xFFFFFFFFU
 

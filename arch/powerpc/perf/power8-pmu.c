@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER8 processors.
+* Performance counter support for POWER8 processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  * Copyright 2013 Michael Ellerman, IBM Corporation.
@@ -15,7 +15,7 @@
 #include "isa207-common.h"
 
 /*
- * Some power8 event codes.
+* Some power8 event codes.
  */
 #define EVENT(_name, _code)	_name = _code,
 
@@ -124,12 +124,12 @@ static struct attribute *power8_events_attr[] = {
 
 static struct attribute_group power8_pmu_events_group = {
 	.name = "events",
-	.attrs = power8_events_attr,
+.attrs = power8_events_attr,
 };
 
 static const struct attribute_group *power8_pmu_attr_groups[] = {
 	&isa207_pmu_format_group,
-	&power8_pmu_events_group,
+&power8_pmu_events_group,
 	NULL,
 };
 
@@ -170,7 +170,7 @@ static u64 power8_bhrb_filter_map(u64 branch_sample_type)
 		return -1;
 
 	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_CALL) {
-		pmu_bhrb_filter |= POWER8_MMCRA_IFM1;
+pmu_bhrb_filter |= POWER8_MMCRA_IFM1;
 		return pmu_bhrb_filter;
 	}
 
@@ -180,7 +180,7 @@ static u64 power8_bhrb_filter_map(u64 branch_sample_type)
 
 static void power8_config_bhrb(u64 pmu_bhrb_filter)
 {
-	pmu_bhrb_filter &= POWER8_MMCRA_BHRB_MASK;
+pmu_bhrb_filter &= POWER8_MMCRA_BHRB_MASK;
 
 	/* Enable BHRB filter in PMU */
 	mtspr(SPRN_MMCRA, (mfspr(SPRN_MMCRA) | pmu_bhrb_filter));
@@ -297,24 +297,24 @@ static int power8_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
 #undef C
 
 static struct power_pmu power8_pmu = {
-	.name			= "POWER8",
+.name			= "POWER8",
 	.n_counter		= MAX_PMU_COUNTERS,
 	.max_alternatives	= MAX_ALT + 1,
 	.add_fields		= ISA207_ADD_FIELDS,
 	.test_adder		= ISA207_TEST_ADDER,
 	.compute_mmcr		= isa207_compute_mmcr,
-	.config_bhrb		= power8_config_bhrb,
-	.bhrb_filter_map	= power8_bhrb_filter_map,
+.config_bhrb		= power8_config_bhrb,
+.bhrb_filter_map	= power8_bhrb_filter_map,
 	.get_constraint		= isa207_get_constraint,
-	.get_alternatives	= power8_get_alternatives,
+.get_alternatives	= power8_get_alternatives,
 	.get_mem_data_src	= isa207_get_mem_data_src,
 	.get_mem_weight		= isa207_get_mem_weight,
 	.disable_pmc		= isa207_disable_pmc,
 	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S,
-	.n_generic		= ARRAY_SIZE(power8_generic_events),
-	.generic_events		= power8_generic_events,
-	.cache_events		= &power8_cache_events,
-	.attr_groups		= power8_pmu_attr_groups,
+.n_generic		= ARRAY_SIZE(power8_generic_events),
+.generic_events		= power8_generic_events,
+.cache_events		= &power8_cache_events,
+.attr_groups		= power8_pmu_attr_groups,
 	.bhrb_nr		= 32,
 };
 
@@ -323,10 +323,10 @@ static int __init init_power8_pmu(void)
 	int rc;
 
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power8"))
+strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power8"))
 		return -ENODEV;
 
-	rc = register_power_pmu(&power8_pmu);
+rc = register_power_pmu(&power8_pmu);
 	if (rc)
 		return rc;
 

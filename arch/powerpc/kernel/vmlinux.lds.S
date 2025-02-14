@@ -106,7 +106,7 @@ SECTIONS
 		IRQENTRY_TEXT
 		SOFTIRQENTRY_TEXT
 		/*
-		 * -Os builds call FP save/restore functions. The powerpc64
+* -Os builds call FP save/restore functions. The powerpc64
 		 * linker generates those on demand in the .sfpr section.
 		 * .sfpr gets placed at the beginning of a group of input
 		 * sections, which can break start-of-text offset if it is
@@ -347,7 +347,7 @@ SECTIONS
 		__toc_start = .;
 #ifndef CONFIG_RELOCATABLE
 		__prom_init_toc_start = .;
-		arch/powerpc/kernel/prom_init.o*(.toc .got)
+arch/powerpc/kernel/prom_init.o*(.toc .got)
 		__prom_init_toc_end = .;
 #endif
 		*(.got)

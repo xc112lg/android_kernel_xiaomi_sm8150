@@ -80,17 +80,17 @@ static unsigned long compute_freq(struct cpu_pmu_stats *cpustats,
 {
 	ktime_t ts;
 	unsigned int diff;
-	uint64_t freq = 0;
+uint64_t freq = 0;
 
 	ts = ktime_get();
 	diff = ktime_to_us(ktime_sub(ts, cpustats->prev_ts));
 	if (!diff)
 		diff = 1;
 	cpustats->prev_ts = ts;
-	freq = cyc_cnt;
-	do_div(freq, diff);
+freq = cyc_cnt;
+do_div(freq, diff);
 
-	return freq;
+return freq;
 }
 
 #define MAX_COUNT_LIM 0xFFFFFFFFFFFFFFFF
@@ -147,7 +147,7 @@ static void read_perf_counters(int cpu, struct cpu_grp_info *cpu_grp)
 	devstats->inst_count = read_event(&cpustats->events[INST_IDX]);
 	devstats->mem_count = read_event(&cpustats->events[CM_IDX]);
 	cyc_cnt = read_event(&cpustats->events[CYC_IDX]);
-	devstats->freq = compute_freq(cpustats, cyc_cnt);
+devstats->freq = compute_freq(cpustats, cyc_cnt);
 	if (cpustats->events[STALL_CYC_IDX].pevent) {
 		stall_cnt = read_event(&cpustats->events[STALL_CYC_IDX]);
 		stall_cnt = min(stall_cnt, cyc_cnt);
@@ -194,7 +194,7 @@ static void stop_hwmon(struct memlat_hwmon *hw)
 		devstats = to_devstats(cpu_grp, cpu);
 		devstats->inst_count = 0;
 		devstats->mem_count = 0;
-		devstats->freq = 0;
+devstats->freq = 0;
 		devstats->stall_pct = 0;
 	}
 }

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
- * This file contains the 64-bit "server" PowerPC variant
+* This file contains the 64-bit "server" PowerPC variant
  * of the low level exception handling including exception
  * vectors, exception return, part of the slb and stab
  * handling and other fixed offset specific things.
@@ -71,7 +71,7 @@ OPEN_FIXED_SECTION(virt_trampolines,    0x5900, 0x7000)
 /*
  * Data area reserved for FWNMI option.
  * This address (0x7000) is fixed by the RPA.
- * pseries and powernv need to keep the whole page from
+* pseries and powernv need to keep the whole page from
  * 0x7000 to 0x8000 free for use by the firmware
  */
 ZERO_FIXED_SECTION(fwnmi_page,          0x7000, 0x8000)
@@ -101,7 +101,7 @@ EXC_VIRT_NONE(0x4000, 0x100)
 	/*
 	 * If running native on arch 2.06 or later, check if we are waking up
 	 * from nap/sleep/winkle, and branch to idle handler. This tests SRR1
-	 * bits 46:47. A non-0 value indicates that we are coming from a power
+* bits 46:47. A non-0 value indicates that we are coming from a power
 	 * saving state. The idle wakeup handler initially runs in real mode,
 	 * but we branch to the 0xc000... address so we can turn on relocation
 	 * with mtmsr.
@@ -134,7 +134,7 @@ EXC_VIRT_NONE(0x4100, 0x100)
 #ifdef CONFIG_PPC_P7_NAP
 EXC_COMMON_BEGIN(system_reset_idle_common)
 	mfspr	r12,SPRN_SRR1
-	b	pnv_powersave_wakeup
+b	pnv_powersave_wakeup
 #endif
 
 EXC_COMMON_BEGIN(system_reset_common)
@@ -186,7 +186,7 @@ EXC_REAL_BEGIN(machine_check, 0x200, 0x100)
 	SET_SCRATCH0(r13)		/* save r13 */
 	EXCEPTION_PROLOG_0(PACA_EXMC)
 BEGIN_FTR_SECTION
-	b	machine_check_powernv_early
+b	machine_check_powernv_early
 FTR_SECTION_ELSE
 	b	machine_check_pSeries_0
 ALT_FTR_SECTION_END_IFSET(CPU_FTR_HVMODE)
@@ -219,7 +219,7 @@ BEGIN_FTR_SECTION
 	 *
 	 * This interrupt can wake directly from idle. If that is the case,
 	 * the machine check is handled then the idle wakeup code is called
-	 * to restore state. In that case, the POWER9 DD1 idle PACA workaround
+* to restore state. In that case, the POWER9 DD1 idle PACA workaround
 	 * is not applied in the early machine check code, which will cause
 	 * bugs.
 	 */
@@ -355,7 +355,7 @@ EXC_COMMON_BEGIN(machine_check_idle_common)
 	 * Therefore PACA_NAPSTATELOST does not need to be set. Idle
 	 * wakeup will restore volatile registers.
 	 *
-	 * Load the original SRR1 into r3 for pnv_powersave_wakeup_mce.
+* Load the original SRR1 into r3 for pnv_powersave_wakeup_mce.
 	 *
 	 * Then decrement MCE nesting after finishing with the stack.
 	 */
@@ -370,7 +370,7 @@ EXC_COMMON_BEGIN(machine_check_idle_common)
 	li	r11,0
 	mtmsrd	r11,1
 
-	b	pnv_powersave_wakeup_mce
+b	pnv_powersave_wakeup_mce
 #endif
 	/*
 	 * Handle machine check early in real mode. We come here with
@@ -387,10 +387,10 @@ EXC_COMMON_BEGIN(machine_check_handle_early)
 
 #ifdef	CONFIG_PPC_P7_NAP
 	/*
-	 * Check if thread was in power saving mode. We come here when any
+* Check if thread was in power saving mode. We come here when any
 	 * of the following is true:
-	 * a. thread wasn't in power saving mode
-	 * b. thread was in power saving mode with no state loss,
+* a. thread wasn't in power saving mode
+* b. thread was in power saving mode with no state loss,
 	 *    supervisor state loss or hypervisor state loss.
 	 *
 	 * Go back to nap/sleep/winkle mode again if (b) is true.
@@ -876,7 +876,7 @@ EXC_COMMON(trap_0b_common, 0xb00, unknown_exception)
  *
  * Call convention:
  *
- * syscall register convention is in Documentation/powerpc/syscall64-abi.txt
+* syscall register convention is in Documentation/powerpc/syscall64-abi.txt
  *
  * For hypercalls, the register convention is as follows:
  * r0 volatile
@@ -1283,7 +1283,7 @@ TRAMP_REAL_BEGIN(denorm_assist)
 BEGIN_FTR_SECTION
 /*
  * To denormalise we need to move a copy of the register to itself.
- * For POWER6 do that here for all FP regs.
+* For POWER6 do that here for all FP regs.
  */
 	mfmsr	r10
 	ori	r10,r10,(MSR_FP|MSR_FE0|MSR_FE1)
@@ -1301,7 +1301,7 @@ BEGIN_FTR_SECTION
 FTR_SECTION_ELSE
 /*
  * To denormalise we need to move a copy of the register to itself.
- * For POWER7 do that here for the first 32 VSX registers only.
+* For POWER7 do that here for the first 32 VSX registers only.
  */
 	mfmsr	r10
 	oris	r10,r10,MSR_VSX@h
@@ -1322,7 +1322,7 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
 /*
  * To denormalise we need to move a copy of the register to itself.
- * For POWER8 we need to do that for all 64 VSX registers
+* For POWER8 we need to do that for all 64 VSX registers
  */
 	XVCPSGNDP32(32)
 denorm_done:

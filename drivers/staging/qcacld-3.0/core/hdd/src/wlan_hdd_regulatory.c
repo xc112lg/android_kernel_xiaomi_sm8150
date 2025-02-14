@@ -382,30 +382,30 @@ static void hdd_modify_wiphy(struct wiphy  *wiphy,
 	const struct ieee80211_reg_rule *reg_rule;
 
 	if (is_wiphy_custom_regulatory(wiphy)) {
-		reg_rule = freq_reg_info(wiphy, MHZ_TO_KHZ(chan->center_freq));
+reg_rule = freq_reg_info(wiphy, MHZ_TO_KHZ(chan->center_freq));
 		if (!IS_ERR(reg_rule)) {
 			chan->flags &= ~IEEE80211_CHAN_DISABLED;
 
 			if (!(reg_rule->flags & NL80211_RRF_DFS)) {
 				hdd_debug("Remove dfs restriction for %u",
-					chan->center_freq);
+chan->center_freq);
 				chan->flags &= ~IEEE80211_CHAN_RADAR;
 			}
 
 			if (!(reg_rule->flags & NL80211_RRF_PASSIVE_SCAN)) {
 				hdd_debug("Remove passive restriction for %u",
-					chan->center_freq);
+chan->center_freq);
 				chan->flags &= ~IEEE80211_CHAN_PASSIVE_SCAN;
 			}
 
 			if (!(reg_rule->flags & NL80211_RRF_NO_IBSS)) {
 				hdd_debug("Remove no ibss restriction for %u",
-					chan->center_freq);
+chan->center_freq);
 				chan->flags &= ~IEEE80211_CHAN_NO_IBSS;
 			}
 
-			chan->max_power =
-				MBM_TO_DBM(reg_rule->power_rule.max_eirp);
+chan->max_power =
+MBM_TO_DBM(reg_rule->power_rule.max_eirp);
 		}
 	}
 }
@@ -514,7 +514,7 @@ static void hdd_process_regulatory_data(struct hdd_context *hdd_ctx,
 					cds_chan->state = CHANNEL_STATE_ENABLE;
 			} else
 				cds_chan->state = CHANNEL_STATE_ENABLE;
-			cds_chan->tx_power = wiphy_chan->max_power;
+cds_chan->tx_power = wiphy_chan->max_power;
 			if (wiphy_chan->flags & IEEE80211_CHAN_NO_10MHZ)
 				cds_chan->max_bw = 5;
 			else if (wiphy_chan->flags & IEEE80211_CHAN_NO_20MHZ)
@@ -627,7 +627,7 @@ void hdd_modify_indoor_channel_state_flags(
 			wiphy_chan->flags |=
 				IEEE80211_CHAN_DISABLED;
 			hdd_info("Mark indoor channel %d as disable",
-				cds_chan->center_freq);
+cds_chan->center_freq);
 			cds_chan->state =
 				CHANNEL_STATE_DISABLE;
 		}
@@ -846,7 +846,7 @@ static void hdd_restore_custom_reg_settings(struct wiphy *wiphy,
 				chan = &sband->channels[i];
 				chan->flags = chan->orig_flags;
 				chan->max_antenna_gain = chan->orig_mag;
-				chan->max_power = chan->orig_mpwr;
+chan->max_power = chan->orig_mpwr;
 			}
 		}
 		*reset = true;
@@ -1039,7 +1039,7 @@ static void fill_wiphy_channel(struct ieee80211_channel *wiphy_chan,
 {
 
 	wiphy_chan->flags = 0;
-	wiphy_chan->max_power = cur_chan->tx_power;
+wiphy_chan->max_power = cur_chan->tx_power;
 
 	if (cur_chan->chan_flags & REGULATORY_CHAN_DISABLED)
 		wiphy_chan->flags  |= IEEE80211_CHAN_DISABLED;
@@ -1082,8 +1082,8 @@ static void fill_wiphy_band_channels(struct wiphy *wiphy,
 
 	for (wiphy_index = 0; wiphy_index < wiphy_num_chan; wiphy_index++) {
 		for (chan_cnt = 0; chan_cnt < NUM_CHANNELS; chan_cnt++) {
-			if (wiphy_chan[wiphy_index].center_freq ==
-			    cur_chan_list[chan_cnt].center_freq) {
+if (wiphy_chan[wiphy_index].center_freq ==
+cur_chan_list[chan_cnt].center_freq) {
 				fill_wiphy_channel(&(wiphy_chan[wiphy_index]),
 						   &(cur_chan_list[chan_cnt]));
 				break;
@@ -1106,7 +1106,7 @@ static void fill_wiphy_band_channels(struct wiphy *wiphy,
  */
 void hdd_ch_avoid_ind(struct hdd_context *hdd_ctxt,
 		struct unsafe_ch_list *unsafe_chan_list,
-		struct ch_avoid_ind_type *avoid_freq_list)
+struct ch_avoid_ind_type *avoid_freq_list)
 {
 	uint16_t *local_unsafe_list;
 	uint16_t local_unsafe_list_count;
@@ -1118,10 +1118,10 @@ void hdd_ch_avoid_ind(struct hdd_context *hdd_ctxt,
 		return;
 	}
 
-	mutex_lock(&hdd_ctxt->avoid_freq_lock);
-	qdf_mem_copy(&hdd_ctxt->coex_avoid_freq_list, avoid_freq_list,
+mutex_lock(&hdd_ctxt->avoid_freq_lock);
+qdf_mem_copy(&hdd_ctxt->coex_avoid_freq_list, avoid_freq_list,
 			sizeof(struct ch_avoid_ind_type));
-	mutex_unlock(&hdd_ctxt->avoid_freq_lock);
+mutex_unlock(&hdd_ctxt->avoid_freq_lock);
 
 	if (hdd_clone_local_unsafe_chan(hdd_ctxt,
 					&local_unsafe_list,
@@ -1139,7 +1139,7 @@ void hdd_ch_avoid_ind(struct hdd_context *hdd_ctxt,
 
 	for (i = 0; i < unsafe_chan_list->chan_cnt; i++) {
 		hdd_ctxt->unsafe_channel_list[i] =
-				unsafe_chan_list->chan_freq_list[i];
+unsafe_chan_list->chan_freq_list[i];
 	}
 	hdd_debug("number of unsafe channels is %d ",
 	       hdd_ctxt->unsafe_channel_count);
@@ -1157,21 +1157,21 @@ void hdd_ch_avoid_ind(struct hdd_context *hdd_ctxt,
 		return;
 	}
 
-	mutex_lock(&hdd_ctxt->avoid_freq_lock);
-	if (hdd_ctxt->dnbs_avoid_freq_list.ch_avoid_range_cnt)
-		if (wlan_hdd_merge_avoid_freqs(avoid_freq_list,
-					&hdd_ctxt->dnbs_avoid_freq_list)) {
-			mutex_unlock(&hdd_ctxt->avoid_freq_lock);
-			hdd_debug("unable to merge avoid freqs");
+mutex_lock(&hdd_ctxt->avoid_freq_lock);
+if (hdd_ctxt->dnbs_avoid_freq_list.ch_avoid_range_cnt)
+if (wlan_hdd_merge_avoid_freqs(avoid_freq_list,
+&hdd_ctxt->dnbs_avoid_freq_list)) {
+mutex_unlock(&hdd_ctxt->avoid_freq_lock);
+hdd_debug("unable to merge avoid freqs");
 			qdf_mem_free(local_unsafe_list);
 			return;
 	}
-	mutex_unlock(&hdd_ctxt->avoid_freq_lock);
+mutex_unlock(&hdd_ctxt->avoid_freq_lock);
 	/*
 	 * first update the unsafe channel list to the platform driver and
-	 * send the avoid freq event to the application
+* send the avoid freq event to the application
 	 */
-	wlan_hdd_send_avoid_freq_event(hdd_ctxt, avoid_freq_list);
+wlan_hdd_send_avoid_freq_event(hdd_ctxt, avoid_freq_list);
 
 	if (!hdd_ctxt->unsafe_channel_count) {
 		hdd_debug("no unsafe channels - not restarting SAP");
@@ -1288,26 +1288,26 @@ void hdd_send_wiphy_regd_sync_event(struct hdd_context *hdd_ctx)
 
 	regd_rules = regd->reg_rules;
 	hdd_debug("Regulatory Domain %s", regd->alpha2);
-	hdd_debug("start freq\tend freq\t@ max_bw\tant_gain\tpwr\tflags");
+hdd_debug("start freq\tend freq\t@ max_bw\tant_gain\tpwr\tflags");
 	for (i = 0; i < reg_rules->num_of_reg_rules; i++) {
-		regd_rules[i].freq_range.start_freq_khz =
-			reg_rules->reg_rules[i].start_freq * 1000;
-		regd_rules[i].freq_range.end_freq_khz =
-			reg_rules->reg_rules[i].end_freq * 1000;
-		regd_rules[i].freq_range.max_bandwidth_khz =
+regd_rules[i].freq_range.start_freq_khz =
+reg_rules->reg_rules[i].start_freq * 1000;
+regd_rules[i].freq_range.end_freq_khz =
+reg_rules->reg_rules[i].end_freq * 1000;
+regd_rules[i].freq_range.max_bandwidth_khz =
 			reg_rules->reg_rules[i].max_bw * 1000;
-		regd_rules[i].power_rule.max_antenna_gain =
+regd_rules[i].power_rule.max_antenna_gain =
 			reg_rules->reg_rules[i].ant_gain * 100;
-		regd_rules[i].power_rule.max_eirp =
-			reg_rules->reg_rules[i].reg_power * 100;
+regd_rules[i].power_rule.max_eirp =
+reg_rules->reg_rules[i].reg_power * 100;
 		map_nl_reg_rule_flags(reg_rules->reg_rules[i].flags,
 				      &regd_rules[i].flags);
 		hdd_debug("%d KHz\t%d KHz\t@ %d KHz\t%d\t\t%d\t%d",
-			  regd_rules[i].freq_range.start_freq_khz,
-			  regd_rules[i].freq_range.end_freq_khz,
-			  regd_rules[i].freq_range.max_bandwidth_khz,
-			  regd_rules[i].power_rule.max_antenna_gain,
-			  regd_rules[i].power_rule.max_eirp,
+regd_rules[i].freq_range.start_freq_khz,
+regd_rules[i].freq_range.end_freq_khz,
+regd_rules[i].freq_range.max_bandwidth_khz,
+regd_rules[i].power_rule.max_antenna_gain,
+regd_rules[i].power_rule.max_eirp,
 			  regd_rules[i].flags);
 	}
 
@@ -1351,14 +1351,14 @@ static void hdd_regulatory_chanlist_dump(struct regulatory_channel *chan_list)
 	uint32_t count = 0;
 	int ret;
 
-	hdd_debug("start (freq MHz, tx power dBm):");
+hdd_debug("start (freq MHz, tx power dBm):");
 	for (i = 0; i < NUM_CHANNELS; i++) {
 		chan = &chan_list[i];
 		if ((chan->chan_flags & REGULATORY_CHAN_DISABLED))
 			continue;
 		count++;
 		ret = scnprintf(info + len, sizeof(info) - len, "%d %d ",
-				chan->center_freq, chan->tx_power);
+chan->center_freq, chan->tx_power);
 		if (ret <= 0)
 			break;
 		len += ret;
@@ -1375,7 +1375,7 @@ static void hdd_regulatory_chanlist_dump(struct regulatory_channel *chan_list)
 static void hdd_regulatory_dyn_cbk(struct wlan_objmgr_psoc *psoc,
 				   struct wlan_objmgr_pdev *pdev,
 				   struct regulatory_channel *chan_list,
-				   struct avoid_freq_ind_data *avoid_freq_ind,
+struct avoid_freq_ind_data *avoid_freq_ind,
 				   void *arg)
 {
 	struct wiphy *wiphy;
@@ -1408,9 +1408,9 @@ static void hdd_regulatory_dyn_cbk(struct wlan_objmgr_psoc *psoc,
 		hdd_send_wiphy_regd_sync_event(hdd_ctx);
 #endif
 
-	if (avoid_freq_ind) {
-		hdd_ch_avoid_ind(hdd_ctx, &avoid_freq_ind->chan_list,
-				&avoid_freq_ind->freq_list);
+if (avoid_freq_ind) {
+hdd_ch_avoid_ind(hdd_ctx, &avoid_freq_ind->chan_list,
+&avoid_freq_ind->freq_list);
 	} else {
 		hdd_config_tdls_with_band_switch(hdd_ctx);
 

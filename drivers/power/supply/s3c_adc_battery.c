@@ -28,7 +28,7 @@
 #define JITTER_DELAY			500 /* ms */
 
 struct s3c_adc_bat {
-	struct power_supply		*psy;
+struct power_supply		*psy;
 	struct s3c_adc_client		*client;
 	struct s3c_adc_bat_pdata	*pdata;
 	int				volt_value;
@@ -64,16 +64,16 @@ static int gather_samples(struct s3c_adc_client *client, int num, int channel)
 }
 
 static enum power_supply_property s3c_adc_backup_bat_props[] = {
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_MIN,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
 };
 
 static int s3c_adc_backup_bat_get_property(struct power_supply *psy,
-				enum power_supply_property psp,
-				union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct s3c_adc_bat *bat = power_supply_get_drvdata(psy);
+struct s3c_adc_bat *bat = power_supply_get_drvdata(psy);
 
 	if (!bat) {
 		dev_err(&psy->dev, "%s: no battery infos ?!\n", __func__);
@@ -91,13 +91,13 @@ static int s3c_adc_backup_bat_get_property(struct power_supply *psy,
 	}
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		val->intval = bat->volt_value;
 		return 0;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+case POWER_SUPPLY_PROP_VOLTAGE_MIN:
 		val->intval = bat->pdata->backup_volt_min;
 		return 0;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
 		val->intval = bat->pdata->backup_volt_max;
 		return 0;
 	default:
@@ -107,7 +107,7 @@ static int s3c_adc_backup_bat_get_property(struct power_supply *psy,
 
 static const struct power_supply_desc backup_bat_desc = {
 	.name		= "backup-battery",
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.properties	= s3c_adc_backup_bat_props,
 	.num_properties = ARRAY_SIZE(s3c_adc_backup_bat_props),
 	.get_property	= s3c_adc_backup_bat_get_property,
@@ -117,12 +117,12 @@ static const struct power_supply_desc backup_bat_desc = {
 static struct s3c_adc_bat backup_bat;
 
 static enum power_supply_property s3c_adc_main_bat_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
 };
 
 static int calc_full_volt(int volt_val, int cur_val, int impedance)
@@ -138,10 +138,10 @@ static int charge_finished(struct s3c_adc_bat *bat)
 }
 
 static int s3c_adc_bat_get_property(struct power_supply *psy,
-				    enum power_supply_property psp,
-				    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct s3c_adc_bat *bat = power_supply_get_drvdata(psy);
+struct s3c_adc_bat *bat = power_supply_get_drvdata(psy);
 
 	int new_level;
 	int full_volt;
@@ -205,26 +205,26 @@ static int s3c_adc_bat_get_property(struct power_supply *psy,
 	bat->level = new_level;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (bat->pdata->gpio_charge_finished < 0)
 			val->intval = bat->level == 100000 ?
-				POWER_SUPPLY_STATUS_FULL : bat->status;
+POWER_SUPPLY_STATUS_FULL : bat->status;
 		else
 			val->intval = bat->status;
 		return 0;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		val->intval = 100000;
 		return 0;
-	case POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN:
 		val->intval = 0;
 		return 0;
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		val->intval = bat->level;
 		return 0;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		val->intval = bat->volt_value;
 		return 0;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		val->intval = bat->cur_value;
 		return 0;
 	default:
@@ -234,11 +234,11 @@ static int s3c_adc_bat_get_property(struct power_supply *psy,
 
 static const struct power_supply_desc main_bat_desc = {
 	.name			= "main-battery",
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= s3c_adc_main_bat_props,
 	.num_properties		= ARRAY_SIZE(s3c_adc_main_bat_props),
 	.get_property		= s3c_adc_bat_get_property,
-	.external_power_changed = s3c_adc_bat_ext_power_changed,
+.external_power_changed = s3c_adc_bat_ext_power_changed,
 	.use_for_apm		= 1,
 };
 
@@ -251,18 +251,18 @@ static void s3c_adc_bat_work(struct work_struct *work)
 	int is_plugged;
 	static int was_plugged;
 
-	is_plugged = power_supply_am_i_supplied(bat->psy);
+is_plugged = power_supply_am_i_supplied(bat->psy);
 	bat->cable_plugged = is_plugged;
 	if (is_plugged != was_plugged) {
 		was_plugged = is_plugged;
 		if (is_plugged) {
 			if (bat->pdata->enable_charger)
 				bat->pdata->enable_charger();
-			bat->status = POWER_SUPPLY_STATUS_CHARGING;
+bat->status = POWER_SUPPLY_STATUS_CHARGING;
 		} else {
 			if (bat->pdata->disable_charger)
 				bat->pdata->disable_charger();
-			bat->status = POWER_SUPPLY_STATUS_DISCHARGING;
+bat->status = POWER_SUPPLY_STATUS_DISCHARGING;
 		}
 	} else {
 		if ((bat->pdata->gpio_charge_finished >= 0) && is_plugged) {
@@ -270,16 +270,16 @@ static void s3c_adc_bat_work(struct work_struct *work)
 			if (is_charged) {
 				if (bat->pdata->disable_charger)
 					bat->pdata->disable_charger();
-				bat->status = POWER_SUPPLY_STATUS_FULL;
+bat->status = POWER_SUPPLY_STATUS_FULL;
 			} else {
 				if (bat->pdata->enable_charger)
 					bat->pdata->enable_charger();
-				bat->status = POWER_SUPPLY_STATUS_CHARGING;
+bat->status = POWER_SUPPLY_STATUS_CHARGING;
 			}
 		}
 	}
 
-	power_supply_changed(bat->psy);
+power_supply_changed(bat->psy);
 }
 
 static irqreturn_t s3c_adc_bat_charged(int irq, void *dev_id)
@@ -308,21 +308,21 @@ static int s3c_adc_bat_probe(struct platform_device *pdev)
 	main_bat.volt_value = -1;
 	main_bat.cur_value = -1;
 	main_bat.cable_plugged = 0;
-	main_bat.status = POWER_SUPPLY_STATUS_DISCHARGING;
+main_bat.status = POWER_SUPPLY_STATUS_DISCHARGING;
 
-	main_bat.psy = power_supply_register(&pdev->dev, &main_bat_desc, NULL);
+main_bat.psy = power_supply_register(&pdev->dev, &main_bat_desc, NULL);
 	if (IS_ERR(main_bat.psy)) {
 		ret = PTR_ERR(main_bat.psy);
 		goto err_reg_main;
 	}
 	if (pdata->backup_volt_mult) {
-		const struct power_supply_config psy_cfg
+const struct power_supply_config psy_cfg
 						= { .drv_data = &backup_bat, };
 
 		backup_bat.client = client;
 		backup_bat.pdata = pdev->dev.platform_data;
 		backup_bat.volt_value = -1;
-		backup_bat.psy = power_supply_register(&pdev->dev,
+backup_bat.psy = power_supply_register(&pdev->dev,
 						       &backup_bat_desc,
 						       &psy_cfg);
 		if (IS_ERR(backup_bat.psy)) {
@@ -369,9 +369,9 @@ err_irq:
 		gpio_free(pdata->gpio_charge_finished);
 err_gpio:
 	if (pdata->backup_volt_mult)
-		power_supply_unregister(backup_bat.psy);
+power_supply_unregister(backup_bat.psy);
 err_reg_backup:
-	power_supply_unregister(main_bat.psy);
+power_supply_unregister(main_bat.psy);
 err_reg_main:
 	return ret;
 }
@@ -381,9 +381,9 @@ static int s3c_adc_bat_remove(struct platform_device *pdev)
 	struct s3c_adc_client *client = platform_get_drvdata(pdev);
 	struct s3c_adc_bat_pdata *pdata = pdev->dev.platform_data;
 
-	power_supply_unregister(main_bat.psy);
+power_supply_unregister(main_bat.psy);
 	if (pdata->backup_volt_mult)
-		power_supply_unregister(backup_bat.psy);
+power_supply_unregister(backup_bat.psy);
 
 	s3c_adc_release(client);
 

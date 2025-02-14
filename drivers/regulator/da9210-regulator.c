@@ -49,9 +49,9 @@ static const struct regulator_ops da9210_buck_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
 	.set_current_limit = da9210_set_current_limit,
 	.get_current_limit = da9210_get_current_limit,
 };
@@ -71,8 +71,8 @@ static const struct regulator_desc da9210_reg = {
 	.name = "DA9210",
 	.id = 0,
 	.ops = &da9210_buck_ops,
-	.type = REGULATOR_VOLTAGE,
-	.n_voltages = ((DA9210_MAX_MV - DA9210_MIN_MV) / DA9210_STEP_MV) + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = ((DA9210_MAX_MV - DA9210_MIN_MV) / DA9210_STEP_MV) + 1,
 	.min_uV = (DA9210_MIN_MV * 1000),
 	.uV_step = (DA9210_STEP_MV * 1000),
 	.vsel_reg = DA9210_REG_VBUCK_A,
@@ -141,7 +141,7 @@ static irqreturn_t da9210_irq_handler(int irq, void *data)
 	}
 	if (val & DA9210_E_NPWRGOOD) {
 		regulator_notifier_call_chain(chip->rdev,
-					      REGULATOR_EVENT_UNDER_VOLTAGE,
+REGULATOR_EVENT_UNDER_VOLTAGE,
 					      NULL);
 		handled |= DA9210_E_NPWRGOOD;
 	}

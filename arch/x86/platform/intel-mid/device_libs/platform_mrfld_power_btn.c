@@ -1,5 +1,5 @@
 /*
- * Intel Merrifield power button support
+* Intel Merrifield power button support
  *
  * (C) Copyright 2017 Intel Corporation
  *
@@ -26,25 +26,25 @@ static struct resource mrfld_power_btn_resources[] = {
 };
 
 static struct platform_device mrfld_power_btn_dev = {
-	.name		= "msic_power_btn",
+.name		= "msic_power_btn",
 	.id		= PLATFORM_DEVID_NONE,
-	.num_resources	= ARRAY_SIZE(mrfld_power_btn_resources),
-	.resource	= mrfld_power_btn_resources,
+.num_resources	= ARRAY_SIZE(mrfld_power_btn_resources),
+.resource	= mrfld_power_btn_resources,
 };
 
 static int mrfld_power_btn_scu_status_change(struct notifier_block *nb,
 					     unsigned long code, void *data)
 {
 	if (code == SCU_DOWN) {
-		platform_device_unregister(&mrfld_power_btn_dev);
+platform_device_unregister(&mrfld_power_btn_dev);
 		return 0;
 	}
 
-	return platform_device_register(&mrfld_power_btn_dev);
+return platform_device_register(&mrfld_power_btn_dev);
 }
 
 static struct notifier_block mrfld_power_btn_scu_notifier = {
-	.notifier_call	= mrfld_power_btn_scu_status_change,
+.notifier_call	= mrfld_power_btn_scu_status_change,
 };
 
 static int __init register_mrfld_power_btn(void)
@@ -54,9 +54,9 @@ static int __init register_mrfld_power_btn(void)
 
 	/*
 	 * We need to be sure that the SCU IPC is ready before
-	 * PMIC power button device can be registered:
+* PMIC power button device can be registered:
 	 */
-	intel_scu_notifier_add(&mrfld_power_btn_scu_notifier);
+intel_scu_notifier_add(&mrfld_power_btn_scu_notifier);
 
 	return 0;
 }
@@ -64,7 +64,7 @@ arch_initcall(register_mrfld_power_btn);
 
 static void __init *mrfld_power_btn_platform_data(void *info)
 {
-	struct resource *res = mrfld_power_btn_resources;
+struct resource *res = mrfld_power_btn_resources;
 	struct sfi_device_table_entry *pentry = info;
 
 	res->start = res->end = pentry->irq;
@@ -72,11 +72,11 @@ static void __init *mrfld_power_btn_platform_data(void *info)
 }
 
 static const struct devs_id mrfld_power_btn_dev_id __initconst = {
-	.name			= "bcove_power_btn",
+.name			= "bcove_power_btn",
 	.type			= SFI_DEV_TYPE_IPC,
 	.delay			= 1,
 	.msic			= 1,
-	.get_platform_data	= &mrfld_power_btn_platform_data,
+.get_platform_data	= &mrfld_power_btn_platform_data,
 };
 
 sfi_device(mrfld_power_btn_dev_id);

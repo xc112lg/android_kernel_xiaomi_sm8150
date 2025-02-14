@@ -64,10 +64,10 @@ struct tps6586x_regulator {
 };
 
 static struct regulator_ops tps6586x_rw_regulator_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
@@ -75,9 +75,9 @@ static struct regulator_ops tps6586x_rw_regulator_ops = {
 };
 
 static struct regulator_ops tps6586x_rw_linear_regulator_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
@@ -85,9 +85,9 @@ static struct regulator_ops tps6586x_rw_linear_regulator_ops = {
 };
 
 static struct regulator_ops tps6586x_ro_regulator_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
@@ -115,10 +115,10 @@ static const unsigned int tps658640_rtc_voltages[] = {
 		.supply_name = _pin_name,				\
 		.name	= "REG-" #_id,					\
 		.ops	= &tps6586x_## _ops ## _regulator_ops,		\
-		.type	= REGULATOR_VOLTAGE,				\
+.type	= REGULATOR_VOLTAGE,				\
 		.id	= TPS6586X_ID_##_id,				\
-		.n_voltages = ARRAY_SIZE(vdata##_voltages),		\
-		.volt_table = vdata##_voltages,				\
+.n_voltages = ARRAY_SIZE(vdata##_voltages),		\
+.volt_table = vdata##_voltages,				\
 		.owner	= THIS_MODULE,					\
 		.enable_reg = TPS6586X_SUPPLY##ereg0,			\
 		.enable_mask = 1 << (ebit0),				\
@@ -139,9 +139,9 @@ static const unsigned int tps658640_rtc_voltages[] = {
 		.supply_name = _pin_name,				\
 		.name	= "REG-" #_id,					\
 		.ops	= &tps6586x_## _ops ## _regulator_ops,		\
-		.type	= REGULATOR_VOLTAGE,				\
+.type	= REGULATOR_VOLTAGE,				\
 		.id	= TPS6586X_ID_##_id,				\
-		.n_voltages = n_volt,					\
+.n_voltages = n_volt,					\
 		.min_uV = min_uv,					\
 		.uV_step = uv_step,					\
 		.owner	= THIS_MODULE,					\
@@ -194,7 +194,7 @@ static const unsigned int tps658640_rtc_voltages[] = {
 		.supply_name = "sys",					\
 		.name	= "REG-SYS",					\
 		.ops	= &tps6586x_sys_regulator_ops,			\
-		.type	= REGULATOR_VOLTAGE,				\
+.type	= REGULATOR_VOLTAGE,				\
 		.id	= TPS6586X_ID_SYS,				\
 		.owner	= THIS_MODULE,					\
 	},								\

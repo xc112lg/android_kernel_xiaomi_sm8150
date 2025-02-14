@@ -65,25 +65,25 @@ enum rpm_regulator_hw_type {
 /* RPM resource parameters */
 enum rpm_regulator_param_index {
 	RPM_REGULATOR_PARAM_ENABLE,
-	RPM_REGULATOR_PARAM_VOLTAGE,
+RPM_REGULATOR_PARAM_VOLTAGE,
 	RPM_REGULATOR_PARAM_CURRENT,
 	RPM_REGULATOR_PARAM_MODE_LDO,
 	RPM_REGULATOR_PARAM_MODE_SMPS,
 	RPM_REGULATOR_PARAM_PIN_CTRL_ENABLE,
 	RPM_REGULATOR_PARAM_PIN_CTRL_MODE,
-	RPM_REGULATOR_PARAM_FREQUENCY,
+RPM_REGULATOR_PARAM_FREQUENCY,
 	RPM_REGULATOR_PARAM_HEAD_ROOM,
 	RPM_REGULATOR_PARAM_QUIET_MODE,
-	RPM_REGULATOR_PARAM_FREQ_REASON,
+RPM_REGULATOR_PARAM_FREQ_REASON,
 	RPM_REGULATOR_PARAM_CORNER,
 	RPM_REGULATOR_PARAM_BYPASS,
 	RPM_REGULATOR_PARAM_FLOOR_CORNER,
 	RPM_REGULATOR_PARAM_LEVEL,
 	RPM_REGULATOR_PARAM_FLOOR_LEVEL,
 	RPM_REGULATOR_PARAM_MODE_BOB,
-	RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE1,
-	RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE2,
-	RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE3,
+RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE1,
+RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE2,
+RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE3,
 	RPM_REGULATOR_PARAM_MAX,
 };
 
@@ -136,25 +136,25 @@ struct rpm_regulator_param {
 static struct rpm_regulator_param params[RPM_REGULATOR_PARAM_MAX] = {
 	/*    ID               LDO SMPS VS  NCP BOB  name  min max          property-name */
 	PARAM(ENABLE,            1,  1,  1,  1,  1, "swen", 0, 1,          "qcom,init-enable"),
-	PARAM(VOLTAGE,           1,  1,  0,  1,  1, "uv",   0, 0x7FFFFFF,  "qcom,init-voltage"),
+PARAM(VOLTAGE,           1,  1,  0,  1,  1, "uv",   0, 0x7FFFFFF,  "qcom,init-voltage"),
 	PARAM(CURRENT,           0,  1,  0,  0,  0, "ma",   0, 0x1FFF,     "qcom,init-current"),
 	PARAM(MODE_LDO,          1,  0,  0,  0,  0, "lsmd", 0, 1,          "qcom,init-ldo-mode"),
 	PARAM(MODE_SMPS,         0,  1,  0,  0,  0, "ssmd", 0, 2,          "qcom,init-smps-mode"),
 	PARAM(PIN_CTRL_ENABLE,   1,  1,  1,  0,  0, "pcen", 0, 0xF,        "qcom,init-pin-ctrl-enable"),
 	PARAM(PIN_CTRL_MODE,     0,  1,  1,  0,  0, "pcmd", 0, 0x1F,       "qcom,init-pin-ctrl-mode"),
-	PARAM(FREQUENCY,         0,  1,  0,  1,  0, "freq", 0, 31,         "qcom,init-frequency"),
+PARAM(FREQUENCY,         0,  1,  0,  1,  0, "freq", 0, 31,         "qcom,init-frequency"),
 	PARAM(HEAD_ROOM,         0,  0,  0,  1,  0, "hr",   0, 0x7FFFFFFF, "qcom,init-head-room"),
 	PARAM(QUIET_MODE,        0,  1,  0,  0,  0, "qm",   0, 2,          "qcom,init-quiet-mode"),
-	PARAM(FREQ_REASON,       0,  1,  0,  1,  0, "resn", 0, 8,          "qcom,init-freq-reason"),
-	PARAM(CORNER,            0,  1,  0,  0,  0, "corn", 0, 6,          "qcom,init-voltage-corner"),
+PARAM(FREQ_REASON,       0,  1,  0,  1,  0, "resn", 0, 8,          "qcom,init-freq-reason"),
+PARAM(CORNER,            0,  1,  0,  0,  0, "corn", 0, 6,          "qcom,init-voltage-corner"),
 	PARAM(BYPASS,            0,  0,  0,  0,  0, "bypa", 0, 1,          "qcom,init-disallow-bypass"),
-	PARAM(FLOOR_CORNER,      0,  1,  0,  0,  0, "vfc",  0, 6,          "qcom,init-voltage-floor-corner"),
-	PARAM(LEVEL,             0,  1,  0,  0,  0, "vlvl", 0, 0xFFFF,     "qcom,init-voltage-level"),
-	PARAM(FLOOR_LEVEL,       0,  1,  0,  0,  0, "vfl",  0, 0xFFFF,     "qcom,init-voltage-floor-level"),
+PARAM(FLOOR_CORNER,      0,  1,  0,  0,  0, "vfc",  0, 6,          "qcom,init-voltage-floor-corner"),
+PARAM(LEVEL,             0,  1,  0,  0,  0, "vlvl", 0, 0xFFFF,     "qcom,init-voltage-level"),
+PARAM(FLOOR_LEVEL,       0,  1,  0,  0,  0, "vfl",  0, 0xFFFF,     "qcom,init-voltage-floor-level"),
 	PARAM(MODE_BOB,          0,  0,  0,  0,  1, "bobm", 0, 3,          "qcom,init-bob-mode"),
-	PARAM(PIN_CTRL_VOLTAGE1, 0,  0,  0,  0,  1, "pcv1", 0, 0x7FFFFFF,  "qcom,init-pin-ctrl-voltage1"),
-	PARAM(PIN_CTRL_VOLTAGE2, 0,  0,  0,  0,  1, "pcv2", 0, 0x7FFFFFF,  "qcom,init-pin-ctrl-voltage2"),
-	PARAM(PIN_CTRL_VOLTAGE3, 0,  0,  0,  0,  1, "pcv3", 0, 0x7FFFFFF,  "qcom,init-pin-ctrl-voltage3"),
+PARAM(PIN_CTRL_VOLTAGE1, 0,  0,  0,  0,  1, "pcv1", 0, 0x7FFFFFF,  "qcom,init-pin-ctrl-voltage1"),
+PARAM(PIN_CTRL_VOLTAGE2, 0,  0,  0,  0,  1, "pcv2", 0, 0x7FFFFFF,  "qcom,init-pin-ctrl-voltage2"),
+PARAM(PIN_CTRL_VOLTAGE3, 0,  0,  0,  0,  1, "pcv3", 0, 0x7FFFFFF,  "qcom,init-pin-ctrl-voltage3"),
 };
 
 struct rpm_regulator_mode_map {
@@ -212,7 +212,7 @@ struct rpm_regulator {
 	struct list_head	list;
 	bool			set_active;
 	bool			set_sleep;
-	bool			always_send_voltage;
+bool			always_send_voltage;
 	bool			always_send_current;
 	bool			use_pin_ctrl_for_enable;
 	struct rpm_vreg_request	req;
@@ -220,23 +220,23 @@ struct rpm_regulator {
 	int			min_uV;
 	int			max_uV;
 	u32			pin_ctrl_mask[RPM_VREG_PIN_CTRL_STATE_COUNT];
-	enum rpm_regulator_param_index voltage_index;
-	int			voltage_offset;
+enum rpm_regulator_param_index voltage_index;
+int			voltage_offset;
 };
 
 /*
- * This voltage in uV is returned by get_voltage functions when there is no way
- * to determine the current voltage level.  It is needed because the regulator
- * framework treats a 0 uV voltage as an error.
+* This voltage in uV is returned by get_voltage functions when there is no way
+* to determine the current voltage level.  It is needed because the regulator
+* framework treats a 0 uV voltage as an error.
  */
 #define VOLTAGE_UNKNOWN 1
 
 /*
  * Regulator requests sent in the active set take effect immediately.  Requests
  * sent in the sleep set take effect when the Apps processor transitions into
- * RPM assisted power collapse.  For any given regulator, if an active set
+* RPM assisted power collapse.  For any given regulator, if an active set
  * request is present, but not a sleep set request, then the active set request
- * is used at all times, even when the Apps processor is power collapsed.
+* is used at all times, even when the Apps processor is power collapsed.
  *
  * The rpm-regulator-smd takes advantage of this default usage of the active set
  * request by only sending a sleep set request if it differs from the
@@ -295,7 +295,7 @@ static inline bool rpm_vreg_shared_active_or_sleep_enabled_valid
 
 static const u32 power_level_params =
 	BIT(RPM_REGULATOR_PARAM_ENABLE) |
-	BIT(RPM_REGULATOR_PARAM_VOLTAGE) |
+BIT(RPM_REGULATOR_PARAM_VOLTAGE) |
 	BIT(RPM_REGULATOR_PARAM_CURRENT) |
 	BIT(RPM_REGULATOR_PARAM_CORNER) |
 	BIT(RPM_REGULATOR_PARAM_BYPASS) |
@@ -318,7 +318,7 @@ static bool rpm_vreg_ack_required(struct rpm_vreg *rpm_vreg, u32 set,
 	for (i = 0; i < RPM_REGULATOR_PARAM_MAX; i++) {
 		mask = BIT(i);
 		if (modified & mask) {
-			if ((prev_valid & mask) && (power_level_params & mask)
+if ((prev_valid & mask) && (power_level_params & mask)
 			    && (param[i] <= prev_param[i]))
 				continue;
 			else
@@ -564,25 +564,25 @@ static int rpm_vreg_send_request(struct rpm_regulator *regulator, u32 set,
 static void rpm_vreg_aggregate_params(u32 *param_aggr, const u32 *param_reg)
 {
 	RPM_VREG_AGGR_MAX(ENABLE, param_aggr, param_reg);
-	RPM_VREG_AGGR_MAX(VOLTAGE, param_aggr, param_reg);
+RPM_VREG_AGGR_MAX(VOLTAGE, param_aggr, param_reg);
 	RPM_VREG_AGGR_SUM(CURRENT, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(MODE_LDO, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(MODE_SMPS, param_aggr, param_reg);
 	RPM_VREG_AGGR_OR(PIN_CTRL_ENABLE, param_aggr, param_reg);
 	RPM_VREG_AGGR_OR(PIN_CTRL_MODE, param_aggr, param_reg);
-	RPM_VREG_AGGR_MIN(FREQUENCY, param_aggr, param_reg);
+RPM_VREG_AGGR_MIN(FREQUENCY, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(HEAD_ROOM, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(QUIET_MODE, param_aggr, param_reg);
-	RPM_VREG_AGGR_MAX(FREQ_REASON, param_aggr, param_reg);
+RPM_VREG_AGGR_MAX(FREQ_REASON, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(CORNER, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(BYPASS, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(FLOOR_CORNER, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(LEVEL, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(FLOOR_LEVEL, param_aggr, param_reg);
 	RPM_VREG_AGGR_MAX(MODE_BOB, param_aggr, param_reg);
-	RPM_VREG_AGGR_MAX(PIN_CTRL_VOLTAGE1, param_aggr, param_reg);
-	RPM_VREG_AGGR_MAX(PIN_CTRL_VOLTAGE2, param_aggr, param_reg);
-	RPM_VREG_AGGR_MAX(PIN_CTRL_VOLTAGE3, param_aggr, param_reg);
+RPM_VREG_AGGR_MAX(PIN_CTRL_VOLTAGE1, param_aggr, param_reg);
+RPM_VREG_AGGR_MAX(PIN_CTRL_VOLTAGE2, param_aggr, param_reg);
+RPM_VREG_AGGR_MAX(PIN_CTRL_VOLTAGE3, param_aggr, param_reg);
 }
 
 static int rpm_vreg_aggregate_requests(struct rpm_regulator *regulator)
@@ -646,7 +646,7 @@ static int rpm_vreg_aggregate_requests(struct rpm_regulator *regulator)
 	/*
 	 * Sleep set configurations are only sent if they differ from the
 	 * active set values.  This is because the active set values will take
-	 * effect during rpm assisted power collapse in the absence of sleep set
+* effect during rpm assisted power collapse in the absence of sleep set
 	 * values.
 	 *
 	 * However, once a sleep set request is sent for a given regulator,
@@ -810,8 +810,8 @@ static int rpm_vreg_disable(struct regulator_dev *rdev)
 
 #define RPM_VREG_SET_VOLTAGE(_regulator, _val) \
 { \
-	(_regulator)->req.param[(_regulator)->voltage_index] = _val; \
-	(_regulator)->req.modified |= BIT((_regulator)->voltage_index); \
+(_regulator)->req.param[(_regulator)->voltage_index] = _val; \
+(_regulator)->req.modified |= BIT((_regulator)->voltage_index); \
 } \
 
 static int rpm_vreg_set_voltage(struct regulator_dev *rdev, int min_uV,
@@ -819,41 +819,41 @@ static int rpm_vreg_set_voltage(struct regulator_dev *rdev, int min_uV,
 {
 	struct rpm_regulator *reg = rdev_get_drvdata(rdev);
 	int rc = 0;
-	int voltage;
-	u32 prev_voltage;
+int voltage;
+u32 prev_voltage;
 
-	voltage = min_uV - reg->voltage_offset;
+voltage = min_uV - reg->voltage_offset;
 
-	if (voltage < params[reg->voltage_index].min
-	    || voltage > params[reg->voltage_index].max) {
-		vreg_err(reg, "voltage=%d for key=%s is not within allowed range: [%u, %u]\n",
-			voltage, params[reg->voltage_index].name,
-			params[reg->voltage_index].min,
-			params[reg->voltage_index].max);
+if (voltage < params[reg->voltage_index].min
+|| voltage > params[reg->voltage_index].max) {
+vreg_err(reg, "voltage=%d for key=%s is not within allowed range: [%u, %u]\n",
+voltage, params[reg->voltage_index].name,
+params[reg->voltage_index].min,
+params[reg->voltage_index].max);
 		return -EINVAL;
 	}
 
 	rpm_vreg_lock(reg->rpm_vreg);
 
-	prev_voltage = reg->req.param[reg->voltage_index];
-	RPM_VREG_SET_VOLTAGE(reg, voltage);
+prev_voltage = reg->req.param[reg->voltage_index];
+RPM_VREG_SET_VOLTAGE(reg, voltage);
 
-	rpm_vreg_check_param_max(reg, reg->voltage_index,
-				max_uV - reg->voltage_offset);
+rpm_vreg_check_param_max(reg, reg->voltage_index,
+max_uV - reg->voltage_offset);
 
 	/*
-	 * Only send a new voltage if the regulator is currently enabled or
-	 * if the regulator has been configured to always send voltage updates.
+* Only send a new voltage if the regulator is currently enabled or
+* if the regulator has been configured to always send voltage updates.
 	 */
-	if (reg->always_send_voltage
+if (reg->always_send_voltage
 	    || rpm_vreg_active_or_sleep_enabled(reg->rpm_vreg)
 	    || rpm_vreg_shared_active_or_sleep_enabled_valid(reg->rpm_vreg))
 		rc = rpm_vreg_aggregate_requests(reg);
 
 	if (rc) {
-		vreg_err(reg, "set voltage for key=%s failed, rc=%d",
-			params[reg->voltage_index].name, rc);
-		RPM_VREG_SET_VOLTAGE(reg, prev_voltage);
+vreg_err(reg, "set voltage for key=%s failed, rc=%d",
+params[reg->voltage_index].name, rc);
+RPM_VREG_SET_VOLTAGE(reg, prev_voltage);
 	}
 
 	rpm_vreg_unlock(reg->rpm_vreg);
@@ -866,9 +866,9 @@ static int rpm_vreg_get_voltage(struct regulator_dev *rdev)
 	struct rpm_regulator *reg = rdev_get_drvdata(rdev);
 	int uV;
 
-	uV = reg->req.param[reg->voltage_index] + reg->voltage_offset;
+uV = reg->req.param[reg->voltage_index] + reg->voltage_offset;
 	if (uV == 0)
-		uV = VOLTAGE_UNKNOWN;
+uV = VOLTAGE_UNKNOWN;
 
 	return uV;
 }
@@ -1267,7 +1267,7 @@ static int rpm_regulator_check_input(struct rpm_regulator *regulator)
  * @regulator: RPM regulator handle
  *
  * Parameter reaggregation does not take place when rpm_regulator_put is called.
- * Therefore, regulator enable state and voltage must be configured
+* Therefore, regulator enable state and voltage must be configured
  * appropriately before calling rpm_regulator_put.
  *
  * This function may be called from either atomic or nonatomic context.  If this
@@ -1341,23 +1341,23 @@ int rpm_regulator_disable(struct rpm_regulator *regulator)
 EXPORT_SYMBOL(rpm_regulator_disable);
 
 /**
- * rpm_regulator_set_voltage() - set regulator output voltage
+* rpm_regulator_set_voltage() - set regulator output voltage
  * @regulator: RPM regulator handle
- * @min_uV: minimum required voltage in uV
- * @max_uV: maximum acceptable voltage in uV
+* @min_uV: minimum required voltage in uV
+* @max_uV: maximum acceptable voltage in uV
  *
- * Sets a voltage regulator to the desired output voltage. This can be set
+* Sets a voltage regulator to the desired output voltage. This can be set
  * while the regulator is disabled or enabled.  If the regulator is enabled then
- * the voltage will change to the new value immediately; otherwise, if the
- * regulator is disabled, then the regulator will output at the new voltage when
+* the voltage will change to the new value immediately; otherwise, if the
+* regulator is disabled, then the regulator will output at the new voltage when
  * enabled.
  *
- * The min_uV to max_uV voltage range requested must intersect with the
- * voltage constraint range configured for the regulator.
+* The min_uV to max_uV voltage range requested must intersect with the
+* voltage constraint range configured for the regulator.
  *
  * Returns 0 on success or errno on failure.
  *
- * The final voltage value that is sent to the RPM is aggregated based upon the
+* The final voltage value that is sent to the RPM is aggregated based upon the
  * values requested by all consumers of the regulator.  This corresponds to the
  * maximum min_uV value.
  *
@@ -1396,7 +1396,7 @@ int rpm_regulator_set_voltage(struct rpm_regulator *regulator, int min_uV,
 		return -EINVAL;
 	}
 
-	return regulator->rdesc.ops->set_voltage(regulator->rdev, uV, uV, NULL);
+return regulator->rdesc.ops->set_voltage(regulator->rdev, uV, uV, NULL);
 }
 EXPORT_SYMBOL(rpm_regulator_set_voltage);
 
@@ -1469,8 +1469,8 @@ static struct regulator_ops ldo_ops = {
 	.enable			= rpm_vreg_enable,
 	.disable		= rpm_vreg_disable,
 	.is_enabled		= rpm_vreg_is_enabled,
-	.set_voltage		= rpm_vreg_set_voltage,
-	.get_voltage		= rpm_vreg_get_voltage,
+.set_voltage		= rpm_vreg_set_voltage,
+.get_voltage		= rpm_vreg_get_voltage,
 	.set_load		= rpm_vreg_ldo_set_load,
 	.set_mode		= rpm_vreg_ldo_set_mode,
 	.get_mode		= rpm_vreg_ldo_get_mode,
@@ -1481,8 +1481,8 @@ static struct regulator_ops smps_ops = {
 	.enable			= rpm_vreg_enable,
 	.disable		= rpm_vreg_disable,
 	.is_enabled		= rpm_vreg_is_enabled,
-	.set_voltage		= rpm_vreg_set_voltage,
-	.get_voltage		= rpm_vreg_get_voltage,
+.set_voltage		= rpm_vreg_set_voltage,
+.get_voltage		= rpm_vreg_get_voltage,
 	.set_mode		= rpm_vreg_set_mode,
 	.get_mode		= rpm_vreg_get_mode,
 	.get_optimum_mode	= rpm_vreg_get_optimum_mode,
@@ -1500,8 +1500,8 @@ static struct regulator_ops ncp_ops = {
 	.enable			= rpm_vreg_enable,
 	.disable		= rpm_vreg_disable,
 	.is_enabled		= rpm_vreg_is_enabled,
-	.set_voltage		= rpm_vreg_set_voltage,
-	.get_voltage		= rpm_vreg_get_voltage,
+.set_voltage		= rpm_vreg_set_voltage,
+.get_voltage		= rpm_vreg_get_voltage,
 	.enable_time		= rpm_vreg_enable_time,
 };
 
@@ -1509,8 +1509,8 @@ static struct regulator_ops bob_ops = {
 	.enable			= rpm_vreg_enable,
 	.disable		= rpm_vreg_disable,
 	.is_enabled		= rpm_vreg_is_enabled,
-	.set_voltage		= rpm_vreg_set_voltage,
-	.get_voltage		= rpm_vreg_get_voltage,
+.set_voltage		= rpm_vreg_set_voltage,
+.get_voltage		= rpm_vreg_get_voltage,
 	.set_mode		= rpm_vreg_set_bob_mode,
 	.get_mode		= rpm_vreg_get_bob_mode,
 	.enable_time		= rpm_vreg_enable_time,
@@ -1591,30 +1591,30 @@ static int rpm_vreg_set_smps_ldo_voltage_index(struct device *dev,
 	struct device_node *node = dev->of_node;
 	int chosen = 0;
 
-	if (of_property_read_bool(node, "qcom,use-voltage-corner")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_CORNER;
-		reg->voltage_offset = RPM_REGULATOR_CORNER_NONE;
+if (of_property_read_bool(node, "qcom,use-voltage-corner")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_CORNER;
+reg->voltage_offset = RPM_REGULATOR_CORNER_NONE;
 		chosen++;
 	}
 
-	if (of_property_read_bool(node, "qcom,use-voltage-floor-corner")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_FLOOR_CORNER;
-		reg->voltage_offset = RPM_REGULATOR_CORNER_NONE;
+if (of_property_read_bool(node, "qcom,use-voltage-floor-corner")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_FLOOR_CORNER;
+reg->voltage_offset = RPM_REGULATOR_CORNER_NONE;
 		chosen++;
 	}
 
-	if (of_property_read_bool(node, "qcom,use-voltage-level")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_LEVEL;
+if (of_property_read_bool(node, "qcom,use-voltage-level")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_LEVEL;
 		chosen++;
 	}
 
-	if (of_property_read_bool(node, "qcom,use-voltage-floor-level")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_FLOOR_LEVEL;
+if (of_property_read_bool(node, "qcom,use-voltage-floor-level")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_FLOOR_LEVEL;
 		chosen++;
 	}
 
 	if (chosen > 1) {
-		dev_err(dev, "only one qcom,use-voltage-* may be specified\n");
+dev_err(dev, "only one qcom,use-voltage-* may be specified\n");
 		return -EINVAL;
 	}
 
@@ -1627,23 +1627,23 @@ static int rpm_vreg_set_bob_voltage_index(struct device *dev,
 	struct device_node *node = dev->of_node;
 	int chosen = 0;
 
-	if (of_property_read_bool(node, "qcom,use-pin-ctrl-voltage1")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE1;
+if (of_property_read_bool(node, "qcom,use-pin-ctrl-voltage1")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE1;
 		chosen++;
 	}
 
-	if (of_property_read_bool(node, "qcom,use-pin-ctrl-voltage2")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE2;
+if (of_property_read_bool(node, "qcom,use-pin-ctrl-voltage2")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE2;
 		chosen++;
 	}
 
-	if (of_property_read_bool(node, "qcom,use-pin-ctrl-voltage3")) {
-		reg->voltage_index = RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE3;
+if (of_property_read_bool(node, "qcom,use-pin-ctrl-voltage3")) {
+reg->voltage_index = RPM_REGULATOR_PARAM_PIN_CTRL_VOLTAGE3;
 		chosen++;
 	}
 
 	if (chosen > 1) {
-		dev_err(dev, "only one qcom,use-pin-ctrl-voltage* may be specified\n");
+dev_err(dev, "only one qcom,use-pin-ctrl-voltage* may be specified\n");
 		return -EINVAL;
 	}
 
@@ -1655,15 +1655,15 @@ static int rpm_vreg_device_set_voltage_index(struct device *dev,
 {
 	int rc = 0;
 
-	reg->voltage_index = RPM_REGULATOR_PARAM_VOLTAGE;
+reg->voltage_index = RPM_REGULATOR_PARAM_VOLTAGE;
 
 	switch (type) {
 	case RPM_REGULATOR_TYPE_SMPS:
 	case RPM_REGULATOR_TYPE_LDO:
-		rc = rpm_vreg_set_smps_ldo_voltage_index(dev, reg);
+rc = rpm_vreg_set_smps_ldo_voltage_index(dev, reg);
 		break;
 	case RPM_REGULATOR_TYPE_BOB:
-		rc = rpm_vreg_set_bob_voltage_index(dev, reg);
+rc = rpm_vreg_set_bob_voltage_index(dev, reg);
 		break;
 	}
 
@@ -1711,22 +1711,22 @@ static int rpm_vreg_device_probe(struct platform_device *pdev)
 	regulator_type		= rpm_vreg->regulator_type;
 	reg->rpm_vreg		= rpm_vreg;
 	reg->rdesc.owner	= THIS_MODULE;
-	reg->rdesc.type		= REGULATOR_VOLTAGE;
+reg->rdesc.type		= REGULATOR_VOLTAGE;
 	reg->rdesc.ops		= vreg_ops[regulator_type];
 
-	rc = rpm_vreg_device_set_voltage_index(dev, reg, regulator_type);
+rc = rpm_vreg_device_set_voltage_index(dev, reg, regulator_type);
 	if (rc)
 		goto fail_free_reg;
 
-	reg->always_send_voltage
-		= of_property_read_bool(node, "qcom,always-send-voltage");
+reg->always_send_voltage
+= of_property_read_bool(node, "qcom,always-send-voltage");
 	reg->always_send_current
 		= of_property_read_bool(node, "qcom,always-send-current");
 
 	if (regulator_type == RPM_REGULATOR_TYPE_VS)
-		reg->rdesc.n_voltages = 0;
+reg->rdesc.n_voltages = 0;
 	else
-		reg->rdesc.n_voltages = 2;
+reg->rdesc.n_voltages = 2;
 
 	rc = of_property_read_u32(node, "qcom,set", &val);
 	if (rc) {
@@ -1768,9 +1768,9 @@ static int rpm_vreg_device_probe(struct platform_device *pdev)
 	if (reg->rdesc.ops->enable)
 		init_data->constraints.valid_ops_mask
 			|= REGULATOR_CHANGE_STATUS;
-	if (reg->rdesc.ops->get_voltage)
+if (reg->rdesc.ops->get_voltage)
 		init_data->constraints.valid_ops_mask
-			|= REGULATOR_CHANGE_VOLTAGE;
+|= REGULATOR_CHANGE_VOLTAGE;
 	if (reg->rdesc.ops->get_mode) {
 		init_data->constraints.valid_ops_mask
 			|= REGULATOR_CHANGE_MODE | REGULATOR_CHANGE_DRMS;

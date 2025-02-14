@@ -172,7 +172,7 @@ static int virtio_regulator_set_voltage(struct regulator_dev *rdev, int min_uV,
 		return -ENOMEM;
 
 	strlcpy(req->name, reg->rdesc.name, sizeof(req->name));
-	req->type = cpu_to_virtio32(vreg->vdev, VIRTIO_REGULATOR_T_SET_VOLTAGE);
+req->type = cpu_to_virtio32(vreg->vdev, VIRTIO_REGULATOR_T_SET_VOLTAGE);
 	req->data[0] = cpu_to_virtio32(vreg->vdev, DIV_ROUND_UP(min_uV, 1000));
 	req->data[1] = cpu_to_virtio32(vreg->vdev, max_uV / 1000);
 	sg_init_one(sg, req, sizeof(*req));
@@ -221,7 +221,7 @@ static int virtio_regulator_get_voltage(struct regulator_dev *rdev)
 		return -ENOMEM;
 
 	strlcpy(req->name, reg->rdesc.name, sizeof(req->name));
-	req->type = cpu_to_virtio32(vreg->vdev, VIRTIO_REGULATOR_T_GET_VOLTAGE);
+req->type = cpu_to_virtio32(vreg->vdev, VIRTIO_REGULATOR_T_GET_VOLTAGE);
 	sg_init_one(sg, req, sizeof(*req));
 
 	mutex_lock(&vreg->lock);
@@ -246,7 +246,7 @@ static int virtio_regulator_get_voltage(struct regulator_dev *rdev)
 	if (rsp->result) {
 		pr_debug("%s: error response (%d)\n", reg->rdesc.name,
 				virtio32_to_cpu(vreg->vdev, rsp->result));
-		ret = VIRTIO_REGULATOR_VOLTAGE_UNKNOWN;
+ret = VIRTIO_REGULATOR_VOLTAGE_UNKNOWN;
 	} else
 		ret = virtio32_to_cpu(vreg->vdev, rsp->data[0]) * 1000;
 
@@ -412,8 +412,8 @@ static struct regulator_ops virtio_regulator_ops = {
 	.enable			= virtio_regulator_enable,
 	.disable		= virtio_regulator_disable,
 	.is_enabled		= virtio_regulator_is_enabled,
-	.set_voltage		= virtio_regulator_set_voltage,
-	.get_voltage		= virtio_regulator_get_voltage,
+.set_voltage		= virtio_regulator_set_voltage,
+.get_voltage		= virtio_regulator_get_voltage,
 	.set_mode		= virtio_regulator_set_mode,
 	.get_mode		= virtio_regulator_get_mode,
 	.set_load		= virtio_regulator_set_load,
@@ -499,7 +499,7 @@ static int virtio_regulator_init_reg(struct reg_virtio *reg)
 	int ret = 0;
 
 	reg->rdesc.owner	= THIS_MODULE;
-	reg->rdesc.type		= REGULATOR_VOLTAGE;
+reg->rdesc.type		= REGULATOR_VOLTAGE;
 	reg->rdesc.ops		= &virtio_regulator_ops;
 
 	init_data = of_get_regulator_init_data(dev, reg->of_node, &reg->rdesc);
@@ -507,7 +507,7 @@ static int virtio_regulator_init_reg(struct reg_virtio *reg)
 		return -ENOMEM;
 
 	init_data->constraints.input_uV = init_data->constraints.max_uV;
-	init_data->constraints.valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
+init_data->constraints.valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
 
 	reg_config.dev			= dev;
 	reg_config.init_data		= init_data;

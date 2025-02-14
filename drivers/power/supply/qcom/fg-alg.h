@@ -142,7 +142,7 @@ struct ttf {
 
 struct soh_profile {
 	struct device_node *bp_node;
-	struct power_supply *bms_psy;
+struct power_supply *bms_psy;
 	struct soh_range *soh_data;
 	int batt_id_kohms;
 	int profile_count;

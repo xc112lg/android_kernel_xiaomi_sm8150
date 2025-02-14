@@ -29,16 +29,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,860@0 {
+PowerPC,860@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <16>;	// 16 bytes
 			i-cache-line-size = <16>;	// 16 bytes
 			d-cache-size = <0x1000>;		// L1, 4K
 			i-cache-size = <0x1000>;		// L1, 4K
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <15 2>;	// decrementer interrupt
 			interrupt-parent = <&PIC>;
 		};
@@ -75,11 +75,11 @@
 			reg = <3 0x0 0x80>;
 			interrupts = <8 1>;
 			interrupt-parent = <&PIC>;
-			bosch,external-clock-frequency = <16000000>;
+bosch,external-clock-frequency = <16000000>;
 			bosch,disconnect-rx1-input;
 			bosch,disconnect-tx1-output;
 			bosch,iso-low-speed-mux;
-			bosch,clock-out-frequency = <16000000>;
+bosch,clock-out-frequency = <16000000>;
 		};
 
 		can@3,100 {
@@ -87,7 +87,7 @@
 			reg = <3 0x100 0x80>;
 			interrupts = <8 1>;
 			interrupt-parent = <&PIC>;
-			bosch,external-clock-frequency = <16000000>;
+bosch,external-clock-frequency = <16000000>;
 			bosch,disconnect-rx1-input;
 			bosch,disconnect-tx1-output;
 			bosch,iso-low-speed-mux;
@@ -134,7 +134,7 @@
 			compatible = "fsl,mpc860-cpm", "fsl,cpm1";
 			ranges;
 			reg = <0x9c0 0x40>;
-			brg-frequency = <0>;
+brg-frequency = <0>;
 			interrupts = <0 2>;	// cpm error interrupt
 			interrupt-parent = <&CPM_PIC>;
 
@@ -154,7 +154,7 @@
 					     "fsl,cpm1-brg",
 					     "fsl,cpm-brg";
 				reg = <0x9f0 0x10>;
-				clock-frequency = <0>;
+clock-frequency = <0>;
 			};
 
 			CPM_PIC: pic@930 {

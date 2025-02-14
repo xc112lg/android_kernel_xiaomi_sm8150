@@ -627,7 +627,7 @@ bool __init xive_spapr_init(void)
 		return false;
 
 	pr_devel("%s()\n", __func__);
-	np = of_find_compatible_node(NULL, NULL, "ibm,power-ivpe");
+np = of_find_compatible_node(NULL, NULL, "ibm,power-ivpe");
 	if (!np) {
 		pr_devel("not found !\n");
 		return false;

@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/powermac/low_i2c.c
+* arch/powerpc/platforms/powermac/low_i2c.c
  *
  *  Copyright (C) 2003-2005 Ben. Herrenschmidt (benh@kernel.crashing.org)
  *
@@ -13,7 +13,7 @@
  * matching some requirements of the apple platform functions etc...
  *
  * This file thus provides a simple low level unified i2c interface for
- * powermac that covers the various types of i2c busses used in Apple machines.
+* powermac that covers the various types of i2c busses used in Apple machines.
  * For now, keywest, PMU and SMU, though we could add Cuda, or other bit
  * banging busses found on older chipsets in earlier machines if we ever need
  * one of them.
@@ -1188,7 +1188,7 @@ static void pmac_i2c_devscan(void (*callback)(struct device_node *dev,
 		{ "i2c-hwclock", "imic5002", pmac_i2c_quirk_skip },
 		{ "i2c-hwclock", "imic5003", pmac_i2c_quirk_skip },
 		{ "i2c-hwclock", NULL, pmac_i2c_quirk_invmask },
-		{ "i2c-cpu-voltage", NULL, 0},
+{ "i2c-cpu-voltage", NULL, 0},
 		{  "temp-monitor", NULL, 0 },
 		{  "supply-monitor", NULL, 0 },
 		{ NULL, NULL, 0 },
@@ -1503,7 +1503,7 @@ static int __init pmac_i2c_create_platform_devices(void)
 	/* Create platform devices */
 	list_for_each_entry(bus, &pmac_i2c_busses, link) {
 		bus->platform_dev =
-			platform_device_alloc("i2c-powermac", i++);
+platform_device_alloc("i2c-powermac", i++);
 		if (bus->platform_dev == NULL)
 			return -ENOMEM;
 		bus->platform_dev->dev.platform_data = bus;

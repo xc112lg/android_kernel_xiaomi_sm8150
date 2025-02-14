@@ -59,7 +59,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0 255>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <26 2 0 0>;
 	sleep = <&pmc 0x20000000>;
 
@@ -102,7 +102,7 @@
 	#size-cells = <1>;
 	device_type = "soc";
 	compatible = "fsl,mpc8568-immr", "simple-bus";
-	bus-frequency = <0>;		// Filled out by uboot.
+bus-frequency = <0>;		// Filled out by uboot.
 
 	ecm-law@0 {
 		compatible = "fsl,ecm-law";
@@ -192,7 +192,7 @@
 		ranges = <0 0xe0000 0x1000>;
 		fsl,has-rstcr;
 
-		pmc: power@70 {
+pmc: power@70 {
 			compatible = "fsl,mpc8568-pmc",
 				     "fsl,mpc8548-pmc";
 			reg = <0x70 0x20>;
@@ -206,8 +206,8 @@
 	device_type = "qe";
 	compatible = "fsl,qe";
 	sleep = <&pmc 0x00000800>;
-	brg-frequency = <0>;
-	bus-frequency = <396000000>;
+brg-frequency = <0>;
+bus-frequency = <396000000>;
 	fsl,qe-num-riscs = <2>;
 	fsl,qe-num-snums = <28>;
 

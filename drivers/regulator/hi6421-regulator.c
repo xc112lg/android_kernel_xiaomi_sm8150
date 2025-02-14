@@ -157,9 +157,9 @@ static const struct regulator_ops hi6421_buck345_ops;
 #define HI6421_LDO_ENABLE_TIME (350)
 /*
  * _id - LDO id name string
- * v_table - voltage table
- * vreg - voltage select register
- * vmask - voltage select mask
+* v_table - voltage table
+* vreg - voltage select register
+* vmask - voltage select mask
  * ereg - enable register
  * emask - enable mask
  * odelay - off/on delay time in uS
@@ -172,10 +172,10 @@ static const struct regulator_ops hi6421_buck345_ops;
 		.desc = {						\
 			.name		= #_id,				\
 			.ops		= &hi6421_ldo_ops,		\
-			.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 			.id		= HI6421_##_id,			\
 			.owner		= THIS_MODULE,			\
-			.n_voltages	= ARRAY_SIZE(v_table),		\
+.n_voltages	= ARRAY_SIZE(v_table),		\
 			.volt_table	= v_table,			\
 			.vsel_reg	= HI6421_REG_TO_BUS_ADDR(vreg),	\
 			.vsel_mask	= vmask,			\
@@ -191,11 +191,11 @@ static const struct regulator_ops hi6421_buck345_ops;
 /* HI6421 LDO1~3 are linear voltage regulators at fixed uV_step
  *
  * _id - LDO id name string
- * _min_uV - minimum voltage supported in uV
+* _min_uV - minimum voltage supported in uV
  * n_volt - number of votages available
- * vstep - voltage increase in each linear step in uV
- * vreg - voltage select register
- * vmask - voltage select mask
+* vstep - voltage increase in each linear step in uV
+* vreg - voltage select register
+* vmask - voltage select mask
  * ereg - enable register
  * emask - enable mask
  * odelay - off/on delay time in uS
@@ -208,11 +208,11 @@ static const struct regulator_ops hi6421_buck345_ops;
 		.desc = {						\
 			.name		= #_id,				\
 			.ops		= &hi6421_ldo_linear_ops,	\
-			.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 			.id		= HI6421_##_id,			\
 			.owner		= THIS_MODULE,			\
 			.min_uV		= _min_uV,			\
-			.n_voltages	= n_volt,			\
+.n_voltages	= n_volt,			\
 			.uV_step	= vstep,			\
 			.vsel_reg	= HI6421_REG_TO_BUS_ADDR(vreg),	\
 			.vsel_mask	= vmask,			\
@@ -230,9 +230,9 @@ static const struct regulator_ops hi6421_buck345_ops;
  * _id - LDO id name string
  * n_volt - number of votages available
  * volt_ranges - array of regulator_linear_range
- * vstep - voltage increase in each linear step in uV
- * vreg - voltage select register
- * vmask - voltage select mask
+* vstep - voltage increase in each linear step in uV
+* vreg - voltage select register
+* vmask - voltage select mask
  * ereg - enable register
  * emask - enable mask
  * odelay - off/on delay time in uS
@@ -245,10 +245,10 @@ static const struct regulator_ops hi6421_buck345_ops;
 		.desc = {						\
 			.name		= #_id,				\
 			.ops		= &hi6421_ldo_linear_range_ops,	\
-			.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 			.id		= HI6421_##_id,			\
 			.owner		= THIS_MODULE,			\
-			.n_voltages	= n_volt,			\
+.n_voltages	= n_volt,			\
 			.linear_ranges	= volt_ranges,			\
 			.n_linear_ranges = ARRAY_SIZE(volt_ranges),	\
 			.vsel_reg	= HI6421_REG_TO_BUS_ADDR(vreg),	\
@@ -265,8 +265,8 @@ static const struct regulator_ops hi6421_buck345_ops;
 /* HI6421 BUCK0/1/2 are linear voltage regulators at fixed uV_step
  *
  * _id - BUCK0/1/2 id name string
- * vreg - voltage select register
- * vmask - voltage select mask
+* vreg - voltage select register
+* vmask - voltage select mask
  * ereg - enable register
  * emask - enable mask
  * sleepmask - mask of sleep mode
@@ -279,11 +279,11 @@ static const struct regulator_ops hi6421_buck345_ops;
 		.desc = {						\
 			.name		= #_id,				\
 			.ops		= &hi6421_buck012_ops,		\
-			.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 			.id		= HI6421_##_id,			\
 			.owner		= THIS_MODULE,			\
 			.min_uV		= 700000,			\
-			.n_voltages	= 128,				\
+.n_voltages	= 128,				\
 			.uV_step	= 7086,				\
 			.vsel_reg	= HI6421_REG_TO_BUS_ADDR(vreg),	\
 			.vsel_mask	= vmask,			\
@@ -299,9 +299,9 @@ static const struct regulator_ops hi6421_buck345_ops;
  *  that it supports SLEEP mode, so has different .ops.
  *
  * _id - LDO id name string
- * v_table - voltage table
- * vreg - voltage select register
- * vmask - voltage select mask
+* v_table - voltage table
+* vreg - voltage select register
+* vmask - voltage select mask
  * ereg - enable register
  * emask - enable mask
  * odelay - off/on delay time in uS
@@ -313,10 +313,10 @@ static const struct regulator_ops hi6421_buck345_ops;
 		.desc = {						\
 			.name		= #_id,				\
 			.ops		= &hi6421_buck345_ops,		\
-			.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 			.id		= HI6421_##_id,			\
 			.owner		= THIS_MODULE,			\
-			.n_voltages	= ARRAY_SIZE(v_table),		\
+.n_voltages	= ARRAY_SIZE(v_table),		\
 			.volt_table	= v_table,			\
 			.vsel_reg	= HI6421_REG_TO_BUS_ADDR(vreg),	\
 			.vsel_mask	= vmask,			\
@@ -331,7 +331,7 @@ static const struct regulator_ops hi6421_buck345_ops;
 /* HI6421 regulator information */
 static struct hi6421_regulator_info
 		hi6421_regulator_info[HI6421_NUM_REGULATORS] = {
-	HI6421_LDO(LDO0, ldo_0_voltages, 0x20, 0x07, 0x20, 0x10,
+HI6421_LDO(LDO0, ldo_0_voltages, 0x20, 0x07, 0x20, 0x10,
 		   10000, 0x20, 8000),
 	HI6421_LDO_LINEAR(LDO1, 1700000, 4, 100000, 0x21, 0x03, 0x21, 0x10,
 			  10000, 0x20, 5000),
@@ -339,50 +339,50 @@ static struct hi6421_regulator_info
 			  20000, 0x20, 8000),
 	HI6421_LDO_LINEAR(LDO3, 1050000, 8, 50000, 0x23, 0x07, 0x23, 0x10,
 			  20000, 0x20, 8000),
-	HI6421_LDO(LDO4, ldo_0_voltages, 0x24, 0x07, 0x24, 0x10,
+HI6421_LDO(LDO4, ldo_0_voltages, 0x24, 0x07, 0x24, 0x10,
 		   20000, 0x20, 8000),
-	HI6421_LDO(LDO5, ldo_0_voltages, 0x25, 0x07, 0x25, 0x10,
+HI6421_LDO(LDO5, ldo_0_voltages, 0x25, 0x07, 0x25, 0x10,
 		   20000, 0x20, 8000),
-	HI6421_LDO(LDO6, ldo_0_voltages, 0x26, 0x07, 0x26, 0x10,
+HI6421_LDO(LDO6, ldo_0_voltages, 0x26, 0x07, 0x26, 0x10,
 		   20000, 0x20, 8000),
-	HI6421_LDO(LDO7, ldo_0_voltages, 0x27, 0x07, 0x27, 0x10,
+HI6421_LDO(LDO7, ldo_0_voltages, 0x27, 0x07, 0x27, 0x10,
 		   20000, 0x20, 5000),
-	HI6421_LDO(LDO8, ldo_8_voltages, 0x28, 0x07, 0x28, 0x10,
+HI6421_LDO(LDO8, ldo_8_voltages, 0x28, 0x07, 0x28, 0x10,
 		   20000, 0x20, 8000),
-	HI6421_LDO(LDO9, ldo_0_voltages, 0x29, 0x07, 0x29, 0x10,
+HI6421_LDO(LDO9, ldo_0_voltages, 0x29, 0x07, 0x29, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO10, ldo_0_voltages, 0x2a, 0x07, 0x2a, 0x10,
+HI6421_LDO(LDO10, ldo_0_voltages, 0x2a, 0x07, 0x2a, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO11, ldo_0_voltages, 0x2b, 0x07, 0x2b, 0x10,
+HI6421_LDO(LDO11, ldo_0_voltages, 0x2b, 0x07, 0x2b, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO12, ldo_0_voltages, 0x2c, 0x07, 0x2c, 0x10,
+HI6421_LDO(LDO12, ldo_0_voltages, 0x2c, 0x07, 0x2c, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO13, ldo_0_voltages, 0x2d, 0x07, 0x2d, 0x10,
+HI6421_LDO(LDO13, ldo_0_voltages, 0x2d, 0x07, 0x2d, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO14, ldo_0_voltages, 0x2e, 0x07, 0x2e, 0x10,
+HI6421_LDO(LDO14, ldo_0_voltages, 0x2e, 0x07, 0x2e, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO15, ldo_8_voltages, 0x2f, 0x07, 0x2f, 0x10,
+HI6421_LDO(LDO15, ldo_8_voltages, 0x2f, 0x07, 0x2f, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO16, ldo_0_voltages, 0x30, 0x07, 0x30, 0x10,
+HI6421_LDO(LDO16, ldo_0_voltages, 0x30, 0x07, 0x30, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO17, ldo_0_voltages, 0x31, 0x07, 0x31, 0x10,
+HI6421_LDO(LDO17, ldo_0_voltages, 0x31, 0x07, 0x31, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO18, ldo_0_voltages, 0x32, 0x07, 0x32, 0x10,
+HI6421_LDO(LDO18, ldo_0_voltages, 0x32, 0x07, 0x32, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO19, ldo_0_voltages, 0x33, 0x07, 0x33, 0x10,
+HI6421_LDO(LDO19, ldo_0_voltages, 0x33, 0x07, 0x33, 0x10,
 		   40000, 0x20, 8000),
-	HI6421_LDO(LDO20, ldo_0_voltages, 0x34, 0x07, 0x34, 0x10,
+HI6421_LDO(LDO20, ldo_0_voltages, 0x34, 0x07, 0x34, 0x10,
 		   40000, 0x20, 8000),
 	HI6421_LDO_LINEAR_RANGE(LDOAUDIO, 8, ldo_audio_volt_range, 0x36,
 				0x70, 0x36, 0x01, 40000, 0x02, 5000),
 	HI6421_BUCK012(BUCK0, 0x0d, 0x7f, 0x0c, 0x01, 0x10, 400, 20000),
 	HI6421_BUCK012(BUCK1, 0x0f, 0x7f, 0x0e, 0x01, 0x10, 400, 20000),
 	HI6421_BUCK012(BUCK2, 0x11, 0x7f, 0x10, 0x01, 0x10, 350, 100),
-	HI6421_BUCK345(BUCK3, buck_3_voltages, 0x13, 0x07, 0x12, 0x01,
+HI6421_BUCK345(BUCK3, buck_3_voltages, 0x13, 0x07, 0x12, 0x01,
 		       20000, 0x10),
-	HI6421_BUCK345(BUCK4, buck_4_voltages, 0x15, 0x07, 0x14, 0x01,
+HI6421_BUCK345(BUCK4, buck_4_voltages, 0x15, 0x07, 0x14, 0x01,
 		       20000, 0x10),
-	HI6421_BUCK345(BUCK5, buck_5_voltages, 0x17, 0x07, 0x16, 0x01,
+HI6421_BUCK345(BUCK5, buck_5_voltages, 0x17, 0x07, 0x16, 0x01,
 		       20000, 0x10),
 };
 
@@ -493,10 +493,10 @@ static const struct regulator_ops hi6421_ldo_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = hi6421_regulator_enable,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = hi6421_regulator_ldo_get_mode,
 	.set_mode = hi6421_regulator_ldo_set_mode,
 	.get_optimum_mode = hi6421_regulator_ldo_get_optimum_mode,
@@ -506,10 +506,10 @@ static const struct regulator_ops hi6421_ldo_linear_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = hi6421_regulator_enable,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = hi6421_regulator_ldo_get_mode,
 	.set_mode = hi6421_regulator_ldo_set_mode,
 	.get_optimum_mode = hi6421_regulator_ldo_get_optimum_mode,
@@ -519,10 +519,10 @@ static const struct regulator_ops hi6421_ldo_linear_range_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = hi6421_regulator_enable,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = hi6421_regulator_ldo_get_mode,
 	.set_mode = hi6421_regulator_ldo_set_mode,
 	.get_optimum_mode = hi6421_regulator_ldo_get_optimum_mode,
@@ -532,10 +532,10 @@ static const struct regulator_ops hi6421_buck012_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = hi6421_regulator_enable,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = hi6421_regulator_buck_get_mode,
 	.set_mode = hi6421_regulator_buck_set_mode,
 };
@@ -544,10 +544,10 @@ static const struct regulator_ops hi6421_buck345_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = hi6421_regulator_enable,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = hi6421_regulator_buck_get_mode,
 	.set_mode = hi6421_regulator_buck_set_mode,
 };

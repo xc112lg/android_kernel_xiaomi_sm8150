@@ -36,12 +36,12 @@ XXXX add flash parts, rtc, ??
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,603e { /* Really 8241 */
+PowerPC,603e { /* Really 8241 */
 			device_type = "cpu";
 			reg = <0x0>;
-			clock-frequency = <200000000>;	/* Fixed by bootloader */
-			timebase-frequency = <24391680>; /* Fixed by bootloader */
-			bus-frequency = <0>;		/* Fixed by bootloader */
+clock-frequency = <200000000>;	/* Fixed by bootloader */
+timebase-frequency = <24391680>; /* Fixed by bootloader */
+bus-frequency = <0>;		/* Fixed by bootloader */
 			/* Following required by dtc but not used */
 			i-cache-size = <0x4000>;
 			d-cache-size = <0x4000>;
@@ -86,7 +86,7 @@ XXXX add flash parts, rtc, ??
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x80004500 0x8>;
-			clock-frequency = <97553800>;
+clock-frequency = <97553800>;
 			current-speed = <9600>;
 			interrupts = <9 0>;
 			interrupt-parent = <&mpic>;
@@ -97,7 +97,7 @@ XXXX add flash parts, rtc, ??
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x80004600 0x8>;
-			clock-frequency = <97553800>;
+clock-frequency = <97553800>;
 			current-speed = <57600>;
 			interrupts = <10 0>;
 			interrupt-parent = <&mpic>;
@@ -122,7 +122,7 @@ XXXX add flash parts, rtc, ??
 			ranges = <0x1000000 0x0        0x0 0xfe000000 0x0 0xc00000
 				  0x2000000 0x0 0x80000000 0x80000000 0x0 0x70000000>;
 			bus-range = <0 255>;
-			clock-frequency = <133333333>;
+clock-frequency = <133333333>;
 			interrupt-parent = <&mpic>;
 			interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 			interrupt-map = <

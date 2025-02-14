@@ -65,9 +65,9 @@ static const struct regulator_ops hi6421v530_ldo_ops;
 
 /*
  * _id - LDO id name string
- * v_table - voltage table
- * vreg - voltage select register
- * vmask - voltage select mask
+* v_table - voltage table
+* vreg - voltage select register
+* vmask - voltage select mask
  * ereg - enable register
  * emask - enable mask
  * odelay - off/on delay time in uS
@@ -81,10 +81,10 @@ static const struct regulator_ops hi6421v530_ldo_ops;
 		.of_match        = of_match_ptr(#_ID),			\
 		.regulators_node = of_match_ptr("regulators"),		\
 		.ops		 = &hi6421v530_ldo_ops,			\
-		.type		 = REGULATOR_VOLTAGE,			\
+.type		 = REGULATOR_VOLTAGE,			\
 		.id		 = HI6421V530_##_ID,			\
 		.owner		 = THIS_MODULE,				\
-		.n_voltages	 = ARRAY_SIZE(v_table),			\
+.n_voltages	 = ARRAY_SIZE(v_table),			\
 		.volt_table	 = v_table,				\
 		.vsel_reg	 = HI6421_REG_TO_BUS_ADDR(vreg),	\
 		.vsel_mask	 = vmask,				\
@@ -100,15 +100,15 @@ static const struct regulator_ops hi6421v530_ldo_ops;
 /* HI6421V530 regulator information */
 
 static struct hi6421v530_regulator_info hi6421v530_regulator_info[] = {
-	HI6421V530_LDO(LDO3, ldo_3_voltages, 0x061, 0xf, 0x060, 0x2,
+HI6421V530_LDO(LDO3, ldo_3_voltages, 0x061, 0xf, 0x060, 0x2,
 		   20000, 0x6, 8000),
-	HI6421V530_LDO(LDO9, ldo_9_11_voltages, 0x06b, 0x7, 0x06a, 0x2,
+HI6421V530_LDO(LDO9, ldo_9_11_voltages, 0x06b, 0x7, 0x06a, 0x2,
 		   40000, 0x6, 8000),
-	HI6421V530_LDO(LDO11, ldo_9_11_voltages, 0x06f, 0x7, 0x06e, 0x2,
+HI6421V530_LDO(LDO11, ldo_9_11_voltages, 0x06f, 0x7, 0x06e, 0x2,
 		   40000, 0x6, 8000),
-	HI6421V530_LDO(LDO15, ldo_15_16_voltages, 0x077, 0x7, 0x076, 0x2,
+HI6421V530_LDO(LDO15, ldo_15_16_voltages, 0x077, 0x7, 0x076, 0x2,
 		   40000, 0x6, 8000),
-	HI6421V530_LDO(LDO16, ldo_15_16_voltages, 0x079, 0x7, 0x078, 0x2,
+HI6421V530_LDO(LDO16, ldo_15_16_voltages, 0x079, 0x7, 0x078, 0x2,
 		   40000, 0x6, 8000),
 };
 
@@ -156,10 +156,10 @@ static const struct regulator_ops hi6421v530_ldo_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = hi6421v530_regulator_ldo_get_mode,
 	.set_mode = hi6421v530_regulator_ldo_set_mode,
 };

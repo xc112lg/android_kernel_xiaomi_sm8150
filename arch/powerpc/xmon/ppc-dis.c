@@ -27,8 +27,8 @@ Software Foundation, 51 Franklin Street - Fifth Floor, Boston, MA 02110-1301, US
 
 /* This file provides several disassembler functions, all of which use
    the disassembler interface defined in dis-asm.h.  Several functions
-   are provided because this file handles disassembly for the PowerPC
-   in both big and little endian mode and also for the POWER (RS/6000)
+are provided because this file handles disassembly for the PowerPC
+in both big and little endian mode and also for the POWER (RS/6000)
    chip.  */
 
 /* Extract the operand value from the PowerPC or POWER instruction.  */
@@ -70,14 +70,14 @@ static int
 skip_optional_operands (const unsigned char *opindex,
 			unsigned long insn, ppc_cpu_t dialect)
 {
-  const struct powerpc_operand *operand;
+const struct powerpc_operand *operand;
 
   for (; *opindex != 0; opindex++)
     {
-      operand = &powerpc_operands[*opindex];
+operand = &powerpc_operands[*opindex];
       if ((operand->flags & PPC_OPERAND_NEXT) != 0
 	  || ((operand->flags & PPC_OPERAND_OPTIONAL) != 0
-	      && operand_value_powerpc (operand, insn, dialect) !=
+&& operand_value_powerpc (operand, insn, dialect) !=
 		 ppc_optional_operand_value (operand)))
 	return 0;
     }
@@ -91,19 +91,19 @@ skip_optional_operands (const unsigned char *opindex,
 static const struct powerpc_opcode *
 lookup_powerpc (unsigned long insn, ppc_cpu_t dialect)
 {
-  const struct powerpc_opcode *opcode;
-  const struct powerpc_opcode *opcode_end;
+const struct powerpc_opcode *opcode;
+const struct powerpc_opcode *opcode_end;
   unsigned long op;
 
   /* Get the major opcode of the instruction.  */
   op = PPC_OP (insn);
 
-  opcode_end = powerpc_opcodes + powerpc_num_opcodes;
+opcode_end = powerpc_opcodes + powerpc_num_opcodes;
   /* Find the first match in the opcode table for this major opcode.  */
-  for (opcode = powerpc_opcodes; opcode < opcode_end; ++opcode)
+for (opcode = powerpc_opcodes; opcode < opcode_end; ++opcode)
     {
       const unsigned char *opindex;
-      const struct powerpc_operand *operand;
+const struct powerpc_operand *operand;
       int invalid;
 
       if ((insn & opcode->mask) != opcode->opcode
@@ -116,7 +116,7 @@ lookup_powerpc (unsigned long insn, ppc_cpu_t dialect)
       invalid = 0;
       for (opindex = opcode->operands; *opindex != 0; opindex++)
 	{
-	  operand = powerpc_operands + *opindex;
+operand = powerpc_operands + *opindex;
 	  if (operand->extract)
 	    (*operand->extract) (insn, dialect, &invalid);
 	}
@@ -133,16 +133,16 @@ lookup_powerpc (unsigned long insn, ppc_cpu_t dialect)
 
 int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
 {
-  const struct powerpc_opcode *opcode;
+const struct powerpc_opcode *opcode;
   bool insn_is_short;
   ppc_cpu_t dialect;
 
   dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON;
 
   if (IS_ENABLED(CONFIG_PPC64))
-    dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
-	PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
-	PPC_OPCODE_POWER9;
+dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
+PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
+PPC_OPCODE_POWER9;
 
   if (cpu_has_feature(CPU_FTR_TM))
     dialect |= PPC_OPCODE_HTM;
@@ -158,14 +158,14 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
   insn_is_short = false;
 
   if (opcode == NULL)
-    opcode = lookup_powerpc (insn, dialect);
+opcode = lookup_powerpc (insn, dialect);
   if (opcode == NULL && (dialect & PPC_OPCODE_ANY) != 0)
-    opcode = lookup_powerpc (insn, (ppc_cpu_t) -1);
+opcode = lookup_powerpc (insn, (ppc_cpu_t) -1);
 
   if (opcode != NULL)
     {
       const unsigned char *opindex;
-      const struct powerpc_operand *operand;
+const struct powerpc_operand *operand;
       int need_comma;
       int need_paren;
       int skip_optional;
@@ -187,7 +187,7 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
 	{
 	  long value;
 
-	  operand = powerpc_operands + *opindex;
+operand = powerpc_operands + *opindex;
 
 	  /* Operands that are marked FAKE are simply ignored.  We
 	     already made sure that the extract function considered
@@ -206,7 +206,7 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
 		continue;
 	    }
 
-	  value = operand_value_powerpc (operand, insn, dialect);
+value = operand_value_powerpc (operand, insn, dialect);
 
 	  if (need_comma)
 	    {

@@ -203,7 +203,7 @@ static int FDC2 = -1;
 #define N_DRIVE 8
 
 /*
- * The PowerPC has no problems with floppy DMA crossing 64k borders.
+* The PowerPC has no problems with floppy DMA crossing 64k borders.
  */
 #define CROSS_64KB(a,s)	(0)
 

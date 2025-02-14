@@ -25,7 +25,7 @@
 #define TONGA_PPTABLE_H
 
 /** \file
- * This is a PowerPlay table header file
+* This is a PowerPlay table header file
  */
 #pragma pack(push, 1)
 
@@ -107,14 +107,14 @@ typedef struct _ATOM_Tonga_POWERPLAYTABLE {
 	ULONG	ulGoldenRevision;
 	USHORT	usFormatID;
 
-	USHORT	usVoltageTime;					 /*in microseconds */
+USHORT	usVoltageTime;					 /*in microseconds */
 	ULONG	ulPlatformCaps;					  /*See ATOM_Tonga_CAPS_* */
 
 	ULONG	ulMaxODEngineClock; 			   /*For Overdrive.  */
 	ULONG	ulMaxODMemoryClock; 			   /*For Overdrive. */
 
-	USHORT	usPowerControlLimit;
-	USHORT	usUlvVoltageOffset;				  /*in mv units */
+USHORT	usPowerControlLimit;
+USHORT	usUlvVoltageOffset;				  /*in mv units */
 
 	USHORT	usStateArrayOffset;				  /*points to ATOM_Tonga_State_Array */
 	USHORT	usFanTableOffset;				  /*points to ATOM_Tonga_Fan_Table */
@@ -123,15 +123,15 @@ typedef struct _ATOM_Tonga_POWERPLAYTABLE {
 
 	USHORT	usMclkDependencyTableOffset;	   /*points to ATOM_Tonga_MCLK_Dependency_Table */
 	USHORT	usSclkDependencyTableOffset;	   /*points to ATOM_Tonga_SCLK_Dependency_Table */
-	USHORT	usVddcLookupTableOffset;		   /*points to ATOM_Tonga_Voltage_Lookup_Table */
-	USHORT	usVddgfxLookupTableOffset; 		/*points to ATOM_Tonga_Voltage_Lookup_Table */
+USHORT	usVddcLookupTableOffset;		   /*points to ATOM_Tonga_Voltage_Lookup_Table */
+USHORT	usVddgfxLookupTableOffset; 		/*points to ATOM_Tonga_Voltage_Lookup_Table */
 
 	USHORT	usMMDependencyTableOffset;		  /*points to ATOM_Tonga_MM_Dependency_Table */
 
 	USHORT	usVCEStateTableOffset;			   /*points to ATOM_Tonga_VCE_State_Table; */
 
 	USHORT	usPPMTableOffset;				  /*points to ATOM_Tonga_PPM_Table */
-	USHORT	usPowerTuneTableOffset;			  /*points to ATOM_PowerTune_Table */
+USHORT	usPowerTuneTableOffset;			  /*points to ATOM_PowerTune_Table */
 
 	USHORT	usHardLimitTableOffset; 		   /*points to ATOM_Tonga_Hard_Limit_Table */
 
@@ -168,10 +168,10 @@ typedef struct _ATOM_Tonga_State_Array {
 } ATOM_Tonga_State_Array;
 
 typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
-	UCHAR  ucVddcInd;	/* Vddc voltage */
-	USHORT usVddci;
-	USHORT usVddgfxOffset;	/* Offset relative to Vddc voltage */
-	USHORT usMvdd;
+UCHAR  ucVddcInd;	/* Vddc voltage */
+USHORT usVddci;
+USHORT usVddgfxOffset;	/* Offset relative to Vddc voltage */
+USHORT usMvdd;
 	ULONG ulMclk;
 	USHORT usReserved;
 } ATOM_Tonga_MCLK_Dependency_Record;
@@ -183,12 +183,12 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
 } ATOM_Tonga_MCLK_Dependency_Table;
 
 typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
-	UCHAR  ucVddInd;											/* Base voltage */
-	USHORT usVddcOffset;										/* Offset relative to base voltage */
+UCHAR  ucVddInd;											/* Base voltage */
+USHORT usVddcOffset;										/* Offset relative to base voltage */
 	ULONG ulSclk;
 	USHORT usEdcCurrent;
 	UCHAR  ucReliabilityTemperature;
-	UCHAR  ucCKSVOffsetandDisable;							  /* Bits 0~6: Voltage offset for CKS, Bit 7: Disable/enable for the SCLK level. */
+UCHAR  ucCKSVOffsetandDisable;							  /* Bits 0~6: Voltage offset for CKS, Bit 7: Disable/enable for the SCLK level. */
 } ATOM_Tonga_SCLK_Dependency_Record;
 
 typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
@@ -198,12 +198,12 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
 } ATOM_Tonga_SCLK_Dependency_Table;
 
 typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
-	UCHAR  ucVddInd;											/* Base voltage */
-	USHORT usVddcOffset;										/* Offset relative to base voltage */
+UCHAR  ucVddInd;											/* Base voltage */
+USHORT usVddcOffset;										/* Offset relative to base voltage */
 	ULONG ulSclk;
 	USHORT usEdcCurrent;
 	UCHAR  ucReliabilityTemperature;
-	UCHAR  ucCKSVOffsetandDisable;			/* Bits 0~6: Voltage offset for CKS, Bit 7: Disable/enable for the SCLK level. */
+UCHAR  ucCKSVOffsetandDisable;			/* Bits 0~6: Voltage offset for CKS, Bit 7: Disable/enable for the SCLK level. */
 	ULONG  ulSclkOffset;
 } ATOM_Polaris_SCLK_Dependency_Record;
 
@@ -240,8 +240,8 @@ typedef struct _ATOM_Polaris10_PCIE_Table {
 
 
 typedef struct _ATOM_Tonga_MM_Dependency_Record {
-	UCHAR   ucVddcInd;											 /* VDDC voltage */
-	USHORT  usVddgfxOffset;									  /* Offset relative to VDDC voltage */
+UCHAR   ucVddcInd;											 /* VDDC voltage */
+USHORT  usVddgfxOffset;									  /* Offset relative to VDDC voltage */
 	ULONG  ulDClk;												/* UVD D-clock */
 	ULONG  ulVClk;												/* UVD V-clock */
 	ULONG  ulEClk;												/* VCE clock */
@@ -256,7 +256,7 @@ typedef struct _ATOM_Tonga_MM_Dependency_Table {
 } ATOM_Tonga_MM_Dependency_Table;
 
 typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
-	USHORT usVdd;											   /* Base voltage */
+USHORT usVdd;											   /* Base voltage */
 	USHORT usCACLow;
 	USHORT usCACMid;
 	USHORT usCACHigh;
@@ -265,7 +265,7 @@ typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
 typedef struct _ATOM_Tonga_Voltage_Lookup_Table {
 	UCHAR ucRevId;
 	UCHAR ucNumEntries; 										/* Number of entries. */
-	ATOM_Tonga_Voltage_Lookup_Record entries[];				/* Dynamically allocate entries. */
+ATOM_Tonga_Voltage_Lookup_Record entries[];				/* Dynamically allocate entries. */
 } ATOM_Tonga_Voltage_Lookup_Table;
 
 typedef struct _ATOM_Tonga_Fan_Table {
@@ -279,10 +279,10 @@ typedef struct _ATOM_Tonga_Fan_Table {
 	USHORT  usPWMHigh;						 /* The PWM value at THigh. */
 	USHORT  usTMax; 						 /* The max temperature */
 	UCHAR   ucFanControlMode;				  /* Legacy or Fuzzy Fan mode */
-	USHORT  usFanPWMMax;					  /* Maximum allowed fan power in percent */
+USHORT  usFanPWMMax;					  /* Maximum allowed fan power in percent */
 	USHORT  usFanOutputSensitivity;		  /* Sensitivity of fan reaction to temepature changes */
 	USHORT  usFanRPMMax;					  /* The default value in RPM */
-	ULONG  ulMinFanSCLKAcousticLimit;	   /* Minimum Fan Controller SCLK Frequency Acoustic Limit. */
+ULONG  ulMinFanSCLKAcousticLimit;	   /* Minimum Fan Controller SCLK Frequency Acoustic Limit. */
 	UCHAR   ucTargetTemperature;			 /* Advanced fan controller target temperature. */
 	UCHAR   ucMinimumPWMLimit; 			  /* The minimum PWM that the advanced fan controller can set.	This should be set to the highest PWM that will run the fan at its lowest RPM. */
 	USHORT  usReserved;
@@ -299,17 +299,17 @@ typedef struct _ATOM_Fiji_Fan_Table {
 	USHORT  usPWMHigh;						 /* The PWM value at THigh. */
 	USHORT  usTMax; 						 /* The max temperature */
 	UCHAR   ucFanControlMode;				  /* Legacy or Fuzzy Fan mode */
-	USHORT  usFanPWMMax;					  /* Maximum allowed fan power in percent */
+USHORT  usFanPWMMax;					  /* Maximum allowed fan power in percent */
 	USHORT  usFanOutputSensitivity;		  /* Sensitivity of fan reaction to temepature changes */
 	USHORT  usFanRPMMax;					  /* The default value in RPM */
-	ULONG  ulMinFanSCLKAcousticLimit;		/* Minimum Fan Controller SCLK Frequency Acoustic Limit. */
+ULONG  ulMinFanSCLKAcousticLimit;		/* Minimum Fan Controller SCLK Frequency Acoustic Limit. */
 	UCHAR   ucTargetTemperature;			 /* Advanced fan controller target temperature. */
 	UCHAR   ucMinimumPWMLimit; 			  /* The minimum PWM that the advanced fan controller can set.	This should be set to the highest PWM that will run the fan at its lowest RPM. */
 	USHORT  usFanGainEdge;
 	USHORT  usFanGainHotspot;
 	USHORT  usFanGainLiquid;
-	USHORT  usFanGainVrVddc;
-	USHORT  usFanGainVrMvdd;
+USHORT  usFanGainVrVddc;
+USHORT  usFanGainVrMvdd;
 	USHORT  usFanGainPlx;
 	USHORT  usFanGainHbm;
 	USHORT  usReserved;
@@ -345,13 +345,13 @@ typedef struct _ATOM_Tonga_PowerTune_Table {
 	USHORT usTDP;
 	USHORT usConfigurableTDP;
 	USHORT usTDC;
-	USHORT usBatteryPowerLimit;
-	USHORT usSmallPowerLimit;
+USHORT usBatteryPowerLimit;
+USHORT usSmallPowerLimit;
 	USHORT usLowCACLeakage;
 	USHORT usHighCACLeakage;
-	USHORT usMaximumPowerDeliveryLimit;
+USHORT usMaximumPowerDeliveryLimit;
 	USHORT usTjMax;
-	USHORT usPowerTuneDataSetID;
+USHORT usPowerTuneDataSetID;
 	USHORT usEDCLimit;
 	USHORT usSoftwareShutdownTemp;
 	USHORT usClockStretchAmount;
@@ -363,21 +363,21 @@ typedef struct _ATOM_Fiji_PowerTune_Table {
 	USHORT usTDP;
 	USHORT usConfigurableTDP;
 	USHORT usTDC;
-	USHORT usBatteryPowerLimit;
-	USHORT usSmallPowerLimit;
+USHORT usBatteryPowerLimit;
+USHORT usSmallPowerLimit;
 	USHORT usLowCACLeakage;
 	USHORT usHighCACLeakage;
-	USHORT usMaximumPowerDeliveryLimit;
+USHORT usMaximumPowerDeliveryLimit;
 	USHORT usTjMax;  /* For Fiji, this is also usTemperatureLimitEdge; */
-	USHORT usPowerTuneDataSetID;
+USHORT usPowerTuneDataSetID;
 	USHORT usEDCLimit;
 	USHORT usSoftwareShutdownTemp;
 	USHORT usClockStretchAmount;
 	USHORT usTemperatureLimitHotspot;  /*The following are added for Fiji */
 	USHORT usTemperatureLimitLiquid1;
 	USHORT usTemperatureLimitLiquid2;
-	USHORT usTemperatureLimitVrVddc;
-	USHORT usTemperatureLimitVrMvdd;
+USHORT usTemperatureLimitVrVddc;
+USHORT usTemperatureLimitVrMvdd;
 	USHORT usTemperatureLimitPlx;
 	UCHAR  ucLiquid1_I2C_address;  /*Liquid */
 	UCHAR  ucLiquid2_I2C_address;
@@ -401,16 +401,16 @@ typedef struct _ATOM_Tonga_PPM_Table {
 	ULONG  ulSmallACPlatformTDC;
 	ULONG  ulApuTDP;
 	ULONG  ulDGpuTDP;
-	ULONG  ulDGpuUlvPower;
+ULONG  ulDGpuUlvPower;
 	ULONG  ulTjmax;
 } ATOM_Tonga_PPM_Table;
 
 typedef struct _ATOM_Tonga_Hard_Limit_Record {
 	ULONG  ulSCLKLimit;
 	ULONG  ulMCLKLimit;
-	USHORT  usVddcLimit;
-	USHORT  usVddciLimit;
-	USHORT  usVddgfxLimit;
+USHORT  usVddcLimit;
+USHORT  usVddciLimit;
+USHORT  usVddgfxLimit;
 } ATOM_Tonga_Hard_Limit_Record;
 
 typedef struct _ATOM_Tonga_Hard_Limit_Table {

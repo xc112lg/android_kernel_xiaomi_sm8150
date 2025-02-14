@@ -105,7 +105,7 @@ static void pmac_backlight_unblank(void)
 
 		props = &pmac_backlight->props;
 		props->brightness = props->max_brightness;
-		props->power = FB_BLANK_UNBLANK;
+props->power = FB_BLANK_UNBLANK;
 		backlight_update_status(pmac_backlight);
 	}
 	mutex_unlock(&pmac_backlight_mutex);
@@ -161,7 +161,7 @@ static unsigned long oops_begin(struct pt_regs *regs)
 	die_owner = cpu;
 	console_verbose();
 	bust_spinlocks(1);
-	if (machine_is(powermac))
+if (machine_is(powermac))
 		pmac_backlight_unblank();
 	return flags;
 }
@@ -373,7 +373,7 @@ out:
 }
 
 /*
- * I/O accesses can cause machine checks on powermacs.
+* I/O accesses can cause machine checks on powermacs.
  * Check if the NIP corresponds to the address of a sync
  * instruction for which there is an entry in the exception
  * table.
@@ -1234,7 +1234,7 @@ bail:
 NOKPROBE_SYMBOL(program_check_exception);
 
 /*
- * This occurs when running in hypervisor mode on POWER6 or later
+* This occurs when running in hypervisor mode on POWER6 or later
  * and an illegal instruction is encountered.
  */
 void emulation_assist_interrupt(struct pt_regs *regs)
@@ -1895,7 +1895,7 @@ void __attribute__ ((weak)) WatchdogHandler(struct pt_regs *regs)
 
 void WatchdogException(struct pt_regs *regs)
 {
-	printk (KERN_EMERG "PowerPC Book-E Watchdog Exception\n");
+printk (KERN_EMERG "PowerPC Book-E Watchdog Exception\n");
 	WatchdogHandler(regs);
 }
 #endif
@@ -1964,11 +1964,11 @@ static int __init ppc_warn_emulated_init(void)
 	unsigned int i;
 	struct ppc_emulated_entry *entries = (void *)&ppc_emulated;
 
-	if (!powerpc_debugfs_root)
+if (!powerpc_debugfs_root)
 		return -ENODEV;
 
 	dir = debugfs_create_dir("emulated_instructions",
-				 powerpc_debugfs_root);
+powerpc_debugfs_root);
 	if (!dir)
 		return -ENOMEM;
 

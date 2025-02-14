@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2009 ST-Ericsson AB
  * License terms: GNU General Public License (GPL) version 2
- * Handle board-bound regulators and board power not related
+* Handle board-bound regulators and board power not related
  * to any devices.
  * Author: Linus Walleij <linus.walleij@stericsson.com>
  */
@@ -24,7 +24,7 @@
 #define U300_SYSCON_PMCR_PWR_MGNT_ENABLE			(0x0001)
 
 /*
- * Regulators that power the board and chip and which are
+* Regulators that power the board and chip and which are
  * not copuled to specific drivers are hogged in these
  * instances.
  */
@@ -33,7 +33,7 @@ static struct regulator *main_power_15;
 /*
  * This function is used from pm.h to shut down the system by
  * resetting all regulators in turn and then disable regulator
- * LDO D (main power).
+* LDO D (main power).
  */
 void u300_pm_poweroff(void)
 {
@@ -42,8 +42,8 @@ void u300_pm_poweroff(void)
 	sigfillset(&all);
 	if (!sigprocmask(SIG_BLOCK, &all, &old)) {
 		/* Disable LDO D to shut down the system */
-		if (main_power_15)
-			regulator_disable(main_power_15);
+if (main_power_15)
+regulator_disable(main_power_15);
 		else
 			pr_err("regulator not available to shut down system\n");
 		(void) sigprocmask(SIG_SETMASK, &old, NULL);
@@ -52,7 +52,7 @@ void u300_pm_poweroff(void)
 }
 
 /*
- * Hog the regulators needed to power up the board.
+* Hog the regulators needed to power up the board.
  */
 static int __init __u300_init_boardpower(struct platform_device *pdev)
 {
@@ -61,7 +61,7 @@ static int __init __u300_init_boardpower(struct platform_device *pdev)
 	struct regmap *regmap;
 	int err;
 
-	pr_info("U300: setting up board power\n");
+pr_info("U300: setting up board power\n");
 
 	syscon_np = of_parse_phandle(np, "syscon", 0);
 	if (!syscon_np) {
@@ -74,13 +74,13 @@ static int __init __u300_init_boardpower(struct platform_device *pdev)
 		return PTR_ERR(regmap);
 	}
 
-	main_power_15 = regulator_get(&pdev->dev, "vana15");
+main_power_15 = regulator_get(&pdev->dev, "vana15");
 
-	if (IS_ERR(main_power_15)) {
+if (IS_ERR(main_power_15)) {
 		pr_err("could not get vana15");
-		return PTR_ERR(main_power_15);
+return PTR_ERR(main_power_15);
 	}
-	err = regulator_enable(main_power_15);
+err = regulator_enable(main_power_15);
 	if (err) {
 		pr_err("could not enable vana15\n");
 		return err;
@@ -89,23 +89,23 @@ static int __init __u300_init_boardpower(struct platform_device *pdev)
 	/*
 	 * On U300 a special system controller register pulls up the DC
 	 * until the vana15 (LDO D) regulator comes up. At this point, all
-	 * regulators are set and we do not need power control via
+* regulators are set and we do not need power control via
 	 * DC ON anymore. This function will likely be moved whenever
-	 * the rest of the U300 power management is implemented.
+* the rest of the U300 power management is implemented.
 	 */
 	pr_info("U300: disable system controller pull-up\n");
 	regmap_update_bits(regmap, U300_SYSCON_PMCR,
 			   U300_SYSCON_PMCR_DCON_ENABLE, 0);
 
-	/* Register globally exported PM poweroff hook */
-	pm_power_off = u300_pm_poweroff;
+/* Register globally exported PM poweroff hook */
+pm_power_off = u300_pm_poweroff;
 
 	return 0;
 }
 
 static int __init s365_board_probe(struct platform_device *pdev)
 {
-	return __u300_init_boardpower(pdev);
+return __u300_init_boardpower(pdev);
 }
 
 static const struct of_device_id s365_board_match[] = {

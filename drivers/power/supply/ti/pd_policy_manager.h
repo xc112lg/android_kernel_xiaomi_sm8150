@@ -78,7 +78,7 @@ enum pm_state {
 #define PDO_MAX_NUM 7
 /*
  * add hysteresis for warm threshold to avoid flash
- * charge and normal charge switch frequently at
+* charge and normal charge switch frequently at
  * the warm threshold
  */
 #define JEITA_HYSTERESIS 20
@@ -168,7 +168,7 @@ struct usbpd_pm {
 	bool pd_active;
 	bool pps_supported;
 
-	int request_voltage;
+int request_voltage;
 	int request_current;
 
 	struct usbpd *pd;
@@ -178,7 +178,7 @@ struct usbpd_pm {
 	int apdo_max_curr;
 	int apdo_selected_pdo;
 
-	int adapter_voltage;
+int adapter_voltage;
 	int adapter_current;
 	int adapter_ptf;
 	bool adapter_omf;
@@ -192,11 +192,11 @@ struct usbpd_pm {
 	spinlock_t psy_change_lock;
 
 	struct votable *fcc_votable;
-	struct power_supply *cp_psy;
-	struct power_supply *cp_sec_psy;
-	struct power_supply *sw_psy;
-	struct power_supply *usb_psy;
-	struct power_supply *bms_psy;
+struct power_supply *cp_psy;
+struct power_supply *cp_sec_psy;
+struct power_supply *sw_psy;
+struct power_supply *usb_psy;
+struct power_supply *bms_psy;
 
 	/* dtsi properties */
 	int bat_volt_max;

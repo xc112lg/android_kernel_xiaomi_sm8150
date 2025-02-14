@@ -47,8 +47,8 @@ struct dev_data {
 	int cur_ab;
 	int cur_ib;
 	long gov_ab;
-	struct devfreq *df;
-	struct devfreq_dev_profile dp;
+struct devfreq *df;
+struct devfreq_dev_profile dp;
 };
 
 static int set_bw(struct device *dev, int new_ib, int new_ab)
@@ -85,15 +85,15 @@ static int devbw_target(struct device *dev, unsigned long *freq, u32 flags)
 	struct dev_data *d = dev_get_drvdata(dev);
 	struct dev_pm_opp *opp;
 
-	opp = devfreq_recommended_opp(dev, freq, flags);
+opp = devfreq_recommended_opp(dev, freq, flags);
 	if (!IS_ERR(opp))
 		dev_pm_opp_put(opp);
 
-	return set_bw(dev, *freq, d->gov_ab);
+return set_bw(dev, *freq, d->gov_ab);
 }
 
 static int devbw_get_dev_status(struct device *dev,
-				struct devfreq_dev_status *stat)
+struct devfreq_dev_status *stat)
 {
 	struct dev_data *d = dev_get_drvdata(dev);
 
@@ -165,7 +165,7 @@ static int parse_child_nodes_for_opp(struct device *dev)
 int devfreq_add_devbw(struct device *dev)
 {
 	struct dev_data *d;
-	struct devfreq_dev_profile *p;
+struct devfreq_dev_profile *p;
 	u32 ports[MAX_PATHS * 2];
 	const char *gov_name;
 	int ret, len, i, num_paths;
@@ -231,7 +231,7 @@ int devfreq_add_devbw(struct device *dev)
 	if (of_property_read_string(dev->of_node, "governor", &gov_name))
 		gov_name = "performance";
 
-	d->df = devfreq_add_device(dev, p, gov_name, NULL);
+d->df = devfreq_add_device(dev, p, gov_name, NULL);
 	if (IS_ERR(d->df)) {
 		msm_bus_scale_unregister_client(d->bus_client);
 		return PTR_ERR(d->df);
@@ -245,7 +245,7 @@ int devfreq_remove_devbw(struct device *dev)
 	struct dev_data *d = dev_get_drvdata(dev);
 
 	msm_bus_scale_unregister_client(d->bus_client);
-	devfreq_remove_device(d->df);
+devfreq_remove_device(d->df);
 	return 0;
 }
 
@@ -253,24 +253,24 @@ int devfreq_suspend_devbw(struct device *dev)
 {
 	struct dev_data *d = dev_get_drvdata(dev);
 
-	return devfreq_suspend_device(d->df);
+return devfreq_suspend_device(d->df);
 }
 
 int devfreq_resume_devbw(struct device *dev)
 {
 	struct dev_data *d = dev_get_drvdata(dev);
 
-	return devfreq_resume_device(d->df);
+return devfreq_resume_device(d->df);
 }
 
 static int devfreq_devbw_probe(struct platform_device *pdev)
 {
-	return devfreq_add_devbw(&pdev->dev);
+return devfreq_add_devbw(&pdev->dev);
 }
 
 static int devfreq_devbw_remove(struct platform_device *pdev)
 {
-	return devfreq_remove_devbw(&pdev->dev);
+return devfreq_remove_devbw(&pdev->dev);
 }
 
 static const struct of_device_id devbw_match_table[] = {
@@ -279,8 +279,8 @@ static const struct of_device_id devbw_match_table[] = {
 };
 
 static struct platform_driver devbw_driver = {
-	.probe = devfreq_devbw_probe,
-	.remove = devfreq_devbw_remove,
+.probe = devfreq_devbw_probe,
+.remove = devfreq_devbw_remove,
 	.driver = {
 		.name = "devbw",
 		.of_match_table = devbw_match_table,

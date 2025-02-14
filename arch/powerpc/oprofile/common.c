@@ -64,7 +64,7 @@ static int op_powerpc_setup(void)
 
 	/* Configure the registers on all cpus.	 If an error occurs on one
 	 * of the cpus, op_per_cpu_rc will be set to the error */
-	on_each_cpu(op_powerpc_cpu_setup, NULL, 1);
+on_each_cpu(op_powerpc_cpu_setup, NULL, 1);
 
 out:	if (op_per_cpu_rc) {
 		/* error on setup release the performance counter hardware */
@@ -99,11 +99,11 @@ static int op_powerpc_start(void)
 	if (model->global_start)
 		return model->global_start(ctr);
 	if (model->start) {
-		on_each_cpu(op_powerpc_cpu_start, NULL, 1);
+on_each_cpu(op_powerpc_cpu_start, NULL, 1);
 		return op_per_cpu_rc;
 	}
 	return -EIO; /* No start function is defined for this
-			power architecture */
+power architecture */
 }
 
 static inline void op_powerpc_cpu_stop(void *dummy)
@@ -114,7 +114,7 @@ static inline void op_powerpc_cpu_stop(void *dummy)
 static void op_powerpc_stop(void)
 {
 	if (model->stop)
-		on_each_cpu(op_powerpc_cpu_stop, NULL, 1);
+on_each_cpu(op_powerpc_cpu_stop, NULL, 1);
         if (model->global_stop)
                 model->global_stop();
 }
@@ -167,7 +167,7 @@ static int op_powerpc_create_files(struct dentry *root)
 		oprofilefs_create_ulong(dir, "count", &ctr[i].count);
 
 		/*
-		 * Classic PowerPC doesn't support per-counter
+* Classic PowerPC doesn't support per-counter
 		 * control like this, but the options are
 		 * expected, so they remain.  For Freescale
 		 * Book-E style performance monitors, we do
@@ -205,8 +205,8 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
 			ops->sync_stop = model->sync_stop;
 			break;
 #endif
-		case PPC_OPROFILE_POWER4:
-			model = &op_model_power4;
+case PPC_OPROFILE_POWER4:
+model = &op_model_power4;
 			break;
 		case PPC_OPROFILE_PA6T:
 			model = &op_model_pa6t;
@@ -229,12 +229,12 @@ int __init oprofile_arch_init(struct oprofile_operations *ops)
 	model->num_counters = cur_cpu_spec->num_pmcs;
 
 	ops->cpu_type = cur_cpu_spec->oprofile_cpu_type;
-	ops->create_files = op_powerpc_create_files;
-	ops->setup = op_powerpc_setup;
-	ops->shutdown = op_powerpc_shutdown;
-	ops->start = op_powerpc_start;
-	ops->stop = op_powerpc_stop;
-	ops->backtrace = op_powerpc_backtrace;
+ops->create_files = op_powerpc_create_files;
+ops->setup = op_powerpc_setup;
+ops->shutdown = op_powerpc_shutdown;
+ops->start = op_powerpc_start;
+ops->stop = op_powerpc_stop;
+ops->backtrace = op_powerpc_backtrace;
 
 	printk(KERN_DEBUG "oprofile: using %s performance monitoring.\n",
 	       ops->cpu_type);

@@ -11,7 +11,7 @@
  *
  *   - Replace mdelay with some schedule loop if possible
  *   - Shorten some obfuscated delays on some routines (like modem
- *     power)
+*     power)
  *   - Refcount some clocks (see darwin)
  *   - Split split split...
  *
@@ -196,7 +196,7 @@ static long ohare_htw_scc_enable(struct device_node *node, long param,
 		if (!(fcr & OH_SCC_ENABLE)) {
 			fcr |= OH_SCC_ENABLE;
 			if (htw) {
-				/* Side effect: this will also power up the
+/* Side effect: this will also power up the
 				 * modem, but it's too messy to figure out on which
 				 * ports this controls the transceiver and on which
 				 * it controls the modem
@@ -385,7 +385,7 @@ static long heathrow_mesh_enable(struct device_node *node, long param,
 		MACIO_BIC(HEATHROW_FCR, HRW_MESH_ENABLE);
 	(void)MACIO_IN32(HEATHROW_FCR);
 	udelay(10);
-	/* Set/Clear termination power */
+/* Set/Clear termination power */
 	if (value)
 		MACIO_BIC(HEATHROW_MBCR, 0x04000000);
 	else
@@ -475,12 +475,12 @@ static long heathrow_sound_enable(struct device_node *node, long param,
 	if (value) {
 		LOCK(flags);
 		MACIO_BIS(HEATHROW_FCR, HRW_SOUND_CLK_ENABLE);
-		MACIO_BIC(HEATHROW_FCR, HRW_SOUND_POWER_N);
+MACIO_BIC(HEATHROW_FCR, HRW_SOUND_POWER_N);
 		UNLOCK(flags);
 		(void)MACIO_IN32(HEATHROW_FCR);
 	} else {
 		LOCK(flags);
-		MACIO_BIS(HEATHROW_FCR, HRW_SOUND_POWER_N);
+MACIO_BIS(HEATHROW_FCR, HRW_SOUND_POWER_N);
 		MACIO_BIC(HEATHROW_FCR, HRW_SOUND_CLK_ENABLE);
 		UNLOCK(flags);
 	}
@@ -539,7 +539,7 @@ static void heathrow_sleep(struct macio_chip *macio, int secondary)
 		save_fcr[1] = MACIO_IN32(0x3c);
 		save_mbcr = MACIO_IN32(0x34);
 		/* Make sure sound is shut down */
-		MACIO_BIS(HEATHROW_FCR, HRW_SOUND_POWER_N);
+MACIO_BIS(HEATHROW_FCR, HRW_SOUND_POWER_N);
 		MACIO_BIC(HEATHROW_FCR, HRW_SOUND_CLK_ENABLE);
 		/* This seems to be necessary as well or the fan
 		 * keeps coming up and battery drains fast */
@@ -782,13 +782,13 @@ pangea_modem_enable(struct device_node *node, long param, long value)
 	}
 	LOCK(flags);
 	if (value) {
-		MACIO_OUT8(KL_GPIO_MODEM_POWER,
+MACIO_OUT8(KL_GPIO_MODEM_POWER,
 			KEYLARGO_GPIO_OUTPUT_ENABLE);
 		UNLOCK(flags);
 		(void)MACIO_IN32(KEYLARGO_FCR2);
 		mdelay(250);
 	} else {
-		MACIO_OUT8(KL_GPIO_MODEM_POWER,
+MACIO_OUT8(KL_GPIO_MODEM_POWER,
 			KEYLARGO_GPIO_OUTPUT_ENABLE | KEYLARGO_GPIO_OUTOUT_DATA);
 		UNLOCK(flags);
 	}
@@ -943,13 +943,13 @@ core99_sound_chip_enable(struct device_node *node, long param, long value)
 	    pmac_mb.model_id == PMAC_TYPE_TITANIUM) {
 		LOCK(flags);
 		if (value)
-			MACIO_OUT8(KL_GPIO_SOUND_POWER,
+MACIO_OUT8(KL_GPIO_SOUND_POWER,
 				KEYLARGO_GPIO_OUTPUT_ENABLE |
 				KEYLARGO_GPIO_OUTOUT_DATA);
 		else
-			MACIO_OUT8(KL_GPIO_SOUND_POWER,
+MACIO_OUT8(KL_GPIO_SOUND_POWER,
 				KEYLARGO_GPIO_OUTPUT_ENABLE);
-		(void)MACIO_IN8(KL_GPIO_SOUND_POWER);
+(void)MACIO_IN8(KL_GPIO_SOUND_POWER);
 		UNLOCK(flags);
 	}
 	return 0;
@@ -1275,7 +1275,7 @@ core99_firewire_cable_power(struct device_node *node, long param, long value)
 	struct macio_chip *macio;
 
 	/* Trick: we allow NULL node */
-	if ((pmac_mb.board_flags & PMAC_MB_HAS_FW_POWER) == 0)
+if ((pmac_mb.board_flags & PMAC_MB_HAS_FW_POWER) == 0)
 		return -ENODEV;
 	macio = &macio_chips[0];
 	if (macio->type != macio_keylargo && macio->type != macio_pangea &&
@@ -1286,12 +1286,12 @@ core99_firewire_cable_power(struct device_node *node, long param, long value)
 
 	LOCK(flags);
 	if (value) {
-		MACIO_OUT8(KL_GPIO_FW_CABLE_POWER , 0);
-		MACIO_IN8(KL_GPIO_FW_CABLE_POWER);
+MACIO_OUT8(KL_GPIO_FW_CABLE_POWER , 0);
+MACIO_IN8(KL_GPIO_FW_CABLE_POWER);
 		udelay(10);
 	} else {
-		MACIO_OUT8(KL_GPIO_FW_CABLE_POWER , 4);
-		MACIO_IN8(KL_GPIO_FW_CABLE_POWER); udelay(10);
+MACIO_OUT8(KL_GPIO_FW_CABLE_POWER , 4);
+MACIO_IN8(KL_GPIO_FW_CABLE_POWER); udelay(10);
 	}
 	UNLOCK(flags);
 	mdelay(1);
@@ -1686,16 +1686,16 @@ core99_sleep(void)
 	    macio->type != macio_intrepid)
 		return -ENODEV;
 
-	/* We power off the wireless slot in case it was not done
-	 * by the driver. We don't power it on automatically however
+/* We power off the wireless slot in case it was not done
+* by the driver. We don't power it on automatically however
 	 */
 	if (macio->flags & MACIO_FLAG_AIRPORT_ON)
 		core99_airport_enable(macio->of_node, 0, 0);
 
-	/* We power off the FW cable. Should be done by the driver... */
+/* We power off the FW cable. Should be done by the driver... */
 	if (macio->flags & MACIO_FLAG_FW_SUPPORTED) {
 		core99_firewire_enable(NULL, 0, 0);
-		core99_firewire_cable_power(NULL, 0, 0);
+core99_firewire_cable_power(NULL, 0, 0);
 	}
 
 	/* We make sure int. modem is off (in case driver lost it) */
@@ -1755,7 +1755,7 @@ core99_sleep(void)
 	       ~(/*UNI_N_CLOCK_CNTL_GMAC|*/UNI_N_CLOCK_CNTL_FW/*|UNI_N_CLOCK_CNTL_PCI*/));
 	udelay(100);
 	UN_OUT(UNI_N_HWINIT_STATE, UNI_N_HWINIT_STATE_SLEEPING);
-	UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_SLEEP);
+UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_SLEEP);
 	mdelay(10);
 
 	/*
@@ -1782,7 +1782,7 @@ core99_wake_up(void)
 	/*
 	 * Wakeup the host bridge
 	 */
-	UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_NORMAL);
+UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_NORMAL);
 	udelay(10);
 	UN_OUT(UNI_N_HWINIT_STATE, UNI_N_HWINIT_STATE_RUNNING);
 	udelay(10);
@@ -1842,9 +1842,9 @@ core99_sleep_state(struct device_node *node, long param, long value)
 	if (param == 1) {
 		if (value == 1) {
 			UN_OUT(UNI_N_HWINIT_STATE, UNI_N_HWINIT_STATE_SLEEPING);
-			UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_IDLE2);
+UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_IDLE2);
 		} else {
-			UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_NORMAL);
+UN_OUT(UNI_N_POWER_MGT, UNI_N_POWER_MGT_NORMAL);
 			udelay(10);
 			UN_OUT(UNI_N_HWINIT_STATE, UNI_N_HWINIT_STATE_RUNNING);
 			udelay(10);
@@ -1909,7 +1909,7 @@ static struct feature_table_entry any_features[] = {
 #ifndef CONFIG_PPC64
 
 /* OHare based motherboards. Currently, we only use these on the
- * 2400,3400 and 3500 series powerbooks. Some older desktops seem
+* 2400,3400 and 3500 series powerbooks. Some older desktops seem
  * to have issues with turning on/off those asic cells
  */
 static struct feature_table_entry ohare_features[] = {
@@ -1936,7 +1936,7 @@ static struct feature_table_entry heathrow_desktop_features[] = {
 };
 
 /* Heathrow based laptop, that is the Wallstreet and mainstreet
- * powerbooks.
+* powerbooks.
  */
 static struct feature_table_entry heathrow_laptop_features[] = {
 	{ PMAC_FTR_SCC_ENABLE,		ohare_htw_scc_enable },
@@ -1952,7 +1952,7 @@ static struct feature_table_entry heathrow_laptop_features[] = {
 };
 
 /* Paddington based machines
- * The lombard (101) powerbook, first iMac models, B&W G3 and Yikes G4.
+* The lombard (101) powerbook, first iMac models, B&W G3 and Yikes G4.
  */
 static struct feature_table_entry paddington_features[] = {
 	{ PMAC_FTR_SCC_ENABLE,		ohare_htw_scc_enable },
@@ -1970,7 +1970,7 @@ static struct feature_table_entry paddington_features[] = {
 /* Core99 & MacRISC 2 machines (all machines released since the
  * iBook (included), that is all AGP machines, except pangea
  * chipset. The pangea chipset is the "combo" UniNorth/KeyLargo
- * used on iBook2 & iMac "flow power".
+* used on iBook2 & iMac "flow power".
  */
 static struct feature_table_entry core99_features[] = {
 	{ PMAC_FTR_SCC_ENABLE,		core99_scc_enable },
@@ -1983,7 +1983,7 @@ static struct feature_table_entry core99_features[] = {
 	{ PMAC_FTR_AIRPORT_ENABLE,	core99_airport_enable },
 	{ PMAC_FTR_USB_ENABLE,		core99_usb_enable },
 	{ PMAC_FTR_1394_ENABLE,		core99_firewire_enable },
-	{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
+{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
 #ifdef CONFIG_PM
 	{ PMAC_FTR_SLEEP_STATE,		core99_sleep_state },
 #endif
@@ -2005,7 +2005,7 @@ static struct feature_table_entry rackmac_features[] = {
 	{ PMAC_FTR_GMAC_PHY_RESET,	core99_gmac_phy_reset },
 	{ PMAC_FTR_USB_ENABLE,		core99_usb_enable },
 	{ PMAC_FTR_1394_ENABLE,		core99_firewire_enable },
-	{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
+{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
 	{ PMAC_FTR_SLEEP_STATE,		core99_sleep_state },
 #ifdef CONFIG_SMP
 	{ PMAC_FTR_RESET_CPU,		core99_reset_cpu },
@@ -2028,7 +2028,7 @@ static struct feature_table_entry pangea_features[] = {
 	{ PMAC_FTR_AIRPORT_ENABLE,	core99_airport_enable },
 	{ PMAC_FTR_USB_ENABLE,		core99_usb_enable },
 	{ PMAC_FTR_1394_ENABLE,		core99_firewire_enable },
-	{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
+{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
 	{ PMAC_FTR_SLEEP_STATE,		core99_sleep_state },
 	{ PMAC_FTR_READ_GPIO,		core99_read_gpio },
 	{ PMAC_FTR_WRITE_GPIO,		core99_write_gpio },
@@ -2048,7 +2048,7 @@ static struct feature_table_entry intrepid_features[] = {
 	{ PMAC_FTR_AIRPORT_ENABLE,	core99_airport_enable },
 	{ PMAC_FTR_USB_ENABLE,		core99_usb_enable },
 	{ PMAC_FTR_1394_ENABLE,		core99_firewire_enable },
-	{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
+{ PMAC_FTR_1394_CABLE_POWER,	core99_firewire_cable_power },
 	{ PMAC_FTR_SLEEP_STATE,		core99_sleep_state },
 	{ PMAC_FTR_READ_GPIO,		core99_read_gpio },
 	{ PMAC_FTR_WRITE_GPIO,		core99_write_gpio },
@@ -2082,23 +2082,23 @@ static struct pmac_mb_def pmac_mb_defs[] = {
 	 * Desktops
 	 */
 
-	{	"AAPL,8500",			"PowerMac 8500/8600",
+{	"AAPL,8500",			"PowerMac 8500/8600",
 		PMAC_TYPE_PSURGE,		NULL,
 		0
 	},
-	{	"AAPL,9500",			"PowerMac 9500/9600",
+{	"AAPL,9500",			"PowerMac 9500/9600",
 		PMAC_TYPE_PSURGE,		NULL,
 		0
 	},
-	{	"AAPL,7200",			"PowerMac 7200",
+{	"AAPL,7200",			"PowerMac 7200",
 		PMAC_TYPE_PSURGE,		NULL,
 		0
 	},
-	{	"AAPL,7300",			"PowerMac 7200/7300",
+{	"AAPL,7300",			"PowerMac 7200/7300",
 		PMAC_TYPE_PSURGE,		NULL,
 		0
 	},
-	{	"AAPL,7500",			"PowerMac 7500",
+{	"AAPL,7500",			"PowerMac 7500",
 		PMAC_TYPE_PSURGE,		NULL,
 		0
 	},
@@ -2114,87 +2114,87 @@ static struct pmac_mb_def pmac_mb_defs[] = {
 		PMAC_TYPE_GAZELLE,		NULL,
 		0
 	},
-	{	"AAPL,Gossamer",		"PowerMac G3 (Gossamer)",
+{	"AAPL,Gossamer",		"PowerMac G3 (Gossamer)",
 		PMAC_TYPE_GOSSAMER,		heathrow_desktop_features,
 		0
 	},
-	{	"AAPL,PowerMac G3",		"PowerMac G3 (Silk)",
+{	"AAPL,PowerMac G3",		"PowerMac G3 (Silk)",
 		PMAC_TYPE_SILK,			heathrow_desktop_features,
 		0
 	},
-	{	"PowerMac1,1",			"Blue&White G3",
+{	"PowerMac1,1",			"Blue&White G3",
 		PMAC_TYPE_YOSEMITE,		paddington_features,
 		0
 	},
-	{	"PowerMac1,2",			"PowerMac G4 PCI Graphics",
+{	"PowerMac1,2",			"PowerMac G4 PCI Graphics",
 		PMAC_TYPE_YIKES,		paddington_features,
 		0
 	},
-	{	"PowerMac2,1",			"iMac FireWire",
+{	"PowerMac2,1",			"iMac FireWire",
 		PMAC_TYPE_FW_IMAC,		core99_features,
 		PMAC_MB_MAY_SLEEP | PMAC_MB_OLD_CORE99
 	},
-	{	"PowerMac2,2",			"iMac FireWire",
+{	"PowerMac2,2",			"iMac FireWire",
 		PMAC_TYPE_FW_IMAC,		core99_features,
 		PMAC_MB_MAY_SLEEP | PMAC_MB_OLD_CORE99
 	},
-	{	"PowerMac3,1",			"PowerMac G4 AGP Graphics",
+{	"PowerMac3,1",			"PowerMac G4 AGP Graphics",
 		PMAC_TYPE_SAWTOOTH,		core99_features,
 		PMAC_MB_OLD_CORE99
 	},
-	{	"PowerMac3,2",			"PowerMac G4 AGP Graphics",
+{	"PowerMac3,2",			"PowerMac G4 AGP Graphics",
 		PMAC_TYPE_SAWTOOTH,		core99_features,
 		PMAC_MB_MAY_SLEEP | PMAC_MB_OLD_CORE99
 	},
-	{	"PowerMac3,3",			"PowerMac G4 AGP Graphics",
+{	"PowerMac3,3",			"PowerMac G4 AGP Graphics",
 		PMAC_TYPE_SAWTOOTH,		core99_features,
 		PMAC_MB_MAY_SLEEP | PMAC_MB_OLD_CORE99
 	},
-	{	"PowerMac3,4",			"PowerMac G4 Silver",
+{	"PowerMac3,4",			"PowerMac G4 Silver",
 		PMAC_TYPE_QUICKSILVER,		core99_features,
 		PMAC_MB_MAY_SLEEP
 	},
-	{	"PowerMac3,5",			"PowerMac G4 Silver",
+{	"PowerMac3,5",			"PowerMac G4 Silver",
 		PMAC_TYPE_QUICKSILVER,		core99_features,
 		PMAC_MB_MAY_SLEEP
 	},
-	{	"PowerMac3,6",			"PowerMac G4 Windtunnel",
+{	"PowerMac3,6",			"PowerMac G4 Windtunnel",
 		PMAC_TYPE_WINDTUNNEL,		core99_features,
 		PMAC_MB_MAY_SLEEP,
 	},
-	{	"PowerMac4,1",			"iMac \"Flower Power\"",
+{	"PowerMac4,1",			"iMac \"Flower Power\"",
 		PMAC_TYPE_PANGEA_IMAC,		pangea_features,
 		PMAC_MB_MAY_SLEEP
 	},
-	{	"PowerMac4,2",			"Flat panel iMac",
+{	"PowerMac4,2",			"Flat panel iMac",
 		PMAC_TYPE_FLAT_PANEL_IMAC,	pangea_features,
 		PMAC_MB_CAN_SLEEP
 	},
-	{	"PowerMac4,4",			"eMac",
+{	"PowerMac4,4",			"eMac",
 		PMAC_TYPE_EMAC,			core99_features,
 		PMAC_MB_MAY_SLEEP
 	},
-	{	"PowerMac5,1",			"PowerMac G4 Cube",
+{	"PowerMac5,1",			"PowerMac G4 Cube",
 		PMAC_TYPE_CUBE,			core99_features,
 		PMAC_MB_MAY_SLEEP | PMAC_MB_OLD_CORE99
 	},
-	{	"PowerMac6,1",			"Flat panel iMac",
+{	"PowerMac6,1",			"Flat panel iMac",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
 		PMAC_MB_MAY_SLEEP,
 	},
-	{	"PowerMac6,3",			"Flat panel iMac",
+{	"PowerMac6,3",			"Flat panel iMac",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
 		PMAC_MB_MAY_SLEEP,
 	},
-	{	"PowerMac6,4",			"eMac",
+{	"PowerMac6,4",			"eMac",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
 		PMAC_MB_MAY_SLEEP,
 	},
-	{	"PowerMac10,1",			"Mac mini",
+{	"PowerMac10,1",			"Mac mini",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
 		PMAC_MB_MAY_SLEEP,
 	},
-	{       "PowerMac10,2",                 "Mac mini (Late 2005)",
+{       "PowerMac10,2",                 "Mac mini (Late 2005)",
 		PMAC_TYPE_UNKNOWN_INTREPID,     intrepid_features,
 		PMAC_MB_MAY_SLEEP,
 	},
@@ -2220,152 +2220,152 @@ static struct pmac_mb_def pmac_mb_defs[] = {
 	 * Laptops
 	 */
 
-	{	"AAPL,3400/2400",		"PowerBook 3400",
+{	"AAPL,3400/2400",		"PowerBook 3400",
 		PMAC_TYPE_HOOPER,		ohare_features,
 		PMAC_MB_CAN_SLEEP | PMAC_MB_MOBILE
 	},
-	{	"AAPL,3500",			"PowerBook 3500",
+{	"AAPL,3500",			"PowerBook 3500",
 		PMAC_TYPE_KANGA,		ohare_features,
 		PMAC_MB_CAN_SLEEP | PMAC_MB_MOBILE
 	},
-	{	"AAPL,PowerBook1998",		"PowerBook Wallstreet",
+{	"AAPL,PowerBook1998",		"PowerBook Wallstreet",
 		PMAC_TYPE_WALLSTREET,		heathrow_laptop_features,
 		PMAC_MB_CAN_SLEEP | PMAC_MB_MOBILE
 	},
-	{	"PowerBook1,1",			"PowerBook 101 (Lombard)",
+{	"PowerBook1,1",			"PowerBook 101 (Lombard)",
 		PMAC_TYPE_101_PBOOK,		paddington_features,
 		PMAC_MB_CAN_SLEEP | PMAC_MB_MOBILE
 	},
-	{	"PowerBook2,1",			"iBook (first generation)",
+{	"PowerBook2,1",			"iBook (first generation)",
 		PMAC_TYPE_ORIG_IBOOK,		core99_features,
 		PMAC_MB_CAN_SLEEP | PMAC_MB_OLD_CORE99 | PMAC_MB_MOBILE
 	},
-	{	"PowerBook2,2",			"iBook FireWire",
+{	"PowerBook2,2",			"iBook FireWire",
 		PMAC_TYPE_FW_IBOOK,		core99_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER |
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER |
 		PMAC_MB_OLD_CORE99 | PMAC_MB_MOBILE
 	},
-	{	"PowerBook3,1",			"PowerBook Pismo",
+{	"PowerBook3,1",			"PowerBook Pismo",
 		PMAC_TYPE_PISMO,		core99_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER |
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER |
 		PMAC_MB_OLD_CORE99 | PMAC_MB_MOBILE
 	},
-	{	"PowerBook3,2",			"PowerBook Titanium",
+{	"PowerBook3,2",			"PowerBook Titanium",
 		PMAC_TYPE_TITANIUM,		core99_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook3,3",			"PowerBook Titanium II",
+{	"PowerBook3,3",			"PowerBook Titanium II",
 		PMAC_TYPE_TITANIUM2,		core99_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook3,4",			"PowerBook Titanium III",
+{	"PowerBook3,4",			"PowerBook Titanium III",
 		PMAC_TYPE_TITANIUM3,		core99_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook3,5",			"PowerBook Titanium IV",
+{	"PowerBook3,5",			"PowerBook Titanium IV",
 		PMAC_TYPE_TITANIUM4,		core99_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook4,1",			"iBook 2",
+{	"PowerBook4,1",			"iBook 2",
 		PMAC_TYPE_IBOOK2,		pangea_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook4,2",			"iBook 2",
+{	"PowerBook4,2",			"iBook 2",
 		PMAC_TYPE_IBOOK2,		pangea_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook4,3",			"iBook 2 rev. 2",
+{	"PowerBook4,3",			"iBook 2 rev. 2",
 		PMAC_TYPE_IBOOK2,		pangea_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE
 	},
-	{	"PowerBook5,1",			"PowerBook G4 17\"",
+{	"PowerBook5,1",			"PowerBook G4 17\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,2",			"PowerBook G4 15\"",
+{	"PowerBook5,2",			"PowerBook G4 15\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,3",			"PowerBook G4 17\"",
+{	"PowerBook5,3",			"PowerBook G4 17\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,4",			"PowerBook G4 15\"",
+{	"PowerBook5,4",			"PowerBook G4 15\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,5",			"PowerBook G4 17\"",
+{	"PowerBook5,5",			"PowerBook G4 17\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,6",			"PowerBook G4 15\"",
+{	"PowerBook5,6",			"PowerBook G4 15\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,7",			"PowerBook G4 17\"",
+{	"PowerBook5,7",			"PowerBook G4 17\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,8",			"PowerBook G4 15\"",
+{	"PowerBook5,8",			"PowerBook G4 15\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
 		PMAC_MB_MAY_SLEEP  | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook5,9",			"PowerBook G4 17\"",
+{	"PowerBook5,9",			"PowerBook G4 17\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
 		PMAC_MB_MAY_SLEEP | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,1",			"PowerBook G4 12\"",
+{	"PowerBook6,1",			"PowerBook G4 12\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,2",			"PowerBook G4",
+{	"PowerBook6,2",			"PowerBook G4",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,3",			"iBook G4",
+{	"PowerBook6,3",			"iBook G4",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,4",			"PowerBook G4 12\"",
+{	"PowerBook6,4",			"PowerBook G4 12\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,5",			"iBook G4",
+{	"PowerBook6,5",			"iBook G4",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,7",			"iBook G4",
+{	"PowerBook6,7",			"iBook G4",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
-	{	"PowerBook6,8",			"PowerBook G4 12\"",
+{	"PowerBook6,8",			"PowerBook G4 12\"",
 		PMAC_TYPE_UNKNOWN_INTREPID,	intrepid_features,
-		PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
+PMAC_MB_MAY_SLEEP | PMAC_MB_HAS_FW_POWER | PMAC_MB_MOBILE,
 	},
 #else /* CONFIG_PPC64 */
-	{	"PowerMac7,2",			"PowerMac G5",
-		PMAC_TYPE_POWERMAC_G5,		g5_features,
+{	"PowerMac7,2",			"PowerMac G5",
+PMAC_TYPE_POWERMAC_G5,		g5_features,
 		0,
 	},
 #ifdef CONFIG_PPC64
-	{	"PowerMac7,3",			"PowerMac G5",
-		PMAC_TYPE_POWERMAC_G5,		g5_features,
+{	"PowerMac7,3",			"PowerMac G5",
+PMAC_TYPE_POWERMAC_G5,		g5_features,
 		0,
 	},
-	{	"PowerMac8,1",			"iMac G5",
+{	"PowerMac8,1",			"iMac G5",
 		PMAC_TYPE_IMAC_G5,		g5_features,
 		0,
 	},
-	{	"PowerMac9,1",			"PowerMac G5",
-		PMAC_TYPE_POWERMAC_G5_U3L,	g5_features,
+{	"PowerMac9,1",			"PowerMac G5",
+PMAC_TYPE_POWERMAC_G5_U3L,	g5_features,
 		0,
 	},
-	{	"PowerMac11,2",			"PowerMac G5 Dual Core",
-		PMAC_TYPE_POWERMAC_G5_U3L,	g5_features,
+{	"PowerMac11,2",			"PowerMac G5 Dual Core",
+PMAC_TYPE_POWERMAC_G5_U3L,	g5_features,
 		0,
 	},
-	{	"PowerMac12,1",			"iMac G5 (iSight)",
-		PMAC_TYPE_POWERMAC_G5_U3L,	g5_features,
+{	"PowerMac12,1",			"iMac G5 (iSight)",
+PMAC_TYPE_POWERMAC_G5_U3L,	g5_features,
 		0,
 	},
 	{       "RackMac3,1",                   "XServe G5",
@@ -2444,7 +2444,7 @@ static int __init probe_motherboard(void)
 #ifndef CONFIG_PPC64
 	    case macio_grand_central:
 		pmac_mb.model_id = PMAC_TYPE_PSURGE;
-		pmac_mb.model_name = "Unknown PowerSurge";
+pmac_mb.model_name = "Unknown PowerSurge";
 		break;
 	    case macio_ohare:
 		pmac_mb.model_id = PMAC_TYPE_UNKNOWN_OHARE;
@@ -2509,7 +2509,7 @@ found:
 		iounmap(mach_id_ptr);
 	}
 
-	/* Set default value of powersave_nap on machines that support it.
+/* Set default value of powersave_nap on machines that support it.
 	 * It appears that uninorth rev 3 has a problem with it, we don't
 	 * enable it on those. In theory, the flush-on-lock property is
 	 * supposed to be set when not supported, but I'm not very confident
@@ -2536,7 +2536,7 @@ found:
 			break;
 		}
 		of_node_put(cpus);
-		powersave_nap = 1;
+powersave_nap = 1;
 		printk(KERN_DEBUG "Processor NAP mode on idle enabled.\n");
 		break;
 	}
@@ -2544,19 +2544,19 @@ found:
 	/* On CPUs that support it (750FX), lowspeed by default during
 	 * NAP mode
 	 */
-	powersave_lowspeed = 1;
+powersave_lowspeed = 1;
 
 #else /* CONFIG_PPC64 */
-	powersave_nap = 1;
+powersave_nap = 1;
 #endif  /* CONFIG_PPC64 */
 
 	/* Check for "mobile" machine */
-	if (model && (strncmp(model, "PowerBook", 9) == 0
+if (model && (strncmp(model, "PowerBook", 9) == 0
 		   || strncmp(model, "iBook", 5) == 0))
 		pmac_mb.board_flags |= PMAC_MB_MOBILE;
 
 
-	printk(KERN_INFO "PowerMac motherboard: %s\n", pmac_mb.model_name);
+printk(KERN_INFO "PowerMac motherboard: %s\n", pmac_mb.model_name);
 done:
 	of_node_put(dt);
 	return ret;
@@ -2882,7 +2882,7 @@ set_initial_features(void)
 		    pmac_mb.model_id == PMAC_TYPE_SILK)) {
 		struct macio_chip *macio = &macio_chips[0];
 		MACIO_BIS(HEATHROW_FCR, HRW_SOUND_CLK_ENABLE);
-		MACIO_BIC(HEATHROW_FCR, HRW_SOUND_POWER_N);
+MACIO_BIC(HEATHROW_FCR, HRW_SOUND_POWER_N);
 	}
 
 #endif /* CONFIG_PPC64 */
@@ -2910,7 +2910,7 @@ pmac_feature_init(void)
 
 	/* Probe machine type */
 	if (probe_motherboard())
-		printk(KERN_WARNING "Unknown PowerMac !\n");
+printk(KERN_WARNING "Unknown PowerMac !\n");
 
 	/* Set some initial features (turn off some chips that will
 	 * be later turned on)
@@ -2921,29 +2921,29 @@ pmac_feature_init(void)
 #if 0
 static void dump_HT_speeds(char *name, u32 cfg, u32 frq)
 {
-	int	freqs[16] = { 200,300,400,500,600,800,1000,0,0,0,0,0,0,0,0,0 };
+int	freqs[16] = { 200,300,400,500,600,800,1000,0,0,0,0,0,0,0,0,0 };
 	int	bits[8] = { 8,16,0,32,2,4,0,0 };
-	int	freq = (frq >> 8) & 0xf;
+int	freq = (frq >> 8) & 0xf;
 
-	if (freqs[freq] == 0)
-		printk("%s: Unknown HT link frequency %x\n", name, freq);
+if (freqs[freq] == 0)
+printk("%s: Unknown HT link frequency %x\n", name, freq);
 	else
 		printk("%s: %d MHz on main link, (%d in / %d out) bits width\n",
-		       name, freqs[freq],
+name, freqs[freq],
 		       bits[(cfg >> 28) & 0x7], bits[(cfg >> 24) & 0x7]);
 }
 
 void __init pmac_check_ht_link(void)
 {
-	u32	ufreq, freq, ucfg, cfg;
+u32	ufreq, freq, ucfg, cfg;
 	struct device_node *pcix_node;
 	u8	px_bus, px_devfn;
 	struct pci_controller *px_hose;
 
 	(void)in_be32(u3_ht_base + U3_HT_LINK_COMMAND);
 	ucfg = cfg = in_be32(u3_ht_base + U3_HT_LINK_CONFIG);
-	ufreq = freq = in_be32(u3_ht_base + U3_HT_LINK_FREQ);
-	dump_HT_speeds("U3 HyperTransport", cfg, freq);
+ufreq = freq = in_be32(u3_ht_base + U3_HT_LINK_FREQ);
+dump_HT_speeds("U3 HyperTransport", cfg, freq);
 
 	pcix_node = of_find_compatible_node(NULL, "pci", "pci-x");
 	if (pcix_node == NULL) {
@@ -2960,11 +2960,11 @@ void __init pmac_check_ht_link(void)
 		return;
 	}	
 	early_read_config_dword(px_hose, px_bus, px_devfn, 0xc4, &cfg);
-	early_read_config_dword(px_hose, px_bus, px_devfn, 0xcc, &freq);
-	dump_HT_speeds("PCI-X HT Uplink", cfg, freq);
+early_read_config_dword(px_hose, px_bus, px_devfn, 0xcc, &freq);
+dump_HT_speeds("PCI-X HT Uplink", cfg, freq);
 	early_read_config_dword(px_hose, px_bus, px_devfn, 0xc8, &cfg);
-	early_read_config_dword(px_hose, px_bus, px_devfn, 0xd0, &freq);
-	dump_HT_speeds("PCI-X HT Downlink", cfg, freq);
+early_read_config_dword(px_hose, px_bus, px_devfn, 0xd0, &freq);
+dump_HT_speeds("PCI-X HT Downlink", cfg, freq);
 }
 #endif /* 0 */
 
@@ -2977,7 +2977,7 @@ static void *pmac_early_vresume_data;
 
 void pmac_set_early_video_resume(void (*proc)(void *data), void *data)
 {
-	if (!machine_is(powermac))
+if (!machine_is(powermac))
 		return;
 	preempt_disable();
 	pmac_early_vresume_proc = proc;

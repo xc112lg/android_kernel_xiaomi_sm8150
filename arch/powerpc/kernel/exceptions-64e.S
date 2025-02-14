@@ -481,7 +481,7 @@ exc_##n##_bad_stack:							    \
 /* WARNING: If you change the layout of this stub, make sure you check
 	*   the debug exception handler which handles single stepping
 	*   into exceptions from userspace, and the MM code in
-	*   arch/powerpc/mm/tlb_nohash.c which patches the branch here
+*   arch/powerpc/mm/tlb_nohash.c which patches the branch here
 	*   and would need to be updated if that branch is moved
 	*/
 #define	EXCEPTION_STUB(loc, label)					\

@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/mpc830x_rdb.c
+* arch/powerpc/platforms/83xx/mpc830x_rdb.c
  *
  * Description: MPC830x RDB board specific routines.
  * This file is based on mpc831x_rdb.c

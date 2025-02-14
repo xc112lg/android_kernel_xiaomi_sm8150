@@ -56,8 +56,8 @@ struct machdep_calls {
 	/* Optional, may be NULL. */
 	void		(*show_cpuinfo)(struct seq_file *m);
 	void		(*show_percpuinfo)(struct seq_file *m, int i);
-	/* Returns the current operating frequency of "cpu" in Hz */
-	unsigned long  	(*get_proc_freq)(unsigned int cpu);
+/* Returns the current operating frequency of "cpu" in Hz */
+unsigned long  	(*get_proc_freq)(unsigned int cpu);
 
 	void		(*init_IRQ)(void);
 
@@ -114,7 +114,7 @@ struct machdep_calls {
 
 	/* Motherboard/chipset features. This is a kind of general purpose
 	 * hook used to control some machine specific features (like reset
-	 * lines, chip power control, etc...).
+* lines, chip power control, etc...).
 	 */
 	long	 	(*feature_call)(unsigned int feature, ...);
 
@@ -128,10 +128,10 @@ struct machdep_calls {
 						pgprot_t vma_prot);
 
 	/*
-	 * Function for waiting for work with reduced power in idle loop;
+* Function for waiting for work with reduced power in idle loop;
 	 * called with interrupts disabled.
 	 */
-	void		(*power_save)(void);
+void		(*power_save)(void);
 
 	/* Function to enable performance monitor counters for this
 	   platform, called once per cpu. */
@@ -256,8 +256,8 @@ extern void probe_machine(void);
 
 #ifdef CONFIG_PPC_PMAC
 /*
- * Power macintoshes have either a CUDA, PMU or SMU controlling
- * system reset, power, NVRAM, RTC.
+* Power macintoshes have either a CUDA, PMU or SMU controlling
+* system reset, power, NVRAM, RTC.
  */
 typedef enum sys_ctrler_kind {
 	SYS_CTRLER_UNKNOWN = 0,

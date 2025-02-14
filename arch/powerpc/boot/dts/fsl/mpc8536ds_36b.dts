@@ -20,7 +20,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8536@0 {
+PowerPC,8536@0 {
 			device_type = "cpu";
 			reg = <0>;
 			next-level-cache = <&L2>;
@@ -48,7 +48,7 @@
 		reg = <0xf 0xffe08000 0 0x1000>;
 		ranges = <0x02000000 0 0xf0000000 0xc 0x00000000 0 0x10000000
 			  0x01000000 0 0x00000000 0xf 0xffc00000 0 0x00010000>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 		interrupt-map = <
 

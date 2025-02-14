@@ -8,9 +8,9 @@
  *    Kevin Wolf <mail@kevin-wolf.de>
  *
  * Description: KVM functions specific to running on Book 3S
- * processors in hypervisor mode (specifically POWER7 and later).
+* processors in hypervisor mode (specifically POWER7 and later).
  *
- * This file is derived from arch/powerpc/kvm/book3s.c,
+* This file is derived from arch/powerpc/kvm/book3s.c,
  * by Alexander Graf <agraf@suse.de>.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -139,7 +139,7 @@ static bool kvmppc_ipi_thread(int cpu)
 {
 	unsigned long msg = PPC_DBELL_TYPE(PPC_DBELL_SERVER);
 
-	/* On POWER9 we can use msgsnd to IPI any cpu */
+/* On POWER9 we can use msgsnd to IPI any cpu */
 	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
 		msg |= get_hard_smp_processor_id(cpu);
 		smp_mb();
@@ -147,7 +147,7 @@ static bool kvmppc_ipi_thread(int cpu)
 		return true;
 	}
 
-	/* On POWER8 for IPIs to threads in the same core, use msgsnd */
+/* On POWER8 for IPIs to threads in the same core, use msgsnd */
 	if (cpu_has_feature(CPU_FTR_ARCH_207S)) {
 		preempt_disable();
 		if (cpu_first_thread_sibling(cpu) ==
@@ -715,7 +715,7 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
 {
 	switch (resource) {
 	case H_SET_MODE_RESOURCE_SET_CIABR:
-		if (!kvmppc_power8_compatible(vcpu))
+if (!kvmppc_power8_compatible(vcpu))
 			return H_P2;
 		if (value2)
 			return H_P4;
@@ -727,7 +727,7 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
 		vcpu->arch.ciabr  = value1;
 		return H_SUCCESS;
 	case H_SET_MODE_RESOURCE_SET_DAWR:
-		if (!kvmppc_power8_compatible(vcpu))
+if (!kvmppc_power8_compatible(vcpu))
 			return H_P2;
 		if (mflags)
 			return H_UNSUPPORTED_FLAG_START;
@@ -982,7 +982,7 @@ static unsigned long kvmppc_read_dpdes(struct kvm_vcpu *vcpu)
 }
 
 /*
- * On POWER9, emulate doorbell-related instructions in order to
+* On POWER9, emulate doorbell-related instructions in order to
  * give the guest the illusion of running on a multi-threaded core.
  * The instructions emulated are msgsndp, msgclrp, mfspr TIR,
  * and mfspr DPDES.
@@ -1175,7 +1175,7 @@ static int kvmppc_handle_exit_hv(struct kvm_run *run, struct kvm_vcpu *vcpu,
 	/*
 	 * This occurs if the guest (kernel or userspace), does something that
 	 * is prohibited by HFSCR.
-	 * On POWER9, this could be a doorbell instruction that we need
+* On POWER9, this could be a doorbell instruction that we need
 	 * to emulate.
 	 * Otherwise, we just generate a program interrupt to the guest.
 	 */
@@ -1275,13 +1275,13 @@ static void kvmppc_set_lpcr(struct kvm_vcpu *vcpu, u64 new_lpcr,
 	/*
 	 * Userspace can only modify DPFD (default prefetch depth),
 	 * ILE (interrupt little-endian) and TC (translation control).
-	 * On POWER8 and POWER9 userspace can also modify AIL (alt. interrupt loc.).
+* On POWER8 and POWER9 userspace can also modify AIL (alt. interrupt loc.).
 	 */
 	mask = LPCR_DPFD | LPCR_ILE | LPCR_TC;
 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
 		mask |= LPCR_AIL;
 	/*
-	 * On POWER9, allow userspace to enable large decrementer for the
+* On POWER9, allow userspace to enable large decrementer for the
 	 * guest, whether or not the host has it enabled.
 	 */
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
@@ -1357,10 +1357,10 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
 		break;
 	case KVM_REG_PPC_DPDES:
 		/*
-		 * On POWER9, where we are emulating msgsndp etc.,
+* On POWER9, where we are emulating msgsndp etc.,
 		 * we return 1 bit for each vcpu, which can come from
 		 * either vcore->dpdes or doorbell_request.
-		 * On POWER8, doorbell_request is 0.
+* On POWER8, doorbell_request is 0.
 		 */
 		*val = get_reg_val(id, vcpu->arch.vcore->dpdes |
 				   vcpu->arch.doorbell_request);
@@ -1640,12 +1640,12 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
 		break;
 	case KVM_REG_PPC_TB_OFFSET:
 		/*
-		 * POWER9 DD1 has an erratum where writing TBU40 causes
+* POWER9 DD1 has an erratum where writing TBU40 causes
 		 * the timebase to lose ticks.  So we don't let the
 		 * timebase offset be changed on P9 DD1.  (It is
 		 * initialized to zero.)
 		 */
-		if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 			break;
 		/* round up to multiple of 2^24 */
 		vcpu->arch.vcore->tb_offset =
@@ -1741,7 +1741,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
 }
 
 /*
- * On POWER9, threads are independent and can be in different partitions.
+* On POWER9, threads are independent and can be in different partitions.
  * Therefore we consider each thread to be a subcore.
  * There is a restriction that all threads have to be in the same
  * MMU mode (radix or HPT), unfortunately, but since we only support
@@ -1963,10 +1963,10 @@ static struct kvm_vcpu *kvmppc_core_vcpu_create_hv(struct kvm *kvm,
 
 	/*
 	 * Set the default HFSCR for the guest from the host value.
-	 * This value is only used on POWER9.
-	 * On POWER9 DD1, TM doesn't work, so we make sure to
+* This value is only used on POWER9.
+* On POWER9 DD1, TM doesn't work, so we make sure to
 	 * prevent the guest from using it.
-	 * On POWER9, we want to virtualize the doorbell facility, so we
+* On POWER9, we want to virtualize the doorbell facility, so we
 	 * turn off the HFSCR bit, which causes those instructions to trap.
 	 */
 	vcpu->arch.hfscr = mfspr(SPRN_HFSCR);
@@ -2030,18 +2030,18 @@ static int kvmhv_set_smt_mode(struct kvm *kvm, unsigned long smt_mode,
 
 	if (flags)
 		return -EINVAL;
-	if (smt_mode > MAX_SMT_THREADS || !is_power_of_2(smt_mode))
+if (smt_mode > MAX_SMT_THREADS || !is_power_of_2(smt_mode))
 		return -EINVAL;
 	if (!cpu_has_feature(CPU_FTR_ARCH_300)) {
 		/*
-		 * On POWER8 (or POWER7), the threading mode is "strict",
+* On POWER8 (or POWER7), the threading mode is "strict",
 		 * so we pack smt_mode vcpus per vcore.
 		 */
 		if (smt_mode > threads_per_subcore)
 			return -EINVAL;
 	} else {
 		/*
-		 * On POWER9, the threading mode is "loose",
+* On POWER9, the threading mode is "loose",
 		 * so each vcpu gets its own vcore.
 		 */
 		esmt = smt_mode;
@@ -2674,7 +2674,7 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
 
 	/*
 	 * Number of threads that we will be controlling: the same as
-	 * the number of threads per subcore, except on POWER9,
+* the number of threads per subcore, except on POWER9,
 	 * where it's 1 because the threads are (mostly) independent.
 	 */
 	controlled_threads = threads_per_vcore();
@@ -2754,12 +2754,12 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
 	if (split > 1) {
 		/* threads_per_subcore must be MAX_SMT_THREADS (8) here */
 		if (split == 2 && (dynamic_mt_modes & 2)) {
-			cmd_bit = HID0_POWER8_1TO2LPAR;
-			stat_bit = HID0_POWER8_2LPARMODE;
+cmd_bit = HID0_POWER8_1TO2LPAR;
+stat_bit = HID0_POWER8_2LPARMODE;
 		} else {
 			split = 4;
-			cmd_bit = HID0_POWER8_1TO4LPAR;
-			stat_bit = HID0_POWER8_4LPARMODE;
+cmd_bit = HID0_POWER8_1TO4LPAR;
+stat_bit = HID0_POWER8_4LPARMODE;
 		}
 		subcore_size = MAX_SMT_THREADS / split;
 		sip = &split_info;
@@ -2780,7 +2780,7 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
 	if (cmd_bit) {
 		unsigned long hid0 = mfspr(SPRN_HID0);
 
-		hid0 |= cmd_bit | HID0_POWER8_DYNLPARDIS;
+hid0 |= cmd_bit | HID0_POWER8_DYNLPARDIS;
 		mb();
 		mtspr(SPRN_HID0, hid0);
 		isync();
@@ -2872,8 +2872,8 @@ static noinline void kvmppc_run_core(struct kvmppc_vcore *vc)
 		unsigned long hid0 = mfspr(SPRN_HID0);
 		unsigned long loops = 0;
 
-		hid0 &= ~HID0_POWER8_DYNLPARDIS;
-		stat_bit = HID0_POWER8_2LPARMODE | HID0_POWER8_4LPARMODE;
+hid0 &= ~HID0_POWER8_DYNLPARDIS;
+stat_bit = HID0_POWER8_2LPARMODE | HID0_POWER8_4LPARMODE;
 		mb();
 		mtspr(SPRN_HID0, hid0);
 		isync();
@@ -3369,9 +3369,9 @@ static int kvm_vm_ioctl_get_smmu_info_hv(struct kvm *kvm,
 		return -EINVAL;
 
 	/*
-	 * POWER7, POWER8 and POWER9 all support 32 storage keys for data.
-	 * POWER7 doesn't support keys for instruction accesses,
-	 * POWER8 and POWER9 do.
+* POWER7, POWER8 and POWER9 all support 32 storage keys for data.
+* POWER7 doesn't support keys for instruction accesses,
+* POWER8 and POWER9 do.
 	 */
 	info->data_keys = 32;
 	info->instr_keys = cpu_has_feature(CPU_FTR_ARCH_207S) ? 32 : 0;
@@ -3761,7 +3761,7 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
 	 * Since we don't flush the TLB when tearing down a VM,
 	 * and this lpid might have previously been used,
 	 * make sure we flush on each core before running the new VM.
-	 * On POWER9, the tlbie in mmu_partition_table_set_entry()
+* On POWER9, the tlbie in mmu_partition_table_set_entry()
 	 * does this flush for us.
 	 */
 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
@@ -3782,11 +3782,11 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
 		LPCR_VPM0 | LPCR_VPM1;
 	kvm->arch.vrma_slb_v = SLB_VSID_B_1T |
 		(VRMA_VSID << SLB_VSID_SHIFT_1T);
-	/* On POWER8 turn on online bit to enable PURR/SPURR */
+/* On POWER8 turn on online bit to enable PURR/SPURR */
 	if (cpu_has_feature(CPU_FTR_ARCH_207S))
 		lpcr |= LPCR_ONL;
 	/*
-	 * On POWER9, VPM0 bit is reserved (VPM0=1 behaviour is assumed)
+* On POWER9, VPM0 bit is reserved (VPM0=1 behaviour is assumed)
 	 * Set HVICE bit to enable hypervisor virtualization interrupts.
 	 * Set HEIC to prevent OS interrupts to go to hypervisor (should
 	 * be unnecessary but better safe than sorry in case we re-enable
@@ -3829,18 +3829,18 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
 	 * the TLB invalidation loop in book3s_hv_rmhandlers.S.
 	 */
 	if (kvm_is_radix(kvm))
-		kvm->arch.tlb_sets = POWER9_TLB_SETS_RADIX;	/* 128 */
+kvm->arch.tlb_sets = POWER9_TLB_SETS_RADIX;	/* 128 */
 	else if (cpu_has_feature(CPU_FTR_ARCH_300))
-		kvm->arch.tlb_sets = POWER9_TLB_SETS_HASH;	/* 256 */
+kvm->arch.tlb_sets = POWER9_TLB_SETS_HASH;	/* 256 */
 	else if (cpu_has_feature(CPU_FTR_ARCH_207S))
-		kvm->arch.tlb_sets = POWER8_TLB_SETS;		/* 512 */
+kvm->arch.tlb_sets = POWER8_TLB_SETS;		/* 512 */
 	else
-		kvm->arch.tlb_sets = POWER7_TLB_SETS;		/* 128 */
+kvm->arch.tlb_sets = POWER7_TLB_SETS;		/* 128 */
 
 	/*
 	 * Track that we now have a HV mode VM active. This blocks secondary
 	 * CPU threads from coming online.
-	 * On POWER9, we only need to do this for HPT guests on a radix
+* On POWER9, we only need to do this for HPT guests on a radix
 	 * host, which is not yet supported.
 	 */
 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
@@ -3848,9 +3848,9 @@ static int kvmppc_core_init_vm_hv(struct kvm *kvm)
 
 	/*
 	 * Initialize smt_mode depending on processor.
-	 * POWER8 and earlier have to use "strict" threading, where
+* POWER8 and earlier have to use "strict" threading, where
 	 * all vCPUs in a vcore have to run on the same (sub)core,
-	 * whereas on POWER9 the threads can each run a different
+* whereas on POWER9 the threads can each run a different
 	 * guest.
 	 */
 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
@@ -4219,7 +4219,7 @@ static int kvmhv_configure_mmu(struct kvm *kvm, struct kvm_ppc_mmuv3_cfg *cfg)
 	unsigned long lpcr;
 	int radix;
 
-	/* If not on a POWER9, reject it */
+/* If not on a POWER9, reject it */
 	if (!cpu_has_feature(CPU_FTR_ARCH_300))
 		return -ENODEV;
 

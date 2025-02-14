@@ -104,12 +104,12 @@ struct step_chg_info {
 	struct votable		*dc_suspend_votable;
 #endif
 	struct wakeup_source	*step_chg_ws;
-	struct power_supply	*batt_psy;
-	struct power_supply	*bms_psy;
-	struct power_supply	*usb_psy;
-	struct power_supply	*dc_psy;
+struct power_supply	*batt_psy;
+struct power_supply	*bms_psy;
+struct power_supply	*usb_psy;
+struct power_supply	*dc_psy;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	struct power_supply	*bq_psy;
+struct power_supply	*bq_psy;
 #endif
 	struct delayed_work	status_change_work;
 	struct delayed_work	get_config_work;
@@ -128,7 +128,7 @@ static struct step_chg_info *the_chip;
 static bool is_batt_available(struct step_chg_info *chip)
 {
 	if (!chip->batt_psy)
-		chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 
 	if (!chip->batt_psy)
 		return false;
@@ -139,7 +139,7 @@ static bool is_batt_available(struct step_chg_info *chip)
 static bool is_bms_available(struct step_chg_info *chip)
 {
 	if (!chip->bms_psy)
-		chip->bms_psy = power_supply_get_by_name("bms");
+chip->bms_psy = power_supply_get_by_name("bms");
 
 	if (!chip->bms_psy)
 		return false;
@@ -150,7 +150,7 @@ static bool is_bms_available(struct step_chg_info *chip)
 static bool is_usb_available(struct step_chg_info *chip)
 {
 	if (!chip->usb_psy)
-		chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 
 	if (!chip->usb_psy)
 		return false;
@@ -162,11 +162,11 @@ static bool is_usb_available(struct step_chg_info *chip)
 static bool is_bq25970_available(struct step_chg_info *chip)
 {
 	if (!chip->bq_psy)
-		chip->bq_psy = power_supply_get_by_name("bq2597x-standalone");
+chip->bq_psy = power_supply_get_by_name("bq2597x-standalone");
 
 #ifdef CONFIG_CHARGER_LN8000
 	if (!chip->bq_psy)
-		chip->bq_psy = power_supply_get_by_name("ln8000");
+chip->bq_psy = power_supply_get_by_name("ln8000");
 #endif
 
 	if (!chip->bq_psy)
@@ -179,13 +179,13 @@ static bool is_bq25970_available(struct step_chg_info *chip)
 static bool is_input_present(struct step_chg_info *chip)
 {
 	int rc = 0, input_present = 0;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (!chip->usb_psy)
-		chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 	if (chip->usb_psy) {
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 		if (rc < 0)
 			pr_err("Couldn't read USB Present status, rc=%d\n", rc);
 		else
@@ -193,10 +193,10 @@ static bool is_input_present(struct step_chg_info *chip)
 	}
 
 	if (!chip->dc_psy)
-		chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 	if (chip->dc_psy) {
-		rc = power_supply_get_property(chip->dc_psy,
-				POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 		if (rc < 0)
 			pr_err("Couldn't read DC Present status, rc=%d\n", rc);
 		else
@@ -289,7 +289,7 @@ static int get_step_chg_jeita_setting_from_profile(struct step_chg_info *chip)
 	const char *batt_type_str;
 	const __be32 *handle;
 	int batt_id_ohms, rc;
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 
 	handle = of_get_property(chip->dev->of_node,
 			"qcom,battery-data", NULL);
@@ -307,8 +307,8 @@ static int get_step_chg_jeita_setting_from_profile(struct step_chg_info *chip)
 	if (!is_bms_available(chip))
 		return -ENODEV;
 
-	power_supply_get_property(chip->bms_psy,
-			POWER_SUPPLY_PROP_RESISTANCE_ID, &prop);
+power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_RESISTANCE_ID, &prop);
 	batt_id_ohms = prop.intval;
 
 	/* bms_psy has not yet read the batt_id */
@@ -339,10 +339,10 @@ static int get_step_chg_jeita_setting_from_profile(struct step_chg_info *chip)
 	pr_debug("battery: %s detected, getting sw-jeita/step charging settings\n",
 					batt_type_str);
 
-	rc = of_property_read_u32(profile_node, "qcom,max-voltage-uv",
+rc = of_property_read_u32(profile_node, "qcom,max-voltage-uv",
 					&max_fv_uv);
 	if (rc < 0) {
-		pr_err("max-voltage_uv reading failed, rc=%d\n", rc);
+pr_err("max-voltage_uv reading failed, rc=%d\n", rc);
 		return rc;
 	}
 
@@ -359,7 +359,7 @@ static int get_step_chg_jeita_setting_from_profile(struct step_chg_info *chip)
 		of_property_read_bool(profile_node, "qcom,soc-based-step-chg");
 	if (chip->soc_based_step_chg) {
 		chip->step_chg_config->param.psy_prop =
-				POWER_SUPPLY_PROP_CAPACITY;
+POWER_SUPPLY_PROP_CAPACITY;
 		chip->step_chg_config->param.prop_name = "SOC";
 		chip->step_chg_config->param.hysteresis = 0;
 	}
@@ -368,7 +368,7 @@ static int get_step_chg_jeita_setting_from_profile(struct step_chg_info *chip)
 		of_property_read_bool(profile_node, "qcom,ocv-based-step-chg");
 	if (chip->ocv_based_step_chg) {
 		chip->step_chg_config->param.psy_prop =
-				POWER_SUPPLY_PROP_VOLTAGE_OCV;
+POWER_SUPPLY_PROP_VOLTAGE_OCV;
 		chip->step_chg_config->param.prop_name = "OCV";
 		chip->step_chg_config->param.hysteresis = 0;
 		chip->step_chg_config->param.use_bms = true;
@@ -379,7 +379,7 @@ static int get_step_chg_jeita_setting_from_profile(struct step_chg_info *chip)
 				"qcom,vbat-avg-based-step-chg");
 	if (chip->vbat_avg_based_step_chg) {
 		chip->step_chg_config->param.psy_prop =
-				POWER_SUPPLY_PROP_VOLTAGE_AVG;
+POWER_SUPPLY_PROP_VOLTAGE_AVG;
 		chip->step_chg_config->param.prop_name = "VBAT_AVG";
 		chip->step_chg_config->param.hysteresis = 0;
 		chip->step_chg_config->param.use_bms = true;
@@ -590,7 +590,7 @@ static int get_val(struct range_data *range, int hysteresis, int current_index,
 
 #define TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA		50000 /* 50 mA */
 static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
-					int current_voltage)
+int current_voltage)
 {
 	u32 current_fcc, target_fcc;
 
@@ -604,7 +604,7 @@ static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
 
 	if (index == 0) {
 		vote(chip->fcc_votable, STEP_CHG_VOTER, true, target_fcc);
-	} else if (current_voltage >
+} else if (current_voltage >
 		(chip->step_chg_config->fcc_cfg[index - 1].high_threshold +
 		chip->step_chg_config->param.hysteresis)) {
 		/*
@@ -617,7 +617,7 @@ static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
 			current_fcc - TAPERED_STEP_CHG_FCC_REDUCTION_STEP_MA));
 	} else if ((current_fcc >
 		chip->step_chg_config->fcc_cfg[index - 1].value) &&
-		(current_voltage >
+(current_voltage >
 		chip->step_chg_config->fcc_cfg[index - 1].low_threshold +
 		chip->step_chg_config->param.hysteresis)) {
 		/*
@@ -633,7 +633,7 @@ static void taper_fcc_step_chg(struct step_chg_info *chip, int index,
 
 static int handle_step_chg_config(struct step_chg_info *chip)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc = 0, fcc_ua = 0, current_index;
 	u64 elapsed_us;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
@@ -644,8 +644,8 @@ static int handle_step_chg_config(struct step_chg_info *chip)
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	if (!is_usb_available(chip))
 		return 0;
-	rc = power_supply_get_property(chip->usb_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 	if (rc < 0) {
 		pr_err("Get battery present status failed, rc=%d\n", rc);
 		return rc;
@@ -664,8 +664,8 @@ static int handle_step_chg_config(struct step_chg_info *chip)
 #endif
 		return 0;
 
-	rc = power_supply_get_property(chip->batt_psy,
-		POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED, &pval);
 	if (rc < 0)
 		chip->step_chg_enable = 0;
 	else
@@ -680,17 +680,17 @@ static int handle_step_chg_config(struct step_chg_info *chip)
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	if (chip->use_bq_pump) {
 		if (is_bq25970_available(chip)) {
-			rc = power_supply_get_property(chip->bq_psy,
-				POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE, &pval);
+rc = power_supply_get_property(chip->bq_psy,
+POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE, &pval);
 			pval.intval = pval.intval * 1000;
 		}
 	} else {
 #endif
 	if (chip->step_chg_config->param.use_bms)
-		rc = power_supply_get_property(chip->bms_psy,
+rc = power_supply_get_property(chip->bms_psy,
 				chip->step_chg_config->param.psy_prop, &pval);
 	else
-		rc = power_supply_get_property(chip->batt_psy,
+rc = power_supply_get_property(chip->batt_psy,
 				chip->step_chg_config->param.psy_prop, &pval);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	}
@@ -749,13 +749,13 @@ update_time:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 static int handle_dynamic_fv(struct step_chg_info *chip)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc = 0, fv_uv, cycle_count;
 	u64 elapsed_us;
 	int batt_vol = 0;
 
-	rc = power_supply_get_property(chip->batt_psy,
-		POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED, &pval);
 	if (rc < 0)
 		chip->dynamic_fv_enable = 0;
 	else
@@ -773,8 +773,8 @@ static int handle_dynamic_fv(struct step_chg_info *chip)
 	if (elapsed_us < STEP_CHG_HYSTERISIS_DELAY_US)
 		return 0;
 
-	rc = power_supply_get_property(chip->bms_psy,
-			POWER_SUPPLY_PROP_CYCLE_COUNT, &pval);
+rc = power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_CYCLE_COUNT, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't read %s property rc=%d\n",
 				chip->dynamic_fv_config->prop_name, rc);
@@ -795,8 +795,8 @@ static int handle_dynamic_fv(struct step_chg_info *chip)
 		goto update_time;
 	}
 
-	power_supply_get_property(chip->batt_psy,
-		POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
 	batt_vol = pval.intval;
 	if (batt_vol >= fv_uv) {
 		goto update_time;
@@ -808,12 +808,12 @@ static int handle_dynamic_fv(struct step_chg_info *chip)
 
 	vote(chip->fv_votable, DYNAMIC_FV_VOTER, true, fv_uv);
 
-	/*set battery full voltage to FLOAT VOLTAGE - 10mV*/
+/*set battery full voltage to FLOAT VOLTAGE - 10mV*/
 	pval.intval = fv_uv - 10000;
-	rc = power_supply_set_property(chip->bms_psy,
-		POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE, &pval);
+rc = power_supply_set_property(chip->bms_psy,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE, &pval);
 	if (rc < 0) {
-		pr_err("Couldn't set CONSTANT VOLTAGE property rc=%d\n", rc);
+pr_err("Couldn't set CONSTANT VOLTAGE property rc=%d\n", rc);
 		return rc;
 	}
 
@@ -839,7 +839,7 @@ update_time:
 #endif
 static int handle_jeita(struct step_chg_info *chip)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc = 0, fcc_ua = 0, fv_uv = 0;
 	u64 elapsed_us;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
@@ -852,8 +852,8 @@ static int handle_jeita(struct step_chg_info *chip)
 	bool set_term_curr_flag = false;
 #endif
 
-	rc = power_supply_get_property(chip->batt_psy,
-		POWER_SUPPLY_PROP_SW_JEITA_ENABLED, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_SW_JEITA_ENABLED, &pval);
 	if (rc < 0)
 		chip->sw_jeita_enable = 0;
 	else
@@ -877,8 +877,8 @@ static int handle_jeita(struct step_chg_info *chip)
 	if (!is_usb_available(chip))
 		return 0;
 
-	rc = power_supply_get_property(chip->usb_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 	if (rc < 0) {
 		pr_err("Get battery present status failed, rc=%d\n", rc);
 		return rc;
@@ -898,10 +898,10 @@ static int handle_jeita(struct step_chg_info *chip)
 		return 0;
 
 	if (chip->jeita_fcc_config->param.use_bms)
-		rc = power_supply_get_property(chip->bms_psy,
+rc = power_supply_get_property(chip->bms_psy,
 				chip->jeita_fcc_config->param.psy_prop, &pval);
 	else
-		rc = power_supply_get_property(chip->batt_psy,
+rc = power_supply_get_property(chip->batt_psy,
 				chip->jeita_fcc_config->param.psy_prop, &pval);
 
 	if (rc < 0) {
@@ -946,16 +946,16 @@ static int handle_jeita(struct step_chg_info *chip)
 
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	batt_temp = pval.intval;
-	rc = power_supply_get_property(chip->bms_psy,
-				POWER_SUPPLY_PROP_CAPACITY, &pval);
+rc = power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_CAPACITY, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't read batt_soc fail rc=%d\n", rc);
 		return rc;
 	}
 	batt_soc = pval.intval;
 	pr_info("%s:batt_soc=%d\n", __func__, batt_soc);
-	rc = power_supply_get_property(chip->bms_psy,
-			POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
+rc = power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
 	pr_err("%s:fastcharge_mode=%d\n", __func__, pval.intval);
 	if (rc < 0) {
 		pr_err("Couldn't read fastcharge mode fail rc=%d\n", rc);
@@ -971,14 +971,14 @@ static int handle_jeita(struct step_chg_info *chip)
 				set_term_curr_flag = true;
 			}
 			if (set_term_curr_flag) {
-				rc = power_supply_get_property(chip->bms_psy,
-					POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT, &pval);
+rc = power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT, &pval);
 				if (rc < 0) {
 					pr_err("Couldn't read ffc_term_curr fail rc=%d\n", rc);
 					return rc;
 				}
-				rc = power_supply_set_property(chip->batt_psy,
-						POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT, &pval);
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT, &pval);
 				if (rc < 0) {
 					pr_err("Set charge_term_curr failed, rc=%d\n", rc);
 					return rc;
@@ -1010,14 +1010,14 @@ static int handle_jeita(struct step_chg_info *chip)
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	/* set and clear fast charge mode when soft jeita trigger and clear */
 	if (chip->six_pin_battery) {
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_PD_AUTHENTICATION, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PD_AUTHENTICATION, &pval);
 		if (rc < 0)
 			pr_err("Get fastcharge mode status failed, rc=%d\n", rc);
 		pd_authen_result = pval.intval;
 
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_HVDCP3_TYPE, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_HVDCP3_TYPE, &pval);
 		if (rc < 0)
 			pr_err("get hvdcp3_type failed, rc=%d\n", rc);
 
@@ -1030,8 +1030,8 @@ static int handle_jeita(struct step_chg_info *chip)
 			if ((temp >= BATT_WARM_THRESHOLD || temp <= BATT_COOL_THRESHOLD)
 						&& !fast_mode_dis) {
 				pval.intval = false;
-				rc = power_supply_set_property(chip->usb_psy,
-						POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
+rc = power_supply_set_property(chip->usb_psy,
+POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
 				if (rc < 0) {
 					pr_err("Set fastcharge mode failed, rc=%d\n", rc);
 					return rc;
@@ -1041,8 +1041,8 @@ static int handle_jeita(struct step_chg_info *chip)
 						&& (temp > BATT_COOL_THRESHOLD + chip->jeita_fv_config->param.hysteresis)
 							&& fast_mode_dis) {
 				pval.intval = true;
-				rc = power_supply_set_property(chip->usb_psy,
-						POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
+rc = power_supply_set_property(chip->usb_psy,
+POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
 				if (rc < 0) {
 					pr_err("Set fastcharge mode failed, rc=%d\n", rc);
 					return rc;
@@ -1056,11 +1056,11 @@ static int handle_jeita(struct step_chg_info *chip)
 #endif
 
 	/*
-	 * If JEITA float voltage is same as max-vfloat of battery then
+* If JEITA float voltage is same as max-vfloat of battery then
 	 * skip any further VBAT specific checks.
 	 */
-	rc = power_supply_get_property(chip->batt_psy,
-				POWER_SUPPLY_PROP_VOLTAGE_MAX, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_MAX, &pval);
 	if (rc || (pval.intval == fv_uv)) {
 		vote(chip->usb_icl_votable, JEITA_VOTER, false, 0);
 #if defined(CONFIG_MACH_XIAOMI_SM8150) && !(defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU))
@@ -1070,7 +1070,7 @@ static int handle_jeita(struct step_chg_info *chip)
 	}
 
 	/*
-	 * Suspend USB input path if battery voltage is above
+* Suspend USB input path if battery voltage is above
 	 * JEITA VFLOAT threshold.
 	 */
 #ifdef CONFIG_MACH_XIAOMI_SM8150
@@ -1078,11 +1078,11 @@ static int handle_jeita(struct step_chg_info *chip)
 #else
 	if (chip->jeita_arb_en && fv_uv > 0) {
 #endif
-		rc = power_supply_get_property(chip->batt_psy,
-				POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 		if (rc < 0) {
-			pr_err("Get battery voltage failed, rc = %d\n", rc);
+pr_err("Get battery voltage failed, rc = %d\n", rc);
 			goto set_jeita_fv;
 		}
 		curr_vbat_uv = pval.intval;
@@ -1095,8 +1095,8 @@ static int handle_jeita(struct step_chg_info *chip)
 		} else {
 			curr_vfloat_uv = get_effective_result(chip->fv_votable);
 
-			rc = power_supply_get_property(chip->batt_psy,
-					POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
 			if (rc < 0) {
 				pr_err("Get charge type failed, rc = %d\n", rc);
 				goto set_jeita_fv;
@@ -1104,7 +1104,7 @@ static int handle_jeita(struct step_chg_info *chip)
 
 			if (curr_vfloat_uv != WARM_VFLOAT_UV) {
 				if (curr_vbat_uv > fv_uv + JEITA_SIX_PIN_BATT_HYST_UV) {
-					if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER && fv_uv == WARM_VFLOAT_UV)
+if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER && fv_uv == WARM_VFLOAT_UV)
 						vote(chip->usb_icl_votable, JEITA_VOTER, true, 0);
 				} else if (curr_vbat_uv < (fv_uv - JEITA_SUSPEND_HYST_UV)) {
 					vote(chip->usb_icl_votable, JEITA_VOTER, false, 0);
@@ -1112,7 +1112,7 @@ static int handle_jeita(struct step_chg_info *chip)
 			} else {
 				pr_info("curr_vbat_uv = %duV,FCC =%duA,FV = %duV\n",curr_vbat_uv, fcc_ua, fv_uv);
 				if (curr_vbat_uv > fv_uv + JEITA_SIX_PIN_BATT_HYST_UV) {
-					if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER && fv_uv == WARM_VFLOAT_UV)
+if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER && fv_uv == WARM_VFLOAT_UV)
 						vote(chip->usb_icl_votable, JEITA_VOTER, true, 0);
 				} else if (curr_vbat_uv < (fv_uv - JEITA_SUSPEND_HYST_UV)) {
 					vote(chip->usb_icl_votable, JEITA_VOTER, false, 0);
@@ -1147,10 +1147,10 @@ update_time:
 static int handle_battery_insertion(struct step_chg_info *chip)
 {
 	int rc;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 	if (rc < 0) {
 		pr_err("Get battery present status failed, rc=%d\n", rc);
 		return rc;
@@ -1185,7 +1185,7 @@ static void status_change_work(struct work_struct *work)
 	struct step_chg_info *chip = container_of(work,
 			struct step_chg_info, status_change_work.work);
 	int rc = 0;
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	if (!is_batt_available(chip) || !is_bms_available(chip) || !is_usb_available(chip))
@@ -1214,8 +1214,8 @@ static void status_change_work(struct work_struct *work)
 	/* Remove stale votes on USB removal */
 	if (is_usb_available(chip)) {
 		prop.intval = 0;
-		power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_PRESENT, &prop);
+power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &prop);
 		if (!prop.intval) {
 			if (chip->usb_icl_votable)
 				vote(chip->usb_icl_votable, JEITA_VOTER,
@@ -1230,7 +1230,7 @@ exit_work:
 static int step_chg_notifier_call(struct notifier_block *nb,
 		unsigned long ev, void *v)
 {
-	struct power_supply *psy = v;
+struct power_supply *psy = v;
 	struct step_chg_info *chip = container_of(nb, struct step_chg_info, nb);
 
 	if (ev != PSY_EVENT_PROP_CHANGED)
@@ -1257,7 +1257,7 @@ static int step_chg_register_notifier(struct step_chg_info *chip)
 	int rc;
 
 	chip->nb.notifier_call = step_chg_notifier_call;
-	rc = power_supply_reg_notifier(&chip->nb);
+rc = power_supply_reg_notifier(&chip->nb);
 	if (rc < 0) {
 		pr_err("Couldn't register psy notifier rc = %d\n", rc);
 		return rc;
@@ -1301,7 +1301,7 @@ int qcom_step_chg_init(struct device *dev,
 	if (!chip->step_chg_config)
 		return -ENOMEM;
 
-	chip->step_chg_config->param.psy_prop = POWER_SUPPLY_PROP_VOLTAGE_NOW;
+chip->step_chg_config->param.psy_prop = POWER_SUPPLY_PROP_VOLTAGE_NOW;
 	chip->step_chg_config->param.prop_name = "VBATT";
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	chip->step_chg_config->param.hysteresis = 10000;
@@ -1324,14 +1324,14 @@ int qcom_step_chg_init(struct device *dev,
 #endif
 		return -ENOMEM;
 
-	chip->jeita_fcc_config->param.psy_prop = POWER_SUPPLY_PROP_TEMP;
+chip->jeita_fcc_config->param.psy_prop = POWER_SUPPLY_PROP_TEMP;
 	chip->jeita_fcc_config->param.prop_name = "BATT_TEMP";
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 	chip->jeita_fcc_config->param.hysteresis = 5;
 #else
 	chip->jeita_fcc_config->param.hysteresis = 10;
 #endif
-	chip->jeita_fv_config->param.psy_prop = POWER_SUPPLY_PROP_TEMP;
+chip->jeita_fv_config->param.psy_prop = POWER_SUPPLY_PROP_TEMP;
 	chip->jeita_fv_config->param.prop_name = "BATT_TEMP";
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 	chip->jeita_fv_config->param.hysteresis = 5;
@@ -1372,7 +1372,7 @@ void qcom_step_chg_deinit(void)
 
 	cancel_delayed_work_sync(&chip->status_change_work);
 	cancel_delayed_work_sync(&chip->get_config_work);
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 	wakeup_source_unregister(chip->step_chg_ws);
 	the_chip = NULL;
 }

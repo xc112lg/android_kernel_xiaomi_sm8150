@@ -25,7 +25,7 @@ struct mc13xxx_regulator {
 
 struct mc13xxx_regulator_priv {
 	struct mc13xxx *mc13xxx;
-	u32 powermisc_pwgt_state;
+u32 powermisc_pwgt_state;
 	struct mc13xxx_regulator *mc13xxx_regulators;
 	int num_regulators;
 	struct regulator_dev *regulators[];
@@ -60,10 +60,10 @@ extern struct regulator_ops mc13xxx_fixed_regulator_ops;
 	[prefix ## _name] = {				\
 		.desc = {						\
 			.name = #_name,					\
-			.n_voltages = ARRAY_SIZE(_voltages),		\
-			.volt_table =  _voltages,			\
+.n_voltages = ARRAY_SIZE(_voltages),		\
+.volt_table =  _voltages,			\
 			.ops = &_ops,			\
-			.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 			.id = prefix ## _name,		\
 			.owner = THIS_MODULE,				\
 		},							\
@@ -78,10 +78,10 @@ extern struct regulator_ops mc13xxx_fixed_regulator_ops;
 	[prefix ## _name] = {				\
 		.desc = {						\
 			.name = #_name,					\
-			.n_voltages = ARRAY_SIZE(_voltages),		\
-			.volt_table =  _voltages,			\
+.n_voltages = ARRAY_SIZE(_voltages),		\
+.volt_table =  _voltages,			\
 			.ops = &_ops,		\
-			.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 			.id = prefix ## _name,		\
 			.owner = THIS_MODULE,				\
 		},							\
@@ -93,10 +93,10 @@ extern struct regulator_ops mc13xxx_fixed_regulator_ops;
 	[prefix ## _name] = {				\
 		.desc = {						\
 			.name = #_name,					\
-			.n_voltages = ARRAY_SIZE(_voltages),		\
-			.volt_table =  _voltages,			\
+.n_voltages = ARRAY_SIZE(_voltages),		\
+.volt_table =  _voltages,			\
 			.ops = &_ops,		\
-			.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 			.id = prefix ## _name,		\
 			.owner = THIS_MODULE,				\
 		},							\
@@ -105,8 +105,8 @@ extern struct regulator_ops mc13xxx_fixed_regulator_ops;
 	}
 
 #define MC13xxx_DEFINE_SW(_name, _reg, _vsel_reg, _voltages, ops)	\
-	MC13xxx_DEFINE(SW, _name, _reg, _vsel_reg, _voltages, ops)
+MC13xxx_DEFINE(SW, _name, _reg, _vsel_reg, _voltages, ops)
 #define MC13xxx_DEFINE_REGU(_name, _reg, _vsel_reg, _voltages, ops)	\
-	MC13xxx_DEFINE(REGU, _name, _reg, _vsel_reg, _voltages, ops)
+MC13xxx_DEFINE(REGU, _name, _reg, _vsel_reg, _voltages, ops)
 
 #endif

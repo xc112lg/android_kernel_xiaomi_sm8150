@@ -188,8 +188,8 @@ struct rx1619_chg {
 	struct regmap *regmap;
 	unsigned int tx_on_gpio;
 	unsigned int irq_gpio;
-	unsigned int power_good_gpio;
-	unsigned int power_good_irq;
+unsigned int power_good_gpio;
+unsigned int power_good_irq;
 	unsigned int enable_gpio;
 	unsigned int chip_enable;
 	int online;
@@ -213,14 +213,14 @@ struct rx1619_chg {
 	struct mutex wireless_chg_int_lock;
 	struct mutex sysfs_op_lock;
 
-	struct power_supply *wip_psy;
-	struct power_supply *dc_psy;
-	struct power_supply_desc wip_psy_d;
-	struct power_supply *wireless_psy;
-	struct power_supply *batt_psy;
-	struct power_supply *usb_psy;
-	struct power_supply *pc_port_psy;
-	struct power_supply *ln_psy;
+struct power_supply *wip_psy;
+struct power_supply *dc_psy;
+struct power_supply_desc wip_psy_d;
+struct power_supply *wireless_psy;
+struct power_supply *batt_psy;
+struct power_supply *usb_psy;
+struct power_supply *pc_port_psy;
+struct power_supply *ln_psy;
 	struct alarm reverse_dping_alarm;
 	struct alarm reverse_chg_alarm;
 	struct alarm cmd_timeout_alarm;
@@ -228,7 +228,7 @@ struct rx1619_chg {
 	int auth;
 	int op_mode;
 	int dcin_present;
-	u8 epp_max_power;
+u8 epp_max_power;
 	int target_vol;
 	int target_curr;
 	int is_vin_limit;
@@ -242,11 +242,11 @@ struct rx1619_chg {
 	int last_icl;
 	int exchange;
 	int last_qc3_icl;
-	int power_off_mode;
+int power_off_mode;
 
 	/* product related */
 	bool wireless_by_usbin;
-	int power_good_flag;
+int power_good_flag;
 	int ss;
 	int is_reverse_chg;
 	int is_reverse_gpio;
@@ -395,31 +395,31 @@ void rx1619_send_device_auth(struct rx1619_chg *chip)
 
 static int rx_get_property_names(struct rx1619_chg *chip)
 {
-	chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 	if (!chip->batt_psy) {
 		dev_err(chip->dev, "no batt_psy,return\n");
 		return -EINVAL;
 	}
 
-	chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 	if (!chip->dc_psy) {
 		dev_err(chip->dev, "no dc_psy,return\n");
 		return -EINVAL;
 	}
 
-	chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 	if (!chip->wireless_psy) {
 		dev_err(chip->dev, "no wireless_psy,return\n");
 		return -EINVAL;
 	}
 
-	chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 	if (!chip->usb_psy) {
 		dev_err(chip->dev, "[idt] no usb_psy,return\n");
 		return -EINVAL;
 	}
 
-	chip->pc_port_psy = power_supply_get_by_name("pc_port");
+chip->pc_port_psy = power_supply_get_by_name("pc_port");
 	if (!chip->pc_port_psy) {
 		dev_err(chip->dev, "[idt] no pc_port_psy,return\n");
 		return -EINVAL;
@@ -625,13 +625,13 @@ int rx1619_set_vout(struct rx1619_chg *chip, int volt)
 bool rx1619_is_vout_on(struct rx1619_chg *chip)
 {
 	bool vout_status = false;
-	unsigned int voltage = 0;
+unsigned int voltage = 0;
 
-	voltage = rx1619_get_rx_vout(chip);
+voltage = rx1619_get_rx_vout(chip);
 
-	dev_err(chip->dev, "[rx1619] [%s] Vout = %d \n", __func__, voltage);
+dev_err(chip->dev, "[rx1619] [%s] Vout = %d \n", __func__, voltage);
 
-	if ((voltage > MIN_VOUT) && (voltage < MAX_VOUT)) //4V~15V
+if ((voltage > MIN_VOUT) && (voltage < MAX_VOUT)) //4V~15V
 	{
 		vout_status = true;
 	} else {
@@ -1015,13 +1015,13 @@ static bool rx1619_download_firmware(struct rx1619_chg *chip, u8 area)
 	for (i = 0; i < g_fw_data_lenth; i += 4) {
 		rx1619_write(chip, fw_data[i + 3], 0x0012);
 		for (j = 0; j < 4; j++) {
-			if (gpio_get_value(chip->power_good_gpio) == 1) {
+if (gpio_get_value(chip->power_good_gpio) == 1) {
 				usleep_range(300, 350);
-				if (gpio_get_value(chip->power_good_gpio) ==
+if (gpio_get_value(chip->power_good_gpio) ==
 				    0) {
 					break;
 				}
-			} else if (gpio_get_value(chip->power_good_gpio) == 0) {
+} else if (gpio_get_value(chip->power_good_gpio) == 0) {
 				usleep_range(900, 950);
 				count++;
 				break;
@@ -1030,13 +1030,13 @@ static bool rx1619_download_firmware(struct rx1619_chg *chip, u8 area)
 
 		rx1619_write(chip, fw_data[i + 2], 0x0012);
 		for (j = 0; j < 4; j++) {
-			if (gpio_get_value(chip->power_good_gpio) == 1) {
+if (gpio_get_value(chip->power_good_gpio) == 1) {
 				usleep_range(300, 350);
-				if (gpio_get_value(chip->power_good_gpio) ==
+if (gpio_get_value(chip->power_good_gpio) ==
 				    0) {
 					break;
 				}
-			} else if (gpio_get_value(chip->power_good_gpio) == 0) {
+} else if (gpio_get_value(chip->power_good_gpio) == 0) {
 				usleep_range(900, 950);
 				count++;
 				break;
@@ -1045,13 +1045,13 @@ static bool rx1619_download_firmware(struct rx1619_chg *chip, u8 area)
 
 		rx1619_write(chip, fw_data[i + 1], 0x0012);
 		for (j = 0; j < 4; j++) {
-			if (gpio_get_value(chip->power_good_gpio) == 1) {
+if (gpio_get_value(chip->power_good_gpio) == 1) {
 				usleep_range(300, 350);
-				if (gpio_get_value(chip->power_good_gpio) ==
+if (gpio_get_value(chip->power_good_gpio) ==
 				    0) {
 					break;
 				}
-			} else if (gpio_get_value(chip->power_good_gpio) == 0) {
+} else if (gpio_get_value(chip->power_good_gpio) == 0) {
 				usleep_range(900, 950);
 				count++;
 				break;
@@ -1060,13 +1060,13 @@ static bool rx1619_download_firmware(struct rx1619_chg *chip, u8 area)
 
 		rx1619_write(chip, fw_data[i + 0], 0x0012);
 		for (j = 0; j < 4; j++) {
-			if (gpio_get_value(chip->power_good_gpio) == 1) {
+if (gpio_get_value(chip->power_good_gpio) == 1) {
 				usleep_range(300, 350);
-				if (gpio_get_value(chip->power_good_gpio) ==
+if (gpio_get_value(chip->power_good_gpio) ==
 				    0) {
 					break;
 				}
-			} else if (gpio_get_value(chip->power_good_gpio) == 0) {
+} else if (gpio_get_value(chip->power_good_gpio) == 0) {
 				usleep_range(900, 950);
 				count++;
 				break;
@@ -1539,7 +1539,7 @@ void rx1619_dump_reg(void)
 
 void rx1619_set_pmi_icl(struct rx1619_chg *chip, int mA)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
@@ -1547,20 +1547,20 @@ void rx1619_set_pmi_icl(struct rx1619_chg *chip, int mA)
 
 	if (chip->wireless_by_usbin) {
 		if (!chip->usb_psy)
-			chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 
 		if (chip->usb_psy)
-			power_supply_set_property(chip->usb_psy,
-						  POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_set_property(chip->usb_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 						  &val);
 
 	} else {
 		if (!chip->dc_psy)
-			chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 
 		if (chip->dc_psy)
-			power_supply_set_property(chip->dc_psy,
-						  POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_set_property(chip->dc_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 						  &val);
 	}
 
@@ -1570,25 +1570,25 @@ void rx1619_set_pmi_icl(struct rx1619_chg *chip, int mA)
 
 void rx1619_get_pmi_icl(struct rx1619_chg *chip)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	if (chip->wireless_by_usbin) {
 		if (!chip->usb_psy)
-			chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 
 		if (chip->usb_psy)
-			power_supply_get_property(chip->usb_psy,
-						  POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 						  &val);
 	} else {
 		if (!chip->dc_psy)
-			chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 
 		if (chip->dc_psy)
-			power_supply_get_property(chip->dc_psy,
-						  POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 						  &val);
 	}
 
@@ -1602,7 +1602,7 @@ void set_usb_type_current(struct rx1619_chg *chip, u8 data)
 	int i = 0;
 	int uA = 0;
 	//int vol_now = 0;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
@@ -1676,17 +1676,17 @@ void set_usb_type_current(struct rx1619_chg *chip, u8 data)
 	case 11: //PD-27W(20W)
 		if (chip->op_mode != LN8282_OPMODE_SWITCHING) {
 			dev_info(chip->dev,
-				 "[20W]not switch mode, don't rise voltage \n");
+"[20W]not switch mode, don't rise voltage \n");
 			break;
 		}
 		/*
-		chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 		if (!chip->batt_psy) {
 			dev_err(chip->dev, "Battery supply not found\n");
 			vol_now = 15000;
 		} else {
-			power_supply_get_property(chip->batt_psy,
-					POWER_SUPPLY_PROP_VOLTAGE_NOW, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_NOW, &val);
 			vol_now = val.intval;
 			vol_now = (vol_now*4) / 1000 + 200; //delta
 		}
@@ -1696,9 +1696,9 @@ void set_usb_type_current(struct rx1619_chg *chip, u8 data)
 		msleep(100);
 		if (chip->epp && chip->auth && chip->wireless_psy) {
 			val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				chip->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			msleep(200);
 		}
 		/* for usb-in design, set max usb icl to 1.8A*/
@@ -1717,17 +1717,17 @@ void set_usb_type_current(struct rx1619_chg *chip, u8 data)
 	case 14:
 		if (chip->op_mode != LN8282_OPMODE_SWITCHING) {
 			dev_info(chip->dev,
-				 "[30W]not switch mode, don't rise voltage \n");
+"[30W]not switch mode, don't rise voltage \n");
 			break;
 		}
 		/*
-		chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 		if (!chip->batt_psy) {
 			dev_err(chip->dev, "Battery supply not found\n");
 			vol_now = 15000;
 		} else {
-			power_supply_get_property(chip->batt_psy,
-					POWER_SUPPLY_PROP_VOLTAGE_NOW, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_NOW, &val);
 			vol_now = val.intval;
 			vol_now = (vol_now*4) / 1000 + 200; //delta
 		}
@@ -1737,9 +1737,9 @@ void set_usb_type_current(struct rx1619_chg *chip, u8 data)
 		msleep(100);
 		if (chip->epp && chip->auth && chip->wireless_psy) {
 			val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				chip->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			msleep(200);
 		}
 		/* for usb-in design, set max usb icl to 1.8A*/
@@ -1824,7 +1824,7 @@ void get_usb_type_current(struct rx1619_chg *chip, u8 data)
 
 	case ADAPTER_XIAOMI_QC3: //QC3-27W(20W)
 	case ADAPTER_XIAOMI_PD: //PD-27W(20W)
-	case ADAPTER_ZIMI_CAR_POWER: //PD-27W(20W)
+case ADAPTER_ZIMI_CAR_POWER: //PD-27W(20W)
 		chip->target_vol = ADAPTER_EPP_MI_VOL;
 		/* for usb-in design, set max usb icl to 1.8A*/
 		chip->target_curr = USB_20W_PLUS_CURRENT_UA; //1.8A
@@ -1845,10 +1845,10 @@ void get_usb_type_current(struct rx1619_chg *chip, u8 data)
 }
 static void rx_set_charging_param(struct rx1619_chg *chip)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int soc = 0, health = 0, batt_sts = 0;
@@ -1866,28 +1866,28 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 			return;
 	}
 
-	power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_STATUS,
+power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_STATUS,
 				  &val);
 	batt_sts = val.intval;
 
-	power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_CAPACITY,
+power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_CAPACITY,
 				  &val);
 	soc = val.intval;
 
-	power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
+power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
 				  &val);
 	vol_now = val.intval;
 
-	power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_CURRENT_NOW,
+power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_CURRENT_NOW,
 				  &val);
 	cur_now = val.intval;
 
-	power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_HEALTH,
+power_supply_get_property(chip->batt_psy, POWER_SUPPLY_PROP_HEALTH,
 				  &val);
 	health = val.intval;
 
-	power_supply_get_property(chip->batt_psy,
-				  POWER_SUPPLY_PROP_DC_THERMAL_LEVELS, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS, &val);
 	dc_level = val.intval;
 
 	dev_info(
@@ -1901,7 +1901,7 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 			chip->target_curr = DC_BPP_CURRENT;
 		if (soc == 100)
 			chip->target_curr = DC_SDP_CURRENT;
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 
 		if (chip->target_curr != chip->last_qc3_icl) {
@@ -1917,7 +1917,7 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 	if (g_USB_TYPE >= 9) {
 		if (chip->op_mode != LN8282_OPMODE_SWITCHING) {
 			dev_info(chip->dev,
-				 "not switch mode, don't adjust voltage \n");
+"not switch mode, don't adjust voltage \n");
 			goto out;
 		}
 
@@ -2000,7 +2000,7 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 				"ready to full_mode ,set vin to %d, curr to %d\n",
 				chip->target_vol, chip->target_curr);
 			if (soc == FULL_SOC &&
-			    batt_sts == POWER_SUPPLY_STATUS_FULL)
+batt_sts == POWER_SUPPLY_STATUS_FULL)
 				chip->status = FULL_MODE;
 			else if (soc < FULL_SOC - 1)
 				chip->status = NORMAL_MODE;
@@ -2010,7 +2010,7 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 			chip->target_vol = ADAPTER_EPP_QC3_VOL;
 			chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 
-			if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 				dev_info(chip->dev,
 					 "full mode -> recharge mode\n");
 				chip->status = RECHG_MODE;
@@ -2018,7 +2018,7 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 			}
 			break;
 		case RECHG_MODE:
-			if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
 				dev_info(chip->dev,
 					 "recharge mode -> full mode\n");
 				chip->status = FULL_MODE;
@@ -2026,9 +2026,9 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 				chip->target_vol = ADAPTER_EPP_QC3_VOL;
 				if (chip->wireless_psy) {
 					wk_val.intval = 0;
-					power_supply_set_property(
+power_supply_set_property(
 						chip->wireless_psy,
-						POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 						&wk_val);
 				}
 				break;
@@ -2039,9 +2039,9 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 
 			if (chip->wireless_psy) {
 				wk_val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			break;
@@ -2049,22 +2049,22 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 			break;
 		}
 		switch (health) {
-		case POWER_SUPPLY_HEALTH_GOOD:
+case POWER_SUPPLY_HEALTH_GOOD:
 			break;
-		case POWER_SUPPLY_HEALTH_COOL:
+case POWER_SUPPLY_HEALTH_COOL:
 			break;
-		case POWER_SUPPLY_HEALTH_WARM:
+case POWER_SUPPLY_HEALTH_WARM:
 			//chip->target_vol = min(EPP_VOL_THRESHOLD, chip->target_vol);
 			chip->target_curr =
 				min(DC_SDP_CURRENT, chip->target_curr);
 			break;
-		case POWER_SUPPLY_HEALTH_OVERVOLTAGE:
+case POWER_SUPPLY_HEALTH_OVERVOLTAGE:
 			//chip->target_vol = min(EPP_VOL_THRESHOLD, chip->target_vol);
 			chip->target_curr =
 				min(SCREEN_OFF_FUL_CURRENT, chip->target_curr);
 			break;
-		case POWER_SUPPLY_HEALTH_COLD:
-		case POWER_SUPPLY_HEALTH_HOT:
+case POWER_SUPPLY_HEALTH_COLD:
+case POWER_SUPPLY_HEALTH_HOT:
 			//chip->target_vol = min(EPP_VOL_THRESHOLD, chip->target_vol);
 			chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 			break;
@@ -2085,9 +2085,9 @@ static void rx_set_charging_param(struct rx1619_chg *chip)
 				val.intval = 1;
 			}
 			if (chip->wireless_psy) {
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			}
 		}
 		if ((chip->target_curr > 0 &&
@@ -2123,7 +2123,7 @@ static void rx1619_dc_check_work(struct work_struct *work)
 				      msecs_to_jiffies(2500));
 	}
 	if (chip->wireless_psy)
-		power_supply_changed(chip->wireless_psy);
+power_supply_changed(chip->wireless_psy);
 }
 
 static void rx1619_cmd_timeout_work(struct work_struct *work)
@@ -2142,7 +2142,7 @@ static void rx1619_rx_first_boot(struct work_struct *work)
 		container_of(work, struct rx1619_chg, rx_first_boot.work);
 	g_rx1619_first_flag = true;
 	if (chip->wip_psy)
-		power_supply_changed(chip->wip_psy);
+power_supply_changed(chip->wip_psy);
 }
 #define CHARGING_PERIOD_S 10
 static void rx_monitor_work(struct work_struct *work)
@@ -2161,7 +2161,7 @@ static void rx1619_fw_download_work(struct work_struct *work)
 	struct rx1619_chg *chip =
 		container_of(work, struct rx1619_chg, fw_download_work.work);
 
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	bool is_valid_fw = true;
@@ -2172,7 +2172,7 @@ static void rx1619_fw_download_work(struct work_struct *work)
 		return;
 	}
 
-	power_supply_get_property(chip->dc_psy, POWER_SUPPLY_PROP_ONLINE, &val);
+power_supply_get_property(chip->dc_psy, POWER_SUPPLY_PROP_ONLINE, &val);
 	if (!val.intval) {
 		pm_stay_awake(chip->dev);
 		chip->fw_update = true;
@@ -2249,10 +2249,10 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 	int ret = 0;
 	unsigned int vout = 0;
 	bool vout_change = false;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 
@@ -2260,16 +2260,16 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 	chip->target_curr = 2000000;
 
 	if (chip->batt_psy) {
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 					  &val);
 		dc_level = val.intval;
 	}
@@ -2288,7 +2288,7 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 			chip->status = TAPER_MODE;
 		break;
 	case TAPER_MODE:
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			chip->status = FULL_MODE;
 		else if (soc < FULL_SOC - 1)
 			chip->status = NORMAL_MODE;
@@ -2298,7 +2298,7 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 		chip->target_vol = ADAPTER_EPP_QC3_VOL;
 		chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 
-		if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 			dev_info(chip->dev,
 				 "[pan]full mode -> recharge mode\n");
 			chip->status = RECHG_MODE;
@@ -2306,16 +2306,16 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 		}
 		break;
 	case RECHG_MODE:
-		if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
 			dev_info(chip->dev,
 				 "[pan]recharge mode -> full mode\n");
 			chip->status = FULL_MODE;
 			chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 			if (chip->wireless_psy) {
 				wk_val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			break;
@@ -2327,9 +2327,9 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 
 		if (chip->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				chip->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		break;
 	default:
@@ -2345,25 +2345,25 @@ static void rx1619_pan_tx_work(struct work_struct *work)
 			ret = rx1619_set_vout(chip, chip->target_vol);
 			if (chip->wireless_psy) {
 				val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			}
 		} else if (chip->target_vol == ADAPTER_EPP_QC3_VOL) {
 			chip->disable_bq = true;
 			/* enable 8150b charge */
 			if (chip->batt_psy) {
 				val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->batt_psy,
-					POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
 					&val);
 			}
 			if (chip->wireless_psy) {
 				val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			}
 
 			vout = rx1619_get_rx_vout(chip);
@@ -2421,10 +2421,10 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 	int effective_fcc = 0;
 	unsigned int vout = 0;
 	bool vout_change = false;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 
@@ -2432,21 +2432,21 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 	chip->target_curr = 2000000;
 
 	if (chip->batt_psy) {
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 					  &val);
 		dc_level = val.intval;
 
-		power_supply_get_property(chip->batt_psy,
-					  POWER_SUPPLY_PROP_TEMP, &val);
+power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_TEMP, &val);
 		batt_temp = val.intval;
 	}
 
@@ -2496,7 +2496,7 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 	case TAPER_MODE:
 		dev_info(chip->dev, "[voice]taper mode set Vin 11V\n");
 		chip->target_vol = ADAPTER_EPP_QC3_VOL;
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			chip->status = FULL_MODE;
 		else if (soc < 95)
 			chip->status = NORMAL_MODE;
@@ -2506,7 +2506,7 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 		chip->target_vol = ADAPTER_EPP_QC3_VOL;
 		chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 
-		if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 			dev_info(chip->dev,
 				 "[voice]full mode -> recharge mode\n");
 			chip->status = RECHG_MODE;
@@ -2514,16 +2514,16 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 		}
 		break;
 	case RECHG_MODE:
-		if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
 			dev_info(chip->dev,
 				 "[voice]recharge mode -> full mode\n");
 			chip->status = FULL_MODE;
 			chip->target_curr = SCREEN_OFF_FUL_CURRENT;
 			if (chip->wireless_psy) {
 				wk_val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			break;
@@ -2535,9 +2535,9 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 
 		if (chip->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				chip->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		break;
 	default:
@@ -2553,25 +2553,25 @@ static void rx1619_voice_tx_work(struct work_struct *work)
 			ret = rx1619_set_vout(chip, chip->target_vol);
 			if (chip->wireless_psy) {
 				val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			}
 		} else if (chip->target_vol == ADAPTER_EPP_QC3_VOL) {
 			chip->disable_bq = true;
 			/* enable 8150b charge */
 			if (chip->batt_psy) {
 				val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->batt_psy,
-					POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
 					&val);
 			}
 			if (chip->wireless_psy) {
 				val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			}
 
 			vout = rx1619_get_rx_vout(chip);
@@ -2603,13 +2603,13 @@ static void rx_chg_detect_work(struct work_struct *work)
 {
 	struct rx1619_chg *chip =
 		container_of(work, struct rx1619_chg, chg_detect_work.work);
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval pc_val = {
+union power_supply_propval pc_val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int rc;
@@ -2621,9 +2621,9 @@ static void rx_chg_detect_work(struct work_struct *work)
 		return;
 
 	g_chip = chip;
-	power_supply_get_property(chip->usb_psy, POWER_SUPPLY_PROP_ONLINE,
+power_supply_get_property(chip->usb_psy, POWER_SUPPLY_PROP_ONLINE,
 				  &val);
-	power_supply_get_property(chip->pc_port_psy, POWER_SUPPLY_PROP_ONLINE,
+power_supply_get_property(chip->pc_port_psy, POWER_SUPPLY_PROP_ONLINE,
 				  &pc_val);
 	if (val.intval || pc_val.intval) {
 		dev_info(chip->dev,
@@ -2635,16 +2635,16 @@ static void rx_chg_detect_work(struct work_struct *work)
 	}
 
 	if (chip->dc_psy) {
-		power_supply_get_property(chip->dc_psy,
-					  POWER_SUPPLY_PROP_ONLINE, &val);
+power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_ONLINE, &val);
 		dev_info(chip->dev, "dc_online %d\n", val.intval);
 		if (val.intval && chip->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				chip->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 
-			if (!chip->power_off_mode) {
+if (!chip->power_off_mode) {
 				rx_set_enable_mode(chip, false);
 				usleep_range(20000, 25000);
 				rx_set_enable_mode(chip, true);
@@ -2661,17 +2661,17 @@ static void reverse_chg_sent_state_work(struct work_struct *work)
 	struct rx1619_chg *chip = container_of(work, struct rx1619_chg,
 					       reverse_sent_state_work.work);
 
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	if (chip->wireless_psy) {
 		val.intval = chip->is_reverse_chg;
-		power_supply_set_property(chip->wireless_psy,
-					  POWER_SUPPLY_PROP_REVERSE_CHG_STATE,
+power_supply_set_property(chip->wireless_psy,
+POWER_SUPPLY_PROP_REVERSE_CHG_STATE,
 					  &val);
 		dev_info(chip->dev, "sent tx_mode_uevent\n");
-		power_supply_changed(chip->wireless_psy);
+power_supply_changed(chip->wireless_psy);
 	} else
 		dev_err(chip->dev, "get wls property error\n");
 }
@@ -2708,55 +2708,55 @@ static void rx1619_wpc_det_work(struct work_struct *work)
 {
 	struct rx1619_chg *chip =
 		container_of(work, struct rx1619_chg, wpc_det_work.work);
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int ret = 0;
 
-	chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 	if (!chip->wireless_psy) {
 		dev_err(chip->dev, "[rx1619] no wireless_psy, return\n");
 		return;
 	}
 
-	if (gpio_is_valid(chip->power_good_gpio)) {
-		ret = gpio_get_value(chip->power_good_gpio);
+if (gpio_is_valid(chip->power_good_gpio)) {
+ret = gpio_get_value(chip->power_good_gpio);
 		if (ret) {
 			dev_info(chip->dev,
-				 "power_good high, wireless attached\n");
-			chip->power_good_flag = 1;
+"power_good high, wireless attached\n");
+chip->power_good_flag = 1;
 			val.intval = 1;
 			schedule_delayed_work(&chip->dc_check_work,
 					      msecs_to_jiffies(2500));
 		} else {
 			dev_info(chip->dev,
-				 "power_good low, wireless detached\n");
+"power_good low, wireless detached\n");
 			cancel_delayed_work(&chip->dc_check_work);
-			chip->power_good_flag = 0;
+chip->power_good_flag = 0;
 			chip->ss = 2;
 			val.intval = 0;
-			chip->ln_psy = power_supply_get_by_name("lionsemi");
+chip->ln_psy = power_supply_get_by_name("lionsemi");
 			if (chip->ln_psy)
-				power_supply_set_property(
+power_supply_set_property(
 					chip->ln_psy,
-					POWER_SUPPLY_PROP_RESET_DIV_2_MODE,
+POWER_SUPPLY_PROP_RESET_DIV_2_MODE,
 					&val);
 		}
-		power_supply_set_property(
+power_supply_set_property(
 			chip->wireless_psy,
-			POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
 	}
 }
 static void rx1619_enable_aicl(struct rx1619_chg *chip, bool enable)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	if (chip->wireless_psy) {
 		if (chip->enabled_aicl != enable) {
 			val.intval = enable ? 1 : 0;
-			power_supply_set_property(chip->wireless_psy,
-						  POWER_SUPPLY_PROP_AICL_ENABLE,
+power_supply_set_property(chip->wireless_psy,
+POWER_SUPPLY_PROP_AICL_ENABLE,
 						  &val);
 			chip->enabled_aicl = enable;
 			return;
@@ -2817,7 +2817,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 	static int retry_id;
 	int rc;
 	int cnt;
-	union power_supply_propval cp_val = {
+union power_supply_propval cp_val = {
 		0,
 	};
 	int fc_flag = 0;
@@ -2826,7 +2826,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 	struct rx1619_chg *chip =
 		container_of(work, struct rx1619_chg, wireless_int_work.work);
 
-	chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 	if (!chip->wireless_psy) {
 		dev_err(chip->dev, "[rx1619] no wireless_psy, return\n");
 		return;
@@ -2877,10 +2877,10 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 				chip->is_reverse_chg = 4;
 				schedule_delayed_work(
 					&chip->reverse_sent_state_work, 0);
-				dev_info(chip->dev, "tx mode power transfer\n");
+dev_info(chip->dev, "tx mode power transfer\n");
 				break;
-			case POWER_LIM:
-				dev_info(chip->dev, "tx mode power limit\n");
+case POWER_LIM:
+dev_info(chip->dev, "tx mode power limit\n");
 				break;
 			case CONFIGURE_CNF:
 				dev_info(chip->dev, "tx mode CONFIGURE_CNF\n");
@@ -2939,13 +2939,13 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 
 	case 0x01: //LDO on Int
 		rx1619_write(chip, AP_REV_DATA_OK, REG_AP_RX_COMM); //receive ok
-		chip->epp_max_power = 5;
+chip->epp_max_power = 5;
 		msleep(10);
 
 		dev_info(chip->dev, "[%s] LDO on Int \n", __func__);
 
 		chip->epp = (rx_rev_data[0] >> 7) & 0xff;
-		chip->epp_max_power = (rx_rev_data[0] & 0x7f);
+chip->epp_max_power = (rx_rev_data[0] & 0x7f);
 		g_hw_id_h = rx_rev_data[1]; //0x16
 		g_hw_id_l = rx_rev_data[2]; //0x19
 		g_fw_rx_id = rx_rev_data[3];
@@ -2954,17 +2954,17 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 			chip->epp = 1;
 			rx1619_set_pmi_icl(chip, 30000);
 			dev_info(chip->dev,
-				 "[%s] EPP--10mA and epp max power is %d\n",
-				 __func__, chip->epp_max_power);
+"[%s] EPP--10mA and epp max power is %d\n",
+__func__, chip->epp_max_power);
 			if (chip->wireless_psy) {
 				cp_val.intval = 2;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_DIV_2_MODE, &cp_val);
+POWER_SUPPLY_PROP_DIV_2_MODE, &cp_val);
 				msleep(10);
-				power_supply_get_property(
+power_supply_get_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_DIV_2_MODE, &cp_val);
+POWER_SUPPLY_PROP_DIV_2_MODE, &cp_val);
 				chip->op_mode = cp_val.intval;
 				dev_info(chip->dev,
 					 "loop ln8282 set switch and get: %d\n",
@@ -3025,7 +3025,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 		msleep(10);
 		dev_info(chip->dev, "[rx1619] [%s] Calibration OK! \n",
 			 __func__);
-		if (chip->epp && chip->epp_max_power == 10) { //EPP
+if (chip->epp && chip->epp_max_power == 10) { //EPP
 			if (chip->op_mode == LN8282_OPMODE_SWITCHING)
 				rx1619_set_pmi_icl(chip, 1800000); //10W
 			else
@@ -3075,7 +3075,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 */
 
 		if (chip->is_car_tx && (usb_type >= ADAPTER_XIAOMI_QC3))
-			usb_type = ADAPTER_ZIMI_CAR_POWER;
+usb_type = ADAPTER_ZIMI_CAR_POWER;
 
 		if (chip->is_voice_box_tx)
 			usb_type = ADAPTER_VOICE_BOX;
@@ -3104,7 +3104,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 			break;
 		case ADAPTER_XIAOMI_QC3:
 		case ADAPTER_XIAOMI_PD:
-		case ADAPTER_ZIMI_CAR_POWER:
+case ADAPTER_ZIMI_CAR_POWER:
 		case ADAPTER_XIAOMI_PD_40W:
 		case ADAPTER_XIAOMI_PD_50W:
 		case ADAPTER_XIAOMI_PD_60W:
@@ -3127,7 +3127,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 		}
 
 		if (chip->wireless_psy)
-			power_supply_changed(chip->wireless_psy);
+power_supply_changed(chip->wireless_psy);
 		break;
 
 	case 0x07: //FC status 0x7,0x1,0x0,0x19,0x5
@@ -3175,7 +3175,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 
 			dev_info(
 				chip->dev,
-				"vendor:0x%x, module:0x%x, hw:0x%x and power:0x%x\n",
+"vendor:0x%x, module:0x%x, hw:0x%x and power:0x%x\n",
 				g_uuid_data[0], g_uuid_data[1], g_uuid_data[2],
 				g_uuid_data[3]);
 
@@ -3237,8 +3237,8 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 			alarm_cancel(&chip->cmd_timeout_alarm);
 			if (chip->epp) {
 				chip->target_vol = ADAPTER_EPP_QC3_VOL;
-				if (chip->epp_max_power < 10000) {
-					uA = ((chip->epp_max_power - 1000) /
+if (chip->epp_max_power < 10000) {
+uA = ((chip->epp_max_power - 1000) /
 					      11) *
 					     1000;
 					if (chip->op_mode ==
@@ -3296,7 +3296,7 @@ static void rx1619_wireless_int_work(struct work_struct *work)
 		}
 
 		if (chip->wireless_psy)
-			power_supply_changed(chip->wireless_psy);
+power_supply_changed(chip->wireless_psy);
 		break;
 
 	case 0x1f: //for product test
@@ -3441,10 +3441,10 @@ static int rx1619_parse_dt(struct rx1619_chg *chip)
 		return -EINVAL;
 	}
 
-	chip->power_good_gpio = of_get_named_gpio(node, "rx,power_good", 0);
-	if (!gpio_is_valid(chip->power_good_gpio)) {
-		dev_err(chip->dev, "[rx1619] [%s] fail_power_good_gpio %d\n",
-			__func__, chip->power_good_gpio);
+chip->power_good_gpio = of_get_named_gpio(node, "rx,power_good", 0);
+if (!gpio_is_valid(chip->power_good_gpio)) {
+dev_err(chip->dev, "[rx1619] [%s] fail_power_good_gpio %d\n",
+__func__, chip->power_good_gpio);
 		return -EINVAL;
 	}
 
@@ -3498,17 +3498,17 @@ static int rx1619_gpio_init(struct rx1619_chg *chip)
 		goto fail_irq_gpio;
 	}
 
-	if (gpio_is_valid(chip->power_good_gpio)) {
-		chip->power_good_irq = gpio_to_irq(chip->power_good_gpio);
-		if (chip->power_good_irq < 0) {
+if (gpio_is_valid(chip->power_good_gpio)) {
+chip->power_good_irq = gpio_to_irq(chip->power_good_gpio);
+if (chip->power_good_irq < 0) {
 			dev_err(chip->dev, "[rx1619] [%s] gpio_to_irq Fail! \n",
 				__func__);
-			goto fail_power_good_gpio;
+goto fail_power_good_gpio;
 		}
 	} else {
-		dev_err(chip->dev, "%s: power good gpio not provided\n",
+dev_err(chip->dev, "%s: power good gpio not provided\n",
 			__func__);
-		goto fail_power_good_gpio;
+goto fail_power_good_gpio;
 	}
 
 	return ret;
@@ -3516,13 +3516,13 @@ static int rx1619_gpio_init(struct rx1619_chg *chip)
 fail_irq_gpio:
 	gpio_free(chip->irq_gpio);
 fail_power_good_gpio:
-	gpio_free(chip->power_good_gpio);
+gpio_free(chip->power_good_gpio);
 
 	return ret;
 }
 
 /*******************************************************
- * SET GPIO STATE TO SMB FOR IGNORE DC_POWER_ON IRQ*
+* SET GPIO STATE TO SMB FOR IGNORE DC_POWER_ON IRQ*
  *******************************************************/
 /* define for reverse state of wireless charging */
 #define REVERSE_GPIO_STATE_UNSET 0
@@ -3530,12 +3530,12 @@ fail_power_good_gpio:
 #define REVERSE_GPIO_STATE_END 2
 static int rx1619_set_reverse_gpio_state(struct rx1619_chg *chip, int enable)
 {
-	union power_supply_propval reverse_val = {
+union power_supply_propval reverse_val = {
 		0,
 	};
 	chip->reverse_gpio_state = !!enable;
 	if (!chip->wireless_psy)
-		chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 
 	if (chip->wireless_psy) {
 		dev_dbg(chip->dev, "set_reverse_gpio_state\n",
@@ -3545,8 +3545,8 @@ static int rx1619_set_reverse_gpio_state(struct rx1619_chg *chip, int enable)
 		} else {
 			reverse_val.intval = REVERSE_GPIO_STATE_END;
 		}
-		power_supply_set_property(chip->wireless_psy,
-					  POWER_SUPPLY_PROP_REVERSE_GPIO_STATE,
+power_supply_set_property(chip->wireless_psy,
+POWER_SUPPLY_PROP_REVERSE_GPIO_STATE,
 					  &reverse_val);
 	} else {
 		dev_err(chip->dev, "no wireless_psy,return\n");
@@ -3557,11 +3557,11 @@ static int rx1619_set_reverse_gpio_state(struct rx1619_chg *chip, int enable)
 static int rx_set_reverse_gpio(struct rx1619_chg *chip, int enable)
 {
 	int ret;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
-	chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 	if (!chip->wireless_psy) {
 		dev_err(chip->dev, "[idt] no wireless_psy,return\n");
 		return -EINVAL;
@@ -3569,14 +3569,14 @@ static int rx_set_reverse_gpio(struct rx1619_chg *chip, int enable)
 
 	if (enable) {
 		val.intval = 1;
-		power_supply_set_property(chip->wireless_psy,
-					  POWER_SUPPLY_PROP_SW_DISABLE_DC_EN,
+power_supply_set_property(chip->wireless_psy,
+POWER_SUPPLY_PROP_SW_DISABLE_DC_EN,
 					  &val);
 	} else {
 		val.intval = 0;
-		power_supply_set_property(
+power_supply_set_property(
 			chip->wireless_psy,
-			POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
 	}
 
 	if (gpio_is_valid(chip->tx_on_gpio)) {
@@ -3626,18 +3626,18 @@ static int rx_get_reverse_chg_mode(struct rx1619_chg *chip)
 
 static int rx_set_reverse_chg_mode(struct rx1619_chg *chip, int enable)
 {
-	union power_supply_propval cp_val = {
+union power_supply_propval cp_val = {
 		0,
 	};
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int ret, rc;
 
-	chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 	if (!chip->wireless_psy) {
 		dev_err(chip->dev, "[idt] no wireless_psy,return\n");
 		return -EINVAL;
@@ -3645,14 +3645,14 @@ static int rx_set_reverse_chg_mode(struct rx1619_chg *chip, int enable)
 
 	if (enable) {
 		val.intval = 1;
-		power_supply_set_property(chip->wireless_psy,
-					  POWER_SUPPLY_PROP_SW_DISABLE_DC_EN,
+power_supply_set_property(chip->wireless_psy,
+POWER_SUPPLY_PROP_SW_DISABLE_DC_EN,
 					  &val);
 	} else {
 		val.intval = 0;
-		power_supply_set_property(
+power_supply_set_property(
 			chip->wireless_psy,
-			POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
 	}
 
 	if (gpio_is_valid(chip->tx_on_gpio)) {
@@ -3670,20 +3670,20 @@ static int rx_set_reverse_chg_mode(struct rx1619_chg *chip, int enable)
 				__func__);
 		}
 		gpio_free(chip->tx_on_gpio);
-		power_supply_changed(chip->wireless_psy);
+power_supply_changed(chip->wireless_psy);
 		dev_info(chip->dev,
-			 "reverse_charge, set ln8282 powerpath and opmode\n");
+"reverse_charge, set ln8282 powerpath and opmode\n");
 		msleep(100);
 		if (enable) {
 			if (chip->wireless_psy) {
 				cp_val.intval = 3;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_DIV_2_MODE, &cp_val);
+POWER_SUPPLY_PROP_DIV_2_MODE, &cp_val);
 				wk_val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			msleep(100);
@@ -3710,9 +3710,9 @@ static int rx_set_reverse_chg_mode(struct rx1619_chg *chip, int enable)
 				 "disable reverse charging for wireless\n");
 			if (chip->wireless_psy) {
 				wk_val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					chip->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			cancel_delayed_work(&chip->reverse_chg_state_work);
@@ -3784,7 +3784,7 @@ static enum alarmtimer_restart reverse_dping_alarm_cb(struct alarm *alarm,
 
 static void rx1619_set_present(struct rx1619_chg *chip, int enable)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
@@ -3816,11 +3816,11 @@ static void rx1619_set_present(struct rx1619_chg *chip, int enable)
 		chip->disable_bq = false;
 		cancel_delayed_work_sync(&chip->wireless_int_work);
 		cancel_delayed_work(&chip->chg_monitor_work);
-		chip->ln_psy = power_supply_get_by_name("lionsemi");
+chip->ln_psy = power_supply_get_by_name("lionsemi");
 		if (chip->ln_psy)
-			power_supply_set_property(
+power_supply_set_property(
 				chip->ln_psy,
-				POWER_SUPPLY_PROP_RESET_DIV_2_MODE, &val);
+POWER_SUPPLY_PROP_RESET_DIV_2_MODE, &val);
 
 		/* enable aicl if disabled by wireless earlier */
 		rx1619_enable_aicl(chip, true);
@@ -3925,11 +3925,11 @@ static ssize_t chip_vout_store(struct device *dev,
 	int index;
 
 	index = (int)simple_strtoul(buf, NULL, 10);
-	dev_info(g_chip->dev, "[rx1619] [%s] --Store output_voltage = %d\n",
+dev_info(g_chip->dev, "[rx1619] [%s] --Store output_voltage = %d\n",
 		 __func__, index);
 	if ((index < 4000) || (index > 21000)) {
 		dev_err(g_chip->dev,
-			"[rx1619] [%s] Store Voltage %s is invalid\n", __func__,
+"[rx1619] [%s] Store Voltage %s is invalid\n", __func__,
 			buf);
 		rx1619_set_vout(g_chip, 0);
 		return count;
@@ -4196,60 +4196,60 @@ static const struct attribute_group rx1619_sysfs_group_attrs = {
 #if 1
 static enum power_supply_property rx1619_wireless_properties[] = {
 	/*
-	   POWER_SUPPLY_PROP_PRESENT,
-	   POWER_SUPPLY_PROP_ONLINE,
-	   POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	   POWER_SUPPLY_PROP_RX_CHIP_ID, //RX chip id
-	   POWER_SUPPLY_PROP_RX_VRECT, //RX vrect
-	   POWER_SUPPLY_PROP_RX_IOUT, //RX output current
-	   POWER_SUPPLY_PROP_RX_VOUT, //RX output voltage
-	   POWER_SUPPLY_PROP_RX_ILIMIT, //RX Main LDO output current limit
-	   POWER_SUPPLY_PROP_VOUT_SET, //Vout voltage set
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_RX_CHIP_ID, //RX chip id
+POWER_SUPPLY_PROP_RX_VRECT, //RX vrect
+POWER_SUPPLY_PROP_RX_IOUT, //RX output current
+POWER_SUPPLY_PROP_RX_VOUT, //RX output voltage
+POWER_SUPPLY_PROP_RX_ILIMIT, //RX Main LDO output current limit
+POWER_SUPPLY_PROP_VOUT_SET, //Vout voltage set
 	 */
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
-	POWER_SUPPLY_PROP_PIN_ENABLED,
-	POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT,
-	POWER_SUPPLY_PROP_RX_IOUT,
-	POWER_SUPPLY_PROP_TX_ADAPTER,
-	POWER_SUPPLY_PROP_WIRELESS_VERSION,
-	POWER_SUPPLY_PROP_WIRELESS_FW_VERSION,
-	POWER_SUPPLY_PROP_CHIP_OK,
-	POWER_SUPPLY_PROP_OTG_STATE,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
+POWER_SUPPLY_PROP_PIN_ENABLED,
+POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT,
+POWER_SUPPLY_PROP_RX_IOUT,
+POWER_SUPPLY_PROP_TX_ADAPTER,
+POWER_SUPPLY_PROP_WIRELESS_VERSION,
+POWER_SUPPLY_PROP_WIRELESS_FW_VERSION,
+POWER_SUPPLY_PROP_CHIP_OK,
+POWER_SUPPLY_PROP_OTG_STATE,
 };
 
 static int rx1619_wireless_set_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
 	int ret;
-	struct rx1619_chg *chip = power_supply_get_drvdata(psy);
+struct rx1619_chg *chip = power_supply_get_drvdata(psy);
 	int data;
 
 	switch (prop) {
 		/*
-		   case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		   break;
-		   case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		   rx1619_chip_enable(chip, val->intval);
 		   break;
-		   case POWER_SUPPLY_PROP_VOUT_SET:
+case POWER_SUPPLY_PROP_VOUT_SET:
 		   ret = rx1619_set_vout(chip, val->intval);
 		   if(ret < 0)
 		   return ret;
 		   break;
 		 */
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rx1619_set_present(chip, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		chip->ss = val->intval;
 		if (chip->wireless_psy)
-			power_supply_changed(chip->wireless_psy);
+power_supply_changed(chip->wireless_psy);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		data = val->intval / 1000;
 		if (data < ADAPTER_VOUT_LIMIT_VOL)
 			data = ADAPTER_VOUT_LIMIT_VOL;
@@ -4262,17 +4262,17 @@ static int rx1619_wireless_set_property(struct power_supply *psy,
 		if (!chip->disable_bq)
 			ret = rx1619_set_vout(chip, data);
 		break;
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		ret = rx_set_enable_mode(chip, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		if (chip->fw_update) {
 			dev_info(chip->dev, "fw update going, break\n");
 			break;
 		}
 		chip->is_reverse_chg = 0;
 		schedule_delayed_work(&chip->reverse_sent_state_work, 0);
-		if (!chip->power_good_flag) {
+if (!chip->power_good_flag) {
 			ret = rx_set_reverse_chg_mode(chip, val->intval);
 		} else {
 			chip->is_reverse_chg = 3;
@@ -4280,7 +4280,7 @@ static int rx1619_wireless_set_property(struct power_supply *psy,
 					      0);
 		}
 		break;
-	case POWER_SUPPLY_PROP_OTG_STATE:
+case POWER_SUPPLY_PROP_OTG_STATE:
 		rx_set_otg_state(chip, val->intval);
 		break;
 	default:
@@ -4291,50 +4291,50 @@ static int rx1619_wireless_set_property(struct power_supply *psy,
 }
 
 static int rx1619_wireless_get_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
 	int tmp;
-	struct rx1619_chg *chip = power_supply_get_drvdata(psy);
+struct rx1619_chg *chip = power_supply_get_drvdata(psy);
 
 	switch (prop) {
 		/*
-		   case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		   val->intval = chip->online;
 		   break;
-		   case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		   val->intval = chip->chip_enable;
 		   break;
-		   case POWER_SUPPLY_PROP_RX_CHIP_ID:
+case POWER_SUPPLY_PROP_RX_CHIP_ID:
 		   val->intval = rx1619_get_rx_chip_id(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_RX_VRECT:
+case POWER_SUPPLY_PROP_RX_VRECT:
 		   val->intval = rx1619_get_rx_vrect(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_RX_IOUT:
+case POWER_SUPPLY_PROP_RX_IOUT:
 		   val->intval = rx1619_get_rx_iout(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_RX_VOUT:
+case POWER_SUPPLY_PROP_RX_VOUT:
 		   val->intval = rx1619_get_rx_vout(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_VOUT_SET:
+case POWER_SUPPLY_PROP_VOUT_SET:
 		   val->intval = 0;
 		   break;
 		 */
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		val->intval = chip->epp;
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_FW_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_FW_VERSION:
 		val->intval = chip->fw_version;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = chip->dcin_present;
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		val->intval = chip->ss;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		if (!chip->power_good_flag) {
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+if (!chip->power_good_flag) {
 			val->intval = 0;
 			break;
 		}
@@ -4344,22 +4344,22 @@ static int rx1619_wireless_get_property(struct power_supply *psy,
 		else
 			val->intval = tmp;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT:
 		val->intval = rx1619_get_rx_vrect(chip);
 		break;
-	case POWER_SUPPLY_PROP_RX_IOUT:
+case POWER_SUPPLY_PROP_RX_IOUT:
 		val->intval = rx1619_get_rx_iout(chip);
 		break;
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		val->intval = !gpio_get_value(chip->enable_gpio);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		val->intval = rx_get_reverse_chg_mode(chip);
 		break;
-	case POWER_SUPPLY_PROP_TX_ADAPTER:
+case POWER_SUPPLY_PROP_TX_ADAPTER:
 		val->intval = g_USB_TYPE;
 		break;
-	case POWER_SUPPLY_PROP_CHIP_OK:
+case POWER_SUPPLY_PROP_CHIP_OK:
 		val->intval = chip->chip_ok;
 		break;
 	default:
@@ -4377,16 +4377,16 @@ static const struct regmap_config rx1619_regmap_config = {
 };
 
 static int rx1619_prop_is_writeable(struct power_supply *psy,
-				    enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
-	case POWER_SUPPLY_PROP_PRESENT:
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		return 1;
 	default:
 		rc = 0;
@@ -4402,11 +4402,11 @@ static int get_cmdline(struct rx1619_chg *chip)
 {
 	if (strnstr(saved_command_line,
 		    "androidboot.mode=", strlen(saved_command_line))) {
-		chip->power_off_mode = 1;
+chip->power_off_mode = 1;
 		dev_info(chip->dev,
-			 "[idtp9220]: enter power off charging app\n");
+"[idtp9220]: enter power off charging app\n");
 	} else {
-		chip->power_off_mode = 0;
+chip->power_off_mode = 0;
 		dev_info(chip->dev, "[idtp9220]: enter normal boot mode\n");
 	}
 	return 1;
@@ -4420,7 +4420,7 @@ static int rx1619_probe(struct i2c_client *client,
 	struct kobject *rx1619_kobj;
 	//int drv_load = 0;
 
-	struct power_supply_config wip_psy_cfg = {};
+struct power_supply_config wip_psy_cfg = {};
 	/*
 	drv_load = get_board_version();
 	if (!drv_load)
@@ -4430,9 +4430,9 @@ static int rx1619_probe(struct i2c_client *client,
 	/*
 	   int hw_id;
 
-	   struct power_supply *batt_psy;
+struct power_supply *batt_psy;
 
-	   batt_psy = power_supply_get_by_name("battery");
+batt_psy = power_supply_get_by_name("battery");
 	   if (!batt_psy) {
 	   dev_err(&client->dev, "Battery supply not found; defer probe\n");
 	   return -EPROBE_DEFER;
@@ -4494,7 +4494,7 @@ static int rx1619_probe(struct i2c_client *client,
 	INIT_DELAYED_WORK(&chip->voice_tx_work, rx1619_voice_tx_work);
 
 	chip->wip_psy_d.name = "rx1619";
-	chip->wip_psy_d.type = POWER_SUPPLY_TYPE_WIRELESS;
+chip->wip_psy_d.type = POWER_SUPPLY_TYPE_WIRELESS;
 	chip->wip_psy_d.get_property = rx1619_wireless_get_property;
 	chip->wip_psy_d.set_property = rx1619_wireless_set_property;
 	chip->wip_psy_d.properties = rx1619_wireless_properties;
@@ -4503,7 +4503,7 @@ static int rx1619_probe(struct i2c_client *client,
 
 	wip_psy_cfg.drv_data = chip;
 
-	chip->wip_psy = devm_power_supply_register(chip->dev, &chip->wip_psy_d,
+chip->wip_psy = devm_power_supply_register(chip->dev, &chip->wip_psy_d,
 						   &wip_psy_cfg);
 	if (IS_ERR(chip->wip_psy)) {
 		dev_err(chip->dev, "Couldn't register wip psy rc=%ld\n",
@@ -4525,19 +4525,19 @@ static int rx1619_probe(struct i2c_client *client,
 	}
 	enable_irq_wake(chip->client->irq);
 
-	if (chip->power_good_irq) {
+if (chip->power_good_irq) {
 		ret = devm_request_threaded_irq(
-			&chip->client->dev, chip->power_good_irq, NULL,
-			rx1619_power_good_handler,
+&chip->client->dev, chip->power_good_irq, NULL,
+rx1619_power_good_handler,
 			(IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING |
 			 IRQF_ONESHOT),
-			"rx1619_power_good_irq", chip);
+"rx1619_power_good_irq", chip);
 		if (ret) {
 			dev_err(chip->dev, "Failed irq = %d ret = %d\n",
-				chip->power_good_irq, ret);
+chip->power_good_irq, ret);
 		}
 	}
-	enable_irq_wake(chip->power_good_irq);
+enable_irq_wake(chip->power_good_irq);
 
 	rx1619_kobj = kobject_create_and_add("rx1619", NULL);
 	if (!rx1619_kobj) {
@@ -4585,7 +4585,7 @@ static int rx1619_probe(struct i2c_client *client,
 	dev_err(chip->dev, "[rx1619] [%s] success! \n", __func__);
 	get_cmdline(chip);
 
-	if (chip->power_off_mode) {
+if (chip->power_off_mode) {
 		rx_set_enable_mode(chip, false);
 		usleep_range(20000, 25000);
 		rx_set_enable_mode(chip, true);
@@ -4612,7 +4612,7 @@ static void rx1619_shutdown(struct i2c_client *client)
 {
 	struct rx1619_chg *chip = i2c_get_clientdata(client);
 
-	if (chip->power_good_flag) {
+if (chip->power_good_flag) {
 		rx_set_enable_mode(chip, false);
 		usleep_range(20000, 25000);
 		rx_set_enable_mode(chip, true);

@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
 /*
  * OPAL Runtime Diagnostics interface driver
- * Supported on POWERNV platform
+* Supported on POWERNV platform
  *
  * (C) Copyright IBM 2015
  *

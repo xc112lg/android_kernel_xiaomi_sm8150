@@ -114,19 +114,19 @@ static void __noreturn linkstation_power_off(void)
 {
 	local_irq_disable();
 
-	/* Power down system via AVR */
+/* Power down system via AVR */
 	avr_uart_configure();
 	/* send shutdown command */
 	avr_uart_send('E');
 
-	for(;;)  /* Spin until power-off happens */
+for(;;)  /* Spin until power-off happens */
 		avr_uart_send('G');	/* "kick" */
 	/* NOTREACHED */
 }
 
 static void __noreturn linkstation_halt(void)
 {
-	linkstation_power_off();
+linkstation_power_off();
 	/* NOTREACHED */
 }
 
@@ -141,7 +141,7 @@ static int __init linkstation_probe(void)
 	if (!of_machine_is_compatible("linkstation"))
 		return 0;
 
-	pm_power_off = linkstation_power_off;
+pm_power_off = linkstation_power_off;
 
 	return 1;
 }

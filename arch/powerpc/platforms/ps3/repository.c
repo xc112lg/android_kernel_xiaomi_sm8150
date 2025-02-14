@@ -1024,7 +1024,7 @@ int ps3_repository_read_tb_freq(u64 node_id, u64 *tb_freq)
 		node_id,
 		make_field("clock", 0),
 		0,
-		tb_freq, NULL);
+tb_freq, NULL);
 }
 
 int ps3_repository_read_be_tb_freq(unsigned int be_index, u64 *tb_freq)
@@ -1032,10 +1032,10 @@ int ps3_repository_read_be_tb_freq(unsigned int be_index, u64 *tb_freq)
 	int result;
 	u64 node_id;
 
-	*tb_freq = 0;
+*tb_freq = 0;
 	result = ps3_repository_read_be_node_id(be_index, &node_id);
 	return result ? result
-		: ps3_repository_read_tb_freq(node_id, tb_freq);
+: ps3_repository_read_tb_freq(node_id, tb_freq);
 }
 
 int ps3_repository_read_lpm_privileges(unsigned int be_index, u64 *lpar,

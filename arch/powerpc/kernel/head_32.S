@@ -1,17 +1,17 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
  *  Rewritten by Cort Dougan (cort@cs.nmt.edu) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@cs.nmt.edu>
- *  Adapted for Power Macintosh by Paul Mackerras.
+*  Adapted for Power Macintosh by Paul Mackerras.
  *  Low-level exception handlers and MMU support
  *  rewritten by Paul Mackerras.
  *    Copyright (C) 1996 Paul Mackerras.
  *  MPC8xx modifications Copyright (C) 1997 Dan Malek (dmalek@jlc.net).
  *
  *  This file contains the low-level support and setup for the
- *  PowerPC platform, including trap and interrupt dispatch.
+*  PowerPC platform, including trap and interrupt dispatch.
  *  (The PPC 8xx embedded CPUs use head_8xx.S instead.)
  *
  *  This program is free software; you can redistribute it and/or
@@ -54,14 +54,14 @@
 1:
 
 	__HEAD
-	.stabs	"arch/powerpc/kernel/",N_SO,0,0,0f
+.stabs	"arch/powerpc/kernel/",N_SO,0,0,0f
 	.stabs	"head_32.S",N_SO,0,0,0f
 0:
 _ENTRY(_stext);
 
 /*
  * _start is defined this way because the XCOFF loader in the OpenFirmware
- * on the powermac expects the entry point to be a procedure descriptor.
+* on the powermac expects the entry point to be a procedure descriptor.
  */
 _ENTRY(_start);
 	/*
@@ -128,7 +128,7 @@ __start:
 	trap
 
 /*
- * Check for BootX signature when supporting PowerMac and branch to
+* Check for BootX signature when supporting PowerMac and branch to
  * appropriate trampoline if it's present
  */
 #ifdef CONFIG_PPC_PMAC
@@ -819,7 +819,7 @@ __secondary_start_pmac_0:
 	b	1f
 	li	r24,3
 1:
-	/* on powersurge, we come in here with IR=0 and DR=1, and DBAT 0
+/* on powersurge, we come in here with IR=0 and DR=1, and DBAT 0
 	   set to map the 0xf0000000 - 0xffffffff region */
 	mfmsr	r0
 	rlwinm	r0,r0,0,28,26		/* clear DR (0x10) */

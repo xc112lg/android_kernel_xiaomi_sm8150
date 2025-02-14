@@ -136,7 +136,7 @@ static int ibus_lmt_change_timer;
 static struct power_supply *cp_get_sw_psy(void)
 {
 	if (!pm_state.sw_psy)
-		pm_state.sw_psy = power_supply_get_by_name("battery");
+pm_state.sw_psy = power_supply_get_by_name("battery");
 
 	return pm_state.sw_psy;
 }
@@ -144,7 +144,7 @@ static struct power_supply *cp_get_sw_psy(void)
 static struct power_supply *cp_get_usb_psy(void)
 {
 	if (!pm_state.usb_psy)
-		pm_state.usb_psy = power_supply_get_by_name("usb");
+pm_state.usb_psy = power_supply_get_by_name("usb");
 
 	return pm_state.usb_psy;
 }
@@ -152,7 +152,7 @@ static struct power_supply *cp_get_usb_psy(void)
 static struct power_supply *cp_get_bms_psy(void)
 {
 	if (!pm_state.bms_psy)
-		pm_state.bms_psy = power_supply_get_by_name("bms");
+pm_state.bms_psy = power_supply_get_by_name("bms");
 
 	return pm_state.bms_psy;
 }
@@ -178,10 +178,10 @@ static struct power_supply *cp_get_fc_psy(void)
 	if (!pm_state.fc_psy) {
 		if (sys_config.cp_sec_enable)
 			pm_state.fc_psy =
-				power_supply_get_by_name("bq2597x-master");
+power_supply_get_by_name("bq2597x-master");
 		else
 			pm_state.fc_psy =
-				power_supply_get_by_name("bq2597x-standalone");
+power_supply_get_by_name("bq2597x-standalone");
 	}
 
 	return pm_state.fc_psy;
@@ -190,8 +190,8 @@ static struct power_supply *cp_get_fc_psy(void)
 static void cp_update_bms_ibat(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -199,7 +199,7 @@ static void cp_update_bms_ibat(void)
 	if (!psy)
 		return;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CURRENT_NOW,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CURRENT_NOW,
 					&val);
 	if (!ret)
 		pm_state.ibat_now = -(val.intval / 1000);
@@ -207,7 +207,7 @@ static void cp_update_bms_ibat(void)
 
 static int qc3_get_bms_fastcharge_mode(void)
 {
-	union power_supply_propval pval = {
+union power_supply_propval pval = {
 		0,
 	};
 	int rc;
@@ -217,8 +217,8 @@ static int qc3_get_bms_fastcharge_mode(void)
 	if (!pm_state.bms_psy)
 		return 0;
 
-	rc = power_supply_get_property(
-		pm_state.bms_psy, POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
+rc = power_supply_get_property(
+pm_state.bms_psy, POWER_SUPPLY_PROP_FASTCHARGE_MODE, &pval);
 	if (rc < 0) {
 		pr_info("Couldn't get fastcharge mode:%d\n", rc);
 		return 0;
@@ -233,8 +233,8 @@ static int qc3_get_bms_fastcharge_mode(void)
 static int qc3_get_batt_current_thermal_level(int *level)
 {
 	int ret, rc;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -242,8 +242,8 @@ static int qc3_get_batt_current_thermal_level(int *level)
 	if (!psy)
 		return 0;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT, &val);
 
 	if (rc < 0) {
 		pr_info("Couldn't get themal level:%d\n", rc);
@@ -261,8 +261,8 @@ static bool qc3_disable_cp_by_jeita_status(void)
 {
 	int batt_temp = 0, bq_input_suspend = 0;
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -270,7 +270,7 @@ static bool qc3_disable_cp_by_jeita_status(void)
 	if (!psy)
 		return false;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_BQ_INPUT_SUSPEND,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_BQ_INPUT_SUSPEND,
 					&val);
 	if (!ret)
 		bq_input_suspend = !!val.intval;
@@ -279,7 +279,7 @@ static bool qc3_disable_cp_by_jeita_status(void)
 	if (!psy)
 		return false;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TEMP, &val);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TEMP, &val);
 
 	if (ret < 0) {
 		pr_info("Couldn't get batt temp prop:%d\n", ret);
@@ -314,8 +314,8 @@ static bool qc3_disable_cp_by_jeita_status(void)
 static int qc3_check_slowly_charging_enabled(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -323,7 +323,7 @@ static int qc3_check_slowly_charging_enabled(void)
 	if (!psy)
 		return false;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_SLOWLY_CHARGING,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_SLOWLY_CHARGING,
 					&val);
 	if (!ret)
 		pm_state.slowly_charging = !!val.intval;
@@ -334,8 +334,8 @@ static int qc3_check_slowly_charging_enabled(void)
 static void cp_get_batt_capacity(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -343,7 +343,7 @@ static void cp_get_batt_capacity(void)
 	if (!psy)
 		return;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CAPACITY, &val);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CAPACITY, &val);
 	if (!ret)
 		pm_state.capacity = val.intval;
 	pr_info("capacity %d\n", pm_state.capacity);
@@ -352,8 +352,8 @@ static void cp_get_batt_capacity(void)
 static void cp_update_fc_status(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -361,52 +361,52 @@ static void cp_update_fc_status(void)
 	if (!psy)
 		return;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE, &val);
 	if (!ret)
 		pm_state.bq2597x.vbat_volt = val.intval;
 
-	/*ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BATTERY_CURRENT, &val);
+/*ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BATTERY_CURRENT, &val);
 	if (!ret)
 		pm_state.bq2597x.ibat_curr = val.intval; */
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
 					&val);
 	if (!ret)
 		pm_state.bq2597x.vbus_volt = val.intval;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_CURRENT,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_BUS_CURRENT,
 					&val);
 	if (!ret)
 		pm_state.bq2597x.ibus_curr = val.intval;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE, &val);
 	if (!ret)
 		pm_state.bq2597x.bus_temp = val.intval;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE, &val);
 	if (!ret)
 		pm_state.bq2597x.bat_temp = val.intval;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE, &val);
 	if (!ret)
 		pm_state.bq2597x.die_temp = val.intval;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_TI_BATTERY_PRESENT, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_TI_BATTERY_PRESENT, &val);
 	if (!ret)
 		pm_state.bq2597x.batt_pres = val.intval;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_VBUS_PRESENT,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_VBUS_PRESENT,
 					&val);
 	if (!ret)
 		pm_state.bq2597x.vbus_pres = val.intval;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_TI_BUS_ERROR_STATUS, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_TI_BUS_ERROR_STATUS, &val);
 	if (!ret)
 		pm_state.bq2597x.bus_error_status = val.intval;
 
@@ -415,12 +415,12 @@ static void cp_update_fc_status(void)
 		pm_state.bq2597x.ibat_curr = pm_state.ibat_now;
 	}
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
 					&val);
 	if (!ret)
 		pm_state.bq2597x.charge_enabled = val.intval;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_ALARM_STATUS,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_ALARM_STATUS,
 					&val);
 	if (!ret) {
 		pm_state.bq2597x.bat_ovp_alarm =
@@ -441,7 +441,7 @@ static void cp_update_fc_status(void)
 			!!(val.intval & DIE_THERM_ALARM_MASK);
 	}
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_FAULT_STATUS,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_FAULT_STATUS,
 					&val);
 	if (!ret) {
 		pm_state.bq2597x.bat_ovp_fault =
@@ -460,7 +460,7 @@ static void cp_update_fc_status(void)
 			!!(val.intval & DIE_THERM_FAULT_MASK);
 	}
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_REG_STATUS,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TI_REG_STATUS,
 					&val);
 	if (!ret) {
 		pm_state.bq2597x.vbat_reg =
@@ -473,8 +473,8 @@ static void cp_update_fc_status(void)
 static int cp_enable_fc(bool enable)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -483,7 +483,7 @@ static int cp_enable_fc(bool enable)
 		return -ENODEV;
 
 	val.intval = enable;
-	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
+ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
 					&val);
 
 	return ret;
@@ -492,8 +492,8 @@ static int cp_enable_fc(bool enable)
 static int cp_set_qc_bus_protections(int hvdcp3_type)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -502,8 +502,8 @@ static int cp_set_qc_bus_protections(int hvdcp3_type)
 		return -ENODEV;
 
 	val.intval = hvdcp3_type;
-	ret = power_supply_set_property(
-		psy, POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3, &val);
+ret = power_supply_set_property(
+psy, POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3, &val);
 
 	return ret;
 }
@@ -511,8 +511,8 @@ static int cp_set_qc_bus_protections(int hvdcp3_type)
 static int cp_enable_sw(bool enable)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -521,8 +521,8 @@ static int cp_enable_sw(bool enable)
 		return -ENODEV;
 
 	val.intval = enable;
-	ret = power_supply_set_property(
-		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+ret = power_supply_set_property(
+psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
 
 	return ret;
 }
@@ -530,8 +530,8 @@ static int cp_enable_sw(bool enable)
 static int cp_limit_sw(bool enable)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -540,8 +540,8 @@ static int cp_limit_sw(bool enable)
 		return -ENODEV;
 
 	val.intval = enable;
-	ret = power_supply_set_property(
-		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED, &val);
+ret = power_supply_set_property(
+psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED, &val);
 
 	return ret;
 }
@@ -549,8 +549,8 @@ static int cp_limit_sw(bool enable)
 static int cp_check_fc_enabled(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -558,7 +558,7 @@ static int cp_check_fc_enabled(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_CHARGING_ENABLED,
 					&val);
 	if (!ret)
 		pm_state.bq2597x.charge_enabled = !!val.intval;
@@ -571,8 +571,8 @@ static int cp_check_fc_enabled(void)
 static int cp_check_sw_enabled(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -580,8 +580,8 @@ static int cp_check_sw_enabled(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED, &val);
 	if (!ret)
 		pm_state.sw_chager.charge_enabled = !!val.intval;
 
@@ -593,8 +593,8 @@ static int cp_check_sw_enabled(void)
 static int cp_check_sw_limited(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -602,8 +602,8 @@ static int cp_check_sw_limited(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(
-		psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED, &val);
+ret = power_supply_get_property(
+psy, POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED, &val);
 	if (!ret)
 		pm_state.sw_chager.charge_limited = !!val.intval;
 
@@ -621,8 +621,8 @@ static void cp_update_sw_status(void)
 static int cp_tune_vbus_volt(bool up)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -631,13 +631,13 @@ static int cp_tune_vbus_volt(bool up)
 		return -ENODEV;
 
 	if (up)
-		val.intval = POWER_SUPPLY_DP_DM_DP_PULSE;
+val.intval = POWER_SUPPLY_DP_DM_DP_PULSE;
 	else
-		val.intval = POWER_SUPPLY_DP_DM_DM_PULSE;
+val.intval = POWER_SUPPLY_DP_DM_DM_PULSE;
 
-	ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
 
-	pr_info("tune adapter voltage %s %s\n", up ? "up" : "down",
+pr_info("tune adapter voltage %s %s\n", up ? "up" : "down",
 		ret ? "fail" : "successfully");
 
 	return ret;
@@ -646,8 +646,8 @@ static int cp_tune_vbus_volt(bool up)
 static int cp_get_qc_pulse_cnt(void)
 {
 	int ret = 0, cnt = 0;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -655,7 +655,7 @@ static int cp_get_qc_pulse_cnt(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ, &val);
 	if (!ret)
 		cnt = val.intval;
 
@@ -667,12 +667,12 @@ static int cp_reset_vbus_volt(void)
 {
 	int ret;
 	int qc3p5_reset_vbus_retry = 0;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
-	if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 		cp_update_fc_status();
 		pr_err("vbat=%d,vbus=%d\n", pm_state.bq2597x.vbat_volt,
 		       pm_state.bq2597x.vbus_volt);
@@ -694,9 +694,9 @@ static int cp_reset_vbus_volt(void)
 		if (!psy)
 			return -ENODEV;
 
-		val.intval = POWER_SUPPLY_DP_DM_FORCE_5V;
+val.intval = POWER_SUPPLY_DP_DM_FORCE_5V;
 
-		ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ,
+ret = power_supply_set_property(psy, POWER_SUPPLY_PROP_DP_DM_BQ,
 						&val);
 
 		pr_err("reset vbus volt %s\n", ret ? "fail" : "successfully");
@@ -708,8 +708,8 @@ static int cp_reset_vbus_volt(void)
 static int cp_get_usb_type(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -717,7 +717,7 @@ static int cp_get_usb_type(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_REAL_TYPE, &val);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_REAL_TYPE, &val);
 	if (!ret)
 		pm_state.usb_type = val.intval;
 
@@ -727,8 +727,8 @@ static int cp_get_usb_type(void)
 static int cp_get_usb_present(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -736,7 +736,7 @@ static int cp_get_usb_present(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT, &val);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT, &val);
 	if (!ret)
 		pm_state.usb_present = val.intval;
 
@@ -746,8 +746,8 @@ static int cp_get_usb_present(void)
 static int cp_get_qc_hvdcp3_type(void)
 {
 	int ret;
-	struct power_supply *psy;
-	union power_supply_propval val = {
+struct power_supply *psy;
+union power_supply_propval val = {
 		0,
 	};
 
@@ -755,7 +755,7 @@ static int cp_get_qc_hvdcp3_type(void)
 	if (!psy)
 		return -ENODEV;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_HVDCP3_TYPE,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_HVDCP3_TYPE,
 					&val);
 	if (!ret)
 		pm_state.hvdcp3_type = val.intval;
@@ -798,7 +798,7 @@ static int cp_flash2_charge(unsigned int port)
 	ibat_limit = min(effective_fcc_val, sys_config.bat_curr_lp_lmt);
 	if (!pm_state.batt_cell_volt_triggered) {
 		cp_get_batt_capacity();
-		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 			if (pm_state.bq2597x.vbat_volt >= 4250 ||
 			    pm_state.capacity > 40) {
 				sys_config.ibus_minus_deviation_val =
@@ -812,7 +812,7 @@ static int cp_flash2_charge(unsigned int port)
 				pm_state.batt_cell_volt_triggered = true;
 				pr_info("for qc3.5, cell_vbat > 4250mv or soc > 40%, modify bq adjust params\n");
 			}
-		} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
+} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
 			if (pm_state.bq2597x.vbat_volt >= 4200 ||
 			    pm_state.capacity > 29) {
 				sys_config.ibus_minus_deviation_val =
@@ -841,7 +841,7 @@ static int cp_flash2_charge(unsigned int port)
 	    !pm_state.bq2597x.bus_ovp_alarm &&
 	    pm_state.bq2597x.vbat_volt < sys_config.bat_volt_lp_lmt - 50 &&
 	    pm_state.bq2597x.ibat_curr < sys_config.bat_curr_lp_lmt &&
-	    pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
+pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
 
 		cp_tune_vbus_volt(VOLT_UP);
 
@@ -986,8 +986,8 @@ void cp_statemachine(unsigned int port)
 		pr_info("is_temp_out_fc2_range:%d\n",
 			pm_state.is_temp_out_fc2_range);
 
-		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 ||
-		    pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 ||
+pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 			pr_info("vbus_volt:%d\n", pm_state.bq2597x.vbus_volt);
 			cp_reset_vbus_volt();
 			msleep(100);
@@ -1151,17 +1151,17 @@ void cp_statemachine(unsigned int port)
 					pm_state.bq2597x.vbus_volt,
 					tune_vbus_retry);
 			} else {
-				pr_err("vbus:%d, tuned above expected voltage, retry_times:%d\n",
+pr_err("vbus:%d, tuned above expected voltage, retry_times:%d\n",
 				       pm_state.bq2597x.vbus_volt,
 				       tune_vbus_retry);
 				cp_move_state(CP_STATE_FLASH2_ENTRY_3);
 				break;
 			}
 			if ((pm_state.usb_type ==
-				     POWER_SUPPLY_TYPE_USB_HVDCP_3 &&
+POWER_SUPPLY_TYPE_USB_HVDCP_3 &&
 			     tune_vbus_retry > MAX_PLUSE_COUNT_ALLOWED) ||
 			    (pm_state.usb_type ==
-				     POWER_SUPPLY_TYPE_USB_HVDCP_3P5 &&
+POWER_SUPPLY_TYPE_USB_HVDCP_3P5 &&
 			     tune_vbus_retry >
 				     MAX_HVDCP3P5_PLUSE_COUNT_ALLOWED)) {
 				pr_err("Failed to tune adapter volt into valid range, charge with switching charger\n");
@@ -1177,7 +1177,7 @@ void cp_statemachine(unsigned int port)
 				tune_vbus_retry++;
 				cp_tune_vbus_volt(VOLT_UP);
 			} else {
-				pr_err("voltage tuned above expected voltage, retry %d times\n",
+pr_err("voltage tuned above expected voltage, retry %d times\n",
 				       tune_vbus_retry);
 				cp_move_state(CP_STATE_FLASH2_ENTRY_3);
 				break;
@@ -1238,7 +1238,7 @@ void cp_statemachine(unsigned int port)
 			    (pm_state.bq2597x.vbat_volt * 2 + BUS_VOLT_INIT_UP +
 			     200)) {
 				pr_err("vbat volt is too high, wait it down\n");
-				/* voltage is too high, wait for voltage down, keep charge disabled to discharge */
+/* voltage is too high, wait for voltage down, keep charge disabled to discharge */
 			} else {
 				pr_err("vbat volt is ok, enable flash charging\n");
 				if (!pm_state.bq2597x.charge_enabled) {
@@ -1315,7 +1315,7 @@ void cp_statemachine(unsigned int port)
 static void cp_workfunc(struct work_struct *work)
 {
 #ifdef CONFIG_CHARGER_LN8000
-	struct power_supply *onsemi_psy;
+struct power_supply *onsemi_psy;
 #endif
 	cp_get_usb_type();
 
@@ -1330,16 +1330,16 @@ static void cp_workfunc(struct work_struct *work)
 	if (pm_state.usb_present == 0) {
 		cp_set_qc_bus_protections(HVDCP3_NONE);
 #ifdef CONFIG_CHARGER_LN8000
-		onsemi_psy = power_supply_get_by_name("ln8000");
+onsemi_psy = power_supply_get_by_name("ln8000");
 		if (onsemi_psy)
 			pm_state.state = CP_STATE_DISCONNECT;
 #endif
 		return;
 	}
 
-	if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
+if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
 		schedule_delayed_work(&pm_state.qc3_pm_work, HZ);
-	} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 		schedule_delayed_work(&pm_state.qc3_pm_work,
 				      msecs_to_jiffies(PM_WORK_TIME_100MS));
 	}
@@ -1348,14 +1348,14 @@ static void cp_workfunc(struct work_struct *work)
 static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 				 void *v)
 {
-	struct power_supply *psy = v;
+struct power_supply *psy = v;
 	static bool usb_hvdcp3_on;
 	if (ev != PSY_EVENT_PROP_CHANGED)
 		return NOTIFY_OK;
 
 	if (strcmp(psy->desc->name, "usb") == 0) {
 		cp_get_usb_type();
-		if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
+if (pm_state.usb_type == POWER_SUPPLY_TYPE_USB_HVDCP_3) {
 			if (!usb_hvdcp3_on) {
 				schedule_delayed_work(&pm_state.qc3_pm_work,
 						      3 * HZ);
@@ -1366,7 +1366,7 @@ static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 			}
 		} else if (sys_config.qc3p5_supported &&
 			   pm_state.usb_type ==
-				   POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 			if (!usb_hvdcp3_on) {
 				schedule_delayed_work(&pm_state.qc3_pm_work,
 						      HZ);
@@ -1375,7 +1375,7 @@ static int cp_qc30_notifier_call(struct notifier_block *nb, unsigned long ev,
 				schedule_delayed_work(&pm_state.qc3_pm_work,
 						      msecs_to_jiffies(100));
 			}
-		} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_UNKNOWN &&
+} else if (pm_state.usb_type == POWER_SUPPLY_TYPE_UNKNOWN &&
 			   usb_hvdcp3_on == true) {
 			cancel_delayed_work(&pm_state.qc3_pm_work);
 			schedule_delayed_work(&pm_state.qc3_pm_work, 0);
@@ -1392,7 +1392,7 @@ static int cp_qc30_register_notifier(struct cp_qc30_data *chip)
 	int rc;
 
 	chip->nb.notifier_call = cp_qc30_notifier_call;
-	rc = power_supply_reg_notifier(&chip->nb);
+rc = power_supply_reg_notifier(&chip->nb);
 	if (rc < 0) {
 		pr_err("Couldn't register psy notifier rc = %d\n", rc);
 		return rc;
@@ -1479,7 +1479,7 @@ static int cp_qc30_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, chip);
 
 	pm_state.state = CP_STATE_DISCONNECT;
-	pm_state.usb_type = POWER_SUPPLY_TYPE_UNKNOWN;
+pm_state.usb_type = POWER_SUPPLY_TYPE_UNKNOWN;
 	pm_state.ibus_lmt_curr = sys_config.bus_curr_lp_lmt;
 
 	INIT_DELAYED_WORK(&pm_state.qc3_pm_work, cp_workfunc);

@@ -31,29 +31,29 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8572@0 {
+PowerPC,8572@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;	// 32 bytes
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <0x8000>;		// L1, 32K
 			i-cache-size = <0x8000>;		// L1, 32K
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			next-level-cache = <&L2>;
 		};
 
-		PowerPC,8572@1 {
+PowerPC,8572@1 {
 			device_type = "cpu";
 			reg = <0x1>;
 			d-cache-line-size = <32>;	// 32 bytes
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <0x8000>;		// L1, 32K
 			i-cache-size = <0x8000>;		// L1, 32K
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			next-level-cache = <&L2>;
 		};
 	};
@@ -162,7 +162,7 @@
 		device_type = "soc";
 		compatible = "fsl,mpc8572-immr", "simple-bus";
 		ranges = <0x0 0 0xef000000 0x100000>;
-		bus-frequency = <0>;		// Filled out by uboot.
+bus-frequency = <0>;		// Filled out by uboot.
 
 		ecm-law@0 {
 			compatible = "fsl,ecm-law";
@@ -443,7 +443,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
 		};
@@ -454,7 +454,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
 		};
@@ -575,7 +575,7 @@
 		bus-range = <0 255>;
 		ranges = <0x2000000 0x0 0xc0000000 0 0xc0000000 0x0 0x10000000
 			  0x1000000 0x0 0x00000000 0 0xe8800000 0x0 0x00010000>;
-		clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 		interrupt-parent = <&mpic>;
 		interrupts = <25 2>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
@@ -612,7 +612,7 @@
 		bus-range = <0 255>;
 		ranges = <0x2000000 0x0 0x80000000 0 0x80000000 0x0 0x40000000
 			  0x1000000 0x0 0x00000000 0 0xe8000000 0x0 0x10000>;
-		clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 		interrupt-parent = <&mpic>;
 		interrupts = <26 2>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;

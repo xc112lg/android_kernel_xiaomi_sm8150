@@ -1,5 +1,5 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *  Rewritten by Cort Dougan (cort@cs.nmt.edu) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@cs.nmt.edu>
@@ -9,7 +9,7 @@
  *  MPC8xx modifications by Dan Malek
  *    Copyright (C) 1997 Dan Malek (dmalek@jlc.net).
  *
- *  This file contains low-level support and setup for PowerPC 8xx
+*  This file contains low-level support and setup for PowerPC 8xx
  *  embedded processors, including trap and interrupt dispatch.
  *
  *  This program is free software; you can redistribute it and/or

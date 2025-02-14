@@ -190,10 +190,10 @@ int wakeup_source_sysfs_add(struct device *parent, struct wakeup_source *ws)
  */
 int pm_wakeup_source_sysfs_add(struct device *parent)
 {
-	if (!parent->power.wakeup || parent->power.wakeup->dev)
+if (!parent->power.wakeup || parent->power.wakeup->dev)
 		return 0;
 
-	return wakeup_source_sysfs_add(parent, parent->power.wakeup);
+return wakeup_source_sysfs_add(parent, parent->power.wakeup);
 }
 
 /**

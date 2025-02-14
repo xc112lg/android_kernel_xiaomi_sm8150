@@ -145,7 +145,7 @@ static int store_cycle_count(struct cycle_counter *counter, int id)
  * cycle_count_update -
  * @counter: Cycle counter object
  * @batt_soc: Battery State of Charge (SOC)
- * @charge_status: Charging status from power supply
+* @charge_status: Charging status from power supply
  * @charge_done: Indicator for charge termination
  * @input_present: Indicator for input presence
  *
@@ -165,7 +165,7 @@ void cycle_count_update(struct cycle_counter *counter, int batt_soc,
 	/* Find out which id the SOC falls in */
 	id = batt_soc / BUCKET_SOC_PCT;
 
-	if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
+if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
 		if (!counter->started[id] && id != counter->last_bucket) {
 			counter->started[id] = true;
 			counter->last_soc[id] = batt_soc;
@@ -621,7 +621,7 @@ static void cap_wt_learning_update(struct cap_learning *cl, int batt_soc_cp,
  * @cl: Capacity learning object
  * @batt_temp - Battery temperature
  * @batt_soc: Battery State of Charge (SOC)
- * @charge_status: Charging status from power supply
+* @charge_status: Charging status from power supply
  * @charge_done: Indicator for charge termination
  * @input_present: Indicator for input presence
  * @qnovo_en: Indicator for Qnovo enable status
@@ -657,11 +657,11 @@ void cap_learning_update(struct cap_learning *cl, int batt_temp,
 
 	/* Initialize the starting point of learning capacity */
 	if (!cl->active) {
-		if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
+if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
 			rc = cap_learning_begin(cl, batt_soc_cp);
 			cl->active = (rc == 0);
 		} else {
-			if (charge_status == POWER_SUPPLY_STATUS_DISCHARGING ||
+if (charge_status == POWER_SUPPLY_STATUS_DISCHARGING ||
 				charge_done)
 				prime_cc = true;
 		}
@@ -676,7 +676,7 @@ void cap_learning_update(struct cap_learning *cl, int batt_temp,
 			cl->init_cap_uah = 0;
 		}
 
-		if (charge_status == POWER_SUPPLY_STATUS_DISCHARGING &&
+if (charge_status == POWER_SUPPLY_STATUS_DISCHARGING &&
 				!input_present) {
 			pr_debug("Capacity learning aborted @ battery SOC %d\n",
 				 batt_soc_cp);
@@ -685,7 +685,7 @@ void cap_learning_update(struct cap_learning *cl, int batt_temp,
 			prime_cc = true;
 		}
 
-		if (charge_status == POWER_SUPPLY_STATUS_NOT_CHARGING &&
+if (charge_status == POWER_SUPPLY_STATUS_NOT_CHARGING &&
 				!cl->dt.cl_wt_enable) {
 			if (qnovo_en && input_present) {
 				/*
@@ -864,7 +864,7 @@ static int soh_get_batt_age_level(struct soh_profile *sp, int soh,
  */
 int soh_profile_update(struct soh_profile *sp, int new_soh)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc, batt_age_level = 0;
 
 	if (!sp->bms_psy)
@@ -887,8 +887,8 @@ int soh_profile_update(struct soh_profile *sp, int new_soh)
 
 	if (batt_age_level != sp->last_batt_age_level) {
 		pval.intval = batt_age_level;
-		rc = power_supply_set_property(sp->bms_psy,
-			POWER_SUPPLY_PROP_BATT_AGE_LEVEL, &pval);
+rc = power_supply_set_property(sp->bms_psy,
+POWER_SUPPLY_PROP_BATT_AGE_LEVEL, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't set batt_age_level rc=%d\n", rc);
 			return rc;
@@ -909,7 +909,7 @@ int soh_profile_update(struct soh_profile *sp, int new_soh)
  *
  * FG/QG have to call this after parsing battery profile node and multiple
  * profile load feature is enabled. SOH profile object should have atleast
- * the power supply of FG/QG and battery profile node. SOH specific range
+* the power supply of FG/QG and battery profile node. SOH specific range
  * data is allocated by this function.
  *
  */
@@ -1054,7 +1054,7 @@ static int get_step_chg_current_window(struct ttf *ttf)
 	if (ttf->mode == TTF_MODE_VBAT_STEP_CHG) {
 		rc =  ttf->get_ttf_param(ttf->data, TTF_VBAT, &vbatt);
 		if (rc < 0) {
-			pr_err("failed to get battery voltage, rc=%d\n", rc);
+pr_err("failed to get battery voltage, rc=%d\n", rc);
 			return rc;
 		}
 	} else {
@@ -1087,7 +1087,7 @@ static int get_time_to_full_locked(struct ttf *ttf, int *val)
 		t_predicted_cv, t_predicted = 0, charge_type = 0, i_step,
 		float_volt_uv = 0, valid = 0, charge_status = 0;
 	int multiplier, curr_window = 0, pbatt_avg;
-	bool power_approx = false;
+bool power_approx = false;
 	s64 delta_ms;
 
 	rc = ttf->get_ttf_param(ttf->data, TTF_TTE_VALID, &valid);
@@ -1107,7 +1107,7 @@ static int get_time_to_full_locked(struct ttf *ttf, int *val)
 		return rc;
 	}
 
-	if (charge_status != POWER_SUPPLY_STATUS_CHARGING) {
+if (charge_status != POWER_SUPPLY_STATUS_CHARGING) {
 		*val = -1;
 		return 0;
 	}
@@ -1217,7 +1217,7 @@ static int get_time_to_full_locked(struct ttf *ttf, int *val)
 	pr_debug("TTF: i_cc2cv=%d\n", i_cc2cv);
 
 	/* if we are already in CV state then we can skip estimating CC */
-	if (charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER)
+if (charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER)
 		goto cv_estimate;
 
 	/* estimated SOC at the CC to CV transition */
@@ -1276,15 +1276,15 @@ static int get_time_to_full_locked(struct ttf *ttf, int *val)
 		for (i = 0; i < ttf->step_chg_num_params; i++) {
 			/*
 			 * If Ibatt_avg differs by step charging threshold by
-			 * more than 100 mA, then use power approximation to
+* more than 100 mA, then use power approximation to
 			 * get charging current step.
 			 */
 
 			if (step_chg_cfg[i].value - ibatt_avg > 100)
-				power_approx = true;
+power_approx = true;
 
 			/* Calculate OCV for each window */
-			if (power_approx) {
+if (power_approx) {
 				i_step = pbatt_avg / max(MILLI_UNIT,
 					(step_chg_cfg[i].high_threshold /
 						MILLI_UNIT));
@@ -1347,14 +1347,14 @@ static int get_time_to_full_locked(struct ttf *ttf, int *val)
 cv_estimate:
 	pr_debug("TTF: t_predicted_cc=%d\n", t_predicted);
 
-	if (charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER)
+if (charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER)
 		iterm = max(100, abs(iterm));
 	else
 		iterm = max(100, abs(iterm) + ttf->iterm_delta);
 
 	pr_debug("TTF: iterm=%d\n", iterm);
 
-	if (charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER)
+if (charge_type == POWER_SUPPLY_CHARGE_TYPE_TAPER)
 		tau = max(MILLI_UNIT, ibatt_avg * MILLI_UNIT / iterm);
 	else
 		tau = max(MILLI_UNIT, i_cc2cv * MILLI_UNIT / iterm);
@@ -1412,7 +1412,7 @@ cv_estimate:
  * @val: Average time to full returned to the caller
  *
  * Get Average time to full the battery based on current soc, rbatt
- * battery voltage and charge current etc.
+* battery voltage and charge current etc.
  */
 int ttf_get_time_to_full(struct ttf *ttf, int *val)
 {
@@ -1439,8 +1439,8 @@ static void ttf_work(struct work_struct *work)
 		pr_err("failed to get charge_status rc=%d\n", rc);
 		goto end_work;
 	}
-	if (charge_status != POWER_SUPPLY_STATUS_CHARGING &&
-			charge_status != POWER_SUPPLY_STATUS_DISCHARGING)
+if (charge_status != POWER_SUPPLY_STATUS_CHARGING &&
+charge_status != POWER_SUPPLY_STATUS_DISCHARGING)
 		goto end_work;
 
 	rc =  ttf->get_ttf_param(ttf->data, TTF_IBAT, &ibatt_now);
@@ -1451,14 +1451,14 @@ static void ttf_work(struct work_struct *work)
 
 	rc =  ttf->get_ttf_param(ttf->data, TTF_VBAT, &vbatt_now);
 	if (rc < 0) {
-		pr_err("failed to get battery voltage, rc=%d\n", rc);
+pr_err("failed to get battery voltage, rc=%d\n", rc);
 		goto end_work;
 	}
 
 	ttf_circ_buf_add(&ttf->ibatt, ibatt_now);
 	ttf_circ_buf_add(&ttf->vbatt, vbatt_now);
 
-	if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
+if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
 		rc = ttf_circ_buf_median(&ttf->ibatt, &ibatt_avg);
 		if (rc < 0) {
 			pr_err("failed to get IBATT AVG rc=%d\n", rc);
@@ -1539,7 +1539,7 @@ int ttf_get_time_to_empty(struct ttf *ttf, int *val)
 		return rc;
 	}
 
-	if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
+if (charge_status == POWER_SUPPLY_STATUS_CHARGING) {
 		*val = -1;
 		return 0;
 	}

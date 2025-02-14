@@ -1,5 +1,5 @@
 /*
- * TI CPUFreq/OPP hw-supported driver
+* TI CPUFreq/OPP hw-supported driver
  *
  * Copyright (C) 2016-2017 Texas Instruments, Inc.
  *	 Dave Gerlach <d-gerlach@ti.com>
@@ -43,7 +43,7 @@
 struct ti_cpufreq_data;
 
 struct ti_cpufreq_soc_data {
-	unsigned long (*efuse_xlate)(struct ti_cpufreq_data *opp_data,
+unsigned long (*efuse_xlate)(struct ti_cpufreq_data *opp_data,
 				     unsigned long efuse);
 	unsigned long efuse_fallback;
 	unsigned long efuse_offset;
@@ -56,7 +56,7 @@ struct ti_cpufreq_data {
 	struct device *cpu_dev;
 	struct device_node *opp_node;
 	struct regmap *syscon;
-	const struct ti_cpufreq_soc_data *soc_data;
+const struct ti_cpufreq_soc_data *soc_data;
 };
 
 static unsigned long amx3_efuse_xlate(struct ti_cpufreq_data *opp_data,
@@ -91,7 +91,7 @@ static unsigned long dra7_efuse_xlate(struct ti_cpufreq_data *opp_data,
 
 static struct ti_cpufreq_soc_data am3x_soc_data = {
 	.efuse_xlate = amx3_efuse_xlate,
-	.efuse_fallback = AM33XX_800M_ARM_MPU_MAX_FREQ,
+.efuse_fallback = AM33XX_800M_ARM_MPU_MAX_FREQ,
 	.efuse_offset = 0x07fc,
 	.efuse_mask = 0x1fff,
 	.rev_offset = 0x600,
@@ -99,7 +99,7 @@ static struct ti_cpufreq_soc_data am3x_soc_data = {
 
 static struct ti_cpufreq_soc_data am4x_soc_data = {
 	.efuse_xlate = amx3_efuse_xlate,
-	.efuse_fallback = AM43XX_600M_ARM_MPU_MAX_FREQ,
+.efuse_fallback = AM43XX_600M_ARM_MPU_MAX_FREQ,
 	.efuse_offset = 0x0610,
 	.efuse_mask = 0x3f,
 	.rev_offset = 0x600,
@@ -114,8 +114,8 @@ static struct ti_cpufreq_soc_data dra7_soc_data = {
 };
 
 /**
- * ti_cpufreq_get_efuse() - Parse and return efuse value present on SoC
- * @opp_data: pointer to ti_cpufreq_data context
+* ti_cpufreq_get_efuse() - Parse and return efuse value present on SoC
+* @opp_data: pointer to ti_cpufreq_data context
  * @efuse_value: Set to the value parsed from efuse
  *
  * Returns error code if efuse not read properly.
@@ -145,8 +145,8 @@ static int ti_cpufreq_get_efuse(struct ti_cpufreq_data *opp_data,
 }
 
 /**
- * ti_cpufreq_get_rev() - Parse and return rev value present on SoC
- * @opp_data: pointer to ti_cpufreq_data context
+* ti_cpufreq_get_rev() - Parse and return rev value present on SoC
+* @opp_data: pointer to ti_cpufreq_data context
  * @revision_value: Set to the value parsed from revision register
  *
  * Returns error code if revision not read properly.
@@ -200,11 +200,11 @@ static int ti_cpufreq_init(void)
 	u32 version[VERSION_COUNT];
 	struct device_node *np;
 	const struct of_device_id *match;
-	struct ti_cpufreq_data *opp_data;
+struct ti_cpufreq_data *opp_data;
 	int ret;
 
 	np = of_find_node_by_path("/");
-	match = of_match_node(ti_cpufreq_of_match, np);
+match = of_match_node(ti_cpufreq_of_match, np);
 	of_node_put(np);
 	if (!match)
 		return -ENODEV;
@@ -224,11 +224,11 @@ static int ti_cpufreq_init(void)
 	opp_data->opp_node = dev_pm_opp_of_get_opp_desc_node(opp_data->cpu_dev);
 	if (!opp_data->opp_node) {
 		dev_info(opp_data->cpu_dev,
-			 "OPP-v2 not supported, cpufreq-dt will attempt to use legacy tables.\n");
-		goto register_cpufreq_dt;
+"OPP-v2 not supported, cpufreq-dt will attempt to use legacy tables.\n");
+goto register_cpufreq_dt;
 	}
 
-	ret = ti_cpufreq_setup_syscon_register(opp_data);
+ret = ti_cpufreq_setup_syscon_register(opp_data);
 	if (ret)
 		goto fail_put_node;
 
@@ -238,11 +238,11 @@ static int ti_cpufreq_init(void)
 	 *	0 - SoC Revision
 	 *	1 - eFuse value
 	 */
-	ret = ti_cpufreq_get_rev(opp_data, &version[0]);
+ret = ti_cpufreq_get_rev(opp_data, &version[0]);
 	if (ret)
 		goto fail_put_node;
 
-	ret = ti_cpufreq_get_efuse(opp_data, &version[1]);
+ret = ti_cpufreq_get_efuse(opp_data, &version[1]);
 	if (ret)
 		goto fail_put_node;
 
@@ -257,7 +257,7 @@ static int ti_cpufreq_init(void)
 	of_node_put(opp_data->opp_node);
 
 register_cpufreq_dt:
-	platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
+platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
 
 	return 0;
 

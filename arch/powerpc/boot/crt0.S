@@ -1,7 +1,7 @@
 /*
  * Copyright (C) Paul Mackerras 1997.
  *
- * Adapted for 64 bit LE PowerPC by Andrew Tauferner
+* Adapted for 64 bit LE PowerPC by Andrew Tauferner
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

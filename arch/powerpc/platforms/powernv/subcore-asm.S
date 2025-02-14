@@ -57,7 +57,7 @@ real_mode:
 	li	r4, SYNC_STEP_REAL_MODE
 	stb	r4, 0(r3)
 
-	li	r5, (HID0_POWER8_4LPARMODE | HID0_POWER8_2LPARMODE)@highest
+li	r5, (HID0_POWER8_4LPARMODE | HID0_POWER8_2LPARMODE)@highest
 	sldi	r5, r5, 48
 
 	/* Loop until we see the split happen in HID0 */

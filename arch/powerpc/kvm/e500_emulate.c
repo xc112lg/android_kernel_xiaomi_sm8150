@@ -4,7 +4,7 @@
  * Author: Yu Liu, <yu.liu@freescale.com>
  *
  * Description:
- * This file is derived from arch/powerpc/kvm/44x_emulate.c,
+* This file is derived from arch/powerpc/kvm/44x_emulate.c,
  * by Hollis Blanchard <hollisb@us.ibm.com>.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -271,7 +271,7 @@ int kvmppc_core_emulate_mtspr_e500(struct kvm_vcpu *vcpu, int sprn, ulong spr_va
 
 	case SPRN_PWRMGTCR0:
 		/*
-		 * Guest relies on host power management configurations
+* Guest relies on host power management configurations
 		 * Treat the request as a general store
 		 */
 		vcpu->arch.pwrmgtcr0 = spr_val;

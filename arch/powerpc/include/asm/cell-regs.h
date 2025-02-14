@@ -100,7 +100,7 @@ struct cbe_pmd_regs {
 	u64	tm_str2;					/* 0x0870 */
 	union	ppe_spe_reg tm_tsr;				/* 0x0878 */
 
-	/* Power Management */
+/* Power Management */
 	u64	pmcr;						/* 0x0880 */
 #define CBE_PMD_PAUSE_ZERO_CONTROL	0x10000
 	u64	pmsr;						/* 0x0888 */

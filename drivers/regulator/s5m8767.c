@@ -83,47 +83,47 @@ static const struct sec_voltage_desc ldo_voltage_val2 = {
 };
 
 static const struct sec_voltage_desc *reg_voltage_map[] = {
-	[S5M8767_LDO1] = &ldo_voltage_val2,
-	[S5M8767_LDO2] = &ldo_voltage_val2,
-	[S5M8767_LDO3] = &ldo_voltage_val1,
-	[S5M8767_LDO4] = &ldo_voltage_val1,
-	[S5M8767_LDO5] = &ldo_voltage_val1,
-	[S5M8767_LDO6] = &ldo_voltage_val2,
-	[S5M8767_LDO7] = &ldo_voltage_val2,
-	[S5M8767_LDO8] = &ldo_voltage_val2,
-	[S5M8767_LDO9] = &ldo_voltage_val1,
-	[S5M8767_LDO10] = &ldo_voltage_val1,
-	[S5M8767_LDO11] = &ldo_voltage_val1,
-	[S5M8767_LDO12] = &ldo_voltage_val1,
-	[S5M8767_LDO13] = &ldo_voltage_val1,
-	[S5M8767_LDO14] = &ldo_voltage_val1,
-	[S5M8767_LDO15] = &ldo_voltage_val2,
-	[S5M8767_LDO16] = &ldo_voltage_val1,
-	[S5M8767_LDO17] = &ldo_voltage_val1,
-	[S5M8767_LDO18] = &ldo_voltage_val1,
-	[S5M8767_LDO19] = &ldo_voltage_val1,
-	[S5M8767_LDO20] = &ldo_voltage_val1,
-	[S5M8767_LDO21] = &ldo_voltage_val1,
-	[S5M8767_LDO22] = &ldo_voltage_val1,
-	[S5M8767_LDO23] = &ldo_voltage_val1,
-	[S5M8767_LDO24] = &ldo_voltage_val1,
-	[S5M8767_LDO25] = &ldo_voltage_val1,
-	[S5M8767_LDO26] = &ldo_voltage_val1,
-	[S5M8767_LDO27] = &ldo_voltage_val1,
-	[S5M8767_LDO28] = &ldo_voltage_val1,
-	[S5M8767_BUCK1] = &buck_voltage_val1,
-	[S5M8767_BUCK2] = &buck_voltage_val2,
-	[S5M8767_BUCK3] = &buck_voltage_val2,
-	[S5M8767_BUCK4] = &buck_voltage_val2,
-	[S5M8767_BUCK5] = &buck_voltage_val1,
-	[S5M8767_BUCK6] = &buck_voltage_val1,
-	[S5M8767_BUCK7] = &buck_voltage_val3,
-	[S5M8767_BUCK8] = &buck_voltage_val3,
-	[S5M8767_BUCK9] = &buck_voltage_val3,
+[S5M8767_LDO1] = &ldo_voltage_val2,
+[S5M8767_LDO2] = &ldo_voltage_val2,
+[S5M8767_LDO3] = &ldo_voltage_val1,
+[S5M8767_LDO4] = &ldo_voltage_val1,
+[S5M8767_LDO5] = &ldo_voltage_val1,
+[S5M8767_LDO6] = &ldo_voltage_val2,
+[S5M8767_LDO7] = &ldo_voltage_val2,
+[S5M8767_LDO8] = &ldo_voltage_val2,
+[S5M8767_LDO9] = &ldo_voltage_val1,
+[S5M8767_LDO10] = &ldo_voltage_val1,
+[S5M8767_LDO11] = &ldo_voltage_val1,
+[S5M8767_LDO12] = &ldo_voltage_val1,
+[S5M8767_LDO13] = &ldo_voltage_val1,
+[S5M8767_LDO14] = &ldo_voltage_val1,
+[S5M8767_LDO15] = &ldo_voltage_val2,
+[S5M8767_LDO16] = &ldo_voltage_val1,
+[S5M8767_LDO17] = &ldo_voltage_val1,
+[S5M8767_LDO18] = &ldo_voltage_val1,
+[S5M8767_LDO19] = &ldo_voltage_val1,
+[S5M8767_LDO20] = &ldo_voltage_val1,
+[S5M8767_LDO21] = &ldo_voltage_val1,
+[S5M8767_LDO22] = &ldo_voltage_val1,
+[S5M8767_LDO23] = &ldo_voltage_val1,
+[S5M8767_LDO24] = &ldo_voltage_val1,
+[S5M8767_LDO25] = &ldo_voltage_val1,
+[S5M8767_LDO26] = &ldo_voltage_val1,
+[S5M8767_LDO27] = &ldo_voltage_val1,
+[S5M8767_LDO28] = &ldo_voltage_val1,
+[S5M8767_BUCK1] = &buck_voltage_val1,
+[S5M8767_BUCK2] = &buck_voltage_val2,
+[S5M8767_BUCK3] = &buck_voltage_val2,
+[S5M8767_BUCK4] = &buck_voltage_val2,
+[S5M8767_BUCK5] = &buck_voltage_val1,
+[S5M8767_BUCK6] = &buck_voltage_val1,
+[S5M8767_BUCK7] = &buck_voltage_val3,
+[S5M8767_BUCK8] = &buck_voltage_val3,
+[S5M8767_BUCK9] = &buck_voltage_val3,
 };
 
 static unsigned int s5m8767_opmode_reg[][4] = {
-	/* {OFF, ON, LOWPOWER, SUSPEND} */
+/* {OFF, ON, LOWPOWER, SUSPEND} */
 	/* LDO1 ... LDO28 */
 	{0x0, 0x3, 0x2, 0x1}, /* LDO1 */
 	{0x0, 0x3, 0x2, 0x1},
@@ -323,7 +323,7 @@ static int s5m8767_set_voltage_sel(struct regulator_dev *rdev,
 		return -EINVAL;
 	}
 
-	/* buck234_vol != NULL means to control buck234 voltage via DVS GPIO */
+/* buck234_vol != NULL means to control buck234 voltage via DVS GPIO */
 	if (buck234_vol) {
 		while (*buck234_vol != selector) {
 			buck234_vol++;
@@ -337,7 +337,7 @@ static int s5m8767_set_voltage_sel(struct regulator_dev *rdev,
 		else
 			return s5m8767_set_low(s5m8767);
 	} else {
-		return regulator_set_voltage_sel_regmap(rdev, selector);
+return regulator_set_voltage_sel_regmap(rdev, selector);
 	}
 }
 
@@ -346,10 +346,10 @@ static int s5m8767_set_voltage_time_sel(struct regulator_dev *rdev,
 					     unsigned int new_sel)
 {
 	struct s5m8767_info *s5m8767 = rdev_get_drvdata(rdev);
-	const struct sec_voltage_desc *desc;
+const struct sec_voltage_desc *desc;
 	int reg_id = rdev_get_id(rdev);
 
-	desc = reg_voltage_map[reg_id];
+desc = reg_voltage_map[reg_id];
 
 	if ((old_sel < new_sel) && s5m8767->ramp_delay)
 		return DIV_ROUND_UP(desc->step * (new_sel - old_sel),
@@ -358,29 +358,29 @@ static int s5m8767_set_voltage_time_sel(struct regulator_dev *rdev,
 }
 
 static const struct regulator_ops s5m8767_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= s5m8767_set_voltage_sel,
-	.set_voltage_time_sel	= s5m8767_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= s5m8767_set_voltage_sel,
+.set_voltage_time_sel	= s5m8767_set_voltage_time_sel,
 };
 
 static const struct regulator_ops s5m8767_buck78_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 };
 
 #define s5m8767_regulator_desc(_name) {		\
 	.name		= #_name,		\
 	.id		= S5M8767_##_name,	\
 	.ops		= &s5m8767_ops,		\
-	.type		= REGULATOR_VOLTAGE,	\
+.type		= REGULATOR_VOLTAGE,	\
 	.owner		= THIS_MODULE,		\
 }
 
@@ -388,7 +388,7 @@ static const struct regulator_ops s5m8767_buck78_ops = {
 	.name		= #_name,		\
 	.id		= S5M8767_##_name,	\
 	.ops		= &s5m8767_buck78_ops,	\
-	.type		= REGULATOR_VOLTAGE,	\
+.type		= REGULATOR_VOLTAGE,	\
 	.owner		= THIS_MODULE,		\
 }
 
@@ -536,7 +536,7 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 	struct device_node *pmic_np, *regulators_np, *reg_np;
 	struct sec_regulator_data *rdata;
 	struct sec_opmode_data *rmode;
-	unsigned int i, dvs_voltage_nr = 8, ret;
+unsigned int i, dvs_voltage_nr = 8, ret;
 
 	pmic_np = iodev->dev->of_node;
 	if (!pmic_np) {
@@ -604,9 +604,9 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 		pdata->buck2_gpiodvs = true;
 
 		if (of_property_read_u32_array(pmic_np,
-				"s5m8767,pmic-buck2-dvs-voltage",
-				pdata->buck2_voltage, dvs_voltage_nr)) {
-			dev_err(iodev->dev, "buck2 voltages not specified\n");
+"s5m8767,pmic-buck2-dvs-voltage",
+pdata->buck2_voltage, dvs_voltage_nr)) {
+dev_err(iodev->dev, "buck2 voltages not specified\n");
 			return -EINVAL;
 		}
 	}
@@ -615,9 +615,9 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 		pdata->buck3_gpiodvs = true;
 
 		if (of_property_read_u32_array(pmic_np,
-				"s5m8767,pmic-buck3-dvs-voltage",
-				pdata->buck3_voltage, dvs_voltage_nr)) {
-			dev_err(iodev->dev, "buck3 voltages not specified\n");
+"s5m8767,pmic-buck3-dvs-voltage",
+pdata->buck3_voltage, dvs_voltage_nr)) {
+dev_err(iodev->dev, "buck3 voltages not specified\n");
 			return -EINVAL;
 		}
 	}
@@ -626,9 +626,9 @@ static int s5m8767_pmic_dt_parse_pdata(struct platform_device *pdev,
 		pdata->buck4_gpiodvs = true;
 
 		if (of_property_read_u32_array(pmic_np,
-				"s5m8767,pmic-buck4-dvs-voltage",
-				pdata->buck4_voltage, dvs_voltage_nr)) {
-			dev_err(iodev->dev, "buck4 voltages not specified\n");
+"s5m8767,pmic-buck4-dvs-voltage",
+pdata->buck4_voltage, dvs_voltage_nr)) {
+dev_err(iodev->dev, "buck4 voltages not specified\n");
 			return -EINVAL;
 		}
 	}
@@ -749,19 +749,19 @@ static int s5m8767_pmic_probe(struct platform_device *pdev)
 	s5m8767->buck4_ramp = pdata->buck4_ramp_enable;
 	s5m8767->opmode = pdata->opmode;
 
-	buck_init = s5m8767_convert_voltage_to_sel(&buck_voltage_val2,
+buck_init = s5m8767_convert_voltage_to_sel(&buck_voltage_val2,
 						   pdata->buck2_init);
 
 	regmap_write(s5m8767->iodev->regmap_pmic, S5M8767_REG_BUCK2DVS2,
 			buck_init);
 
-	buck_init = s5m8767_convert_voltage_to_sel(&buck_voltage_val2,
+buck_init = s5m8767_convert_voltage_to_sel(&buck_voltage_val2,
 						   pdata->buck3_init);
 
 	regmap_write(s5m8767->iodev->regmap_pmic, S5M8767_REG_BUCK3DVS2,
 			buck_init);
 
-	buck_init = s5m8767_convert_voltage_to_sel(&buck_voltage_val2,
+buck_init = s5m8767_convert_voltage_to_sel(&buck_voltage_val2,
 						   pdata->buck4_init);
 
 	regmap_write(s5m8767->iodev->regmap_pmic, S5M8767_REG_BUCK4DVS2,
@@ -770,23 +770,23 @@ static int s5m8767_pmic_probe(struct platform_device *pdev)
 	for (i = 0; i < 8; i++) {
 		if (s5m8767->buck2_gpiodvs) {
 			s5m8767->buck2_vol[i] =
-				s5m8767_convert_voltage_to_sel(
-						&buck_voltage_val2,
-						pdata->buck2_voltage[i]);
+s5m8767_convert_voltage_to_sel(
+&buck_voltage_val2,
+pdata->buck2_voltage[i]);
 		}
 
 		if (s5m8767->buck3_gpiodvs) {
 			s5m8767->buck3_vol[i] =
-				s5m8767_convert_voltage_to_sel(
-						&buck_voltage_val2,
-						pdata->buck3_voltage[i]);
+s5m8767_convert_voltage_to_sel(
+&buck_voltage_val2,
+pdata->buck3_voltage[i]);
 		}
 
 		if (s5m8767->buck4_gpiodvs) {
 			s5m8767->buck4_vol[i] =
-				s5m8767_convert_voltage_to_sel(
-						&buck_voltage_val2,
-						pdata->buck4_voltage[i]);
+s5m8767_convert_voltage_to_sel(
+&buck_voltage_val2,
+pdata->buck4_voltage[i]);
 		}
 	}
 
@@ -917,18 +917,18 @@ static int s5m8767_pmic_probe(struct platform_device *pdev)
 	}
 
 	for (i = 0; i < pdata->num_regulators; i++) {
-		const struct sec_voltage_desc *desc;
+const struct sec_voltage_desc *desc;
 		unsigned int id = pdata->regulators[i].id;
 		int enable_reg, enable_val;
 		struct regulator_dev *rdev;
 
-		BUILD_BUG_ON(ARRAY_SIZE(regulators) != ARRAY_SIZE(reg_voltage_map));
+BUILD_BUG_ON(ARRAY_SIZE(regulators) != ARRAY_SIZE(reg_voltage_map));
 		if (WARN_ON_ONCE(id >= ARRAY_SIZE(regulators)))
 			continue;
 
-		desc = reg_voltage_map[id];
+desc = reg_voltage_map[id];
 		if (desc) {
-			regulators[id].n_voltages =
+regulators[id].n_voltages =
 				(desc->max - desc->min) / desc->step + 1;
 			regulators[id].min_uV = desc->min;
 			regulators[id].uV_step = desc->step;

@@ -64,11 +64,11 @@ void mpc8xx_set_clocks(u32 sysclk)
 
 	node = finddevice("/soc/cpm");
 	if (node)
-		setprop(node, "clock-frequency", &sysclk, 4);
+setprop(node, "clock-frequency", &sysclk, 4);
 
 	node = finddevice("/soc/cpm/brg");
 	if (node)
-		setprop(node, "clock-frequency", &sysclk, 4);
+setprop(node, "clock-frequency", &sysclk, 4);
 }
 
 int mpc885_fixup_clocks(u32 crystal)

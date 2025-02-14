@@ -9,7 +9,7 @@
 /*
  * Mapping of threads to cores
  *
- * Note: This implementation is limited to a power of 2 number of
+* Note: This implementation is limited to a power of 2 number of
  * threads per core and the same number for each core in the system
  * (though it would work if some processors had less threads as long
  * as the CPU numbers are still allocated, just not brought online).

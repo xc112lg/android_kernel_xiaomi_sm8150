@@ -30,11 +30,11 @@
  *				monitor.
  * @of_node:			OF node of device that this HW monitor can
  *				monitor.
- * @gov:			devfreq_governor struct that should be used
- *				when registering this HW monitor with devfreq.
+* @gov:			devfreq_governor struct that should be used
+*				when registering this HW monitor with devfreq.
  *				Only the name field is expected to be
  *				initialized.
- * @df:				Devfreq node that this HW monitor is being
+* @df:				Devfreq node that this HW monitor is being
  *				used for. NULL when not actively in use and
  *				non-NULL when in use.
  *
@@ -55,14 +55,14 @@ struct bw_hwmon {
 	u32 (*get_throttle_adj)(struct bw_hwmon *hw);
 	struct device *dev;
 	struct device_node *of_node;
-	struct devfreq_governor *gov;
+struct devfreq_governor *gov;
 
 	unsigned long up_wake_mbps;
 	unsigned long undo_over_req_mbps;
 	unsigned long down_wake_mbps;
 	unsigned int down_cnt;
 
-	struct devfreq *df;
+struct devfreq *df;
 };
 
 #ifdef CONFIG_DEVFREQ_GOV_QCOM_BW_HWMON

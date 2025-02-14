@@ -69,7 +69,7 @@ struct SMU8_Fusion_ClkLevel {
 	uint8_t		DfsDid;
 	uint8_t		DeepSleepDid;
 	uint32_t	DfsBypass;
-	uint32_t	Frequency;
+uint32_t	Frequency;
 };
 
 struct SMU8_Fusion_SclkBreakdownTable {

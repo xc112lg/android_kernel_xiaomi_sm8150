@@ -1,7 +1,7 @@
 /*
  * Copyright 2008 IBM Corp. 
  *
- * Based on arch/powerpc/platforms/pasemi/idle.c: 
+* Based on arch/powerpc/platforms/pasemi/idle.c:
  * Copyright (C) 2006-2007 PA Semi, Inc
  *
  * Added by: Jerone Young <jyoung5@us.ibm.com>
@@ -45,7 +45,7 @@ int __init ppc44x_idle_init(void)
 	if (!mode_spin) {
 		/* If we are not setting spin mode 
                    then we set to wait mode */
-		ppc_md.power_save = &ppc44x_idle;
+ppc_md.power_save = &ppc44x_idle;
 	}
 
 	return 0;
@@ -58,7 +58,7 @@ static int __init idle_param(char *p)
 
 	if (!strcmp("spin", p)) {
 		mode_spin = 1;
-		ppc_md.power_save = NULL;
+ppc_md.power_save = NULL;
 	}
 
 	return 0;

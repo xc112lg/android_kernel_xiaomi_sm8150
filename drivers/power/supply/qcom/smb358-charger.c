@@ -257,11 +257,11 @@ struct smb358_charger {
 	int			usb_suspended;
 
 	/* psy */
-	struct power_supply_desc	usb_psy_d;
-	struct power_supply		*usb_psy;
-	struct power_supply		*bms_psy;
-	struct power_supply_desc	batt_psy_d;
-	struct power_supply		*batt_psy;
+struct power_supply_desc	usb_psy_d;
+struct power_supply		*usb_psy;
+struct power_supply		*bms_psy;
+struct power_supply_desc	batt_psy_d;
+struct power_supply		*batt_psy;
 	int				usb_psy_ma;
 	u8				usb_psy_health;
 
@@ -276,7 +276,7 @@ struct smb358_charger {
 	struct regulator	*vcc_i2c;
 	struct extcon_dev       *extcon;
 	u32			 cable_id;
-	enum power_supply_type  charger_type;
+enum power_supply_type  charger_type;
 };
 
 struct smb_irq_info {
@@ -438,7 +438,7 @@ static int smb358_float_voltage_set(struct smb358_charger *chip, int vfloat_mv)
 	u8 temp;
 
 	if ((vfloat_mv < MIN_FLOAT_MV) || (vfloat_mv > MAX_FLOAT_MV)) {
-		dev_err(chip->dev, "bad float voltage mv =%d asked to set\n",
+dev_err(chip->dev, "bad float voltage mv =%d asked to set\n",
 					vfloat_mv);
 		return -EINVAL;
 	}
@@ -627,7 +627,7 @@ static int smb358_regulator_init(struct smb358_charger *chip)
 	struct regulator_config cfg = {};
 
 	chip->otg_vreg.rdesc.owner = THIS_MODULE;
-	chip->otg_vreg.rdesc.type = REGULATOR_VOLTAGE;
+chip->otg_vreg.rdesc.type = REGULATOR_VOLTAGE;
 	chip->otg_vreg.rdesc.ops = &smb358_chg_otg_reg_ops;
 	chip->otg_vreg.rdesc.name = chip->dev->of_node->name;
 	chip->otg_vreg.rdesc.of_match = chip->dev->of_node->name;
@@ -687,11 +687,11 @@ static int smb358_path_suspend(struct smb358_charger *chip, int reason,
 	if (!chip->usb_suspended && suspended) {
 		rc = __smb358_path_suspend(chip, true);
 		chip->usb_suspended = suspended;
-		power_supply_changed(chip->usb_psy);
+power_supply_changed(chip->usb_psy);
 	} else if (chip->usb_suspended && !suspended) {
 		rc = __smb358_path_suspend(chip, false);
 		chip->usb_suspended = suspended;
-		power_supply_changed(chip->usb_psy);
+power_supply_changed(chip->usb_psy);
 	}
 
 	if (rc)
@@ -741,7 +741,7 @@ static int smb358_charging_disable(struct smb358_charger *chip,
 	}
 
 	/* will not modify online status in this condition */
-	power_supply_changed(chip->batt_psy);
+power_supply_changed(chip->batt_psy);
 
 skip:
 	chip->charging_disabled_status = disabled;
@@ -857,11 +857,11 @@ static int smb358_hw_init(struct smb358_charger *chip)
 		return rc;
 	}
 
-	/* set the float voltage */
-	rc = smb358_float_voltage_set(chip, chip->vfloat_mv);
+/* set the float voltage */
+rc = smb358_float_voltage_set(chip, chip->vfloat_mv);
 	if (rc < 0) {
 		dev_err(chip->dev,
-			"Couldn't set float voltage rc = %d\n", rc);
+"Couldn't set float voltage rc = %d\n", rc);
 		return rc;
 	}
 
@@ -903,7 +903,7 @@ static int smb358_hw_init(struct smb358_charger *chip)
 	}
 
 	/*
-	 * Workaround for recharge frequent issue: When battery is
+* Workaround for recharge frequent issue: When battery is
 	 * greater than 4.2v, and charging is disabled, charger
 	 * stops switching. In such a case, system load is provided
 	 * by battery rather than input, even though input is still
@@ -920,16 +920,16 @@ static int smb358_hw_init(struct smb358_charger *chip)
 }
 
 static enum power_supply_property smb358_battery_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
 };
 
 static int smb358_get_prop_batt_status(struct smb358_charger *chip)
@@ -938,24 +938,24 @@ static int smb358_get_prop_batt_status(struct smb358_charger *chip)
 	u8 reg = 0;
 
 	if (chip->batt_full)
-		return POWER_SUPPLY_STATUS_FULL;
+return POWER_SUPPLY_STATUS_FULL;
 
 	rc = smb358_read_reg(chip, STATUS_C_REG, &reg);
 	if (rc) {
 		dev_err(chip->dev, "Couldn't read STAT_C rc = %d\n", rc);
-		return POWER_SUPPLY_STATUS_UNKNOWN;
+return POWER_SUPPLY_STATUS_UNKNOWN;
 	}
 
 	dev_dbg(chip->dev, "%s: STATUS_C_REG=%x\n", __func__, reg);
 
 	if (reg & STATUS_C_CHG_HOLD_OFF_BIT)
-		return POWER_SUPPLY_STATUS_NOT_CHARGING;
+return POWER_SUPPLY_STATUS_NOT_CHARGING;
 
 	if ((reg & STATUS_C_CHARGING_MASK) &&
 			!(reg & STATUS_C_CHG_ERR_STATUS_BIT))
-		return POWER_SUPPLY_STATUS_CHARGING;
+return POWER_SUPPLY_STATUS_CHARGING;
 
-	return POWER_SUPPLY_STATUS_DISCHARGING;
+return POWER_SUPPLY_STATUS_DISCHARGING;
 }
 
 static int smb358_get_prop_batt_present(struct smb358_charger *chip)
@@ -965,14 +965,14 @@ static int smb358_get_prop_batt_present(struct smb358_charger *chip)
 
 static int smb358_get_prop_batt_capacity(struct smb358_charger *chip)
 {
-	union power_supply_propval ret = {0, };
+union power_supply_propval ret = {0, };
 
 	if (chip->fake_battery_soc >= 0)
 		return chip->fake_battery_soc;
 
 	if (chip->bms_psy) {
-		power_supply_get_property(chip->bms_psy,
-				POWER_SUPPLY_PROP_CAPACITY, &ret);
+power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_CAPACITY, &ret);
 		return ret.intval;
 	}
 
@@ -988,7 +988,7 @@ static int smb358_get_prop_charge_type(struct smb358_charger *chip)
 	rc = smb358_read_reg(chip, STATUS_C_REG, &reg);
 	if (rc) {
 		dev_err(chip->dev, "Couldn't read STAT_C rc = %d\n", rc);
-		return POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
+return POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
 	}
 
 	dev_dbg(chip->dev, "%s: STATUS_C_REG=%x\n", __func__, reg);
@@ -996,29 +996,29 @@ static int smb358_get_prop_charge_type(struct smb358_charger *chip)
 	reg &= STATUS_C_CHARGING_MASK;
 
 	if (reg == STATUS_C_FAST_CHARGING)
-		return POWER_SUPPLY_CHARGE_TYPE_FAST;
+return POWER_SUPPLY_CHARGE_TYPE_FAST;
 	else if (reg == STATUS_C_TAPER_CHARGING)
-		return POWER_SUPPLY_CHARGE_TYPE_TAPER;
+return POWER_SUPPLY_CHARGE_TYPE_TAPER;
 	else if (reg == STATUS_C_PRE_CHARGING)
-		return POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+return POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 	else
-		return POWER_SUPPLY_CHARGE_TYPE_NONE;
+return POWER_SUPPLY_CHARGE_TYPE_NONE;
 }
 
 static int smb358_get_prop_batt_health(struct smb358_charger *chip)
 {
-	union power_supply_propval ret = {0, };
+union power_supply_propval ret = {0, };
 
 	if (chip->batt_hot)
-		ret.intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+ret.intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 	else if (chip->batt_cold)
-		ret.intval = POWER_SUPPLY_HEALTH_COLD;
+ret.intval = POWER_SUPPLY_HEALTH_COLD;
 	else if (chip->batt_warm)
-		ret.intval = POWER_SUPPLY_HEALTH_WARM;
+ret.intval = POWER_SUPPLY_HEALTH_WARM;
 	else if (chip->batt_cool)
-		ret.intval = POWER_SUPPLY_HEALTH_COOL;
+ret.intval = POWER_SUPPLY_HEALTH_COOL;
 	else
-		ret.intval = POWER_SUPPLY_HEALTH_GOOD;
+ret.intval = POWER_SUPPLY_HEALTH_GOOD;
 
 	return ret.intval;
 }
@@ -1026,11 +1026,11 @@ static int smb358_get_prop_batt_health(struct smb358_charger *chip)
 #define DEFAULT_TEMP 250
 static int smb358_get_prop_batt_temp(struct smb358_charger *chip)
 {
-	union power_supply_propval ret = {0, };
+union power_supply_propval ret = {0, };
 
 	if (chip->bms_psy) {
-		power_supply_get_property(chip->bms_psy,
-				POWER_SUPPLY_PROP_TEMP, &ret);
+power_supply_get_property(chip->bms_psy,
+POWER_SUPPLY_PROP_TEMP, &ret);
 		return ret.intval;
 	}
 
@@ -1152,11 +1152,11 @@ static int smb358_set_usb_chg_current(struct smb358_charger *chip,
 
 static int
 smb358_batt_property_is_writeable(struct power_supply *psy,
-					enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CAPACITY:
 		return 1;
 	default:
 		break;
@@ -1173,18 +1173,18 @@ static int bound_soc(int soc)
 }
 
 static int smb358_battery_set_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
 	int rc;
-	struct smb358_charger *chip = power_supply_get_drvdata(psy);
+struct smb358_charger *chip = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (!chip->bms_controlled_charging)
 			return -EINVAL;
 		switch (val->intval) {
-		case POWER_SUPPLY_STATUS_FULL:
+case POWER_SUPPLY_STATUS_FULL:
 			rc = smb358_charging_disable(chip, SOC, true);
 			if (rc < 0) {
 				dev_err(chip->dev,
@@ -1196,13 +1196,13 @@ static int smb358_battery_set_property(struct power_supply *psy,
 							chip->batt_full);
 			}
 			break;
-		case POWER_SUPPLY_STATUS_DISCHARGING:
+case POWER_SUPPLY_STATUS_DISCHARGING:
 			chip->batt_full = false;
-			power_supply_changed(chip->batt_psy);
+power_supply_changed(chip->batt_psy);
 			dev_dbg(chip->dev, "status = DISCHARGING, batt_full = %d\n",
 							chip->batt_full);
 			break;
-		case POWER_SUPPLY_STATUS_CHARGING:
+case POWER_SUPPLY_STATUS_CHARGING:
 			rc = smb358_charging_disable(chip, SOC, false);
 			if (rc < 0) {
 				dev_err(chip->dev,
@@ -1218,13 +1218,13 @@ static int smb358_battery_set_property(struct power_supply *psy,
 			return -EINVAL;
 		}
 		break;
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		smb358_charging_disable(chip, USER, !val->intval);
 		smb358_path_suspend(chip, USER, !val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		chip->fake_battery_soc = bound_soc(val->intval);
-		power_supply_changed(chip->batt_psy);
+power_supply_changed(chip->batt_psy);
 		break;
 	default:
 		return -EINVAL;
@@ -1234,41 +1234,41 @@ static int smb358_battery_set_property(struct power_supply *psy,
 }
 
 static int smb358_battery_get_property(struct power_supply *psy,
-				       enum power_supply_property prop,
-				       union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb358_charger *chip = power_supply_get_drvdata(psy);
+struct smb358_charger *chip = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = smb358_get_prop_batt_status(chip);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = smb358_get_prop_batt_present(chip);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		val->intval = smb358_get_prop_batt_capacity(chip);
 		break;
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		val->intval = !(chip->charging_disabled_status & USER);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		val->intval = smb358_get_prop_charge_type(chip);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		val->intval = smb358_get_prop_batt_health(chip);
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+case POWER_SUPPLY_PROP_TECHNOLOGY:
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = "SMB358";
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		val->intval = smb358_get_prop_batt_temp(chip);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		val->intval = smb358_get_prop_battery_voltage_now(chip);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+val->intval = smb358_get_prop_battery_voltage_now(chip);
 		break;
 	default:
 		return -EINVAL;
@@ -1297,7 +1297,7 @@ static int apsd_complete(struct smb358_charger *chip, u8 status)
 {
 	int rc = 0;
 	u8 reg = 0;
-	enum power_supply_type type = POWER_SUPPLY_TYPE_UNKNOWN;
+enum power_supply_type type = POWER_SUPPLY_TYPE_UNKNOWN;
 	u32 id = EXTCON_NONE;
 
 	/*
@@ -1325,27 +1325,27 @@ static int apsd_complete(struct smb358_charger *chip, u8 status)
 	case STATUS_D_PORT_ACA_C:
 	case STATUS_D_PORT_ACA_B:
 	case STATUS_D_PORT_ACA_A:
-		type = POWER_SUPPLY_TYPE_USB_ACA;
+type = POWER_SUPPLY_TYPE_USB_ACA;
 		id = EXTCON_CHG_USB_ACA;
 		break;
 	case STATUS_D_PORT_CDP:
-		type = POWER_SUPPLY_TYPE_USB_CDP;
+type = POWER_SUPPLY_TYPE_USB_CDP;
 		id = EXTCON_CHG_USB_CDP;
 		break;
 	case STATUS_D_PORT_DCP:
-		type = POWER_SUPPLY_TYPE_USB_DCP;
+type = POWER_SUPPLY_TYPE_USB_DCP;
 		id = EXTCON_CHG_USB_DCP;
 		break;
 	case STATUS_D_PORT_SDP:
-		type = POWER_SUPPLY_TYPE_USB;
+type = POWER_SUPPLY_TYPE_USB;
 		id = EXTCON_CHG_USB_SDP;
 		break;
 	case STATUS_D_PORT_OTHER:
-		type = POWER_SUPPLY_TYPE_USB_DCP;
+type = POWER_SUPPLY_TYPE_USB_DCP;
 		id = EXTCON_CHG_USB_DCP;
 		break;
 	default:
-		type = POWER_SUPPLY_TYPE_USB;
+type = POWER_SUPPLY_TYPE_USB;
 		id = EXTCON_USB;
 		break;
 	}
@@ -1357,7 +1357,7 @@ static int apsd_complete(struct smb358_charger *chip, u8 status)
 		type, chip->chg_present);
 
 	/* set the charge current as required */
-	if (type == POWER_SUPPLY_TYPE_USB)
+if (type == POWER_SUPPLY_TYPE_USB)
 		chip->usb_psy_ma = USB2_MAX_CURRENT_MA;
 	else /* DCP or CDP */
 		chip->usb_psy_ma = DCP_MAX_CURRENT_MA;
@@ -1379,7 +1379,7 @@ static int chg_uv(struct smb358_charger *chip, u8 status)
 	/* use this to detect USB insertion only if !apsd */
 	if (chip->disable_apsd && status == 0) {
 		chip->chg_present = true;
-		chip->charger_type = POWER_SUPPLY_TYPE_USB;
+chip->charger_type = POWER_SUPPLY_TYPE_USB;
 		smb358_set_cable_id(chip, EXTCON_USB, true);
 
 		if (chip->bms_controlled_charging) {
@@ -1412,11 +1412,11 @@ static int chg_uv(struct smb358_charger *chip, u8 status)
 static int chg_ov(struct smb358_charger *chip, u8 status)
 {
 	if (status)
-		chip->usb_psy_health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+chip->usb_psy_health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 	else
-		chip->usb_psy_health = POWER_SUPPLY_HEALTH_GOOD;
+chip->usb_psy_health = POWER_SUPPLY_HEALTH_GOOD;
 
-	power_supply_changed(chip->usb_psy);
+power_supply_changed(chip->usb_psy);
 	return 0;
 }
 
@@ -1604,7 +1604,7 @@ static struct irq_handler_info handlers[] = {
 		.prev_val	= 0,
 		.irq_info	= {
 			{
-				.name		= "power_ok",
+.name		= "power_ok",
 			},
 			{
 				.name		= "otg_det",
@@ -1683,7 +1683,7 @@ static irqreturn_t smb358_chg_stat_handler(int irq, void *dev_id)
 	dev_dbg(chip->dev, "handler count = %d\n", handler_count);
 	if (handler_count) {
 		dev_dbg(chip->dev, "batt psy changed\n");
-		power_supply_changed(chip->batt_psy);
+power_supply_changed(chip->batt_psy);
 	}
 
 	mutex_unlock(&chip->irq_complete);
@@ -1710,7 +1710,7 @@ static irqreturn_t smb358_chg_valid_handler(int irq, void *dev_id)
 		chip->chg_present = present;
 		dev_dbg(chip->dev, "%s updating usb_psy present=%d",
 				__func__, chip->chg_present);
-		power_supply_changed(chip->usb_psy);
+power_supply_changed(chip->usb_psy);
 	}
 
 	return IRQ_HANDLED;
@@ -1718,16 +1718,16 @@ static irqreturn_t smb358_chg_valid_handler(int irq, void *dev_id)
 
 static void smb358_external_power_changed(struct power_supply *psy)
 {
-	struct smb358_charger *chip = power_supply_get_drvdata(psy);
-	union power_supply_propval prop = {0,};
+struct smb358_charger *chip = power_supply_get_drvdata(psy);
+union power_supply_propval prop = {0,};
 	int rc, current_limit = 0;
 
 	if (chip->bms_psy_name)
 		chip->bms_psy =
-			power_supply_get_by_name((char *)chip->bms_psy_name);
+power_supply_get_by_name((char *)chip->bms_psy_name);
 
-	rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_CURRENT_MAX, &prop);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX, &prop);
 	if (rc)
 		dev_err(chip->dev,
 			"Couldn't read USB current_max property, rc=%d\n",
@@ -2011,7 +2011,7 @@ static int smb_parse_batt_id(struct smb358_charger *chip)
 	chip->connected_rid = div64_s64(numerator, denom);
 
 	dev_dbg(chip->dev,
-		"batt_id_voltage=%lld numerator=%lld denom=%lld connected_rid=%d\n",
+"batt_id_voltage=%lld numerator=%lld denom=%lld connected_rid=%d\n",
 		batt_id_uv, numerator, denom, chip->connected_rid);
 	return 0;
 }
@@ -2064,11 +2064,11 @@ static int smb_parse_dt(struct smb358_charger *chip)
 	if (rc < 0)
 		chip->iterm_ma = -EINVAL;
 
-	rc = of_property_read_u32(node, "qcom,float-voltage-mv",
+rc = of_property_read_u32(node, "qcom,float-voltage-mv",
 						&chip->vfloat_mv);
 	if (rc < 0) {
 		chip->vfloat_mv = -EINVAL;
-		pr_err("float-voltage-mv property missing, exit\n");
+pr_err("float-voltage-mv property missing, exit\n");
 		return -EINVAL;
 	}
 
@@ -2273,37 +2273,37 @@ static char *smb358_usb_supplicants[] = {
 };
 
 static enum power_supply_property smb358_usb_properties[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_SDP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_TYPE,
-	POWER_SUPPLY_PROP_REAL_TYPE,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_SDP_CURRENT_MAX,
+POWER_SUPPLY_PROP_TYPE,
+POWER_SUPPLY_PROP_REAL_TYPE,
 };
 
 static int smb358_usb_get_property(struct power_supply *psy,
-				enum power_supply_property psp,
-				union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb358_charger *chip = power_supply_get_drvdata(psy);
+struct smb358_charger *chip = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
-	case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
 		val->intval = chip->usb_psy_ma * 1000;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = chip->chg_present;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = chip->chg_present && !chip->usb_suspended;
 		break;
-	case POWER_SUPPLY_PROP_TYPE:
+case POWER_SUPPLY_PROP_TYPE:
 		val->intval = chip->charger_type;
 		break;
-	case POWER_SUPPLY_PROP_REAL_TYPE:
-		if (chip->charger_type == POWER_SUPPLY_TYPE_UNKNOWN)
-			val->intval = POWER_SUPPLY_TYPE_USB;
+case POWER_SUPPLY_PROP_REAL_TYPE:
+if (chip->charger_type == POWER_SUPPLY_TYPE_UNKNOWN)
+val->intval = POWER_SUPPLY_TYPE_USB;
 		else
 			val->intval = chip->charger_type;
 		break;
@@ -2314,14 +2314,14 @@ static int smb358_usb_get_property(struct power_supply *psy,
 }
 
 static int smb358_usb_set_property(struct power_supply *psy,
-				enum power_supply_property psp,
-				const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb358_charger *chip = power_supply_get_drvdata(psy);
+struct smb358_charger *chip = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
-	case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
 		chip->usb_psy_ma = val->intval / 1000;
 		smb358_enable_volatile_writes(chip);
 		smb358_set_usb_chg_current(chip, chip->usb_psy_ma);
@@ -2330,15 +2330,15 @@ static int smb358_usb_set_property(struct power_supply *psy,
 		return -EINVAL;
 	}
 
-	power_supply_changed(psy);
+power_supply_changed(psy);
 	return 0;
 }
 
 static int smb358_usb_is_writeable(struct power_supply *psy,
-				enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		return 1;
 	default:
 		break;
@@ -2355,8 +2355,8 @@ static int smb358_charger_probe(struct i2c_client *client,
 	u8 reg = 0;
 	int rc, irq;
 	struct smb358_charger *chip;
-	struct power_supply_config batt_psy_cfg = {};
-	struct power_supply_config usb_psy_cfg = {};
+struct power_supply_config batt_psy_cfg = {};
+struct power_supply_config usb_psy_cfg = {};
 
 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
 	if (!chip)
@@ -2385,8 +2385,8 @@ static int smb358_charger_probe(struct i2c_client *client,
 
 	/* i2c pull up regulator configuration */
 	if (chip->vcc_i2c) {
-		if (regulator_count_voltages(chip->vcc_i2c) > 0) {
-			rc = regulator_set_voltage(chip->vcc_i2c,
+if (regulator_count_voltages(chip->vcc_i2c) > 0) {
+rc = regulator_set_voltage(chip->vcc_i2c,
 				SMB_I2C_VTG_MIN_UV, SMB_I2C_VTG_MAX_UV);
 			if (rc) {
 				dev_err(&client->dev,
@@ -2418,7 +2418,7 @@ static int smb358_charger_probe(struct i2c_client *client,
 	i2c_set_clientdata(client, chip);
 
 	chip->usb_psy_d.name = "usb";
-	chip->usb_psy_d.type = POWER_SUPPLY_TYPE_USB;
+chip->usb_psy_d.type = POWER_SUPPLY_TYPE_USB;
 	chip->usb_psy_d.get_property = smb358_usb_get_property;
 	chip->usb_psy_d.set_property = smb358_usb_set_property;
 	chip->usb_psy_d.properties = smb358_usb_properties;
@@ -2429,7 +2429,7 @@ static int smb358_charger_probe(struct i2c_client *client,
 	usb_psy_cfg.supplied_to = smb358_usb_supplicants;
 	usb_psy_cfg.num_supplicants = ARRAY_SIZE(smb358_usb_supplicants);
 
-	chip->usb_psy = devm_power_supply_register(chip->dev,
+chip->usb_psy = devm_power_supply_register(chip->dev,
 				&chip->usb_psy_d, &usb_psy_cfg);
 	if (IS_ERR(chip->usb_psy)) {
 		rc = PTR_ERR(chip->usb_psy);
@@ -2448,14 +2448,14 @@ static int smb358_charger_probe(struct i2c_client *client,
 	}
 
 	chip->batt_psy_d.name		= "battery";
-	chip->batt_psy_d.type		= POWER_SUPPLY_TYPE_BATTERY;
+chip->batt_psy_d.type		= POWER_SUPPLY_TYPE_BATTERY;
 	chip->batt_psy_d.get_property	= smb358_battery_get_property;
 	chip->batt_psy_d.set_property	= smb358_battery_set_property;
 	chip->batt_psy_d.property_is_writeable =
 				smb358_batt_property_is_writeable;
 	chip->batt_psy_d.properties	= smb358_battery_properties;
 	chip->batt_psy_d.num_properties	= ARRAY_SIZE(smb358_battery_properties);
-	chip->batt_psy_d.external_power_changed = smb358_external_power_changed;
+chip->batt_psy_d.external_power_changed = smb358_external_power_changed;
 
 	chip->resume_completed = true;
 	mutex_init(&chip->irq_complete);
@@ -2463,7 +2463,7 @@ static int smb358_charger_probe(struct i2c_client *client,
 	batt_psy_cfg.drv_data = chip;
 	batt_psy_cfg.supplied_to = pm_batt_supplied_to;
 	batt_psy_cfg.num_supplicants = ARRAY_SIZE(pm_batt_supplied_to);
-	chip->batt_psy = devm_power_supply_register(chip->dev,
+chip->batt_psy = devm_power_supply_register(chip->dev,
 						&chip->batt_psy_d,
 						&batt_psy_cfg);
 	if (IS_ERR(chip->batt_psy)) {
@@ -2554,8 +2554,8 @@ static int smb358_charger_probe(struct i2c_client *client,
 
 err_set_vtg_i2c:
 	if (chip->vcc_i2c)
-		if (regulator_count_voltages(chip->vcc_i2c) > 0)
-			regulator_set_voltage(chip->vcc_i2c, 0,
+if (regulator_count_voltages(chip->vcc_i2c) > 0)
+regulator_set_voltage(chip->vcc_i2c, 0,
 						SMB_I2C_VTG_MAX_UV);
 	return rc;
 }

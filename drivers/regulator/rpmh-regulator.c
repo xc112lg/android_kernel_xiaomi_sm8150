@@ -31,10 +31,10 @@
 /**
  * enum rpmh_regulator_type - supported RPMh accelerator types
  * %RPMH_REGULATOR_TYPE_VRM:	RPMh VRM accelerator which supports voting on
- *				enable, voltage, mode, and headroom voltage of
+*				enable, voltage, mode, and headroom voltage of
  *				LDO, SMPS, VS, and BOB type PMIC regulators.
  * %RPMH_REGULATOR_TYPE_ARC:	RPMh ARC accelerator which supports voting on
- *				the CPR managed voltage level of LDO and SMPS
+*				the CPR managed voltage level of LDO and SMPS
  *				type PMIC regulators.
  * %RPMH_REGULATOR_TYPE_XOB:	RPMh XOB accelerator which supports voting on
  *				the enable state of PMIC regulators.
@@ -64,9 +64,9 @@ enum rpmh_regulator_hw_type {
 
 /**
  * enum rpmh_regulator_reg_index - RPMh accelerator register indices
- * %RPMH_REGULATOR_REG_VRM_VOLTAGE:	VRM voltage voting register index
- * %RPMH_REGULATOR_REG_ARC_LEVEL:	ARC voltage level voting register index
- * %RPMH_REGULATOR_REG_VRM_ENABLE:	VRM enable voltage voting register index
+* %RPMH_REGULATOR_REG_VRM_VOLTAGE:	VRM voltage voting register index
+* %RPMH_REGULATOR_REG_ARC_LEVEL:	ARC voltage level voting register index
+* %RPMH_REGULATOR_REG_VRM_ENABLE:	VRM enable voltage voting register index
  * %RPMH_REGULATOR_REG_ARC_PSEUDO_ENABLE: Place-holder for enable aggregation.
  *					ARC does not have a specific register
  *					for enable voting.  Instead, ARC level
@@ -76,7 +76,7 @@ enum rpmh_regulator_hw_type {
  * %RPMH_REGULATOR_REG_ENABLE:		Common enable index used in callback
  *					functions for both ARC and VRM.
  * %RPMH_REGULATOR_REG_VRM_MODE:	VRM regulator mode voting register index
- * %RPMH_REGULATOR_REG_VRM_HEADROOM:	VRM headroom voltage voting register
+* %RPMH_REGULATOR_REG_VRM_HEADROOM:	VRM headroom voltage voting register
  *					index
  * %RPMH_REGULATOR_REG_ARC_REAL_MAX:	Upper limit of real existent ARC
  *					register indices
@@ -92,7 +92,7 @@ enum rpmh_regulator_hw_type {
  * Register addresses are calculated as: base_addr + sizeof(u32) * reg_index
  */
 enum rpmh_regulator_reg_index {
-	RPMH_REGULATOR_REG_VRM_VOLTAGE		= 0,
+RPMH_REGULATOR_REG_VRM_VOLTAGE		= 0,
 	RPMH_REGULATOR_REG_ARC_LEVEL		= 0,
 	RPMH_REGULATOR_REG_VRM_ENABLE		= 1,
 	RPMH_REGULATOR_REG_ARC_PSEUDO_ENABLE	= RPMH_REGULATOR_REG_VRM_ENABLE,
@@ -114,7 +114,7 @@ enum rpmh_regulator_reg_index {
 #define RPMH_ARC_LEVEL_SIZE		2
 
 /*
- * This is the maximum number of voltage levels that may be defined for an ARC
+* This is the maximum number of voltage levels that may be defined for an ARC
  * resource.
  */
 #define RPMH_ARC_MAX_LEVELS		16
@@ -180,9 +180,9 @@ struct rpmh_vreg;
  *				resource
  * @regulator_hw_type:		The regulator hardware type (e.g. LDO or SMPS)
  *				along with PMIC family (i.e. PMIC4 or PMIC5)
- * @level:			Mapping from ARC resource specific voltage
+* @level:			Mapping from ARC resource specific voltage
  *				levels (0 to RPMH_ARC_MAX_LEVELS - 1) to common
- *				consumer voltage levels (i.e.
+*				consumer voltage levels (i.e.
  *				RPMH_REGULATOR_LEVEL_*).  These values are read
  *				out of the AUX data found in command DB for a
  *				given ARC resource.  Note that the values in
@@ -191,13 +191,13 @@ struct rpmh_vreg;
  * @level_count:		The number of valid entries in the level array
  * @always_wait_for_ack:	Boolean flag indicating if a request must always
  *				wait for an ACK from RPMh before continuing even
- *				if it corresponds to a strictly lower power
+*				if it corresponds to a strictly lower power
  *				state (e.g. enabled --> disabled).
  * @next_wait_for_ack:		Boolean flag indicating that the next request
  *				sent must wait for an ACK.  This is used to
- *				ensure that the driver waits for the voltage to
+*				ensure that the driver waits for the voltage to
  *				slew down in the case that the requested max_uV
- *				value is lower than the last requested voltage.
+*				value is lower than the last requested voltage.
  * @sleep_request_sent:		Boolean flag indicating that a sleep set request
  *				has been sent at some point due to it diverging
  *				from the active set request.  After that point,
@@ -456,9 +456,9 @@ rpmh_regulator_mode_map[RPMH_REGULATOR_HW_TYPE_MAX] = {
 };
 
 /*
- * This voltage in uV is returned by get_voltage functions when there is no way
- * to determine the current voltage level.  It is needed because the regulator
- * framework treats a 0 uV voltage as an error.
+* This voltage in uV is returned by get_voltage functions when there is no way
+* to determine the current voltage level.  It is needed because the regulator
+* framework treats a 0 uV voltage as an error.
  */
 #define VOLTAGE_UNKNOWN 1
 
@@ -485,7 +485,7 @@ static const char *const rpmh_regulator_state_names[] = {
 };
 
 static const char *const rpmh_regulator_vrm_param_names[] = {
-	[RPMH_REGULATOR_REG_VRM_VOLTAGE]	= "mv",
+[RPMH_REGULATOR_REG_VRM_VOLTAGE]	= "mv",
 	[RPMH_REGULATOR_REG_VRM_ENABLE]		= "en",
 	[RPMH_REGULATOR_REG_VRM_MODE]		= "mode",
 	[RPMH_REGULATOR_REG_VRM_HEADROOM]	= "hr_mv",
@@ -588,7 +588,7 @@ static void rpmh_regulator_req(struct rpmh_vreg *vreg,
 }
 
 /**
- * rpmh_regulator_handle_arc_enable() - handle masking of the voltage level
+* rpmh_regulator_handle_arc_enable() - handle masking of the voltage level
  *		request based on the pseudo-enable value
  * @aggr_vreg:		Pointer to the aggregated rpmh regulator resource
  * @req			Pointer to the newly aggregated request
@@ -602,7 +602,7 @@ static void rpmh_regulator_handle_arc_enable(struct rpmh_aggr_vreg *aggr_vreg,
 		return;
 
 	/*
-	 * Mask the voltage level if "off" level is supported and the regulator
+* Mask the voltage level if "off" level is supported and the regulator
 	 * has not been enabled.
 	 */
 	if (aggr_vreg->level[0] == RPMH_REGULATOR_LEVEL_OFF) {
@@ -610,7 +610,7 @@ static void rpmh_regulator_handle_arc_enable(struct rpmh_aggr_vreg *aggr_vreg,
 			if (!req->reg[RPMH_REGULATOR_REG_ARC_PSEUDO_ENABLE])
 				req->reg[RPMH_REGULATOR_REG_ARC_LEVEL] = 0;
 		} else {
-			/* Invalidate voltage level if enable is invalid. */
+/* Invalidate voltage level if enable is invalid. */
 			req->valid &= ~BIT(RPMH_REGULATOR_REG_ARC_LEVEL);
 		}
 	}
@@ -760,7 +760,7 @@ rpmh_regulator_send_aggregate_requests(struct rpmh_vreg *vreg)
 			sent_mask |= BIT(i);
 
 			/*
-			 * Must wait for ACK from RPMh if power state is
+* Must wait for ACK from RPMh if power state is
 			 * increasing
 			 */
 			if (req_active.reg[i]
@@ -838,7 +838,7 @@ static u32 rpmh_regulator_set_reg(struct rpmh_vreg *vreg, int reg_index,
  * This function is used to handle the case when a consumer makes a new
  * (min_uv, max_uv) range request in which the new max_uv is lower than the
  * previously requested min_uv.  In this case, the driver must wait for an ACK
- * from RPMh to ensure that the voltage has completed reducing to the new min_uv
+* from RPMh to ensure that the voltage has completed reducing to the new min_uv
  * value since the consumer cannot operate at the old min_uv value.
  *
  * Return: none
@@ -860,7 +860,7 @@ static void rpmh_regulator_check_param_max(struct rpmh_aggr_vreg *aggr_vreg,
  * are registered for each rpmh-regulator device.
  *
  * Note that for ARC resources, this value is effectively a flag indicating if
- * the requested voltage level is masked or unmasked since "disabled" = voltage
+* the requested voltage level is masked or unmasked since "disabled" = voltage
  * level 0 (if supported).
  *
  * Return: true if regulator is enabled, false if regulator is disabled
@@ -879,9 +879,9 @@ static int rpmh_regulator_is_enabled(struct regulator_dev *rdev)
  * This function is passed as a callback function into the regulator ops that
  * are registered for each rpmh-regulator device.
  *
- * Note that for ARC devices the enable state is handled via the voltage level
+* Note that for ARC devices the enable state is handled via the voltage level
  * parameter.  Therefore, this enable value effectively masks or unmasks the
- * enabled voltage level.
+* enabled voltage level.
  *
  * Return: 0 on success, errno on failure
  */
@@ -915,9 +915,9 @@ static int rpmh_regulator_enable(struct regulator_dev *rdev)
  * This function is passed as a callback function into the regulator ops that
  * are registered for each rpmh-regulator device.
  *
- * Note that for ARC devices the enable state is handled via the voltage level
+* Note that for ARC devices the enable state is handled via the voltage level
  * parameter.  Therefore, this enable value effectively masks or unmasks the
- * enabled voltage level.
+* enabled voltage level.
  *
  * Return: 0 on success, errno on failure
  */
@@ -945,10 +945,10 @@ static int rpmh_regulator_disable(struct regulator_dev *rdev)
 }
 
 /**
- * rpmh_regulator_vrm_set_voltage() - set the voltage of the VRM rpmh-regulator
+* rpmh_regulator_vrm_set_voltage() - set the voltage of the VRM rpmh-regulator
  * @rdev:		Regulator device pointer for the rpmh-regulator
- * @min_uv:		New voltage in microvolts to set
- * @max_uv:		Maximum voltage in microvolts allowed
+* @min_uv:		New voltage in microvolts to set
+* @max_uv:		Maximum voltage in microvolts allowed
  * @selector:		Unused
  *
  * This function is passed as a callback function into the regulator ops that
@@ -960,7 +960,7 @@ static int rpmh_regulator_vrm_set_voltage(struct regulator_dev *rdev,
 				int min_uv, int max_uv, unsigned int *selector)
 {
 	struct rpmh_vreg *vreg = rdev_get_drvdata(rdev);
-	u32 prev_voltage;
+u32 prev_voltage;
 	int mv;
 	int rc = 0;
 
@@ -973,16 +973,16 @@ static int rpmh_regulator_vrm_set_voltage(struct regulator_dev *rdev,
 
 	mutex_lock(&vreg->aggr_vreg->lock);
 
-	prev_voltage
-	     = rpmh_regulator_set_reg(vreg, RPMH_REGULATOR_REG_VRM_VOLTAGE, mv);
+prev_voltage
+= rpmh_regulator_set_reg(vreg, RPMH_REGULATOR_REG_VRM_VOLTAGE, mv);
 	rpmh_regulator_check_param_max(vreg->aggr_vreg,
-				RPMH_REGULATOR_REG_VRM_VOLTAGE, max_uv);
+RPMH_REGULATOR_REG_VRM_VOLTAGE, max_uv);
 
 	rc = rpmh_regulator_send_aggregate_requests(vreg);
 	if (rc) {
-		vreg_err(vreg, "set voltage=%d mV failed, rc=%d\n", mv, rc);
-		rpmh_regulator_set_reg(vreg, RPMH_REGULATOR_REG_VRM_VOLTAGE,
-					prev_voltage);
+vreg_err(vreg, "set voltage=%d mV failed, rc=%d\n", mv, rc);
+rpmh_regulator_set_reg(vreg, RPMH_REGULATOR_REG_VRM_VOLTAGE,
+prev_voltage);
 	}
 
 	mutex_unlock(&vreg->aggr_vreg->lock);
@@ -991,22 +991,22 @@ static int rpmh_regulator_vrm_set_voltage(struct regulator_dev *rdev,
 }
 
 /**
- * rpmh_regulator_vrm_get_voltage() - get the voltage of the VRM rpmh-regulator
+* rpmh_regulator_vrm_get_voltage() - get the voltage of the VRM rpmh-regulator
  * @rdev:		Regulator device pointer for the rpmh-regulator
  *
  * This function is passed as a callback function into the regulator ops that
  * are registered for each VRM rpmh-regulator device.
  *
- * Return: regulator voltage in microvolts
+* Return: regulator voltage in microvolts
  */
 static int rpmh_regulator_vrm_get_voltage(struct regulator_dev *rdev)
 {
 	struct rpmh_vreg *vreg = rdev_get_drvdata(rdev);
 	int uv;
 
-	uv = vreg->req.reg[RPMH_REGULATOR_REG_VRM_VOLTAGE] * 1000;
+uv = vreg->req.reg[RPMH_REGULATOR_REG_VRM_VOLTAGE] * 1000;
 	if (uv == 0)
-		uv = VOLTAGE_UNKNOWN;
+uv = VOLTAGE_UNKNOWN;
 
 	return uv;
 }
@@ -1129,10 +1129,10 @@ static int rpmh_regulator_vrm_set_load(struct regulator_dev *rdev, int load_ua)
 }
 
 /**
- * rpmh_regulator_arc_set_voltage_sel() - set the voltage level of the ARC
+* rpmh_regulator_arc_set_voltage_sel() - set the voltage level of the ARC
  *		rpmh-regulator device
  * @rdev:		Regulator device pointer for the rpmh-regulator
- * @selector:		ARC voltage level to set
+* @selector:		ARC voltage level to set
  *
  * This function is passed as a callback function into the regulator ops that
  * are registered for each ARC rpmh-regulator device.
@@ -1166,14 +1166,14 @@ static int rpmh_regulator_arc_set_voltage_sel(struct regulator_dev *rdev,
 }
 
 /**
- * rpmh_regulator_arc_get_voltage_sel() - get the voltage level of the ARC
+* rpmh_regulator_arc_get_voltage_sel() - get the voltage level of the ARC
  *		rpmh-regulator device
  * @rdev:		Regulator device pointer for the rpmh-regulator
  *
  * This function is passed as a callback function into the regulator ops that
  * are registered for each ARC rpmh-regulator device.
  *
- * Return: ARC voltage level
+* Return: ARC voltage level
  */
 static int rpmh_regulator_arc_get_voltage_sel(struct regulator_dev *rdev)
 {
@@ -1183,19 +1183,19 @@ static int rpmh_regulator_arc_get_voltage_sel(struct regulator_dev *rdev)
 }
 
 /**
- * rpmh_regulator_arc_list_voltage() - return the consumer voltage level mapped
- *		to a given ARC voltage level
+* rpmh_regulator_arc_list_voltage() - return the consumer voltage level mapped
+*		to a given ARC voltage level
  * @rdev:		Regulator device pointer for the rpmh-regulator
- * @selector:		ARC voltage level
+* @selector:		ARC voltage level
  *
  * This function is passed as a callback function into the regulator ops that
  * are registered for each ARC rpmh-regulator device.
  *
  * Data ranges:
- * ARC voltage level:      0 - 15 (fixed in hardware)
- * Consumer voltage level: 1 - 513 (could be expanded to larger values)
+* ARC voltage level:      0 - 15 (fixed in hardware)
+* Consumer voltage level: 1 - 513 (could be expanded to larger values)
  *
- * Return: consumer voltage level
+* Return: consumer voltage level
  */
 static int rpmh_regulator_arc_list_voltage(struct regulator_dev *rdev,
 						unsigned int selector)
@@ -1212,8 +1212,8 @@ static const struct regulator_ops rpmh_regulator_vrm_ops = {
 	.enable			= rpmh_regulator_enable,
 	.disable		= rpmh_regulator_disable,
 	.is_enabled		= rpmh_regulator_is_enabled,
-	.set_voltage		= rpmh_regulator_vrm_set_voltage,
-	.get_voltage		= rpmh_regulator_vrm_get_voltage,
+.set_voltage		= rpmh_regulator_vrm_set_voltage,
+.get_voltage		= rpmh_regulator_vrm_get_voltage,
 	.set_mode		= rpmh_regulator_vrm_set_mode,
 	.get_mode		= rpmh_regulator_vrm_get_mode,
 	.set_load		= rpmh_regulator_vrm_set_load,
@@ -1223,9 +1223,9 @@ static const struct regulator_ops rpmh_regulator_arc_ops = {
 	.enable			= rpmh_regulator_enable,
 	.disable		= rpmh_regulator_disable,
 	.is_enabled		= rpmh_regulator_is_enabled,
-	.set_voltage_sel	= rpmh_regulator_arc_set_voltage_sel,
-	.get_voltage_sel	= rpmh_regulator_arc_get_voltage_sel,
-	.list_voltage		= rpmh_regulator_arc_list_voltage,
+.set_voltage_sel	= rpmh_regulator_arc_set_voltage_sel,
+.get_voltage_sel	= rpmh_regulator_arc_get_voltage_sel,
+.list_voltage		= rpmh_regulator_arc_list_voltage,
 };
 
 static const struct regulator_ops rpmh_regulator_xob_ops = {
@@ -1242,10 +1242,10 @@ static const struct regulator_ops *rpmh_regulator_ops[] = {
 
 /**
  * rpmh_regulator_load_arc_level_mapping() - load the RPMh ARC resource's
- *		voltage level mapping from command db
+*		voltage level mapping from command db
  * @aggr_vreg:		Pointer to the aggregated rpmh regulator resource
  *
- * The set of supported RPMH_REGULATOR_LEVEL_* voltage levels (0 - ~512) that
+* The set of supported RPMH_REGULATOR_LEVEL_* voltage levels (0 - ~512) that
  * map to ARC operating levels (0 - 15) is defined in aux data per ARC resource
  * in the command db SMEM data structure.  It is in a u16 array with 1 to 16
  * elements.  Note that the aux data array may be zero padded at the end for
@@ -1311,7 +1311,7 @@ rpmh_regulator_load_arc_level_mapping(struct rpmh_aggr_vreg *aggr_vreg)
 			break;
 		}
 
-		/* Add consumer offset to avoid voltage = 0. */
+/* Add consumer offset to avoid voltage = 0. */
 		aggr_vreg->level[i] += RPMH_REGULATOR_LEVEL_OFFSET;
 		aggr_vreg_debug(aggr_vreg, "ARC hlvl=%2d --> vlvl=%4u\n",
 				i, aggr_vreg->level[i]);
@@ -1536,7 +1536,7 @@ static int rpmh_regulator_load_default_parameters(struct rpmh_vreg *vreg)
 	u32 temp;
 
 	if (type == RPMH_REGULATOR_TYPE_ARC) {
-		prop = "qcom,init-voltage-level";
+prop = "qcom,init-voltage-level";
 		rc = of_property_read_u32(vreg->of_node, prop, &temp);
 		if (!rc) {
 			for (i = 0; i < vreg->aggr_vreg->level_count; i++)
@@ -1552,7 +1552,7 @@ static int rpmh_regulator_load_default_parameters(struct rpmh_vreg *vreg)
 			}
 		}
 
-		prop = "qcom,min-dropout-voltage-level";
+prop = "qcom,min-dropout-voltage-level";
 		rc = of_property_read_u32(vreg->of_node, prop, &temp);
 		if (!rc)
 			vreg->rdesc.min_dropout_uV = temp;
@@ -1564,7 +1564,7 @@ static int rpmh_regulator_load_default_parameters(struct rpmh_vreg *vreg)
 						RPMH_REGULATOR_REG_VRM_ENABLE,
 						!!temp);
 
-		prop = "qcom,init-voltage";
+prop = "qcom,init-voltage";
 		rc = of_property_read_u32(vreg->of_node, prop, &temp);
 		if (!rc) {
 			if (temp < RPMH_VRM_MIN_UV || temp > RPMH_VRM_MAX_UV) {
@@ -1573,7 +1573,7 @@ static int rpmh_regulator_load_default_parameters(struct rpmh_vreg *vreg)
 				return -EINVAL;
 			}
 			rpmh_regulator_set_reg(vreg,
-						RPMH_REGULATOR_REG_VRM_VOLTAGE,
+RPMH_REGULATOR_REG_VRM_VOLTAGE,
 						temp / 1000);
 		}
 
@@ -1612,7 +1612,7 @@ static int rpmh_regulator_load_default_parameters(struct rpmh_vreg *vreg)
 			}
 		}
 
-		prop = "qcom,init-headroom-voltage";
+prop = "qcom,init-headroom-voltage";
 		rc = of_property_read_u32(vreg->of_node, prop, &temp);
 		if (!rc) {
 			if (temp < RPMH_VRM_HEADROOM_MIN_UV ||
@@ -1626,7 +1626,7 @@ static int rpmh_regulator_load_default_parameters(struct rpmh_vreg *vreg)
 						temp / 1000);
 		}
 
-		prop = "qcom,min-dropout-voltage";
+prop = "qcom,min-dropout-voltage";
 		rc = of_property_read_u32(vreg->of_node, prop, &temp);
 		if (!rc)
 			vreg->rdesc.min_dropout_uV = temp;
@@ -1699,7 +1699,7 @@ static int rpmh_regulator_init_vreg(struct rpmh_vreg *vreg)
 
 	*ops			= *rpmh_regulator_ops[type];
 	vreg->rdesc.owner	= THIS_MODULE;
-	vreg->rdesc.type	= REGULATOR_VOLTAGE;
+vreg->rdesc.type	= REGULATOR_VOLTAGE;
 	vreg->rdesc.ops		= ops;
 
 	init_data = of_get_regulator_init_data(dev,
@@ -1719,9 +1719,9 @@ static int rpmh_regulator_init_vreg(struct rpmh_vreg *vreg)
 			= min(init_data->constraints.max_uV, RPMH_VRM_MAX_UV);
 	}
 
-	if (ops->set_voltage || ops->set_voltage_sel)
+if (ops->set_voltage || ops->set_voltage_sel)
 		init_data->constraints.valid_ops_mask
-			|= REGULATOR_CHANGE_VOLTAGE;
+|= REGULATOR_CHANGE_VOLTAGE;
 
 	if (type == RPMH_REGULATOR_TYPE_XOB
 	    && init_data->constraints.min_uV == init_data->constraints.max_uV)
@@ -1755,13 +1755,13 @@ static int rpmh_regulator_init_vreg(struct rpmh_vreg *vreg)
 
 	switch (type) {
 	case RPMH_REGULATOR_TYPE_VRM:
-		vreg->rdesc.n_voltages = 2;
+vreg->rdesc.n_voltages = 2;
 		break;
 	case RPMH_REGULATOR_TYPE_ARC:
-		vreg->rdesc.n_voltages = vreg->aggr_vreg->level_count;
+vreg->rdesc.n_voltages = vreg->aggr_vreg->level_count;
 		break;
 	case RPMH_REGULATOR_TYPE_XOB:
-		vreg->rdesc.n_voltages = 1;
+vreg->rdesc.n_voltages = 1;
 		break;
 	default:
 		return -EINVAL;

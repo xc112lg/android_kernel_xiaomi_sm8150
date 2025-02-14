@@ -5,7 +5,7 @@
  *  Derived from arch/ppc64/mm/init.c:
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *

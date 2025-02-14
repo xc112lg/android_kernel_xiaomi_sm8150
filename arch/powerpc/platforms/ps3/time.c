@@ -57,11 +57,11 @@ void __init ps3_calibrate_decr(void)
 	int result;
 	u64 tmp;
 
-	result = ps3_repository_read_be_tb_freq(0, &tmp);
+result = ps3_repository_read_be_tb_freq(0, &tmp);
 	BUG_ON(result);
 
-	ppc_tb_freq = tmp;
-	ppc_proc_freq = ppc_tb_freq * 40;
+ppc_tb_freq = tmp;
+ppc_proc_freq = ppc_tb_freq * 40;
 }
 
 static u64 read_rtc(void)

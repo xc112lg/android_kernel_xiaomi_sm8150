@@ -43,7 +43,7 @@ static inline int uart_baudrate(void)
 
 static inline int uart_clock(void)
 {
-        return ppc_proc_freq;
+return ppc_proc_freq;
 }
 
 #endif

@@ -33,9 +33,9 @@ struct pcf50633_mbc {
 	int adapter_online;
 	int usb_online;
 
-	struct power_supply *usb;
-	struct power_supply *adapter;
-	struct power_supply *ac;
+struct power_supply *usb;
+struct power_supply *adapter;
+struct power_supply *ac;
 };
 
 int pcf50633_mbc_usb_curlim_set(struct pcf50633 *pcf, int ma)
@@ -104,7 +104,7 @@ int pcf50633_mbc_usb_curlim_set(struct pcf50633 *pcf, int ma)
 				PCF50633_MBCC1_CHGENA, PCF50633_MBCC1_CHGENA);
 	}
 
-	power_supply_changed(mbc->usb);
+power_supply_changed(mbc->usb);
 
 	return ret;
 }
@@ -278,23 +278,23 @@ pcf50633_mbc_irq_handler(int irq, void *data)
 	else if (irq == PCF50633_IRQ_ADPREM)
 		mbc->adapter_online = 0;
 
-	power_supply_changed(mbc->ac);
-	power_supply_changed(mbc->usb);
-	power_supply_changed(mbc->adapter);
+power_supply_changed(mbc->ac);
+power_supply_changed(mbc->usb);
+power_supply_changed(mbc->adapter);
 
 	if (mbc->pcf->pdata->mbc_event_callback)
 		mbc->pcf->pdata->mbc_event_callback(mbc->pcf, irq);
 }
 
 static int adapter_get_property(struct power_supply *psy,
-			enum power_supply_property psp,
-			union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct pcf50633_mbc *mbc = power_supply_get_drvdata(psy);
+struct pcf50633_mbc *mbc = power_supply_get_drvdata(psy);
 	int ret = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval =  mbc->adapter_online;
 		break;
 	default:
@@ -305,16 +305,16 @@ static int adapter_get_property(struct power_supply *psy,
 }
 
 static int usb_get_property(struct power_supply *psy,
-			enum power_supply_property psp,
-			union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct pcf50633_mbc *mbc = power_supply_get_drvdata(psy);
+struct pcf50633_mbc *mbc = power_supply_get_drvdata(psy);
 	int ret = 0;
 	u8 usblim = pcf50633_reg_read(mbc->pcf, PCF50633_REG_MBCC7) &
 						PCF50633_MBCC7_USB_MASK;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = mbc->usb_online &&
 				(usblim <= PCF50633_MBCC7_USB_500mA);
 		break;
@@ -326,16 +326,16 @@ static int usb_get_property(struct power_supply *psy,
 }
 
 static int ac_get_property(struct power_supply *psy,
-			enum power_supply_property psp,
-			union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct pcf50633_mbc *mbc = power_supply_get_drvdata(psy);
+struct pcf50633_mbc *mbc = power_supply_get_drvdata(psy);
 	int ret = 0;
 	u8 usblim = pcf50633_reg_read(mbc->pcf, PCF50633_REG_MBCC7) &
 						PCF50633_MBCC7_USB_MASK;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = mbc->usb_online &&
 				(usblim == PCF50633_MBCC7_USB_1000mA);
 		break;
@@ -347,7 +347,7 @@ static int ac_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property power_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static const u8 mbc_irq_handlers[] = {
@@ -367,31 +367,31 @@ static const u8 mbc_irq_handlers[] = {
 
 static const struct power_supply_desc pcf50633_mbc_adapter_desc = {
 	.name		= "adapter",
-	.type		= POWER_SUPPLY_TYPE_MAINS,
-	.properties	= power_props,
-	.num_properties	= ARRAY_SIZE(power_props),
+.type		= POWER_SUPPLY_TYPE_MAINS,
+.properties	= power_props,
+.num_properties	= ARRAY_SIZE(power_props),
 	.get_property	= &adapter_get_property,
 };
 
 static const struct power_supply_desc pcf50633_mbc_usb_desc = {
 	.name		= "usb",
-	.type		= POWER_SUPPLY_TYPE_USB,
-	.properties	= power_props,
-	.num_properties	= ARRAY_SIZE(power_props),
+.type		= POWER_SUPPLY_TYPE_USB,
+.properties	= power_props,
+.num_properties	= ARRAY_SIZE(power_props),
 	.get_property	= usb_get_property,
 };
 
 static const struct power_supply_desc pcf50633_mbc_ac_desc = {
 	.name		= "ac",
-	.type		= POWER_SUPPLY_TYPE_MAINS,
-	.properties	= power_props,
-	.num_properties	= ARRAY_SIZE(power_props),
+.type		= POWER_SUPPLY_TYPE_MAINS,
+.properties	= power_props,
+.num_properties	= ARRAY_SIZE(power_props),
 	.get_property	= ac_get_property,
 };
 
 static int pcf50633_mbc_probe(struct platform_device *pdev)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct pcf50633_mbc *mbc;
 	int i;
 	u8 mbcs1;
@@ -412,8 +412,8 @@ static int pcf50633_mbc_probe(struct platform_device *pdev)
 	psy_cfg.num_supplicants		= mbc->pcf->pdata->num_batteries;
 	psy_cfg.drv_data		= mbc;
 
-	/* Create power supplies */
-	mbc->adapter = power_supply_register(&pdev->dev,
+/* Create power supplies */
+mbc->adapter = power_supply_register(&pdev->dev,
 					     &pcf50633_mbc_adapter_desc,
 					     &psy_cfg);
 	if (IS_ERR(mbc->adapter)) {
@@ -421,20 +421,20 @@ static int pcf50633_mbc_probe(struct platform_device *pdev)
 		return PTR_ERR(mbc->adapter);
 	}
 
-	mbc->usb = power_supply_register(&pdev->dev, &pcf50633_mbc_usb_desc,
+mbc->usb = power_supply_register(&pdev->dev, &pcf50633_mbc_usb_desc,
 					 &psy_cfg);
 	if (IS_ERR(mbc->usb)) {
 		dev_err(mbc->pcf->dev, "failed to register usb\n");
-		power_supply_unregister(mbc->adapter);
+power_supply_unregister(mbc->adapter);
 		return PTR_ERR(mbc->usb);
 	}
 
-	mbc->ac = power_supply_register(&pdev->dev, &pcf50633_mbc_ac_desc,
+mbc->ac = power_supply_register(&pdev->dev, &pcf50633_mbc_ac_desc,
 					&psy_cfg);
 	if (IS_ERR(mbc->ac)) {
 		dev_err(mbc->pcf->dev, "failed to register ac\n");
-		power_supply_unregister(mbc->adapter);
-		power_supply_unregister(mbc->usb);
+power_supply_unregister(mbc->adapter);
+power_supply_unregister(mbc->usb);
 		return PTR_ERR(mbc->ac);
 	}
 
@@ -460,9 +460,9 @@ static int pcf50633_mbc_remove(struct platform_device *pdev)
 		pcf50633_free_irq(mbc->pcf, mbc_irq_handlers[i]);
 
 	sysfs_remove_group(&pdev->dev.kobj, &mbc_attr_group);
-	power_supply_unregister(mbc->usb);
-	power_supply_unregister(mbc->adapter);
-	power_supply_unregister(mbc->ac);
+power_supply_unregister(mbc->usb);
+power_supply_unregister(mbc->adapter);
+power_supply_unregister(mbc->ac);
 
 	return 0;
 }

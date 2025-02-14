@@ -58,16 +58,16 @@ static struct rv_power_state *cast_rv_ps(struct pp_hw_power_state *hw_ps)
 	if (PhwRaven_Magic != hw_ps->magic)
 		return NULL;
 
-	return (struct rv_power_state *)hw_ps;
+return (struct rv_power_state *)hw_ps;
 }
 
 static const struct rv_power_state *cast_const_rv_ps(
-				const struct pp_hw_power_state *hw_ps)
+const struct pp_hw_power_state *hw_ps)
 {
 	if (PhwRaven_Magic != hw_ps->magic)
 		return NULL;
 
-	return (struct rv_power_state *)hw_ps;
+return (struct rv_power_state *)hw_ps;
 }
 
 static int rv_init_vq_budget_table(struct pp_hwmgr *hwmgr)
@@ -90,8 +90,8 @@ static int rv_init_vq_budget_table(struct pp_hwmgr *hwmgr)
 
 	for (i = 0; i < ptable->numEntries; i++) {
 		ptable->entries[i].ulCUs = rv_vqtable[i].ulCUs;
-		ptable->entries[i].ulSustainableSOCPowerLimitLow = rv_vqtable[i].ulSustainableSOCPowerLimitLow;
-		ptable->entries[i].ulSustainableSOCPowerLimitHigh = rv_vqtable[i].ulSustainableSOCPowerLimitHigh;
+ptable->entries[i].ulSustainableSOCPowerLimitLow = rv_vqtable[i].ulSustainableSOCPowerLimitLow;
+ptable->entries[i].ulSustainableSOCPowerLimitHigh = rv_vqtable[i].ulSustainableSOCPowerLimitHigh;
 		ptable->entries[i].ulMinSclkLow = rv_vqtable[i].ulMinSclkLow;
 		ptable->entries[i].ulMinSclkHigh = rv_vqtable[i].ulMinSclkHigh;
 		ptable->entries[i].ucDispConfig = rv_vqtable[i].ucDispConfig;
@@ -112,7 +112,7 @@ static int rv_initialize_dpm_defaults(struct pp_hwmgr *hwmgr)
 	struct cgs_system_info sys_info = {0};
 	int result;
 
-	rv_hwmgr->ddi_power_gating_disabled = 0;
+rv_hwmgr->ddi_power_gating_disabled = 0;
 	rv_hwmgr->bapm_enabled = 1;
 	rv_hwmgr->dce_slow_sclk_threshold = 30000;
 	rv_hwmgr->disable_driver_thermal_policy = 1;
@@ -127,16 +127,16 @@ static int rv_initialize_dpm_defaults(struct pp_hwmgr *hwmgr)
 					PHM_PlatformCaps_DynamicM3Arbiter);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-					PHM_PlatformCaps_UVDPowerGating);
+PHM_PlatformCaps_UVDPowerGating);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-					PHM_PlatformCaps_UVDDynamicPowerGating);
+PHM_PlatformCaps_UVDDynamicPowerGating);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-					PHM_PlatformCaps_VCEPowerGating);
+PHM_PlatformCaps_VCEPowerGating);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-					PHM_PlatformCaps_SamuPowerGating);
+PHM_PlatformCaps_SamuPowerGating);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
 					PHM_PlatformCaps_ACP);
@@ -145,13 +145,13 @@ static int rv_initialize_dpm_defaults(struct pp_hwmgr *hwmgr)
 					PHM_PlatformCaps_SclkDeepSleep);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-				PHM_PlatformCaps_GFXDynamicMGPowerGating);
+PHM_PlatformCaps_GFXDynamicMGPowerGating);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
 				PHM_PlatformCaps_SclkThrottleLowNotification);
 
 	phm_cap_unset(hwmgr->platform_descriptor.platformCaps,
-				PHM_PlatformCaps_DisableVoltageIsland);
+PHM_PlatformCaps_DisableVoltageIsland);
 
 	phm_cap_set(hwmgr->platform_descriptor.platformCaps,
 					PHM_PlatformCaps_DynamicUVDState);
@@ -162,14 +162,14 @@ static int rv_initialize_dpm_defaults(struct pp_hwmgr *hwmgr)
 	if (!result) {
 		if (sys_info.value & AMD_PG_SUPPORT_GFX_DMG)
 			phm_cap_set(hwmgr->platform_descriptor.platformCaps,
-				      PHM_PlatformCaps_GFXDynamicMGPowerGating);
+PHM_PlatformCaps_GFXDynamicMGPowerGating);
 	}
 
 	return 0;
 }
 
 static int rv_construct_max_power_limits_table(struct pp_hwmgr *hwmgr,
-			struct phm_clock_and_voltage_limits *table)
+struct phm_clock_and_voltage_limits *table)
 {
 	return 0;
 }
@@ -178,10 +178,10 @@ static int rv_init_dynamic_state_adjustment_rule_settings(
 							struct pp_hwmgr *hwmgr)
 {
 	uint32_t table_size =
-		sizeof(struct phm_clock_voltage_dependency_table) +
-		(7 * sizeof(struct phm_clock_voltage_dependency_record));
+sizeof(struct phm_clock_voltage_dependency_table) +
+(7 * sizeof(struct phm_clock_voltage_dependency_record));
 
-	struct phm_clock_voltage_dependency_table *table_clk_vlt =
+struct phm_clock_voltage_dependency_table *table_clk_vlt =
 					kzalloc(table_size, GFP_KERNEL);
 
 	if (NULL == table_clk_vlt) {
@@ -190,23 +190,23 @@ static int rv_init_dynamic_state_adjustment_rule_settings(
 	}
 
 	table_clk_vlt->count = 8;
-	table_clk_vlt->entries[0].clk = PP_DAL_POWERLEVEL_0;
+table_clk_vlt->entries[0].clk = PP_DAL_POWERLEVEL_0;
 	table_clk_vlt->entries[0].v = 0;
-	table_clk_vlt->entries[1].clk = PP_DAL_POWERLEVEL_1;
+table_clk_vlt->entries[1].clk = PP_DAL_POWERLEVEL_1;
 	table_clk_vlt->entries[1].v = 1;
-	table_clk_vlt->entries[2].clk = PP_DAL_POWERLEVEL_2;
+table_clk_vlt->entries[2].clk = PP_DAL_POWERLEVEL_2;
 	table_clk_vlt->entries[2].v = 2;
-	table_clk_vlt->entries[3].clk = PP_DAL_POWERLEVEL_3;
+table_clk_vlt->entries[3].clk = PP_DAL_POWERLEVEL_3;
 	table_clk_vlt->entries[3].v = 3;
-	table_clk_vlt->entries[4].clk = PP_DAL_POWERLEVEL_4;
+table_clk_vlt->entries[4].clk = PP_DAL_POWERLEVEL_4;
 	table_clk_vlt->entries[4].v = 4;
-	table_clk_vlt->entries[5].clk = PP_DAL_POWERLEVEL_5;
+table_clk_vlt->entries[5].clk = PP_DAL_POWERLEVEL_5;
 	table_clk_vlt->entries[5].v = 5;
-	table_clk_vlt->entries[6].clk = PP_DAL_POWERLEVEL_6;
+table_clk_vlt->entries[6].clk = PP_DAL_POWERLEVEL_6;
 	table_clk_vlt->entries[6].v = 6;
-	table_clk_vlt->entries[7].clk = PP_DAL_POWERLEVEL_7;
+table_clk_vlt->entries[7].clk = PP_DAL_POWERLEVEL_7;
 	table_clk_vlt->entries[7].v = 7;
-	hwmgr->dyn_state.vddc_dep_on_dal_pwrl = table_clk_vlt;
+hwmgr->dyn_state.vddc_dep_on_dal_pwrl = table_clk_vlt;
 
 	return 0;
 }
@@ -221,8 +221,8 @@ static int rv_get_system_info_data(struct pp_hwmgr *hwmgr)
 	if (rv_data->thermal_auto_throttling_treshold == 0)
 		 rv_data->thermal_auto_throttling_treshold = 203;
 
-	rv_construct_max_power_limits_table (hwmgr,
-				    &hwmgr->dyn_state.max_clock_voltage_on_ac);
+rv_construct_max_power_limits_table (hwmgr,
+&hwmgr->dyn_state.max_clock_voltage_on_ac);
 
 	rv_init_dynamic_state_adjustment_rule_settings(hwmgr);
 
@@ -244,12 +244,12 @@ static int rv_tf_set_clock_limit(struct pp_hwmgr *hwmgr, void *input,
 	clocks.dcefClock = hwmgr->display_config.min_dcef_set_clk;
 	clocks.dcefClockInSR = hwmgr->display_config.min_dcef_deep_sleep_set_clk;
 	clock_req.clock_type = amd_pp_dcf_clock;
-	clock_req.clock_freq_in_khz = clocks.dcefClock * 10;
+clock_req.clock_freq_in_khz = clocks.dcefClock * 10;
 
 	if (clocks.dcefClock == 0 && clocks.dcefClockInSR == 0)
-		clock_req.clock_freq_in_khz = rv_data->dcf_actual_hard_min_freq;
+clock_req.clock_freq_in_khz = rv_data->dcf_actual_hard_min_freq;
 
-	PP_ASSERT_WITH_CODE(!rv_display_clock_voltage_request(hwmgr, &clock_req),
+PP_ASSERT_WITH_CODE(!rv_display_clock_voltage_request(hwmgr, &clock_req),
 				"Attempt to set DCF Clock Failed!", return -EINVAL);
 
 	if(rv_data->need_min_deep_sleep_dcefclk && 0 != clocks.dcefClockInSR)
@@ -257,11 +257,11 @@ static int rv_tf_set_clock_limit(struct pp_hwmgr *hwmgr, void *input,
 					PPSMC_MSG_SetMinDeepSleepDcefclk,
 					clocks.dcefClockInSR / 100);
 	/*
-	if(!rv_data->isp_tileA_power_gated || !rv_data->isp_tileB_power_gated) {
-		if ((hwmgr->ispArbiter.iclk != 0) && (rv_data->ISPActualHardMinFreq != (hwmgr->ispArbiter.iclk / 100) )) {
+if(!rv_data->isp_tileA_power_gated || !rv_data->isp_tileB_power_gated) {
+if ((hwmgr->ispArbiter.iclk != 0) && (rv_data->ISPActualHardMinFreq != (hwmgr->ispArbiter.iclk / 100) )) {
 			smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_SetHardMinIspclkByFreq, hwmgr->ispArbiter.iclk / 100);
-			rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->ISPActualHardMinFreq),
+PPSMC_MSG_SetHardMinIspclkByFreq, hwmgr->ispArbiter.iclk / 100);
+rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->ISPActualHardMinFreq),
 		}
 	} */
 
@@ -275,27 +275,27 @@ static int rv_tf_set_clock_limit(struct pp_hwmgr *hwmgr, void *input,
 	}
 
 	if((hwmgr->gfx_arbiter.sclk_hard_min != 0) &&
-		((hwmgr->gfx_arbiter.sclk_hard_min / 100) != rv_data->soc_actual_hard_min_freq)) {
+((hwmgr->gfx_arbiter.sclk_hard_min / 100) != rv_data->soc_actual_hard_min_freq)) {
 		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_SetHardMinSocclkByFreq,
+PPSMC_MSG_SetHardMinSocclkByFreq,
 					hwmgr->gfx_arbiter.sclk_hard_min / 100);
-			rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->soc_actual_hard_min_freq);
+rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->soc_actual_hard_min_freq);
 	}
 
 	if ((hwmgr->gfx_arbiter.gfxclk != 0) &&
-		(rv_data->gfx_actual_soft_min_freq != (hwmgr->gfx_arbiter.gfxclk))) {
+(rv_data->gfx_actual_soft_min_freq != (hwmgr->gfx_arbiter.gfxclk))) {
 		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_SetMinVideoGfxclkFreq,
+PPSMC_MSG_SetMinVideoGfxclkFreq,
 					hwmgr->gfx_arbiter.gfxclk / 100);
-		rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->gfx_actual_soft_min_freq);
+rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->gfx_actual_soft_min_freq);
 	}
 
 	if ((hwmgr->gfx_arbiter.fclk != 0) &&
-		(rv_data->fabric_actual_soft_min_freq != (hwmgr->gfx_arbiter.fclk / 100))) {
+(rv_data->fabric_actual_soft_min_freq != (hwmgr->gfx_arbiter.fclk / 100))) {
 		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_SetMinVideoFclkFreq,
+PPSMC_MSG_SetMinVideoFclkFreq,
 					hwmgr->gfx_arbiter.fclk / 100);
-		rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->fabric_actual_soft_min_freq);
+rv_read_arg_from_smc(hwmgr->smumgr, &rv_data->fabric_actual_soft_min_freq);
 	}
 
 	return 0;
@@ -325,7 +325,7 @@ static const struct phm_master_table_item rv_set_power_state_list[] = {
 static const struct phm_master_table_header rv_set_power_state_master = {
 	0,
 	PHM_MasterTableFlag_None,
-	rv_set_power_state_list
+rv_set_power_state_list
 };
 
 static int rv_tf_init_power_gate_state(struct pp_hwmgr *hwmgr, void *input,
@@ -333,15 +333,15 @@ static int rv_tf_init_power_gate_state(struct pp_hwmgr *hwmgr, void *input,
 {
 	struct rv_hwmgr *rv_data = (struct rv_hwmgr *)(hwmgr->backend);
 
-	rv_data->vcn_power_gated = true;
-	rv_data->isp_tileA_power_gated = true;
-	rv_data->isp_tileB_power_gated = true;
+rv_data->vcn_power_gated = true;
+rv_data->isp_tileA_power_gated = true;
+rv_data->isp_tileB_power_gated = true;
 
 	return 0;
 }
 
 static const struct phm_master_table_item rv_setup_asic_list[] = {
-	{ .tableFunction = rv_tf_init_power_gate_state },
+{ .tableFunction = rv_tf_init_power_gate_state },
 	{ }
 };
 
@@ -373,7 +373,7 @@ static const struct phm_master_table_item rv_power_down_asic_list[] = {
 static const struct phm_master_table_header rv_power_down_asic_master = {
 	0,
 	PHM_MasterTableFlag_None,
-	rv_power_down_asic_list
+rv_power_down_asic_list
 };
 
 
@@ -427,8 +427,8 @@ static const struct phm_master_table_header rv_enable_dpm_master = {
 };
 
 static int rv_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
-				struct pp_power_state  *prequest_ps,
-			const struct pp_power_state *pcurrent_ps)
+struct pp_power_state  *prequest_ps,
+const struct pp_power_state *pcurrent_ps)
 {
 	return 0;
 }
@@ -471,13 +471,13 @@ DpmClock_t VddPhyClk[]= {
 };
 
 static int rv_get_clock_voltage_dependency_table(struct pp_hwmgr *hwmgr,
-			struct rv_voltage_dependency_table **pptable,
+struct rv_voltage_dependency_table **pptable,
 			uint32_t num_entry, DpmClock_t *pclk_dependency_table)
 {
 	uint32_t table_size, i;
-	struct rv_voltage_dependency_table *ptable;
+struct rv_voltage_dependency_table *ptable;
 
-	table_size = sizeof(uint32_t) + sizeof(struct rv_voltage_dependency_table) * num_entry;
+table_size = sizeof(uint32_t) + sizeof(struct rv_voltage_dependency_table) * num_entry;
 	ptable = kzalloc(table_size, GFP_KERNEL);
 
 	if (NULL == ptable)
@@ -486,7 +486,7 @@ static int rv_get_clock_voltage_dependency_table(struct pp_hwmgr *hwmgr,
 	ptable->count = num_entry;
 
 	for (i = 0; i < ptable->count; i++) {
-		ptable->entries[i].clk         = pclk_dependency_table->Freq * 100;
+ptable->entries[i].clk         = pclk_dependency_table->Freq * 100;
 		ptable->entries[i].vol         = pclk_dependency_table->Vol;
 		pclk_dependency_table++;
 	}
@@ -503,7 +503,7 @@ static int rv_populate_clock_table(struct pp_hwmgr *hwmgr)
 
 	struct rv_hwmgr *rv_data = (struct rv_hwmgr *)(hwmgr->backend);
 	DpmClocks_t  *table = &(rv_data->clock_table);
-	struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
+struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
 
 	result = rv_copy_table_from_smc(hwmgr->smumgr, (uint8_t *)table, CLOCKTABLE);
 
@@ -511,37 +511,37 @@ static int rv_populate_clock_table(struct pp_hwmgr *hwmgr)
 			"Attempt to copy clock table from smc failed",
 			return result);
 
-	if (0 == result && table->DcefClocks[0].Freq != 0) {
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dcefclk,
+if (0 == result && table->DcefClocks[0].Freq != 0) {
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dcefclk,
 						NUM_DCEFCLK_DPM_LEVELS,
 						&rv_data->clock_table.DcefClocks[0]);
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_socclk,
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_socclk,
 						NUM_SOCCLK_DPM_LEVELS,
 						&rv_data->clock_table.SocClocks[0]);
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_fclk,
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_fclk,
 						NUM_FCLK_DPM_LEVELS,
 						&rv_data->clock_table.FClocks[0]);
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_mclk,
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_mclk,
 						NUM_MEMCLK_DPM_LEVELS,
 						&rv_data->clock_table.MemClocks[0]);
 	} else {
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dcefclk,
-						ARRAY_SIZE(VddDcfClk),
-						&VddDcfClk[0]);
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_socclk,
-						ARRAY_SIZE(VddSocClk),
-						&VddSocClk[0]);
-		rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_fclk,
-						ARRAY_SIZE(VddFClk),
-						&VddFClk[0]);
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dcefclk,
+ARRAY_SIZE(VddDcfClk),
+&VddDcfClk[0]);
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_socclk,
+ARRAY_SIZE(VddSocClk),
+&VddSocClk[0]);
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_fclk,
+ARRAY_SIZE(VddFClk),
+&VddFClk[0]);
 	}
-	rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dispclk,
-					ARRAY_SIZE(VddDispClk),
-					&VddDispClk[0]);
-	rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dppclk,
-					ARRAY_SIZE(VddDppClk), &VddDppClk[0]);
-	rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_phyclk,
-					ARRAY_SIZE(VddPhyClk), &VddPhyClk[0]);
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dispclk,
+ARRAY_SIZE(VddDispClk),
+&VddDispClk[0]);
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_dppclk,
+ARRAY_SIZE(VddDppClk), &VddDppClk[0]);
+rv_get_clock_voltage_dependency_table(hwmgr, &pinfo->vdd_dep_on_phyclk,
+ARRAY_SIZE(VddPhyClk), &VddPhyClk[0]);
 
 	return 0;
 }
@@ -564,7 +564,7 @@ static int rv_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 	}
 
 	phm_cap_set(hwmgr->platform_descriptor.platformCaps,
-                PHM_PlatformCaps_PowerPlaySupport);
+PHM_PlatformCaps_PowerPlaySupport);
 
 	rv_populate_clock_table(hwmgr);
 
@@ -583,17 +583,17 @@ static int rv_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 		return result;
 	}
 
-	result = phm_construct_table(hwmgr, &rv_power_down_asic_master,
-				&(hwmgr->power_down_asic));
+result = phm_construct_table(hwmgr, &rv_power_down_asic_master,
+&(hwmgr->power_down_asic));
 	if (result != 0) {
-		pr_err("Fail to construct power down ASIC\n");
+pr_err("Fail to construct power down ASIC\n");
 		return result;
 	}
 
-	result = phm_construct_table(hwmgr, &rv_set_power_state_master,
-				&(hwmgr->set_power_state));
+result = phm_construct_table(hwmgr, &rv_set_power_state_master,
+&(hwmgr->set_power_state));
 	if (result != 0) {
-		pr_err("Fail to construct set_power_state\n");
+pr_err("Fail to construct set_power_state\n");
 		return result;
 	}
 
@@ -611,10 +611,10 @@ static int rv_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 	}
 
 	hwmgr->platform_descriptor.hardwareActivityPerformanceLevels =
-						RAVEN_MAX_HARDWARE_POWERLEVELS;
+RAVEN_MAX_HARDWARE_POWERLEVELS;
 
 	hwmgr->platform_descriptor.hardwarePerformanceLevels =
-						RAVEN_MAX_HARDWARE_POWERLEVELS;
+RAVEN_MAX_HARDWARE_POWERLEVELS;
 
 	hwmgr->platform_descriptor.vbiosInterruptId = 0;
 
@@ -632,42 +632,42 @@ static int rv_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
 static int rv_hwmgr_backend_fini(struct pp_hwmgr *hwmgr)
 {
 	struct rv_hwmgr *rv_data = (struct rv_hwmgr *)(hwmgr->backend);
-	struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
+struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
 
-	phm_destroy_table(hwmgr, &(hwmgr->set_power_state));
+phm_destroy_table(hwmgr, &(hwmgr->set_power_state));
 	phm_destroy_table(hwmgr, &(hwmgr->enable_dynamic_state_management));
 	phm_destroy_table(hwmgr, &(hwmgr->disable_dynamic_state_management));
-	phm_destroy_table(hwmgr, &(hwmgr->power_down_asic));
+phm_destroy_table(hwmgr, &(hwmgr->power_down_asic));
 	phm_destroy_table(hwmgr, &(hwmgr->setup_asic));
 
-	if (pinfo->vdd_dep_on_dcefclk) {
-		kfree(pinfo->vdd_dep_on_dcefclk);
-		pinfo->vdd_dep_on_dcefclk = NULL;
+if (pinfo->vdd_dep_on_dcefclk) {
+kfree(pinfo->vdd_dep_on_dcefclk);
+pinfo->vdd_dep_on_dcefclk = NULL;
 	}
-	if (pinfo->vdd_dep_on_socclk) {
-		kfree(pinfo->vdd_dep_on_socclk);
-		pinfo->vdd_dep_on_socclk = NULL;
+if (pinfo->vdd_dep_on_socclk) {
+kfree(pinfo->vdd_dep_on_socclk);
+pinfo->vdd_dep_on_socclk = NULL;
 	}
-	if (pinfo->vdd_dep_on_fclk) {
-		kfree(pinfo->vdd_dep_on_fclk);
-		pinfo->vdd_dep_on_fclk = NULL;
+if (pinfo->vdd_dep_on_fclk) {
+kfree(pinfo->vdd_dep_on_fclk);
+pinfo->vdd_dep_on_fclk = NULL;
 	}
-	if (pinfo->vdd_dep_on_dispclk) {
-		kfree(pinfo->vdd_dep_on_dispclk);
-		pinfo->vdd_dep_on_dispclk = NULL;
+if (pinfo->vdd_dep_on_dispclk) {
+kfree(pinfo->vdd_dep_on_dispclk);
+pinfo->vdd_dep_on_dispclk = NULL;
 	}
-	if (pinfo->vdd_dep_on_dppclk) {
-		kfree(pinfo->vdd_dep_on_dppclk);
-		pinfo->vdd_dep_on_dppclk = NULL;
+if (pinfo->vdd_dep_on_dppclk) {
+kfree(pinfo->vdd_dep_on_dppclk);
+pinfo->vdd_dep_on_dppclk = NULL;
 	}
-	if (pinfo->vdd_dep_on_phyclk) {
-		kfree(pinfo->vdd_dep_on_phyclk);
-		pinfo->vdd_dep_on_phyclk = NULL;
+if (pinfo->vdd_dep_on_phyclk) {
+kfree(pinfo->vdd_dep_on_phyclk);
+pinfo->vdd_dep_on_phyclk = NULL;
 	}
 
-	if (NULL != hwmgr->dyn_state.vddc_dep_on_dal_pwrl) {
-		kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
-		hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
+if (NULL != hwmgr->dyn_state.vddc_dep_on_dal_pwrl) {
+kfree(hwmgr->dyn_state.vddc_dep_on_dal_pwrl);
+hwmgr->dyn_state.vddc_dep_on_dal_pwrl = NULL;
 	}
 
 	if (NULL != hwmgr->dyn_state.vq_budgeting_table) {
@@ -698,30 +698,30 @@ static int rv_dpm_get_sclk(struct pp_hwmgr *hwmgr, bool low)
 }
 
 static int rv_dpm_patch_boot_state(struct pp_hwmgr *hwmgr,
-					struct pp_hw_power_state *hw_ps)
+struct pp_hw_power_state *hw_ps)
 {
 	return 0;
 }
 
 static int rv_dpm_get_pp_table_entry_callback(
 						     struct pp_hwmgr *hwmgr,
-					   struct pp_hw_power_state *hw_ps,
+struct pp_hw_power_state *hw_ps,
 							  unsigned int index,
 						     const void *clock_info)
 {
-	struct rv_power_state *rv_ps = cast_rv_ps(hw_ps);
+struct rv_power_state *rv_ps = cast_rv_ps(hw_ps);
 
 	const ATOM_PPLIB_CZ_CLOCK_INFO *rv_clock_info = clock_info;
 
-	struct phm_clock_voltage_dependency_table *table =
-				    hwmgr->dyn_state.vddc_dependency_on_sclk;
+struct phm_clock_voltage_dependency_table *table =
+hwmgr->dyn_state.vddc_dependency_on_sclk;
 	uint8_t clock_info_index = rv_clock_info->index;
 
 	if (clock_info_index > (uint8_t)(hwmgr->platform_descriptor.hardwareActivityPerformanceLevels - 1))
 		clock_info_index = (uint8_t)(hwmgr->platform_descriptor.hardwareActivityPerformanceLevels - 1);
 
 	rv_ps->levels[index].engine_clock = table->entries[clock_info_index].clk;
-	rv_ps->levels[index].vddc_index = (uint8_t)table->entries[clock_info_index].v;
+rv_ps->levels[index].vddc_index = (uint8_t)table->entries[clock_info_index].v;
 
 	rv_ps->level = index + 1;
 
@@ -744,10 +744,10 @@ static int rv_dpm_get_num_of_pp_table_entries(struct pp_hwmgr *hwmgr)
 }
 
 static int rv_dpm_get_pp_table_entry(struct pp_hwmgr *hwmgr,
-		    unsigned long entry, struct pp_power_state *ps)
+unsigned long entry, struct pp_power_state *ps)
 {
 	int result;
-	struct rv_power_state *rv_ps;
+struct rv_power_state *rv_ps;
 
 	ps->hardware.magic = PhwRaven_Magic;
 
@@ -764,7 +764,7 @@ static int rv_dpm_get_pp_table_entry(struct pp_hwmgr *hwmgr,
 
 static int rv_get_power_state_size(struct pp_hwmgr *hwmgr)
 {
-	return sizeof(struct rv_power_state);
+return sizeof(struct rv_power_state);
 }
 
 static int rv_set_cpu_power_state(struct pp_hwmgr *hwmgr)
@@ -801,7 +801,7 @@ static int rv_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_hw_p
 				PHM_PerformanceLevelDesignation designation, uint32_t index,
 				PHM_PerformanceLevel *level)
 {
-	const struct rv_power_state *ps;
+const struct rv_power_state *ps;
 	struct rv_hwmgr *data;
 	uint32_t level_index;
 	uint32_t i;
@@ -816,7 +816,7 @@ static int rv_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_hw_p
 	level_index = index > ps->level - 1 ? ps->level - 1 : index;
 	level->coreClock = ps->levels[level_index].engine_clock;
 
-	if (designation == PHM_PerformanceLevelDesignation_PowerContainment) {
+if (designation == PHM_PerformanceLevelDesignation_PowerContainment) {
 		for (i = 1; i < ps->level; i++) {
 			if (ps->levels[i].engine_clock > data->dce_slow_sclk_threshold) {
 				level->coreClock = ps->levels[i].engine_clock;
@@ -826,22 +826,22 @@ static int rv_get_performance_level(struct pp_hwmgr *hwmgr, const struct pp_hw_p
 	}
 
 	if (level_index == 0) {
-		vol_dep_record_index = data->clock_vol_info.vdd_dep_on_fclk->count - 1;
+vol_dep_record_index = data->clock_vol_info.vdd_dep_on_fclk->count - 1;
 		level->memory_clock =
-			data->clock_vol_info.vdd_dep_on_fclk->entries[vol_dep_record_index].clk;
+data->clock_vol_info.vdd_dep_on_fclk->entries[vol_dep_record_index].clk;
 	} else
-		level->memory_clock = data->clock_vol_info.vdd_dep_on_fclk->entries[0].clk;
+level->memory_clock = data->clock_vol_info.vdd_dep_on_fclk->entries[0].clk;
 
-	level->nonLocalMemoryFreq = 0;
+level->nonLocalMemoryFreq = 0;
 	level->nonLocalMemoryWidth = 0;
 
 	return 0;
 }
 
 static int rv_get_current_shallow_sleep_clocks(struct pp_hwmgr *hwmgr,
-	const struct pp_hw_power_state *state, struct pp_clock_info *clock_info)
+const struct pp_hw_power_state *state, struct pp_clock_info *clock_info)
 {
-	const struct rv_power_state *ps = cast_const_rv_ps(state);
+const struct rv_power_state *ps = cast_const_rv_ps(state);
 
 	clock_info->min_eng_clk = ps->levels[0].engine_clock / (1 << (ps->levels[0].ss_divider_index));
 	clock_info->max_eng_clk = ps->levels[ps->level - 1].engine_clock / (1 << (ps->levels[ps->level - 1].ss_divider_index));
@@ -859,10 +859,10 @@ static int rv_get_current_shallow_sleep_clocks(struct pp_hwmgr *hwmgr,
 static uint32_t rv_get_mem_latency(struct pp_hwmgr *hwmgr,
 		uint32_t clock)
 {
-	if (clock >= MEM_FREQ_LOW_LATENCY &&
-			clock < MEM_FREQ_HIGH_LATENCY)
+if (clock >= MEM_FREQ_LOW_LATENCY &&
+clock < MEM_FREQ_HIGH_LATENCY)
 		return MEM_LATENCY_HIGH;
-	else if (clock >= MEM_FREQ_HIGH_LATENCY)
+else if (clock >= MEM_FREQ_HIGH_LATENCY)
 		return MEM_LATENCY_LOW;
 	else
 		return MEM_LATENCY_ERR;
@@ -874,8 +874,8 @@ static int rv_get_clock_by_type_with_latency(struct pp_hwmgr *hwmgr,
 {
 	uint32_t i;
 	struct rv_hwmgr *rv_data = (struct rv_hwmgr *)(hwmgr->backend);
-	struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
-	struct rv_voltage_dependency_table *pclk_vol_table;
+struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
+struct rv_voltage_dependency_table *pclk_vol_table;
 	bool latency_required = false;
 
 	if (pinfo == NULL)
@@ -883,24 +883,24 @@ static int rv_get_clock_by_type_with_latency(struct pp_hwmgr *hwmgr,
 
 	switch (type) {
 	case amd_pp_mem_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_mclk;
+pclk_vol_table = pinfo->vdd_dep_on_mclk;
 		latency_required = true;
 		break;
 	case amd_pp_f_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_fclk;
+pclk_vol_table = pinfo->vdd_dep_on_fclk;
 		latency_required = true;
 		break;
 	case amd_pp_dcf_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_dcefclk;
+pclk_vol_table = pinfo->vdd_dep_on_dcefclk;
 		break;
 	case amd_pp_disp_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_dispclk;
+pclk_vol_table = pinfo->vdd_dep_on_dispclk;
 		break;
 	case amd_pp_phy_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_phyclk;
+pclk_vol_table = pinfo->vdd_dep_on_phyclk;
 		break;
 	case amd_pp_dpp_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_dppclk;
+pclk_vol_table = pinfo->vdd_dep_on_dppclk;
 	default:
 		return -EINVAL;
 	}
@@ -923,28 +923,28 @@ static int rv_get_clock_by_type_with_latency(struct pp_hwmgr *hwmgr,
 
 static int rv_get_clock_by_type_with_voltage(struct pp_hwmgr *hwmgr,
 		enum amd_pp_clock_type type,
-		struct pp_clock_levels_with_voltage *clocks)
+struct pp_clock_levels_with_voltage *clocks)
 {
 	uint32_t i;
 	struct rv_hwmgr *rv_data = (struct rv_hwmgr *)(hwmgr->backend);
-	struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
-	struct rv_voltage_dependency_table *pclk_vol_table = NULL;
+struct rv_clock_voltage_information *pinfo = &(rv_data->clock_vol_info);
+struct rv_voltage_dependency_table *pclk_vol_table = NULL;
 
 	if (pinfo == NULL)
 		return -EINVAL;
 
 	switch (type) {
 	case amd_pp_mem_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_mclk;
+pclk_vol_table = pinfo->vdd_dep_on_mclk;
 		break;
 	case amd_pp_f_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_fclk;
+pclk_vol_table = pinfo->vdd_dep_on_fclk;
 		break;
 	case amd_pp_dcf_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_dcefclk;
+pclk_vol_table = pinfo->vdd_dep_on_dcefclk;
 		break;
 	case amd_pp_soc_clock:
-		pclk_vol_table = pinfo->vdd_dep_on_socclk;
+pclk_vol_table = pinfo->vdd_dep_on_socclk;
 		break;
 	default:
 		return -EINVAL;
@@ -956,7 +956,7 @@ static int rv_get_clock_by_type_with_voltage(struct pp_hwmgr *hwmgr,
 	clocks->num_levels = 0;
 	for (i = 0; i < pclk_vol_table->count; i++) {
 		clocks->data[i].clocks_in_khz = pclk_vol_table->entries[i].clk;
-		clocks->data[i].voltage_in_mv = pclk_vol_table->entries[i].vol;
+clocks->data[i].voltage_in_mv = pclk_vol_table->entries[i].vol;
 		clocks->num_levels++;
 	}
 
@@ -969,32 +969,32 @@ int rv_display_clock_voltage_request(struct pp_hwmgr *hwmgr,
 	int result = 0;
 	struct rv_hwmgr *rv_data = (struct rv_hwmgr *)(hwmgr->backend);
 	enum amd_pp_clock_type clk_type = clock_req->clock_type;
-	uint32_t clk_freq = clock_req->clock_freq_in_khz / 1000;
+uint32_t clk_freq = clock_req->clock_freq_in_khz / 1000;
 	PPSMC_Msg        msg;
 
 	switch (clk_type) {
 	case amd_pp_dcf_clock:
-		if (clk_freq == rv_data->dcf_actual_hard_min_freq)
+if (clk_freq == rv_data->dcf_actual_hard_min_freq)
 			return 0;
-		msg =  PPSMC_MSG_SetHardMinDcefclkByFreq;
-		rv_data->dcf_actual_hard_min_freq = clk_freq;
+msg =  PPSMC_MSG_SetHardMinDcefclkByFreq;
+rv_data->dcf_actual_hard_min_freq = clk_freq;
 		break;
 	case amd_pp_soc_clock:
-		 msg = PPSMC_MSG_SetHardMinSocclkByFreq;
+msg = PPSMC_MSG_SetHardMinSocclkByFreq;
 		break;
 	case amd_pp_f_clock:
-		if (clk_freq == rv_data->f_actual_hard_min_freq)
+if (clk_freq == rv_data->f_actual_hard_min_freq)
 			return 0;
-		rv_data->f_actual_hard_min_freq = clk_freq;
-		msg = PPSMC_MSG_SetHardMinFclkByFreq;
+rv_data->f_actual_hard_min_freq = clk_freq;
+msg = PPSMC_MSG_SetHardMinFclkByFreq;
 		break;
 	default:
-		pr_info("[DisplayClockVoltageRequest]Invalid Clock Type!");
+pr_info("[DisplayClockVoltageRequest]Invalid Clock Type!");
 		return -EINVAL;
 	}
 
 	result = smum_send_msg_to_smc_with_parameter(hwmgr->smumgr, msg,
-							clk_freq);
+clk_freq);
 
 	return result;
 }
@@ -1038,24 +1038,24 @@ static const struct pp_hwmgr_func rv_hwmgr_funcs = {
 	.asic_setup = NULL,
 	.apply_state_adjust_rules = rv_apply_state_adjust_rules,
 	.force_dpm_level = rv_dpm_force_dpm_level,
-	.get_power_state_size = rv_get_power_state_size,
-	.powerdown_uvd = NULL,
-	.powergate_uvd = NULL,
-	.powergate_vce = NULL,
+.get_power_state_size = rv_get_power_state_size,
+.powerdown_uvd = NULL,
+.powergate_uvd = NULL,
+.powergate_vce = NULL,
 	.get_mclk = rv_dpm_get_mclk,
 	.get_sclk = rv_dpm_get_sclk,
 	.patch_boot_state = rv_dpm_patch_boot_state,
 	.get_pp_table_entry = rv_dpm_get_pp_table_entry,
 	.get_num_of_pp_table_entries = rv_dpm_get_num_of_pp_table_entries,
-	.set_cpu_power_state = rv_set_cpu_power_state,
+.set_cpu_power_state = rv_set_cpu_power_state,
 	.store_cc6_data = rv_store_cc6_data,
 	.force_clock_level = rv_force_clock_level,
 	.print_clock_levels = rv_print_clock_levels,
-	.get_dal_power_level = rv_get_dal_power_level,
+.get_dal_power_level = rv_get_dal_power_level,
 	.get_performance_level = rv_get_performance_level,
 	.get_current_shallow_sleep_clocks = rv_get_current_shallow_sleep_clocks,
 	.get_clock_by_type_with_latency = rv_get_clock_by_type_with_latency,
-	.get_clock_by_type_with_voltage = rv_get_clock_by_type_with_voltage,
+.get_clock_by_type_with_voltage = rv_get_clock_by_type_with_voltage,
 	.get_max_high_clocks = rv_get_max_high_clocks,
 	.read_sensor = rv_read_sensor,
 };

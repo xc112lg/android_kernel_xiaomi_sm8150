@@ -90,10 +90,10 @@ struct rx1618_chg {
 	struct mutex wireless_chg_lock;
 	struct mutex wireless_chg_int_lock;
 
-	struct power_supply *wip_psy;
-	struct power_supply *dc_psy;
-	struct power_supply_desc wip_psy_d;
-	struct power_supply *wireless_psy;
+struct power_supply *wip_psy;
+struct power_supply *dc_psy;
+struct power_supply_desc wip_psy_d;
+struct power_supply *wireless_psy;
 	int epp;
 	int auth;
 };
@@ -199,13 +199,13 @@ unsigned int rx1618_get_rx_ibuck(struct rx1618_chg *chip)
 bool rx1618_is_vbuck_on(struct rx1618_chg *chip)
 {
 	bool vbuck_status = false;
-	unsigned int voltage = 0;
+unsigned int voltage = 0;
 
-	voltage = rx1618_get_rx_vbuck(chip);
+voltage = rx1618_get_rx_vbuck(chip);
 
-	dev_err(chip->dev, "[rx1618] [%s] Vbuck = %d \n", __func__, voltage);
+dev_err(chip->dev, "[rx1618] [%s] Vbuck = %d \n", __func__, voltage);
 
-	if ((voltage > MIN_VBUCK) && (voltage < MAX_VBUCK)) //4V~11V
+if ((voltage > MIN_VBUCK) && (voltage < MAX_VBUCK)) //4V~11V
 	{
 		vbuck_status = true;
 	} else {
@@ -402,13 +402,13 @@ bool rx1618_download_firmware(struct rx1618_chg *chip)
 static void determine_initial_status(struct rx1618_chg *chip)
 {
 	bool vbuck_on = false;
-	//union power_supply_propval prop = {0, };
+//union power_supply_propval prop = {0, };
 
 	vbuck_on = rx1618_is_vbuck_on(chip);
 	if (vbuck_on && !chip->online) {
 		chip->online = 1;
 		//prop.intval = vbuck_on;
-		//power_supply_set_property(chip->batt_psy, POWER_SUPPLY_PROP_WIRELESS_ONLINE, &prop);
+//power_supply_set_property(chip->batt_psy, POWER_SUPPLY_PROP_WIRELESS_ONLINE, &prop);
 	}
 
 	dev_err(chip->dev, "[rx1618] [%s] initial vbuck_on = %d, online = %d\n",
@@ -491,12 +491,12 @@ void rx1618_dump_reg(void)
 #define DC_PD_20W_CURRENT 1000000 * N //2A
 void rx1618_set_pmi_icl(struct rx1618_chg *chip, int mA)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	if (!chip->dc_psy) {
-		chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 		if (!chip->dc_psy) {
 			dev_err(chip->dev, "[rx1618] [%s] no dc_psy,return\n",
 				__func__);
@@ -504,7 +504,7 @@ void rx1618_set_pmi_icl(struct rx1618_chg *chip, int mA)
 		}
 	}
 	val.intval = mA;
-	power_supply_set_property(chip->dc_psy, POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_set_property(chip->dc_psy, POWER_SUPPLY_PROP_CURRENT_MAX,
 				  &val);
 	dev_err(chip->dev, "[rx1618] [%s] [rx1618] set icl: %d\n", __func__,
 		val.intval);
@@ -533,14 +533,14 @@ static void rx1618_wireless_int_work(struct work_struct *work)
 	u16 vrect = 0;
 	u8 data1, data2, data3, data4, privite_cmd, tx_cmd, usb_type;
 	u8 data_h, data_l, header, header_length;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	struct rx1618_chg *chip =
 		container_of(work, struct rx1618_chg, wireless_int_work.work);
 
-	chip->wireless_psy = power_supply_get_by_name("wireless");
+chip->wireless_psy = power_supply_get_by_name("wireless");
 	if (!chip->wireless_psy) {
 		dev_err(chip->dev, "[rx1618] no wireless_psy,return\n");
 	}
@@ -754,9 +754,9 @@ static void rx1618_wireless_int_work(struct work_struct *work)
 				if (chip->epp && chip->auth &&
 				    chip->wireless_psy) {
 					val.intval = 1;
-					power_supply_set_property(
+power_supply_set_property(
 						chip->wireless_psy,
-						POWER_SUPPLY_PROP_WIRELESS_CP_EN,
+POWER_SUPPLY_PROP_WIRELESS_CP_EN,
 						&val);
 				}
 				dev_err(chip->dev,
@@ -773,9 +773,9 @@ static void rx1618_wireless_int_work(struct work_struct *work)
 				if (chip->epp && chip->auth &&
 				    chip->wireless_psy) {
 					val.intval = 1;
-					power_supply_set_property(
+power_supply_set_property(
 						chip->wireless_psy,
-						POWER_SUPPLY_PROP_WIRELESS_CP_EN,
+POWER_SUPPLY_PROP_WIRELESS_CP_EN,
 						&val);
 				}
 				dev_err(chip->dev,
@@ -1072,15 +1072,15 @@ u8 g_offset_h = 0;
 u8 g_offset_l = 0;
 void FODturring(void)
 {
-	rx1618_write(g_chip, g_power_level, REG_RX_SENT_DATA1);
+rx1618_write(g_chip, g_power_level, REG_RX_SENT_DATA1);
 	rx1618_write(g_chip, g_gain_h, REG_RX_SENT_DATA2);
 	rx1618_write(g_chip, g_gain_l, REG_RX_SENT_DATA3);
 	rx1618_write(g_chip, g_offset_h, REG_RX_SENT_DATA4);
 	rx1618_write(g_chip, g_offset_l, REG_RX_SENT_DATA5);
 
 	dev_err(g_chip->dev,
-		"[rx1618] [%s] FODturring:g_power_level,g_gain_h,g_gain_l,g_offset_h,g_offset_l %d,%d,%d,%d,%d\n",
-		__func__, g_power_level, g_gain_h, g_gain_l, g_offset_h,
+"[rx1618] [%s] FODturring:g_power_level,g_gain_h,g_gain_l,g_offset_h,g_offset_l %d,%d,%d,%d,%d\n",
+__func__, g_power_level, g_gain_h, g_gain_l, g_offset_h,
 		g_offset_l);
 
 	msleep(5);
@@ -1096,9 +1096,9 @@ static ssize_t chip_fod_power_store(struct device *dev,
 	int index;
 	index = (int)simple_strtoul(buf, NULL, 10);
 
-	g_power_level = (index & 0xff);
-	dev_err(g_chip->dev, "[rx1618] [%s] g_power_level=0x%x \n", __func__,
-		g_power_level);
+g_power_level = (index & 0xff);
+dev_err(g_chip->dev, "[rx1618] [%s] g_power_level=0x%x \n", __func__,
+g_power_level);
 
 	return count;
 }
@@ -1175,11 +1175,11 @@ static ssize_t chip_vbuck_store(struct device *dev,
 	int index;
 
 	index = (int)simple_strtoul(buf, NULL, 10);
-	dev_err(g_chip->dev, "[rx1618] [%s] --Store output_voltage = %d\n",
+dev_err(g_chip->dev, "[rx1618] [%s] --Store output_voltage = %d\n",
 		__func__, index);
 	if ((index < 5166) || (index > 9609)) {
 		dev_err(g_chip->dev,
-			"[rx1618] [%s] Store Voltage %s is invalid\n", __func__,
+"[rx1618] [%s] Store Voltage %s is invalid\n", __func__,
 			buf);
 		rx1618_set_vbuck(g_chip, 0);
 		return count;
@@ -1329,7 +1329,7 @@ static struct attribute *rx1618_sysfs_attrs[] = {
 	&dev_attr_chip_ap_req.attr,
 	&dev_attr_chip_firmware_update.attr,
 	&dev_attr_chip_vbuck_calibration.attr,
-	&dev_attr_chip_fod_power.attr,
+&dev_attr_chip_fod_power.attr,
 	&dev_attr_chip_fod_gain.attr,
 	&dev_attr_chip_fod_offset.attr,
 	NULL,
@@ -1342,41 +1342,41 @@ static const struct attribute_group rx1618_sysfs_group_attrs = {
 #if 1
 static enum power_supply_property rx1618_wireless_properties[] = {
 	/*
-	   POWER_SUPPLY_PROP_PRESENT,
-	   POWER_SUPPLY_PROP_ONLINE,
-	   POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	   POWER_SUPPLY_PROP_RX_CHIP_ID, //RX chip id
-	   POWER_SUPPLY_PROP_RX_VRECT, //RX vrect
-	   POWER_SUPPLY_PROP_RX_IOUT, //RX output current
-	   POWER_SUPPLY_PROP_RX_VOUT, //RX output voltage
-	   POWER_SUPPLY_PROP_RX_ILIMIT, //RX Main LDO output current limit
-	   POWER_SUPPLY_PROP_VOUT_SET, //Vout voltage set
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_RX_CHIP_ID, //RX chip id
+POWER_SUPPLY_PROP_RX_VRECT, //RX vrect
+POWER_SUPPLY_PROP_RX_IOUT, //RX output current
+POWER_SUPPLY_PROP_RX_VOUT, //RX output voltage
+POWER_SUPPLY_PROP_RX_ILIMIT, //RX Main LDO output current limit
+POWER_SUPPLY_PROP_VOUT_SET, //Vout voltage set
 	 */
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
 };
 
 static int rx1618_wireless_set_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
 	int ret;
-	struct rx1618_chg *chip = power_supply_get_drvdata(psy);
+struct rx1618_chg *chip = power_supply_get_drvdata(psy);
 	int data;
 
 	switch (prop) {
 	/*
-		   case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		   break;
-		   case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		   rx1618_chip_enable(chip, val->intval);
 		   break;
-		   case POWER_SUPPLY_PROP_VOUT_SET:
+case POWER_SUPPLY_PROP_VOUT_SET:
 		   ret = rx1618_set_vbuck(chip, val->intval);
 		   if(ret < 0)
 		   return ret;
 		   break;
 		 */
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		data = val->intval / 1000;
 		ret = rx1618_set_vbuck(chip, data);
 		break;
@@ -1388,39 +1388,39 @@ static int rx1618_wireless_set_property(struct power_supply *psy,
 }
 
 static int rx1618_wireless_get_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct rx1618_chg *chip = power_supply_get_drvdata(psy);
+struct rx1618_chg *chip = power_supply_get_drvdata(psy);
 
 	switch (prop) {
 	/*
-		   case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		   val->intval = rx1618_is_rx_present(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		   val->intval = chip->online;
 		   break;
-		   case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		   val->intval = chip->chip_enable;
 		   break;
-		   case POWER_SUPPLY_PROP_RX_CHIP_ID:
+case POWER_SUPPLY_PROP_RX_CHIP_ID:
 		   val->intval = rx1618_get_rx_chip_id(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_RX_VRECT:
+case POWER_SUPPLY_PROP_RX_VRECT:
 		   val->intval = rx1618_get_rx_vrect(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_RX_IOUT:
+case POWER_SUPPLY_PROP_RX_IOUT:
 		   val->intval = rx1618_get_rx_ibuck(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_RX_VOUT:
+case POWER_SUPPLY_PROP_RX_VOUT:
 		   val->intval = rx1618_get_rx_vbuck(chip);
 		   break;
-		   case POWER_SUPPLY_PROP_VOUT_SET:
+case POWER_SUPPLY_PROP_VOUT_SET:
 		   val->intval = 0;
 		   break;
 		 */
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		val->intval = rx1618_get_rx_vbuck(chip);
 		break;
 	default:
@@ -1438,12 +1438,12 @@ static const struct regmap_config rx1618_regmap_config = {
 };
 
 static int rx1618_prop_is_writeable(struct power_supply *psy,
-				    enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		return 1;
 	default:
 		rc = 0;
@@ -1460,12 +1460,12 @@ static int rx1618_probe(struct i2c_client *client,
 	struct rx1618_chg *chip;
 	struct kobject *rx1618_kobj;
 
-	struct power_supply_config wip_psy_cfg = {};
+struct power_supply_config wip_psy_cfg = {};
 	int hw_id;
 	/*
-	   struct power_supply *batt_psy;
+struct power_supply *batt_psy;
 
-	   batt_psy = power_supply_get_by_name("battery");
+batt_psy = power_supply_get_by_name("battery");
 	   if (!batt_psy) {
 	   dev_err(&client->dev, "Battery supply not found; defer probe\n");
 	   return -EPROBE_DEFER;
@@ -1509,7 +1509,7 @@ static int rx1618_probe(struct i2c_client *client,
 	INIT_DELAYED_WORK(&chip->wireless_int_work, rx1618_wireless_int_work);
 
 	chip->wip_psy_d.name = "rx1618";
-	chip->wip_psy_d.type = POWER_SUPPLY_TYPE_WIRELESS;
+chip->wip_psy_d.type = POWER_SUPPLY_TYPE_WIRELESS;
 	chip->wip_psy_d.get_property = rx1618_wireless_get_property;
 	chip->wip_psy_d.set_property = rx1618_wireless_set_property;
 	chip->wip_psy_d.properties = rx1618_wireless_properties;
@@ -1518,7 +1518,7 @@ static int rx1618_probe(struct i2c_client *client,
 
 	wip_psy_cfg.drv_data = chip;
 
-	chip->wip_psy = devm_power_supply_register(chip->dev, &chip->wip_psy_d,
+chip->wip_psy = devm_power_supply_register(chip->dev, &chip->wip_psy_d,
 						   &wip_psy_cfg);
 	if (IS_ERR(chip->wip_psy)) {
 		dev_err(chip->dev, "Couldn't register wip psy rc=%ld\n",

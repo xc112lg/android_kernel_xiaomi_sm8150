@@ -32,8 +32,8 @@ enum SID_OPTION {
 
 enum Poly3rdOrderCoeff {
     LEAKAGE_TEMPERATURE_SCALAR,
-    LEAKAGE_VOLTAGE_SCALAR,
-    DYNAMIC_VOLTAGE_SCALAR,
+LEAKAGE_VOLTAGE_SCALAR,
+DYNAMIC_VOLTAGE_SCALAR,
     POLY_3RD_ORDER_COUNT
 };
 
@@ -53,20 +53,20 @@ typedef struct SMU7_Poly3rdOrder_Data SMU7_Poly3rdOrder_Data;
 
 struct Power_Calculator_Data
 {
-  uint16_t NoLoadVoltage;
-  uint16_t LoadVoltage;
+uint16_t NoLoadVoltage;
+uint16_t LoadVoltage;
   uint16_t Resistance;
   uint16_t Temperature;
   uint16_t BaseLeakage;
   uint16_t LkgTempScalar;
   uint16_t LkgVoltScalar;
   uint16_t LkgAreaScalar;
-  uint16_t LkgPower;
+uint16_t LkgPower;
   uint16_t DynVoltScalar;
   uint32_t Cac;
-  uint32_t DynPower;
+uint32_t DynPower;
   uint32_t TotalCurrent;
-  uint32_t TotalPower;
+uint32_t TotalPower;
 };
 
 typedef struct Power_Calculator_Data PowerCalculatorData_t;
@@ -232,7 +232,7 @@ struct SMU7_LocalDpmScoreboard
     uint8_t  TdpClampMode;
     uint8_t  TdcClampMode;
     uint8_t  ThermClampMode;
-    uint8_t  VoltageBusy;
+uint8_t  VoltageBusy;
 
     int8_t   CurrLevel;
     int8_t   TargLevel;
@@ -240,7 +240,7 @@ struct SMU7_LocalDpmScoreboard
     uint8_t  UpHyst;
 
     uint8_t  DownHyst;
-    uint8_t  VoltageDownHyst;
+uint8_t  VoltageDownHyst;
     uint8_t  DpmEnable;
     uint8_t  DpmRunning;
 
@@ -275,11 +275,11 @@ struct SMU7_LocalDpmScoreboard
     uint8_t  AllowLowClkInterruptToHost;
     uint8_t  FpsRunning;
 
-    uint32_t MaxAllowedFrequency;
+uint32_t MaxAllowedFrequency;
 
-    uint32_t FilteredSclkFrequency;
-    uint32_t LastSclkFrequency;
-    uint32_t FilteredSclkFrequencyCnt;
+uint32_t FilteredSclkFrequency;
+uint32_t LastSclkFrequency;
+uint32_t FilteredSclkFrequencyCnt;
 
     uint8_t  LedEnable;
     uint8_t  LedPin0;
@@ -317,44 +317,44 @@ typedef uint32_t SMU_VoltageLevel;
 
 struct SMU7_VoltageScoreboard
 {
-    SMU_VoltageLevel TargetVoltage;
+SMU_VoltageLevel TargetVoltage;
     uint16_t MaxVid;
     uint8_t  HighestVidOffset;
     uint8_t  CurrentVidOffset;
 
-    uint16_t CurrentVddc;
-    uint16_t CurrentVddci;
+uint16_t CurrentVddc;
+uint16_t CurrentVddci;
 
 
     uint8_t  ControllerBusy;
     uint8_t  CurrentVid;
-    uint8_t  CurrentVddciVid;
+uint8_t  CurrentVddciVid;
     uint8_t  padding;
 
-    SMU_VoltageLevel RequestedVoltage[SMU7_MAX_VOLTAGE_CLIENTS];
-    SMU_VoltageLevel TargetVoltageState;
-    uint8_t  EnabledRequest[SMU7_MAX_VOLTAGE_CLIENTS];
+SMU_VoltageLevel RequestedVoltage[SMU7_MAX_VOLTAGE_CLIENTS];
+SMU_VoltageLevel TargetVoltageState;
+uint8_t  EnabledRequest[SMU7_MAX_VOLTAGE_CLIENTS];
 
     uint8_t  padding2;
     uint8_t  padding3;
     uint8_t  ControllerEnable;
     uint8_t  ControllerRunning;
-    uint16_t CurrentStdVoltageHiSidd;
-    uint16_t CurrentStdVoltageLoSidd;
-    uint8_t  OverrideVoltage;
+uint16_t CurrentStdVoltageHiSidd;
+uint16_t CurrentStdVoltageLoSidd;
+uint8_t  OverrideVoltage;
     uint8_t  padding4;
     uint8_t  padding5;
     uint8_t  CurrentPhases;
 
-    VoltageChangeHandler_t ChangeVddc;
+VoltageChangeHandler_t ChangeVddc;
 
-    VoltageChangeHandler_t ChangeVddci;
-    VoltageChangeHandler_t ChangePhase;
-    VoltageChangeHandler_t ChangeMvdd;
+VoltageChangeHandler_t ChangeVddci;
+VoltageChangeHandler_t ChangePhase;
+VoltageChangeHandler_t ChangeMvdd;
 
-    VoltageChangeHandler_t functionLinks[6];
+VoltageChangeHandler_t functionLinks[6];
 
-    uint16_t * VddcFollower1;
+uint16_t * VddcFollower1;
 
     int16_t  Driver_OD_RequestedVidOffset1;
     int16_t  Driver_OD_RequestedVidOffset2;
@@ -398,17 +398,17 @@ typedef struct SMU7_PCIeLinkSpeedScoreboard SMU7_PCIeLinkSpeedScoreboard;
 
 struct SMU7_PowerScoreboard
 {
-    uint32_t GpuPower;
+uint32_t GpuPower;
 
-    uint32_t VddcPower;
-    uint32_t VddcVoltage;
-    uint32_t VddcCurrent;
+uint32_t VddcPower;
+uint32_t VddcVoltage;
+uint32_t VddcCurrent;
 
-    uint32_t MvddPower;
-    uint32_t MvddVoltage;
-    uint32_t MvddCurrent;
+uint32_t MvddPower;
+uint32_t MvddVoltage;
+uint32_t MvddCurrent;
 
-    uint32_t RocPower;
+uint32_t RocPower;
 
     uint16_t Telemetry_1_slope;
     uint16_t Telemetry_2_slope;
@@ -438,7 +438,7 @@ typedef struct SMU7_PowerScoreboard SMU7_PowerScoreboard;
 // All 'soft registers' should be uint32_t.
 struct SMU73_SoftRegisters
 {
-    uint32_t        RefClockFrequency;
+uint32_t        RefClockFrequency;
     uint32_t        PmTimerPeriod;
     uint32_t        FeatureEnables;
 
@@ -446,12 +446,12 @@ struct SMU73_SoftRegisters
     uint32_t        VBlankTimeout;
     uint32_t        TrainTimeGap;
 
-    uint32_t        MvddSwitchTime;
+uint32_t        MvddSwitchTime;
     uint32_t        LongestAcpiTrainTime;
     uint32_t        AcpiDelay;
     uint32_t        G5TrainTime;
     uint32_t        DelayMpllPwron;
-    uint32_t        VoltageChangeTimeout;
+uint32_t        VoltageChangeTimeout;
 
     uint32_t        HandshakeDisables;
 
@@ -474,7 +474,7 @@ struct SMU73_SoftRegisters
     uint8_t         LClkDpmEnabledLevels;
     uint8_t         PCIeDpmEnabledLevels;
 
-    uint8_t         UVDDpmEnabledLevels;
+uint8_t         UVDDpmEnabledLevels;
     uint8_t         SAMUDpmEnabledLevels;
     uint8_t         ACPDpmEnabledLevels;
     uint8_t         VCEDpmEnabledLevels;
@@ -531,7 +531,7 @@ typedef struct SMU73_Firmware_Header SMU73_Firmware_Header;
 #define SMU7_FIRMWARE_HEADER_LOCATION 0x20000
 
 enum  DisplayConfig {
-    PowerDown = 1,
+PowerDown = 1,
     DP54x4,
     DP54x2,
     DP54x1,
@@ -665,8 +665,8 @@ struct SMU_ClockStretcherDataTable {
 typedef struct SMU_ClockStretcherDataTable SMU_ClockStretcherDataTable;
 
 struct SMU_CKS_LOOKUPTableEntry {
-  uint16_t minFreq;
-  uint16_t maxFreq;
+uint16_t minFreq;
+uint16_t maxFreq;
 
   uint8_t setting;
   uint8_t padding[3];
@@ -701,7 +701,7 @@ enum VFT_COLUMNS {
 
 #define TEMP_RANGE_MAXSTEPS 12
 struct VFT_CELL_t {
-  uint16_t Voltage;
+uint16_t Voltage;
 };
 
 typedef struct VFT_CELL_t VFT_CELL_t;

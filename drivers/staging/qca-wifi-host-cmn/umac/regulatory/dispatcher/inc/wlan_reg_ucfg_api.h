@@ -81,8 +81,8 @@ void ucfg_reg_cache_channel_state(struct wlan_objmgr_pdev *pdev,
 #endif /* CONFIG_CHAN_NUM_API */
 
 /**
- * ucfg_reg_cache_channel_freq_state() - Cache the current state of the
- * channels based on the channel center frequency.
+* ucfg_reg_cache_channel_freq_state() - Cache the current state of the
+* channels based on the channel center frequency.
  * @pdev: Pointer to pdev.
  * @channel_list: List of the channels for which states need to be cached.
  * @num_channels: Number of channels in the list.
@@ -132,9 +132,9 @@ void ucfg_reg_restore_cached_channels(struct wlan_objmgr_pdev *pdev)
 
 /**
  * ucfg_reg_set_fcc_constraint() - apply fcc constraints on channels 12/13
- * @pdev: The physical pdev to reduce tx power for
+* @pdev: The physical pdev to reduce tx power for
  *
- * This function adjusts the transmit power on channels 12 and 13, to comply
+* This function adjusts the transmit power on channels 12 and 13, to comply
  * with FCC regulations in the USA.
  *
  * Return: QDF_STATUS

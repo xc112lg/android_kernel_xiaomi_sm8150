@@ -110,7 +110,7 @@
 				#size-cells = <1>;
 				compatible = "spansion,s25fl512s", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <10000000>; /* input clk */
+spi-max-frequency = <10000000>; /* input clk */
 			};
 		};
 

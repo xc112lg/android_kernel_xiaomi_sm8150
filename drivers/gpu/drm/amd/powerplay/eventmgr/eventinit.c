@@ -28,28 +28,28 @@
 void pem_init_feature_info(struct pp_eventmgr *eventmgr)
 {
 
-	/* PowerPlay info */
-	eventmgr->ui_state_info[PP_PowerSource_AC].default_ui_lable =
+/* PowerPlay info */
+eventmgr->ui_state_info[PP_PowerSource_AC].default_ui_lable =
 					    PP_StateUILabel_Performance;
 
-	eventmgr->ui_state_info[PP_PowerSource_AC].current_ui_label =
+eventmgr->ui_state_info[PP_PowerSource_AC].current_ui_label =
 					    PP_StateUILabel_Performance;
 
-	eventmgr->ui_state_info[PP_PowerSource_DC].default_ui_lable =
+eventmgr->ui_state_info[PP_PowerSource_DC].default_ui_lable =
 						  PP_StateUILabel_Battery;
 
-	eventmgr->ui_state_info[PP_PowerSource_DC].current_ui_label =
+eventmgr->ui_state_info[PP_PowerSource_DC].current_ui_label =
 						  PP_StateUILabel_Battery;
 
-	if (phm_cap_enabled(eventmgr->platform_descriptor->platformCaps, PHM_PlatformCaps_PowerPlaySupport)) {
-		eventmgr->features[PP_Feature_PowerPlay].supported = true;
-		eventmgr->features[PP_Feature_PowerPlay].version = PEM_CURRENT_POWERPLAY_FEATURE_VERSION;
-		eventmgr->features[PP_Feature_PowerPlay].enabled_default = true;
-		eventmgr->features[PP_Feature_PowerPlay].enabled = true;
+if (phm_cap_enabled(eventmgr->platform_descriptor->platformCaps, PHM_PlatformCaps_PowerPlaySupport)) {
+eventmgr->features[PP_Feature_PowerPlay].supported = true;
+eventmgr->features[PP_Feature_PowerPlay].version = PEM_CURRENT_POWERPLAY_FEATURE_VERSION;
+eventmgr->features[PP_Feature_PowerPlay].enabled_default = true;
+eventmgr->features[PP_Feature_PowerPlay].enabled = true;
 	} else {
-		eventmgr->features[PP_Feature_PowerPlay].supported = false;
-		eventmgr->features[PP_Feature_PowerPlay].enabled = false;
-		eventmgr->features[PP_Feature_PowerPlay].enabled_default = false;
+eventmgr->features[PP_Feature_PowerPlay].supported = false;
+eventmgr->features[PP_Feature_PowerPlay].enabled = false;
+eventmgr->features[PP_Feature_PowerPlay].enabled_default = false;
 	}
 
 	eventmgr->features[PP_Feature_Force3DClock].supported = true;
@@ -80,10 +80,10 @@ void pem_init_feature_info(struct pp_eventmgr *eventmgr)
 
 	eventmgr->features[PP_Feature_OverDrive].supported = false;
 
-	eventmgr->features[PP_Feature_PowerBudgetWaiver].enabled_default = false;
-	eventmgr->features[PP_Feature_PowerBudgetWaiver].version = 1;
-	eventmgr->features[PP_Feature_PowerBudgetWaiver].supported = false;
-	eventmgr->features[PP_Feature_PowerBudgetWaiver].enabled = false;
+eventmgr->features[PP_Feature_PowerBudgetWaiver].enabled_default = false;
+eventmgr->features[PP_Feature_PowerBudgetWaiver].version = 1;
+eventmgr->features[PP_Feature_PowerBudgetWaiver].supported = false;
+eventmgr->features[PP_Feature_PowerBudgetWaiver].enabled = false;
 
 	/* Multi UVD States support */
 	eventmgr->features[PP_Feature_MultiUVDState].supported = false;
@@ -100,10 +100,10 @@ void pem_init_feature_info(struct pp_eventmgr *eventmgr)
 	eventmgr->features[PP_Feature_VCEDPM].enabled = false;
 	eventmgr->features[PP_Feature_VCEDPM].enabled_default = false;
 
-	/* ACP PowerGating support */
-	eventmgr->features[PP_Feature_ACP_POWERGATING].supported = false;
-	eventmgr->features[PP_Feature_ACP_POWERGATING].enabled = false;
-	eventmgr->features[PP_Feature_ACP_POWERGATING].enabled_default = false;
+/* ACP PowerGating support */
+eventmgr->features[PP_Feature_ACP_POWERGATING].supported = false;
+eventmgr->features[PP_Feature_ACP_POWERGATING].enabled = false;
+eventmgr->features[PP_Feature_ACP_POWERGATING].enabled_default = false;
 
 	/* PPM support */
 	eventmgr->features[PP_Feature_PPM].version = 1;
@@ -131,10 +131,10 @@ void pem_init_feature_info(struct pp_eventmgr *eventmgr)
 	eventmgr->features[PP_Feature_BACO].supported = false;
 	eventmgr->features[PP_Feature_BACO].enabled_default = false;
 
-	/* PowerDown feature support */
-	eventmgr->features[PP_Feature_PowerDown].supported = false;
-	eventmgr->features[PP_Feature_PowerDown].enabled = false;
-	eventmgr->features[PP_Feature_PowerDown].enabled_default = false;
+/* PowerDown feature support */
+eventmgr->features[PP_Feature_PowerDown].supported = false;
+eventmgr->features[PP_Feature_PowerDown].enabled = false;
+eventmgr->features[PP_Feature_PowerDown].enabled_default = false;
 
 	eventmgr->features[PP_Feature_FPS].version = 1;
 	eventmgr->features[PP_Feature_FPS].supported = false;
@@ -185,11 +185,11 @@ void pem_uninit_featureInfo(struct pp_eventmgr *eventmgr)
 {
 	eventmgr->features[PP_Feature_MultiUVDState].supported = false;
 	eventmgr->features[PP_Feature_VariBright].supported = false;
-	eventmgr->features[PP_Feature_PowerBudgetWaiver].supported = false;
+eventmgr->features[PP_Feature_PowerBudgetWaiver].supported = false;
 	eventmgr->features[PP_Feature_OverDrive].supported = false;
 	eventmgr->features[PP_Feature_OverdriveTest].supported = false;
 	eventmgr->features[PP_Feature_User3DPerformance].supported = false;
 	eventmgr->features[PP_Feature_User2DPerformance].supported = false;
-	eventmgr->features[PP_Feature_PowerPlay].supported = false;
+eventmgr->features[PP_Feature_PowerPlay].supported = false;
 	eventmgr->features[PP_Feature_Force3DClock].supported = false;
 }

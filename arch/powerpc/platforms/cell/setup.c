@@ -1,5 +1,5 @@
 /*
- *  linux/arch/powerpc/platforms/cell/cell_setup.c
+*  linux/arch/powerpc/platforms/cell/cell_setup.c
  *
  *  Copyright (C) 1995  Linus Torvalds
  *  Adapted from 'alpha' version by Gary Thomas
@@ -259,7 +259,7 @@ static int __init cell_probe(void)
 	    !of_machine_is_compatible("IBM,CPBW-1.0"))
 		return 0;
 
-	pm_power_off = rtas_power_off;
+pm_power_off = rtas_power_off;
 
 	return 1;
 }

@@ -142,12 +142,12 @@ static const unsigned int max77693_safeout_table[] = {
 };
 
 static const struct regulator_ops max77693_safeout_ops = {
-	.list_voltage		= regulator_list_voltage_table,
+.list_voltage		= regulator_list_voltage_table,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 };
 
 static const struct regulator_ops max77693_charger_ops = {
@@ -163,9 +163,9 @@ static const struct regulator_ops max77693_charger_ops = {
 	.id		= MAX77693_ESAFEOUT##_num,		\
 	.of_match	= of_match_ptr("ESAFEOUT"#_num),	\
 	.regulators_node	= of_match_ptr("regulators"),	\
-	.n_voltages	= 4,					\
+.n_voltages	= 4,					\
 	.ops		= &max77693_safeout_ops,		\
-	.type		= REGULATOR_VOLTAGE,			\
+.type		= REGULATOR_VOLTAGE,			\
 	.owner		= THIS_MODULE,				\
 	.volt_table	= max77693_safeout_table,		\
 	.vsel_reg	= MAX77693_CHG_REG_SAFEOUT_CTRL,	\
@@ -205,9 +205,9 @@ static const struct chg_reg_data max77693_chg_reg_data = {
 	.ops		= &max77693_safeout_ops,			\
 	.of_match	= of_match_ptr("SAFEOUT" # num),		\
 	.regulators_node = of_match_ptr("regulators"),			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
-	.n_voltages	= ARRAY_SIZE(max77693_safeout_table),		\
+.n_voltages	= ARRAY_SIZE(max77693_safeout_table),		\
 	.volt_table	= max77693_safeout_table,			\
 	.enable_reg	= MAX77843_SYS_REG_SAFEOUTCTRL,			\
 	.enable_mask	= MAX77843_REG_SAFEOUTCTRL_ENSAFEOUT ## num,	\

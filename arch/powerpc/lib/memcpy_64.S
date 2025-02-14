@@ -20,7 +20,7 @@ BEGIN_FTR_SECTION
 #endif
 FTR_SECTION_ELSE
 #ifndef SELFTEST
-	b	memcpy_power7
+b	memcpy_power7
 #endif
 ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
 #ifdef __LITTLE_ENDIAN__
@@ -44,7 +44,7 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
    CPU_FTR_UNALIGNED_LD_STD bit set and the CPU_FTR_CP_USE_DCBTZ bit
    cleared.
    At the time of writing the only CPU that has this combination of bits
-   set is Power6. */
+set is Power6. */
 BEGIN_FTR_SECTION
 	nop
 FTR_SECTION_ELSE

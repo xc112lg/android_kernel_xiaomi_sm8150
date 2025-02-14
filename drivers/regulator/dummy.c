@@ -36,7 +36,7 @@ static struct regulator_ops dummy_ops;
 static const struct regulator_desc dummy_desc = {
 	.name = "regulator-dummy",
 	.id = -1,
-	.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 	.owner = THIS_MODULE,
 	.ops = &dummy_ops,
 };

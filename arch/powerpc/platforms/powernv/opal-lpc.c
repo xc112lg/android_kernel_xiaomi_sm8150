@@ -1,5 +1,5 @@
 /*
- * PowerNV LPC bus handling.
+* PowerNV LPC bus handling.
  *
  * Copyright 2013 IBM Corp.
  *
@@ -375,7 +375,7 @@ static int opal_lpc_init_debugfs(void)
 	if (opal_lpc_chip_id < 0)
 		return -ENODEV;
 
-	root = debugfs_create_dir("lpc", powerpc_debugfs_root);
+root = debugfs_create_dir("lpc", powerpc_debugfs_root);
 
 	rc |= opal_lpc_debugfs_create_type(root, "io", OPAL_LPC_IO);
 	rc |= opal_lpc_debugfs_create_type(root, "mem", OPAL_LPC_MEM);
@@ -390,11 +390,11 @@ void __init opal_lpc_init(void)
 	struct device_node *np;
 
 	/*
-	 * Look for a Power8 LPC bus tagged as "primary",
+* Look for a Power8 LPC bus tagged as "primary",
 	 * we currently support only one though the OPAL APIs
 	 * support any number.
 	 */
-	for_each_compatible_node(np, NULL, "ibm,power8-lpc") {
+for_each_compatible_node(np, NULL, "ibm,power8-lpc") {
 		if (!of_device_is_available(np))
 			continue;
 		if (!of_get_property(np, "primary", NULL))

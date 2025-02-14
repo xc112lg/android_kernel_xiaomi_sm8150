@@ -1,5 +1,5 @@
 /*
- * PowerPC 4xx OCM memory allocation support
+* PowerPC 4xx OCM memory allocation support
  *
  * (C) Copyright 2009, Applied Micro Circuits Corporation
  * Victor Gallardo (vgallardo@amcc.com)

@@ -1,5 +1,5 @@
 /*
- * Hisilicon PMIC powerkey driver
+* Hisilicon PMIC powerkey driver
  *
  * Copyright (C) 2013 Hisilicon Ltd.
  * Copyright (C) 2015, 2016 Linaro Ltd.
@@ -31,7 +31,7 @@ static irqreturn_t hi65xx_power_press_isr(int irq, void *q)
 	struct input_dev *input = q;
 
 	pm_wakeup_event(input->dev.parent, MAX_HELD_TIME);
-	input_report_key(input, KEY_POWER, 1);
+input_report_key(input, KEY_POWER, 1);
 	input_sync(input);
 
 	return IRQ_HANDLED;
@@ -42,7 +42,7 @@ static irqreturn_t hi65xx_power_release_isr(int irq, void *q)
 	struct input_dev *input = q;
 
 	pm_wakeup_event(input->dev.parent, MAX_HELD_TIME);
-	input_report_key(input, KEY_POWER, 0);
+input_report_key(input, KEY_POWER, 0);
 	input_sync(input);
 
 	return IRQ_HANDLED;
@@ -64,8 +64,8 @@ static const struct {
 	const char *name;
 	irqreturn_t (*handler)(int irq, void *q);
 } hi65xx_irq_info[] = {
-	{ "down", hi65xx_power_press_isr },
-	{ "up", hi65xx_power_release_isr },
+{ "down", hi65xx_power_press_isr },
+{ "up", hi65xx_power_release_isr },
 	{ "hold 4s", hi65xx_restart_toggle_isr },
 };
 
@@ -82,9 +82,9 @@ static int hi65xx_powerkey_probe(struct platform_device *pdev)
 	}
 
 	input->phys = "hisi_on/input0";
-	input->name = "HISI 65xx PowerOn Key";
+input->name = "HISI 65xx PowerOn Key";
 
-	input_set_capability(input, EV_KEY, KEY_POWER);
+input_set_capability(input, EV_KEY, KEY_POWER);
 	input_set_capability(input, EV_KEY, KEY_RESTART);
 
 	for (i = 0; i < ARRAY_SIZE(hi65xx_irq_info); i++) {
@@ -122,9 +122,9 @@ static int hi65xx_powerkey_probe(struct platform_device *pdev)
 
 static struct platform_driver hi65xx_powerkey_driver = {
 	.driver = {
-		.name = "hi65xx-powerkey",
+.name = "hi65xx-powerkey",
 	},
-	.probe = hi65xx_powerkey_probe,
+.probe = hi65xx_powerkey_probe,
 };
 module_platform_driver(hi65xx_powerkey_driver);
 

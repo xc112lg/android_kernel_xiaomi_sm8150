@@ -1,5 +1,5 @@
 /*
- * PowerPC backend to the KGDB stub.
+* PowerPC backend to the KGDB stub.
  *
  * 1998 (c) Michael AK Tesch (tesch@cs.wisc.edu)
  * Copyright (C) 2003 Timesys Corporation.
@@ -27,13 +27,13 @@
 #include <linux/slab.h>
 
 /*
- * This table contains the mapping between PowerPC hardware trap types, and
+* This table contains the mapping between PowerPC hardware trap types, and
  * signals, which are primarily what GDB understands.  GDB and the kernel
  * don't always agree on values, so we use constants taken from gdb-6.2.
  */
 static struct hard_trap_info
 {
-	unsigned int tt;		/* Trap type code for powerpc */
+unsigned int tt;		/* Trap type code for powerpc */
 	unsigned char signo;		/* Signal that we map this trap into */
 } hard_trap_info[] = {
 	{ 0x0100, 0x02 /* SIGINT */  },		/* system reset */
@@ -402,7 +402,7 @@ void kgdb_arch_set_pc(struct pt_regs *regs, unsigned long pc)
 }
 
 /*
- * This function does PowerPC specific procesing for interfacing to gdb.
+* This function does PowerPC specific procesing for interfacing to gdb.
  */
 int kgdb_arch_handle_exception(int vector, int signo, int err_code,
 			       char *remcom_in_buffer, char *remcom_out_buffer,

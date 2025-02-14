@@ -1,7 +1,7 @@
 /* Power off driver for i.mx6
  * Copyright (c) 2014, FREESCALE CORPORATION.  All rights reserved.
  *
- * based on msm-poweroff.c
+* based on msm-poweroff.c
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -41,26 +41,26 @@ static int imx_poweroff_probe(struct platform_device *pdev)
 		return -ENODEV;
 	}
 
-	pm_power_off = do_imx_poweroff;
+pm_power_off = do_imx_poweroff;
 	return 0;
 }
 
 static const struct of_device_id of_imx_poweroff_match[] = {
-	{ .compatible = "fsl,sec-v4.0-poweroff", },
+{ .compatible = "fsl,sec-v4.0-poweroff", },
 	{},
 };
 MODULE_DEVICE_TABLE(of, of_imx_poweroff_match);
 
 static struct platform_driver imx_poweroff_driver = {
-	.probe = imx_poweroff_probe,
+.probe = imx_poweroff_probe,
 	.driver = {
-		.name = "imx-snvs-poweroff",
-		.of_match_table = of_match_ptr(of_imx_poweroff_match),
+.name = "imx-snvs-poweroff",
+.of_match_table = of_match_ptr(of_imx_poweroff_match),
 	},
 };
 
 static int __init imx_poweroff_init(void)
 {
-	return platform_driver_register(&imx_poweroff_driver);
+return platform_driver_register(&imx_poweroff_driver);
 }
 device_initcall(imx_poweroff_init);

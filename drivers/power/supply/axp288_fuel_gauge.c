@@ -1,5 +1,5 @@
 /*
- * axp288_fuel_gauge.c - Xpower AXP288 PMIC Fuel Gauge Driver
+* axp288_fuel_gauge.c - Xpower AXP288 PMIC Fuel Gauge Driver
  *
  * Copyright (C) 2014 Intel Corporation
  *
@@ -105,7 +105,7 @@ struct axp288_fg_info {
 	struct regmap *regmap;
 	struct regmap_irq_chip_data *regmap_irqc;
 	int irq[AXP288_FG_INTR_NUM];
-	struct power_supply *bat;
+struct power_supply *bat;
 	struct mutex lock;
 	int status;
 	int max_volt;
@@ -114,18 +114,18 @@ struct axp288_fg_info {
 };
 
 static enum power_supply_property fuel_gauge_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_OCV,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_CHARGE_FULL,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_OCV,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_CHARGE_FULL,
+POWER_SUPPLY_PROP_CHARGE_NOW,
 };
 
 static int fuel_gauge_reg_readb(struct axp288_fg_info *info, int reg)
@@ -374,14 +374,14 @@ static void fuel_gauge_get_status(struct axp288_fg_info *info)
 	}
 
 	if (charge > 0)
-		info->status = POWER_SUPPLY_STATUS_CHARGING;
+info->status = POWER_SUPPLY_STATUS_CHARGING;
 	else if (discharge > 0)
-		info->status = POWER_SUPPLY_STATUS_DISCHARGING;
+info->status = POWER_SUPPLY_STATUS_DISCHARGING;
 	else {
 		if (pwr_stat & CHRG_STAT_BAT_PRESENT)
-			info->status = POWER_SUPPLY_STATUS_FULL;
+info->status = POWER_SUPPLY_STATUS_FULL;
 		else
-			info->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+info->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	}
 }
 
@@ -393,7 +393,7 @@ static int fuel_gauge_get_vbatt(struct axp288_fg_info *info, int *vbatt)
 	if (ret < 0)
 		goto vbatt_read_fail;
 
-	*vbatt = VOLTAGE_FROM_ADC(raw_val);
+*vbatt = VOLTAGE_FROM_ADC(raw_val);
 vbatt_read_fail:
 	return ret;
 }
@@ -426,63 +426,63 @@ static int fuel_gauge_get_vocv(struct axp288_fg_info *info, int *vocv)
 
 	ret = fuel_gauge_read_12bit_word(info, AXP288_FG_OCVH_REG);
 	if (ret >= 0)
-		*vocv = VOLTAGE_FROM_ADC(ret);
+*vocv = VOLTAGE_FROM_ADC(ret);
 
 	return ret;
 }
 
 static int fuel_gauge_battery_health(struct axp288_fg_info *info)
 {
-	int ret, vocv, health = POWER_SUPPLY_HEALTH_UNKNOWN;
+int ret, vocv, health = POWER_SUPPLY_HEALTH_UNKNOWN;
 
 	ret = fuel_gauge_get_vocv(info, &vocv);
 	if (ret < 0)
 		goto health_read_fail;
 
 	if (vocv > info->max_volt)
-		health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 	else
-		health = POWER_SUPPLY_HEALTH_GOOD;
+health = POWER_SUPPLY_HEALTH_GOOD;
 
 health_read_fail:
 	return health;
 }
 
 static int fuel_gauge_get_property(struct power_supply *ps,
-		enum power_supply_property prop,
-		union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct axp288_fg_info *info = power_supply_get_drvdata(ps);
+struct axp288_fg_info *info = power_supply_get_drvdata(ps);
 	int ret = 0, value;
 
 	mutex_lock(&info->lock);
 	switch (prop) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		fuel_gauge_get_status(info);
 		val->intval = info->status;
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		val->intval = fuel_gauge_battery_health(info);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		ret = fuel_gauge_get_vbatt(info, &value);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
 		val->intval = PROP_VOLT(value);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_OCV:
+case POWER_SUPPLY_PROP_VOLTAGE_OCV:
 		ret = fuel_gauge_get_vocv(info, &value);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
 		val->intval = PROP_VOLT(value);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = fuel_gauge_get_current(info, &value);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
 		val->intval = PROP_CURR(value);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		ret = fuel_gauge_reg_readb(info, AXP20X_PWR_OP_MODE);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
@@ -492,7 +492,7 @@ static int fuel_gauge_get_property(struct power_supply *ps,
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = fuel_gauge_reg_readb(info, AXP20X_FG_RES);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
@@ -502,30 +502,30 @@ static int fuel_gauge_get_property(struct power_supply *ps,
 				"capacity measurement not valid\n");
 		val->intval = (ret & FG_REP_CAP_VAL_MASK);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN:
+case POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN:
 		ret = fuel_gauge_reg_readb(info, AXP288_FG_LOW_CAP_REG);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
 		val->intval = (ret & 0x0f);
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+case POWER_SUPPLY_PROP_TECHNOLOGY:
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		ret = fuel_gauge_read_15bit_word(info, AXP288_FG_CC_MTR1_REG);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
 
 		val->intval = ret * FG_DES_CAP_RES_LSB;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		ret = fuel_gauge_read_15bit_word(info, AXP288_FG_DES_CAP1_REG);
 		if (ret < 0)
 			goto fuel_gauge_read_err;
 
 		val->intval = ret * FG_DES_CAP_RES_LSB;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
 		val->intval = PROP_VOLT(info->max_volt);
 		break;
 	default:
@@ -542,15 +542,15 @@ fuel_gauge_read_err:
 }
 
 static int fuel_gauge_set_property(struct power_supply *ps,
-		enum power_supply_property prop,
-		const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct axp288_fg_info *info = power_supply_get_drvdata(ps);
+struct axp288_fg_info *info = power_supply_get_drvdata(ps);
 	int ret = 0;
 
 	mutex_lock(&info->lock);
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN:
+case POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN:
 		if ((val->intval < 0) || (val->intval > 15)) {
 			ret = -EINVAL;
 			break;
@@ -572,12 +572,12 @@ static int fuel_gauge_set_property(struct power_supply *ps,
 }
 
 static int fuel_gauge_property_is_writeable(struct power_supply *psy,
-	enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN:
+case POWER_SUPPLY_PROP_CAPACITY_ALERT_MIN:
 		ret = 1;
 		break;
 	default:
@@ -593,7 +593,7 @@ static void fuel_gauge_status_monitor(struct work_struct *work)
 		struct axp288_fg_info, status_monitor.work);
 
 	fuel_gauge_get_status(info);
-	power_supply_changed(info->bat);
+power_supply_changed(info->bat);
 	schedule_delayed_work(&info->status_monitor, STATUS_MON_DELAY_JIFFIES);
 }
 
@@ -639,26 +639,26 @@ static irqreturn_t fuel_gauge_thread_handler(int irq, void *dev)
 		dev_warn(&info->pdev->dev, "Spurious Interrupt!!!\n");
 	}
 
-	power_supply_changed(info->bat);
+power_supply_changed(info->bat);
 	return IRQ_HANDLED;
 }
 
 static void fuel_gauge_external_power_changed(struct power_supply *psy)
 {
-	struct axp288_fg_info *info = power_supply_get_drvdata(psy);
+struct axp288_fg_info *info = power_supply_get_drvdata(psy);
 
-	power_supply_changed(info->bat);
+power_supply_changed(info->bat);
 }
 
 static const struct power_supply_desc fuel_gauge_desc = {
 	.name			= DEV_NAME,
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= fuel_gauge_props,
 	.num_properties		= ARRAY_SIZE(fuel_gauge_props),
 	.get_property		= fuel_gauge_get_property,
 	.set_property		= fuel_gauge_set_property,
 	.property_is_writeable	= fuel_gauge_property_is_writeable,
-	.external_power_changed	= fuel_gauge_external_power_changed,
+.external_power_changed	= fuel_gauge_external_power_changed,
 };
 
 static void fuel_gauge_init_irq(struct axp288_fg_info *info)
@@ -703,7 +703,7 @@ static int axp288_fuel_gauge_probe(struct platform_device *pdev)
 	int ret = 0;
 	struct axp288_fg_info *info;
 	struct axp20x_dev *axp20x = dev_get_drvdata(pdev->dev.parent);
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 
 	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
 	if (!info)
@@ -712,7 +712,7 @@ static int axp288_fuel_gauge_probe(struct platform_device *pdev)
 	info->pdev = pdev;
 	info->regmap = axp20x->regmap;
 	info->regmap_irqc = axp20x->regmap_irqc;
-	info->status = POWER_SUPPLY_STATUS_UNKNOWN;
+info->status = POWER_SUPPLY_STATUS_UNKNOWN;
 
 	platform_set_drvdata(pdev, info);
 
@@ -747,7 +747,7 @@ static int axp288_fuel_gauge_probe(struct platform_device *pdev)
 	}
 
 	psy_cfg.drv_data = info;
-	info->bat = power_supply_register(&pdev->dev, &fuel_gauge_desc, &psy_cfg);
+info->bat = power_supply_register(&pdev->dev, &fuel_gauge_desc, &psy_cfg);
 	if (IS_ERR(info->bat)) {
 		ret = PTR_ERR(info->bat);
 		dev_err(&pdev->dev, "failed to register battery: %d\n", ret);
@@ -773,7 +773,7 @@ static int axp288_fuel_gauge_remove(struct platform_device *pdev)
 	int i;
 
 	cancel_delayed_work_sync(&info->status_monitor);
-	power_supply_unregister(info->bat);
+power_supply_unregister(info->bat);
 	fuel_gauge_remove_debugfs(info);
 
 	for (i = 0; i < AXP288_FG_INTR_NUM; i++)

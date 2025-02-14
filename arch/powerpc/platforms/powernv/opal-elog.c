@@ -1,5 +1,5 @@
 /*
- * Error log support on PowerNV.
+* Error log support on PowerNV.
  *
  * Copyright 2013,2014 IBM Corp.
  *

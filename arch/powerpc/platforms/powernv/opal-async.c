@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL asynchronous completion interfaces
+* PowerNV OPAL asynchronous completion interfaces
  *
  * Copyright 2013 IBM Corp.
  *

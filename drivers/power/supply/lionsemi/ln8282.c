@@ -1,5 +1,5 @@
 /*
- * Driver (skeleton code) for LIONSEMI LN8282 SC Voltage Regulator
+* Driver (skeleton code) for LIONSEMI LN8282 SC Voltage Regulator
  *
  * Copyright (C) 2019 Lion Semiconductor Inc.
  * Copyright (C) 2019 XiaoMi, Inc.
@@ -135,7 +135,7 @@ enum {
  * @client: pointer to client
  * @regmap: pointer to driver regmap
  * @op_mode : chip operation mode (STANDBY, BYPASS, SWITCHING)
- * @reverse_power : enable reverse power path
+* @reverse_power : enable reverse power path
  * @pdata: pointer to platform data
  */
 
@@ -151,7 +151,7 @@ struct ln8282_info {
 	struct regmap *regmap;
 
 	int op_mode;
-	bool reverse_power;
+bool reverse_power;
 	bool auto_recovery;
 
 	struct ln8282_dt_props dt_props;
@@ -159,7 +159,7 @@ struct ln8282_info {
 	struct pinctrl_state *ln_gpio_active;
 	struct pinctrl_state *ln_gpio_suspend;
 
-	struct power_supply *ln_psy;
+struct power_supply *ln_psy;
 };
 
 static struct ln8282_info *g_info;
@@ -190,7 +190,7 @@ EXPORT_SYMBOL(ln8282_set_infet);
 
 void ln8282_set_powerpath(struct ln8282_info *info, bool forward_path)
 {
-	info->reverse_power = (!forward_path);
+info->reverse_power = (!forward_path);
 }
 EXPORT_SYMBOL(ln8282_set_powerpath);
 
@@ -198,8 +198,8 @@ EXPORT_SYMBOL(ln8282_set_powerpath);
 /*
 void ln8282_set_powerpath_ext(bool forward_path)
 {
-	g_info->reverse_power = (!forward_path);
-	printk("%s:reverse_power:%d\n", __func__, g_info->reverse_power);
+g_info->reverse_power = (!forward_path);
+printk("%s:reverse_power:%d\n", __func__, g_info->reverse_power);
 }
 */
 
@@ -272,7 +272,7 @@ static void ln8282_enter_bypass(struct ln8282_info *info)
 {
 	ln8282_set_base_opt_Bx(info, 1, 0, 1);
 
-	if (info->reverse_power)
+if (info->reverse_power)
 		regmap_write(info->regmap, LN8282_REG_FAULT_CTRL, 0x0B);
 	else
 		regmap_write(info->regmap, LN8282_REG_FAULT_CTRL, 0x0C);
@@ -300,7 +300,7 @@ static bool ln8282_vin_switch_ok(struct ln8282_info *info)
 
 static void ln8282_enter_switching(struct ln8282_info *info)
 {
-	if (info->reverse_power) {
+if (info->reverse_power) {
 		pr_info("%s:set switch in reverse mode\n");
 		ln8282_set_switch_seq(info, 0);
 		ln8282_set_base_opt_Bx(info, 0, 1, 0);
@@ -322,7 +322,7 @@ static void ln8282_enter_switching(struct ln8282_info *info)
 			   LN8282_MASK_SC_OPERATION_MODE,
 			   LN8282_OPMODE_SWITCHING);
 
-	if (info->reverse_power) {
+if (info->reverse_power) {
 		msleep(50);
 		ln8282_set_vbus_uv_track(info, 0);
 	} else {
@@ -342,8 +342,8 @@ bool ln8282_change_opmode(struct ln8282_info *info, unsigned int target_mode)
 		return false;
 	}
 	/* NOTE:
-	 *      CUSTOMER should know/indicate if power path is forward/reverse mode
-	 *      based on power connections before attempting to change operation mode
+*      CUSTOMER should know/indicate if power path is forward/reverse mode
+*      based on power connections before attempting to change operation mode
 	*/
 
 	dev_info(info->dev, "opmode from %d change to %d\n", info->op_mode,
@@ -399,9 +399,9 @@ bool ln8282_change_opmode_ext(unsigned int target_mode)
 int ln8282_hw_init(struct ln8282_info *info)
 {
 	/* NOTES:
-	 *   When power source is removed, LN8282 is powered off and all register settings are lost
-	 *   So, LN8282 should be re-initialized every time it is powered on
-	 *   This routine should be called when the RX IC or PMIC detects a new power source
+*   When power source is removed, LN8282 is powered off and all register settings are lost
+*   So, LN8282 should be re-initialized every time it is powered on
+*   This routine should be called when the RX IC or PMIC detects a new power source
 	 */
 
 	/* CUSTOMER should add basic initialization tasks
@@ -424,7 +424,7 @@ int ln8282_hw_init(struct ln8282_info *info)
 	regmap_write(info->regmap, LN8282_REG_LION_CTRL, 0x00);
 #endif
 
-	info->reverse_power = false;
+info->reverse_power = false;
 
 	return 1;
 }
@@ -447,7 +447,7 @@ static void ln8282_otp_power(struct ln8282_info *info, const bool enable)
 				   0x02, (1 << 1)); //VPP_to_HV=1
 		msleep(1);
 	} else {
-		//power down (lower VPP)
+//power down (lower VPP)
 		msleep(2);
 		regmap_update_bits(info->regmap, LN8282_REG_BC_OP_SUPPORT_CTRL,
 				   0x02, (0 << 1)); //VPP_to_HV=0
@@ -461,7 +461,7 @@ static void ln8282_otp_write(struct ln8282_info *info, unsigned int otp_addr,
 	unsigned int nvm_ctrl; //NVM_CTRL value
 
 	regmap_write(info->regmap, LN8282_REG_LION_CTRL, 0x5B);
-	ln8282_otp_power(info, true /*power-up*/);
+ln8282_otp_power(info, true /*power-up*/);
 
 	regmap_write(info->regmap, LN8282_REG_NVM_DIN, 0xFF);
 	nvm_ctrl = 0xFF & LN8282_OTP_MASK_WRITE_EN;
@@ -498,7 +498,7 @@ static void ln8282_otp_write(struct ln8282_info *info, unsigned int otp_addr,
 	nvm_ctrl &= (0xFF & ~LN8282_OTP_MASK_WRITE_EN);
 	regmap_write(info->regmap, LN8282_REG_NVM_CTRL, nvm_ctrl);
 
-	ln8282_otp_power(info, false /*power-down*/);
+ln8282_otp_power(info, false /*power-down*/);
 	regmap_write(info->regmap, LN8282_REG_LION_CTRL, 0x00);
 }
 
@@ -704,7 +704,7 @@ static ssize_t ln8282_sysfs_store_powerpath(struct device *dev,
 		forward = true;
 	else
 		forward = false;
-	ln8282_set_powerpath(info, forward);
+ln8282_set_powerpath(info, forward);
 	return count;
 }
 
@@ -736,14 +736,14 @@ static ssize_t ln8282_sysfs_otp_overwrite(struct device *dev,
 	ln8282_otp_write(info, 0x0F /*OTP cell addr*/, 0xF8 /*new OTP value*/);
 
 	pr_info("%s: --> finished overwriting OTP cell\n", __func__);
-	pr_info("%s: --> now, unplug/re-plugin VIN to power-up chip\n",
+pr_info("%s: --> now, unplug/re-plugin VIN to power-up chip\n",
 		__func__);
 	pr_info("%s: *****************************************************\n",
 		__func__);
 #endif
 
 	return scnprintf(buf, PAGE_SIZE,
-			 "unplug VIN to power-up LN8282 again\n");
+"unplug VIN to power-up LN8282 again\n");
 }
 static DEVICE_ATTR(otp_overwrite, 0444, ln8282_sysfs_otp_overwrite, NULL);
 #endif
@@ -764,7 +764,7 @@ static struct attribute *ln8282_info_attr[] = {
 #endif
 	&dev_attr_regcmd.attr,	      &dev_attr_opmode.attr,
 	&dev_attr_infet.attr,	      &dev_attr_ext_5v.attr,
-	&dev_attr_powerpath.attr,     NULL,
+&dev_attr_powerpath.attr,     NULL,
 };
 
 static const struct attribute_group ln8282_attr_group = {
@@ -852,19 +852,19 @@ static int ln8282_set_mode(struct ln8282_info *info, int mode)
 	int ret = 0;
 	switch (mode) {
 	case FORWARD_BYPASS:
-		ln8282_set_powerpath(info, true);
+ln8282_set_powerpath(info, true);
 		ln8282_change_opmode(info, LN8282_OPMODE_BYPASS);
 		break;
 	case FORWARD_SWITCH:
-		ln8282_set_powerpath(info, true);
+ln8282_set_powerpath(info, true);
 		ln8282_change_opmode(info, LN8282_OPMODE_SWITCHING);
 		break;
 	case REVERSE_SWITCH:
-		ln8282_set_powerpath(info, false);
+ln8282_set_powerpath(info, false);
 		ln8282_change_opmode(info, LN8282_OPMODE_SWITCHING);
 		break;
 	case REVERSE_BYPASS:
-		ln8282_set_powerpath(info, false);
+ln8282_set_powerpath(info, false);
 		ln8282_change_opmode(info, LN8282_OPMODE_BYPASS);
 	default:
 		dev_err(info->dev, "%s: invalid settings\n", __func__);
@@ -876,18 +876,18 @@ static int ln8282_set_mode(struct ln8282_info *info, int mode)
 }
 
 static enum power_supply_property ln8282_props[] = {
-	POWER_SUPPLY_PROP_DIV_2_MODE,
-	POWER_SUPPLY_PROP_RESET_DIV_2_MODE,
+POWER_SUPPLY_PROP_DIV_2_MODE,
+POWER_SUPPLY_PROP_RESET_DIV_2_MODE,
 };
 
 static int ln8282_get_prop(struct power_supply *psy,
-			   enum power_supply_property psp,
-			   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct ln8282_info *info = power_supply_get_drvdata(psy);
+struct ln8282_info *info = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		val->intval = info->op_mode;
 		break;
 	default:
@@ -897,17 +897,17 @@ static int ln8282_get_prop(struct power_supply *psy,
 }
 
 static int ln8282_set_prop(struct power_supply *psy,
-			   enum power_supply_property psp,
-			   const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct ln8282_info *info = power_supply_get_drvdata(psy);
+struct ln8282_info *info = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		rc = ln8282_set_mode(info, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_RESET_DIV_2_MODE:
+case POWER_SUPPLY_PROP_RESET_DIV_2_MODE:
 		info->op_mode = 0;
 		break;
 	default:
@@ -918,13 +918,13 @@ static int ln8282_set_prop(struct power_supply *psy,
 }
 
 static int ln8282_prop_is_writeable(struct power_supply *psy,
-				    enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
-	case POWER_SUPPLY_PROP_RESET_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_RESET_DIV_2_MODE:
 		return 1;
 	default:
 		rc = 0;
@@ -936,7 +936,7 @@ static int ln8282_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc ln_psy_desc = {
 	.name = "lionsemi",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = ln8282_props,
 	.num_properties = ARRAY_SIZE(ln8282_props),
 	.get_property = ln8282_get_prop,
@@ -948,7 +948,7 @@ static int ln8282_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
 	struct ln8282_info *info;
-	struct power_supply_config ln_cfg = {};
+struct power_supply_config ln_cfg = {};
 	int ret = 0;
 	pr_info("%s: =/START-PROBE/=\n", __func__);
 
@@ -991,7 +991,7 @@ static int ln8282_probe(struct i2c_client *client,
 	g_info = info;
 
 	ln_cfg.drv_data = info;
-	info->ln_psy = power_supply_register(info->dev, &ln_psy_desc, &ln_cfg);
+info->ln_psy = power_supply_register(info->dev, &ln_psy_desc, &ln_cfg);
 
 	pr_info("[ln8282]%s: success probe!\n", __func__);
 	return 0;

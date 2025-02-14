@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/mpc837x_mds.c
+* arch/powerpc/platforms/83xx/mpc837x_mds.c
  *
  * Copyright (C) 2007 Freescale Semiconductor, Inc. All rights reserved.
  *

@@ -28,16 +28,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8272@0 {
+PowerPC,8272@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <16384>;
 			i-cache-size = <16384>;
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 		};
 	};
 
@@ -88,7 +88,7 @@
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
 		#address-cells = <3>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 		interrupt-map = <
 		                 /* IDSEL 0x16 */

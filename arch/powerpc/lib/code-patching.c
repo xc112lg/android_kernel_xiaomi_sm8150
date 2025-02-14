@@ -79,7 +79,7 @@ static int text_area_cpu_down(unsigned int cpu)
 static int __init setup_text_poke_area(void)
 {
 	BUG_ON(!cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
-		"powerpc/text_poke:online", text_area_cpu_up,
+"powerpc/text_poke:online", text_area_cpu_up,
 		text_area_cpu_down));
 
 	return 0;
@@ -225,7 +225,7 @@ int patch_instruction_site(s32 *site, unsigned int instr)
 bool is_offset_in_branch_range(long offset)
 {
 	/*
-	 * Powerpc branch instruction is :
+* Powerpc branch instruction is :
 	 *
 	 *  0         6                 30   31
 	 *  +---------+----------------+---+---+

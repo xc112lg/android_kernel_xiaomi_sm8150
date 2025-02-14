@@ -22,7 +22,7 @@
  *
  * This driver provides system reboot functionality for APM X-Gene SoC.
  * For system shutdown, this is board specify. If a board designer
- * implements GPIO shutdown, use the gpio-poweroff.c driver.
+* implements GPIO shutdown, use the gpio-poweroff.c driver.
  */
 #include <linux/delay.h>
 #include <linux/io.h>

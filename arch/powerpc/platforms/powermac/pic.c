@@ -1,5 +1,5 @@
 /*
- *  Support for the interrupt controllers found on Power Macintosh,
+*  Support for the interrupt controllers found on Power Macintosh,
  *  currently Apple's "Grand Central" interrupt controller in all
  *  it's incarnations. OpenPIC support used on newer machines is
  *  in a separate file
@@ -233,7 +233,7 @@ static unsigned int pmac_pic_get_irq(void)
 	unsigned long flags;
 
 #ifdef CONFIG_PPC_PMAC32_PSURGE
-	/* IPI's are a hack on the powersurge -- Cort */
+/* IPI's are a hack on the powersurge -- Cort */
 	if (smp_processor_id() != 0) {
 		return  psurge_secondary_virq;
         }
@@ -580,7 +580,7 @@ void __init pmac_pic_init(void)
 
 #if defined(CONFIG_PM) && defined(CONFIG_PPC32)
 /*
- * These procedures are used in implementing sleep on the powerbooks.
+* These procedures are used in implementing sleep on the powerbooks.
  * sleep_save_intrs() saves the states of all interrupt enables
  * and disables all interrupts except for the nominated one.
  * sleep_restore_intrs() restores the states of all interrupt enables.

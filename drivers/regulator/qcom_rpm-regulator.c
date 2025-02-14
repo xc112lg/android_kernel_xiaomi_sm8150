@@ -32,19 +32,19 @@ struct request_member {
 };
 
 struct rpm_reg_parts {
-	struct request_member mV;		/* used if voltage is in mV */
-	struct request_member uV;		/* used if voltage is in uV */
+struct request_member mV;		/* used if voltage is in mV */
+struct request_member uV;		/* used if voltage is in uV */
 	struct request_member ip;		/* peak current in mA */
 	struct request_member pd;		/* pull down enable */
 	struct request_member ia;		/* average current in mA */
 	struct request_member fm;		/* force mode */
-	struct request_member pm;		/* power mode */
+struct request_member pm;		/* power mode */
 	struct request_member pc;		/* pin control */
 	struct request_member pf;		/* pin function */
 	struct request_member enable_state;	/* NCP and switch */
 	struct request_member comp_mode;	/* NCP */
-	struct request_member freq;		/* frequency: NCP and SMPS */
-	struct request_member freq_clk_src;	/* clock source: SMPS */
+struct request_member freq;		/* frequency: NCP and SMPS */
+struct request_member freq_clk_src;	/* clock source: SMPS */
 	struct request_member hpm;		/* switch: control OCP and SS */
 	int request_len;
 };
@@ -90,8 +90,8 @@ static const struct rpm_reg_parts rpm8660_smps_parts = {
 	.pf             = { 0, 0xC0000000, 30 },
 	.pd             = { 1, 0x00000001,  0 },
 	.ia             = { 1, 0x00001FFE,  1 },
-	.freq           = { 1, 0x001FE000, 13 },
-	.freq_clk_src   = { 1, 0x00600000, 21 },
+.freq           = { 1, 0x001FE000, 13 },
+.freq_clk_src   = { 1, 0x00600000, 21 },
 };
 
 static const struct rpm_reg_parts rpm8660_switch_parts = {
@@ -108,7 +108,7 @@ static const struct rpm_reg_parts rpm8660_ncp_parts = {
 	.mV             = { 0, 0x00000FFF,  0 },
 	.enable_state   = { 0, 0x00001000, 12 },
 	.comp_mode      = { 0, 0x00002000, 13 },
-	.freq           = { 0, 0x003FC000, 14 },
+.freq           = { 0, 0x003FC000, 14 },
 };
 
 static const struct rpm_reg_parts rpm8960_ldo_parts = {
@@ -132,8 +132,8 @@ static const struct rpm_reg_parts rpm8960_smps_parts = {
 	.ia             = { 1, 0x000FFC00, 10 },
 	.fm             = { 1, 0x00700000, 20 },
 	.pm             = { 1, 0x00800000, 23 },
-	.freq           = { 1, 0x1F000000, 24 },
-	.freq_clk_src   = { 1, 0x60000000, 29 },
+.freq           = { 1, 0x1F000000, 24 },
+.freq_clk_src   = { 1, 0x60000000, 29 },
 };
 
 static const struct rpm_reg_parts rpm8960_switch_parts = {
@@ -150,15 +150,15 @@ static const struct rpm_reg_parts rpm8960_ncp_parts = {
 	.uV             = { 0, 0x007FFFFF,  0 },
 	.enable_state   = { 0, 0x00800000, 23 },
 	.comp_mode      = { 0, 0x01000000, 24 },
-	.freq           = { 0, 0x3E000000, 25 },
+.freq           = { 0, 0x3E000000, 25 },
 };
 
 /*
- * Physically available PMIC regulator voltage ranges
+* Physically available PMIC regulator voltage ranges
  */
 static const struct regulator_linear_range pldo_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 750000,   0,  59, 12500),
-	REGULATOR_LINEAR_RANGE(1475000,  60, 123, 25000),
+	REGULATOR_LINEAR_RANGE(1500000,  60, 123, 25000),
 	REGULATOR_LINEAR_RANGE(3100000, 124, 160, 50000),
 };
 
@@ -174,24 +174,24 @@ static const struct regulator_linear_range nldo1200_ranges[] = {
 static const struct regulator_linear_range smps_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 375000,   0,  29, 12500),
 	REGULATOR_LINEAR_RANGE( 750000,  30,  89, 12500),
-	REGULATOR_LINEAR_RANGE(1475000,  90, 153, 25000),
+	REGULATOR_LINEAR_RANGE(1500000,  90, 153, 25000),
 };
 
 static const struct regulator_linear_range ftsmps_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 350000,   0,   6, 50000),
 	REGULATOR_LINEAR_RANGE( 700000,   7,  63, 12500),
-	REGULATOR_LINEAR_RANGE(1475000,  64, 100, 50000),
+	REGULATOR_LINEAR_RANGE(1500000,  64, 100, 50000),
 };
 
 static const struct regulator_linear_range smb208_ranges[] = {
 	REGULATOR_LINEAR_RANGE( 375000,   0,  29, 12500),
 	REGULATOR_LINEAR_RANGE( 750000,  30,  89, 12500),
-	REGULATOR_LINEAR_RANGE(1475000,  90, 153, 25000),
+	REGULATOR_LINEAR_RANGE(1500000,  90, 153, 25000),
 	REGULATOR_LINEAR_RANGE(3100000, 154, 234, 25000),
 };
 
 static const struct regulator_linear_range ncp_ranges[] = {
-	REGULATOR_LINEAR_RANGE(1475000,   0,  31, 50000),
+	REGULATOR_LINEAR_RANGE(1500000,   0,  31, 50000),
 };
 
 static int rpm_reg_write(struct qcom_rpm_reg *vreg,
@@ -223,7 +223,7 @@ static int rpm_reg_set_mV_sel(struct regulator_dev *rdev,
 	if (req->mask == 0)
 		return -EINVAL;
 
-	uV = regulator_list_voltage_linear_range(rdev, selector);
+uV = regulator_list_voltage_linear_range(rdev, selector);
 	if (uV < 0)
 		return uV;
 
@@ -250,7 +250,7 @@ static int rpm_reg_set_uV_sel(struct regulator_dev *rdev,
 	if (req->mask == 0)
 		return -EINVAL;
 
-	uV = regulator_list_voltage_linear_range(rdev, selector);
+uV = regulator_list_voltage_linear_range(rdev, selector);
 	if (uV < 0)
 		return uV;
 
@@ -416,10 +416,10 @@ static int rpm_reg_set_load(struct regulator_dev *rdev, int load_uA)
 }
 
 static struct regulator_ops uV_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
+.list_voltage = regulator_list_voltage_linear_range,
 
-	.set_voltage_sel = rpm_reg_set_uV_sel,
-	.get_voltage = rpm_reg_get_voltage,
+.set_voltage_sel = rpm_reg_set_uV_sel,
+.get_voltage = rpm_reg_get_voltage,
 
 	.enable = rpm_reg_uV_enable,
 	.disable = rpm_reg_uV_disable,
@@ -429,10 +429,10 @@ static struct regulator_ops uV_ops = {
 };
 
 static struct regulator_ops mV_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
+.list_voltage = regulator_list_voltage_linear_range,
 
-	.set_voltage_sel = rpm_reg_set_mV_sel,
-	.get_voltage = rpm_reg_get_voltage,
+.set_voltage_sel = rpm_reg_set_mV_sel,
+.get_voltage = rpm_reg_get_voltage,
 
 	.enable = rpm_reg_mV_enable,
 	.disable = rpm_reg_mV_disable,
@@ -453,7 +453,7 @@ static struct regulator_ops switch_ops = {
 static const struct qcom_rpm_reg pm8018_pldo = {
 	.desc.linear_ranges = pldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(pldo_ranges),
-	.desc.n_voltages = 161,
+.desc.n_voltages = 161,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -463,7 +463,7 @@ static const struct qcom_rpm_reg pm8018_pldo = {
 static const struct qcom_rpm_reg pm8018_nldo = {
 	.desc.linear_ranges = nldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(nldo_ranges),
-	.desc.n_voltages = 64,
+.desc.n_voltages = 64,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -473,7 +473,7 @@ static const struct qcom_rpm_reg pm8018_nldo = {
 static const struct qcom_rpm_reg pm8018_smps = {
 	.desc.linear_ranges = smps_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(smps_ranges),
-	.desc.n_voltages = 154,
+.desc.n_voltages = 154,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_smps_parts,
 	.supports_force_mode_auto = false,
@@ -491,7 +491,7 @@ static const struct qcom_rpm_reg pm8018_switch = {
 static const struct qcom_rpm_reg pm8058_pldo = {
 	.desc.linear_ranges = pldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(pldo_ranges),
-	.desc.n_voltages = 161,
+.desc.n_voltages = 161,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -501,7 +501,7 @@ static const struct qcom_rpm_reg pm8058_pldo = {
 static const struct qcom_rpm_reg pm8058_nldo = {
 	.desc.linear_ranges = nldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(nldo_ranges),
-	.desc.n_voltages = 64,
+.desc.n_voltages = 64,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -511,7 +511,7 @@ static const struct qcom_rpm_reg pm8058_nldo = {
 static const struct qcom_rpm_reg pm8058_smps = {
 	.desc.linear_ranges = smps_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(smps_ranges),
-	.desc.n_voltages = 154,
+.desc.n_voltages = 154,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_smps_parts,
 	.supports_force_mode_auto = false,
@@ -521,7 +521,7 @@ static const struct qcom_rpm_reg pm8058_smps = {
 static const struct qcom_rpm_reg pm8058_ncp = {
 	.desc.linear_ranges = ncp_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(ncp_ranges),
-	.desc.n_voltages = 32,
+.desc.n_voltages = 32,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_ncp_parts,
 };
@@ -537,7 +537,7 @@ static const struct qcom_rpm_reg pm8058_switch = {
 static const struct qcom_rpm_reg pm8901_pldo = {
 	.desc.linear_ranges = pldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(pldo_ranges),
-	.desc.n_voltages = 161,
+.desc.n_voltages = 161,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -547,7 +547,7 @@ static const struct qcom_rpm_reg pm8901_pldo = {
 static const struct qcom_rpm_reg pm8901_nldo = {
 	.desc.linear_ranges = nldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(nldo_ranges),
-	.desc.n_voltages = 64,
+.desc.n_voltages = 64,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -557,7 +557,7 @@ static const struct qcom_rpm_reg pm8901_nldo = {
 static const struct qcom_rpm_reg pm8901_ftsmps = {
 	.desc.linear_ranges = ftsmps_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(ftsmps_ranges),
-	.desc.n_voltages = 101,
+.desc.n_voltages = 101,
 	.desc.ops = &mV_ops,
 	.parts = &rpm8660_smps_parts,
 	.supports_force_mode_auto = true,
@@ -575,7 +575,7 @@ static const struct qcom_rpm_reg pm8901_switch = {
 static const struct qcom_rpm_reg pm8921_pldo = {
 	.desc.linear_ranges = pldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(pldo_ranges),
-	.desc.n_voltages = 161,
+.desc.n_voltages = 161,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -585,7 +585,7 @@ static const struct qcom_rpm_reg pm8921_pldo = {
 static const struct qcom_rpm_reg pm8921_nldo = {
 	.desc.linear_ranges = nldo_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(nldo_ranges),
-	.desc.n_voltages = 64,
+.desc.n_voltages = 64,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -595,7 +595,7 @@ static const struct qcom_rpm_reg pm8921_nldo = {
 static const struct qcom_rpm_reg pm8921_nldo1200 = {
 	.desc.linear_ranges = nldo1200_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(nldo1200_ranges),
-	.desc.n_voltages = 124,
+.desc.n_voltages = 124,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_ldo_parts,
 	.supports_force_mode_auto = false,
@@ -605,7 +605,7 @@ static const struct qcom_rpm_reg pm8921_nldo1200 = {
 static const struct qcom_rpm_reg pm8921_smps = {
 	.desc.linear_ranges = smps_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(smps_ranges),
-	.desc.n_voltages = 154,
+.desc.n_voltages = 154,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_smps_parts,
 	.supports_force_mode_auto = true,
@@ -615,7 +615,7 @@ static const struct qcom_rpm_reg pm8921_smps = {
 static const struct qcom_rpm_reg pm8921_ftsmps = {
 	.desc.linear_ranges = ftsmps_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(ftsmps_ranges),
-	.desc.n_voltages = 101,
+.desc.n_voltages = 101,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_smps_parts,
 	.supports_force_mode_auto = true,
@@ -625,7 +625,7 @@ static const struct qcom_rpm_reg pm8921_ftsmps = {
 static const struct qcom_rpm_reg pm8921_ncp = {
 	.desc.linear_ranges = ncp_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(ncp_ranges),
-	.desc.n_voltages = 32,
+.desc.n_voltages = 32,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_ncp_parts,
 };
@@ -638,7 +638,7 @@ static const struct qcom_rpm_reg pm8921_switch = {
 static const struct qcom_rpm_reg smb208_smps = {
 	.desc.linear_ranges = smb208_ranges,
 	.desc.n_linear_ranges = ARRAY_SIZE(smb208_ranges),
-	.desc.n_voltages = 235,
+.desc.n_voltages = 235,
 	.desc.ops = &uV_ops,
 	.parts = &rpm8960_smps_parts,
 	.supports_force_mode_auto = false,
@@ -662,32 +662,32 @@ static int rpm_reg_of_parse_freq(struct device *dev,
 				 struct device_node *node,
 				 struct qcom_rpm_reg *vreg)
 {
-	static const int freq_table[] = {
+static const int freq_table[] = {
 		19200000, 9600000, 6400000, 4800000, 3840000, 3200000, 2740000,
 		2400000, 2130000, 1920000, 1750000, 1600000, 1480000, 1370000,
 		1280000, 1200000,
 
 	};
 	const char *key;
-	u32 freq;
+u32 freq;
 	int ret;
 	int i;
 
-	key = "qcom,switch-mode-frequency";
-	ret = of_property_read_u32(node, key, &freq);
+key = "qcom,switch-mode-frequency";
+ret = of_property_read_u32(node, key, &freq);
 	if (ret) {
 		dev_err(dev, "regulator requires %s property\n", key);
 		return -EINVAL;
 	}
 
-	for (i = 0; i < ARRAY_SIZE(freq_table); i++) {
-		if (freq == freq_table[i]) {
-			rpm_reg_set(vreg, &vreg->parts->freq, i + 1);
+for (i = 0; i < ARRAY_SIZE(freq_table); i++) {
+if (freq == freq_table[i]) {
+rpm_reg_set(vreg, &vreg->parts->freq, i + 1);
 			return 0;
 		}
 	}
 
-	dev_err(dev, "invalid frequency %d\n", freq);
+dev_err(dev, "invalid frequency %d\n", freq);
 	return -EINVAL;
 }
 
@@ -712,19 +712,19 @@ static int rpm_reg_of_parse(struct device_node *node,
 		}
 	}
 
-	if (vreg->parts->freq.mask) {
-		ret = rpm_reg_of_parse_freq(dev, node, vreg);
+if (vreg->parts->freq.mask) {
+ret = rpm_reg_of_parse_freq(dev, node, vreg);
 		if (ret < 0)
 			return ret;
 	}
 
 	if (vreg->parts->pm.mask) {
-		key = "qcom,power-mode-hysteretic";
+key = "qcom,power-mode-hysteretic";
 		pwm = !of_property_read_bool(node, key);
 
 		ret = rpm_reg_set(vreg, &vreg->parts->pm, pwm);
 		if (ret) {
-			dev_err(dev, "failed to set power mode\n");
+dev_err(dev, "failed to set power mode\n");
 			return ret;
 		}
 	}
@@ -794,25 +794,25 @@ struct rpm_regulator_data {
 };
 
 static const struct rpm_regulator_data rpm_pm8018_regulators[] = {
-	{ "s1",  QCOM_RPM_PM8018_SMPS1, &pm8018_smps, "vdd_s1" },
-	{ "s2",  QCOM_RPM_PM8018_SMPS2, &pm8018_smps, "vdd_s2" },
-	{ "s3",  QCOM_RPM_PM8018_SMPS3, &pm8018_smps, "vdd_s3" },
-	{ "s4",  QCOM_RPM_PM8018_SMPS4, &pm8018_smps, "vdd_s4" },
-	{ "s5",  QCOM_RPM_PM8018_SMPS5, &pm8018_smps, "vdd_s5" },
+{ "s1",  QCOM_RPM_PM8018_SMPS1, &pm8018_smps, "vdd_s1" },
+{ "s2",  QCOM_RPM_PM8018_SMPS2, &pm8018_smps, "vdd_s2" },
+{ "s3",  QCOM_RPM_PM8018_SMPS3, &pm8018_smps, "vdd_s3" },
+{ "s4",  QCOM_RPM_PM8018_SMPS4, &pm8018_smps, "vdd_s4" },
+{ "s5",  QCOM_RPM_PM8018_SMPS5, &pm8018_smps, "vdd_s5" },
 
-	{ "l2",  QCOM_RPM_PM8018_LDO2,  &pm8018_pldo, "vdd_l2" },
-	{ "l3",  QCOM_RPM_PM8018_LDO3,  &pm8018_pldo, "vdd_l3" },
-	{ "l4",  QCOM_RPM_PM8018_LDO4,  &pm8018_pldo, "vdd_l4" },
-	{ "l5",  QCOM_RPM_PM8018_LDO5,  &pm8018_pldo, "vdd_l5" },
-	{ "l6",  QCOM_RPM_PM8018_LDO6,  &pm8018_pldo, "vdd_l7" },
-	{ "l7",  QCOM_RPM_PM8018_LDO7,  &pm8018_pldo, "vdd_l7" },
-	{ "l8",  QCOM_RPM_PM8018_LDO8,  &pm8018_nldo, "vdd_l8" },
+{ "l2",  QCOM_RPM_PM8018_LDO2,  &pm8018_pldo, "vdd_l2" },
+{ "l3",  QCOM_RPM_PM8018_LDO3,  &pm8018_pldo, "vdd_l3" },
+{ "l4",  QCOM_RPM_PM8018_LDO4,  &pm8018_pldo, "vdd_l4" },
+{ "l5",  QCOM_RPM_PM8018_LDO5,  &pm8018_pldo, "vdd_l5" },
+{ "l6",  QCOM_RPM_PM8018_LDO6,  &pm8018_pldo, "vdd_l7" },
+{ "l7",  QCOM_RPM_PM8018_LDO7,  &pm8018_pldo, "vdd_l7" },
+{ "l8",  QCOM_RPM_PM8018_LDO8,  &pm8018_nldo, "vdd_l8" },
 	{ "l9",  QCOM_RPM_PM8018_LDO9,  &pm8921_nldo1200,
-						      "vdd_l9_l10_l11_l12" },
-	{ "l10", QCOM_RPM_PM8018_LDO10, &pm8018_nldo, "vdd_l9_l10_l11_l12" },
-	{ "l11", QCOM_RPM_PM8018_LDO11, &pm8018_nldo, "vdd_l9_l10_l11_l12" },
-	{ "l12", QCOM_RPM_PM8018_LDO12, &pm8018_nldo, "vdd_l9_l10_l11_l12" },
-	{ "l14", QCOM_RPM_PM8018_LDO14, &pm8018_pldo, "vdd_l14" },
+"vdd_l9_l10_l11_l12" },
+{ "l10", QCOM_RPM_PM8018_LDO10, &pm8018_nldo, "vdd_l9_l10_l11_l12" },
+{ "l11", QCOM_RPM_PM8018_LDO11, &pm8018_nldo, "vdd_l9_l10_l11_l12" },
+{ "l12", QCOM_RPM_PM8018_LDO12, &pm8018_nldo, "vdd_l9_l10_l11_l12" },
+{ "l14", QCOM_RPM_PM8018_LDO14, &pm8018_pldo, "vdd_l14" },
 
 	{ "lvs1", QCOM_RPM_PM8018_LVS1, &pm8018_switch, "lvs1_in" },
 
@@ -820,60 +820,60 @@ static const struct rpm_regulator_data rpm_pm8018_regulators[] = {
 };
 
 static const struct rpm_regulator_data rpm_pm8058_regulators[] = {
-	{ "s0",   QCOM_RPM_PM8058_SMPS0,  &pm8058_smps, "vdd_s0" },
-	{ "s1",   QCOM_RPM_PM8058_SMPS1,  &pm8058_smps, "vdd_s1" },
-	{ "s2",   QCOM_RPM_PM8058_SMPS2,  &pm8058_smps, "vdd_s2" },
-	{ "s3",   QCOM_RPM_PM8058_SMPS3,  &pm8058_smps, "vdd_s3" },
-	{ "s4",   QCOM_RPM_PM8058_SMPS4,  &pm8058_smps, "vdd_s4" },
+{ "s0",   QCOM_RPM_PM8058_SMPS0,  &pm8058_smps, "vdd_s0" },
+{ "s1",   QCOM_RPM_PM8058_SMPS1,  &pm8058_smps, "vdd_s1" },
+{ "s2",   QCOM_RPM_PM8058_SMPS2,  &pm8058_smps, "vdd_s2" },
+{ "s3",   QCOM_RPM_PM8058_SMPS3,  &pm8058_smps, "vdd_s3" },
+{ "s4",   QCOM_RPM_PM8058_SMPS4,  &pm8058_smps, "vdd_s4" },
 
-	{ "l0",   QCOM_RPM_PM8058_LDO0,   &pm8058_nldo, "vdd_l0_l1_lvs"	},
-	{ "l1",   QCOM_RPM_PM8058_LDO1,   &pm8058_nldo, "vdd_l0_l1_lvs" },
-	{ "l2",   QCOM_RPM_PM8058_LDO2,   &pm8058_pldo, "vdd_l2_l11_l12" },
-	{ "l3",   QCOM_RPM_PM8058_LDO3,   &pm8058_pldo, "vdd_l3_l4_l5" },
-	{ "l4",   QCOM_RPM_PM8058_LDO4,   &pm8058_pldo, "vdd_l3_l4_l5" },
-	{ "l5",   QCOM_RPM_PM8058_LDO5,   &pm8058_pldo, "vdd_l3_l4_l5" },
-	{ "l6",   QCOM_RPM_PM8058_LDO6,   &pm8058_pldo, "vdd_l6_l7" },
-	{ "l7",   QCOM_RPM_PM8058_LDO7,   &pm8058_pldo, "vdd_l6_l7" },
-	{ "l8",   QCOM_RPM_PM8058_LDO8,   &pm8058_pldo, "vdd_l8" },
-	{ "l9",   QCOM_RPM_PM8058_LDO9,   &pm8058_pldo, "vdd_l9" },
-	{ "l10",  QCOM_RPM_PM8058_LDO10,  &pm8058_pldo, "vdd_l10" },
-	{ "l11",  QCOM_RPM_PM8058_LDO11,  &pm8058_pldo, "vdd_l2_l11_l12" },
-	{ "l12",  QCOM_RPM_PM8058_LDO12,  &pm8058_pldo, "vdd_l2_l11_l12" },
-	{ "l13",  QCOM_RPM_PM8058_LDO13,  &pm8058_pldo, "vdd_l13_l16" },
-	{ "l14",  QCOM_RPM_PM8058_LDO14,  &pm8058_pldo, "vdd_l14_l15" },
-	{ "l15",  QCOM_RPM_PM8058_LDO15,  &pm8058_pldo, "vdd_l14_l15" },
-	{ "l16",  QCOM_RPM_PM8058_LDO16,  &pm8058_pldo, "vdd_l13_l16" },
-	{ "l17",  QCOM_RPM_PM8058_LDO17,  &pm8058_pldo, "vdd_l17_l18" },
-	{ "l18",  QCOM_RPM_PM8058_LDO18,  &pm8058_pldo, "vdd_l17_l18" },
-	{ "l19",  QCOM_RPM_PM8058_LDO19,  &pm8058_pldo, "vdd_l19_l20" },
-	{ "l20",  QCOM_RPM_PM8058_LDO20,  &pm8058_pldo, "vdd_l19_l20" },
-	{ "l21",  QCOM_RPM_PM8058_LDO21,  &pm8058_nldo, "vdd_l21" },
-	{ "l22",  QCOM_RPM_PM8058_LDO22,  &pm8058_nldo, "vdd_l22" },
-	{ "l23",  QCOM_RPM_PM8058_LDO23,  &pm8058_nldo, "vdd_l23_l24_l25" },
-	{ "l24",  QCOM_RPM_PM8058_LDO24,  &pm8058_nldo, "vdd_l23_l24_l25" },
-	{ "l25",  QCOM_RPM_PM8058_LDO25,  &pm8058_nldo, "vdd_l23_l24_l25" },
+{ "l0",   QCOM_RPM_PM8058_LDO0,   &pm8058_nldo, "vdd_l0_l1_lvs"	},
+{ "l1",   QCOM_RPM_PM8058_LDO1,   &pm8058_nldo, "vdd_l0_l1_lvs" },
+{ "l2",   QCOM_RPM_PM8058_LDO2,   &pm8058_pldo, "vdd_l2_l11_l12" },
+{ "l3",   QCOM_RPM_PM8058_LDO3,   &pm8058_pldo, "vdd_l3_l4_l5" },
+{ "l4",   QCOM_RPM_PM8058_LDO4,   &pm8058_pldo, "vdd_l3_l4_l5" },
+{ "l5",   QCOM_RPM_PM8058_LDO5,   &pm8058_pldo, "vdd_l3_l4_l5" },
+{ "l6",   QCOM_RPM_PM8058_LDO6,   &pm8058_pldo, "vdd_l6_l7" },
+{ "l7",   QCOM_RPM_PM8058_LDO7,   &pm8058_pldo, "vdd_l6_l7" },
+{ "l8",   QCOM_RPM_PM8058_LDO8,   &pm8058_pldo, "vdd_l8" },
+{ "l9",   QCOM_RPM_PM8058_LDO9,   &pm8058_pldo, "vdd_l9" },
+{ "l10",  QCOM_RPM_PM8058_LDO10,  &pm8058_pldo, "vdd_l10" },
+{ "l11",  QCOM_RPM_PM8058_LDO11,  &pm8058_pldo, "vdd_l2_l11_l12" },
+{ "l12",  QCOM_RPM_PM8058_LDO12,  &pm8058_pldo, "vdd_l2_l11_l12" },
+{ "l13",  QCOM_RPM_PM8058_LDO13,  &pm8058_pldo, "vdd_l13_l16" },
+{ "l14",  QCOM_RPM_PM8058_LDO14,  &pm8058_pldo, "vdd_l14_l15" },
+{ "l15",  QCOM_RPM_PM8058_LDO15,  &pm8058_pldo, "vdd_l14_l15" },
+{ "l16",  QCOM_RPM_PM8058_LDO16,  &pm8058_pldo, "vdd_l13_l16" },
+{ "l17",  QCOM_RPM_PM8058_LDO17,  &pm8058_pldo, "vdd_l17_l18" },
+{ "l18",  QCOM_RPM_PM8058_LDO18,  &pm8058_pldo, "vdd_l17_l18" },
+{ "l19",  QCOM_RPM_PM8058_LDO19,  &pm8058_pldo, "vdd_l19_l20" },
+{ "l20",  QCOM_RPM_PM8058_LDO20,  &pm8058_pldo, "vdd_l19_l20" },
+{ "l21",  QCOM_RPM_PM8058_LDO21,  &pm8058_nldo, "vdd_l21" },
+{ "l22",  QCOM_RPM_PM8058_LDO22,  &pm8058_nldo, "vdd_l22" },
+{ "l23",  QCOM_RPM_PM8058_LDO23,  &pm8058_nldo, "vdd_l23_l24_l25" },
+{ "l24",  QCOM_RPM_PM8058_LDO24,  &pm8058_nldo, "vdd_l23_l24_l25" },
+{ "l25",  QCOM_RPM_PM8058_LDO25,  &pm8058_nldo, "vdd_l23_l24_l25" },
 
-	{ "lvs0", QCOM_RPM_PM8058_LVS0, &pm8058_switch, "vdd_l0_l1_lvs" },
-	{ "lvs1", QCOM_RPM_PM8058_LVS1, &pm8058_switch, "vdd_l0_l1_lvs" },
+{ "lvs0", QCOM_RPM_PM8058_LVS0, &pm8058_switch, "vdd_l0_l1_lvs" },
+{ "lvs1", QCOM_RPM_PM8058_LVS1, &pm8058_switch, "vdd_l0_l1_lvs" },
 
-	{ "ncp",  QCOM_RPM_PM8058_NCP, &pm8058_ncp, "vdd_ncp" },
+{ "ncp",  QCOM_RPM_PM8058_NCP, &pm8058_ncp, "vdd_ncp" },
 	{ }
 };
 
 static const struct rpm_regulator_data rpm_pm8901_regulators[] = {
-	{ "s0",   QCOM_RPM_PM8901_SMPS0, &pm8901_ftsmps, "vdd_s0" },
-	{ "s1",   QCOM_RPM_PM8901_SMPS1, &pm8901_ftsmps, "vdd_s1" },
-	{ "s2",   QCOM_RPM_PM8901_SMPS2, &pm8901_ftsmps, "vdd_s2" },
-	{ "s3",   QCOM_RPM_PM8901_SMPS3, &pm8901_ftsmps, "vdd_s3" },
-	{ "s4",   QCOM_RPM_PM8901_SMPS4, &pm8901_ftsmps, "vdd_s4" },
+{ "s0",   QCOM_RPM_PM8901_SMPS0, &pm8901_ftsmps, "vdd_s0" },
+{ "s1",   QCOM_RPM_PM8901_SMPS1, &pm8901_ftsmps, "vdd_s1" },
+{ "s2",   QCOM_RPM_PM8901_SMPS2, &pm8901_ftsmps, "vdd_s2" },
+{ "s3",   QCOM_RPM_PM8901_SMPS3, &pm8901_ftsmps, "vdd_s3" },
+{ "s4",   QCOM_RPM_PM8901_SMPS4, &pm8901_ftsmps, "vdd_s4" },
 
-	{ "l0",   QCOM_RPM_PM8901_LDO0, &pm8901_nldo, "vdd_l0" },
-	{ "l1",   QCOM_RPM_PM8901_LDO1, &pm8901_pldo, "vdd_l1" },
-	{ "l2",   QCOM_RPM_PM8901_LDO2, &pm8901_pldo, "vdd_l2" },
-	{ "l3",   QCOM_RPM_PM8901_LDO3, &pm8901_pldo, "vdd_l3" },
-	{ "l4",   QCOM_RPM_PM8901_LDO4, &pm8901_pldo, "vdd_l4" },
-	{ "l5",   QCOM_RPM_PM8901_LDO5, &pm8901_pldo, "vdd_l5" },
-	{ "l6",   QCOM_RPM_PM8901_LDO6, &pm8901_pldo, "vdd_l6" },
+{ "l0",   QCOM_RPM_PM8901_LDO0, &pm8901_nldo, "vdd_l0" },
+{ "l1",   QCOM_RPM_PM8901_LDO1, &pm8901_pldo, "vdd_l1" },
+{ "l2",   QCOM_RPM_PM8901_LDO2, &pm8901_pldo, "vdd_l2" },
+{ "l3",   QCOM_RPM_PM8901_LDO3, &pm8901_pldo, "vdd_l3" },
+{ "l4",   QCOM_RPM_PM8901_LDO4, &pm8901_pldo, "vdd_l4" },
+{ "l5",   QCOM_RPM_PM8901_LDO5, &pm8901_pldo, "vdd_l5" },
+{ "l6",   QCOM_RPM_PM8901_LDO6, &pm8901_pldo, "vdd_l6" },
 
 	{ "lvs0", QCOM_RPM_PM8901_LVS0, &pm8901_switch, "lvs0_in" },
 	{ "lvs1", QCOM_RPM_PM8901_LVS1, &pm8901_switch, "lvs1_in" },
@@ -885,39 +885,39 @@ static const struct rpm_regulator_data rpm_pm8901_regulators[] = {
 };
 
 static const struct rpm_regulator_data rpm_pm8921_regulators[] = {
-	{ "s1",  QCOM_RPM_PM8921_SMPS1, &pm8921_smps, "vdd_s1" },
-	{ "s2",  QCOM_RPM_PM8921_SMPS2, &pm8921_smps, "vdd_s2" },
+{ "s1",  QCOM_RPM_PM8921_SMPS1, &pm8921_smps, "vdd_s1" },
+{ "s2",  QCOM_RPM_PM8921_SMPS2, &pm8921_smps, "vdd_s2" },
 	{ "s3",  QCOM_RPM_PM8921_SMPS3, &pm8921_smps },
-	{ "s4",  QCOM_RPM_PM8921_SMPS4, &pm8921_smps, "vdd_s4" },
-	{ "s7",  QCOM_RPM_PM8921_SMPS7, &pm8921_smps, "vdd_s7" },
-	{ "s8",  QCOM_RPM_PM8921_SMPS8, &pm8921_smps, "vdd_s8"  },
+{ "s4",  QCOM_RPM_PM8921_SMPS4, &pm8921_smps, "vdd_s4" },
+{ "s7",  QCOM_RPM_PM8921_SMPS7, &pm8921_smps, "vdd_s7" },
+{ "s8",  QCOM_RPM_PM8921_SMPS8, &pm8921_smps, "vdd_s8"  },
 
-	{ "l1",  QCOM_RPM_PM8921_LDO1, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
-	{ "l2",  QCOM_RPM_PM8921_LDO2, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
-	{ "l3",  QCOM_RPM_PM8921_LDO3, &pm8921_pldo, "vdd_l3_l15_l17" },
-	{ "l4",  QCOM_RPM_PM8921_LDO4, &pm8921_pldo, "vdd_l4_l14" },
-	{ "l5",  QCOM_RPM_PM8921_LDO5, &pm8921_pldo, "vdd_l5_l8_l16" },
-	{ "l6",  QCOM_RPM_PM8921_LDO6, &pm8921_pldo, "vdd_l6_l7" },
-	{ "l7",  QCOM_RPM_PM8921_LDO7, &pm8921_pldo, "vdd_l6_l7" },
-	{ "l8",  QCOM_RPM_PM8921_LDO8, &pm8921_pldo, "vdd_l5_l8_l16" },
-	{ "l9",  QCOM_RPM_PM8921_LDO9, &pm8921_pldo, "vdd_l9_l11" },
-	{ "l10", QCOM_RPM_PM8921_LDO10, &pm8921_pldo, "vdd_l10_l22" },
-	{ "l11", QCOM_RPM_PM8921_LDO11, &pm8921_pldo, "vdd_l9_l11" },
-	{ "l12", QCOM_RPM_PM8921_LDO12, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
-	{ "l14", QCOM_RPM_PM8921_LDO14, &pm8921_pldo, "vdd_l4_l14" },
-	{ "l15", QCOM_RPM_PM8921_LDO15, &pm8921_pldo, "vdd_l3_l15_l17" },
-	{ "l16", QCOM_RPM_PM8921_LDO16, &pm8921_pldo, "vdd_l5_l8_l16" },
-	{ "l17", QCOM_RPM_PM8921_LDO17, &pm8921_pldo, "vdd_l3_l15_l17" },
-	{ "l18", QCOM_RPM_PM8921_LDO18, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
-	{ "l21", QCOM_RPM_PM8921_LDO21, &pm8921_pldo, "vdd_l21_l23_l29" },
-	{ "l22", QCOM_RPM_PM8921_LDO22, &pm8921_pldo, "vdd_l10_l22" },
-	{ "l23", QCOM_RPM_PM8921_LDO23, &pm8921_pldo, "vdd_l21_l23_l29" },
-	{ "l24", QCOM_RPM_PM8921_LDO24, &pm8921_nldo1200, "vdd_l24" },
-	{ "l25", QCOM_RPM_PM8921_LDO25, &pm8921_nldo1200, "vdd_l25" },
-	{ "l26", QCOM_RPM_PM8921_LDO26, &pm8921_nldo1200, "vdd_l26" },
-	{ "l27", QCOM_RPM_PM8921_LDO27, &pm8921_nldo1200, "vdd_l27" },
-	{ "l28", QCOM_RPM_PM8921_LDO28, &pm8921_nldo1200, "vdd_l28" },
-	{ "l29", QCOM_RPM_PM8921_LDO29, &pm8921_pldo, "vdd_l21_l23_l29" },
+{ "l1",  QCOM_RPM_PM8921_LDO1, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
+{ "l2",  QCOM_RPM_PM8921_LDO2, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
+{ "l3",  QCOM_RPM_PM8921_LDO3, &pm8921_pldo, "vdd_l3_l15_l17" },
+{ "l4",  QCOM_RPM_PM8921_LDO4, &pm8921_pldo, "vdd_l4_l14" },
+{ "l5",  QCOM_RPM_PM8921_LDO5, &pm8921_pldo, "vdd_l5_l8_l16" },
+{ "l6",  QCOM_RPM_PM8921_LDO6, &pm8921_pldo, "vdd_l6_l7" },
+{ "l7",  QCOM_RPM_PM8921_LDO7, &pm8921_pldo, "vdd_l6_l7" },
+{ "l8",  QCOM_RPM_PM8921_LDO8, &pm8921_pldo, "vdd_l5_l8_l16" },
+{ "l9",  QCOM_RPM_PM8921_LDO9, &pm8921_pldo, "vdd_l9_l11" },
+{ "l10", QCOM_RPM_PM8921_LDO10, &pm8921_pldo, "vdd_l10_l22" },
+{ "l11", QCOM_RPM_PM8921_LDO11, &pm8921_pldo, "vdd_l9_l11" },
+{ "l12", QCOM_RPM_PM8921_LDO12, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
+{ "l14", QCOM_RPM_PM8921_LDO14, &pm8921_pldo, "vdd_l4_l14" },
+{ "l15", QCOM_RPM_PM8921_LDO15, &pm8921_pldo, "vdd_l3_l15_l17" },
+{ "l16", QCOM_RPM_PM8921_LDO16, &pm8921_pldo, "vdd_l5_l8_l16" },
+{ "l17", QCOM_RPM_PM8921_LDO17, &pm8921_pldo, "vdd_l3_l15_l17" },
+{ "l18", QCOM_RPM_PM8921_LDO18, &pm8921_nldo, "vdd_l1_l2_l12_l18" },
+{ "l21", QCOM_RPM_PM8921_LDO21, &pm8921_pldo, "vdd_l21_l23_l29" },
+{ "l22", QCOM_RPM_PM8921_LDO22, &pm8921_pldo, "vdd_l10_l22" },
+{ "l23", QCOM_RPM_PM8921_LDO23, &pm8921_pldo, "vdd_l21_l23_l29" },
+{ "l24", QCOM_RPM_PM8921_LDO24, &pm8921_nldo1200, "vdd_l24" },
+{ "l25", QCOM_RPM_PM8921_LDO25, &pm8921_nldo1200, "vdd_l25" },
+{ "l26", QCOM_RPM_PM8921_LDO26, &pm8921_nldo1200, "vdd_l26" },
+{ "l27", QCOM_RPM_PM8921_LDO27, &pm8921_nldo1200, "vdd_l27" },
+{ "l28", QCOM_RPM_PM8921_LDO28, &pm8921_nldo1200, "vdd_l28" },
+{ "l29", QCOM_RPM_PM8921_LDO29, &pm8921_pldo, "vdd_l21_l23_l29" },
 
 	{ "lvs1", QCOM_RPM_PM8921_LVS1, &pm8921_switch, "vin_lvs1_3_6" },
 	{ "lvs2", QCOM_RPM_PM8921_LVS2, &pm8921_switch, "vin_lvs2" },
@@ -929,7 +929,7 @@ static const struct rpm_regulator_data rpm_pm8921_regulators[] = {
 
 	{ "usb-switch", QCOM_RPM_USB_OTG_SWITCH, &pm8921_switch, "vin_5vs" },
 	{ "hdmi-switch", QCOM_RPM_HDMI_SWITCH, &pm8921_switch, "vin_5vs" },
-	{ "ncp", QCOM_RPM_PM8921_NCP, &pm8921_ncp, "vdd_ncp" },
+{ "ncp", QCOM_RPM_PM8921_NCP, &pm8921_ncp, "vdd_ncp" },
 	{ }
 };
 
@@ -978,7 +978,7 @@ static int rpm_reg_probe(struct platform_device *pdev)
 
 		vreg->desc.id = -1;
 		vreg->desc.owner = THIS_MODULE;
-		vreg->desc.type = REGULATOR_VOLTAGE;
+vreg->desc.type = REGULATOR_VOLTAGE;
 		vreg->desc.name = reg->name;
 		vreg->desc.supply_name = reg->supply;
 		vreg->desc.of_match = reg->name;

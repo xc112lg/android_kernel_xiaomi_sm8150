@@ -1,5 +1,5 @@
 /*
- * include/asm-sh/cpu-sh2a/freq.h
+* include/asm-sh/cpu-sh2a/freq.h
  *
  * Copyright (C) 2006  Yoshinori Sato
  *

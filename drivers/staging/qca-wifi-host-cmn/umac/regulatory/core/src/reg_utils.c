@@ -70,12 +70,12 @@ bool reg_chan_has_dfs_attribute(struct wlan_objmgr_pdev *pdev, uint8_t ch)
 
 #ifdef CONFIG_CHAN_FREQ_API
 bool reg_chan_has_dfs_attribute_for_freq(struct wlan_objmgr_pdev *pdev,
-					 qdf_freq_t freq)
+qdf_freq_t freq)
 {
 	enum channel_enum ch_idx;
 	struct wlan_regulatory_pdev_priv_obj *pdev_priv_obj;
 
-	ch_idx = reg_get_chan_enum_for_freq(freq);
+ch_idx = reg_get_chan_enum_for_freq(freq);
 
 	if (ch_idx == INVALID_CHANNEL)
 		return false;
@@ -320,11 +320,11 @@ bool reg_is_passive_or_disable_ch(struct wlan_objmgr_pdev *pdev,
 
 #ifdef CONFIG_CHAN_FREQ_API
 bool reg_is_passive_or_disable_for_freq(struct wlan_objmgr_pdev *pdev,
-					qdf_freq_t freq)
+qdf_freq_t freq)
 {
 	enum channel_state chan_state;
 
-	chan_state = reg_get_channel_state_for_freq(pdev, freq);
+chan_state = reg_get_channel_state_for_freq(pdev, freq);
 
 	return (chan_state == CHANNEL_STATE_DFS) ||
 		(chan_state == CHANNEL_STATE_DISABLE);
@@ -335,10 +335,10 @@ bool reg_is_passive_or_disable_for_freq(struct wlan_objmgr_pdev *pdev,
 #ifdef CONFIG_CHAN_FREQ_API
 bool reg_is_dsrc_freq(qdf_freq_t freq)
 {
-	if (!REG_IS_5GHZ_FREQ(freq))
+if (!REG_IS_5GHZ_FREQ(freq))
 		return false;
 
-	if (!(freq >= REG_DSRC_START_FREQ && freq <= REG_DSRC_END_FREQ))
+if (!(freq >= REG_DSRC_START_FREQ && freq <= REG_DSRC_END_FREQ))
 		return false;
 
 	return true;
@@ -349,7 +349,7 @@ bool reg_is_dsrc_freq(qdf_freq_t freq)
 bool reg_is_dsrc_chan(struct wlan_objmgr_pdev *pdev, uint8_t chan)
 {
 	struct wlan_regulatory_pdev_priv_obj *pdev_priv_obj;
-	qdf_freq_t freq = 0;
+qdf_freq_t freq = 0;
 
 	pdev_priv_obj = reg_get_pdev_obj(pdev);
 
@@ -361,9 +361,9 @@ bool reg_is_dsrc_chan(struct wlan_objmgr_pdev *pdev, uint8_t chan)
 	if (!REG_IS_5GHZ_CH(chan))
 		return false;
 
-	freq = reg_chan_to_freq(pdev, chan);
+freq = reg_chan_to_freq(pdev, chan);
 
-	if (!(freq >= REG_DSRC_START_FREQ && freq <= REG_DSRC_END_FREQ))
+if (!(freq >= REG_DSRC_START_FREQ && freq <= REG_DSRC_END_FREQ))
 		return false;
 
 	return true;
@@ -388,13 +388,13 @@ bool reg_is_etsi13_regdmn(struct wlan_objmgr_pdev *pdev)
 
 #ifdef CONFIG_CHAN_FREQ_API
 bool reg_is_etsi13_srd_chan_for_freq(struct wlan_objmgr_pdev *pdev,
-				     uint16_t freq)
+uint16_t freq)
 {
-	if (!REG_IS_5GHZ_FREQ(freq))
+if (!REG_IS_5GHZ_FREQ(freq))
 		return false;
 
-	if (!(freq >= REG_ETSI13_SRD_START_FREQ &&
-	      freq <= REG_ETSI13_SRD_END_FREQ))
+if (!(freq >= REG_ETSI13_SRD_START_FREQ &&
+freq <= REG_ETSI13_SRD_END_FREQ))
 		return false;
 
 	return reg_is_etsi13_regdmn(pdev);
@@ -405,7 +405,7 @@ bool reg_is_etsi13_srd_chan_for_freq(struct wlan_objmgr_pdev *pdev,
 bool reg_is_etsi13_srd_chan(struct wlan_objmgr_pdev *pdev, uint8_t chan)
 {
 	struct wlan_regulatory_pdev_priv_obj *pdev_priv_obj;
-	qdf_freq_t freq = 0;
+qdf_freq_t freq = 0;
 
 	pdev_priv_obj = reg_get_pdev_obj(pdev);
 
@@ -417,10 +417,10 @@ bool reg_is_etsi13_srd_chan(struct wlan_objmgr_pdev *pdev, uint8_t chan)
 	if (!REG_IS_5GHZ_CH(chan))
 		return false;
 
-	freq = reg_chan_to_freq(pdev, chan);
+freq = reg_chan_to_freq(pdev, chan);
 
-	if (!(freq >= REG_ETSI13_SRD_START_FREQ &&
-	      freq <= REG_ETSI13_SRD_END_FREQ))
+if (!(freq >= REG_ETSI13_SRD_START_FREQ &&
+freq <= REG_ETSI13_SRD_END_FREQ))
 		return false;
 
 	return reg_is_etsi13_regdmn(pdev);
@@ -594,9 +594,9 @@ QDF_STATUS reg_cache_channel_freq_state(struct wlan_objmgr_pdev *pdev,
 	for (i = 0; i < num_channels; i++) {
 		for (j = 0; j < NUM_CHANNELS; j++) {
 			if (channel_list[i] == pdev_priv_obj->
-						cur_chan_list[j].center_freq) {
+cur_chan_list[j].center_freq) {
 				pdev_priv_obj->
-					cache_disable_chan_list[i].center_freq =
+cache_disable_chan_list[i].center_freq =
 							channel_list[i];
 				pdev_priv_obj->
 					cache_disable_chan_list[i].state =
@@ -725,7 +725,7 @@ bool reg_get_fcc_constraint(struct wlan_objmgr_pdev *pdev, uint32_t freq)
 		return false;
 	}
 
-	if (freq != CHAN_12_CENT_FREQ && freq != CHAN_13_CENT_FREQ)
+if (freq != CHAN_12_CENT_FREQ && freq != CHAN_13_CENT_FREQ)
 		return false;
 
 	if (!pdev_priv_obj->set_fcc_channel)
@@ -820,7 +820,7 @@ bool reg_is_disable_for_freq(struct wlan_objmgr_pdev *pdev, qdf_freq_t freq)
 {
 	enum channel_state ch_state;
 
-	ch_state = reg_get_channel_state_for_freq(pdev, freq);
+ch_state = reg_get_channel_state_for_freq(pdev, freq);
 
 	return ch_state == CHANNEL_STATE_DISABLE;
 }
@@ -872,8 +872,8 @@ void reg_program_mas_chan_list(struct wlan_objmgr_psoc *psoc,
 	reg_debug("set cur_country %.2s", psoc_priv_obj->cur_country);
 	for (count = 0; count < NUM_CHANNELS; count++) {
 		reg_channels[count].chan_num = channel_map[count].chan_num;
-		reg_channels[count].center_freq =
-			channel_map[count].center_freq;
+reg_channels[count].center_freq =
+channel_map[count].center_freq;
 		reg_channels[count].nol_chan = false;
 	}
 

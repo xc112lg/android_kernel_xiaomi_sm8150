@@ -193,7 +193,7 @@ static int qg_master_hold(struct qpnp_qg *chip, bool hold)
 
 static void qg_notify_charger(struct qpnp_qg *chip)
 {
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 	int rc;
 
 	if (!chip->batt_psy)
@@ -201,8 +201,8 @@ static void qg_notify_charger(struct qpnp_qg *chip)
 
 	if (is_debug_batt_id(chip)) {
 		prop.intval = 1;
-		power_supply_set_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_DEBUG_BATTERY, &prop);
+power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_DEBUG_BATTERY, &prop);
 		return;
 	}
 
@@ -210,27 +210,27 @@ static void qg_notify_charger(struct qpnp_qg *chip)
 		return;
 
 	prop.intval = chip->bp.float_volt_uv;
-	rc = power_supply_set_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_VOLTAGE_MAX, &prop);
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_MAX, &prop);
 	if (rc < 0) {
-		pr_err("Failed to set voltage_max property on batt_psy, rc=%d\n",
+pr_err("Failed to set voltage_max property on batt_psy, rc=%d\n",
 			rc);
 		return;
 	}
 
 	prop.intval = chip->bp.fastchg_curr_ma * 1000;
-	rc = power_supply_set_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX, &prop);
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX, &prop);
 	if (rc < 0) {
 		pr_err("Failed to set constant_charge_current_max property on batt_psy, rc=%d\n",
 			rc);
 		return;
 	}
 
-	pr_debug("Notified charger on float voltage and FCC\n");
+pr_debug("Notified charger on float voltage and FCC\n");
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT, &prop);
 	if (rc < 0) {
 		pr_err("Failed to get charge term current, rc=%d\n", rc);
 		return;
@@ -243,7 +243,7 @@ static bool is_batt_available(struct qpnp_qg *chip)
 	if (chip->batt_psy)
 		return true;
 
-	chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 	if (!chip->batt_psy)
 		return false;
 
@@ -758,7 +758,7 @@ static int qg_fast_charge_config(struct qpnp_qg *chip)
 		return 0;
 
 	rc = qg_config_s2_state(chip, S2_FAST_CHARGING,
-			(chip->charge_status == POWER_SUPPLY_STATUS_CHARGING)
+(chip->charge_status == POWER_SUPPLY_STATUS_CHARGING)
 			? true : false, false);
 	if (rc < 0)
 		pr_err("Failed to exit S2_SLEEP rc=%d\n", rc);
@@ -971,7 +971,7 @@ static int qg_esr_estimate(struct qpnp_qg *chip)
 	rc = qg_get_battery_current(chip, &ibat);
 	if (rc < 0)
 		return rc;
-	if (chip->charge_status == POWER_SUPPLY_STATUS_CHARGING &&
+if (chip->charge_status == POWER_SUPPLY_STATUS_CHARGING &&
 				ibat > chip->dt.esr_min_ibat_ua) {
 		qg_dbg(chip, QG_DEBUG_ESR,
 			"Skip CHG ESR, Fails IBAT ibat(%d) min_ibat(%d)\n",
@@ -979,7 +979,7 @@ static int qg_esr_estimate(struct qpnp_qg *chip)
 		return 0;
 	}
 
-	if (chip->charge_status != POWER_SUPPLY_STATUS_CHARGING &&
+if (chip->charge_status != POWER_SUPPLY_STATUS_CHARGING &&
 			!chip->dt.esr_discharge_enable)
 		return 0;
 
@@ -1182,7 +1182,7 @@ static void process_udata_work(struct work_struct *work)
 	if (chip->esr_actual != -EINVAL && chip->udata.param[QG_ESR].valid) {
 		chip->esr_nominal = chip->udata.param[QG_ESR].data;
 		if (chip->qg_psy)
-			power_supply_changed(chip->qg_psy);
+power_supply_changed(chip->qg_psy);
 	}
 
 	if (!chip->dt.esr_disable)
@@ -1328,7 +1328,7 @@ static irqreturn_t qg_vbat_empty_handler(int irq, void *data)
 	qg_store_soc_params(chip);
 
 	if (chip->qg_psy)
-		power_supply_changed(chip->qg_psy);
+power_supply_changed(chip->qg_psy);
 
 	return IRQ_HANDLED;
 }
@@ -1744,7 +1744,7 @@ static int qg_get_charge_counter(struct qpnp_qg *chip, int *charge_counter)
 static int qg_get_power(struct qpnp_qg *chip, int *val, bool average)
 {
 	int rc, v_min, v_ocv, rbatt = 0, esr = 0;
-	s64 power;
+s64 power;
 
 	if (is_debug_batt_id(chip)) {
 		*val = -EINVAL;
@@ -1774,24 +1774,24 @@ static int qg_get_power(struct qpnp_qg *chip, int *val, bool average)
 		return 0;
 	}
 
-	power = (s64)v_min * (v_ocv - v_min);
+power = (s64)v_min * (v_ocv - v_min);
 
 	if (average)
-		power = div_s64(power, rbatt);
+power = div_s64(power, rbatt);
 	else
-		power = div_s64(power, esr);
+power = div_s64(power, esr);
 
-	*val = power;
+*val = power;
 
-	qg_dbg(chip, QG_DEBUG_STATUS, "v_min=%d v_ocv=%d rbatt=%d esr=%d power=%lld\n",
-			v_min, v_ocv, rbatt, esr, power);
+qg_dbg(chip, QG_DEBUG_STATUS, "v_min=%d v_ocv=%d rbatt=%d esr=%d power=%lld\n",
+v_min, v_ocv, rbatt, esr, power);
 
 	return 0;
 }
 
 static int qg_get_ttf_param(void *data, enum ttf_param param, int *val)
 {
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 	struct qpnp_qg *chip = data;
 	int rc = 0;
 	int64_t temp = 0;
@@ -1809,15 +1809,15 @@ static int qg_get_ttf_param(void *data, enum ttf_param param, int *val)
 		rc = qg_get_battery_capacity(chip, val);
 		break;
 	case TTF_VBAT:
-		rc = qg_get_battery_voltage(chip, val);
+rc = qg_get_battery_voltage(chip, val);
 		break;
 	case TTF_IBAT:
 		rc = qg_get_battery_current(chip, val);
 		break;
 	case TTF_FCC:
 		if (chip->qg_psy) {
-			rc = power_supply_get_property(chip->qg_psy,
-				POWER_SUPPLY_PROP_CHARGE_FULL, &prop);
+rc = power_supply_get_property(chip->qg_psy,
+POWER_SUPPLY_PROP_CHARGE_FULL, &prop);
 			if (rc >= 0) {
 				temp = div64_u64(prop.intval, 1000);
 				*val  = div64_u64(chip->full_soc * temp,
@@ -1905,7 +1905,7 @@ static int qg_reset(struct qpnp_qg *chip)
 	/* delay for master to settle */
 	msleep(20);
 
-	qg_get_battery_voltage(chip, &rc);
+qg_get_battery_voltage(chip, &rc);
 	qg_get_battery_capacity(chip, &soc);
 	qg_dbg(chip, QG_DEBUG_STATUS, "VBAT=%duV SOC=%d\n", rc, soc);
 
@@ -2005,14 +2005,14 @@ static int qg_setprop_batt_age_level(struct qpnp_qg *chip, int batt_age_level)
 }
 
 static int qg_psy_set_property(struct power_supply *psy,
-			       enum power_supply_property psp,
-			       const union power_supply_propval *pval)
+enum power_supply_property psp,
+const union power_supply_propval *pval)
 {
-	struct qpnp_qg *chip = power_supply_get_drvdata(psy);
+struct qpnp_qg *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		if (chip->dt.cl_disable) {
 			pr_warn("Capacity learning disabled!\n");
 			return 0;
@@ -2031,23 +2031,23 @@ static int qg_psy_set_property(struct power_supply *psy,
 			chip->cl->learned_cap_uah = pval->intval;
 		mutex_unlock(&chip->cl->lock);
 		break;
-	case POWER_SUPPLY_PROP_SOH:
+case POWER_SUPPLY_PROP_SOH:
 		chip->soh = pval->intval;
 		qg_dbg(chip, QG_DEBUG_STATUS, "SOH update: SOH=%d esr_actual=%d esr_nominal=%d\n",
 				chip->soh, chip->esr_actual, chip->esr_nominal);
 		if (chip->sp)
 			soh_profile_update(chip->sp, chip->soh);
 		break;
-	case POWER_SUPPLY_PROP_ESR_ACTUAL:
+case POWER_SUPPLY_PROP_ESR_ACTUAL:
 		chip->esr_actual = pval->intval;
 		break;
-	case POWER_SUPPLY_PROP_ESR_NOMINAL:
+case POWER_SUPPLY_PROP_ESR_NOMINAL:
 		chip->esr_nominal = pval->intval;
 		break;
-	case POWER_SUPPLY_PROP_FG_RESET:
+case POWER_SUPPLY_PROP_FG_RESET:
 		qg_reset(chip);
 		break;
-	case POWER_SUPPLY_PROP_BATT_AGE_LEVEL:
+case POWER_SUPPLY_PROP_BATT_AGE_LEVEL:
 		rc = qg_setprop_batt_age_level(chip, pval->intval);
 		break;
 	default:
@@ -2057,76 +2057,76 @@ static int qg_psy_set_property(struct power_supply *psy,
 }
 
 static int qg_psy_get_property(struct power_supply *psy,
-			       enum power_supply_property psp,
-			       union power_supply_propval *pval)
+enum power_supply_property psp,
+union power_supply_propval *pval)
 {
-	struct qpnp_qg *chip = power_supply_get_drvdata(psy);
+struct qpnp_qg *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 	int64_t temp = 0;
 
 	pval->intval = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		rc = qg_get_battery_capacity(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY_RAW:
+case POWER_SUPPLY_PROP_CAPACITY_RAW:
 		pval->intval = chip->sys_soc;
 		break;
-	case POWER_SUPPLY_PROP_REAL_CAPACITY:
+case POWER_SUPPLY_PROP_REAL_CAPACITY:
 		rc = qg_get_battery_capacity_real(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		rc = qg_get_battery_voltage(chip, &pval->intval);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+rc = qg_get_battery_voltage(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		rc = qg_get_battery_current(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_OCV:
+case POWER_SUPPLY_PROP_VOLTAGE_OCV:
 		rc = qg_sdam_read(SDAM_OCV_UV, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		rc = qg_get_battery_temp(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_RESISTANCE_ID:
+case POWER_SUPPLY_PROP_RESISTANCE_ID:
 		pval->intval = chip->batt_id_ohm;
 		break;
-	case POWER_SUPPLY_PROP_DEBUG_BATTERY:
+case POWER_SUPPLY_PROP_DEBUG_BATTERY:
 		pval->intval = is_debug_batt_id(chip);
 		break;
-	case POWER_SUPPLY_PROP_RESISTANCE:
+case POWER_SUPPLY_PROP_RESISTANCE:
 		rc = qg_sdam_read(SDAM_RBAT_MOHM, &pval->intval);
 		if (!rc)
 			pval->intval *= 1000;
 		break;
-	case POWER_SUPPLY_PROP_RESISTANCE_NOW:
+case POWER_SUPPLY_PROP_RESISTANCE_NOW:
 		pval->intval = chip->esr_last;
 		break;
-	case POWER_SUPPLY_PROP_SOC_REPORTING_READY:
+case POWER_SUPPLY_PROP_SOC_REPORTING_READY:
 		pval->intval = chip->soc_reporting_ready;
 		break;
-	case POWER_SUPPLY_PROP_RESISTANCE_CAPACITIVE:
+case POWER_SUPPLY_PROP_RESISTANCE_CAPACITIVE:
 		pval->intval = chip->dt.rbat_conn_mohm;
 		break;
-	case POWER_SUPPLY_PROP_BATTERY_TYPE:
+case POWER_SUPPLY_PROP_BATTERY_TYPE:
 		pval->strval = qg_get_battery_type(chip);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+case POWER_SUPPLY_PROP_VOLTAGE_MIN:
 		pval->intval = chip->dt.vbatt_cutoff_mv * 1000;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		pval->intval = chip->bp.float_volt_uv;
 		break;
-	case POWER_SUPPLY_PROP_BATT_FULL_CURRENT:
+case POWER_SUPPLY_PROP_BATT_FULL_CURRENT:
 		pval->intval = chip->dt.iterm_ma * 1000;
 		break;
-	case POWER_SUPPLY_PROP_BATT_PROFILE_VERSION:
+case POWER_SUPPLY_PROP_BATT_PROFILE_VERSION:
 		pval->intval = chip->bp.qg_profile_version;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		rc = qg_get_charge_counter(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		if (!chip->dt.cl_disable && chip->dt.cl_feedback_on)
 			rc = qg_get_learned_capacity(chip, &temp);
 		else
@@ -2134,58 +2134,58 @@ static int qg_psy_get_property(struct power_supply *psy,
 		if (!rc)
 			pval->intval = (int)temp;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		rc = qg_get_nominal_capacity((int *)&temp, 250, true);
 		if (!rc)
 			pval->intval = (int)temp;
 		break;
-	case POWER_SUPPLY_PROP_CYCLE_COUNTS:
+case POWER_SUPPLY_PROP_CYCLE_COUNTS:
 		rc = get_cycle_counts(chip->counter, &pval->strval);
 		if (rc < 0)
 			pval->strval = NULL;
 		break;
-	case POWER_SUPPLY_PROP_CYCLE_COUNT:
+case POWER_SUPPLY_PROP_CYCLE_COUNT:
 		rc = get_cycle_count(chip->counter, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_FULL_AVG:
+case POWER_SUPPLY_PROP_TIME_TO_FULL_AVG:
 		rc = ttf_get_time_to_full(chip->ttf, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
 		rc = ttf_get_time_to_full(chip->ttf, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
+case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
 		rc = ttf_get_time_to_empty(chip->ttf, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_ESR_ACTUAL:
+case POWER_SUPPLY_PROP_ESR_ACTUAL:
 		pval->intval = (chip->esr_actual == -EINVAL) ?  -EINVAL :
 					(chip->esr_actual * 1000);
 		break;
-	case POWER_SUPPLY_PROP_ESR_NOMINAL:
+case POWER_SUPPLY_PROP_ESR_NOMINAL:
 		pval->intval = (chip->esr_nominal == -EINVAL) ?  -EINVAL :
 					(chip->esr_nominal * 1000);
 		break;
-	case POWER_SUPPLY_PROP_SOH:
+case POWER_SUPPLY_PROP_SOH:
 		pval->intval = chip->soh;
 		break;
-	case POWER_SUPPLY_PROP_CC_SOC:
+case POWER_SUPPLY_PROP_CC_SOC:
 		rc = qg_get_cc_soc(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
 		rc = qg_get_vbat_avg(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		rc = qg_get_ibat_avg(chip, &pval->intval);
 		break;
-	case POWER_SUPPLY_PROP_POWER_NOW:
-		rc = qg_get_power(chip, &pval->intval, false);
+case POWER_SUPPLY_PROP_POWER_NOW:
+rc = qg_get_power(chip, &pval->intval, false);
 		break;
-	case POWER_SUPPLY_PROP_POWER_AVG:
-		rc = qg_get_power(chip, &pval->intval, true);
+case POWER_SUPPLY_PROP_POWER_AVG:
+rc = qg_get_power(chip, &pval->intval, true);
 		break;
-	case POWER_SUPPLY_PROP_SCALE_MODE_EN:
+case POWER_SUPPLY_PROP_SCALE_MODE_EN:
 		pval->intval = chip->fvss_active;
 		break;
-	case POWER_SUPPLY_PROP_BATT_AGE_LEVEL:
+case POWER_SUPPLY_PROP_BATT_AGE_LEVEL:
 		pval->intval = chip->batt_age_level;
 		break;
 	default:
@@ -2197,15 +2197,15 @@ static int qg_psy_get_property(struct power_supply *psy,
 }
 
 static int qg_property_is_writeable(struct power_supply *psy,
-				enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
-	case POWER_SUPPLY_PROP_ESR_ACTUAL:
-	case POWER_SUPPLY_PROP_ESR_NOMINAL:
-	case POWER_SUPPLY_PROP_SOH:
-	case POWER_SUPPLY_PROP_FG_RESET:
-	case POWER_SUPPLY_PROP_BATT_AGE_LEVEL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_ESR_ACTUAL:
+case POWER_SUPPLY_PROP_ESR_NOMINAL:
+case POWER_SUPPLY_PROP_SOH:
+case POWER_SUPPLY_PROP_FG_RESET:
+case POWER_SUPPLY_PROP_BATT_AGE_LEVEL:
 		return 1;
 	default:
 		break;
@@ -2214,48 +2214,48 @@ static int qg_property_is_writeable(struct power_supply *psy,
 }
 
 static enum power_supply_property qg_psy_props[] = {
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CAPACITY_RAW,
-	POWER_SUPPLY_PROP_REAL_CAPACITY,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_OCV,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_RESISTANCE,
-	POWER_SUPPLY_PROP_RESISTANCE_ID,
-	POWER_SUPPLY_PROP_RESISTANCE_NOW,
-	POWER_SUPPLY_PROP_SOC_REPORTING_READY,
-	POWER_SUPPLY_PROP_RESISTANCE_CAPACITIVE,
-	POWER_SUPPLY_PROP_DEBUG_BATTERY,
-	POWER_SUPPLY_PROP_BATTERY_TYPE,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_BATT_FULL_CURRENT,
-	POWER_SUPPLY_PROP_BATT_PROFILE_VERSION,
-	POWER_SUPPLY_PROP_CYCLE_COUNT,
-	POWER_SUPPLY_PROP_CYCLE_COUNTS,
-	POWER_SUPPLY_PROP_CHARGE_FULL,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_TIME_TO_FULL_AVG,
-	POWER_SUPPLY_PROP_TIME_TO_FULL_NOW,
-	POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
-	POWER_SUPPLY_PROP_ESR_ACTUAL,
-	POWER_SUPPLY_PROP_ESR_NOMINAL,
-	POWER_SUPPLY_PROP_SOH,
-	POWER_SUPPLY_PROP_FG_RESET,
-	POWER_SUPPLY_PROP_CC_SOC,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_POWER_AVG,
-	POWER_SUPPLY_PROP_POWER_NOW,
-	POWER_SUPPLY_PROP_SCALE_MODE_EN,
-	POWER_SUPPLY_PROP_BATT_AGE_LEVEL,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CAPACITY_RAW,
+POWER_SUPPLY_PROP_REAL_CAPACITY,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_OCV,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_RESISTANCE,
+POWER_SUPPLY_PROP_RESISTANCE_ID,
+POWER_SUPPLY_PROP_RESISTANCE_NOW,
+POWER_SUPPLY_PROP_SOC_REPORTING_READY,
+POWER_SUPPLY_PROP_RESISTANCE_CAPACITIVE,
+POWER_SUPPLY_PROP_DEBUG_BATTERY,
+POWER_SUPPLY_PROP_BATTERY_TYPE,
+POWER_SUPPLY_PROP_VOLTAGE_MIN,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_BATT_FULL_CURRENT,
+POWER_SUPPLY_PROP_BATT_PROFILE_VERSION,
+POWER_SUPPLY_PROP_CYCLE_COUNT,
+POWER_SUPPLY_PROP_CYCLE_COUNTS,
+POWER_SUPPLY_PROP_CHARGE_FULL,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_TIME_TO_FULL_AVG,
+POWER_SUPPLY_PROP_TIME_TO_FULL_NOW,
+POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
+POWER_SUPPLY_PROP_ESR_ACTUAL,
+POWER_SUPPLY_PROP_ESR_NOMINAL,
+POWER_SUPPLY_PROP_SOH,
+POWER_SUPPLY_PROP_FG_RESET,
+POWER_SUPPLY_PROP_CC_SOC,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_POWER_AVG,
+POWER_SUPPLY_PROP_POWER_NOW,
+POWER_SUPPLY_PROP_SCALE_MODE_EN,
+POWER_SUPPLY_PROP_BATT_AGE_LEVEL,
 };
 
 static const struct power_supply_desc qg_psy_desc = {
 	.name = "bms",
-	.type = POWER_SUPPLY_TYPE_BMS,
+.type = POWER_SUPPLY_TYPE_BMS,
 	.properties = qg_psy_props,
 	.num_properties = ARRAY_SIZE(qg_psy_props),
 	.get_property = qg_psy_get_property,
@@ -2277,22 +2277,22 @@ static bool qg_cl_ok_to_begin(void *data)
 #define DEFAULT_RECHARGE_SOC 95
 static int qg_charge_full_update(struct qpnp_qg *chip)
 {
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 	int rc, recharge_soc, health;
 
 	if (!chip->dt.hold_soc_while_full)
 		goto out;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_HEALTH, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_HEALTH, &prop);
 	if (rc < 0) {
 		pr_err("Failed to get battery health, rc=%d\n", rc);
 		goto out;
 	}
 	health = prop.intval;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_RECHARGE_SOC, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_RECHARGE_SOC, &prop);
 	if (rc < 0 || prop.intval < 0) {
 		pr_debug("Failed to get recharge-soc\n");
 		recharge_soc = DEFAULT_RECHARGE_SOC;
@@ -2305,11 +2305,11 @@ static int qg_charge_full_update(struct qpnp_qg *chip)
 				chip->msoc, health, chip->charge_full,
 				chip->charge_done);
 	if (chip->charge_done && !chip->charge_full) {
-		if (chip->msoc >= 99 && health == POWER_SUPPLY_HEALTH_GOOD) {
+if (chip->msoc >= 99 && health == POWER_SUPPLY_HEALTH_GOOD) {
 			chip->charge_full = true;
 			qg_dbg(chip, QG_DEBUG_STATUS, "Setting charge_full (0->1) @ msoc=%d\n",
 					chip->msoc);
-		} else if (health != POWER_SUPPLY_HEALTH_GOOD) {
+} else if (health != POWER_SUPPLY_HEALTH_GOOD) {
 			/* terminated in JEITA */
 			qg_dbg(chip, QG_DEBUG_STATUS, "Terminated charging @ msoc=%d\n",
 					chip->msoc);
@@ -2325,11 +2325,11 @@ static int qg_charge_full_update(struct qpnp_qg *chip)
 		 */
 		if ((chip->wa_flags & QG_RECHARGE_SOC_WA) &&
 			input_present && chip->msoc <= recharge_soc &&
-			chip->charge_status != POWER_SUPPLY_STATUS_CHARGING) {
+chip->charge_status != POWER_SUPPLY_STATUS_CHARGING) {
 			/* Force recharge */
 			prop.intval = 0;
-			rc = power_supply_set_property(chip->batt_psy,
-				POWER_SUPPLY_PROP_FORCE_RECHARGE, &prop);
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_FORCE_RECHARGE, &prop);
 			if (rc < 0)
 				pr_err("Failed to force recharge rc=%d\n", rc);
 			else
@@ -2484,15 +2484,15 @@ static int qg_handle_battery_insertion(struct qpnp_qg *chip)
 static int qg_battery_status_update(struct qpnp_qg *chip)
 {
 	int rc;
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 
 	if (!is_batt_available(chip))
 		return 0;
 
 	mutex_lock(&chip->data_lock);
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_PRESENT, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_PRESENT, &prop);
 	if (rc < 0) {
 		pr_err("Failed to get battery-present, rc=%d\n", rc);
 		goto done;
@@ -2549,7 +2549,7 @@ static void qg_status_change_work(struct work_struct *work)
 {
 	struct qpnp_qg *chip = container_of(work,
 			struct qpnp_qg, qg_status_change_work);
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 	int rc = 0, batt_temp = 0;
 	bool input_present = false;
 
@@ -2562,22 +2562,22 @@ static void qg_status_change_work(struct work_struct *work)
 	if (rc < 0)
 		pr_err("Failed to process battery status update rc=%d\n", rc);
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CHARGE_TYPE, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &prop);
 	if (rc < 0)
 		pr_err("Failed to get charge-type, rc=%d\n", rc);
 	else
 		chip->charge_type = prop.intval;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_STATUS, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &prop);
 	if (rc < 0)
 		pr_err("Failed to get charger status, rc=%d\n", rc);
 	else
 		chip->charge_status = prop.intval;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CHARGE_DONE, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_DONE, &prop);
 	if (rc < 0)
 		pr_err("Failed to get charge done status, rc=%d\n", rc);
 	else
@@ -2624,7 +2624,7 @@ out:
 static int qg_notifier_cb(struct notifier_block *nb,
 			unsigned long event, void *data)
 {
-	struct power_supply *psy = data;
+struct power_supply *psy = data;
 	struct qpnp_qg *chip = container_of(nb, struct qpnp_qg, nb);
 
 	if (event != PSY_EVENT_PROP_CHANGED)
@@ -2650,14 +2650,14 @@ static int qg_notifier_cb(struct notifier_block *nb,
 
 static int qg_init_psy(struct qpnp_qg *chip)
 {
-	struct power_supply_config qg_psy_cfg;
+struct power_supply_config qg_psy_cfg;
 	int rc;
 
 	qg_psy_cfg.drv_data = chip;
 	qg_psy_cfg.of_node = NULL;
 	qg_psy_cfg.supplied_to = NULL;
 	qg_psy_cfg.num_supplicants = 0;
-	chip->qg_psy = devm_power_supply_register(chip->dev,
+chip->qg_psy = devm_power_supply_register(chip->dev,
 				&qg_psy_desc, &qg_psy_cfg);
 	if (IS_ERR_OR_NULL(chip->qg_psy)) {
 		pr_err("Failed to register qg_psy rc = %ld\n",
@@ -2666,7 +2666,7 @@ static int qg_init_psy(struct qpnp_qg *chip)
 	}
 
 	chip->nb.notifier_call = qg_notifier_cb;
-	rc = power_supply_reg_notifier(&chip->nb);
+rc = power_supply_reg_notifier(&chip->nb);
 	if (rc < 0)
 		pr_err("Failed register psy notifier rc = %d\n", rc);
 
@@ -2951,10 +2951,10 @@ static int qg_load_battery_profile(struct qpnp_qg *chip)
 		return rc;
 	}
 
-	rc = of_property_read_u32(profile_node, "qcom,max-voltage-uv",
+rc = of_property_read_u32(profile_node, "qcom,max-voltage-uv",
 				&chip->bp.float_volt_uv);
 	if (rc < 0) {
-		pr_err("Failed to read battery float-voltage rc:%d\n", rc);
+pr_err("Failed to read battery float-voltage rc:%d\n", rc);
 		chip->bp.float_volt_uv = -EINVAL;
 	}
 
@@ -3149,7 +3149,7 @@ static int qg_determine_pon_soc(struct qpnp_qg *chip)
 	/*
 	 * Use the shutdown SOC if
 	 * 1. SDAM read is a success & SDAM data is valid
-	 * 2. The device was powered off for < ignore_shutdown_time
+* 2. The device was powered off for < ignore_shutdown_time
 	 * 2. Batt temp has not changed more than shutdown_temp_diff
 	 */
 	if (!shutdown[SDAM_VALID])
@@ -4053,7 +4053,7 @@ static int qg_parse_dt(struct qpnp_qg *chip)
 	else
 		chip->dt.shutdown_soc_threshold = temp;
 
-	rc = of_property_read_u32(node, "qcom,qg-sys-min-voltage", &temp);
+rc = of_property_read_u32(node, "qcom,qg-sys-min-voltage", &temp);
 	if (rc < 0)
 		chip->dt.sys_min_volt_mv = DEFAULT_SYS_MIN_VOLT_MV;
 	else
@@ -4235,7 +4235,7 @@ static int process_suspend(struct qpnp_qg *chip)
 	qg_read(chip, chip->qg_base + QG_STATUS2_REG, &status, 1);
 
 	/* ignore any suspend processing if we are charging */
-	if (chip->charge_status == POWER_SUPPLY_STATUS_CHARGING) {
+if (chip->charge_status == POWER_SUPPLY_STATUS_CHARGING) {
 		/* Reset the sleep config if we are charging */
 		if (chip->dt.qg_sleep_config) {
 			qg_dbg(chip, QG_DEBUG_STATUS, "Suspend: Charging - Exit S2_SLEEP\n");
@@ -4704,7 +4704,7 @@ static void qpnp_qg_shutdown(struct platform_device *pdev)
 	 */
 	cycle_count_update(chip->counter,
 			DIV_ROUND_CLOSEST(chip->msoc * 255, 100),
-			POWER_SUPPLY_STATUS_NOT_CHARGING,
+POWER_SUPPLY_STATUS_NOT_CHARGING,
 			true, input_present);
 }
 

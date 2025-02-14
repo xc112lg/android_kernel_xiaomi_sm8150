@@ -21,7 +21,7 @@ typedef	void (*cpu_restore_t)(void);
 enum powerpc_oprofile_type {
 	PPC_OPROFILE_INVALID = 0,
 	PPC_OPROFILE_RS64 = 1,
-	PPC_OPROFILE_POWER4 = 2,
+PPC_OPROFILE_POWER4 = 2,
 	PPC_OPROFILE_G4 = 3,
 	PPC_OPROFILE_FSL_EMB = 4,
 	PPC_OPROFILE_CELL = 5,
@@ -73,7 +73,7 @@ struct cpu_spec {
 
 	/* number of performance monitor counters */
 	unsigned int	num_pmcs;
-	enum powerpc_pmc_type pmc_type;
+enum powerpc_pmc_type pmc_type;
 
 	/* this is called to initialize various CPU bits like L1 cache,
 	 * BHT, SPD, etc... from head.S before branching to identify_machine
@@ -86,7 +86,7 @@ struct cpu_spec {
 	char		*oprofile_cpu_type;
 
 	/* Processor specific oprofile operations */
-	enum powerpc_oprofile_type oprofile_type;
+enum powerpc_oprofile_type oprofile_type;
 
 	/* Bit locations inside the mmcra change */
 	unsigned long	oprofile_mmcra_sihv;
@@ -275,7 +275,7 @@ enum {
 #endif
 
 /* We need to mark all pages as being coherent if we're SMP or we have a
- * 74[45]x and an MPC107 host bridge. Also 83xx and PowerQUICC II
+* 74[45]x and an MPC107 host bridge. Also 83xx and PowerQUICC II
  * require it for PCI "streaming/prefetch" to work properly.
  * This is also required by 52xx family.
  */
@@ -496,10 +496,10 @@ enum {
 #define CPU_FTRS_POSSIBLE	(CPU_FTRS_E6500 | CPU_FTRS_E5500)
 #else
 #define CPU_FTRS_POSSIBLE	\
-	    (CPU_FTRS_POWER4 | CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
-	     CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
-	     CPU_FTRS_POWER8 | CPU_FTRS_POWER8_DD1 | CPU_FTRS_CELL | \
-	     CPU_FTRS_PA6T | CPU_FTR_VSX | CPU_FTRS_POWER9 | CPU_FTRS_POWER9_DD1)
+(CPU_FTRS_POWER4 | CPU_FTRS_PPC970 | CPU_FTRS_POWER5 | \
+CPU_FTRS_POWER6 | CPU_FTRS_POWER7 | CPU_FTRS_POWER8E | \
+CPU_FTRS_POWER8 | CPU_FTRS_POWER8_DD1 | CPU_FTRS_CELL | \
+CPU_FTRS_PA6T | CPU_FTR_VSX | CPU_FTRS_POWER9 | CPU_FTRS_POWER9_DD1)
 #endif
 #else
 enum {
@@ -545,11 +545,11 @@ enum {
 #define CPU_FTRS_ALWAYS		(CPU_FTRS_E6500 & CPU_FTRS_E5500)
 #else
 #define CPU_FTRS_ALWAYS		\
-	    (CPU_FTRS_POWER4 & CPU_FTRS_PPC970 & CPU_FTRS_POWER5 & \
-	     CPU_FTRS_POWER6 & CPU_FTRS_POWER7 & CPU_FTRS_CELL & \
-	     CPU_FTRS_PA6T & CPU_FTRS_POWER8 & CPU_FTRS_POWER8E & \
-	     CPU_FTRS_POWER8_DD1 & ~CPU_FTR_HVMODE & CPU_FTRS_POSSIBLE & \
-	     CPU_FTRS_POWER9)
+(CPU_FTRS_POWER4 & CPU_FTRS_PPC970 & CPU_FTRS_POWER5 & \
+CPU_FTRS_POWER6 & CPU_FTRS_POWER7 & CPU_FTRS_CELL & \
+CPU_FTRS_PA6T & CPU_FTRS_POWER8 & CPU_FTRS_POWER8E & \
+CPU_FTRS_POWER8_DD1 & ~CPU_FTR_HVMODE & CPU_FTRS_POSSIBLE & \
+CPU_FTRS_POWER9)
 #endif
 #else
 enum {

@@ -70,7 +70,7 @@ static struct timer_list spuloadavg_timer;
 #define NORMAL_PRIO		120
 
 /*
- * Frequency of the spu scheduler tick.  By default we do one SPU scheduler
+* Frequency of the spu scheduler tick.  By default we do one SPU scheduler
  * tick for every 10 CPU scheduler ticks.
  */
 #define SPUSCHED_TICK		(10)
@@ -115,7 +115,7 @@ void __spu_update_sched_info(struct spu_context *ctx)
 	BUG_ON(!list_empty(&ctx->rq));
 
 	/*
-	 * 32-Bit assignments are atomic on powerpc, and we don't care about
+* 32-Bit assignments are atomic on powerpc, and we don't care about
 	 * memory ordering here because retrieving the controlling thread is
 	 * per definition racy.
 	 */
@@ -962,7 +962,7 @@ out:
  * Return the number of tasks currently running or waiting to run.
  *
  * Note that we don't take runq_lock / list_mutex here.  Reading
- * a single 32bit value is atomic on powerpc, and we don't care
+* a single 32bit value is atomic on powerpc, and we don't care
  * about memory ordering issues here.
  */
 static unsigned long count_active_contexts(void)
@@ -1000,7 +1000,7 @@ static void spusched_wake(unsigned long data)
 
 static void spuloadavg_wake(unsigned long data)
 {
-	mod_timer(&spuloadavg_timer, jiffies + LOAD_FREQ);
+mod_timer(&spuloadavg_timer, jiffies + LOAD_FREQ);
 	spu_calc_load();
 }
 

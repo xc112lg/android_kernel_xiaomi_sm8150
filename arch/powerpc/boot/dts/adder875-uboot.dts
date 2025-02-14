@@ -27,16 +27,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,875@0 {
+PowerPC,875@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <16>;
 			i-cache-line-size = <16>;
 			d-cache-size = <8192>;
 			i-cache-size = <8192>;
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <15 2>;	// decrementer interrupt
 			interrupt-parent = <&PIC>;
 		};
@@ -148,7 +148,7 @@
 				compatible = "fsl,mpc875-brg",
 				             "fsl,cpm1-brg",
 				             "fsl,cpm-brg";
-				clock-frequency = <50000000>;
+clock-frequency = <50000000>;
 				reg = <0x9f0 0x10>;
 			};
 

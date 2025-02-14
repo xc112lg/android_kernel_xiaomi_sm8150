@@ -1,7 +1,7 @@
 /*
- * act8865-regulator.c - Voltage regulation for active-semi ACT88xx PMUs
+* act8865-regulator.c - Voltage regulation for active-semi ACT88xx PMUs
  *
- * http://www.active-semi.com/products/power-management-units/act88xx/
+* http://www.active-semi.com/products/power-management-units/act88xx/
  *
  * Copyright (C) 2013 Atmel Corporation
  *
@@ -128,7 +128,7 @@
 #define ACT8600_SUDCDC_VSEL_MASK	0xFF	/* SUDCDC VSET - [7:0] */
 
 /*
- * ACT8865 voltage number
+* ACT8865 voltage number
  */
 #define	ACT8865_VOLTAGE_NUM	64
 #define ACT8600_SUDCDC_VOLTAGE_NUM	256
@@ -227,10 +227,10 @@ static const struct regulator_linear_range act8600_sudcdc_voltage_ranges[] = {
 };
 
 static struct regulator_ops act8865_ops = {
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
@@ -247,11 +247,11 @@ static struct regulator_ops act8865_ldo_ops = {
 		.name			= _name,			\
 		.supply_name		= _supply,			\
 		.id			= _family##_ID_##_id,		\
-		.type			= REGULATOR_VOLTAGE,		\
+.type			= REGULATOR_VOLTAGE,		\
 		.ops			= &act8865_ops,			\
-		.n_voltages		= ACT8865_VOLTAGE_NUM,		\
-		.linear_ranges		= act8865_voltage_ranges,	\
-		.n_linear_ranges	= ARRAY_SIZE(act8865_voltage_ranges), \
+.n_voltages		= ACT8865_VOLTAGE_NUM,		\
+.linear_ranges		= act8865_voltage_ranges,	\
+.n_linear_ranges	= ARRAY_SIZE(act8865_voltage_ranges), \
 		.vsel_reg		= _family##_##_id##_##_vsel_reg, \
 		.vsel_mask		= ACT8865_VSEL_MASK,		\
 		.enable_reg		= _family##_##_id##_CTRL,	\
@@ -267,10 +267,10 @@ static const struct regulator_desc act8600_regulators[] = {
 		.name = "SUDCDC_REG4",
 		.id = ACT8600_ID_SUDCDC4,
 		.ops = &act8865_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = ACT8600_SUDCDC_VOLTAGE_NUM,
-		.linear_ranges = act8600_sudcdc_voltage_ranges,
-		.n_linear_ranges = ARRAY_SIZE(act8600_sudcdc_voltage_ranges),
+.type = REGULATOR_VOLTAGE,
+.n_voltages = ACT8600_SUDCDC_VOLTAGE_NUM,
+.linear_ranges = act8600_sudcdc_voltage_ranges,
+.n_linear_ranges = ARRAY_SIZE(act8600_sudcdc_voltage_ranges),
 		.vsel_reg = ACT8600_SUDCDC4_VSET,
 		.vsel_mask = ACT8600_SUDCDC_VSEL_MASK,
 		.enable_reg = ACT8600_SUDCDC4_CTRL,
@@ -285,8 +285,8 @@ static const struct regulator_desc act8600_regulators[] = {
 		.name = "LDO_REG9",
 		.id = ACT8600_ID_LDO9,
 		.ops = &act8865_ldo_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
 		.fixed_uV = 3300000,
 		.enable_reg = ACT8600_LDO910_CTRL,
 		.enable_mask = ACT8865_ENA,
@@ -296,8 +296,8 @@ static const struct regulator_desc act8600_regulators[] = {
 		.name = "LDO_REG10",
 		.id = ACT8600_ID_LDO10,
 		.ops = &act8865_ldo_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
 		.fixed_uV = 1200000,
 		.enable_reg = ACT8600_LDO910_CTRL,
 		.enable_mask = ACT8600_LDO10_ENA,
@@ -490,7 +490,7 @@ static int act8865_pmic_probe(struct i2c_client *client,
 	const struct regmap_config *regmap_config;
 	unsigned long type;
 	int off_reg, off_mask;
-	int voltage_select = 0;
+int voltage_select = 0;
 
 	pdata = dev_get_platdata(dev);
 
@@ -503,7 +503,7 @@ static int act8865_pmic_probe(struct i2c_client *client,
 
 		type = (unsigned long) id->data;
 
-		voltage_select = !!of_get_property(dev->of_node,
+voltage_select = !!of_get_property(dev->of_node,
 						   "active-semi,vsel-high",
 						   NULL);
 	} else {
@@ -526,7 +526,7 @@ static int act8865_pmic_probe(struct i2c_client *client,
 		off_mask = ACT8846_OFF_SYSMASK;
 		break;
 	case ACT8865:
-		if (voltage_select) {
+if (voltage_select) {
 			regulators = act8865_alt_regulators;
 			num_regulators = ARRAY_SIZE(act8865_alt_regulators);
 		} else {
@@ -561,14 +561,14 @@ static int act8865_pmic_probe(struct i2c_client *client,
 		return ret;
 	}
 
-	if (of_device_is_system_power_controller(dev->of_node)) {
-		if (!pm_power_off && (off_reg > 0)) {
+if (of_device_is_system_power_controller(dev->of_node)) {
+if (!pm_power_off && (off_reg > 0)) {
 			act8865_i2c_client = client;
 			act8865->off_reg = off_reg;
 			act8865->off_mask = off_mask;
-			pm_power_off = act8865_power_off;
+pm_power_off = act8865_power_off;
 		} else {
-			dev_err(dev, "Failed to set poweroff capability, already defined\n");
+dev_err(dev, "Failed to set poweroff capability, already defined\n");
 		}
 	}
 

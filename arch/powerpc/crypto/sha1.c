@@ -1,7 +1,7 @@
 /*
  * Cryptographic API.
  *
- * powerpc implementation of the SHA1 Secure Hash Algorithm.
+* powerpc implementation of the SHA1 Secure Hash Algorithm.
  *
  * Derived from cryptoapi implementation, adapted for in-place
  * scatterlist interface.
@@ -61,7 +61,7 @@ static int sha1_update(struct shash_desc *desc, const u8 *data,
 		}
 
 		do {
-			powerpc_sha_transform(sctx->state, src, temp);
+powerpc_sha_transform(sctx->state, src, temp);
 			done += 64;
 			src = data + done;
 		} while (done + 63 < len);
@@ -131,7 +131,7 @@ static struct shash_alg alg = {
 	.statesize	=	sizeof(struct sha1_state),
 	.base		=	{
 		.cra_name	=	"sha1",
-		.cra_driver_name=	"sha1-powerpc",
+.cra_driver_name=	"sha1-powerpc",
 		.cra_flags	=	CRYPTO_ALG_TYPE_SHASH,
 		.cra_blocksize	=	SHA1_BLOCK_SIZE,
 		.cra_module	=	THIS_MODULE,

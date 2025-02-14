@@ -30,7 +30,7 @@ struct mrps_stats {
 };
 
 /**
- * struct cache_hwmon - devfreq Cache HW monitor info
+* struct cache_hwmon - devfreq Cache HW monitor info
  * @start_hwmon:	Start the HW monitoring
  * @stop_hwmon:		Stop the HW monitoring
  * @meas_mrps_and_set_irq:	Return the measured count and set up the
@@ -38,7 +38,7 @@ struct mrps_stats {
  *				measurement by @tol percent.
  * @dev:		device that this HW monitor can monitor.
  * @of_node:		OF node of device that this HW monitor can monitor.
- * @df:			Devfreq node that this HW montior is being used
+* @df:			Devfreq node that this HW montior is being used
  *			for. NULL when not actively in use, and non-NULL
  *			when in use.
  */
@@ -50,7 +50,7 @@ struct cache_hwmon {
 					struct mrps_stats *mrps);
 	struct device *dev;
 	struct device_node *of_node;
-	struct devfreq *df;
+struct devfreq *df;
 };
 
 #ifdef CONFIG_DEVFREQ_GOV_QCOM_CACHE_HWMON

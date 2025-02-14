@@ -2,7 +2,7 @@
 /*
  *  Copyright (C) 1991, 1992, 1995  Linus Torvalds
  *
- * Adapted for PowerPC (PReP) by Gary Thomas
+* Adapted for PowerPC (PReP) by Gary Thomas
  * Modified by Cort Dougan (cort@cs.nmt.edu).
  * Copied and modified from arch/i386/kernel/time.c
  *
@@ -87,7 +87,7 @@ static void chrp_cmos_clock_write(unsigned long val, int addr)
  */
 int chrp_set_rtc_time(struct rtc_time *tmarg)
 {
-	unsigned char save_control, save_freq_select;
+unsigned char save_control, save_freq_select;
 	struct rtc_time tm = *tmarg;
 
 	spin_lock(&rtc_lock);
@@ -96,9 +96,9 @@ int chrp_set_rtc_time(struct rtc_time *tmarg)
 
 	chrp_cmos_clock_write((save_control|RTC_SET), RTC_CONTROL);
 
-	save_freq_select = chrp_cmos_clock_read(RTC_FREQ_SELECT); /* stop and reset prescaler */
+save_freq_select = chrp_cmos_clock_read(RTC_FREQ_SELECT); /* stop and reset prescaler */
 
-	chrp_cmos_clock_write((save_freq_select|RTC_DIV_RESET2), RTC_FREQ_SELECT);
+chrp_cmos_clock_write((save_freq_select|RTC_DIV_RESET2), RTC_FREQ_SELECT);
 
 	if (!(save_control & RTC_DM_BINARY) || RTC_ALWAYS_BCD) {
 		tm.tm_sec = bin2bcd(tm.tm_sec);
@@ -123,7 +123,7 @@ int chrp_set_rtc_time(struct rtc_time *tmarg)
 	 * sheets anyway ...                           -- Markus Kuhn
 	 */
 	chrp_cmos_clock_write(save_control, RTC_CONTROL);
-	chrp_cmos_clock_write(save_freq_select, RTC_FREQ_SELECT);
+chrp_cmos_clock_write(save_freq_select, RTC_FREQ_SELECT);
 
 	spin_unlock(&rtc_lock);
 	return 0;

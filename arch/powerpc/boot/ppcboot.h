@@ -53,25 +53,25 @@ typedef struct bd_info {
 	unsigned long	bi_ip_addr;	/* IP Address */
 	unsigned char	bi_enetaddr[6];	/* Ethernet address */
 	unsigned short	bi_ethspeed;	/* Ethernet speed in Mbps */
-	unsigned long	bi_intfreq;	/* Internal Freq, in MHz */
-	unsigned long	bi_busfreq;	/* Bus Freq, in MHz */
+unsigned long	bi_intfreq;	/* Internal Freq, in MHz */
+unsigned long	bi_busfreq;	/* Bus Freq, in MHz */
 #if defined(TARGET_CPM2)
-	unsigned long	bi_cpmfreq;	/* CPM_CLK Freq, in MHz */
-	unsigned long	bi_brgfreq;	/* BRG_CLK Freq, in MHz */
-	unsigned long	bi_sccfreq;	/* SCC_CLK Freq, in MHz */
+unsigned long	bi_cpmfreq;	/* CPM_CLK Freq, in MHz */
+unsigned long	bi_brgfreq;	/* BRG_CLK Freq, in MHz */
+unsigned long	bi_sccfreq;	/* SCC_CLK Freq, in MHz */
 	unsigned long	bi_vco;		/* VCO Out from PLL, in MHz */
 #endif
 #if defined(TARGET_PPC_MPC52xx)
-	unsigned long   bi_ipbfreq;     /* IPB Bus Freq, in MHz */
-	unsigned long   bi_pcifreq;     /* PCI Bus Freq, in MHz */
+unsigned long   bi_ipbfreq;     /* IPB Bus Freq, in MHz */
+unsigned long   bi_pcifreq;     /* PCI Bus Freq, in MHz */
 #endif
 	unsigned long	bi_baudrate;	/* Console Baudrate */
 #if defined(TARGET_4xx)
 	unsigned char	bi_s_version[4];	/* Version of this structure */
 	unsigned char	bi_r_version[32];	/* Version of the ROM (IBM) */
-	unsigned int	bi_procfreq;	/* CPU (Internal) Freq, in Hz */
-	unsigned int	bi_plb_busfreq;	/* PLB Bus speed, in Hz */
-	unsigned int	bi_pci_busfreq;	/* PCI Bus speed, in Hz */
+unsigned int	bi_procfreq;	/* CPU (Internal) Freq, in Hz */
+unsigned int	bi_plb_busfreq;	/* PLB Bus speed, in Hz */
+unsigned int	bi_pci_busfreq;	/* PCI Bus speed, in Hz */
 	unsigned char	bi_pci_enetaddr[6];	/* PCI Ethernet MAC address */
 #endif
 #if defined(TARGET_HYMOD)
@@ -95,7 +95,7 @@ typedef struct bd_info {
 #define HAVE_ENET3ADDR
 #endif
 #if defined(TARGET_4xx)
-	unsigned int	bi_opbfreq;		/* OB clock in Hz */
+unsigned int	bi_opbfreq;		/* OB clock in Hz */
 	int		bi_iic_fast[2];		/* Use fast i2c mode */
 #endif
 #if defined(TARGET_440GX)

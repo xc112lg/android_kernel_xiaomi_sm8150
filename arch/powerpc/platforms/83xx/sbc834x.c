@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/sbc834x.c
+* arch/powerpc/platforms/83xx/sbc834x.c
  *
  * Wind River SBC834x board specific routines
  *

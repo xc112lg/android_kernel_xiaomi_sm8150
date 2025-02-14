@@ -1,5 +1,5 @@
 /*
- * PowerNV system parameter code
+* PowerNV system parameter code
  *
  * Copyright (C) 2013 IBM
  *

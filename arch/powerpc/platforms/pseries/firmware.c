@@ -1,13 +1,13 @@
 /*
  *  pSeries firmware setup code.
  *
- *  Portions from arch/powerpc/platforms/pseries/setup.c:
+*  Portions from arch/powerpc/platforms/pseries/setup.c:
  *   Copyright (C) 1995  Linus Torvalds
  *   Adapted from 'alpha' version by Gary Thomas
  *   Modified by Cort Dougan (cort@cs.nmt.edu)
  *   Modified by PPC64 Team, IBM Corp
  *
- *  Portions from arch/powerpc/kernel/firmware.c
+*  Portions from arch/powerpc/kernel/firmware.c
  *   Copyright (C) 2001 Ben. Herrenschmidt (benh@kernel.crashing.org)
  *   Modifications for ppc64:
  *    Copyright (C) 2003 Dave Engebretsen <engebret@us.ibm.com>
@@ -96,7 +96,7 @@ static void __init fw_hypertas_feature_init(const char *hypertas,
 				continue;
 
 			/* we have a match */
-			powerpc_firmware_features |=
+powerpc_firmware_features |=
 				hypertas_fw_features_table[i].val;
 			break;
 		}
@@ -128,7 +128,7 @@ static void __init fw_vec5_feature_init(const char *vec5, unsigned long len)
 		feat = OV5_FEAT(vec5_fw_features_table[i].feature);
 
 		if (index < len && (vec5[index] & feat))
-			powerpc_firmware_features |=
+powerpc_firmware_features |=
 				vec5_fw_features_table[i].val;
 	}
 
@@ -153,7 +153,7 @@ static int __init probe_fw_features(unsigned long node, const char *uname, int
 		prop = of_get_flat_dt_prop(node, "ibm,hypertas-functions",
 					   &len);
 		if (prop) {
-			powerpc_firmware_features |= FW_FEATURE_LPAR;
+powerpc_firmware_features |= FW_FEATURE_LPAR;
 			fw_hypertas_feature_init(prop, len);
 		}
 

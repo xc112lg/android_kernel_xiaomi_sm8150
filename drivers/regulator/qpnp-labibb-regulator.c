@@ -318,9 +318,9 @@
 /**
  * enum qpnp_labibb_mode - working mode of LAB/IBB regulators
  * %QPNP_LABIBB_LCD_MODE:		configure LAB and IBB regulators
- * together to provide power supply for LCD
+* together to provide power supply for LCD
  * %QPNP_LABIBB_AMOLED_MODE:		configure LAB and IBB regulators
- * together to provide power supply for AMOLED
+* together to provide power supply for AMOLED
  * %QPNP_LABIBB_MAX_MODE		max number of configureable modes
  * supported by qpnp_labibb_regulator
  */
@@ -634,9 +634,9 @@ struct qpnp_labibb {
 static RAW_NOTIFIER_HEAD(labibb_notifier);
 
 struct ibb_ver_ops {
-	int (*set_default_voltage)(struct qpnp_labibb *labibb,
+int (*set_default_voltage)(struct qpnp_labibb *labibb,
 			bool use_default);
-	int (*set_voltage)(struct qpnp_labibb *labibb, int min_uV, int max_uV);
+int (*set_voltage)(struct qpnp_labibb *labibb, int min_uV, int max_uV);
 	int (*sel_mode)(struct qpnp_labibb *labibb, bool is_ibb);
 	int (*get_mode)(struct qpnp_labibb *labibb);
 	int (*set_clk_div)(struct qpnp_labibb *labibb, u8 val);
@@ -644,12 +644,12 @@ struct ibb_ver_ops {
 				int num_swire_trans, int neg_curr_limit);
 	int (*soft_start_ctl)(struct qpnp_labibb *labibb,
 				 struct device_node *of_node);
-	int (*voltage_at_one_pulse)(struct qpnp_labibb *labibb, u32 volt);
+int (*voltage_at_one_pulse)(struct qpnp_labibb *labibb, u32 volt);
 };
 
 struct lab_ver_ops {
 	const char *ver_str;
-	int (*set_default_voltage)(struct qpnp_labibb *labibb,
+int (*set_default_voltage)(struct qpnp_labibb *labibb,
 					bool default_pres);
 	int (*ps_ctl)(struct qpnp_labibb *labibb,
 				u32 thresh, bool enable);
@@ -1067,7 +1067,7 @@ static int qpnp_ibb_set_default_voltage_v1(struct qpnp_labibb *labibb,
 
 	if (!use_default) {
 		if (labibb->ibb_vreg.curr_volt < labibb->ibb_vreg.min_volt) {
-			pr_err("qcom,qpnp-ibb-init-voltage %d is less than the the minimum voltage %d",
+pr_err("qcom,qpnp-ibb-init-voltage %d is less than the the minimum voltage %d",
 			 labibb->ibb_vreg.curr_volt, labibb->ibb_vreg.min_volt);
 				return -EINVAL;
 		}
@@ -1075,27 +1075,27 @@ static int qpnp_ibb_set_default_voltage_v1(struct qpnp_labibb *labibb,
 		val = DIV_ROUND_UP(labibb->ibb_vreg.curr_volt -
 				labibb->ibb_vreg.min_volt,
 				labibb->ibb_vreg.step_size);
-		if (val > IBB_VOLTAGE_SET_MASK) {
-			pr_err("qcom,qpnp-lab-init-voltage %d is larger than the max supported voltage %ld",
+if (val > IBB_VOLTAGE_SET_MASK) {
+pr_err("qcom,qpnp-lab-init-voltage %d is larger than the max supported voltage %ld",
 				labibb->ibb_vreg.curr_volt,
 				labibb->ibb_vreg.min_volt +
 				labibb->ibb_vreg.step_size *
-				IBB_VOLTAGE_SET_MASK);
+IBB_VOLTAGE_SET_MASK);
 			return -EINVAL;
 		}
 
 		labibb->ibb_vreg.curr_volt = val * labibb->ibb_vreg.step_size +
 				labibb->ibb_vreg.min_volt;
-		val |= IBB_VOLTAGE_OVERRIDE_EN;
+val |= IBB_VOLTAGE_OVERRIDE_EN;
 	} else {
 		val = 0;
 	}
 
 	rc = qpnp_labibb_masked_write(labibb, labibb->ibb_base +
-			REG_IBB_VOLTAGE, IBB_VOLTAGE_SET_MASK |
-			IBB_VOLTAGE_OVERRIDE_EN, val);
+REG_IBB_VOLTAGE, IBB_VOLTAGE_SET_MASK |
+IBB_VOLTAGE_OVERRIDE_EN, val);
 	if (rc < 0)
-		pr_err("write to register %x failed rc = %d\n", REG_IBB_VOLTAGE,
+pr_err("write to register %x failed rc = %d\n", REG_IBB_VOLTAGE,
 			rc);
 
 	return rc;
@@ -1109,8 +1109,8 @@ static int qpnp_ibb_set_default_voltage_v2(struct qpnp_labibb *labibb,
 
 	val = DIV_ROUND_UP(labibb->ibb_vreg.curr_volt,
 			labibb->ibb_vreg.step_size);
-	if (val > IBB_VOLTAGE_SET_MASK) {
-		pr_err("Invalid qcom,qpnp-ibb-init-voltage property %d",
+if (val > IBB_VOLTAGE_SET_MASK) {
+pr_err("Invalid qcom,qpnp-ibb-init-voltage property %d",
 			labibb->ibb_vreg.curr_volt);
 		return -EINVAL;
 	}
@@ -1118,10 +1118,10 @@ static int qpnp_ibb_set_default_voltage_v2(struct qpnp_labibb *labibb,
 	labibb->ibb_vreg.curr_volt = val * labibb->ibb_vreg.step_size;
 
 	rc = qpnp_labibb_write(labibb, labibb->ibb_base +
-				REG_IBB_DEFAULT_VOLTAGE, &val, 1);
+REG_IBB_DEFAULT_VOLTAGE, &val, 1);
 	if (rc < 0)
 		pr_err("write to register %x failed rc = %d\n",
-			 REG_IBB_DEFAULT_VOLTAGE, rc);
+REG_IBB_DEFAULT_VOLTAGE, rc);
 
 	return rc;
 }
@@ -1143,19 +1143,19 @@ static int qpnp_ibb_set_voltage_v1(struct qpnp_labibb *labibb,
 	new_uV = val * labibb->ibb_vreg.step_size + labibb->ibb_vreg.min_volt;
 
 	if (new_uV > max_uV) {
-		pr_err("unable to set voltage %d (min:%d max:%d)\n", new_uV,
+pr_err("unable to set voltage %d (min:%d max:%d)\n", new_uV,
 			min_uV, max_uV);
 		return -EINVAL;
 	}
 
 	rc = qpnp_labibb_masked_write(labibb, labibb->ibb_base +
-				REG_IBB_VOLTAGE,
-				IBB_VOLTAGE_SET_MASK |
-				IBB_VOLTAGE_OVERRIDE_EN,
-				val | IBB_VOLTAGE_OVERRIDE_EN);
+REG_IBB_VOLTAGE,
+IBB_VOLTAGE_SET_MASK |
+IBB_VOLTAGE_OVERRIDE_EN,
+val | IBB_VOLTAGE_OVERRIDE_EN);
 
 	if (rc < 0) {
-		pr_err("write to register %x failed rc = %d\n", REG_IBB_VOLTAGE,
+pr_err("write to register %x failed rc = %d\n", REG_IBB_VOLTAGE,
 			rc);
 		return rc;
 	}
@@ -1180,15 +1180,15 @@ static int qpnp_ibb_set_voltage_v2(struct qpnp_labibb *labibb,
 	new_uV = val * labibb->ibb_vreg.step_size;
 
 	if (new_uV > max_uV) {
-		pr_err("unable to set voltage %d (min:%d max:%d)\n", new_uV,
+pr_err("unable to set voltage %d (min:%d max:%d)\n", new_uV,
 			min_uV, max_uV);
 		return -EINVAL;
 	}
 
 	rc = qpnp_labibb_write(labibb, labibb->ibb_base +
-				REG_IBB_VOLTAGE, &val, 1);
+REG_IBB_VOLTAGE, &val, 1);
 	if (rc < 0) {
-		pr_err("write to register %x failed rc = %d\n", REG_IBB_VOLTAGE,
+pr_err("write to register %x failed rc = %d\n", REG_IBB_VOLTAGE,
 			rc);
 		return rc;
 	}
@@ -1210,14 +1210,14 @@ static int qpnp_ibb_output_voltage_at_one_pulse_v1(struct qpnp_labibb *labibb,
 	u8 val;
 
 	/*
-	 * Set the output voltage 100mV lower as the IBB HW module
+* Set the output voltage 100mV lower as the IBB HW module
 	 * counts one pulse less in SWIRE mode.
 	 */
-	val = DIV_ROUND_UP((volt - MIN_OUTPUT_PULSE_VOLTAGE_MV),
-				OUTPUT_VOLTAGE_STEP_MV) - 1;
+val = DIV_ROUND_UP((volt - MIN_OUTPUT_PULSE_VOLTAGE_MV),
+OUTPUT_VOLTAGE_STEP_MV) - 1;
 	rc = qpnp_labibb_masked_write(labibb, labibb->ibb_base +
 			REG_IBB_SWIRE_CTL,
-			IBB_OUTPUT_VOLTAGE_AT_ONE_PULSE_MASK,
+IBB_OUTPUT_VOLTAGE_AT_ONE_PULSE_MASK,
 			val);
 	if (rc < 0)
 		pr_err("write register %x failed rc = %d\n",
@@ -1232,11 +1232,11 @@ static int qpnp_ibb_output_voltage_at_one_pulse_v2(struct qpnp_labibb *labibb,
 	int rc = 0;
 	u8 val;
 
-	val = DIV_ROUND_UP(volt, OUTPUT_VOLTAGE_STEP_MV);
+val = DIV_ROUND_UP(volt, OUTPUT_VOLTAGE_STEP_MV);
 
 	rc = qpnp_labibb_masked_write(labibb, labibb->ibb_base +
 			REG_IBB_SWIRE_CTL,
-			IBB_OUTPUT_VOLTAGE_AT_ONE_PULSE_MASK,
+IBB_OUTPUT_VOLTAGE_AT_ONE_PULSE_MASK,
 			val);
 	if (rc < 0)
 		pr_err("qpnp_labiibb_write register %x failed rc = %d\n",
@@ -1247,26 +1247,26 @@ static int qpnp_ibb_output_voltage_at_one_pulse_v2(struct qpnp_labibb *labibb,
 
 /* For PMI8998 and earlier PMICs */
 static const struct ibb_ver_ops ibb_ops_v1 = {
-	.set_default_voltage	= qpnp_ibb_set_default_voltage_v1,
-	.set_voltage		= qpnp_ibb_set_voltage_v1,
+.set_default_voltage	= qpnp_ibb_set_default_voltage_v1,
+.set_voltage		= qpnp_ibb_set_voltage_v1,
 	.sel_mode		= qpnp_labibb_sel_mode_v1,
 	.get_mode		= qpnp_ibb_get_mode_v1,
 	.set_clk_div		= qpnp_ibb_set_clk_div_v1,
 	.smart_ps_config	= qpnp_ibb_smart_ps_config_v1,
 	.soft_start_ctl		= qpnp_ibb_soft_start_ctl_v1,
-	.voltage_at_one_pulse	= qpnp_ibb_output_voltage_at_one_pulse_v1,
+.voltage_at_one_pulse	= qpnp_ibb_output_voltage_at_one_pulse_v1,
 };
 
 /* For PM660A and later PMICs */
 static const struct ibb_ver_ops ibb_ops_v2 = {
-	.set_default_voltage	= qpnp_ibb_set_default_voltage_v2,
-	.set_voltage		= qpnp_ibb_set_voltage_v2,
+.set_default_voltage	= qpnp_ibb_set_default_voltage_v2,
+.set_voltage		= qpnp_ibb_set_voltage_v2,
 	.sel_mode		= qpnp_labibb_sel_mode_v2,
 	.get_mode		= qpnp_ibb_get_mode_v2,
 	.set_clk_div		= qpnp_ibb_set_clk_div_v2,
 	.smart_ps_config	= qpnp_ibb_smart_ps_config_v2,
 	.soft_start_ctl		= qpnp_ibb_soft_start_ctl_v2,
-	.voltage_at_one_pulse	= qpnp_ibb_output_voltage_at_one_pulse_v2,
+.voltage_at_one_pulse	= qpnp_ibb_output_voltage_at_one_pulse_v2,
 };
 
 static int qpnp_lab_set_default_voltage_v1(struct qpnp_labibb *labibb,
@@ -1277,7 +1277,7 @@ static int qpnp_lab_set_default_voltage_v1(struct qpnp_labibb *labibb,
 
 	if (!default_pres) {
 		if (labibb->lab_vreg.curr_volt < labibb->lab_vreg.min_volt) {
-			pr_err("qcom,qpnp-lab-init-voltage %d is less than the the minimum voltage %d",
+pr_err("qcom,qpnp-lab-init-voltage %d is less than the the minimum voltage %d",
 				labibb->lab_vreg.curr_volt,
 				labibb->lab_vreg.min_volt);
 			return -EINVAL;
@@ -1286,29 +1286,29 @@ static int qpnp_lab_set_default_voltage_v1(struct qpnp_labibb *labibb,
 		val = DIV_ROUND_UP(labibb->lab_vreg.curr_volt -
 				labibb->lab_vreg.min_volt,
 				labibb->lab_vreg.step_size);
-		if (val > LAB_VOLTAGE_SET_MASK) {
-			pr_err("qcom,qpnp-lab-init-voltage %d is larger than the max supported voltage %ld",
+if (val > LAB_VOLTAGE_SET_MASK) {
+pr_err("qcom,qpnp-lab-init-voltage %d is larger than the max supported voltage %ld",
 				labibb->lab_vreg.curr_volt,
 				labibb->lab_vreg.min_volt +
 				labibb->lab_vreg.step_size *
-				LAB_VOLTAGE_SET_MASK);
+LAB_VOLTAGE_SET_MASK);
 			return -EINVAL;
 		}
 
 		labibb->lab_vreg.curr_volt = val * labibb->lab_vreg.step_size +
 				labibb->lab_vreg.min_volt;
-		val |= LAB_VOLTAGE_OVERRIDE_EN;
+val |= LAB_VOLTAGE_OVERRIDE_EN;
 
 	} else {
 		val = 0;
 	}
 
 	rc = qpnp_labibb_masked_write(labibb, labibb->lab_base +
-				REG_LAB_VOLTAGE, LAB_VOLTAGE_SET_MASK |
-				LAB_VOLTAGE_OVERRIDE_EN, val);
+REG_LAB_VOLTAGE, LAB_VOLTAGE_SET_MASK |
+LAB_VOLTAGE_OVERRIDE_EN, val);
 
 	if (rc < 0)
-		pr_err("write to register %x failed rc = %d\n", REG_LAB_VOLTAGE,
+pr_err("write to register %x failed rc = %d\n", REG_LAB_VOLTAGE,
 			rc);
 
 	return rc;
@@ -1397,17 +1397,17 @@ static int qpnp_lab_ps_ctl_v2(struct qpnp_labibb *labibb,
 
 /* For PMI8996 and earlier PMICs */
 static const struct lab_ver_ops lab_ops_v1 = {
-	.set_default_voltage	= qpnp_lab_set_default_voltage_v1,
+.set_default_voltage	= qpnp_lab_set_default_voltage_v1,
 	.ps_ctl			= qpnp_lab_ps_ctl_v1,
 };
 
 static const struct lab_ver_ops pmi8998_lab_ops = {
-	.set_default_voltage	= qpnp_lab_set_default_voltage_v1,
+.set_default_voltage	= qpnp_lab_set_default_voltage_v1,
 	.ps_ctl			= qpnp_lab_ps_ctl_v2,
 };
 
 static const struct lab_ver_ops pm660_lab_ops = {
-	.set_default_voltage	= qpnp_lab_set_default_voltage_v2,
+.set_default_voltage	= qpnp_lab_set_default_voltage_v2,
 	.ps_ctl			= qpnp_lab_ps_ctl_v2,
 };
 
@@ -1505,14 +1505,14 @@ static int qpnp_lab_dt_init(struct qpnp_labibb *labibb,
 	}
 
 	rc = of_property_read_u32(of_node,
-		"qcom,qpnp-lab-switching-clock-frequency", &tmp);
+"qcom,qpnp-lab-switching-clock-frequency", &tmp);
 	if (!rc) {
 		for (val = 0; val < ARRAY_SIZE(lab_clk_div_table); val++)
 			if (lab_clk_div_table[val] == tmp)
 				break;
 
 		if (val == ARRAY_SIZE(lab_clk_div_table)) {
-			pr_err("Invalid value in qpnp-lab-switching-clock-frequency\n");
+pr_err("Invalid value in qpnp-lab-switching-clock-frequency\n");
 			return -EINVAL;
 		}
 
@@ -1631,19 +1631,19 @@ static int qpnp_lab_dt_init(struct qpnp_labibb *labibb,
 		return rc;
 	}
 
-	rc = of_property_read_u32(of_node, "qcom,qpnp-lab-init-voltage",
+rc = of_property_read_u32(of_node, "qcom,qpnp-lab-init-voltage",
 				&(labibb->lab_vreg.curr_volt));
 	if (rc < 0) {
-		pr_err("get qcom,qpnp-lab-init-voltage failed, rc = %d\n",
+pr_err("get qcom,qpnp-lab-init-voltage failed, rc = %d\n",
 				 rc);
 		return rc;
 	}
 
 	if (of_property_read_bool(of_node,
-			"qcom,qpnp-lab-use-default-voltage"))
-		rc = labibb->lab_ver_ops->set_default_voltage(labibb, true);
+"qcom,qpnp-lab-use-default-voltage"))
+rc = labibb->lab_ver_ops->set_default_voltage(labibb, true);
 	else
-		rc = labibb->lab_ver_ops->set_default_voltage(labibb, false);
+rc = labibb->lab_ver_ops->set_default_voltage(labibb, false);
 
 	if (rc < 0)
 		return rc;
@@ -2716,19 +2716,19 @@ static int qpnp_lab_regulator_set_voltage(struct regulator_dev *rdev,
 	new_uV = val * labibb->lab_vreg.step_size + labibb->lab_vreg.min_volt;
 
 	if (new_uV > max_uV) {
-		pr_err("unable to set voltage %d (min:%d max:%d)\n", new_uV,
+pr_err("unable to set voltage %d (min:%d max:%d)\n", new_uV,
 			min_uV, max_uV);
 		return -EINVAL;
 	}
 
 	rc = qpnp_labibb_masked_write(labibb, labibb->lab_base +
-				REG_LAB_VOLTAGE,
-				LAB_VOLTAGE_SET_MASK |
-				LAB_VOLTAGE_OVERRIDE_EN,
-				val | LAB_VOLTAGE_OVERRIDE_EN);
+REG_LAB_VOLTAGE,
+LAB_VOLTAGE_SET_MASK |
+LAB_VOLTAGE_OVERRIDE_EN,
+val | LAB_VOLTAGE_OVERRIDE_EN);
 
 	if (rc < 0) {
-		pr_err("write to register %x failed rc = %d\n", REG_LAB_VOLTAGE,
+pr_err("write to register %x failed rc = %d\n", REG_LAB_VOLTAGE,
 			rc);
 		return rc;
 	}
@@ -2862,8 +2862,8 @@ static struct regulator_ops qpnp_lab_ops = {
 	.enable			= qpnp_lab_regulator_enable,
 	.disable		= qpnp_lab_regulator_disable,
 	.is_enabled		= qpnp_lab_regulator_is_enabled,
-	.set_voltage		= qpnp_lab_regulator_set_voltage,
-	.get_voltage		= qpnp_lab_regulator_get_voltage,
+.set_voltage		= qpnp_lab_regulator_set_voltage,
+.get_voltage		= qpnp_lab_regulator_get_voltage,
 };
 
 static int register_qpnp_lab_regulator(struct qpnp_labibb *labibb,
@@ -2889,10 +2889,10 @@ static int register_qpnp_lab_regulator(struct qpnp_labibb *labibb,
 		return -ENOMEM;
 	}
 
-	rc = of_property_read_u32(of_node, "qcom,qpnp-lab-min-voltage",
+rc = of_property_read_u32(of_node, "qcom,qpnp-lab-min-voltage",
 					&(labibb->lab_vreg.min_volt));
 	if (rc < 0) {
-		pr_err("qcom,qpnp-lab-min-voltage is missing, rc = %d\n",
+pr_err("qcom,qpnp-lab-min-voltage is missing, rc = %d\n",
 			rc);
 		return rc;
 	}
@@ -3045,33 +3045,33 @@ static int register_qpnp_lab_regulator(struct qpnp_labibb *labibb,
 		rc = labibb->ibb_ver_ops->get_mode(labibb);
 
 		rc = qpnp_labibb_read(labibb, labibb->lab_base +
-					REG_LAB_VOLTAGE, &val, 1);
+REG_LAB_VOLTAGE, &val, 1);
 		if (rc < 0) {
 			pr_err("qpnp_lab_read read register %x failed rc = %d\n",
-				REG_LAB_VOLTAGE, rc);
+REG_LAB_VOLTAGE, rc);
 			return rc;
 		}
 
 		labibb->lab_vreg.curr_volt =
 					(val &
-					LAB_VOLTAGE_SET_MASK) *
+LAB_VOLTAGE_SET_MASK) *
 					labibb->lab_vreg.step_size +
 					labibb->lab_vreg.min_volt;
 		if (labibb->mode == QPNP_LABIBB_LCD_MODE) {
 			rc = of_property_read_u32(of_node,
-				"qcom,qpnp-lab-init-lcd-voltage",
+"qcom,qpnp-lab-init-lcd-voltage",
 				&(labibb->lab_vreg.curr_volt));
 			if (rc < 0) {
-				pr_err("get qcom,qpnp-lab-init-lcd-voltage failed, rc = %d\n",
+pr_err("get qcom,qpnp-lab-init-lcd-voltage failed, rc = %d\n",
 					rc);
 				return rc;
 			}
-		} else if (!(val & LAB_VOLTAGE_OVERRIDE_EN)) {
+} else if (!(val & LAB_VOLTAGE_OVERRIDE_EN)) {
 			rc = of_property_read_u32(of_node,
-				"qcom,qpnp-lab-init-amoled-voltage",
+"qcom,qpnp-lab-init-amoled-voltage",
 				&(labibb->lab_vreg.curr_volt));
 			if (rc < 0) {
-				pr_err("get qcom,qpnp-lab-init-amoled-voltage failed, rc = %d\n",
+pr_err("get qcom,qpnp-lab-init-amoled-voltage failed, rc = %d\n",
 					rc);
 				return rc;
 			}
@@ -3132,7 +3132,7 @@ static int register_qpnp_lab_regulator(struct qpnp_labibb *labibb,
 
 	if (init_data->constraints.name) {
 		rdesc->owner		= THIS_MODULE;
-		rdesc->type		= REGULATOR_VOLTAGE;
+rdesc->type		= REGULATOR_VOLTAGE;
 		rdesc->ops		= &qpnp_lab_ops;
 		rdesc->name		= init_data->constraints.name;
 
@@ -3146,7 +3146,7 @@ static int register_qpnp_lab_regulator(struct qpnp_labibb *labibb,
 			init_data->supply_regulator = "parent";
 
 		init_data->constraints.valid_ops_mask
-				|= REGULATOR_CHANGE_VOLTAGE |
+|= REGULATOR_CHANGE_VOLTAGE |
 					REGULATOR_CHANGE_STATUS;
 
 		labibb->lab_vreg.rdev = regulator_register(rdesc, &cfg);
@@ -3439,14 +3439,14 @@ static int qpnp_ibb_dt_init(struct qpnp_labibb *labibb,
 	}
 
 	rc = of_property_read_u32(of_node,
-		"qcom,qpnp-ibb-switching-clock-frequency", &tmp);
+"qcom,qpnp-ibb-switching-clock-frequency", &tmp);
 	if (!rc) {
 		for (val = 0; val < ARRAY_SIZE(ibb_clk_div_table); val++)
 			if (ibb_clk_div_table[val] == tmp)
 				break;
 
 		if (val == ARRAY_SIZE(ibb_clk_div_table)) {
-			pr_err("Invalid value in qpnp-ibb-switching-clock-frequency\n");
+pr_err("Invalid value in qpnp-ibb-switching-clock-frequency\n");
 			return -EINVAL;
 		}
 		rc = labibb->ibb_ver_ops->set_clk_div(labibb, val);
@@ -3549,18 +3549,18 @@ static int qpnp_ibb_dt_init(struct qpnp_labibb *labibb,
 
 	}
 
-	rc = of_property_read_u32(of_node, "qcom,qpnp-ibb-init-voltage",
+rc = of_property_read_u32(of_node, "qcom,qpnp-ibb-init-voltage",
 					&(labibb->ibb_vreg.curr_volt));
 	if (rc < 0) {
-		pr_err("get qcom,qpnp-ibb-init-voltage failed, rc = %d\n", rc);
+pr_err("get qcom,qpnp-ibb-init-voltage failed, rc = %d\n", rc);
 		return rc;
 	}
 
 	if (of_property_read_bool(of_node,
-			"qcom,qpnp-ibb-use-default-voltage"))
-		rc = labibb->ibb_ver_ops->set_default_voltage(labibb, true);
+"qcom,qpnp-ibb-use-default-voltage"))
+rc = labibb->ibb_ver_ops->set_default_voltage(labibb, true);
 	else
-		rc = labibb->ibb_ver_ops->set_default_voltage(labibb, false);
+rc = labibb->ibb_ver_ops->set_default_voltage(labibb, false);
 
 	if (rc < 0)
 		return rc;
@@ -3646,7 +3646,7 @@ static int qpnp_ibb_regulator_set_voltage(struct regulator_dev *rdev,
 	if (labibb->swire_control || labibb->secure_mode)
 		return 0;
 
-	rc = labibb->ibb_ver_ops->set_voltage(labibb, min_uV, max_uV);
+rc = labibb->ibb_ver_ops->set_voltage(labibb, min_uV, max_uV);
 	return rc;
 }
 
@@ -3664,8 +3664,8 @@ static struct regulator_ops qpnp_ibb_ops = {
 	.enable			= qpnp_ibb_regulator_enable,
 	.disable		= qpnp_ibb_regulator_disable,
 	.is_enabled		= qpnp_ibb_regulator_is_enabled,
-	.set_voltage		= qpnp_ibb_regulator_set_voltage,
-	.get_voltage		= qpnp_ibb_regulator_get_voltage,
+.set_voltage		= qpnp_ibb_regulator_set_voltage,
+.get_voltage		= qpnp_ibb_regulator_get_voltage,
 };
 
 static int register_qpnp_ibb_regulator(struct qpnp_labibb *labibb,
@@ -3689,10 +3689,10 @@ static int register_qpnp_ibb_regulator(struct qpnp_labibb *labibb,
 		return -ENOMEM;
 	}
 
-	rc = of_property_read_u32(of_node, "qcom,qpnp-ibb-min-voltage",
+rc = of_property_read_u32(of_node, "qcom,qpnp-ibb-min-voltage",
 					&(labibb->ibb_vreg.min_volt));
 	if (rc < 0) {
-		pr_err("qcom,qpnp-ibb-min-voltage is missing, rc = %d\n",
+pr_err("qcom,qpnp-ibb-min-voltage is missing, rc = %d\n",
 			rc);
 		return rc;
 	}
@@ -3716,24 +3716,24 @@ static int register_qpnp_ibb_regulator(struct qpnp_labibb *labibb,
 		return rc;
 	}
 
-	if (of_find_property(of_node, "qcom,output-voltage-one-pulse", NULL)) {
+if (of_find_property(of_node, "qcom,output-voltage-one-pulse", NULL)) {
 		if (!labibb->swire_control) {
-			pr_err("output-voltage-one-pulse valid for SWIRE only\n");
+pr_err("output-voltage-one-pulse valid for SWIRE only\n");
 			return -EINVAL;
 		}
 		rc = of_property_read_u32(of_node,
-				"qcom,output-voltage-one-pulse", &tmp);
+"qcom,output-voltage-one-pulse", &tmp);
 		if (rc < 0) {
-			pr_err("failed to read qcom,output-voltage-one-pulse rc=%d\n",
+pr_err("failed to read qcom,output-voltage-one-pulse rc=%d\n",
 									rc);
 			return rc;
 		}
-		if (tmp > MAX_OUTPUT_PULSE_VOLTAGE_MV ||
-				tmp < MIN_OUTPUT_PULSE_VOLTAGE_MV) {
-			pr_err("Invalid one-pulse voltage range %d\n", tmp);
+if (tmp > MAX_OUTPUT_PULSE_VOLTAGE_MV ||
+tmp < MIN_OUTPUT_PULSE_VOLTAGE_MV) {
+pr_err("Invalid one-pulse voltage range %d\n", tmp);
 			return -EINVAL;
 		}
-		rc = labibb->ibb_ver_ops->voltage_at_one_pulse(labibb, tmp);
+rc = labibb->ibb_ver_ops->voltage_at_one_pulse(labibb, tmp);
 		if (rc < 0)
 			return rc;
 	}
@@ -3764,33 +3764,33 @@ static int register_qpnp_ibb_regulator(struct qpnp_labibb *labibb,
 			return rc;
 		}
 		rc = qpnp_labibb_read(labibb, labibb->ibb_base +
-					REG_IBB_VOLTAGE, &val, 1);
+REG_IBB_VOLTAGE, &val, 1);
 		if (rc < 0) {
 			pr_err("qpnp_labibb_read read register %x failed rc = %d\n",
-				REG_IBB_VOLTAGE, rc);
+REG_IBB_VOLTAGE, rc);
 			return rc;
 		}
 
 		labibb->ibb_vreg.curr_volt =
-			(val & IBB_VOLTAGE_SET_MASK) *
+(val & IBB_VOLTAGE_SET_MASK) *
 			labibb->ibb_vreg.step_size +
 			labibb->ibb_vreg.min_volt;
 
 		if (labibb->mode == QPNP_LABIBB_LCD_MODE) {
 			rc = of_property_read_u32(of_node,
-				"qcom,qpnp-ibb-init-lcd-voltage",
+"qcom,qpnp-ibb-init-lcd-voltage",
 				&(labibb->ibb_vreg.curr_volt));
 			if (rc < 0) {
-				pr_err("get qcom,qpnp-ibb-init-lcd-voltage failed, rc = %d\n",
+pr_err("get qcom,qpnp-ibb-init-lcd-voltage failed, rc = %d\n",
 					rc);
 				return rc;
 			}
-		} else if (!(val & IBB_VOLTAGE_OVERRIDE_EN)) {
+} else if (!(val & IBB_VOLTAGE_OVERRIDE_EN)) {
 			rc = of_property_read_u32(of_node,
-				"qcom,qpnp-ibb-init-amoled-voltage",
+"qcom,qpnp-ibb-init-amoled-voltage",
 				&(labibb->ibb_vreg.curr_volt));
 			if (rc < 0) {
-				pr_err("get qcom,qpnp-ibb-init-amoled-voltage failed, rc = %d\n",
+pr_err("get qcom,qpnp-ibb-init-amoled-voltage failed, rc = %d\n",
 					rc);
 				return rc;
 			}
@@ -3922,7 +3922,7 @@ static int register_qpnp_ibb_regulator(struct qpnp_labibb *labibb,
 
 	if (init_data->constraints.name) {
 		rdesc->owner		= THIS_MODULE;
-		rdesc->type		= REGULATOR_VOLTAGE;
+rdesc->type		= REGULATOR_VOLTAGE;
 		rdesc->ops		= &qpnp_ibb_ops;
 		rdesc->name		= init_data->constraints.name;
 
@@ -3936,7 +3936,7 @@ static int register_qpnp_ibb_regulator(struct qpnp_labibb *labibb,
 			init_data->supply_regulator = "parent";
 
 		init_data->constraints.valid_ops_mask
-				|= REGULATOR_CHANGE_VOLTAGE |
+|= REGULATOR_CHANGE_VOLTAGE |
 					REGULATOR_CHANGE_STATUS;
 
 		labibb->ibb_vreg.rdev = regulator_register(rdesc, &cfg);

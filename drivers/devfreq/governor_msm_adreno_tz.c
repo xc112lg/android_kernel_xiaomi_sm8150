@@ -139,8 +139,8 @@ static const struct device_attribute *adreno_tz_attr_list[] = {
 };
 
 void compute_work_load(struct devfreq_dev_status *stats,
-		struct devfreq_msm_adreno_tz_data *priv,
-		struct devfreq *devfreq)
+struct devfreq_msm_adreno_tz_data *priv,
+struct devfreq *devfreq)
 {
 	u64 busy;
 
@@ -151,8 +151,8 @@ void compute_work_load(struct devfreq_dev_status *stats,
 	 * is done when the entry is read
 	 */
 	acc_total += stats->total_time;
-	busy = (u64)stats->busy_time * stats->current_frequency;
-	do_div(busy, devfreq->profile->freq_table[0]);
+busy = (u64)stats->busy_time * stats->current_frequency;
+do_div(busy, devfreq->profile->freq_table[0]);
 	acc_relative_busy += busy;
 
 	spin_unlock(&sample_lock);
@@ -187,7 +187,7 @@ static int __secure_tz_reset_entry2(unsigned int *scm_data, u32 size_scm_data,
 }
 
 static int __secure_tz_update_entry3(unsigned int *scm_data, u32 size_scm_data,
-		int *val, u32 size_val, struct devfreq_msm_adreno_tz_data *priv)
+int *val, u32 size_val, struct devfreq_msm_adreno_tz_data *priv)
 {
 	int ret;
 	/* sync memory before sending the commands to tz */
@@ -324,12 +324,12 @@ static int tz_init(struct devfreq_msm_adreno_tz_data *priv,
 }
 
 static inline int devfreq_get_freq_level(struct devfreq *devfreq,
-	unsigned long freq)
+unsigned long freq)
 {
 	int lev;
 
-	for (lev = 0; lev < devfreq->profile->max_state; lev++)
-		if (freq == devfreq->profile->freq_table[lev])
+for (lev = 0; lev < devfreq->profile->max_state; lev++)
+if (freq == devfreq->profile->freq_table[lev])
 			return lev;
 
 	return -EINVAL;
@@ -338,20 +338,20 @@ static inline int devfreq_get_freq_level(struct devfreq *devfreq,
 static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 {
 	int result = 0;
-	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
-	struct devfreq_dev_status stats;
+struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
+struct devfreq_dev_status stats;
 	int val, level = 0;
 	unsigned int scm_data[4];
 	int context_count = 0;
 
 	/* keeps stats.private_data == NULL   */
-	result = devfreq->profile->get_dev_status(devfreq->dev.parent, &stats);
+result = devfreq->profile->get_dev_status(devfreq->dev.parent, &stats);
 	if (result) {
 		pr_err(TAG "get_status failed %d\n", result);
 		return result;
 	}
 
-	*freq = stats.current_frequency;
+*freq = stats.current_frequency;
 	priv->bin.total_time += stats.total_time;
 	priv->bin.busy_time += stats.busy_time;
 
@@ -359,7 +359,7 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 		context_count =  *((int *)stats.private_data);
 
 	/* Update the GPU load statistics */
-	compute_work_load(&stats, priv, devfreq);
+compute_work_load(&stats, priv, devfreq);
 	/*
 	 * Do not waste CPU cycles running this algorithm if
 	 * the GPU just started, or if less than FLOOR time
@@ -372,15 +372,15 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 		return 0;
 	}
 
-	level = devfreq_get_freq_level(devfreq, stats.current_frequency);
+level = devfreq_get_freq_level(devfreq, stats.current_frequency);
 	if (level < 0) {
-		pr_err(TAG "bad freq %ld\n", stats.current_frequency);
+pr_err(TAG "bad freq %ld\n", stats.current_frequency);
 		return level;
 	}
 
 	/*
 	 * If there is an extended block of busy processing,
-	 * increase frequency.  Otherwise run the normal algorithm.
+* increase frequency.  Otherwise run the normal algorithm.
 	 */
 	if (!priv->disable_busy_time_burst &&
 			priv->bin.busy_time > CEILING) {
@@ -399,27 +399,27 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq)
 
 	/*
 	 * If the decision is to move to a different level, make sure the GPU
-	 * frequency changes.
+* frequency changes.
 	 */
 	if (val) {
 		level += val;
 		level = max(level, 0);
-		level = min_t(int, level, devfreq->profile->max_state - 1);
+level = min_t(int, level, devfreq->profile->max_state - 1);
 	}
 
-	*freq = devfreq->profile->freq_table[level];
+*freq = devfreq->profile->freq_table[level];
 	return 0;
 }
 
 static int tz_start(struct devfreq *devfreq)
 {
-	struct devfreq_msm_adreno_tz_data *priv;
+struct devfreq_msm_adreno_tz_data *priv;
 	unsigned int tz_pwrlevels[MSM_ADRENO_MAX_PWRLEVELS + 1];
 	int i, out, ret;
 	unsigned int version;
 
 	struct msm_adreno_extended_profile *gpu_profile = container_of(
-					(devfreq->profile),
+(devfreq->profile),
 					struct msm_adreno_extended_profile,
 					profile);
 
@@ -429,14 +429,14 @@ static int tz_start(struct devfreq *devfreq)
 	 * can safely restore the pointer to the governor private data
 	 * from the container of the device profile
 	 */
-	devfreq->data = gpu_profile->private_data;
+devfreq->data = gpu_profile->private_data;
 
-	priv = devfreq->data;
+priv = devfreq->data;
 
 	out = 1;
-	if (devfreq->profile->max_state < MSM_ADRENO_MAX_PWRLEVELS) {
-		for (i = 0; i < devfreq->profile->max_state; i++)
-			tz_pwrlevels[out++] = devfreq->profile->freq_table[i];
+if (devfreq->profile->max_state < MSM_ADRENO_MAX_PWRLEVELS) {
+for (i = 0; i < devfreq->profile->max_state; i++)
+tz_pwrlevels[out++] = devfreq->profile->freq_table[i];
 		tz_pwrlevels[0] = i;
 	} else {
 		pr_err(TAG "tz_pwrlevels[] is too short\n");
@@ -451,7 +451,7 @@ static int tz_start(struct devfreq *devfreq)
 	}
 
 	for (i = 0; adreno_tz_attr_list[i] != NULL; i++)
-		device_create_file(&devfreq->dev, adreno_tz_attr_list[i]);
+device_create_file(&devfreq->dev, adreno_tz_attr_list[i]);
 
 	return 0;
 }
@@ -461,16 +461,16 @@ static int tz_stop(struct devfreq *devfreq)
 	int i;
 
 	for (i = 0; adreno_tz_attr_list[i] != NULL; i++)
-		device_remove_file(&devfreq->dev, adreno_tz_attr_list[i]);
+device_remove_file(&devfreq->dev, adreno_tz_attr_list[i]);
 
 	/* leaving the governor and cleaning the pointer to private data */
-	devfreq->data = NULL;
+devfreq->data = NULL;
 	return 0;
 }
 
 static int tz_suspend(struct devfreq *devfreq)
 {
-	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
+struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 	unsigned int scm_data[2] = {0, 0};
 
 	__secure_tz_reset_entry2(scm_data, sizeof(scm_data), priv->is_64);
@@ -485,19 +485,19 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 	int result;
 
 	switch (event) {
-	case DEVFREQ_GOV_START:
-		result = tz_start(devfreq);
+case DEVFREQ_GOV_START:
+result = tz_start(devfreq);
 		break;
 
-	case DEVFREQ_GOV_STOP:
+case DEVFREQ_GOV_STOP:
 		spin_lock(&suspend_lock);
 		suspend_start = 0;
 		spin_unlock(&suspend_lock);
-		result = tz_stop(devfreq);
+result = tz_stop(devfreq);
 		break;
 
-	case DEVFREQ_GOV_SUSPEND:
-		result = tz_suspend(devfreq);
+case DEVFREQ_GOV_SUSPEND:
+result = tz_suspend(devfreq);
 		if (!result) {
 			spin_lock(&suspend_lock);
 			/* Collect the start sample for suspend time */
@@ -506,14 +506,14 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 		}
 		break;
 
-	case DEVFREQ_GOV_RESUME:
+case DEVFREQ_GOV_RESUME:
 		spin_lock(&suspend_lock);
 		suspend_time += suspend_time_ms();
 		/* Reset the suspend_start when gpu resumes */
 		suspend_start = 0;
 		spin_unlock(&suspend_lock);
 		/* fallthrough */
-	case DEVFREQ_GOV_INTERVAL:
+case DEVFREQ_GOV_INTERVAL:
 		/* fallthrough, this governor doesn't use polling */
 	default:
 		result = 0;
@@ -525,19 +525,19 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 
 int msm_adreno_devfreq_init_tz(struct devfreq *devfreq)
 {
-	struct devfreq_msm_adreno_tz_data *priv;
+struct devfreq_msm_adreno_tz_data *priv;
 	unsigned int tz_pwrlevels[MSM_ADRENO_MAX_PWRLEVELS + 1];
 	int i, out = 1, ret;
 	unsigned int version;
 
-	if (!devfreq)
+if (!devfreq)
 		return -EINVAL;
 
-	priv = devfreq->data;
+priv = devfreq->data;
 
-	if (devfreq->profile->max_state < MSM_ADRENO_MAX_PWRLEVELS) {
-		for (i = 0; i < devfreq->profile->max_state; i++)
-			tz_pwrlevels[out++] = devfreq->profile->freq_table[i];
+if (devfreq->profile->max_state < MSM_ADRENO_MAX_PWRLEVELS) {
+for (i = 0; i < devfreq->profile->max_state; i++)
+tz_pwrlevels[out++] = devfreq->profile->freq_table[i];
 		tz_pwrlevels[0] = i;
 	} else {
 		pr_err(TAG "tz_pwrlevels[] is too short\n");
@@ -557,19 +557,19 @@ EXPORT_SYMBOL(msm_adreno_devfreq_init_tz);
 
 static struct devfreq_governor msm_adreno_tz = {
 	.name = "msm-adreno-tz",
-	.get_target_freq = tz_get_target_freq,
+.get_target_freq = tz_get_target_freq,
 	.event_handler = tz_handler,
 };
 
 static int __init msm_adreno_tz_init(void)
 {
-	return devfreq_add_governor(&msm_adreno_tz);
+return devfreq_add_governor(&msm_adreno_tz);
 }
 subsys_initcall(msm_adreno_tz_init);
 
 static void __exit msm_adreno_tz_exit(void)
 {
-	int ret = devfreq_remove_governor(&msm_adreno_tz);
+int ret = devfreq_remove_governor(&msm_adreno_tz);
 
 	if (ret)
 		pr_err(TAG "failed to remove governor %d\n", ret);

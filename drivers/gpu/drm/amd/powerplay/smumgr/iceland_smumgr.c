@@ -127,12 +127,12 @@ static int iceland_smu_upload_firmware_image(struct pp_smumgr *smumgr)
 		smu7_convert_fw_type_to_cgs(UCODE_ID_SMU), &info);
 
 	if (info.image_size & 3) {
-		pr_err("[ powerplay ] SMC ucode is not 4 bytes aligned\n");
+pr_err("[ powerplay ] SMC ucode is not 4 bytes aligned\n");
 		return -EINVAL;
 	}
 
 	if (info.image_size > ICELAND_SMC_SIZE) {
-		pr_err("[ powerplay ] SMC address is beyond the SMC RAM area\n");
+pr_err("[ powerplay ] SMC address is beyond the SMC RAM area\n");
 		return -EINVAL;
 	}
 
@@ -194,7 +194,7 @@ static int iceland_start_smu(struct pp_smumgr *smumgr)
 /**
  * Write a 32bit value to the SMC SRAM space.
  * ALL PARAMETERS ARE IN HOST BYTE ORDER.
- * @param    smumgr  the address of the powerplay hardware manager.
+* @param    smumgr  the address of the powerplay hardware manager.
  * @param    smcAddress the address in the SMC RAM to access.
  * @param    value to write to the SMC SRAM.
  */

@@ -82,7 +82,7 @@ static int get_phb_number(struct device_node *dn)
 	 * Try fixed PHB numbering first, by checking archs and reading
 	 * the respective device-tree properties. Firstly, try reading
 	 * standard "linux,pci-domain", then try reading "ibm,opal-phbid"
-	 * (only present in powernv OPAL environment), then try device-tree
+* (only present in powernv OPAL environment), then try device-tree
 	 * alias and as the last try to use lower bits of "reg" property.
 	 */
 	ret = of_get_pci_domain_nr(dn);
@@ -768,7 +768,7 @@ void pci_process_bridge_OF_ranges(struct pci_controller *hose,
 	for_each_of_pci_range(&parser, &range) {
 		/* If we failed translation or got a zero-sized region
 		 * (some FW try to feed us with non sensical zero sized regions
-		 * such as power3 which look like some kind of attempt at exposing
+* such as power3 which look like some kind of attempt at exposing
 		 * the VGA memory hole)
 		 */
 		if (range.cpu_addr == OF_BAD_ADDR || range.size == 0)
@@ -1743,7 +1743,7 @@ static void fixup_hide_host_resource_fsl(struct pci_dev *dev)
 	/* When configured as agent, programing interface = 1 */
 	int prog_if = dev->class & 0xf;
 
-	if ((class == PCI_CLASS_PROCESSOR_POWERPC ||
+if ((class == PCI_CLASS_PROCESSOR_POWERPC ||
 	     class == PCI_CLASS_BRIDGE_OTHER) &&
 		(dev->hdr_type == PCI_HEADER_TYPE_NORMAL) &&
 		(prog_if == 0) &&

@@ -30,10 +30,10 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			model = "PowerPC, 476FSP2";
+model = "PowerPC, 476FSP2";
 			reg = <0x0>;
-			clock-frequency = <0>;    /* Filled in by cuboot */
-			timebase-frequency = <0>; /* Filled in by cuboot */
+clock-frequency = <0>;    /* Filled in by cuboot */
+timebase-frequency = <0>; /* Filled in by cuboot */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			d-cache-size = <32768>;
@@ -53,7 +53,7 @@
 		mmc_clk: mmc_clk {
 			compatible = "fixed-clock";
 			#clock-cells = <0>;
-			clock-frequency = <50000000>;
+clock-frequency = <50000000>;
 			clock-output-names = "mmc_clk";
 		};
 	};
@@ -387,7 +387,7 @@
 		#size-cells = <1>;
 		ranges = <0x00000000 0x00000010 0x00000000 0x80000000
 			  0x80000000 0x00000010 0x80000000 0x80000000>;
-		clock-frequency = <333333334>;
+clock-frequency = <333333334>;
 
 		plb6-system-hung-irq {
 			compatible = "ibm,bus-error-irq";
@@ -511,7 +511,7 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges; // pass-thru to parent bus
-			clock-frequency = <83333334>;
+clock-frequency = <83333334>;
 
 			EMAC0: ethernet@b0000000 {
 				linux,network-index = <0>;
@@ -576,7 +576,7 @@
 				compatible = "ns16550";
 				reg = <0xb0020000 0x8>;
 				virtual-reg = <0xb0020000>;
-				clock-frequency = <20833333>;
+clock-frequency = <20833333>;
 				current-speed = <115200>;
 				interrupt-parent = <&UIC0>;
 				interrupts = <31 0x4>;

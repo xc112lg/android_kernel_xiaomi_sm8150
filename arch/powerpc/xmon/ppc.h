@@ -80,15 +80,15 @@ extern const int vle_num_opcodes;
 #define PPC_OPCODE_POWER2		 4
 
 /* Opcode is supported by the Motorola PowerPC 601 processor.  The 601
-   is assumed to support all PowerPC (PPC_OPCODE_PPC) instructions,
-   but it also supports many additional POWER instructions.  */
+is assumed to support all PowerPC (PPC_OPCODE_PPC) instructions,
+but it also supports many additional POWER instructions.  */
 #define PPC_OPCODE_601			 8
 
 /* Opcode is supported in both the Power and PowerPC architectures
    (ie, compiler's -mcpu=common or assembler's -mcom).  More than just
-   the intersection of PPC_OPCODE_PPC with the union of PPC_OPCODE_POWER
-   and PPC_OPCODE_POWER2 because many instructions changed mnemonics
-   between POWER and POWERPC.  */
+the intersection of PPC_OPCODE_PPC with the union of PPC_OPCODE_POWER
+and PPC_OPCODE_POWER2 because many instructions changed mnemonics
+between POWER and POWERPC.  */
 #define PPC_OPCODE_COMMON	      0x10
 
 /* Opcode is supported for any Power or PowerPC platform (this is
@@ -193,7 +193,7 @@ extern const int vle_num_opcodes;
 
 /* Opcode which is supported by the Hardware Transactional Memory extension.  */
 /* Currently, this is the same as the POWER8 mask.  If another cpu comes out
-   that isn't a superset of POWER8, we can define this to its own mask.  */
+that isn't a superset of POWER8, we can define this to its own mask.  */
 #define PPC_OPCODE_HTM        PPC_OPCODE_POWER8
 
 /* Opcode is supported by ppc750cl.  */
@@ -288,7 +288,7 @@ struct powerpc_operand
 };
 
 /* Elements in the table are retrieved by indexing with values from
-   the operands field of the powerpc_opcodes table.  */
+the operands field of the powerpc_opcodes table.  */
 
 extern const struct powerpc_operand powerpc_operands[];
 extern const unsigned int num_powerpc_operands;
@@ -330,7 +330,7 @@ extern const unsigned int num_powerpc_operands;
        cr0 0	cr1 1	cr2 2	cr3 3
        cr4 4	cr5 5	cr6 6	cr7 7
    These may be combined arithmetically, as in cr2*4+gt.  These are
-   only supported on the PowerPC, not the POWER.  */
+only supported on the PowerPC, not the POWER.  */
 #define PPC_OPERAND_CR_BIT (0x10)
 
 /* This operand names a register.  The disassembler uses this to print
@@ -363,7 +363,7 @@ extern const unsigned int num_powerpc_operands;
 /* This flag is only used with PPC_OPERAND_OPTIONAL.  If this operand
    is omitted, then for the next operand use this operand value plus
    1, ignoring the next operand field for the opcode.  This wretched
-   hack is needed because the Power rotate instructions can take
+hack is needed because the Power rotate instructions can take
    either 4 or 5 operands.  The disassembler should print this operand
    out regardless of the PPC_OPERAND_OPTIONAL field.  */
 #define PPC_OPERAND_NEXT (0x800)
@@ -411,7 +411,7 @@ extern const unsigned int num_powerpc_operands;
 
 /* The POWER and PowerPC assemblers use a few macros.  We keep them
    with the operands table for simplicity.  The macro table is an
-   array of struct powerpc_macro.  */
+array of struct powerpc_macro.  */
 
 struct powerpc_macro
 {
@@ -423,7 +423,7 @@ struct powerpc_macro
 
   /* One bit flags for the opcode.  These are used to indicate which
      specific processors support the instructions.  The values are the
-     same as those for the struct powerpc_opcode flags field.  */
+same as those for the struct powerpc_opcode flags field.  */
   ppc_cpu_t flags;
 
   /* A format string to turn the macro into a normal instruction.

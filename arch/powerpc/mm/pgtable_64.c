@@ -4,7 +4,7 @@
  *  Derived from arch/ppc64/mm/init.c
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@samba.org)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@samba.org)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *
@@ -463,7 +463,7 @@ void __init mmu_partition_table_init(void)
 	 */
 	ptcr = __pa(partition_tb) | (PATB_SIZE_SHIFT - 12);
 	mtspr(SPRN_PTCR, ptcr);
-	powernv_set_nmmu_ptcr(ptcr);
+powernv_set_nmmu_ptcr(ptcr);
 }
 
 void mmu_partition_table_set_entry(unsigned int lpid, unsigned long dw0,

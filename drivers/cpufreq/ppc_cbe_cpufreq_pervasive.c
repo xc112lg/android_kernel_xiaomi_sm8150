@@ -1,8 +1,8 @@
 /*
- * pervasive backend for the cbe_cpufreq driver
+* pervasive backend for the cbe_cpufreq driver
  *
  * This driver makes use of the pervasive unit to
- * engage the desired frequency.
+* engage the desired frequency.
  *
  * (C) Copyright IBM Deutschland Entwicklung GmbH 2005-2007
  *

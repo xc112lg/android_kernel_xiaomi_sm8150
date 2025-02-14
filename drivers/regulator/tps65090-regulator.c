@@ -1,5 +1,5 @@
 /*
- * Regulator driver for tps65090 power management chip.
+* Regulator driver for tps65090 power management chip.
  *
  * Copyright (c) 2012, NVIDIA CORPORATION.  All rights reserved.
 
@@ -92,7 +92,7 @@ static int tps65090_reg_set_overcurrent_wait(struct tps65090_regulator *ri,
  *
  * @rdev:	Regulator device
  *
- * Return: 0 if ok, -ENOTRECOVERABLE if the FET power good bit did not get
+* Return: 0 if ok, -ENOTRECOVERABLE if the FET power good bit did not get
  * set, or some other -ve value if another error occurred (e.g. i2c error)
  */
 static int tps65090_try_enable_fet(struct regulator_dev *rdev)
@@ -197,13 +197,13 @@ static struct regulator_ops tps65090_ldo_ops = {
 	.name = "TPS65090_RAILS"#_id,			\
 	.supply_name = _sname,				\
 	.id = TPS65090_REGULATOR_##_id,			\
-	.n_voltages = _nvolt,				\
+.n_voltages = _nvolt,				\
 	.ops = &_ops,					\
 	.fixed_uV = _volt,				\
 	.enable_reg = _en_reg,				\
 	.enable_val = _en_bits,				\
 	.enable_mask = _en_bits,			\
-	.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 	.owner = THIS_MODULE,				\
 }
 

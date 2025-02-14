@@ -31,10 +31,10 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			model = "PowerPC,4xx"; // real CPU changed in sim
+model = "PowerPC,4xx"; // real CPU changed in sim
 			reg = <0x00000000>;
-			clock-frequency = <100000000>; // 100Mhz :-)
-			timebase-frequency = <100000000>;
+clock-frequency = <100000000>; // 100Mhz :-)
+timebase-frequency = <100000000>;
 			i-cache-line-size = <32>; // may need fixup in sim
 			d-cache-line-size = <32>; // may need fixup in sim
 			i-cache-size = <32768>; /* may need fixup in sim */
@@ -77,7 +77,7 @@
 		#address-cells = <2>;
 		#size-cells = <1>;
 		ranges;
-		clock-frequency = <0>; // Filled in by zImage
+clock-frequency = <0>; // Filled in by zImage
 
 		POB0: opb {
 			compatible = "ibm,opb-4xx", "ibm,opb";
@@ -87,13 +87,13 @@
 			   range */
 			ranges = <0x00000000 0x00000001 0x00000000 0x80000000
 				  0x80000000 0x00000001 0x80000000 0x80000000>;
-			clock-frequency = <0>; // Filled in by zImage
+clock-frequency = <0>; // Filled in by zImage
 			UART0: serial@40000200 {
 				device_type = "serial";
 				compatible = "ns16550a";
 				reg = <0x40000200 0x00000008>;
 				virtual-reg = <0xe0000200>;
-				clock-frequency = <11059200>;
+clock-frequency = <11059200>;
 				current-speed = <115200>;
 				interrupt-parent = <&UIC0>;
 				interrupts = <0x0 0x4>;

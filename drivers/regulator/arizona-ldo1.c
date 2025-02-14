@@ -42,10 +42,10 @@ struct arizona_ldo1 {
 static int arizona_ldo1_hc_list_voltage(struct regulator_dev *rdev,
 					unsigned int selector)
 {
-	if (selector >= rdev->desc->n_voltages)
+if (selector >= rdev->desc->n_voltages)
 		return -EINVAL;
 
-	if (selector == rdev->desc->n_voltages - 1)
+if (selector == rdev->desc->n_voltages - 1)
 		return 1800000;
 	else
 		return rdev->desc->min_uV + (rdev->desc->uV_step * selector);
@@ -57,8 +57,8 @@ static int arizona_ldo1_hc_map_voltage(struct regulator_dev *rdev,
 	int sel;
 
 	sel = DIV_ROUND_UP(min_uV - rdev->desc->min_uV, rdev->desc->uV_step);
-	if (sel >= rdev->desc->n_voltages)
-		sel = rdev->desc->n_voltages - 1;
+if (sel >= rdev->desc->n_voltages)
+sel = rdev->desc->n_voltages - 1;
 
 	return sel;
 }
@@ -71,7 +71,7 @@ static int arizona_ldo1_hc_set_voltage_sel(struct regulator_dev *rdev,
 	unsigned int val;
 	int ret;
 
-	if (sel == rdev->desc->n_voltages - 1)
+if (sel == rdev->desc->n_voltages - 1)
 		val = ARIZONA_LDO1_HI_PWR;
 	else
 		val = 0;
@@ -102,7 +102,7 @@ static int arizona_ldo1_hc_get_voltage_sel(struct regulator_dev *rdev)
 		return ret;
 
 	if (val & ARIZONA_LDO1_HI_PWR)
-		return rdev->desc->n_voltages - 1;
+return rdev->desc->n_voltages - 1;
 
 	ret = regmap_read(regmap, ARIZONA_LDO1_CONTROL_1, &val);
 	if (ret != 0)
@@ -112,25 +112,25 @@ static int arizona_ldo1_hc_get_voltage_sel(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops arizona_ldo1_hc_ops = {
-	.list_voltage = arizona_ldo1_hc_list_voltage,
-	.map_voltage = arizona_ldo1_hc_map_voltage,
-	.get_voltage_sel = arizona_ldo1_hc_get_voltage_sel,
-	.set_voltage_sel = arizona_ldo1_hc_set_voltage_sel,
+.list_voltage = arizona_ldo1_hc_list_voltage,
+.map_voltage = arizona_ldo1_hc_map_voltage,
+.get_voltage_sel = arizona_ldo1_hc_get_voltage_sel,
+.set_voltage_sel = arizona_ldo1_hc_set_voltage_sel,
 	.get_bypass = regulator_get_bypass_regmap,
 	.set_bypass = regulator_set_bypass_regmap,
 };
 
 static const struct regulator_desc arizona_ldo1_hc = {
 	.name = "LDO1",
-	.supply_name = "LDOVDD",
-	.type = REGULATOR_VOLTAGE,
+.supply_name = "LDOVDD",
+.type = REGULATOR_VOLTAGE,
 	.ops = &arizona_ldo1_hc_ops,
 
 	.bypass_reg = ARIZONA_LDO1_CONTROL_1,
 	.bypass_mask = ARIZONA_LDO1_BYPASS,
 	.min_uV = 900000,
 	.uV_step = 50000,
-	.n_voltages = 8,
+.n_voltages = 8,
 	.enable_time = 1500,
 	.ramp_delay = 24000,
 
@@ -138,23 +138,23 @@ static const struct regulator_desc arizona_ldo1_hc = {
 };
 
 static const struct regulator_ops arizona_ldo1_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 };
 
 static const struct regulator_desc arizona_ldo1 = {
 	.name = "LDO1",
-	.supply_name = "LDOVDD",
-	.type = REGULATOR_VOLTAGE,
+.supply_name = "LDOVDD",
+.type = REGULATOR_VOLTAGE,
 	.ops = &arizona_ldo1_ops,
 
 	.vsel_reg = ARIZONA_LDO1_CONTROL_1,
 	.vsel_mask = ARIZONA_LDO1_VSEL_MASK,
 	.min_uV = 900000,
 	.uV_step = 25000,
-	.n_voltages = 13,
+.n_voltages = 13,
 	.enable_time = 500,
 	.ramp_delay = 24000,
 
@@ -166,7 +166,7 @@ static const struct regulator_init_data arizona_ldo1_dvfs = {
 		.min_uV = 1200000,
 		.max_uV = 1800000,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS |
-				  REGULATOR_CHANGE_VOLTAGE,
+REGULATOR_CHANGE_VOLTAGE,
 	},
 	.num_consumer_supplies = 1,
 };
@@ -183,7 +183,7 @@ static const struct regulator_init_data arizona_ldo1_wm5110 = {
 		.min_uV = 1175000,
 		.max_uV = 1200000,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS |
-				  REGULATOR_CHANGE_VOLTAGE,
+REGULATOR_CHANGE_VOLTAGE,
 	},
 	.num_consumer_supplies = 1,
 };
@@ -191,11 +191,11 @@ static const struct regulator_init_data arizona_ldo1_wm5110 = {
 static int arizona_ldo1_of_get_pdata(struct arizona_ldo1_pdata *pdata,
 				     struct regulator_config *config,
 				     const struct regulator_desc *desc,
-				     bool *external_dcvdd)
+bool *external_dcvdd)
 {
 	struct arizona_ldo1 *ldo1 = config->driver_data;
 	struct device_node *np = config->dev->of_node;
-	struct device_node *init_node, *dcvdd_node;
+struct device_node *init_node, *dcvdd_node;
 	struct regulator_init_data *init_data;
 
 	pdata->ldoena = of_get_named_gpio(np, "wlf,ldoena", 0);
@@ -209,7 +209,7 @@ static int arizona_ldo1_of_get_pdata(struct arizona_ldo1_pdata *pdata,
 	}
 
 	init_node = of_get_child_by_name(np, "ldo1");
-	dcvdd_node = of_parse_phandle(np, "DCVDD-supply", 0);
+dcvdd_node = of_parse_phandle(np, "DCVDD-supply", 0);
 
 	if (init_node) {
 		config->of_node = init_node;
@@ -220,16 +220,16 @@ static int arizona_ldo1_of_get_pdata(struct arizona_ldo1_pdata *pdata,
 			init_data->consumer_supplies = &ldo1->supply;
 			init_data->num_consumer_supplies = 1;
 
-			if (dcvdd_node && dcvdd_node != init_node)
-				*external_dcvdd = true;
+if (dcvdd_node && dcvdd_node != init_node)
+*external_dcvdd = true;
 
 			pdata->init_data = init_data;
 		}
-	} else if (dcvdd_node) {
-		*external_dcvdd = true;
+} else if (dcvdd_node) {
+*external_dcvdd = true;
 	}
 
-	of_node_put(dcvdd_node);
+of_node_put(dcvdd_node);
 
 	return 0;
 }
@@ -238,15 +238,15 @@ static int arizona_ldo1_common_init(struct platform_device *pdev,
 				    struct arizona_ldo1 *ldo1,
 				    const struct regulator_desc *desc,
 				    struct arizona_ldo1_pdata *pdata,
-				    bool *external_dcvdd)
+bool *external_dcvdd)
 {
 	struct device *parent_dev = pdev->dev.parent;
 	struct regulator_config config = { };
 	int ret;
 
-	*external_dcvdd = false;
+*external_dcvdd = false;
 
-	ldo1->supply.supply = "DCVDD";
+ldo1->supply.supply = "DCVDD";
 	ldo1->init_data.consumer_supplies = &ldo1->supply;
 	ldo1->supply.dev_name = dev_name(parent_dev);
 
@@ -258,7 +258,7 @@ static int arizona_ldo1_common_init(struct platform_device *pdev,
 		if (!dev_get_platdata(parent_dev)) {
 			ret = arizona_ldo1_of_get_pdata(pdata,
 							&config, desc,
-							external_dcvdd);
+external_dcvdd);
 			if (ret < 0)
 				return ret;
 		}
@@ -272,11 +272,11 @@ static int arizona_ldo1_common_init(struct platform_device *pdev,
 		config.init_data = &ldo1->init_data;
 
 	/*
-	 * LDO1 can only be used to supply DCVDD so if it has no
-	 * consumers then DCVDD is supplied externally.
+* LDO1 can only be used to supply DCVDD so if it has no
+* consumers then DCVDD is supplied externally.
 	 */
 	if (config.init_data->num_consumer_supplies == 0)
-		*external_dcvdd = true;
+*external_dcvdd = true;
 
 	ldo1->regulator = devm_regulator_register(&pdev->dev, desc, &config);
 
@@ -299,7 +299,7 @@ static int arizona_ldo1_probe(struct platform_device *pdev)
 	struct arizona *arizona = dev_get_drvdata(pdev->dev.parent);
 	struct arizona_ldo1 *ldo1;
 	const struct regulator_desc *desc;
-	bool external_dcvdd;
+bool external_dcvdd;
 	int ret;
 
 	ldo1 = devm_kzalloc(&pdev->dev, sizeof(*ldo1), GFP_KERNEL);
@@ -334,9 +334,9 @@ static int arizona_ldo1_probe(struct platform_device *pdev)
 
 	ret = arizona_ldo1_common_init(pdev, ldo1, desc,
 				       &arizona->pdata.ldo1,
-				       &external_dcvdd);
+&external_dcvdd);
 	if (ret == 0)
-		arizona->external_dcvdd = external_dcvdd;
+arizona->external_dcvdd = external_dcvdd;
 
 	return ret;
 }

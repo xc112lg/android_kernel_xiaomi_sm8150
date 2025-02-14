@@ -1,5 +1,5 @@
 /*
- * Regulator driver for RICOH RC5T583 power management chip.
+* Regulator driver for RICOH RC5T583 power management chip.
  *
  * Copyright (c) 2011-2012, NVIDIA CORPORATION.  All rights reserved.
  * Author: Laxman dewangan <ldewangan@nvidia.com>
@@ -40,7 +40,7 @@ struct rc5t583_regulator_info {
 	uint8_t			disc_bit;
 	uint8_t			deepsleep_reg;
 
-	/* Regulator specific turn-on delay  and voltage settling time*/
+/* Regulator specific turn-on delay  and voltage settling time*/
 	int			enable_uv_per_us;
 
 	/* Used by regulator core */
@@ -55,8 +55,8 @@ struct rc5t583_regulator {
 static int rc5t583_regulator_enable_time(struct regulator_dev *rdev)
 {
 	struct rc5t583_regulator *reg = rdev_get_drvdata(rdev);
-	int vsel = regulator_get_voltage_sel_regmap(rdev);
-	int curr_uV = regulator_list_voltage_linear(rdev, vsel);
+int vsel = regulator_get_voltage_sel_regmap(rdev);
+int curr_uV = regulator_list_voltage_linear(rdev, vsel);
 
 	return DIV_ROUND_UP(curr_uV, reg->reg_info->enable_uv_per_us);
 }
@@ -66,11 +66,11 @@ static const struct regulator_ops rc5t583_ops = {
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.enable_time		= rc5t583_regulator_enable_time,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 };
 
 #define RC5T583_REG(_id, _en_reg, _en_bit, _disc_reg, _disc_bit, \
@@ -84,9 +84,9 @@ static const struct regulator_ops rc5t583_ops = {
 	.desc = {						\
 		.name = "rc5t583-regulator-"#_id,		\
 		.id = RC5T583_REGULATOR_##_id,			\
-		.n_voltages = (_max_mv - _min_mv) * 1000 / _step_uV + 1, \
+.n_voltages = (_max_mv - _min_mv) * 1000 / _step_uV + 1, \
 		.ops = &rc5t583_ops,				\
-		.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 		.owner = THIS_MODULE,				\
 		.vsel_reg = RC5T583_REG_##_id##DAC,		\
 		.vsel_mask = _vout_mask,			\
@@ -146,7 +146,7 @@ static int rc5t583_regulator_probe(struct platform_device *pdev)
 		if (ri->deepsleep_id == RC5T583_DS_NONE)
 			goto skip_ext_pwr_config;
 
-		ret = rc5t583_ext_power_req_config(rc5t583->dev,
+ret = rc5t583_ext_power_req_config(rc5t583->dev,
 				ri->deepsleep_id,
 				pdata->regulator_ext_pwr_control[id],
 				pdata->regulator_deepsleep_slot[id]);

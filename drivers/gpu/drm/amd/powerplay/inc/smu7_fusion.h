@@ -38,7 +38,7 @@
 // All 'soft registers' should be uint32_t.
 struct SMU7_SoftRegisters
 {
-    uint32_t        RefClockFrequency;
+uint32_t        RefClockFrequency;
     uint32_t        PmTimerP;
     uint32_t        FeatureEnables;
     uint32_t        HandshakeDisables;
@@ -62,7 +62,7 @@ struct SMU7_SoftRegisters
     uint8_t         LClkDpmEnabledLevels;
     uint8_t         PCIeDpmEnabledLevels;
 
-    uint8_t         UVDDpmEnabledLevels;
+uint8_t         UVDDpmEnabledLevels;
     uint8_t         SAMUDpmEnabledLevels;
     uint8_t         ACPDpmEnabledLevels;
     uint8_t         VCEDpmEnabledLevels;
@@ -82,15 +82,15 @@ typedef struct SMU7_SoftRegisters SMU7_SoftRegisters;
 
 struct SMU7_Fusion_GraphicsLevel
 {
-    uint32_t    MinVddNb;
+uint32_t    MinVddNb;
 
-    uint32_t    SclkFrequency;
+uint32_t    SclkFrequency;
 
     uint8_t     Vid;
     uint8_t     VidOffset;
     uint16_t    AT;
 
-    uint8_t     PowerThrottle;
+uint8_t     PowerThrottle;
     uint8_t     GnbSlow;
     uint8_t     ForceNbPs1;
     uint8_t     SclkDid;
@@ -101,7 +101,7 @@ struct SMU7_Fusion_GraphicsLevel
     uint8_t     UpH;
 
     uint8_t     DownH;
-    uint8_t     VoltageDownH;
+uint8_t     VoltageDownH;
     uint8_t     DeepSleepDivId;
 
     uint8_t     ClkBypassCntl;
@@ -116,15 +116,15 @@ struct SMU7_Fusion_GIOLevel
     uint8_t     EnabledForActivity;
     uint8_t     LclkDid;
     uint8_t     Vid;
-    uint8_t     VoltageDownH;
+uint8_t     VoltageDownH;
 
-    uint32_t    MinVddNb;
+uint32_t    MinVddNb;
 
     uint16_t    ResidencyCounter;
     uint8_t     UpH;
     uint8_t     DownH;
 
-    uint32_t    LclkFrequency;
+uint32_t    LclkFrequency;
 
     uint8_t     ActivityLevel;
     uint8_t     EnabledForThrottle;
@@ -139,9 +139,9 @@ typedef struct SMU7_Fusion_GIOLevel SMU7_Fusion_GIOLevel;
 // UVD VCLK/DCLK state (level) definition.
 struct SMU7_Fusion_UvdLevel
 {
-    uint32_t VclkFrequency;
-    uint32_t DclkFrequency;
-    uint16_t MinVddNb;
+uint32_t VclkFrequency;
+uint32_t DclkFrequency;
+uint16_t MinVddNb;
     uint8_t  VclkDivider;
     uint8_t  DclkDivider;
 
@@ -157,8 +157,8 @@ typedef struct SMU7_Fusion_UvdLevel SMU7_Fusion_UvdLevel;
 // Clocks for other external blocks (VCE, ACP, SAMU).
 struct SMU7_Fusion_ExtClkLevel
 {
-    uint32_t Frequency;
-    uint16_t MinVoltage;
+uint32_t Frequency;
+uint16_t MinVoltage;
     uint8_t  Divider;
     uint8_t  ClkBypassCntl;
 
@@ -169,8 +169,8 @@ typedef struct SMU7_Fusion_ExtClkLevel SMU7_Fusion_ExtClkLevel;
 struct SMU7_Fusion_ACPILevel
 {
     uint32_t    Flags;
-    uint32_t    MinVddNb;
-    uint32_t    SclkFrequency;
+uint32_t    MinVddNb;
+uint32_t    SclkFrequency;
     uint8_t     SclkDid;
     uint8_t     GnbSlow;
     uint8_t     ForceNbPs1;
@@ -199,13 +199,13 @@ typedef struct SMU7_Fusion_NbDpm SMU7_Fusion_NbDpm;
 
 struct SMU7_Fusion_StateInfo
 {
-    uint32_t SclkFrequency;
-    uint32_t LclkFrequency;
-    uint32_t VclkFrequency;
-    uint32_t DclkFrequency;
-    uint32_t SamclkFrequency;
-    uint32_t AclkFrequency;
-    uint32_t EclkFrequency;
+uint32_t SclkFrequency;
+uint32_t LclkFrequency;
+uint32_t VclkFrequency;
+uint32_t DclkFrequency;
+uint32_t SamclkFrequency;
+uint32_t AclkFrequency;
+uint32_t EclkFrequency;
     uint8_t  DisplayWatermark;
     uint8_t  McArbIndex;
     int8_t   SclkIndex;
@@ -249,7 +249,7 @@ struct SMU7_Fusion_DpmTable
     uint8_t                           GraphicsBootLevel;
     uint8_t                           GraphicsInterval;
     uint8_t                           GraphicsThermThrottleEnable;
-    uint8_t                           GraphicsVoltageChangeEnable;
+uint8_t                           GraphicsVoltageChangeEnable;
 
     uint8_t                           GraphicsClkSlowEnable;
     uint8_t                           GraphicsClkSlowDivider;
@@ -276,7 +276,7 @@ struct SMU7_Fusion_GIODpmTable
     uint32_t                          GIOLevelCount;
 
     uint8_t                           Enable;
-    uint8_t                           GIOVoltageChangeEnable;
+uint8_t                           GIOVoltageChangeEnable;
     uint8_t                           GIOBootLevel;
     uint8_t                           padding;
     uint8_t                           padding1[2];

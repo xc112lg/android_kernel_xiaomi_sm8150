@@ -2,7 +2,7 @@
  * The file intends to implement the platform dependent EEH operations on pseries.
  * Actually, the pseries platform is built based on RTAS heavily. That means the
  * pseries platform dependent EEH operations will be built on RTAS calls. The functions
- * are derived from arch/powerpc/platforms/pseries/eeh.c and necessary cleanup has
+* are derived from arch/powerpc/platforms/pseries/eeh.c and necessary cleanup has
  * been done.
  *
  * Copyright Benjamin Herrenschmidt & Gavin Shan, IBM Corporation 2011.
@@ -257,7 +257,7 @@ static void *pseries_eeh_probe(struct pci_dn *pdn, void *data)
 		edev->pe_config_addr = eeh_ops->get_pe_addr(&pe);
 		pe.addr = edev->pe_config_addr;
 
-		/* Some older systems (Power4) allow the ibm,set-eeh-option
+/* Some older systems (Power4) allow the ibm,set-eeh-option
 		 * call to succeed even on nodes where EEH is not supported.
 		 * Verify support explicitly.
 		 */

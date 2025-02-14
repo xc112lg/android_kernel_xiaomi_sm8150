@@ -1,5 +1,5 @@
 /*
- * intel_powerclamp.c - package c-state idle injection
+* intel_powerclamp.c - package c-state idle injection
  *
  * Copyright (c) 2012, Intel Corporation.
  *
@@ -66,7 +66,7 @@
  */
 #define CONFIDENCE_OK (3)
 /* Default idle injection duration, driver adjust sleep time to meet target
- * idle ratio. Similar to frequency modulation.
+* idle ratio. Similar to frequency modulation.
  */
 #define DEFAULT_DURATION_JIFFIES (6)
 
@@ -189,7 +189,7 @@ static const struct kernel_param_ops window_size_ops = {
 
 module_param_cb(window_size, &window_size_ops, &window_size, 0644);
 MODULE_PARM_DESC(window_size, "sliding window in number of clamping cycles\n"
-	"\tpowerclamp controls idle ratio within this window. larger\n"
+"\tpowerclamp controls idle ratio within this window. larger\n"
 	"\twindow size results in slower response time but more smooth\n"
 	"\tclamping results. default to 2.");
 
@@ -320,7 +320,7 @@ static unsigned int get_compensation(int ratio)
 static void adjust_compensation(int target_ratio, unsigned int win)
 {
 	int delta;
-	struct powerclamp_calibration_data *d = &cal_data[target_ratio];
+struct powerclamp_calibration_data *d = &cal_data[target_ratio];
 
 	/*
 	 * adjust compensations if confidence level has not been reached or
@@ -383,13 +383,13 @@ static bool powerclamp_adjust_controls(unsigned int target_ratio,
 
 static void clamp_balancing_func(struct kthread_work *work)
 {
-	struct powerclamp_worker_data *w_data;
+struct powerclamp_worker_data *w_data;
 	int sleeptime;
 	unsigned long target_jiffies;
 	unsigned int compensated_ratio;
 	int interval; /* jiffies to sleep for each attempt */
 
-	w_data = container_of(work, struct powerclamp_worker_data,
+w_data = container_of(work, struct powerclamp_worker_data,
 			      balancing_work);
 
 	/*
@@ -428,9 +428,9 @@ static void clamp_balancing_func(struct kthread_work *work)
 
 static void clamp_idle_injection_func(struct kthread_work *work)
 {
-	struct powerclamp_worker_data *w_data;
+struct powerclamp_worker_data *w_data;
 
-	w_data = container_of(work, struct powerclamp_worker_data,
+w_data = container_of(work, struct powerclamp_worker_data,
 			      idle_injection_work.work);
 
 	/*
@@ -440,7 +440,7 @@ static void clamp_idle_injection_func(struct kthread_work *work)
 	if (w_data->cpu == control_cpu &&
 	    !(w_data->count % w_data->window_size_now)) {
 		should_skip =
-			powerclamp_adjust_controls(w_data->target_ratio,
+powerclamp_adjust_controls(w_data->target_ratio,
 						   w_data->guard,
 						   w_data->window_size_now);
 		smp_mb();
@@ -495,7 +495,7 @@ static void poll_pkg_cstate(struct work_struct *dummy)
 
 static void start_power_clamp_worker(unsigned long cpu)
 {
-	struct powerclamp_worker_data *w_data = per_cpu_ptr(worker_data, cpu);
+struct powerclamp_worker_data *w_data = per_cpu_ptr(worker_data, cpu);
 	struct kthread_worker *worker;
 
 	worker = kthread_create_worker_on_cpu(cpu, 0, "kidle_inj/%ld", cpu);
@@ -516,7 +516,7 @@ static void start_power_clamp_worker(unsigned long cpu)
 
 static void stop_power_clamp_worker(unsigned long cpu)
 {
-	struct powerclamp_worker_data *w_data = per_cpu_ptr(worker_data, cpu);
+struct powerclamp_worker_data *w_data = per_cpu_ptr(worker_data, cpu);
 
 	if (!w_data->worker)
 		return;
@@ -561,7 +561,7 @@ static int start_power_clamp(void)
 
 	/* start one kthread worker per online cpu */
 	for_each_online_cpu(cpu) {
-		start_power_clamp_worker(cpu);
+start_power_clamp_worker(cpu);
 	}
 	put_online_cpus();
 
@@ -581,7 +581,7 @@ static void end_power_clamp(void)
 		for_each_set_bit(i, cpu_clamping_mask, num_possible_cpus()) {
 			pr_debug("clamping worker for cpu %d alive, destroy\n",
 				 i);
-			stop_power_clamp_worker(i);
+stop_power_clamp_worker(i);
 		}
 	}
 }
@@ -590,7 +590,7 @@ static int powerclamp_cpu_online(unsigned int cpu)
 {
 	if (clamping == false)
 		return 0;
-	start_power_clamp_worker(cpu);
+start_power_clamp_worker(cpu);
 	/* prefer BSP as controlling CPU */
 	if (cpu == 0) {
 		control_cpu = 0;
@@ -604,7 +604,7 @@ static int powerclamp_cpu_predown(unsigned int cpu)
 	if (clamping == false)
 		return 0;
 
-	stop_power_clamp_worker(cpu);
+stop_power_clamp_worker(cpu);
 	if (cpu != control_cpu)
 		return 0;
 
@@ -632,7 +632,7 @@ static int powerclamp_get_cur_state(struct thermal_cooling_device *cdev,
 		else
 			*state = set_target_ratio;
 	} else {
-		/* to save power, do not poll idle ratio while not clamping */
+/* to save power, do not poll idle ratio while not clamping */
 		*state = -1; /* indicates invalid state */
 	}
 
@@ -647,13 +647,13 @@ static int powerclamp_set_cur_state(struct thermal_cooling_device *cdev,
 	new_target_ratio = clamp(new_target_ratio, 0UL,
 				(unsigned long) (MAX_TARGET_RATIO-1));
 	if (set_target_ratio == 0 && new_target_ratio > 0) {
-		pr_info("Start idle injection to reduce power\n");
+pr_info("Start idle injection to reduce power\n");
 		set_target_ratio = new_target_ratio;
-		ret = start_power_clamp();
+ret = start_power_clamp();
 		goto exit_set;
 	} else	if (set_target_ratio > 0 && new_target_ratio == 0) {
 		pr_info("Stop forced idle injection\n");
-		end_power_clamp();
+end_power_clamp();
 		set_target_ratio = 0;
 	} else	/* adjust currently running */ {
 		set_target_ratio = new_target_ratio;
@@ -667,9 +667,9 @@ exit_set:
 
 /* bind to generic thermal layer as cooling device*/
 static struct thermal_cooling_device_ops powerclamp_cooling_ops = {
-	.get_max_state = powerclamp_get_max_state,
-	.get_cur_state = powerclamp_get_cur_state,
-	.set_cur_state = powerclamp_set_cur_state,
+.get_max_state = powerclamp_get_max_state,
+.get_cur_state = powerclamp_get_cur_state,
+.set_cur_state = powerclamp_set_cur_state,
 };
 
 static const struct x86_cpu_id __initconst intel_powerclamp_ids[] = {
@@ -681,7 +681,7 @@ MODULE_DEVICE_TABLE(x86cpu, intel_powerclamp_ids);
 static int __init powerclamp_probe(void)
 {
 
-	if (!x86_match_cpu(intel_powerclamp_ids)) {
+if (!x86_match_cpu(intel_powerclamp_ids)) {
 		pr_err("CPU does not support MWAIT");
 		return -ENODEV;
 	}
@@ -718,11 +718,11 @@ static int powerclamp_debug_show(struct seq_file *m, void *unused)
 static int powerclamp_debug_open(struct inode *inode,
 			struct file *file)
 {
-	return single_open(file, powerclamp_debug_show, inode->i_private);
+return single_open(file, powerclamp_debug_show, inode->i_private);
 }
 
 static const struct file_operations powerclamp_debug_fops = {
-	.open		= powerclamp_debug_open,
+.open		= powerclamp_debug_open,
 	.read		= seq_read,
 	.llseek		= seq_lseek,
 	.release	= single_release,
@@ -731,12 +731,12 @@ static const struct file_operations powerclamp_debug_fops = {
 
 static inline void powerclamp_create_debug_files(void)
 {
-	debug_dir = debugfs_create_dir("intel_powerclamp", NULL);
+debug_dir = debugfs_create_dir("intel_powerclamp", NULL);
 	if (!debug_dir)
 		return;
 
-	if (!debugfs_create_file("powerclamp_calib", S_IRUGO, debug_dir,
-					cal_data, &powerclamp_debug_fops))
+if (!debugfs_create_file("powerclamp_calib", S_IRUGO, debug_dir,
+cal_data, &powerclamp_debug_fops))
 		goto file_error;
 
 	return;
@@ -758,22 +758,22 @@ static int __init powerclamp_init(void)
 		return -ENOMEM;
 
 	/* probe cpu features and ids here */
-	retval = powerclamp_probe();
+retval = powerclamp_probe();
 	if (retval)
 		goto exit_free;
 
 	/* set default limit, maybe adjusted during runtime based on feedback */
 	window_size = 2;
 	retval = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-					   "thermal/intel_powerclamp:online",
-					   powerclamp_cpu_online,
-					   powerclamp_cpu_predown);
+"thermal/intel_powerclamp:online",
+powerclamp_cpu_online,
+powerclamp_cpu_predown);
 	if (retval < 0)
 		goto exit_free;
 
 	hp_state = retval;
 
-	worker_data = alloc_percpu(struct powerclamp_worker_data);
+worker_data = alloc_percpu(struct powerclamp_worker_data);
 	if (!worker_data) {
 		retval = -ENOMEM;
 		goto exit_unregister;
@@ -782,8 +782,8 @@ static int __init powerclamp_init(void)
 	if (topology_max_packages() == 1)
 		poll_pkg_cstate_enable = true;
 
-	cooling_dev = thermal_cooling_device_register("intel_powerclamp", NULL,
-						&powerclamp_cooling_ops);
+cooling_dev = thermal_cooling_device_register("intel_powerclamp", NULL,
+&powerclamp_cooling_ops);
 	if (IS_ERR(cooling_dev)) {
 		retval = -ENODEV;
 		goto exit_free_thread;
@@ -792,7 +792,7 @@ static int __init powerclamp_init(void)
 	if (!duration)
 		duration = jiffies_to_msecs(DEFAULT_DURATION_JIFFIES);
 
-	powerclamp_create_debug_files();
+powerclamp_create_debug_files();
 
 	return 0;
 
@@ -808,7 +808,7 @@ module_init(powerclamp_init);
 
 static void __exit powerclamp_exit(void)
 {
-	end_power_clamp();
+end_power_clamp();
 	cpuhp_remove_state_nocalls(hp_state);
 	free_percpu(worker_data);
 	thermal_cooling_device_unregister(cooling_dev);

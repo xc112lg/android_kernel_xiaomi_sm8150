@@ -169,7 +169,7 @@
 			#size-cells = <1>;
 			compatible = "spansion,s25sl12801", "jedec,spi-nor";
 			reg = <0>;
-			spi-max-frequency = <50000000>;
+spi-max-frequency = <50000000>;
 
 			partition@0 {
 				/* 1MB for u-boot Bootloader Image */

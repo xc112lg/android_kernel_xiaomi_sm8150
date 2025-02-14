@@ -38,11 +38,11 @@ struct fixed_voltage_data {
 
 
 /**
- * of_get_fixed_voltage_config - extract fixed_voltage_config structure info
- * @dev: device requesting for fixed_voltage_config
+* of_get_fixed_voltage_config - extract fixed_voltage_config structure info
+* @dev: device requesting for fixed_voltage_config
  * @desc: regulator description
  *
- * Populates fixed_voltage_config structure by extracting data from device
+* Populates fixed_voltage_config structure by extracting data from device
  * tree node, returns a pointer to the populated structure of NULL if memory
  * alloc fails.
  */
@@ -50,11 +50,11 @@ static struct fixed_voltage_config *
 of_get_fixed_voltage_config(struct device *dev,
 			    const struct regulator_desc *desc)
 {
-	struct fixed_voltage_config *config;
+struct fixed_voltage_config *config;
 	struct device_node *np = dev->of_node;
 	struct regulator_init_data *init_data;
 
-	config = devm_kzalloc(dev, sizeof(struct fixed_voltage_config),
+config = devm_kzalloc(dev, sizeof(struct fixed_voltage_config),
 								 GFP_KERNEL);
 	if (!config)
 		return ERR_PTR(-ENOMEM);
@@ -71,7 +71,7 @@ of_get_fixed_voltage_config(struct device *dev,
 		config->microvolts = init_data->constraints.min_uV;
 	} else {
 		dev_err(dev,
-			 "Fixed regulator specified with variable voltages\n");
+"Fixed regulator specified with variable voltages\n");
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -99,18 +99,18 @@ static struct regulator_ops fixed_voltage_ops = {
 
 static int reg_fixed_voltage_probe(struct platform_device *pdev)
 {
-	struct fixed_voltage_config *config;
-	struct fixed_voltage_data *drvdata;
+struct fixed_voltage_config *config;
+struct fixed_voltage_data *drvdata;
 	struct regulator_config cfg = { };
 	int ret;
 
-	drvdata = devm_kzalloc(&pdev->dev, sizeof(struct fixed_voltage_data),
+drvdata = devm_kzalloc(&pdev->dev, sizeof(struct fixed_voltage_data),
 			       GFP_KERNEL);
 	if (!drvdata)
 		return -ENOMEM;
 
 	if (pdev->dev.of_node) {
-		config = of_get_fixed_voltage_config(&pdev->dev,
+config = of_get_fixed_voltage_config(&pdev->dev,
 						     &drvdata->desc);
 		if (IS_ERR(config))
 			return PTR_ERR(config);
@@ -128,9 +128,9 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
 		dev_err(&pdev->dev, "Failed to allocate supply name\n");
 		return -ENOMEM;
 	}
-	drvdata->desc.type = REGULATOR_VOLTAGE;
+drvdata->desc.type = REGULATOR_VOLTAGE;
 	drvdata->desc.owner = THIS_MODULE;
-	drvdata->desc.ops = &fixed_voltage_ops;
+drvdata->desc.ops = &fixed_voltage_ops;
 
 	drvdata->desc.enable_time = config->startup_delay;
 
@@ -146,7 +146,7 @@ static int reg_fixed_voltage_probe(struct platform_device *pdev)
 	}
 
 	if (config->microvolts)
-		drvdata->desc.n_voltages = 1;
+drvdata->desc.n_voltages = 1;
 
 	drvdata->desc.fixed_uV = config->microvolts;
 
@@ -200,22 +200,22 @@ MODULE_DEVICE_TABLE(of, fixed_of_match);
 #endif
 
 static struct platform_driver regulator_fixed_voltage_driver = {
-	.probe		= reg_fixed_voltage_probe,
+.probe		= reg_fixed_voltage_probe,
 	.driver		= {
-		.name		= "reg-fixed-voltage",
+.name		= "reg-fixed-voltage",
 		.of_match_table = of_match_ptr(fixed_of_match),
 	},
 };
 
 static int __init regulator_fixed_voltage_init(void)
 {
-	return platform_driver_register(&regulator_fixed_voltage_driver);
+return platform_driver_register(&regulator_fixed_voltage_driver);
 }
 subsys_initcall(regulator_fixed_voltage_init);
 
 static void __exit regulator_fixed_voltage_exit(void)
 {
-	platform_driver_unregister(&regulator_fixed_voltage_driver);
+platform_driver_unregister(&regulator_fixed_voltage_driver);
 }
 module_exit(regulator_fixed_voltage_exit);
 

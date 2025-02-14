@@ -263,7 +263,7 @@
 				#size-cells = <1>;
 				compatible = "micron,n25q128a11", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <10000000>; /* input clock */
+spi-max-frequency = <10000000>; /* input clock */
 			};
 		};
 
@@ -370,8 +370,8 @@
 	qe: qe@ffe140000 {
 		ranges = <0x0 0xf 0xfe140000 0x40000>;
 		reg = <0xf 0xfe140000 0 0x480>;
-		brg-frequency = <0>;
-		bus-frequency = <0>;
+brg-frequency = <0>;
+bus-frequency = <0>;
 
 		si1: si@700 {
 			compatible = "fsl,t1040-qe-si";

@@ -69,7 +69,7 @@ int module_finalize(const Elf_Ehdr *hdr,
 #ifdef CONFIG_PPC64
 	sect = find_section(hdr, sechdrs, "__fw_ftr_fixup");
 	if (sect != NULL)
-		do_feature_fixups(powerpc_firmware_features,
+do_feature_fixups(powerpc_firmware_features,
 				  (void *)sect->sh_addr,
 				  (void *)sect->sh_addr + sect->sh_size);
 #endif /* CONFIG_PPC64 */

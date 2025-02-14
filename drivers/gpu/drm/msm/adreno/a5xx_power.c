@@ -94,8 +94,8 @@ static struct {
 };
 
 /*
- * Get the actual voltage value for the operating point at the specified
- * frequency
+* Get the actual voltage value for the operating point at the specified
+* frequency
  */
 static inline uint32_t _get_mvolts(struct msm_gpu *gpu, uint32_t freq)
 {
@@ -104,9 +104,9 @@ static inline uint32_t _get_mvolts(struct msm_gpu *gpu, uint32_t freq)
 	struct platform_device *pdev = priv->gpu_pdev;
 	struct dev_pm_opp *opp;
 
-	opp = dev_pm_opp_find_freq_exact(&pdev->dev, freq, true);
+opp = dev_pm_opp_find_freq_exact(&pdev->dev, freq, true);
 
-	return (!IS_ERR(opp)) ? dev_pm_opp_get_voltage(opp) / 1000 : 0;
+return (!IS_ERR(opp)) ? dev_pm_opp_get_voltage(opp) / 1000 : 0;
 }
 
 /* Setup thermal limit management */
@@ -126,8 +126,8 @@ static void a5xx_lm_setup(struct msm_gpu *gpu)
 	gpu_write(gpu, REG_A5XX_GPMU_DELTA_TEMP_THRESHOLD, 0x01);
 	gpu_write(gpu, REG_A5XX_GPMU_TEMP_SENSOR_CONFIG, 0x01);
 
-	/* Until we get clock scaling 0 is always the active power level */
-	gpu_write(gpu, REG_A5XX_GPMU_GPMU_VOLTAGE, 0x80000000 | 0);
+/* Until we get clock scaling 0 is always the active power level */
+gpu_write(gpu, REG_A5XX_GPMU_GPMU_VOLTAGE, 0x80000000 | 0);
 
 	gpu_write(gpu, REG_A5XX_GPMU_BASE_LEAKAGE, a5xx_gpu->lm_leakage);
 
@@ -137,19 +137,19 @@ static void a5xx_lm_setup(struct msm_gpu *gpu)
 	gpu_write(gpu, REG_A5XX_GPMU_BEC_ENABLE, 0x10001FFF);
 	gpu_write(gpu, REG_A5XX_GDPM_CONFIG1, 0x00201FF1);
 
-	/* Write the voltage table */
+/* Write the voltage table */
 	gpu_write(gpu, REG_A5XX_GPMU_BEC_ENABLE, 0x10001FFF);
 	gpu_write(gpu, REG_A5XX_GDPM_CONFIG1, 0x201FF1);
 
 	gpu_write(gpu, AGC_MSG_STATE, 1);
-	gpu_write(gpu, AGC_MSG_COMMAND, AGC_POWER_CONFIG_PRODUCTION_ID);
+gpu_write(gpu, AGC_MSG_COMMAND, AGC_POWER_CONFIG_PRODUCTION_ID);
 
-	/* Write the max power - hard coded to 5448 for A530 */
+/* Write the max power - hard coded to 5448 for A530 */
 	gpu_write(gpu, AGC_MSG_PAYLOAD(0), 5448);
 	gpu_write(gpu, AGC_MSG_PAYLOAD(1), 1);
 
 	/*
-	 * For now just write the one voltage level - we will do more when we
+* For now just write the one voltage level - we will do more when we
 	 * can do scaling
 	 */
 	gpu_write(gpu, AGC_MSG_PAYLOAD(2), _get_mvolts(gpu, gpu->fast_rate));
@@ -207,7 +207,7 @@ static int a5xx_gpmu_init(struct msm_gpu *gpu)
 
 	/*
 	 * Wait for the GPMU to respond. It isn't fatal if it doesn't, we just
-	 * won't have advanced power collapse.
+* won't have advanced power collapse.
 	 */
 	if (spin_usecs(gpu, 25, REG_A5XX_GPMU_GENERAL_0, 0xFFFFFFFF,
 		0xBABEFACE))
@@ -222,7 +222,7 @@ static void a5xx_lm_enable(struct msm_gpu *gpu)
 {
 	gpu_write(gpu, REG_A5XX_GDPM_INT_MASK, 0x0);
 	gpu_write(gpu, REG_A5XX_GDPM_INT_EN, 0x0A);
-	gpu_write(gpu, REG_A5XX_GPMU_GPMU_VOLTAGE_INTR_EN_MASK, 0x01);
+gpu_write(gpu, REG_A5XX_GPMU_GPMU_VOLTAGE_INTR_EN_MASK, 0x01);
 	gpu_write(gpu, REG_A5XX_GPMU_TEMP_THRESHOLD_INTR_EN_MASK, 0x50000);
 	gpu_write(gpu, REG_A5XX_GPMU_THROTTLE_UNMASK_FORCE_CTRL, 0x30000);
 
@@ -236,7 +236,7 @@ int a5xx_power_init(struct msm_gpu *gpu)
 	/* Set up the limits management */
 	a5xx_lm_setup(gpu);
 
-	/* Set up SP/TP power collpase */
+/* Set up SP/TP power collpase */
 	a5xx_pc_init(gpu);
 
 	/* Start the GPMU */

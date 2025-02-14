@@ -374,11 +374,11 @@ struct kvm_book3e_206_tlb_params {
 	/*
 	 * For mmu types KVM_MMU_FSL_BOOKE_NOHV and KVM_MMU_FSL_BOOKE_HV:
 	 *
-	 * - The number of ways of TLB0 must be a power of two between 2 and
+* - The number of ways of TLB0 must be a power of two between 2 and
 	 *   16.
 	 * - TLB1 must be fully associative.
 	 * - The size of TLB0 must be a multiple of the number of ways, and
-	 *   the number of sets must be a power of two.
+*   the number of sets must be a power of two.
 	 * - The size of TLB1 may not exceed 64 entries.
 	 * - TLB0 supports 4 KiB pages.
 	 * - The page sizes supported by TLB1 are as indicated by

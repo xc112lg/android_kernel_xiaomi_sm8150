@@ -306,7 +306,7 @@ static const int nehemiah_eblcr[32] = {
 };
 
 /*
- * Voltage scales. Div/Mod by 1000 to get actual voltage.
+* Voltage scales. Div/Mod by 1000 to get actual voltage.
  * Which scale to use depends on the VRM type in use.
  */
 

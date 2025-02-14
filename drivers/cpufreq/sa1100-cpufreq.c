@@ -7,7 +7,7 @@
  * - Johan Pouwelse (J.A.Pouwelse@its.tudelft.nl): initial version
  * - Erik Mouw (J.A.K.Mouw@its.tudelft.nl):
  *   - major rewrite for linux-2.3.99
- *   - rewritten for the more generic power management scheme in
+*   - rewritten for the more generic power management scheme in
  *     linux-2.4.5-rmk1
  *
  * This software has been developed while working on the LART
@@ -45,7 +45,7 @@
  * Theory of operations
  * ====================
  *
- * Clock scaling can be used to lower the power consumption of the CPU
+* Clock scaling can be used to lower the power consumption of the CPU
  * core. This will give you a somewhat longer running time.
  *
  * The SA-1100 has a single register to change the core clock speed:
@@ -106,7 +106,7 @@ struct sa1100_dram_regs {
 static struct cpufreq_driver sa1100_driver;
 
 static struct sa1100_dram_regs sa1100_dram_settings[] = {
-	/*speed,     mdcnfg,     mdcas0,     mdcas1,     mdcas2,   clock freq */
+/*speed,     mdcnfg,     mdcas0,     mdcas1,     mdcas2,   clock freq */
 	{ 59000, 0x00dc88a3, 0xcccccccf, 0xfffffffc, 0xffffffff},/*  59.0 MHz */
 	{ 73700, 0x011490a3, 0xcccccccf, 0xfffffffc, 0xffffffff},/*  73.7 MHz */
 	{ 88500, 0x014e90a3, 0xcccccccf, 0xfffffffc, 0xffffffff},/*  88.5 MHz */
@@ -146,7 +146,7 @@ static void sa1100_update_dram_timings(int current_speed, int new_speed)
 	/* No risk, no fun: run with interrupts on! */
 	if (new_speed > current_speed) {
 		/* We're going FASTER, so first relax the memory
-		 * timings before changing the core frequency
+* timings before changing the core frequency
 		 */
 
 		/* Half the memory access clock */
@@ -161,7 +161,7 @@ static void sa1100_update_dram_timings(int current_speed, int new_speed)
 		MDCNFG = settings->mdcnfg;
 	} else {
 		/* We're going SLOWER: first decrease the core
-		 * frequency and then tighten the memory settings.
+* frequency and then tighten the memory settings.
 		 */
 
 		/* Half the memory access clock */
@@ -180,30 +180,30 @@ static void sa1100_update_dram_timings(int current_speed, int new_speed)
 static int sa1100_target(struct cpufreq_policy *policy, unsigned int ppcr)
 {
 	unsigned int cur = sa11x0_getspeed(0);
-	unsigned int new_freq;
+unsigned int new_freq;
 
-	new_freq = sa11x0_freq_table[ppcr].frequency;
+new_freq = sa11x0_freq_table[ppcr].frequency;
 
-	if (new_freq > cur)
-		sa1100_update_dram_timings(cur, new_freq);
+if (new_freq > cur)
+sa1100_update_dram_timings(cur, new_freq);
 
 	PPCR = ppcr;
 
-	if (new_freq < cur)
-		sa1100_update_dram_timings(cur, new_freq);
+if (new_freq < cur)
+sa1100_update_dram_timings(cur, new_freq);
 
 	return 0;
 }
 
 static int __init sa1100_cpu_init(struct cpufreq_policy *policy)
 {
-	return cpufreq_generic_init(policy, sa11x0_freq_table, 0);
+return cpufreq_generic_init(policy, sa11x0_freq_table, 0);
 }
 
 static struct cpufreq_driver sa1100_driver __refdata = {
-	.flags		= CPUFREQ_STICKY | CPUFREQ_NEED_INITIAL_FREQ_CHECK |
-			  CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
-	.verify		= cpufreq_generic_frequency_table_verify,
+.flags		= CPUFREQ_STICKY | CPUFREQ_NEED_INITIAL_FREQ_CHECK |
+CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
+.verify		= cpufreq_generic_frequency_table_verify,
 	.target_index	= sa1100_target,
 	.get		= sa11x0_getspeed,
 	.init		= sa1100_cpu_init,
@@ -213,7 +213,7 @@ static struct cpufreq_driver sa1100_driver __refdata = {
 static int __init sa1100_dram_init(void)
 {
 	if (cpu_is_sa1100())
-		return cpufreq_register_driver(&sa1100_driver);
+return cpufreq_register_driver(&sa1100_driver);
 	else
 		return -ENODEV;
 }

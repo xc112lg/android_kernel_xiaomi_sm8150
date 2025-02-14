@@ -1510,7 +1510,7 @@ static void fadump_init_files(void)
 			" fadump_registered (%d)\n", rc);
 
 	debugfs_file = debugfs_create_file("fadump_region", 0444,
-					powerpc_debugfs_root, NULL,
+powerpc_debugfs_root, NULL,
 					&fadump_region_fops);
 	if (!debugfs_file)
 		printk(KERN_ERR "fadump: unable to create debugfs file"

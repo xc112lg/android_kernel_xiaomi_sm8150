@@ -98,7 +98,7 @@ struct pm860x_battery_info {
 	struct i2c_client *i2c;
 	struct device *dev;
 
-	struct power_supply *battery;
+struct power_supply *battery;
 	struct mutex lock;
 	int status;
 	int irq_cc;
@@ -151,8 +151,8 @@ static int array_soc[][2] = {
 static struct ccnt ccnt_data;
 
 /*
- * register 1 bit[7:0] -- bit[11:4] of measured value of voltage
- * register 0 bit[3:0] -- bit[3:0] of measured value of voltage
+* register 1 bit[7:0] -- bit[11:4] of measured value of voltage
+* register 0 bit[3:0] -- bit[3:0] of measured value of voltage
  */
 static int measure_12bit_voltage(struct pm860x_battery_info *info,
 				 int offset, int *data)
@@ -178,7 +178,7 @@ static int measure_vbatt(struct pm860x_battery_info *info, int state,
 
 	switch (state) {
 	case OCV_MODE_ACTIVE:
-		ret = measure_12bit_voltage(info, PM8607_VBAT_MEAS1, data);
+ret = measure_12bit_voltage(info, PM8607_VBAT_MEAS1, data);
 		if (ret)
 			return ret;
 		/* V_BATT_MEAS(mV) = value * 3 * 1.8 * 1000 / (2^12) */
@@ -186,7 +186,7 @@ static int measure_vbatt(struct pm860x_battery_info *info, int state,
 		break;
 	case OCV_MODE_SLEEP:
 		/*
-		 * voltage value of VBATT in sleep mode is saved in different
+* voltage value of VBATT in sleep mode is saved in different
 		 * registers.
 		 * bit[11:10] -- bit[7:6] of LDO9(0x18)
 		 * bit[9:8] -- bit[7:6] of LDO8(0x17)
@@ -503,7 +503,7 @@ static void pm860x_init_battery(struct pm860x_battery_info *info)
 	if (ret < 0)
 		goto out;
 
-	data = pm860x_reg_read(info->i2c, PM8607_POWER_UP_LOG);
+data = pm860x_reg_read(info->i2c, PM8607_POWER_UP_LOG);
 	bat_remove = data & BAT_WU_LOG;
 
 	dev_dbg(info->dev, "battery wake up? %s\n",
@@ -522,7 +522,7 @@ static void pm860x_init_battery(struct pm860x_battery_info *info)
 			info->start_soc = data;
 		dev_dbg(info->dev, "soc_rtc %d, soc_ocv :%d\n", data, soc);
 	} else {
-		pm860x_set_bits(info->i2c, PM8607_POWER_UP_LOG,
+pm860x_set_bits(info->i2c, PM8607_POWER_UP_LOG,
 				BAT_WU_LOG, BAT_WU_LOG);
 		info->start_soc = soc;
 	}
@@ -561,12 +561,12 @@ static int measure_temp(struct pm860x_battery_info *info, int *data)
 	int max;
 
 	if (info->temp_type == PM860X_TEMP_TINT) {
-		ret = measure_12bit_voltage(info, PM8607_TINT_MEAS1, data);
+ret = measure_12bit_voltage(info, PM8607_TINT_MEAS1, data);
 		if (ret)
 			return ret;
 		*data = (*data - 884) * 1000 / 3611;
 	} else {
-		ret = measure_12bit_voltage(info, PM8607_GPADC1_MEAS1, data);
+ret = measure_12bit_voltage(info, PM8607_GPADC1_MEAS1, data);
 		if (ret)
 			return ret;
 		/* meausered Vtbat(mV) / Ibias_current(11uA)*/
@@ -787,7 +787,7 @@ soc:
 		 cap_ocv, cap_cc, *cap);
 	/*
 	 * store the current capacity to RTC domain register,
-	 * after next power up , it will be restored.
+* after next power up , it will be restored.
 	 */
 	pm860x_set_bits(info->i2c, PM8607_RTC_MISC2, RTC_SOC_5LSB,
 			(*cap & 0x1F) << 3);
@@ -806,18 +806,18 @@ static void pm860x_external_power_changed(struct power_supply *psy)
 }
 
 static int pm860x_batt_get_prop(struct power_supply *psy,
-				enum power_supply_property psp,
-				union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct pm860x_battery_info *info = dev_get_drvdata(psy->dev.parent);
 	int data;
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = info->present;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = calc_capacity(info, &data);
 		if (ret)
 			return ret;
@@ -830,30 +830,30 @@ static int pm860x_batt_get_prop(struct power_supply *psy,
 			data = 100;
 		val->intval = data;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+case POWER_SUPPLY_PROP_TECHNOLOGY:
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		/* return real vbatt Voltage */
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+/* return real vbatt Voltage */
 		ret = measure_vbatt(info, OCV_MODE_ACTIVE, &data);
 		if (ret)
 			return ret;
 		val->intval = data * 1000;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
-		/* return Open Circuit Voltage (not measured voltage) */
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+/* return Open Circuit Voltage (not measured voltage) */
 		ret = calc_ocv(info, &data);
 		if (ret)
 			return ret;
 		val->intval = data * 1000;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = measure_current(info, &data);
 		if (ret)
 			return ret;
 		val->intval = data;
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		if (info->present) {
 			ret = measure_temp(info, &data);
 			if (ret)
@@ -872,13 +872,13 @@ static int pm860x_batt_get_prop(struct power_supply *psy,
 }
 
 static int pm860x_batt_set_prop(struct power_supply *psy,
-				       enum power_supply_property psp,
-				       const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
 	struct pm860x_battery_info *info = dev_get_drvdata(psy->dev.parent);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		clear_ccnt(info, &ccnt_data);
 		info->start_soc = 100;
 		dev_dbg(info->dev, "chg done, update soc = %d\n",
@@ -893,30 +893,30 @@ static int pm860x_batt_set_prop(struct power_supply *psy,
 
 
 static enum power_supply_property pm860x_batt_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_TEMP,
 };
 
 static const struct power_supply_desc pm860x_battery_desc = {
 	.name			= "battery-monitor",
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= pm860x_batt_props,
 	.num_properties		= ARRAY_SIZE(pm860x_batt_props),
 	.get_property		= pm860x_batt_get_prop,
 	.set_property		= pm860x_batt_set_prop,
-	.external_power_changed	= pm860x_external_power_changed,
+.external_power_changed	= pm860x_external_power_changed,
 };
 
 static int pm860x_battery_probe(struct platform_device *pdev)
 {
 	struct pm860x_chip *chip = dev_get_drvdata(pdev->dev.parent);
 	struct pm860x_battery_info *info;
-	struct pm860x_power_pdata *pdata;
+struct pm860x_power_pdata *pdata;
 	int ret;
 
 	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
@@ -939,7 +939,7 @@ static int pm860x_battery_probe(struct platform_device *pdev)
 	info->i2c =
 	    (chip->id == CHIP_PM8607) ? chip->client : chip->companion;
 	info->dev = &pdev->dev;
-	info->status = POWER_SUPPLY_STATUS_UNKNOWN;
+info->status = POWER_SUPPLY_STATUS_UNKNOWN;
 	pdata = pdev->dev.platform_data;
 
 	mutex_init(&info->lock);
@@ -956,7 +956,7 @@ static int pm860x_battery_probe(struct platform_device *pdev)
 	else
 		info->resistor = 300;	/* set default internal resistor */
 
-	info->battery = devm_power_supply_register(&pdev->dev,
+info->battery = devm_power_supply_register(&pdev->dev,
 						   &pm860x_battery_desc,
 						   NULL);
 	if (IS_ERR(info->battery))

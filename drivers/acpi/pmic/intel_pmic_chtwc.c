@@ -91,9 +91,9 @@ static struct pmic_table power_table[] = {
 	}, /* V18X */
 	{
 		.address = 0x08,
-		.reg = CHT_WC_VDDQ_CTRL,
+.reg = CHT_WC_VDDQ_CTRL,
 		.bit = 0x01,
-	}, /* VDDQ */
+}, /* VDDQ */
 	{
 		.address = 0x0c,
 		.reg = CHT_WC_V1P2A_CTRL,
@@ -244,10 +244,10 @@ static int intel_cht_wc_pmic_update_power(struct regmap *regmap, int reg,
  * (DPTF) due to lacking documentation.
  */
 static struct intel_pmic_opregion_data intel_cht_wc_pmic_opregion_data = {
-	.get_power		= intel_cht_wc_pmic_get_power,
-	.update_power		= intel_cht_wc_pmic_update_power,
-	.power_table		= power_table,
-	.power_table_count	= ARRAY_SIZE(power_table),
+.get_power		= intel_cht_wc_pmic_get_power,
+.update_power		= intel_cht_wc_pmic_update_power,
+.power_table		= power_table,
+.power_table_count	= ARRAY_SIZE(power_table),
 };
 
 static int intel_cht_wc_pmic_opregion_probe(struct platform_device *pdev)

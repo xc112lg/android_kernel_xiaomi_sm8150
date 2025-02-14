@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER5+/++ (not POWER5) processors.
+* Performance counter support for POWER5+/++ (not POWER5) processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  *
@@ -15,7 +15,7 @@
 #include <asm/cputable.h>
 
 /*
- * Bits in event code for POWER5+ (POWER5 GS) and POWER5++ (POWER5 GS DD3)
+* Bits in event code for POWER5+ (POWER5 GS) and POWER5++ (POWER5 GS DD3)
  */
 #define PM_PMC_SH	20	/* PMC number (1-based) for direct events */
 #define PM_PMC_MSK	0xf
@@ -42,7 +42,7 @@
 #define PM_LASTUNIT	0xc
 
 /*
- * Bits in MMCR1 for POWER5+
+* Bits in MMCR1 for POWER5+
  */
 #define MMCR1_TTM0SEL_SH	62
 #define MMCR1_TTM1SEL_SH	60
@@ -259,7 +259,7 @@ static s64 find_alternative_bdecode(u64 event)
 		}
 	}
 
-	/* new decode alternatives for power5+ */
+/* new decode alternatives for power5+ */
 	if (pmc == 1 && (pp == 0x0d || pp == 0x0e))
 		return event + (2 << PM_PMC_SH) + (0x2e - 0x0d);
 	if (pmc == 3 && (pp == 0x2e || pp == 0x2f))
@@ -281,14 +281,14 @@ static int power5p_get_alternatives(u64 event, unsigned int flags, u64 alt[])
 
 	alt[0] = event;
 	nalt = 1;
-	nlim = power5p_limited_pmc_event(event);
+nlim = power5p_limited_pmc_event(event);
 	i = find_alternative(event);
 	if (i >= 0) {
 		for (j = 0; j < MAX_ALT; ++j) {
 			ae = event_alternatives[i][j];
 			if (ae && ae != event)
 				alt[nalt++] = ae;
-			nlim += power5p_limited_pmc_event(ae);
+nlim += power5p_limited_pmc_event(ae);
 		}
 	} else {
 		ae = find_alternative_bdecode(event);
@@ -334,7 +334,7 @@ static int power5p_get_alternatives(u64 event, unsigned int flags, u64 alt[])
 		/* remove the limited PMC events */
 		j = 0;
 		for (i = 0; i < nalt; ++i) {
-			if (!power5p_limited_pmc_event(alt[i])) {
+if (!power5p_limited_pmc_event(alt[i])) {
 				alt[j] = alt[i];
 				++j;
 			}
@@ -344,7 +344,7 @@ static int power5p_get_alternatives(u64 event, unsigned int flags, u64 alt[])
 		/* remove all but the limited PMC events */
 		j = 0;
 		for (i = 0; i < nalt; ++i) {
-			if (power5p_limited_pmc_event(alt[i])) {
+if (power5p_limited_pmc_event(alt[i])) {
 				alt[j] = alt[i];
 				++j;
 			}
@@ -579,7 +579,7 @@ static int power5p_compute_mmcr(u64 event[], int n_ev,
 			grsel = (event[i] >> PM_GRS_SH) & PM_GRS_MSK;
 			mmcr1 |= (unsigned long)grsel << grsel_shift[bit];
 		}
-		if (power5p_marked_instr_event(event[i]))
+if (power5p_marked_instr_event(event[i]))
 			mmcra |= MMCRA_SAMPLE_ENABLE;
 		if ((psel & 0x58) == 0x40 && (byte & 1) != ((pmc >> 1) & 1))
 			/* select alternate byte lane */
@@ -661,30 +661,30 @@ static int power5p_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
 };
 
 static struct power_pmu power5p_pmu = {
-	.name			= "POWER5+/++",
+.name			= "POWER5+/++",
 	.n_counter		= 6,
 	.max_alternatives	= MAX_ALT,
 	.add_fields		= 0x7000000000055ul,
 	.test_adder		= 0x3000040000000ul,
-	.compute_mmcr		= power5p_compute_mmcr,
-	.get_constraint		= power5p_get_constraint,
-	.get_alternatives	= power5p_get_alternatives,
-	.disable_pmc		= power5p_disable_pmc,
-	.limited_pmc_event	= power5p_limited_pmc_event,
+.compute_mmcr		= power5p_compute_mmcr,
+.get_constraint		= power5p_get_constraint,
+.get_alternatives	= power5p_get_alternatives,
+.disable_pmc		= power5p_disable_pmc,
+.limited_pmc_event	= power5p_limited_pmc_event,
 	.flags			= PPMU_LIMITED_PMC5_6 | PPMU_HAS_SSLOT,
-	.n_generic		= ARRAY_SIZE(power5p_generic_events),
-	.generic_events		= power5p_generic_events,
-	.cache_events		= &power5p_cache_events,
+.n_generic		= ARRAY_SIZE(power5p_generic_events),
+.generic_events		= power5p_generic_events,
+.cache_events		= &power5p_cache_events,
 };
 
 static int __init init_power5p_pmu(void)
 {
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    (strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5+")
-	     && strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5++")))
+(strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5+")
+&& strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5++")))
 		return -ENODEV;
 
-	return register_power_pmu(&power5p_pmu);
+return register_power_pmu(&power5p_pmu);
 }
 
 early_initcall(init_power5p_pmu);

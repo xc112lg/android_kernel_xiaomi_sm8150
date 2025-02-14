@@ -68,23 +68,23 @@ enum max14656_chg_type {
 };
 
 static const struct max14656_chg_type_props {
-	enum power_supply_type type;
+enum power_supply_type type;
 } chg_type_props[] = {
-	{ POWER_SUPPLY_TYPE_UNKNOWN },
-	{ POWER_SUPPLY_TYPE_USB },
-	{ POWER_SUPPLY_TYPE_USB_CDP },
-	{ POWER_SUPPLY_TYPE_USB_DCP },
-	{ POWER_SUPPLY_TYPE_USB_DCP },
-	{ POWER_SUPPLY_TYPE_USB_DCP },
-	{ POWER_SUPPLY_TYPE_USB_DCP },
-	{ POWER_SUPPLY_TYPE_USB_DCP },
-	{ POWER_SUPPLY_TYPE_USB },
+{ POWER_SUPPLY_TYPE_UNKNOWN },
+{ POWER_SUPPLY_TYPE_USB },
+{ POWER_SUPPLY_TYPE_USB_CDP },
+{ POWER_SUPPLY_TYPE_USB_DCP },
+{ POWER_SUPPLY_TYPE_USB_DCP },
+{ POWER_SUPPLY_TYPE_USB_DCP },
+{ POWER_SUPPLY_TYPE_USB_DCP },
+{ POWER_SUPPLY_TYPE_USB_DCP },
+{ POWER_SUPPLY_TYPE_USB },
 };
 
 struct max14656_chip {
 	struct i2c_client	*client;
-	struct power_supply	*detect_psy;
-	struct power_supply_desc psy_desc;
+struct power_supply	*detect_psy;
+struct power_supply_desc psy_desc;
 	struct delayed_work	irq_work;
 
 	int irq;
@@ -154,14 +154,14 @@ static void max14656_irq_worker(struct work_struct *work)
 		if (chg_type < MAX14656_CHARGER_LAST)
 			chip->psy_desc.type = chg_type_props[chg_type].type;
 		else
-			chip->psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
+chip->psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
 		chip->online = 1;
 	} else {
 		chip->online = 0;
-		chip->psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
+chip->psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
 	}
 
-	power_supply_changed(chip->detect_psy);
+power_supply_changed(chip->detect_psy);
 }
 
 static irqreturn_t max14656_irq(int irq, void *dev_id)
@@ -193,7 +193,7 @@ static int max14656_hw_init(struct max14656_chip *chip)
 	if (max14656_write_reg(client, MAX14656_CONTROL_2, CONTROL2_ADC_EN))
 		return -EINVAL;
 
-	/* turn on interrupts and low power mode */
+/* turn on interrupts and low power mode */
 	if (max14656_write_reg(client, MAX14656_CONTROL_1,
 		CONTROL1_DEFAULT |
 		CONTROL1_INT_EN |
@@ -212,19 +212,19 @@ static int max14656_hw_init(struct max14656_chip *chip)
 }
 
 static int max14656_get_property(struct power_supply *psy,
-			    enum power_supply_property psp,
-			    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct max14656_chip *chip = power_supply_get_drvdata(psy);
+struct max14656_chip *chip = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = chip->online;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = MAX14656_NAME;
 		break;
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = MAX14656_MANUFACTURER;
 		break;
 	default:
@@ -235,9 +235,9 @@ static int max14656_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property max14656_battery_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
 };
 
 static void stop_irq_work(void *data)
@@ -253,7 +253,7 @@ static int max14656_probe(struct i2c_client *client,
 {
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
 	struct device *dev = &client->dev;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct max14656_chip *chip;
 	int irq = client->irq;
 	int ret = 0;
@@ -276,7 +276,7 @@ static int max14656_probe(struct i2c_client *client,
 	chip->client = client;
 	chip->online = 0;
 	chip->psy_desc.name = MAX14656_NAME;
-	chip->psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
+chip->psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
 	chip->psy_desc.properties = max14656_battery_props;
 	chip->psy_desc.num_properties = ARRAY_SIZE(max14656_battery_props);
 	chip->psy_desc.get_property = max14656_get_property;
@@ -286,10 +286,10 @@ static int max14656_probe(struct i2c_client *client,
 	if (ret)
 		return -ENODEV;
 
-	chip->detect_psy = devm_power_supply_register(dev,
+chip->detect_psy = devm_power_supply_register(dev,
 		       &chip->psy_desc, &psy_cfg);
 	if (IS_ERR(chip->detect_psy)) {
-		dev_err(dev, "power_supply_register failed\n");
+dev_err(dev, "power_supply_register failed\n");
 		return -EINVAL;
 	}
 

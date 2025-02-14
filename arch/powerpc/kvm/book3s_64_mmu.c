@@ -542,12 +542,12 @@ static void kvmppc_mmu_book3s_64_tlbie(struct kvm_vcpu *vcpu, ulong va,
 
 	/*
 	 * The tlbie instruction changed behaviour starting with
-	 * POWER6.  POWER6 and later don't have the large page flag
+* POWER6.  POWER6 and later don't have the large page flag
 	 * in the instruction but in the RB value, along with bits
 	 * indicating page and segment sizes.
 	 */
 	if (vcpu->arch.hflags & BOOK3S_HFLAG_NEW_TLBIE) {
-		/* POWER6 or later */
+/* POWER6 or later */
 		if (va & 1) {		/* L bit */
 			if ((va & 0xf000) == 0x1000)
 				mask = 0xFFFFFFFF0ULL;	/* 64k page */

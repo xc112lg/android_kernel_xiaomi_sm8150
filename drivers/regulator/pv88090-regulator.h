@@ -1,6 +1,6 @@
 /*
  * pv88090-regulator.h - Regulator definitions for PV88090
- * Copyright (C) 2015 Powerventure Semiconductor Ltd.
+* Copyright (C) 2015 Powerventure Semiconductor Ltd.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

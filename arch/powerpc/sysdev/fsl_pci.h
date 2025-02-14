@@ -73,7 +73,7 @@ struct ccsr_pci {
 	__be32	pex_pme_mes_dr;		/* 0x.020 - PCIE PME and message detect register */
 	__be32	pex_pme_mes_disr;	/* 0x.024 - PCIE PME and message disable register */
 	__be32	pex_pme_mes_ier;	/* 0x.028 - PCIE PME and message interrupt enable register */
-	__be32	pex_pmcr;		/* 0x.02c - PCIE power management command register */
+__be32	pex_pmcr;		/* 0x.02c - PCIE power management command register */
 	u8	res3[3016];
 	__be32	block_rev1;	/* 0x.bf8 - PCIE Block Revision register 1 */
 	__be32	block_rev2;	/* 0x.bfc - PCIE Block Revision register 2 */

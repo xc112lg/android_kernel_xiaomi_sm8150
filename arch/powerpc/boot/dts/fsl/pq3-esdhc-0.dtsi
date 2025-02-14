@@ -37,5 +37,5 @@ sdhc@2e000 {
 	reg = <0x2e000 0x1000>;
 	interrupts = <72 0x2 0 0>;
 	/* Filled in by U-Boot */
-	clock-frequency = <0>;
+clock-frequency = <0>;
 };

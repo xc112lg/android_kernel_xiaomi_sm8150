@@ -43,7 +43,7 @@ int enter_vmx_usercopy(void)
 
 /*
  * This function must return 0 because we tail call optimise when calling
- * from __copy_tofrom_user_power7 which returns 0 on success.
+* from __copy_tofrom_user_power7 which returns 0 on success.
  */
 int exit_vmx_usercopy(void)
 {

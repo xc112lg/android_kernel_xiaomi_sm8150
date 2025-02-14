@@ -92,9 +92,9 @@
 		.of_match	= of_match_ptr("VDCDC"#_num),	\
 		.regulators_node = of_match_ptr("regulators"),	\
 		.id		= TPS65023_DCDC_##_num,		\
-		.n_voltages     = ARRAY_SIZE(_t),		\
+.n_voltages     = ARRAY_SIZE(_t),		\
 		.ops		= &tps65023_dcdc_ops,		\
-		.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 		.owner		= THIS_MODULE,			\
 		.volt_table	= _t,				\
 		.vsel_reg	= TPS65023_REG_DEF_CORE,	\
@@ -111,9 +111,9 @@
 		.of_match	= of_match_ptr("LDO"#_num),	\
 		.regulators_node = of_match_ptr("regulators"),	\
 		.id		= TPS65023_LDO_##_num,		\
-		.n_voltages     = ARRAY_SIZE(_t),		\
+.n_voltages     = ARRAY_SIZE(_t),		\
 		.ops		= &tps65023_ldo_ops,		\
-		.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 		.owner		= THIS_MODULE,			\
 		.volt_table	= _t,				\
 		.vsel_reg	= TPS65023_REG_LDO_CTRL,	\
@@ -184,7 +184,7 @@ static int tps65023_dcdc_get_voltage_sel(struct regulator_dev *dev)
 	if (dcdc != tps->driver_data->core_regulator)
 		return 0;
 
-	return regulator_get_voltage_sel_regmap(dev);
+return regulator_get_voltage_sel_regmap(dev);
 }
 
 static int tps65023_dcdc_set_voltage_sel(struct regulator_dev *dev,
@@ -196,7 +196,7 @@ static int tps65023_dcdc_set_voltage_sel(struct regulator_dev *dev,
 	if (dcdc != tps->driver_data->core_regulator)
 		return -EINVAL;
 
-	return regulator_set_voltage_sel_regmap(dev, selector);
+return regulator_set_voltage_sel_regmap(dev, selector);
 }
 
 /* Operations permitted on VDCDCx */
@@ -204,10 +204,10 @@ static const struct regulator_ops tps65023_dcdc_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.get_voltage_sel = tps65023_dcdc_get_voltage_sel,
-	.set_voltage_sel = tps65023_dcdc_set_voltage_sel,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = tps65023_dcdc_get_voltage_sel,
+.set_voltage_sel = tps65023_dcdc_set_voltage_sel,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
 };
 
 /* Operations permitted on LDOx */
@@ -215,10 +215,10 @@ static const struct regulator_ops tps65023_ldo_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
 };
 
 static const struct regmap_config tps65023_regmap_config = {
@@ -309,7 +309,7 @@ static int tps_65023_probe(struct i2c_client *client,
 
 	i2c_set_clientdata(client, tps);
 
-	/* Enable setting output voltage by I2C */
+/* Enable setting output voltage by I2C */
 	regmap_update_bits(tps->regmap, TPS65023_REG_CON_CTRL2,
 			   TPS65023_REG_CTRL2_CORE_ADJ, 0);
 

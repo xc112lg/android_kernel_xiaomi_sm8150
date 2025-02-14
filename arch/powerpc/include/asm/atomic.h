@@ -3,7 +3,7 @@
 #define _ASM_POWERPC_ATOMIC_H_
 
 /*
- * PowerPC atomic operations
+* PowerPC atomic operations
  */
 
 #ifdef __KERNEL__

@@ -163,7 +163,7 @@ static int tonga_start_smu(struct pp_smumgr *smumgr)
 /**
  * Write a 32bit value to the SMC SRAM space.
  * ALL PARAMETERS ARE IN HOST BYTE ORDER.
- * @param    smumgr  the address of the powerplay hardware manager.
+* @param    smumgr  the address of the powerplay hardware manager.
  * @param    smcAddress the address in the SMC RAM to access.
  * @param    value to write to the SMC SRAM.
  */

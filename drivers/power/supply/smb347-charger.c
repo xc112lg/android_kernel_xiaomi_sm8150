@@ -127,9 +127,9 @@
  * @lock: protects concurrent access to online variables
  * @dev: pointer to device
  * @regmap: pointer to driver regmap
- * @mains: power_supply instance for AC/DC power
- * @usb: power_supply instance for USB power
- * @battery: power_supply instance for battery
+* @mains: power_supply instance for AC/DC power
+* @usb: power_supply instance for USB power
+* @battery: power_supply instance for battery
  * @mains_online: is AC/DC input connected
  * @usb_online: is USB input connected
  * @charging_enabled: is charging enabled
@@ -139,9 +139,9 @@ struct smb347_charger {
 	struct mutex		lock;
 	struct device		*dev;
 	struct regmap		*regmap;
-	struct power_supply	*mains;
-	struct power_supply	*usb;
-	struct power_supply	*battery;
+struct power_supply	*mains;
+struct power_supply	*usb;
+struct power_supply	*battery;
 	bool			mains_online;
 	bool			usb_online;
 	bool			charging_enabled;
@@ -222,10 +222,10 @@ static int current_to_hw(const unsigned int *tbl, size_t size, unsigned int val)
 }
 
 /**
- * smb347_update_ps_status - refreshes the power source status
+* smb347_update_ps_status - refreshes the power source status
  * @smb: pointer to smb347 charger instance
  *
- * Function checks whether any power source is connected to the charger and
+* Function checks whether any power source is connected to the charger and
  * updates internal state accordingly. If there is a change to previous state
  * function returns %1, otherwise %0 and negative errno in case of errror.
  */
@@ -242,7 +242,7 @@ static int smb347_update_ps_status(struct smb347_charger *smb)
 
 	/*
 	 * Dc and usb are set depending on whether they are enabled in
-	 * platform data _and_ whether corresponding undervoltage is set.
+* platform data _and_ whether corresponding undervoltage is set.
 	 */
 	if (smb->pdata->use_mains)
 		dc = !(val & IRQSTAT_E_DCIN_UV_STAT);
@@ -259,11 +259,11 @@ static int smb347_update_ps_status(struct smb347_charger *smb)
 }
 
 /*
- * smb347_is_ps_online - returns whether input power source is connected
+* smb347_is_ps_online - returns whether input power source is connected
  * @smb: pointer to smb347 charger instance
  *
- * Returns %true if input power source is connected. Note that this is
- * dependent on what platform has configured for usable power sources. For
+* Returns %true if input power source is connected. Note that this is
+* dependent on what platform has configured for usable power sources. For
  * example if USB is disabled, this will return %false even if the USB cable
  * is connected.
  */
@@ -335,7 +335,7 @@ static int smb347_start_stop_charging(struct smb347_charger *smb)
 	int ret;
 
 	/*
-	 * Depending on whether valid power source is connected or not, we
+* Depending on whether valid power source is connected or not, we
 	 * disable or enable the charging. We do it manually because it
 	 * depends on how the platform has configured the valid inputs.
 	 */
@@ -433,29 +433,29 @@ static int smb347_set_voltage_limits(struct smb347_charger *smb)
 {
 	int ret;
 
-	if (smb->pdata->pre_to_fast_voltage) {
-		ret = smb->pdata->pre_to_fast_voltage;
+if (smb->pdata->pre_to_fast_voltage) {
+ret = smb->pdata->pre_to_fast_voltage;
 
 		/* uV */
 		ret = clamp_val(ret, 2400000, 3000000) - 2400000;
 		ret /= 200000;
 
-		ret = regmap_update_bits(smb->regmap, CFG_FLOAT_VOLTAGE,
-				CFG_FLOAT_VOLTAGE_THRESHOLD_MASK,
-				ret << CFG_FLOAT_VOLTAGE_THRESHOLD_SHIFT);
+ret = regmap_update_bits(smb->regmap, CFG_FLOAT_VOLTAGE,
+CFG_FLOAT_VOLTAGE_THRESHOLD_MASK,
+ret << CFG_FLOAT_VOLTAGE_THRESHOLD_SHIFT);
 		if (ret < 0)
 			return ret;
 	}
 
-	if (smb->pdata->max_charge_voltage) {
-		ret = smb->pdata->max_charge_voltage;
+if (smb->pdata->max_charge_voltage) {
+ret = smb->pdata->max_charge_voltage;
 
 		/* uV */
 		ret = clamp_val(ret, 3500000, 4500000) - 3500000;
 		ret /= 20000;
 
-		ret = regmap_update_bits(smb->regmap, CFG_FLOAT_VOLTAGE,
-					 CFG_FLOAT_VOLTAGE_FLOAT_MASK, ret);
+ret = regmap_update_bits(smb->regmap, CFG_FLOAT_VOLTAGE,
+CFG_FLOAT_VOLTAGE_FLOAT_MASK, ret);
 		if (ret < 0)
 			return ret;
 	}
@@ -552,7 +552,7 @@ static int smb347_set_temp_limits(struct smb347_charger *smb)
 	 * thermistor monitoring.
 	 *
 	 * When soft limits are hit, the device will start to compensate
-	 * current and/or voltage depending on the configuration.
+* current and/or voltage depending on the configuration.
 	 *
 	 * When hard limit is hit, the device will suspend charging
 	 * depending on the configuration.
@@ -640,7 +640,7 @@ static int smb347_hw_init(struct smb347_charger *smb)
 	if (ret < 0)
 		goto fail;
 
-	ret = smb347_set_voltage_limits(smb);
+ret = smb347_set_voltage_limits(smb);
 	if (ret < 0)
 		goto fail;
 
@@ -688,7 +688,7 @@ static int smb347_hw_init(struct smb347_charger *smb)
 	if (ret < 0)
 		goto fail;
 
-	/* Disable Automatic Power Source Detection (APSD) interrupt. */
+/* Disable Automatic Power Source Detection (APSD) interrupt. */
 	ret = regmap_update_bits(smb->regmap, CFG_PIN, CFG_PIN_EN_APSD_IRQ, 0);
 	if (ret < 0)
 		goto fail;
@@ -741,7 +741,7 @@ static irqreturn_t smb347_interrupt(int irq, void *data)
 	 */
 	if (stat_c & STAT_C_CHARGER_ERROR) {
 		dev_err(smb->dev, "charging stopped due to charger error\n");
-		power_supply_changed(smb->battery);
+power_supply_changed(smb->battery);
 		handled = true;
 	}
 
@@ -752,7 +752,7 @@ static irqreturn_t smb347_interrupt(int irq, void *data)
 	 */
 	if (irqstat_c & (IRQSTAT_C_TERMINATION_IRQ | IRQSTAT_C_TAPER_IRQ)) {
 		if (irqstat_c & IRQSTAT_C_TERMINATION_STAT)
-			power_supply_changed(smb->battery);
+power_supply_changed(smb->battery);
 		dev_dbg(smb->dev, "going to HW maintenance mode\n");
 		handled = true;
 	}
@@ -766,21 +766,21 @@ static irqreturn_t smb347_interrupt(int irq, void *data)
 
 		if (irqstat_d & IRQSTAT_D_CHARGE_TIMEOUT_STAT)
 			dev_warn(smb->dev, "charging stopped due to timeout\n");
-		power_supply_changed(smb->battery);
+power_supply_changed(smb->battery);
 		handled = true;
 	}
 
 	/*
-	 * If we got an under voltage interrupt it means that AC/USB input
+* If we got an under voltage interrupt it means that AC/USB input
 	 * was connected or disconnected.
 	 */
 	if (irqstat_e & (IRQSTAT_E_USBIN_UV_IRQ | IRQSTAT_E_DCIN_UV_IRQ)) {
 		if (smb347_update_ps_status(smb) > 0) {
 			smb347_start_stop_charging(smb);
 			if (smb->pdata->use_mains)
-				power_supply_changed(smb->mains);
+power_supply_changed(smb->mains);
 			if (smb->pdata->use_usb)
-				power_supply_changed(smb->usb);
+power_supply_changed(smb->usb);
 		}
 		handled = true;
 	}
@@ -798,7 +798,7 @@ static int smb347_irq_set(struct smb347_charger *smb, bool enable)
 
 	/*
 	 * Enable/disable interrupts for:
-	 *	- under voltage
+*	- under voltage
 	 *	- termination current reached
 	 *	- charger timeout
 	 *	- charger error
@@ -907,7 +907,7 @@ static int get_const_charge_current(struct smb347_charger *smb)
 }
 
 /*
- * Returns the constant charge voltage programmed
+* Returns the constant charge voltage programmed
  * into the charger in uV.
  */
 static int get_const_charge_voltage(struct smb347_charger *smb)
@@ -922,7 +922,7 @@ static int get_const_charge_voltage(struct smb347_charger *smb)
 	if (ret < 0)
 		return ret;
 
-	v &= STAT_A_FLOAT_VOLTAGE_MASK;
+v &= STAT_A_FLOAT_VOLTAGE_MASK;
 	if (v > 0x3d)
 		v = 0x3d;
 
@@ -932,26 +932,26 @@ static int get_const_charge_voltage(struct smb347_charger *smb)
 }
 
 static int smb347_mains_get_property(struct power_supply *psy,
-				     enum power_supply_property prop,
-				     union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb347_charger *smb = power_supply_get_drvdata(psy);
+struct smb347_charger *smb = power_supply_get_drvdata(psy);
 	int ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = smb->mains_online;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-		ret = get_const_charge_voltage(smb);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+ret = get_const_charge_voltage(smb);
 		if (ret < 0)
 			return ret;
 		else
 			val->intval = ret;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		ret = get_const_charge_current(smb);
 		if (ret < 0)
 			return ret;
@@ -967,32 +967,32 @@ static int smb347_mains_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property smb347_mains_properties[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
 };
 
 static int smb347_usb_get_property(struct power_supply *psy,
-				   enum power_supply_property prop,
-				   union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb347_charger *smb = power_supply_get_drvdata(psy);
+struct smb347_charger *smb = power_supply_get_drvdata(psy);
 	int ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = smb->usb_online;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-		ret = get_const_charge_voltage(smb);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+ret = get_const_charge_voltage(smb);
 		if (ret < 0)
 			return ret;
 		else
 			val->intval = ret;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		ret = get_const_charge_current(smb);
 		if (ret < 0)
 			return ret;
@@ -1008,9 +1008,9 @@ static int smb347_usb_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property smb347_usb_properties[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
 };
 
 static int smb347_get_charging_status(struct smb347_charger *smb)
@@ -1019,7 +1019,7 @@ static int smb347_get_charging_status(struct smb347_charger *smb)
 	unsigned int val;
 
 	if (!smb347_is_ps_online(smb))
-		return POWER_SUPPLY_STATUS_DISCHARGING;
+return POWER_SUPPLY_STATUS_DISCHARGING;
 
 	ret = regmap_read(smb->regmap, STAT_C, &val);
 	if (ret < 0)
@@ -1031,27 +1031,27 @@ static int smb347_get_charging_status(struct smb347_charger *smb)
 		 * set to NOT CHARGING upon charger error
 		 * or charging has stopped.
 		 */
-		status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	} else {
 		if ((val & STAT_C_CHG_MASK) >> STAT_C_CHG_SHIFT) {
 			/*
 			 * set to charging if battery is in pre-charge,
 			 * fast charge or taper charging mode.
 			 */
-			status = POWER_SUPPLY_STATUS_CHARGING;
+status = POWER_SUPPLY_STATUS_CHARGING;
 		} else if (val & STAT_C_CHG_TERM) {
 			/*
 			 * set the status to FULL if battery is not in pre
 			 * charge, fast charge or taper charging mode AND
 			 * charging is terminated at least once.
 			 */
-			status = POWER_SUPPLY_STATUS_FULL;
+status = POWER_SUPPLY_STATUS_FULL;
 		} else {
 			/*
 			 * in this case no charger error or termination
 			 * occured but charging is not in progress!!!
 			 */
-			status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		}
 	}
 
@@ -1059,10 +1059,10 @@ static int smb347_get_charging_status(struct smb347_charger *smb)
 }
 
 static int smb347_battery_get_property(struct power_supply *psy,
-				       enum power_supply_property prop,
-				       union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb347_charger *smb = power_supply_get_drvdata(psy);
+struct smb347_charger *smb = power_supply_get_drvdata(psy);
 	const struct smb347_charger_platform_data *pdata = smb->pdata;
 	int ret;
 
@@ -1071,14 +1071,14 @@ static int smb347_battery_get_property(struct power_supply *psy,
 		return ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = smb347_get_charging_status(smb);
 		if (ret < 0)
 			return ret;
 		val->intval = ret;
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		if (!smb347_is_ps_online(smb))
 			return -ENODATA;
 
@@ -1088,34 +1088,34 @@ static int smb347_battery_get_property(struct power_supply *psy,
 		 */
 		switch (smb347_charging_status(smb)) {
 		case 1:
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 			break;
 		case 2:
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
 			break;
 		default:
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
 			break;
 		}
 		break;
 
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = pdata->battery_info.technology;
 		break;
 
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		val->intval = pdata->battery_info.voltage_min_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+val->intval = pdata->battery_info.voltage_min_design;
 		break;
 
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		val->intval = pdata->battery_info.voltage_max_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+val->intval = pdata->battery_info.voltage_max_design;
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		val->intval = pdata->battery_info.charge_full_design;
 		break;
 
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = pdata->battery_info.name;
 		break;
 
@@ -1127,13 +1127,13 @@ static int smb347_battery_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property smb347_battery_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_MODEL_NAME,
 };
 
 static bool smb347_volatile_reg(struct device *dev, unsigned int reg)
@@ -1159,7 +1159,7 @@ static bool smb347_readable_reg(struct device *dev, unsigned int reg)
 	switch (reg) {
 	case CFG_CHARGE_CURRENT:
 	case CFG_CURRENT_LIMIT:
-	case CFG_FLOAT_VOLTAGE:
+case CFG_FLOAT_VOLTAGE:
 	case CFG_STAT:
 	case CFG_PIN:
 	case CFG_THERM:
@@ -1189,7 +1189,7 @@ static const struct regmap_config smb347_regmap = {
 
 static const struct power_supply_desc smb347_mains_desc = {
 	.name		= "smb347-mains",
-	.type		= POWER_SUPPLY_TYPE_MAINS,
+.type		= POWER_SUPPLY_TYPE_MAINS,
 	.get_property	= smb347_mains_get_property,
 	.properties	= smb347_mains_properties,
 	.num_properties	= ARRAY_SIZE(smb347_mains_properties),
@@ -1197,7 +1197,7 @@ static const struct power_supply_desc smb347_mains_desc = {
 
 static const struct power_supply_desc smb347_usb_desc = {
 	.name		= "smb347-usb",
-	.type		= POWER_SUPPLY_TYPE_USB,
+.type		= POWER_SUPPLY_TYPE_USB,
 	.get_property	= smb347_usb_get_property,
 	.properties	= smb347_usb_properties,
 	.num_properties	= ARRAY_SIZE(smb347_usb_properties),
@@ -1205,7 +1205,7 @@ static const struct power_supply_desc smb347_usb_desc = {
 
 static const struct power_supply_desc smb347_battery_desc = {
 	.name		= "smb347-battery",
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.get_property	= smb347_battery_get_property,
 	.properties	= smb347_battery_properties,
 	.num_properties	= ARRAY_SIZE(smb347_battery_properties),
@@ -1216,7 +1216,7 @@ static int smb347_probe(struct i2c_client *client,
 {
 	static char *battery[] = { "smb347-battery" };
 	const struct smb347_charger_platform_data *pdata;
-	struct power_supply_config mains_usb_cfg = {}, battery_cfg = {};
+struct power_supply_config mains_usb_cfg = {}, battery_cfg = {};
 	struct device *dev = &client->dev;
 	struct smb347_charger *smb;
 	int ret;
@@ -1250,30 +1250,30 @@ static int smb347_probe(struct i2c_client *client,
 	mains_usb_cfg.num_supplicants = ARRAY_SIZE(battery);
 	mains_usb_cfg.drv_data = smb;
 	if (smb->pdata->use_mains) {
-		smb->mains = power_supply_register(dev, &smb347_mains_desc,
+smb->mains = power_supply_register(dev, &smb347_mains_desc,
 						   &mains_usb_cfg);
 		if (IS_ERR(smb->mains))
 			return PTR_ERR(smb->mains);
 	}
 
 	if (smb->pdata->use_usb) {
-		smb->usb = power_supply_register(dev, &smb347_usb_desc,
+smb->usb = power_supply_register(dev, &smb347_usb_desc,
 						 &mains_usb_cfg);
 		if (IS_ERR(smb->usb)) {
 			if (smb->pdata->use_mains)
-				power_supply_unregister(smb->mains);
+power_supply_unregister(smb->mains);
 			return PTR_ERR(smb->usb);
 		}
 	}
 
 	battery_cfg.drv_data = smb;
-	smb->battery = power_supply_register(dev, &smb347_battery_desc,
+smb->battery = power_supply_register(dev, &smb347_battery_desc,
 					     &battery_cfg);
 	if (IS_ERR(smb->battery)) {
 		if (smb->pdata->use_usb)
-			power_supply_unregister(smb->usb);
+power_supply_unregister(smb->usb);
 		if (smb->pdata->use_mains)
-			power_supply_unregister(smb->mains);
+power_supply_unregister(smb->mains);
 		return PTR_ERR(smb->battery);
 	}
 
@@ -1304,11 +1304,11 @@ static int smb347_remove(struct i2c_client *client)
 		gpio_free(smb->pdata->irq_gpio);
 	}
 
-	power_supply_unregister(smb->battery);
+power_supply_unregister(smb->battery);
 	if (smb->pdata->use_usb)
-		power_supply_unregister(smb->usb);
+power_supply_unregister(smb->usb);
 	if (smb->pdata->use_mains)
-		power_supply_unregister(smb->mains);
+power_supply_unregister(smb->mains);
 	return 0;
 }
 

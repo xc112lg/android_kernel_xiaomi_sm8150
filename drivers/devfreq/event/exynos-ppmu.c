@@ -8,7 +8,7 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * This driver is based on drivers/devfreq/exynos/exynos_ppmu.c
+* This driver is based on drivers/devfreq/exynos/exynos_ppmu.c
  */
 
 #include <linux/clk.h>
@@ -28,8 +28,8 @@ struct exynos_ppmu_data {
 };
 
 struct exynos_ppmu {
-	struct devfreq_event_dev **edev;
-	struct devfreq_event_desc *desc;
+struct devfreq_event_dev **edev;
+struct devfreq_event_desc *desc;
 	unsigned int num_events;
 
 	struct device *dev;
@@ -103,11 +103,11 @@ static int exynos_ppmu_find_ppmu_id(struct devfreq_event_dev *edev)
 }
 
 /*
- * The devfreq-event ops structure for PPMU v1.1
+* The devfreq-event ops structure for PPMU v1.1
  */
 static int exynos_ppmu_disable(struct devfreq_event_dev *edev)
 {
-	struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
+struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
 	int ret;
 	u32 pmnc;
 
@@ -136,7 +136,7 @@ static int exynos_ppmu_disable(struct devfreq_event_dev *edev)
 
 static int exynos_ppmu_set_event(struct devfreq_event_dev *edev)
 {
-	struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
+struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
 	int id = exynos_ppmu_find_ppmu_id(edev);
 	int ret;
 	u32 pmnc, cntens;
@@ -179,9 +179,9 @@ static int exynos_ppmu_set_event(struct devfreq_event_dev *edev)
 }
 
 static int exynos_ppmu_get_event(struct devfreq_event_dev *edev,
-				struct devfreq_event_data *edata)
+struct devfreq_event_data *edata)
 {
-	struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
+struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
 	int id = exynos_ppmu_find_ppmu_id(edev);
 	unsigned int total_count, load_count;
 	unsigned int pmcnt3_high, pmcnt3_low;
@@ -255,11 +255,11 @@ static const struct devfreq_event_ops exynos_ppmu_ops = {
 };
 
 /*
- * The devfreq-event ops structure for PPMU v2.0
+* The devfreq-event ops structure for PPMU v2.0
  */
 static int exynos_ppmu_v2_disable(struct devfreq_event_dev *edev)
 {
-	struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
+struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
 	int ret;
 	u32 pmnc, clear;
 
@@ -353,7 +353,7 @@ static int exynos_ppmu_v2_disable(struct devfreq_event_dev *edev)
 
 static int exynos_ppmu_v2_set_event(struct devfreq_event_dev *edev)
 {
-	struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
+struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
 	unsigned int pmnc, cntens;
 	int id = exynos_ppmu_find_ppmu_id(edev);
 	int ret;
@@ -409,9 +409,9 @@ static int exynos_ppmu_v2_set_event(struct devfreq_event_dev *edev)
 }
 
 static int exynos_ppmu_v2_get_event(struct devfreq_event_dev *edev,
-				    struct devfreq_event_data *edata)
+struct devfreq_event_data *edata)
 {
-	struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
+struct exynos_ppmu *info = devfreq_event_get_drvdata(edev);
 	int id = exynos_ppmu_find_ppmu_id(edev);
 	int ret;
 	unsigned int pmnc, cntenc;
@@ -497,14 +497,14 @@ static struct devfreq_event_ops *exynos_bus_get_ops(struct device_node *np)
 	const struct of_device_id *match;
 
 	match = of_match_node(exynos_ppmu_id_match, np);
-	return (struct devfreq_event_ops *)match->data;
+return (struct devfreq_event_ops *)match->data;
 }
 
 static int of_get_devfreq_events(struct device_node *np,
 				 struct exynos_ppmu *info)
 {
-	struct devfreq_event_desc *desc;
-	struct devfreq_event_ops *event_ops;
+struct devfreq_event_desc *desc;
+struct devfreq_event_ops *event_ops;
 	struct device *dev = info->dev;
 	struct device_node *events_np, *node;
 	int i, j, count;
@@ -512,7 +512,7 @@ static int of_get_devfreq_events(struct device_node *np,
 	events_np = of_get_child_by_name(np, "events");
 	if (!events_np) {
 		dev_err(dev,
-			"failed to get child node of devfreq-event devices\n");
+"failed to get child node of devfreq-event devices\n");
 		return -EINVAL;
 	}
 	event_ops = exynos_bus_get_ops(np);
@@ -594,7 +594,7 @@ static int exynos_ppmu_parse_dt(struct platform_device *pdev,
 		dev_warn(dev, "cannot get PPMU clock\n");
 	}
 
-	ret = of_get_devfreq_events(np, info);
+ret = of_get_devfreq_events(np, info);
 	if (ret < 0) {
 		dev_err(dev, "failed to parse exynos ppmu dt node\n");
 		return ret;
@@ -606,8 +606,8 @@ static int exynos_ppmu_parse_dt(struct platform_device *pdev,
 static int exynos_ppmu_probe(struct platform_device *pdev)
 {
 	struct exynos_ppmu *info;
-	struct devfreq_event_dev **edev;
-	struct devfreq_event_desc *desc;
+struct devfreq_event_dev **edev;
+struct devfreq_event_desc *desc;
 	int i, ret = 0, size;
 
 	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
@@ -625,22 +625,22 @@ static int exynos_ppmu_probe(struct platform_device *pdev)
 	}
 	desc = info->desc;
 
-	size = sizeof(struct devfreq_event_dev *) * info->num_events;
+size = sizeof(struct devfreq_event_dev *) * info->num_events;
 	info->edev = devm_kzalloc(&pdev->dev, size, GFP_KERNEL);
 	if (!info->edev) {
 		dev_err(&pdev->dev,
-			"failed to allocate memory devfreq-event devices\n");
+"failed to allocate memory devfreq-event devices\n");
 		return -ENOMEM;
 	}
 	edev = info->edev;
 	platform_set_drvdata(pdev, info);
 
 	for (i = 0; i < info->num_events; i++) {
-		edev[i] = devm_devfreq_event_add_edev(&pdev->dev, &desc[i]);
+edev[i] = devm_devfreq_event_add_edev(&pdev->dev, &desc[i]);
 		if (IS_ERR(edev[i])) {
 			ret = PTR_ERR(edev[i]);
 			dev_err(&pdev->dev,
-				"failed to add devfreq-event device\n");
+"failed to add devfreq-event device\n");
 			return PTR_ERR(edev[i]);
 		}
 

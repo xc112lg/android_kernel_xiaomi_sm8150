@@ -1,5 +1,5 @@
 /*
- * Common Performance counter support functions for PowerISA v2.07 processors.
+* Common Performance counter support functions for PowerISA v2.07 processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  * Copyright 2013 Michael Ellerman, IBM Corporation.
@@ -59,7 +59,7 @@ static bool is_event_valid(u64 event)
 {
 	u64 valid_mask = EVENT_VALID_MASK;
 
-	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
 		valid_mask = p9_EVENT_VALID_MASK;
 
 	return !(event & ~valid_mask);
@@ -79,11 +79,11 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
 	 * MMCRA[SDAR_MODE] specifices how the SDAR should be updated in
 	 * continous sampling mode.
 	 *
-	 * Incase of Power8:
+* Incase of Power8:
 	 * MMCRA[SDAR_MODE] will be programmed as "0b01" for continous sampling
 	 * mode and will be un-changed when setting MMCRA[63] (Marked events).
 	 *
-	 * Incase of Power9:
+* Incase of Power9:
 	 * Marked event: MMCRA[SDAR_MODE] will be set to 0b00 ('No Updates'),
 	 *               or if group already have any marked events.
 	 * Non-Marked events (for DD1):
@@ -96,7 +96,7 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
 	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
 		if (is_event_marked(event) || (*mmcra & MMCRA_SAMPLE_ENABLE))
 			*mmcra &= MMCRA_SDAR_MODE_NO_UPDATES;
-		else if (!cpu_has_feature(CPU_FTR_POWER9_DD1) && p9_SDAR_MODE(event))
+else if (!cpu_has_feature(CPU_FTR_POWER9_DD1) && p9_SDAR_MODE(event))
 			*mmcra |=  p9_SDAR_MODE(event) << MMCRA_SDAR_MODE_SHIFT;
 		else
 			*mmcra |= MMCRA_SDAR_MODE_DCACHE;
@@ -106,7 +106,7 @@ static void mmcra_sdar_mode(u64 event, unsigned long *mmcra)
 
 static u64 thresh_cmp_val(u64 value)
 {
-	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
 		return value << p9_MMCRA_THR_CMP_SHIFT;
 
 	return value << MMCRA_THR_CMP_SHIFT;
@@ -114,7 +114,7 @@ static u64 thresh_cmp_val(u64 value)
 
 static unsigned long combine_from_event(u64 event)
 {
-	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
 		return p9_EVENT_COMBINE(event);
 
 	return EVENT_COMBINE(event);
@@ -122,7 +122,7 @@ static unsigned long combine_from_event(u64 event)
 
 static unsigned long combine_shift(unsigned long pmc)
 {
-	if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_ARCH_300) && !cpu_has_feature(CPU_FTR_POWER9_DD1))
 		return p9_MMCR1_COMBINE_SHIFT(pmc);
 
 	return MMCR1_COMBINE_SHIFT(pmc);

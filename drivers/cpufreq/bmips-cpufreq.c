@@ -1,5 +1,5 @@
 /*
- * CPU frequency scaling for Broadcom BMIPS SoCs
+* CPU frequency scaling for Broadcom BMIPS SoCs
  *
  * Copyright (c) 2017 Broadcom
  *
@@ -39,14 +39,14 @@ struct cpufreq_compat {
 	const char *compatible;
 	unsigned int bmips_type;
 	unsigned int clk_mult;
-	unsigned int max_freqs;
+unsigned int max_freqs;
 };
 
 #define BMIPS(c, t, m, f) { \
 	.compatible = c, \
 	.bmips_type = (t), \
 	.clk_mult = (m), \
-	.max_freqs = (f), \
+.max_freqs = (f), \
 }
 
 static struct cpufreq_compat bmips_cpufreq_compat[] = {
@@ -59,27 +59,27 @@ static struct cpufreq_compat *priv;
 
 static int htp_freq_to_cpu_freq(unsigned int clk_mult)
 {
-	return mips_hpt_frequency * clk_mult / 1000;
+return mips_hpt_frequency * clk_mult / 1000;
 }
 
 static struct cpufreq_frequency_table *
 bmips_cpufreq_get_freq_table(const struct cpufreq_policy *policy)
 {
-	struct cpufreq_frequency_table *table;
-	unsigned long cpu_freq;
+struct cpufreq_frequency_table *table;
+unsigned long cpu_freq;
 	int i;
 
-	cpu_freq = htp_freq_to_cpu_freq(priv->clk_mult);
+cpu_freq = htp_freq_to_cpu_freq(priv->clk_mult);
 
-	table = kmalloc((priv->max_freqs + 1) * sizeof(*table), GFP_KERNEL);
+table = kmalloc((priv->max_freqs + 1) * sizeof(*table), GFP_KERNEL);
 	if (!table)
 		return ERR_PTR(-ENOMEM);
 
-	for (i = 0; i < priv->max_freqs; i++) {
-		table[i].frequency = cpu_freq / (1 << i);
+for (i = 0; i < priv->max_freqs; i++) {
+table[i].frequency = cpu_freq / (1 << i);
 		table[i].driver_data = i;
 	}
-	table[i].frequency = CPUFREQ_TABLE_END;
+table[i].frequency = CPUFREQ_TABLE_END;
 
 	return table;
 }
@@ -99,13 +99,13 @@ static unsigned int bmips_cpufreq_get(unsigned int cpu)
 		div = 0;
 	}
 
-	return htp_freq_to_cpu_freq(priv->clk_mult) / (1 << div);
+return htp_freq_to_cpu_freq(priv->clk_mult) / (1 << div);
 }
 
 static int bmips_cpufreq_target_index(struct cpufreq_policy *policy,
 				      unsigned int index)
 {
-	unsigned int div = policy->freq_table[index].driver_data;
+unsigned int div = policy->freq_table[index].driver_data;
 
 	switch (priv->bmips_type) {
 	case BMIPS5200:
@@ -123,50 +123,50 @@ static int bmips_cpufreq_target_index(struct cpufreq_policy *policy,
 
 static int bmips_cpufreq_exit(struct cpufreq_policy *policy)
 {
-	kfree(policy->freq_table);
+kfree(policy->freq_table);
 
 	return 0;
 }
 
 static int bmips_cpufreq_init(struct cpufreq_policy *policy)
 {
-	struct cpufreq_frequency_table *freq_table;
+struct cpufreq_frequency_table *freq_table;
 	int ret;
 
-	freq_table = bmips_cpufreq_get_freq_table(policy);
-	if (IS_ERR(freq_table)) {
-		ret = PTR_ERR(freq_table);
-		pr_err("%s: couldn't determine frequency table (%d).\n",
-			BMIPS_CPUFREQ_NAME, ret);
+freq_table = bmips_cpufreq_get_freq_table(policy);
+if (IS_ERR(freq_table)) {
+ret = PTR_ERR(freq_table);
+pr_err("%s: couldn't determine frequency table (%d).\n",
+BMIPS_CPUFREQ_NAME, ret);
 		return ret;
 	}
 
-	ret = cpufreq_generic_init(policy, freq_table, TRANSITION_LATENCY);
+ret = cpufreq_generic_init(policy, freq_table, TRANSITION_LATENCY);
 	if (ret)
-		bmips_cpufreq_exit(policy);
+bmips_cpufreq_exit(policy);
 	else
-		pr_info("%s: registered\n", BMIPS_CPUFREQ_NAME);
+pr_info("%s: registered\n", BMIPS_CPUFREQ_NAME);
 
 	return ret;
 }
 
 static struct cpufreq_driver bmips_cpufreq_driver = {
-	.flags		= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= bmips_cpufreq_target_index,
-	.get		= bmips_cpufreq_get,
-	.init		= bmips_cpufreq_init,
-	.exit		= bmips_cpufreq_exit,
-	.attr		= cpufreq_generic_attr,
-	.name		= BMIPS_CPUFREQ_PREFIX,
+.flags		= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= bmips_cpufreq_target_index,
+.get		= bmips_cpufreq_get,
+.init		= bmips_cpufreq_init,
+.exit		= bmips_cpufreq_exit,
+.attr		= cpufreq_generic_attr,
+.name		= BMIPS_CPUFREQ_PREFIX,
 };
 
 static int __init bmips_cpufreq_probe(void)
 {
-	struct cpufreq_compat *cc;
+struct cpufreq_compat *cc;
 	struct device_node *np;
 
-	for (cc = bmips_cpufreq_compat; cc->compatible; cc++) {
+for (cc = bmips_cpufreq_compat; cc->compatible; cc++) {
 		np = of_find_compatible_node(NULL, "cpu", cc->compatible);
 		if (np) {
 			of_node_put(np);
@@ -179,7 +179,7 @@ static int __init bmips_cpufreq_probe(void)
 	if (!cc->compatible)
 		return -ENODEV;
 
-	return cpufreq_register_driver(&bmips_cpufreq_driver);
+return cpufreq_register_driver(&bmips_cpufreq_driver);
 }
 device_initcall(bmips_cpufreq_probe);
 

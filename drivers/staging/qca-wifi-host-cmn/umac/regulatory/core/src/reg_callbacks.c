@@ -46,7 +46,7 @@ static void reg_call_chan_change_cbks(struct wlan_objmgr_psoc *psoc,
 	struct wlan_regulatory_pdev_priv_obj *pdev_priv_obj;
 	struct regulatory_channel *cur_chan_list;
 	uint32_t ctr;
-	struct avoid_freq_ind_data *avoid_freq_ind = NULL;
+struct avoid_freq_ind_data *avoid_freq_ind = NULL;
 	reg_chan_change_callback callback;
 
 	psoc_priv_obj = reg_get_psoc_obj(psoc);
@@ -71,14 +71,14 @@ static void reg_call_chan_change_cbks(struct wlan_objmgr_psoc *psoc,
 		     sizeof(struct regulatory_channel));
 
 	if (psoc_priv_obj->ch_avoid_ind) {
-		avoid_freq_ind = qdf_mem_malloc(sizeof(*avoid_freq_ind));
-		if (!avoid_freq_ind)
+avoid_freq_ind = qdf_mem_malloc(sizeof(*avoid_freq_ind));
+if (!avoid_freq_ind)
 			goto skip_ch_avoid_ind;
 
-		qdf_mem_copy(&avoid_freq_ind->freq_list,
-			     &psoc_priv_obj->avoid_freq_list,
+qdf_mem_copy(&avoid_freq_ind->freq_list,
+&psoc_priv_obj->avoid_freq_list,
 				sizeof(struct ch_avoid_ind_type));
-		qdf_mem_copy(&avoid_freq_ind->chan_list,
+qdf_mem_copy(&avoid_freq_ind->chan_list,
 			     &psoc_priv_obj->unsafe_chan_list,
 				sizeof(struct unsafe_ch_list));
 		psoc_priv_obj->ch_avoid_ind = false;
@@ -94,12 +94,12 @@ skip_ch_avoid_ind:
 			callback = cbk_list[ctr].cbk;
 		qdf_spin_unlock_bh(&psoc_priv_obj->cbk_list_lock);
 		if (callback)
-			callback(psoc, pdev, cur_chan_list, avoid_freq_ind,
+callback(psoc, pdev, cur_chan_list, avoid_freq_ind,
 				 cbk_list[ctr].arg);
 	}
 	qdf_mem_free(cur_chan_list);
-	if (avoid_freq_ind)
-		qdf_mem_free(avoid_freq_ind);
+if (avoid_freq_ind)
+qdf_mem_free(avoid_freq_ind);
 }
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Voltage and current regulation for AD5398 and AD5821
+* Voltage and current regulation for AD5398 and AD5821
  *
  * Copyright 2010 Analog Devices Inc.
  *

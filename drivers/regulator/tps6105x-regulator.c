@@ -31,29 +31,29 @@ static struct regulator_ops tps6105x_regulator_ops = {
 	.enable		= regulator_enable_regmap,
 	.disable	= regulator_disable_regmap,
 	.is_enabled	= regulator_is_enabled_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.list_voltage	= regulator_list_voltage_table,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage	= regulator_list_voltage_table,
 };
 
 static const struct regulator_desc tps6105x_regulator_desc = {
 	.name		= "tps6105x-boost",
 	.ops		= &tps6105x_regulator_ops,
-	.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 	.id		= 0,
 	.owner		= THIS_MODULE,
-	.n_voltages	= ARRAY_SIZE(tps6105x_voltages),
-	.volt_table	= tps6105x_voltages,
+.n_voltages	= ARRAY_SIZE(tps6105x_voltages),
+.volt_table	= tps6105x_voltages,
 	.vsel_reg	= TPS6105X_REG_0,
-	.vsel_mask	= TPS6105X_REG0_VOLTAGE_MASK,
+.vsel_mask	= TPS6105X_REG0_VOLTAGE_MASK,
 	.enable_reg	= TPS6105X_REG_0,
 	.enable_mask	= TPS6105X_REG0_MODE_MASK,
-	.enable_val	= TPS6105X_REG0_MODE_VOLTAGE <<
+.enable_val	= TPS6105X_REG0_MODE_VOLTAGE <<
 			  TPS6105X_REG0_MODE_SHIFT,
 };
 
 /*
- * Registers the chip as a voltage regulator
+* Registers the chip as a voltage regulator
  */
 static int tps6105x_regulator_probe(struct platform_device *pdev)
 {
@@ -63,9 +63,9 @@ static int tps6105x_regulator_probe(struct platform_device *pdev)
 	int ret;
 
 	/* This instance is not set for regulator mode so bail out */
-	if (pdata->mode != TPS6105X_MODE_VOLTAGE) {
+if (pdata->mode != TPS6105X_MODE_VOLTAGE) {
 		dev_info(&pdev->dev,
-			"chip not in voltage mode mode, exit probe\n");
+"chip not in voltage mode mode, exit probe\n");
 		return 0;
 	}
 

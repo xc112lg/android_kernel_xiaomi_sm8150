@@ -269,9 +269,9 @@ struct ad9523_state {
 	struct ad9523_platform_data	*pdata;
 	struct iio_chan_spec		ad9523_channels[AD9523_NUM_CHAN];
 
-	unsigned long		vcxo_freq;
-	unsigned long		vco_freq;
-	unsigned long		vco_out_freq[AD9523_NUM_CLK_SRC];
+unsigned long		vcxo_freq;
+unsigned long		vco_freq;
+unsigned long		vco_out_freq[AD9523_NUM_CLK_SRC];
 	unsigned char		vco_out_map[AD9523_NUM_CHAN_ALT_CLK_SRC];
 
 	/*
@@ -406,7 +406,7 @@ static int ad9523_vco_out_map(struct iio_dev *indio_dev,
 }
 
 static int ad9523_set_clock_provider(struct iio_dev *indio_dev,
-			      unsigned int ch, unsigned long freq)
+unsigned int ch, unsigned long freq)
 {
 	struct ad9523_state *st = iio_priv(indio_dev);
 	long tmp1, tmp2;
@@ -414,14 +414,14 @@ static int ad9523_set_clock_provider(struct iio_dev *indio_dev,
 
 	switch (ch) {
 	case 0 ... 3:
-		use_alt_clk_src = (freq == st->vco_out_freq[AD9523_VCXO]);
+use_alt_clk_src = (freq == st->vco_out_freq[AD9523_VCXO]);
 		break;
 	case 4 ... 9:
-		tmp1 = st->vco_out_freq[AD9523_VCO1] / freq;
-		tmp2 = st->vco_out_freq[AD9523_VCO2] / freq;
-		tmp1 *= freq;
-		tmp2 *= freq;
-		use_alt_clk_src = (abs(tmp1 - freq) > abs(tmp2 - freq));
+tmp1 = st->vco_out_freq[AD9523_VCO1] / freq;
+tmp2 = st->vco_out_freq[AD9523_VCO2] / freq;
+tmp1 *= freq;
+tmp2 *= freq;
+use_alt_clk_src = (abs(tmp1 - freq) > abs(tmp2 - freq));
 		break;
 	default:
 		/* Ch 10..14: No action required, return success */
@@ -634,8 +634,8 @@ static int ad9523_read_raw(struct iio_dev *indio_dev,
 	case IIO_CHAN_INFO_RAW:
 		*val = !(ret & AD9523_CLK_DIST_PWR_DOWN_EN);
 		return IIO_VAL_INT;
-	case IIO_CHAN_INFO_FREQUENCY:
-		*val = st->vco_out_freq[st->vco_out_map[chan->channel]] /
+case IIO_CHAN_INFO_FREQUENCY:
+*val = st->vco_out_freq[st->vco_out_map[chan->channel]] /
 			AD9523_CLK_DIST_DIV_REV(ret);
 		return IIO_VAL_INT;
 	case IIO_CHAN_INFO_PHASE:
@@ -673,7 +673,7 @@ static int ad9523_write_raw(struct iio_dev *indio_dev,
 		else
 			reg |= AD9523_CLK_DIST_PWR_DOWN_EN;
 		break;
-	case IIO_CHAN_INFO_FREQUENCY:
+case IIO_CHAN_INFO_FREQUENCY:
 		if (val <= 0) {
 			ret = -EINVAL;
 			goto out;
@@ -681,7 +681,7 @@ static int ad9523_write_raw(struct iio_dev *indio_dev,
 		ret = ad9523_set_clock_provider(indio_dev, chan->channel, val);
 		if (ret < 0)
 			goto out;
-		tmp = st->vco_out_freq[st->vco_out_map[chan->channel]] / val;
+tmp = st->vco_out_freq[st->vco_out_map[chan->channel]] / val;
 		tmp = clamp(tmp, 1, 1024);
 		reg &= ~(0x3FF << 8);
 		reg |= AD9523_CLK_DIST_DIV(tmp);
@@ -843,11 +843,11 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 	ret = ad9523_write(indio_dev, AD9523_PLL2_CTRL,
 		AD9523_PLL2_CHARGE_PUMP_MODE_NORMAL |
 		AD9523_PLL2_BACKLASH_CTRL_EN |
-		AD_IF(pll2_freq_doubler_en, AD9523_PLL2_FREQ_DOUBLER_EN));
+AD_IF(pll2_freq_doubler_en, AD9523_PLL2_FREQ_DOUBLER_EN));
 	if (ret < 0)
 		return ret;
 
-	st->vco_freq = (pdata->vcxo_freq * (pdata->pll2_freq_doubler_en ? 2 : 1)
+st->vco_freq = (pdata->vcxo_freq * (pdata->pll2_freq_doubler_en ? 2 : 1)
 			/ pdata->pll2_r2_div) * AD9523_PLL2_FB_NDIV(pdata->
 			pll2_ndiv_a_cnt, pdata->pll2_ndiv_b_cnt);
 
@@ -867,14 +867,14 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 		return ret;
 
 	if (pdata->pll2_vco_diff_m1)
-		st->vco_out_freq[AD9523_VCO1] =
-			st->vco_freq / pdata->pll2_vco_diff_m1;
+st->vco_out_freq[AD9523_VCO1] =
+st->vco_freq / pdata->pll2_vco_diff_m1;
 
 	if (pdata->pll2_vco_diff_m2)
-		st->vco_out_freq[AD9523_VCO2] =
-			st->vco_freq / pdata->pll2_vco_diff_m2;
+st->vco_out_freq[AD9523_VCO2] =
+st->vco_freq / pdata->pll2_vco_diff_m2;
 
-	st->vco_out_freq[AD9523_VCXO] = pdata->vcxo_freq;
+st->vco_out_freq[AD9523_VCXO] = pdata->vcxo_freq;
 
 	ret = ad9523_write(indio_dev, AD9523_PLL2_R2_DIVIDER,
 		AD9523_PLL2_R2_DIVIDER_VAL(pdata->pll2_r2_div));
@@ -903,7 +903,7 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 					AD9523_CLK_DIST_IGNORE_SYNC_EN : 0) |
 				(chan->divider_output_invert_en ?
 					AD9523_CLK_DIST_INV_DIV_OUTPUT_EN : 0) |
-				(chan->low_power_mode_en ?
+(chan->low_power_mode_en ?
 					AD9523_CLK_DIST_LOW_PWR_MODE_EN : 0) |
 				(chan->output_dis ?
 					AD9523_CLK_DIST_PWR_DOWN_EN : 0));
@@ -915,7 +915,7 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 			if (ret < 0)
 				return ret;
 
-			st->ad9523_channels[i].type = IIO_ALTVOLTAGE;
+st->ad9523_channels[i].type = IIO_ALTVOLTAGE;
 			st->ad9523_channels[i].output = 1;
 			st->ad9523_channels[i].indexed = 1;
 			st->ad9523_channels[i].channel = chan->channel_num;
@@ -924,7 +924,7 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 			st->ad9523_channels[i].info_mask_separate =
 				BIT(IIO_CHAN_INFO_RAW) |
 				BIT(IIO_CHAN_INFO_PHASE) |
-				BIT(IIO_CHAN_INFO_FREQUENCY);
+BIT(IIO_CHAN_INFO_FREQUENCY);
 		}
 	}
 
@@ -934,7 +934,7 @@ static int ad9523_setup(struct iio_dev *indio_dev)
 			     AD9523_CLK_DIST_DRIVER_MODE(TRISTATE) |
 			     AD9523_CLK_DIST_PWR_DOWN_EN);
 
-	ret = ad9523_write(indio_dev, AD9523_POWER_DOWN_CTRL, 0);
+ret = ad9523_write(indio_dev, AD9523_POWER_DOWN_CTRL, 0);
 	if (ret < 0)
 		return ret;
 

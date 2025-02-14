@@ -1,5 +1,5 @@
 /*
- * dptf_power:  DPTF platform power driver
+* dptf_power:  DPTF platform power driver
  * Copyright (c) 2016, Intel Corporation.
  *
  * This program is free software; you can redistribute it and/or modify it
@@ -21,10 +21,10 @@
 /*
  * Presentation of attributes which are defined for INT3407. They are:
  * PMAX : Maximum platform powe
- * PSRC : Platform power source
+* PSRC : Platform power source
  * ARTG : Adapter rating
  * CTYP : Charger type
- * PBSS : Battery steady power
+* PBSS : Battery steady power
  */
 #define DPTF_POWER_SHOW(name, object) \
 static ssize_t name##_show(struct device *dev,\
@@ -57,17 +57,17 @@ static DEVICE_ATTR_RO(battery_steady_power_mw);
 static DEVICE_ATTR_RO(charger_type);
 
 static struct attribute *dptf_power_attrs[] = {
-	&dev_attr_max_platform_power_mw.attr,
-	&dev_attr_platform_power_source.attr,
+&dev_attr_max_platform_power_mw.attr,
+&dev_attr_platform_power_source.attr,
 	&dev_attr_adapter_rating_mw.attr,
-	&dev_attr_battery_steady_power_mw.attr,
+&dev_attr_battery_steady_power_mw.attr,
 	&dev_attr_charger_type.attr,
 	NULL
 };
 
 static const struct attribute_group dptf_power_attribute_group = {
-	.attrs = dptf_power_attrs,
-	.name = "dptf_power"
+.attrs = dptf_power_attrs,
+.name = "dptf_power"
 };
 
 static int dptf_power_add(struct platform_device *pdev)
@@ -89,7 +89,7 @@ static int dptf_power_add(struct platform_device *pdev)
 		return -ENODEV;
 
 	result = sysfs_create_group(&pdev->dev.kobj,
-				    &dptf_power_attribute_group);
+&dptf_power_attribute_group);
 	if (result)
 		return result;
 
@@ -101,7 +101,7 @@ static int dptf_power_add(struct platform_device *pdev)
 static int dptf_power_remove(struct platform_device *pdev)
 {
 
-	sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
+sysfs_remove_group(&pdev->dev.kobj, &dptf_power_attribute_group);
 
 	return 0;
 }
@@ -113,10 +113,10 @@ static const struct acpi_device_id int3407_device_ids[] = {
 MODULE_DEVICE_TABLE(acpi, int3407_device_ids);
 
 static struct platform_driver dptf_power_driver = {
-	.probe = dptf_power_add,
-	.remove = dptf_power_remove,
+.probe = dptf_power_add,
+.remove = dptf_power_remove,
 	.driver = {
-		.name = "DPTF Platform Power",
+.name = "DPTF Platform Power",
 		.acpi_match_table = int3407_device_ids,
 	},
 };

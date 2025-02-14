@@ -1,5 +1,5 @@
 /*
- * IBM PowerPC eBus Infrastructure Support.
+* IBM PowerPC eBus Infrastructure Support.
  *
  * Copyright (c) 2005 IBM Corporation
  *  Joachim Fenkes <fenkes@de.ibm.com>

@@ -12,10 +12,10 @@
  */
 
 /*
- * Note: Adapted for PowerPC by Gary Thomas
+* Note: Adapted for PowerPC by Gary Thomas
  * Modified by Cort Dougan <cort@cs.nmt.edu>
  *
- * None of this really applies for Power Macintoshes.  There is
+* None of this really applies for Power Macintoshes.  There is
  * basically just enough here to get kernel/dma.c to compile.
  */
 

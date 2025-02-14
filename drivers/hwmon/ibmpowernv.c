@@ -1,5 +1,5 @@
 /*
- * IBM PowerNV platform sensors for temperature/fan/voltage/power
+* IBM PowerNV platform sensors for temperature/fan/voltage/power
  * Copyright (C) 2014 IBM
  *
  * This program is free software; you can redistribute it and/or modify
@@ -42,14 +42,14 @@
 #define DT_THRESHOLD_ATTR_SUFFIX	"thrs"
 
 /*
- * Enumerates all the types of sensors in the POWERNV platform and does index
+* Enumerates all the types of sensors in the POWERNV platform and does index
  * into 'struct sensor_group'
  */
 enum sensors {
 	FAN,
 	TEMP,
-	POWER_SUPPLY,
-	POWER_INPUT,
+POWER_SUPPLY,
+POWER_INPUT,
 	CURRENT,
 	MAX_SENSOR_TYPE,
 };
@@ -58,13 +58,13 @@ enum sensors {
 
 /*
  * 'compatible' string properties for sensor types as defined in old
- * PowerNV firmware (skiboot). These are ordered as 'enum sensors'.
+* PowerNV firmware (skiboot). These are ordered as 'enum sensors'.
  */
 static const char * const legacy_compatibles[] = {
 	"ibm,opal-sensor-cooling-fan",
 	"ibm,opal-sensor-amb-temp",
-	"ibm,opal-sensor-power-supply",
-	"ibm,opal-sensor-power"
+"ibm,opal-sensor-power-supply",
+"ibm,opal-sensor-power"
 };
 
 static struct sensor_group {
@@ -76,7 +76,7 @@ static struct sensor_group {
 	{ "fan"   },
 	{ "temp"  },
 	{ "in"    },
-	{ "power" },
+{ "power" },
 	{ "curr"  },
 };
 
@@ -110,8 +110,8 @@ static ssize_t show_sensor(struct device *dev, struct device_attribute *devattr,
 	/* Convert temperature to milli-degrees */
 	if (sdata->type == TEMP)
 		x *= 1000;
-	/* Convert power to micro-watts */
-	else if (sdata->type == POWER_INPUT)
+/* Convert power to micro-watts */
+else if (sdata->type == POWER_INPUT)
 		x *= 1000000;
 
 	return sprintf(buf, "%u\n", x);
@@ -223,7 +223,7 @@ static const char *convert_opal_attr_name(enum sensors type,
 
 /*
  * This function translates the DT node name into the 'hwmon' attribute name.
- * IBMPOWERNV device node appear like cooling-fan#2-data, amb-temp#1-thrs etc.
+* IBMPOWERNV device node appear like cooling-fan#2-data, amb-temp#1-thrs etc.
  * which need to be mapped as fan2_input, temp1_max respectively before
  * populating them inside hwmon device class.
  */
@@ -370,7 +370,7 @@ static void populate_sensor(struct sensor_data *sdata, int od, int hd, int sid,
 static char *get_max_attr(enum sensors type)
 {
 	switch (type) {
-	case POWER_INPUT:
+case POWER_INPUT:
 		return "input_highest";
 	default:
 		return "highest";
@@ -380,7 +380,7 @@ static char *get_max_attr(enum sensors type)
 static char *get_min_attr(enum sensors type)
 {
 	switch (type) {
-	case POWER_INPUT:
+case POWER_INPUT:
 		return "input_lowest";
 	default:
 		return "lowest";
@@ -544,7 +544,7 @@ static const struct of_device_id opal_sensor_match[] = {
 MODULE_DEVICE_TABLE(of, opal_sensor_match);
 
 static struct platform_driver ibmpowernv_driver = {
-	.probe		= ibmpowernv_probe,
+.probe		= ibmpowernv_probe,
 	.id_table	= opal_sensor_driver_ids,
 	.driver		= {
 		.name	= DRVNAME,

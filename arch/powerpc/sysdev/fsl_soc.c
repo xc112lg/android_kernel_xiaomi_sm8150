@@ -79,22 +79,22 @@ EXPORT_SYMBOL(get_immrbase);
 
 u32 fsl_get_sys_freq(void)
 {
-	static u32 sysfreq = -1;
+static u32 sysfreq = -1;
 	struct device_node *soc;
 
-	if (sysfreq != -1)
-		return sysfreq;
+if (sysfreq != -1)
+return sysfreq;
 
 	soc = of_find_node_by_type(NULL, "soc");
 	if (!soc)
 		return -1;
 
-	of_property_read_u32(soc, "clock-frequency", &sysfreq);
-	if (sysfreq == -1 || !sysfreq)
-		of_property_read_u32(soc, "bus-frequency", &sysfreq);
+of_property_read_u32(soc, "clock-frequency", &sysfreq);
+if (sysfreq == -1 || !sysfreq)
+of_property_read_u32(soc, "bus-frequency", &sysfreq);
 
 	of_node_put(soc);
-	return sysfreq;
+return sysfreq;
 }
 EXPORT_SYMBOL(fsl_get_sys_freq);
 
@@ -102,17 +102,17 @@ EXPORT_SYMBOL(fsl_get_sys_freq);
 
 u32 get_brgfreq(void)
 {
-	static u32 brgfreq = -1;
+static u32 brgfreq = -1;
 	struct device_node *node;
 
-	if (brgfreq != -1)
-		return brgfreq;
+if (brgfreq != -1)
+return brgfreq;
 
 	node = of_find_compatible_node(NULL, NULL, "fsl,cpm-brg");
 	if (node) {
-		of_property_read_u32(node, "clock-frequency", &brgfreq);
+of_property_read_u32(node, "clock-frequency", &brgfreq);
 		of_node_put(node);
-		return brgfreq;
+return brgfreq;
 	}
 
 	/* Legacy device binding -- will go away when no users are left. */
@@ -123,15 +123,15 @@ u32 get_brgfreq(void)
 		node = of_find_node_by_type(NULL, "qe");
 
 	if (node) {
-		of_property_read_u32(node, "brg-frequency", &brgfreq);
-		if (brgfreq == -1 || !brgfreq)
-			if (!of_property_read_u32(node, "bus-frequency",
-						  &brgfreq))
-				brgfreq /= 2;
+of_property_read_u32(node, "brg-frequency", &brgfreq);
+if (brgfreq == -1 || !brgfreq)
+if (!of_property_read_u32(node, "bus-frequency",
+&brgfreq))
+brgfreq /= 2;
 		of_node_put(node);
 	}
 
-	return brgfreq;
+return brgfreq;
 }
 
 EXPORT_SYMBOL(get_brgfreq);
@@ -223,7 +223,7 @@ void __noreturn fsl_hv_restart(char *cmd)
 /*
  * Halt the current partition
  *
- * This function should be assigned to the pm_power_off and ppc_md.halt
+* This function should be assigned to the pm_power_off and ppc_md.halt
  * function pointers, to shut down the partition when we're running under
  * the Freescale hypervisor.
  */

@@ -1,5 +1,5 @@
 /*
- * POWER platform energy management driver
+* POWER platform energy management driver
  * Copyright (C) 2010 IBM Corporation
  *
  * This program is free software; you can redistribute it and/or

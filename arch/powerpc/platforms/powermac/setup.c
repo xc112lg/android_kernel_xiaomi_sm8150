@@ -1,10 +1,10 @@
 /*
- *  Powermac setup and early boot code plus other random bits.
+*  Powermac setup and early boot code plus other random bits.
  *
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Adapted for Power Macintosh by Paul Mackerras
+*  Adapted for Power Macintosh by Paul Mackerras
  *    Copyright (C) 1996 Paul Mackerras (paulus@samba.org)
  *
  *  Derived from "arch/alpha/kernel/setup.c"
@@ -121,7 +121,7 @@ static void pmac_show_cpuinfo(struct seq_file *m)
 		if (pp != NULL)
 			seq_printf(m, "%s\n", pp);
 		else
-			seq_printf(m, "PowerMac\n");
+seq_printf(m, "PowerMac\n");
 		pp = of_get_property(np, "compatible", &plen);
 		if (pp != NULL) {
 			seq_printf(m, "motherboard\t:");
@@ -135,7 +135,7 @@ static void pmac_show_cpuinfo(struct seq_file *m)
 		}
 		of_node_put(np);
 	} else
-		seq_printf(m, "PowerMac\n");
+seq_printf(m, "PowerMac\n");
 
 	/* print parsed model */
 	seq_printf(m, "detected as\t: %d (%s)\n", mbmodel, mbname);
@@ -281,7 +281,7 @@ static void __init pmac_setup_arch(void)
 	loops_per_jiffy = 50000000 / HZ;
 	cpu = of_find_node_by_type(NULL, "cpu");
 	if (cpu != NULL) {
-		fp = of_get_property(cpu, "clock-frequency", NULL);
+fp = of_get_property(cpu, "clock-frequency", NULL);
 		if (fp != NULL) {
 			if (pvr >= 0x30 && pvr < 0x80)
 				/* PPC970 etc. */
@@ -390,7 +390,7 @@ static void __noreturn cuda_shutdown(void)
 {
 	struct adb_request req;
 
-	cuda_request(&req, NULL, 2, CUDA_PACKET, CUDA_POWERDOWN);
+cuda_request(&req, NULL, 2, CUDA_PACKET, CUDA_POWERDOWN);
 	for (;;)
 		cuda_poll();
 }
@@ -447,7 +447,7 @@ static void __noreturn pmac_power_off(void)
 static void __noreturn
 pmac_halt(void)
 {
-	pmac_power_off();
+pmac_power_off();
 }
 
 /* 
@@ -591,7 +591,7 @@ console_initcall(check_pmac_serial_console);
  */
 static int __init pmac_probe(void)
 {
-	if (!of_machine_is_compatible("Power Macintosh") &&
+if (!of_machine_is_compatible("Power Macintosh") &&
 	    !of_machine_is_compatible("MacRISC"))
 		return 0;
 
@@ -602,7 +602,7 @@ static int __init pmac_probe(void)
 	DMA_MODE_WRITE = 2;
 #endif /* CONFIG_PPC32 */
 
-	pm_power_off = pmac_power_off;
+pm_power_off = pmac_power_off;
 
 	pmac_init();
 
@@ -610,7 +610,7 @@ static int __init pmac_probe(void)
 }
 
 define_machine(powermac) {
-	.name			= "PowerMac",
+.name			= "PowerMac",
 	.probe			= pmac_probe,
 	.setup_arch		= pmac_setup_arch,
 	.show_cpuinfo		= pmac_show_cpuinfo,
@@ -627,8 +627,8 @@ define_machine(powermac) {
 	.feature_call		= pmac_do_feature_call,
 	.progress		= udbg_progress,
 #ifdef CONFIG_PPC64
-	.power_save		= power4_idle,
-	.enable_pmcs		= power4_enable_pmcs,
+.power_save		= power4_idle,
+.enable_pmcs		= power4_enable_pmcs,
 #endif /* CONFIG_PPC64 */
 #ifdef CONFIG_PPC32
 	.pcibios_after_init	= pmac_pcibios_after_init,

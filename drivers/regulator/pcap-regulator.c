@@ -141,7 +141,7 @@ static struct pcap_regulator vreg_table[] = {
 	/* SW3 STBY is on PCAP_REG_AUXVREG */
 	VREG_INFO(SW3,   PCAP_REG_SWCTRL,  11, 12, 24, NA),
 
-	/* SWxS used to control SWx voltage on standby */
+/* SWxS used to control SWx voltage on standby */
 /*	VREG_INFO(SW1S,  PCAP_REG_LOWPWR,  NA, 12, NA, NA),
 	VREG_INFO(SW2S,  PCAP_REG_LOWPWR,  NA, 20, NA, NA), */
 };
@@ -152,12 +152,12 @@ static int pcap_regulator_set_voltage_sel(struct regulator_dev *rdev,
 	struct pcap_regulator *vreg = &vreg_table[rdev_get_id(rdev)];
 	void *pcap = rdev_get_drvdata(rdev);
 
-	/* the regulator doesn't support voltage switching */
-	if (rdev->desc->n_voltages == 1)
+/* the regulator doesn't support voltage switching */
+if (rdev->desc->n_voltages == 1)
 		return -EINVAL;
 
 	return ezx_pcap_set_bits(pcap, vreg->reg,
-				 (rdev->desc->n_voltages - 1) << vreg->index,
+(rdev->desc->n_voltages - 1) << vreg->index,
 				 selector << vreg->index);
 }
 
@@ -167,11 +167,11 @@ static int pcap_regulator_get_voltage_sel(struct regulator_dev *rdev)
 	void *pcap = rdev_get_drvdata(rdev);
 	u32 tmp;
 
-	if (rdev->desc->n_voltages == 1)
+if (rdev->desc->n_voltages == 1)
 		return 0;
 
 	ezx_pcap_read(pcap, vreg->reg, &tmp);
-	tmp = ((tmp >> vreg->index) & (rdev->desc->n_voltages - 1));
+tmp = ((tmp >> vreg->index) & (rdev->desc->n_voltages - 1));
 	return tmp;
 }
 
@@ -211,9 +211,9 @@ static int pcap_regulator_is_enabled(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops pcap_regulator_ops = {
-	.list_voltage	= regulator_list_voltage_table,
-	.set_voltage_sel = pcap_regulator_set_voltage_sel,
-	.get_voltage_sel = pcap_regulator_get_voltage_sel,
+.list_voltage	= regulator_list_voltage_table,
+.set_voltage_sel = pcap_regulator_set_voltage_sel,
+.get_voltage_sel = pcap_regulator_get_voltage_sel,
 	.enable		= pcap_regulator_enable,
 	.disable	= pcap_regulator_disable,
 	.is_enabled	= pcap_regulator_is_enabled,
@@ -223,10 +223,10 @@ static const struct regulator_ops pcap_regulator_ops = {
 	[_vreg]	= {						\
 		.name		= #_vreg,			\
 		.id		= _vreg,			\
-		.n_voltages	= ARRAY_SIZE(_vreg##_table),	\
+.n_voltages	= ARRAY_SIZE(_vreg##_table),	\
 		.volt_table	= _vreg##_table,		\
 		.ops		= &pcap_regulator_ops,		\
-		.type		= REGULATOR_VOLTAGE,		\
+.type		= REGULATOR_VOLTAGE,		\
 		.owner		= THIS_MODULE,			\
 	}
 

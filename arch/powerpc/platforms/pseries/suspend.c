@@ -215,8 +215,8 @@ static DEVICE_ATTR(hibernate, S_IWUSR | S_IRUGO,
 		   show_hibernate, store_hibernate);
 
 static struct bus_type suspend_subsys = {
-	.name = "power",
-	.dev_name = "power",
+.name = "power",
+.dev_name = "power",
 };
 
 static const struct platform_suspend_ops pseries_suspend_ops = {

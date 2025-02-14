@@ -1,25 +1,25 @@
 menuconfig POWER_SUPPLY
-	bool "Power supply class support"
+bool "Power supply class support"
 	help
-	  Say Y here to enable power supply class support. This allows
-	  power supply (batteries, AC, USB) monitoring by userspace
+Say Y here to enable power supply class support. This allows
+power supply (batteries, AC, USB) monitoring by userspace
 	  via sysfs and uevent (if available) and/or APM kernel interface
 	  (if selected below).
 
 if POWER_SUPPLY
 
 config POWER_SUPPLY_DEBUG
-	bool "Power supply debug"
+bool "Power supply debug"
 	help
-	  Say Y here to enable debugging messages for power supply class
+Say Y here to enable debugging messages for power supply class
 	  and drivers.
 
 config PDA_POWER
-	tristate "Generic PDA/phone power driver"
+tristate "Generic PDA/phone power driver"
 	depends on !S390
 	help
-	  Say Y here to enable generic power driver for PDAs and phones with
-	  one or two external power supplies (AC/USB) connected to main and
+Say Y here to enable generic power driver for PDAs and phones with
+one or two external power supplies (AC/USB) connected to main and
 	  backup batteries, and optional builtin charger.
 
 config APM_POWER
@@ -54,18 +54,18 @@ config WM831X_POWER
 	tristate "WM831X PMU support"
 	depends on MFD_WM831X
 	help
-	  Say Y here to enable support for the power management unit
+Say Y here to enable support for the power management unit
 	  provided by Wolfson Microelectronics WM831x PMICs.
 
 config WM8350_POWER
         tristate "WM8350 PMU support"
         depends on MFD_WM8350
         help
-          Say Y here to enable support for the power management unit
+Say Y here to enable support for the power management unit
 	  provided by the Wolfson Microelectronics WM8350 PMIC.
 
 config TEST_POWER
-	tristate "Test power driver"
+tristate "Test power driver"
 	help
 	  This driver is used for testing. It's safe to say M here.
 
@@ -79,7 +79,7 @@ config BATTERY_ACT8945A
 	tristate "Active-semi ACT8945A charger driver"
 	depends on MFD_ACT8945A || COMPILE_TEST
 	help
-	  Say Y here to enable support for power supply provided by
+Say Y here to enable support for power supply provided by
 	  Active-semi ActivePath ACT8945A charger.
 
 config BATTERY_CPCAP
@@ -255,51 +255,51 @@ config BATTERY_DA9150
 	  called da9150-fg.
 
 config CHARGER_AXP20X
-	tristate "X-Powers AXP20X and AXP22X AC power supply driver"
+tristate "X-Powers AXP20X and AXP22X AC power supply driver"
 	depends on MFD_AXP20X
 	depends on AXP20X_ADC
 	depends on IIO
 	help
-	  Say Y here to enable support for X-Powers AXP20X and AXP22X PMICs' AC
-	  power supply.
+Say Y here to enable support for X-Powers AXP20X and AXP22X PMICs' AC
+power supply.
 
 	  This driver can also be built as a module. If so, the module will be
-	  called axp20x_ac_power.
+called axp20x_ac_power.
 
 config BATTERY_AXP20X
-	tristate "X-Powers AXP20X battery driver"
+tristate "X-Powers AXP20X battery driver"
 	depends on MFD_AXP20X
 	depends on AXP20X_ADC
 	depends on IIO
 	help
-	  Say Y here to enable support for X-Powers AXP20X PMICs' battery power
+Say Y here to enable support for X-Powers AXP20X PMICs' battery power
 	  supply.
 
 	  This driver can also be built as a module. If so, the module will be
 	  called axp20x_battery.
 
 config AXP20X_POWER
-	tristate "AXP20x power supply driver"
+tristate "AXP20x power supply driver"
 	depends on MFD_AXP20X
 	depends on IIO
 	help
-	  This driver provides support for the power supply features of
+This driver provides support for the power supply features of
 	  AXP20x PMIC.
 
 config AXP288_CHARGER
-	tristate "X-Powers AXP288 Charger"
+tristate "X-Powers AXP288 Charger"
 	depends on MFD_AXP20X && EXTCON_AXP288
 	help
-	  Say yes here to have support X-Power AXP288 power management IC (PMIC)
+Say yes here to have support X-Power AXP288 power management IC (PMIC)
 	  integrated charger.
 
 config AXP288_FUEL_GAUGE
-	tristate "X-Powers AXP288 Fuel Gauge"
+tristate "X-Powers AXP288 Fuel Gauge"
 	depends on MFD_AXP20X && IIO
 	help
-	  Say yes here to have support for X-Power power management IC (PMIC)
+Say yes here to have support for X-Power power management IC (PMIC)
 	  Fuel Gauge. The device provides battery statistics and status
-	  monitoring as well as alerts for battery over/under voltage and
+monitoring as well as alerts for battery over/under voltage and
 	  over/under temperature.
 
 config BATTERY_MAX17040
@@ -402,7 +402,7 @@ config CHARGER_ISP1704
 	  ISP1707/ISP1704 USB transceivers.
 
 config CHARGER_MAX8903
-	tristate "MAX8903 Battery DC-DC Charger for USB and Adapter Power"
+tristate "MAX8903 Battery DC-DC Charger for USB and Adapter Power"
 	help
 	  Say Y to enable support for the MAX8903 DC-DC charger and sysfs.
 	  The driver supports controlling charger-enable and current-limit
@@ -578,7 +578,7 @@ config BATTERY_GAUGE_LTC2941
 	help
 	  Say Y here to include support for LTC2941 and LTC2943 Battery
 	  Gauge IC. The driver reports the charge count continuously, and
-	  measures the voltage and temperature every 10 seconds.
+measures the voltage and temperature every 10 seconds.
 
 config AB8500_BM
 	bool "AB8500 Battery Management Driver"
@@ -591,7 +591,7 @@ config BATTERY_GOLDFISH
 	depends on GOLDFISH || COMPILE_TEST
 	depends on HAS_IOMEM
 	help
-	  Say Y to enable support for the battery and AC power in the
+Say Y to enable support for the battery and AC power in the
 	  Goldfish emulator.
 
 config BATTERY_RT5033
@@ -601,7 +601,7 @@ config BATTERY_RT5033
 	help
 	  This adds support for battery fuel gauge in Richtek RT5033 PMIC.
 	  The fuelgauge calculates and determines the battery state of charge
-	  according to battery open circuit voltage.
+according to battery open circuit voltage.
 
 config CHARGER_RT9455
 	tristate "Richtek RT9455 battery charger driver"

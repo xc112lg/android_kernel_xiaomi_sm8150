@@ -4,7 +4,7 @@
  *	http://armlinux.simtec.co.uk/
  *	Ben Dooks <ben@simtec.co.uk>
  *
- * S3C CPU frequency scaling support - driver and board
+* S3C CPU frequency scaling support - driver and board
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,14 @@ struct s3c_cpufreq_board;
 struct s3c_iotimings;
 
 /**
- * struct s3c_freq - frequency information (mainly for core drivers)
- * @fclk: The FCLK frequency in Hz.
- * @armclk: The ARMCLK frequency in Hz.
+* struct s3c_freq - frequency information (mainly for core drivers)
+* @fclk: The FCLK frequency in Hz.
+* @armclk: The ARMCLK frequency in Hz.
  * @hclk_tns: HCLK cycle time in 10ths of nano-seconds.
- * @hclk: The HCLK frequency in Hz.
- * @pclk: The PCLK frequency in Hz.
+* @hclk: The HCLK frequency in Hz.
+* @pclk: The PCLK frequency in Hz.
  *
- * This contains the frequency information about the current configuration
+* This contains the frequency information about the current configuration
  * mainly for the core drivers to ensure we do not end up passing about
  * a large number of parameters.
  *
@@ -41,15 +41,15 @@ struct s3c_freq {
 };
 
 /**
- * struct s3c_cpufreq_freqs - s3c cpufreq notification information.
- * @freqs: The cpufreq setting information.
+* struct s3c_cpufreq_freqs - s3c cpufreq notification information.
+* @freqs: The cpufreq setting information.
  * @old: The old clock settings.
  * @new: The new clock settings.
  * @pll_changing: Set if the PLL is changing.
  *
- * Wrapper 'struct cpufreq_freqs' so that any drivers receiving the
+* Wrapper 'struct cpufreq_freqs' so that any drivers receiving the
  * notification can use this information that is not provided by just
- * having the core frequency alone.
+* having the core frequency alone.
  *
  * The pll_changing flag is used to indicate if the PLL itself is
  * being set during this change. This is important as the clocks
@@ -60,9 +60,9 @@ struct s3c_freq {
  * may be removed in the future.
  */
 struct s3c_cpufreq_freqs {
-	struct cpufreq_freqs	freqs;
-	struct s3c_freq		old;
-	struct s3c_freq		new;
+struct cpufreq_freqs	freqs;
+struct s3c_freq		old;
+struct s3c_freq		new;
 
 	unsigned int		pll_changing:1;
 };
@@ -89,23 +89,23 @@ struct s3c_clkdivs {
 
 /**
  * struct s3c_pllval - PLL value entry.
- * @freq: The frequency for this entry in Hz.
+* @freq: The frequency for this entry in Hz.
  * @pll_reg: The PLL register setting for this PLL value.
  */
 struct s3c_pllval {
-	unsigned long		freq;
+unsigned long		freq;
 	unsigned long		pll_reg;
 };
 
 /**
- * struct s3c_cpufreq_board - per-board cpu frequency informatin
+* struct s3c_cpufreq_board - per-board cpu frequency informatin
  * @refresh: The SDRAM refresh period in nanoseconds.
  * @auto_io: Set if the IO timing settings should be generated from the
  *	initialisation time hardware registers.
  * @need_io: Set if the board has external IO on any of the chipselect
  *	lines that will require the hardware timing registers to be
  *	updated on a clock change.
- * @max: The maxium frequency limits for the system. Any field that
+* @max: The maxium frequency limits for the system. Any field that
  *	is left at zero will use the CPU's settings.
  *
  * This contains the board specific settings that affect how the CPU
@@ -122,7 +122,7 @@ struct s3c_cpufreq_board {
 	unsigned int	need_io:1;	/* set if needs io timing support. */
 
 	/* any non-zero field in here is taken as an upper limit. */
-	struct s3c_freq	max;	/* frequency limits */
+struct s3c_freq	max;	/* frequency limits */
 };
 
 /* Things depending on frequency scaling. */

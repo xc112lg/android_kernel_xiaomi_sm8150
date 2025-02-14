@@ -391,8 +391,8 @@ static int ppc_nest_imc_cpu_online(unsigned int cpu)
 
 static int nest_pmu_cpumask_init(void)
 {
-	return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_NEST_IMC_ONLINE,
-				 "perf/powerpc/imc:online",
+return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_NEST_IMC_ONLINE,
+"perf/powerpc/imc:online",
 				 ppc_nest_imc_cpu_online,
 				 ppc_nest_imc_cpu_offline);
 }
@@ -672,8 +672,8 @@ static int ppc_core_imc_cpu_offline(unsigned int cpu)
 
 static int core_imc_pmu_cpumask_init(void)
 {
-	return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_CORE_IMC_ONLINE,
-				 "perf/powerpc/imc_core:online",
+return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_CORE_IMC_ONLINE,
+"perf/powerpc/imc_core:online",
 				 ppc_core_imc_cpu_online,
 				 ppc_core_imc_cpu_offline);
 }
@@ -857,8 +857,8 @@ static int ppc_thread_imc_cpu_offline(unsigned int cpu)
 
 static int thread_imc_cpu_init(void)
 {
-	return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_THREAD_IMC_ONLINE,
-			  "perf/powerpc/imc_thread:online",
+return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_THREAD_IMC_ONLINE,
+"perf/powerpc/imc_thread:online",
 			  ppc_thread_imc_cpu_online,
 			  ppc_thread_imc_cpu_offline);
 }
@@ -1193,7 +1193,7 @@ static void imc_common_cpuhp_mem_free(struct imc_pmu *pmu_ptr)
 	if (pmu_ptr->domain == IMC_DOMAIN_NEST) {
 		mutex_lock(&nest_init_lock);
 		if (nest_pmus == 1) {
-			cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_NEST_IMC_ONLINE);
+cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_NEST_IMC_ONLINE);
 			kfree(nest_imc_refc);
 			kfree(per_nest_pmu_arr);
 		}
@@ -1205,13 +1205,13 @@ static void imc_common_cpuhp_mem_free(struct imc_pmu *pmu_ptr)
 
 	/* Free core_imc memory */
 	if (pmu_ptr->domain == IMC_DOMAIN_CORE) {
-		cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_CORE_IMC_ONLINE);
+cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_CORE_IMC_ONLINE);
 		cleanup_all_core_imc_memory();
 	}
 
 	/* Free thread_imc memory */
 	if (pmu_ptr->domain == IMC_DOMAIN_THREAD) {
-		cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_THREAD_IMC_ONLINE);
+cpuhp_remove_state(CPUHP_AP_PERF_POWERPC_THREAD_IMC_ONLINE);
 		cleanup_all_thread_imc_memory();
 	}
 

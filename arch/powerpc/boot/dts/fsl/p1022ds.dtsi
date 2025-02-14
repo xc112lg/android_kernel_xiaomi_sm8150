@@ -141,7 +141,7 @@
 			compatible = "wlf,wm8776";
 			reg = <0x1a>;
 			/*
-			 * clock-frequency will be set by U-Boot if
+* clock-frequency will be set by U-Boot if
 			 * the clock is enabled.
 			 */
 		};
@@ -162,7 +162,7 @@
 			#size-cells = <1>;
 			compatible = "spansion,s25sl12801", "jedec,spi-nor";
 			reg = <0>;
-			spi-max-frequency = <40000000>; /* input clock */
+spi-max-frequency = <40000000>; /* input clock */
 
 			partition@0 {
 				label = "u-boot-spi";

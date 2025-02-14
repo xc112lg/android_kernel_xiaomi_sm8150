@@ -5,7 +5,7 @@
 #ifdef __KERNEL__
 
 /*
- * The PowerPC can do unaligned accesses itself based on its endian mode.
+* The PowerPC can do unaligned accesses itself based on its endian mode.
  */
 #include <linux/unaligned/access_ok.h>
 #include <linux/unaligned/generic.h>

@@ -16,7 +16,7 @@
  * calculate constants that land the data in this 32 bits.
  *
  * We then use fixed point Barrett reduction to compute a mod n over GF(2)
- * for n = CRC using POWER8 instructions. We use x = 32.
+* for n = CRC using POWER8 instructions. We use x = 32.
  *
  * http://en.wikipedia.org/wiki/Barrett_reduction
  *

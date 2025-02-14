@@ -307,7 +307,7 @@ int main(void)
 	STACK_PT_REGS_OFFSET(_TRAP, trap);
 #ifndef CONFIG_PPC64
 	/*
-	 * The PowerPC 400-class & Book-E processors have neither the DAR
+* The PowerPC 400-class & Book-E processors have neither the DAR
 	 * nor the DSISR SPRs. Hence, we overload them to hold the similar
 	 * DEAR and ESR SPRs for such processors.  For critical interrupts
 	 * we use them to hold SRR0 and SRR1.

@@ -1,5 +1,5 @@
 /*
- *	TLB shootdown specifics for powerpc
+*	TLB shootdown specifics for powerpc
  *
  * Copyright (C) 2002 Anton Blanchard, IBM Corp.
  * Copyright (C) 2002 Paul Mackerras, IBM Corp.

@@ -33,7 +33,7 @@
 #define RVW	.long	0x4c0003e4
 
 /* Common sequence to do before going to any of the
- * powersavings modes.
+* powersavings modes.
  */
 
 #define PRE_SLEEP_SEQUENCE	\
@@ -65,7 +65,7 @@ sleep_common:
 #ifdef CONFIG_PPC_PASEMI_CPUFREQ
 	std	r3, 48(r1)
 
-	/* Only do power savings when in astate 0 */
+/* Only do power savings when in astate 0 */
 	bl	check_astate
 	cmpwi	r3,0
 	bne	1f

@@ -22,7 +22,7 @@ static bd_t bd;
 static void platform_fixups(void)
 {
 	dt_fixup_memory(bd.bi_memstart, bd.bi_memsize);
-	dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
+dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
 }
 
 void platform_init(unsigned long r3, unsigned long r4, unsigned long r5,

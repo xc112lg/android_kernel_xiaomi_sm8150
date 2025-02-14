@@ -12,7 +12,7 @@ DPMS_t;
 
 #define setDAC(off) {							\
 	poke32(MISC_CTRL,						\
-	       (peek32(MISC_CTRL) & ~MISC_CTRL_DAC_POWER_OFF) | (off)); \
+(peek32(MISC_CTRL) & ~MISC_CTRL_DAC_POWER_OFF) | (off)); \
 }
 
 void ddk750_set_dpms(DPMS_t state);

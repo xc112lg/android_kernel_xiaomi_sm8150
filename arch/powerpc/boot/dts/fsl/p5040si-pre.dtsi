@@ -99,7 +99,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		cpu0: PowerPC,e5500@0 {
+cpu0: PowerPC,e5500@0 {
 			device_type = "cpu";
 			reg = <0>;
 			clocks = <&mux0>;
@@ -109,7 +109,7 @@
 				next-level-cache = <&cpc>;
 			};
 		};
-		cpu1: PowerPC,e5500@1 {
+cpu1: PowerPC,e5500@1 {
 			device_type = "cpu";
 			reg = <1>;
 			clocks = <&mux1>;
@@ -119,7 +119,7 @@
 				next-level-cache = <&cpc>;
 			};
 		};
-		cpu2: PowerPC,e5500@2 {
+cpu2: PowerPC,e5500@2 {
 			device_type = "cpu";
 			reg = <2>;
 			clocks = <&mux2>;
@@ -129,7 +129,7 @@
 				next-level-cache = <&cpc>;
 			};
 		};
-		cpu3: PowerPC,e5500@3 {
+cpu3: PowerPC,e5500@3 {
 			device_type = "cpu";
 			reg = <3>;
 			clocks = <&mux3>;

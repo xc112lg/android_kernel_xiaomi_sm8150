@@ -26,16 +26,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,5200@0 {
+PowerPC,5200@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <0x4000>;	// L1, 16K
 			i-cache-size = <0x4000>;	// L1, 16K
-			timebase-frequency = <0>;	// from bootloader
-			bus-frequency = <0>;		// from bootloader
-			clock-frequency = <0>;		// from bootloader
+timebase-frequency = <0>;	// from bootloader
+bus-frequency = <0>;		// from bootloader
+clock-frequency = <0>;		// from bootloader
 		};
 	};
 
@@ -50,8 +50,8 @@
 		compatible = "fsl,mpc5200-immr";
 		ranges = <0 0xf0000000 0x0000c000>;
 		reg = <0xf0000000 0x00000100>;
-		bus-frequency = <0>;		// from bootloader
-		system-frequency = <0>;		// from bootloader
+bus-frequency = <0>;		// from bootloader
+system-frequency = <0>;		// from bootloader
 
 		cdm@200 {
 			compatible = "fsl,mpc5200-cdm";
@@ -226,7 +226,7 @@
 				 0xc000 0 0 2 &mpc5200_pic 0 0 3
 				 0xc000 0 0 3 &mpc5200_pic 0 0 3
 				 0xc000 0 0 4 &mpc5200_pic 0 0 3>;
-		clock-frequency = <0>; // From boot loader
+clock-frequency = <0>; // From boot loader
 		interrupts = <2 8 0 2 9 0 2 10 0>;
 		bus-range = <0 0>;
 		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x10000000

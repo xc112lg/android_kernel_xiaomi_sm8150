@@ -25,11 +25,11 @@
 #define PP_POWERSOURCE_H
 
 enum pp_power_source {
-	PP_PowerSource_AC = 0,
-	PP_PowerSource_DC,
-	PP_PowerSource_LimitedPower,
-	PP_PowerSource_LimitedPower_2,
-	PP_PowerSource_Max
+PP_PowerSource_AC = 0,
+PP_PowerSource_DC,
+PP_PowerSource_LimitedPower,
+PP_PowerSource_LimitedPower_2,
+PP_PowerSource_Max
 };
 
 

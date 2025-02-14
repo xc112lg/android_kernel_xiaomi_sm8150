@@ -123,7 +123,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	mfspr	r8,SPRN_DEC
 	mftb	r7
 BEGIN_FTR_SECTION
-	/* On POWER9, don't sign-extend if host LPCR[LD] bit is set */
+/* On POWER9, don't sign-extend if host LPCR[LD] bit is set */
 	bne	32f
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	extsw	r8,r8

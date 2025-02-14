@@ -97,7 +97,7 @@ static void tqm85xx_ti1520_fixup(struct pci_dev *pdev)
 
 	/*
 	 * Enable P2CCLK bit in system control register
-	 * to enable CLOCK output to power chip
+* to enable CLOCK output to power chip
 	 */
 	pci_read_config_dword(pdev, 0x80, &val);
 	pci_write_config_dword(pdev, 0x80, val | (1 << 27));

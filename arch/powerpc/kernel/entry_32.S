@@ -1,16 +1,16 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *  Rewritten by Cort Dougan (cort@fsmlabs.com) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@fsmlabs.com>
- *  Adapted for Power Macintosh by Paul Mackerras.
+*  Adapted for Power Macintosh by Paul Mackerras.
  *  Low-level exception handlers and MMU support
  *  rewritten by Paul Mackerras.
  *    Copyright (C) 1996 Paul Mackerras.
  *  MPC8xx modifications Copyright (C) 1997 Dan Malek (dmalek@jlc.net).
  *
  *  This file contains the system call entry code, context switch
- *  code, and exception/interrupt return code for PowerPC.
+*  code, and exception/interrupt return code for PowerPC.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -274,7 +274,7 @@ reenable_mmu:				/* re-enable mmu so we can */
 #if defined (CONFIG_6xx) || defined(CONFIG_E500)
 4:	rlwinm	r12,r12,0,~_TLF_NAPPING
 	stw	r12,TI_LOCAL_FLAGS(r9)
-	b	power_save_ppc32_restore
+b	power_save_ppc32_restore
 
 7:	rlwinm	r12,r12,0,~_TLF_SLEEPING
 	stw	r12,TI_LOCAL_FLAGS(r9)
@@ -313,7 +313,7 @@ stack_ovf:
 /*
  * Handle a system call.
  */
-	.stabs	"arch/powerpc/kernel/",N_SO,0,0,0f
+.stabs	"arch/powerpc/kernel/",N_SO,0,0,0f
 	.stabs	"entry_32.S",N_SO,0,0,0f
 0:
 

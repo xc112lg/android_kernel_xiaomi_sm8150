@@ -186,7 +186,7 @@ static int __init mpc836x_usb_cfg(void)
 	} else {
 		setbits8(&bcsr[13], BCSR13_USBMODE);
 		/*
-		 * The BCSR GPIOs are used to control power and
+* The BCSR GPIOs are used to control power and
 		 * speed of the USB transceiver. This is needed for
 		 * the USB Host only.
 		 */

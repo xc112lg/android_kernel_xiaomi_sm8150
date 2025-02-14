@@ -22,16 +22,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,885@0 {
+PowerPC,885@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <16>;
 			i-cache-line-size = <16>;
 			d-cache-size = <8192>;
 			i-cache-size = <8192>;
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <15 2>;	// decrementer interrupt
 			interrupt-parent = <&PIC>;
 		};
@@ -72,7 +72,7 @@
 		#size-cells = <1>;
 		device_type = "soc";
 		ranges = <0x0 0xfa200000 0x4000>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		// Temporary -- will go away once kernel uses ranges for get_immrbase().
 		reg = <0xfa200000 0x4000>;

@@ -1,5 +1,5 @@
 /*
- * DRA7xx Power domains framework
+* DRA7xx Power domains framework
  *
  * Copyright (C) 2009-2013 Texas Instruments, Inc.
  * Copyright (C) 2009-2011 Nokia Corporation
@@ -44,7 +44,7 @@ static struct powerdomain iva_7xx_pwrdm = {
 		[2] = PWRSTS_ON,	/* tcm1_mem */
 		[3] = PWRSTS_ON,	/* tcm2_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* rtc_7xx_pwrdm:  */
@@ -61,7 +61,7 @@ static struct powerdomain custefuse_7xx_pwrdm = {
 	.prcm_offs	  = DRA7XX_PRM_CUSTEFUSE_INST,
 	.prcm_partition	  = DRA7XX_PRM_PARTITION,
 	.pwrsts		  = PWRSTS_OFF_ON,
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* custefuse_aon_7xx_pwrdm: Customer efuse controller power domain */
@@ -83,7 +83,7 @@ static struct powerdomain ipu_7xx_pwrdm = {
 		[0] = PWRSTS_ON,	/* aessmem */
 		[1] = PWRSTS_ON,	/* periphmem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* dss_7xx_pwrdm: Display subsystem power domain */
@@ -96,7 +96,7 @@ static struct powerdomain dss_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* dss_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* l4per_7xx_pwrdm: Target peripherals power domain */
@@ -110,7 +110,7 @@ static struct powerdomain l4per_7xx_pwrdm = {
 		[0] = PWRSTS_ON,	/* nonretained_bank */
 		[1] = PWRSTS_ON,	/* retained_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* gpu_7xx_pwrdm: 3D accelerator power domain */
@@ -123,7 +123,7 @@ static struct powerdomain gpu_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* gpu_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* wkupaon_7xx_pwrdm: Wake-up power domain */
@@ -152,7 +152,7 @@ static struct powerdomain core_7xx_pwrdm = {
 		[3] = PWRSTS_ON,	/* ipu_l2ram */
 		[4] = PWRSTS_ON,	/* ipu_unicache */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* coreaon_7xx_pwrdm: Always ON logic that sits in VDD_CORE voltage domain */
@@ -205,7 +205,7 @@ static struct powerdomain vpe_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* vpe_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* mpu_7xx_pwrdm: Modena processor and the Neon coprocessor power domain */
@@ -238,7 +238,7 @@ static struct powerdomain l3init_7xx_pwrdm = {
 		[1] = PWRSTS_ON,	/* l3init_bank1 */
 		[2] = PWRSTS_ON,	/* l3init_bank2 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* eve3_7xx_pwrdm:  */
@@ -251,7 +251,7 @@ static struct powerdomain eve3_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* eve3_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* emu_7xx_pwrdm: Emulation power domain */
@@ -278,7 +278,7 @@ static struct powerdomain dsp2_7xx_pwrdm = {
 		[1] = PWRSTS_ON,	/* dsp2_l1 */
 		[2] = PWRSTS_ON,	/* dsp2_l2 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* dsp1_7xx_pwrdm: Tesla processor power domain */
@@ -293,7 +293,7 @@ static struct powerdomain dsp1_7xx_pwrdm = {
 		[1] = PWRSTS_ON,	/* dsp1_l1 */
 		[2] = PWRSTS_ON,	/* dsp1_l2 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* cam_7xx_pwrdm: Camera subsystem power domain */
@@ -306,7 +306,7 @@ static struct powerdomain cam_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* vip_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* eve4_7xx_pwrdm:  */
@@ -319,7 +319,7 @@ static struct powerdomain eve4_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* eve4_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* eve2_7xx_pwrdm:  */
@@ -332,7 +332,7 @@ static struct powerdomain eve2_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* eve2_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* eve1_7xx_pwrdm:  */
@@ -345,11 +345,11 @@ static struct powerdomain eve1_7xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* eve1_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /*
- * The following power domains are not under SW control
+* The following power domains are not under SW control
  *
  * mpuaon
  * mmaon
@@ -400,14 +400,14 @@ static struct powerdomain *powerdomains_dra72x[] __initdata = {
 void __init dra7xx_powerdomains_init(void)
 {
 	pwrdm_register_platform_funcs(&omap4_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_dra7xx);
+pwrdm_register_pwrdms(powerdomains_dra7xx);
 
 	if (soc_is_dra76x())
-		pwrdm_register_pwrdms(powerdomains_dra76x);
+pwrdm_register_pwrdms(powerdomains_dra76x);
 	else if (soc_is_dra74x())
-		pwrdm_register_pwrdms(powerdomains_dra74x);
+pwrdm_register_pwrdms(powerdomains_dra74x);
 	else if (soc_is_dra72x())
-		pwrdm_register_pwrdms(powerdomains_dra72x);
+pwrdm_register_pwrdms(powerdomains_dra72x);
 
 	pwrdm_complete_init();
 }

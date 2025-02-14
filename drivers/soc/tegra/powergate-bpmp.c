@@ -34,7 +34,7 @@ struct tegra_powergate {
 static inline struct tegra_powergate *
 to_tegra_powergate(struct generic_pm_domain *genpd)
 {
-	return container_of(genpd, struct tegra_powergate, genpd);
+return container_of(genpd, struct tegra_powergate, genpd);
 }
 
 static int tegra_bpmp_powergate_set_state(struct tegra_bpmp *bpmp,
@@ -141,66 +141,66 @@ static char *tegra_bpmp_powergate_get_name(struct tegra_bpmp *bpmp,
 static inline bool tegra_bpmp_powergate_is_powered(struct tegra_bpmp *bpmp,
 						   unsigned int id)
 {
-	return tegra_bpmp_powergate_get_state(bpmp, id) != PG_STATE_OFF;
+return tegra_bpmp_powergate_get_state(bpmp, id) != PG_STATE_OFF;
 }
 
 static int tegra_powergate_power_on(struct generic_pm_domain *domain)
 {
-	struct tegra_powergate *powergate = to_tegra_powergate(domain);
-	struct tegra_bpmp *bpmp = powergate->bpmp;
+struct tegra_powergate *powergate = to_tegra_powergate(domain);
+struct tegra_bpmp *bpmp = powergate->bpmp;
 
-	return tegra_bpmp_powergate_set_state(bpmp, powergate->id,
+return tegra_bpmp_powergate_set_state(bpmp, powergate->id,
 					      PG_STATE_ON);
 }
 
 static int tegra_powergate_power_off(struct generic_pm_domain *domain)
 {
-	struct tegra_powergate *powergate = to_tegra_powergate(domain);
-	struct tegra_bpmp *bpmp = powergate->bpmp;
+struct tegra_powergate *powergate = to_tegra_powergate(domain);
+struct tegra_bpmp *bpmp = powergate->bpmp;
 
-	return tegra_bpmp_powergate_set_state(bpmp, powergate->id,
+return tegra_bpmp_powergate_set_state(bpmp, powergate->id,
 					      PG_STATE_OFF);
 }
 
 static struct tegra_powergate *
 tegra_powergate_add(struct tegra_bpmp *bpmp,
-		    const struct tegra_powergate_info *info)
+const struct tegra_powergate_info *info)
 {
-	struct tegra_powergate *powergate;
+struct tegra_powergate *powergate;
 	bool off;
 	int err;
 
-	off = !tegra_bpmp_powergate_is_powered(bpmp, info->id);
+off = !tegra_bpmp_powergate_is_powered(bpmp, info->id);
 
-	powergate = devm_kzalloc(bpmp->dev, sizeof(*powergate), GFP_KERNEL);
-	if (!powergate)
+powergate = devm_kzalloc(bpmp->dev, sizeof(*powergate), GFP_KERNEL);
+if (!powergate)
 		return ERR_PTR(-ENOMEM);
 
-	powergate->id = info->id;
-	powergate->bpmp = bpmp;
+powergate->id = info->id;
+powergate->bpmp = bpmp;
 
-	powergate->genpd.name = kstrdup(info->name, GFP_KERNEL);
-	powergate->genpd.power_on = tegra_powergate_power_on;
-	powergate->genpd.power_off = tegra_powergate_power_off;
+powergate->genpd.name = kstrdup(info->name, GFP_KERNEL);
+powergate->genpd.power_on = tegra_powergate_power_on;
+powergate->genpd.power_off = tegra_powergate_power_off;
 
-	err = pm_genpd_init(&powergate->genpd, NULL, off);
+err = pm_genpd_init(&powergate->genpd, NULL, off);
 	if (err < 0) {
-		kfree(powergate->genpd.name);
+kfree(powergate->genpd.name);
 		return ERR_PTR(err);
 	}
 
-	return powergate;
+return powergate;
 }
 
 static void tegra_powergate_remove(struct tegra_powergate *powergate)
 {
-	struct generic_pm_domain *genpd = &powergate->genpd;
-	struct tegra_bpmp *bpmp = powergate->bpmp;
+struct generic_pm_domain *genpd = &powergate->genpd;
+struct tegra_bpmp *bpmp = powergate->bpmp;
 	int err;
 
 	err = pm_genpd_remove(genpd);
 	if (err < 0)
-		dev_err(bpmp->dev, "failed to remove power domain %s: %d\n",
+dev_err(bpmp->dev, "failed to remove power domain %s: %d\n",
 			genpd->name, err);
 
 	kfree(genpd->name);
@@ -208,29 +208,29 @@ static void tegra_powergate_remove(struct tegra_powergate *powergate)
 
 static int
 tegra_bpmp_probe_powergates(struct tegra_bpmp *bpmp,
-			    struct tegra_powergate_info **powergatesp)
+struct tegra_powergate_info **powergatesp)
 {
-	struct tegra_powergate_info *powergates;
+struct tegra_powergate_info *powergates;
 	unsigned int max_id, id, count = 0;
 	unsigned int num_holes = 0;
 	int err;
 
-	err = tegra_bpmp_powergate_get_max_id(bpmp);
+err = tegra_bpmp_powergate_get_max_id(bpmp);
 	if (err < 0)
 		return err;
 
 	max_id = err;
 
-	dev_dbg(bpmp->dev, "maximum powergate ID: %u\n", max_id);
+dev_dbg(bpmp->dev, "maximum powergate ID: %u\n", max_id);
 
-	powergates = kcalloc(max_id + 1, sizeof(*powergates), GFP_KERNEL);
-	if (!powergates)
+powergates = kcalloc(max_id + 1, sizeof(*powergates), GFP_KERNEL);
+if (!powergates)
 		return -ENOMEM;
 
 	for (id = 0; id <= max_id; id++) {
-		struct tegra_powergate_info *info = &powergates[count];
+struct tegra_powergate_info *info = &powergates[count];
 
-		info->name = tegra_bpmp_powergate_get_name(bpmp, id);
+info->name = tegra_bpmp_powergate_get_name(bpmp, id);
 		if (!info->name || info->name[0] == '\0') {
 			num_holes++;
 			continue;
@@ -242,18 +242,18 @@ tegra_bpmp_probe_powergates(struct tegra_bpmp *bpmp,
 
 	dev_dbg(bpmp->dev, "holes: %u\n", num_holes);
 
-	*powergatesp = powergates;
+*powergatesp = powergates;
 
 	return count;
 }
 
 static int tegra_bpmp_add_powergates(struct tegra_bpmp *bpmp,
-				     struct tegra_powergate_info *powergates,
+struct tegra_powergate_info *powergates,
 				     unsigned int count)
 {
 	struct genpd_onecell_data *genpd = &bpmp->genpd;
 	struct generic_pm_domain **domains;
-	struct tegra_powergate *powergate;
+struct tegra_powergate *powergate;
 	unsigned int i;
 	int err;
 
@@ -262,15 +262,15 @@ static int tegra_bpmp_add_powergates(struct tegra_bpmp *bpmp,
 		return -ENOMEM;
 
 	for (i = 0; i < count; i++) {
-		powergate = tegra_powergate_add(bpmp, &powergates[i]);
-		if (IS_ERR(powergate)) {
-			err = PTR_ERR(powergate);
+powergate = tegra_powergate_add(bpmp, &powergates[i]);
+if (IS_ERR(powergate)) {
+err = PTR_ERR(powergate);
 			goto remove;
 		}
 
-		dev_dbg(bpmp->dev, "added power domain %s\n",
-			powergate->genpd.name);
-		domains[i] = &powergate->genpd;
+dev_dbg(bpmp->dev, "added power domain %s\n",
+powergate->genpd.name);
+domains[i] = &powergate->genpd;
 	}
 
 	genpd->num_domains = count;
@@ -280,8 +280,8 @@ static int tegra_bpmp_add_powergates(struct tegra_bpmp *bpmp,
 
 remove:
 	while (i--) {
-		powergate = to_tegra_powergate(domains[i]);
-		tegra_powergate_remove(powergate);
+powergate = to_tegra_powergate(domains[i]);
+tegra_powergate_remove(powergate);
 	}
 
 	kfree(genpd->domains);
@@ -292,13 +292,13 @@ static void tegra_bpmp_remove_powergates(struct tegra_bpmp *bpmp)
 {
 	struct genpd_onecell_data *genpd = &bpmp->genpd;
 	unsigned int i = genpd->num_domains;
-	struct tegra_powergate *powergate;
+struct tegra_powergate *powergate;
 
 	while (i--) {
-		dev_dbg(bpmp->dev, "removing power domain %s\n",
+dev_dbg(bpmp->dev, "removing power domain %s\n",
 			genpd->domains[i]->name);
-		powergate = to_tegra_powergate(genpd->domains[i]);
-		tegra_powergate_remove(powergate);
+powergate = to_tegra_powergate(genpd->domains[i]);
+tegra_powergate_remove(powergate);
 	}
 }
 
@@ -310,11 +310,11 @@ tegra_powergate_xlate(struct of_phandle_args *spec, void *data)
 	unsigned int i;
 
 	for (i = 0; i < genpd->num_domains; i++) {
-		struct tegra_powergate *powergate;
+struct tegra_powergate *powergate;
 
-		powergate = to_tegra_powergate(genpd->domains[i]);
-		if (powergate->id == spec->args[0]) {
-			domain = &powergate->genpd;
+powergate = to_tegra_powergate(genpd->domains[i]);
+if (powergate->id == spec->args[0]) {
+domain = &powergate->genpd;
 			break;
 		}
 	}
@@ -325,35 +325,35 @@ tegra_powergate_xlate(struct of_phandle_args *spec, void *data)
 int tegra_bpmp_init_powergates(struct tegra_bpmp *bpmp)
 {
 	struct device_node *np = bpmp->dev->of_node;
-	struct tegra_powergate_info *powergates;
+struct tegra_powergate_info *powergates;
 	struct device *dev = bpmp->dev;
 	unsigned int count, i;
 	int err;
 
-	err = tegra_bpmp_probe_powergates(bpmp, &powergates);
+err = tegra_bpmp_probe_powergates(bpmp, &powergates);
 	if (err < 0)
 		return err;
 
 	count = err;
 
-	dev_dbg(dev, "%u power domains probed\n", count);
+dev_dbg(dev, "%u power domains probed\n", count);
 
-	err = tegra_bpmp_add_powergates(bpmp, powergates, count);
+err = tegra_bpmp_add_powergates(bpmp, powergates, count);
 	if (err < 0)
 		goto free;
 
-	bpmp->genpd.xlate = tegra_powergate_xlate;
+bpmp->genpd.xlate = tegra_powergate_xlate;
 
 	err = of_genpd_add_provider_onecell(np, &bpmp->genpd);
 	if (err < 0) {
-		dev_err(dev, "failed to add power domain provider: %d\n", err);
-		tegra_bpmp_remove_powergates(bpmp);
+dev_err(dev, "failed to add power domain provider: %d\n", err);
+tegra_bpmp_remove_powergates(bpmp);
 	}
 
 free:
 	for (i = 0; i < count; i++)
-		kfree(powergates[i].name);
+kfree(powergates[i].name);
 
-	kfree(powergates);
+kfree(powergates);
 	return err;
 }

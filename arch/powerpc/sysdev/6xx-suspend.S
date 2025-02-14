@@ -1,6 +1,6 @@
 /*
  * Enter and leave sleep state on chips with 6xx-style HID0
- * power management bits, which don't leave sleep state via reset.
+* power management bits, which don't leave sleep state via reset.
  *
  * Author: Scott Wood <scottwood@freescale.com>
  *

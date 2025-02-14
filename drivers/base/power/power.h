@@ -3,10 +3,10 @@
 
 static inline void device_pm_init_common(struct device *dev)
 {
-	if (!dev->power.early_init) {
-		spin_lock_init(&dev->power.lock);
-		dev->power.qos = NULL;
-		dev->power.early_init = true;
+if (!dev->power.early_init) {
+spin_lock_init(&dev->power.lock);
+dev->power.qos = NULL;
+dev->power.early_init = true;
 	}
 }
 
@@ -14,7 +14,7 @@ static inline void device_pm_init_common(struct device *dev)
 
 static inline void pm_runtime_early_init(struct device *dev)
 {
-	dev->power.disable_depth = 1;
+dev->power.disable_depth = 1;
 	device_pm_init_common(dev);
 }
 
@@ -144,7 +144,7 @@ extern int msm_show_resume_irq_mask;
 
 static inline struct device *to_device(struct list_head *entry)
 {
-	return container_of(entry, struct device, power.entry);
+return container_of(entry, struct device, power.entry);
 }
 
 extern void device_pm_sleep_init(struct device *dev);
@@ -157,7 +157,7 @@ extern void device_pm_check_callbacks(struct device *dev);
 
 static inline bool device_pm_initialized(struct device *dev)
 {
-	return dev->power.in_dpm_list;
+return dev->power.in_dpm_list;
 }
 
 #else /* !CONFIG_PM_SLEEP */

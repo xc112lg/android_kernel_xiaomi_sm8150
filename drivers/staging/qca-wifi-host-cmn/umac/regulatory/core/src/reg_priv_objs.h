@@ -58,14 +58,14 @@
  * @psoc: Pointer to psoc
  * @pdev: Pointer to pdev
  * @chan_list: Pointer to regulatory channel list
- * @avoid_freq_ind: Pointer to avoid frequencies
+* @avoid_freq_ind: Pointer to avoid frequencies
  * @arg: list of arguments
  */
 typedef void (*reg_chan_change_callback)(
 		struct wlan_objmgr_psoc *psoc,
 		struct wlan_objmgr_pdev *pdev,
 		struct regulatory_channel *chan_list,
-		struct avoid_freq_ind_data *avoid_freq_ind,
+struct avoid_freq_ind_data *avoid_freq_ind,
 		void *arg);
 
 /**
@@ -136,7 +136,7 @@ struct wlan_regulatory_psoc_priv_obj {
 	uint8_t num_chan_change_cbks;
 	uint8_t ch_avoid_ind;
 	struct unsafe_ch_list unsafe_chan_list;
-	struct ch_avoid_ind_type avoid_freq_list;
+struct ch_avoid_ind_type avoid_freq_list;
 	enum restart_beaconing_on_ch_avoid_rule restart_beaconing;
 	struct wlan_psoc_host_hal_reg_capabilities_ext
 			reg_cap[PSOC_MAX_PHY_REG_CAP];
@@ -173,17 +173,17 @@ struct wlan_regulatory_pdev_priv_obj {
 	enum dfs_reg dfs_region;
 	uint32_t phybitmap;
 	struct wlan_objmgr_pdev *pdev_ptr;
-	qdf_freq_t range_2g_low;
-	qdf_freq_t range_2g_high;
-	qdf_freq_t range_5g_low;
-	qdf_freq_t range_5g_high;
+qdf_freq_t range_2g_low;
+qdf_freq_t range_2g_high;
+qdf_freq_t range_5g_low;
+qdf_freq_t range_5g_high;
 	bool dfs_enabled;
 	bool set_fcc_channel;
 	uint32_t band_capability;
 	bool indoor_chan_enabled;
 	bool en_chan_144;
 	uint32_t wireless_modes;
-	struct ch_avoid_ind_type freq_avoid_list;
+struct ch_avoid_ind_type freq_avoid_list;
 	bool force_ssc_disable_indoor_channel;
 	bool sap_state;
 	struct reg_rule_info reg_rules;

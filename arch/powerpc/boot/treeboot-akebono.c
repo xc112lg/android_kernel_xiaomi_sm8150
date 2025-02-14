@@ -78,7 +78,7 @@ static void ibm_akebono_fixups(void)
 
 	dt_fixup_memory(0x0ULL,  ibm_akebono_memsize);
 
-	/* Fixup the SD timeout frequency */
+/* Fixup the SD timeout frequency */
 	mtdcrx(CCTL0_MCO4, 0x1);
 
 	/* Disable SD high-speed mode (which seems to be broken) */
@@ -152,7 +152,7 @@ void platform_init(char *userdata)
 					     "cpu", sizeof("cpu"));
 	if (!node)
 		fatal("Cannot find cpu node\n");
-	timebase = fdt_getprop(_dtb_start, node, "timebase-frequency", &size);
+timebase = fdt_getprop(_dtb_start, node, "timebase-frequency", &size);
 	if (timebase && (size == 4))
 		timebase_period_ns = 1000000000 / *timebase;
 

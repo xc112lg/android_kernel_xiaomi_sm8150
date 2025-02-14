@@ -54,7 +54,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,e500v2@0 {
+PowerPC,e500v2@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			next-level-cache = <&L2>;

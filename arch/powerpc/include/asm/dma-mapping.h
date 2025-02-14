@@ -2,7 +2,7 @@
 /*
  * Copyright (C) 2004 IBM
  *
- * Implements the generic device dma API for powerpc.
+* Implements the generic device dma API for powerpc.
  * the pci and vio busses
  */
 #ifndef _ASM_DMA_MAPPING_H
@@ -32,7 +32,7 @@ extern int dma_direct_mmap_coherent(struct device *dev,
 
 #ifdef CONFIG_NOT_COHERENT_CACHE
 /*
- * DMA-consistent mapping functions for PowerPCs that don't support
+* DMA-consistent mapping functions for PowerPCs that don't support
  * cache snooping.  These allocate/free a region of uncached mapped
  * memory space for use with DMA devices.  Alternatively, you could
  * allocate the space "normally" and use the cache management functions

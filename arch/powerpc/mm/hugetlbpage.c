@@ -580,7 +580,7 @@ unsigned long vma_mmu_pagesize(struct vm_area_struct *vma)
 
 static inline bool is_power_of_4(unsigned long x)
 {
-	if (is_power_of_2(x))
+if (is_power_of_2(x))
 		return (__ilog2(x) % 2) ? false : true;
 	return false;
 }
@@ -595,10 +595,10 @@ static int __init add_huge_page_size(unsigned long long size)
 	if (size <= PAGE_SIZE)
 		return -EINVAL;
 #if defined(CONFIG_PPC_FSL_BOOK3E)
-	if (!is_power_of_4(size))
+if (!is_power_of_4(size))
 		return -EINVAL;
 #elif !defined(CONFIG_PPC_8xx)
-	if (!is_power_of_2(size) || (shift > SLICE_HIGH_SHIFT))
+if (!is_power_of_2(size) || (shift > SLICE_HIGH_SHIFT))
 		return -EINVAL;
 #endif
 
@@ -616,7 +616,7 @@ static int __init add_huge_page_size(unsigned long long size)
 	 */
 	if (radix_enabled()) {
 		if (mmu_psize != MMU_PAGE_2M) {
-			if (cpu_has_feature(CPU_FTR_POWER9_DD1) ||
+if (cpu_has_feature(CPU_FTR_POWER9_DD1) ||
 			    (mmu_psize != MMU_PAGE_1G))
 				return -EINVAL;
 		}

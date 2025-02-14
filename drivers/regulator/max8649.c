@@ -53,7 +53,7 @@ struct max8649_regulator_info {
 	struct regmap		*regmap;
 
 	unsigned	mode:2;	/* bit[1:0] = VID1, VID0 */
-	unsigned	extclk_freq:2;
+unsigned	extclk_freq:2;
 	unsigned	extclk:1;
 	unsigned	ramp_timing:3;
 	unsigned	ramp_down:1;
@@ -62,15 +62,15 @@ struct max8649_regulator_info {
 static int max8649_enable_time(struct regulator_dev *rdev)
 {
 	struct max8649_regulator_info *info = rdev_get_drvdata(rdev);
-	int voltage, rate, ret;
+int voltage, rate, ret;
 	unsigned int val;
 
-	/* get voltage */
+/* get voltage */
 	ret = regmap_read(info->regmap, rdev->desc->vsel_reg, &val);
 	if (ret != 0)
 		return ret;
 	val &= MAX8649_VOL_MASK;
-	voltage = regulator_list_voltage_linear(rdev, (unsigned char)val);
+voltage = regulator_list_voltage_linear(rdev, (unsigned char)val);
 
 	/* get rate */
 	ret = regmap_read(info->regmap, MAX8649_RAMP, &val);
@@ -79,7 +79,7 @@ static int max8649_enable_time(struct regulator_dev *rdev)
 	ret = (val & MAX8649_RAMP_MASK) >> 5;
 	rate = (32 * 1000) >> ret;	/* uV/uS */
 
-	return DIV_ROUND_UP(voltage, rate);
+return DIV_ROUND_UP(voltage, rate);
 }
 
 static int max8649_set_mode(struct regulator_dev *rdev, unsigned int mode)
@@ -116,10 +116,10 @@ static unsigned int max8649_get_mode(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops max8649_dcdc_ops = {
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage	= regulator_list_voltage_linear,
-	.map_voltage	= regulator_map_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage	= regulator_list_voltage_linear,
+.map_voltage	= regulator_map_voltage_linear,
 	.enable		= regulator_enable_regmap,
 	.disable	= regulator_disable_regmap,
 	.is_enabled	= regulator_is_enabled_regmap,
@@ -132,8 +132,8 @@ static const struct regulator_ops max8649_dcdc_ops = {
 static struct regulator_desc dcdc_desc = {
 	.name		= "max8649",
 	.ops		= &max8649_dcdc_ops,
-	.type		= REGULATOR_VOLTAGE,
-	.n_voltages	= 1 << 6,
+.type		= REGULATOR_VOLTAGE,
+.n_voltages	= 1 << 6,
 	.owner		= THIS_MODULE,
 	.vsel_mask	= MAX8649_VOL_MASK,
 	.min_uV		= MAX8649_DCDC_VMIN,
@@ -209,10 +209,10 @@ static int max8649_regulator_probe(struct i2c_client *client,
 	regmap_update_bits(info->regmap, dcdc_desc.vsel_reg,
 			   MAX8649_SYNC_EXTCLK, data);
 	if (info->extclk) {
-		/* set external clock frequency */
-		info->extclk_freq = pdata->extclk_freq;
+/* set external clock frequency */
+info->extclk_freq = pdata->extclk_freq;
 		regmap_update_bits(info->regmap, MAX8649_SYNC, MAX8649_EXT_MASK,
-				   info->extclk_freq << 6);
+info->extclk_freq << 6);
 	}
 
 	if (pdata->ramp_timing) {

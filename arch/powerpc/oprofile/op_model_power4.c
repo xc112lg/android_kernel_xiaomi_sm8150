@@ -46,7 +46,7 @@ static int power7_marked_instr_event(u64 mmcr1)
 
 	/* Given the MMCR1 value, look at the field for each counter to
 	 * determine if it is a marked event.  Code based on the function
-	 * power7_marked_instr_event() in file arch/powerpc/perf/power7-pmu.c.
+* power7_marked_instr_event() in file arch/powerpc/perf/power7-pmu.c.
 	 */
 	for (pmc = 0; pmc < 4; pmc++) {
 		psel = mmcr1 & (OPROFILE_PM_PMCSEL_MSK
@@ -108,17 +108,17 @@ static int power4_reg_setup(struct op_counter_config *ctr,
 	mmcr1_val = sys->mmcr1;
 	mmcra_val = sys->mmcra;
 
-	/* Power 7+ and newer architectures:
+/* Power 7+ and newer architectures:
 	 * Determine which counter events in the group (the group of events is
 	 * specified by the bit settings in the MMCR1 register) are marked
 	 * events for use in the interrupt handler.  Do the calculation once
 	 * before OProfile starts.  Information is used in the interrupt
-	 * handler.  Starting with Power 7+ we only record the sample for
+* handler.  Starting with Power 7+ we only record the sample for
 	 * marked events if the SIAR valid bit is set.  For non marked events
 	 * the sample is always recorded.
 	 */
-	if (pvr_version_is(PVR_POWER7p))
-		cntr_marked_events = power7_marked_instr_event(mmcr1_val);
+if (pvr_version_is(PVR_POWER7p))
+cntr_marked_events = power7_marked_instr_event(mmcr1_val);
 	else
 		cntr_marked_events = 0; /* For older processors, set the bit map
 					 * to zero so the sample will always be
@@ -139,10 +139,10 @@ static int power4_reg_setup(struct op_counter_config *ctr,
 	else
 		mmcr0_val |= MMCR0_PROBLEM_DISABLE;
 
-	if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p) ||
+if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p) ||
 	    pvr_version_is(PVR_970) || pvr_version_is(PVR_970FX) ||
 	    pvr_version_is(PVR_970MP) || pvr_version_is(PVR_970GX) ||
-	    pvr_version_is(PVR_POWER5) || pvr_version_is(PVR_POWER5p))
+pvr_version_is(PVR_POWER5) || pvr_version_is(PVR_POWER5p))
 		use_slot_nums = 1;
 
 	return 0;
@@ -162,7 +162,7 @@ extern void ppc_enable_pmcs(void);
  */
 static inline int mmcra_must_set_sample(void)
 {
-	if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p) ||
+if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p) ||
 	    pvr_version_is(PVR_970) || pvr_version_is(PVR_970FX) ||
 	    pvr_version_is(PVR_970MP) || pvr_version_is(PVR_970GX))
 		return 1;
@@ -344,7 +344,7 @@ static bool pmc_overflow(unsigned long val)
 		return true;
 
 	/*
-	 * Events on POWER7 can roll back if a speculative event doesn't
+* Events on POWER7 can roll back if a speculative event doesn't
 	 * eventually complete. Unfortunately in some rare cases they will
 	 * raise a performance monitor exception. We need to catch this to
 	 * ensure we reset the PMC. In all cases the PMC will be 256 or less
@@ -354,7 +354,7 @@ static bool pmc_overflow(unsigned long val)
 	 * PMCs because a user might set a period of less than 256 and we
 	 * don't want to mistakenly reset them.
 	 */
-	if (pvr_version_is(PVR_POWER7) && ((0x80000000 - val) <= 256))
+if (pvr_version_is(PVR_POWER7) && ((0x80000000 - val) <= 256))
 		return true;
 
 	return false;
@@ -387,7 +387,7 @@ static void power4_handle_interrupt(struct pt_regs *regs,
 		val = classic_ctr_read(i);
 		if (pmc_overflow(val)) {
 			if (oprofile_running && ctr[i].enabled) {
-				/* Power 7+ and newer architectures:
+/* Power 7+ and newer architectures:
 				 * If the event is a marked event, then only
 				 * save the sample if the SIAR valid bit is
 				 * set.  If the event is not marked, then
@@ -434,9 +434,9 @@ static void power4_handle_interrupt(struct pt_regs *regs,
 }
 
 struct op_powerpc_model op_model_power4 = {
-	.reg_setup		= power4_reg_setup,
-	.cpu_setup		= power4_cpu_setup,
-	.start			= power4_start,
-	.stop			= power4_stop,
-	.handle_interrupt	= power4_handle_interrupt,
+.reg_setup		= power4_reg_setup,
+.cpu_setup		= power4_cpu_setup,
+.start			= power4_start,
+.stop			= power4_stop,
+.handle_interrupt	= power4_handle_interrupt,
 };

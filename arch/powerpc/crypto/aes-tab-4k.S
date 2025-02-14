@@ -21,7 +21,7 @@
  * For the safety-conscious it has to be noted that they might be vulnerable
  * to cache timing attacks because of their size. Nevertheless in contrast to
  * the generic tables they have been reduced from 16KB to 8KB + 256 bytes.
- * This is a quite good tradeoff for low power devices (e.g. routers) without
+* This is a quite good tradeoff for low power devices (e.g. routers) without
  * dedicated encryption hardware where we usually have no multiuser
  * environment.
  *

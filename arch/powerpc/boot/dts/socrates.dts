@@ -30,16 +30,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8544@0 {
+PowerPC,8544@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <0x8000>;	// L1, 32K
 			i-cache-size = <0x8000>;	// L1, 32K
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			next-level-cache = <&L2>;
 		};
 	};
@@ -55,7 +55,7 @@
 		device_type = "soc";
 
 		ranges = <0x00000000 0xe0000000 0x00100000>;
-		bus-frequency = <0>;		// Filled in by U-Boot
+bus-frequency = <0>;		// Filled in by U-Boot
 		compatible = "fsl,mpc8544-immr", "simple-bus";
 
 		ecm-law@0 {
@@ -201,7 +201,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
 		};
@@ -211,7 +211,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
 		};
@@ -334,7 +334,7 @@
 		compatible = "fsl,mpc8540-pci";
 		device_type = "pci";
 		reg = <0xe0008000 0x1000>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 		interrupt-map = <

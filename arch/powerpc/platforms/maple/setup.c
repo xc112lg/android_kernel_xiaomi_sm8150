@@ -138,21 +138,21 @@ static void __noreturn maple_power_off(void)
 		printk(KERN_EMERG "Maple: Unable to find Service Processor\n");
 		goto fail;
 	}
-	maple_nvram_offset = of_get_property(sp, "power-off-addr", NULL);
-	maple_nvram_command = of_get_property(sp, "power-off-value", NULL);
+maple_nvram_offset = of_get_property(sp, "power-off-addr", NULL);
+maple_nvram_command = of_get_property(sp, "power-off-value", NULL);
 	of_node_put(sp);
 
 	/* send command */
 	outb_p(*maple_nvram_command, maple_nvram_base + *maple_nvram_offset);
 	for (;;) ;
  fail:
-	printk(KERN_EMERG "Maple: Manual Power-Down Required\n");
+printk(KERN_EMERG "Maple: Manual Power-Down Required\n");
 	for (;;) ;
 }
 
 static void __noreturn maple_halt(void)
 {
-	maple_power_off();
+maple_power_off();
 }
 
 #ifdef CONFIG_SMP
@@ -169,9 +169,9 @@ static struct smp_ops_t maple_smp_ops = {
 static void __init maple_use_rtas_reboot_and_halt_if_present(void)
 {
 	if (rtas_service_present("system-reboot") &&
-	    rtas_service_present("power-off")) {
+rtas_service_present("power-off")) {
 		ppc_md.restart = rtas_restart;
-		pm_power_off = rtas_power_off;
+pm_power_off = rtas_power_off;
 		ppc_md.halt = rtas_halt;
 	}
 }
@@ -292,7 +292,7 @@ static int __init maple_probe(void)
 	    !of_machine_is_compatible("Momentum,Apache"))
 		return 0;
 
-	pm_power_off = maple_power_off;
+pm_power_off = maple_power_off;
 
 	iommu_init_early_dart(&maple_pci_controller_ops);
 
@@ -370,5 +370,5 @@ define_machine(maple) {
 	.get_rtc_time		= maple_get_rtc_time,
 	.calibrate_decr		= generic_calibrate_decr,
 	.progress		= maple_progress,
-	.power_save		= power4_idle,
+.power_save		= power4_idle,
 };

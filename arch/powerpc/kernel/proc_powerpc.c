@@ -63,7 +63,7 @@ static int __init proc_ppc64_init(void)
 {
 	struct proc_dir_entry *pde;
 
-	pde = proc_create_data("powerpc/systemcfg", S_IFREG|S_IRUGO, NULL,
+pde = proc_create_data("powerpc/systemcfg", S_IFREG|S_IRUGO, NULL,
 			       &page_map_fops, vdso_data);
 	if (!pde)
 		return 1;
@@ -83,13 +83,13 @@ static int __init proc_ppc64_create(void)
 {
 	struct proc_dir_entry *root;
 
-	root = proc_mkdir("powerpc", NULL);
+root = proc_mkdir("powerpc", NULL);
 	if (!root)
 		return 1;
 
 #ifdef CONFIG_PPC64
-	if (!proc_symlink("ppc64", NULL, "powerpc"))
-		pr_err("Failed to create link /proc/ppc64 -> /proc/powerpc\n");
+if (!proc_symlink("ppc64", NULL, "powerpc"))
+pr_err("Failed to create link /proc/ppc64 -> /proc/powerpc\n");
 #endif
 
 	if (!of_find_node_by_path("/rtas"))
@@ -98,7 +98,7 @@ static int __init proc_ppc64_create(void)
 	if (!proc_mkdir("rtas", root))
 		return 1;
 
-	if (!proc_symlink("rtas", NULL, "powerpc/rtas"))
+if (!proc_symlink("rtas", NULL, "powerpc/rtas"))
 		return 1;
 
 	return 0;

@@ -281,10 +281,10 @@ static int lp3972_ldo_set_voltage_sel(struct regulator_dev *dev,
 		return ret;
 
 	/*
-	 * LDO1 and LDO5 support voltage control by either target voltage1
-	 * or target voltage2 register.
-	 * We use target voltage1 register for LDO1 and LDO5 in this driver.
-	 * We need to update voltage change control register(0x20) to enable
+* LDO1 and LDO5 support voltage control by either target voltage1
+* or target voltage2 register.
+* We use target voltage1 register for LDO1 and LDO5 in this driver.
+* We need to update voltage change control register(0x20) to enable
 	 * LDO1 and LDO5 to change to their programmed target values.
 	 */
 	switch (ldo) {
@@ -306,13 +306,13 @@ static int lp3972_ldo_set_voltage_sel(struct regulator_dev *dev,
 }
 
 static struct regulator_ops lp3972_ldo_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
 	.is_enabled = lp3972_ldo_is_enabled,
 	.enable = lp3972_ldo_enable,
 	.disable = lp3972_ldo_disable,
-	.get_voltage_sel = lp3972_ldo_get_voltage_sel,
-	.set_voltage_sel = lp3972_ldo_set_voltage_sel,
+.get_voltage_sel = lp3972_ldo_get_voltage_sel,
+.set_voltage_sel = lp3972_ldo_set_voltage_sel,
 };
 
 static int lp3972_dcdc_is_enabled(struct regulator_dev *dev)
@@ -387,13 +387,13 @@ static int lp3972_dcdc_set_voltage_sel(struct regulator_dev *dev,
 }
 
 static struct regulator_ops lp3972_dcdc_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
 	.is_enabled = lp3972_dcdc_is_enabled,
 	.enable = lp3972_dcdc_enable,
 	.disable = lp3972_dcdc_disable,
-	.get_voltage_sel = lp3972_dcdc_get_voltage_sel,
-	.set_voltage_sel = lp3972_dcdc_set_voltage_sel,
+.get_voltage_sel = lp3972_dcdc_get_voltage_sel,
+.set_voltage_sel = lp3972_dcdc_set_voltage_sel,
 };
 
 static const struct regulator_desc regulators[] = {
@@ -401,72 +401,72 @@ static const struct regulator_desc regulators[] = {
 		.name = "LDO1",
 		.id = LP3972_LDO1,
 		.ops = &lp3972_ldo_ops,
-		.n_voltages = ARRAY_SIZE(ldo1_voltage_map),
-		.volt_table = ldo1_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo1_voltage_map),
+.volt_table = ldo1_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "LDO2",
 		.id = LP3972_LDO2,
 		.ops = &lp3972_ldo_ops,
-		.n_voltages = ARRAY_SIZE(ldo23_voltage_map),
-		.volt_table = ldo23_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo23_voltage_map),
+.volt_table = ldo23_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "LDO3",
 		.id = LP3972_LDO3,
 		.ops = &lp3972_ldo_ops,
-		.n_voltages = ARRAY_SIZE(ldo23_voltage_map),
-		.volt_table = ldo23_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo23_voltage_map),
+.volt_table = ldo23_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "LDO4",
 		.id = LP3972_LDO4,
 		.ops = &lp3972_ldo_ops,
-		.n_voltages = ARRAY_SIZE(ldo4_voltage_map),
-		.volt_table = ldo4_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo4_voltage_map),
+.volt_table = ldo4_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "LDO5",
 		.id = LP3972_LDO5,
 		.ops = &lp3972_ldo_ops,
-		.n_voltages = ARRAY_SIZE(ldo5_voltage_map),
-		.volt_table = ldo5_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo5_voltage_map),
+.volt_table = ldo5_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "DCDC1",
 		.id = LP3972_DCDC1,
 		.ops = &lp3972_dcdc_ops,
-		.n_voltages = ARRAY_SIZE(buck1_voltage_map),
-		.volt_table = buck1_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(buck1_voltage_map),
+.volt_table = buck1_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "DCDC2",
 		.id = LP3972_DCDC2,
 		.ops = &lp3972_dcdc_ops,
-		.n_voltages = ARRAY_SIZE(buck23_voltage_map),
-		.volt_table = buck23_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(buck23_voltage_map),
+.volt_table = buck23_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "DCDC3",
 		.id = LP3972_DCDC3,
 		.ops = &lp3972_dcdc_ops,
-		.n_voltages = ARRAY_SIZE(buck23_voltage_map),
-		.volt_table = buck23_voltage_map,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(buck23_voltage_map),
+.volt_table = buck23_voltage_map,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 };

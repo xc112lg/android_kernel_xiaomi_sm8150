@@ -117,11 +117,11 @@ static const struct regulator_ops arizona_micsupp_ops = {
 	.disable = arizona_micsupp_disable,
 	.is_enabled = regulator_is_enabled_regmap,
 
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
 
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 
 	.get_bypass = regulator_get_bypass_regmap,
 	.set_bypass = arizona_micsupp_set_bypass,
@@ -133,10 +133,10 @@ static const struct regulator_linear_range arizona_micsupp_ranges[] = {
 };
 
 static const struct regulator_desc arizona_micsupp = {
-	.name = "MICVDD",
-	.supply_name = "CPVDD",
-	.type = REGULATOR_VOLTAGE,
-	.n_voltages = 32,
+.name = "MICVDD",
+.supply_name = "CPVDD",
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 32,
 	.ops = &arizona_micsupp_ops,
 
 	.vsel_reg = ARIZONA_LDO2_CONTROL_1,
@@ -160,10 +160,10 @@ static const struct regulator_linear_range arizona_micsupp_ext_ranges[] = {
 };
 
 static const struct regulator_desc arizona_micsupp_ext = {
-	.name = "MICVDD",
-	.supply_name = "CPVDD",
-	.type = REGULATOR_VOLTAGE,
-	.n_voltages = 40,
+.name = "MICVDD",
+.supply_name = "CPVDD",
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 40,
 	.ops = &arizona_micsupp_ops,
 
 	.vsel_reg = ARIZONA_LDO2_CONTROL_1,
@@ -184,7 +184,7 @@ static const struct regulator_desc arizona_micsupp_ext = {
 static const struct regulator_init_data arizona_micsupp_default = {
 	.constraints = {
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS |
-				REGULATOR_CHANGE_VOLTAGE |
+REGULATOR_CHANGE_VOLTAGE |
 				REGULATOR_CHANGE_BYPASS,
 		.min_uV = 1700000,
 		.max_uV = 3300000,
@@ -196,7 +196,7 @@ static const struct regulator_init_data arizona_micsupp_default = {
 static const struct regulator_init_data arizona_micsupp_ext_default = {
 	.constraints = {
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS |
-				REGULATOR_CHANGE_VOLTAGE |
+REGULATOR_CHANGE_VOLTAGE |
 				REGULATOR_CHANGE_BYPASS,
 		.min_uV = 900000,
 		.max_uV = 3300000,
@@ -213,7 +213,7 @@ static int arizona_micsupp_of_get_pdata(struct arizona_micsupp_pdata *pdata,
 	struct device_node *np;
 	struct regulator_init_data *init_data;
 
-	np = of_get_child_by_name(config->dev->of_node, "micvdd");
+np = of_get_child_by_name(config->dev->of_node, "micvdd");
 
 	if (np) {
 		config->of_node = np;
@@ -242,7 +242,7 @@ static int arizona_micsupp_common_init(struct platform_device *pdev,
 	INIT_WORK(&micsupp->check_cp_work, arizona_micsupp_check_cp);
 
 	micsupp->init_data.consumer_supplies = &micsupp->supply;
-	micsupp->supply.supply = "MICVDD";
+micsupp->supply.supply = "MICVDD";
 	micsupp->supply.dev_name = dev_name(micsupp->dev);
 	micsupp->enable_reg = desc->enable_reg;
 
@@ -318,7 +318,7 @@ static int arizona_micsupp_probe(struct platform_device *pdev)
 	}
 
 	return arizona_micsupp_common_init(pdev, micsupp, desc,
-					   &arizona->pdata.micvdd);
+&arizona->pdata.micvdd);
 }
 
 static struct platform_driver arizona_micsupp_driver = {

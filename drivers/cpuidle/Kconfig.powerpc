@@ -11,9 +11,9 @@ config PSERIES_CPUIDLE
 	  through cpuidle subsystem.
 
 config POWERNV_CPUIDLE
-	bool "Cpuidle driver for powernv platforms"
+bool "Cpuidle driver for powernv platforms"
 	depends on CPU_IDLE
-	depends on PPC_POWERNV
+depends on PPC_POWERNV
 	default y
 	help
 	  Select this option to enable processor idle state management

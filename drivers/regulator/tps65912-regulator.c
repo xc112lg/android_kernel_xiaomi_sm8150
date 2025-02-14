@@ -33,8 +33,8 @@ enum tps65912_regulators { DCDC1, DCDC2, DCDC3, DCDC4, LDO1, LDO2, LDO3,
 		.regulators_node	= "regulators",			\
 		.id			= _id,				\
 		.ops			= &_ops,			\
-		.n_voltages		= 64,				\
-		.type			= REGULATOR_VOLTAGE,		\
+.n_voltages		= 64,				\
+.type			= REGULATOR_VOLTAGE,		\
 		.owner			= THIS_MODULE,			\
 		.vsel_reg		= _vr,				\
 		.vsel_mask		= 0x3f,				\
@@ -60,9 +60,9 @@ static struct regulator_ops tps65912_ops_dcdc = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
 };
 
 /* Operations permitted on LDOx */
@@ -70,10 +70,10 @@ static struct regulator_ops tps65912_ops_ldo = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
 };
 
 static const struct regulator_desc regulators[] = {

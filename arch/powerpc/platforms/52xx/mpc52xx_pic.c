@@ -88,7 +88,7 @@
  * For reference, the following is a list of the interrupt property values
  * associated with external interrupt sources on the MPC5200 (just because
  * it is non-obvious to determine what the interrupts property should be
- * when reading the mpc5200 manual and it is a frequently asked question).
+* when reading the mpc5200 manual and it is a frequently asked question).
  *
  * External interrupts:
  * <0 0 n>	external irq0, n is sense	(n=0: level high,

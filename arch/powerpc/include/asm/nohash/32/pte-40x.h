@@ -4,7 +4,7 @@
 #ifdef __KERNEL__
 
 /*
- * At present, all PowerPC 400-class processors share a similar TLB
+* At present, all PowerPC 400-class processors share a similar TLB
  * architecture. The instruction and data sides share a unified,
  * 64-entry, fully-associative TLB which is maintained totally under
  * software control. In addition, the instruction side has a

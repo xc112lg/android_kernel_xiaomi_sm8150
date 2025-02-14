@@ -614,7 +614,7 @@ static int __init disable_bulk_remove(char *str)
 	if (strcmp(str, "off") == 0 &&
 	    firmware_has_feature(FW_FEATURE_BULK_REMOVE)) {
 			printk(KERN_INFO "Disabling BULK_REMOVE firmware feature");
-			powerpc_firmware_features &= ~FW_FEATURE_BULK_REMOVE;
+powerpc_firmware_features &= ~FW_FEATURE_BULK_REMOVE;
 	}
 	return 1;
 }
@@ -1065,7 +1065,7 @@ static int __init vpa_debugfs_init(void)
 	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
 		return 0;
 
-	vpa_dir = debugfs_create_dir("vpa", powerpc_debugfs_root);
+vpa_dir = debugfs_create_dir("vpa", powerpc_debugfs_root);
 	if (!vpa_dir) {
 		pr_warn("%s: can't create vpa root dir\n", __func__);
 		return -ENOMEM;

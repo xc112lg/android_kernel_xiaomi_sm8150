@@ -30,7 +30,7 @@ config BSC9131_RDB
 	select DEFAULT_UIMAGE
 	help
 	  This option enables support for the Freescale BSC9131RDB board.
-	  The BSC9131 is a heterogeneous SoC containing an e500v2 powerpc and a
+The BSC9131 is a heterogeneous SoC containing an e500v2 powerpc and a
 	  StarCore SC3850 DSP
 	  Manufacturer : Freescale Semiconductor, Inc
 
@@ -45,7 +45,7 @@ config BSC9132_QDS
 	select DEFAULT_UIMAGE
 	help
 	  This option enables support for the Freescale BSC9132 QDS board.
-	  BSC9132 is a heterogeneous SoC containing dual e500v2 powerpc cores
+BSC9132 is a heterogeneous SoC containing dual e500v2 powerpc cores
 	  and dual StarCore SC3850 DSP cores.
 	  Manufacturer : Freescale Semiconductor, Inc
 

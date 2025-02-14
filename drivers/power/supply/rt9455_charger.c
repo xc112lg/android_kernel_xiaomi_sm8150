@@ -188,7 +188,7 @@ static const int rt9455_ichrg_values[] = {
 
 /*
  * When the charger is in charge mode, REG02[7:2] represent battery regulation
- * voltage.
+* voltage.
  */
 /* REG02[7:2] (VOREG) in uV */
 static const int rt9455_voreg_values[] = {
@@ -205,7 +205,7 @@ static const int rt9455_voreg_values[] = {
 #if IS_ENABLED(CONFIG_USB_PHY)
 /*
  * When the charger is in boost mode, REG02[7:2] represent boost output
- * voltage.
+* voltage.
  */
 /* REG02[7:2] (Boost output voltage) in uV */
 static const int rt9455_boost_voltage_values[] = {
@@ -245,7 +245,7 @@ struct rt9455_info {
 	struct i2c_client		*client;
 	struct regmap			*regmap;
 	struct regmap_field		*regmap_fields[F_MAX_FIELDS];
-	struct power_supply		*charger;
+struct power_supply		*charger;
 #if IS_ENABLED(CONFIG_USB_PHY)
 	struct usb_phy			*usb_phy;
 	struct notifier_block		nb;
@@ -254,7 +254,7 @@ struct rt9455_info {
 	struct delayed_work		max_charging_time_work;
 	struct delayed_work		batt_presence_work;
 	u32				voreg;
-	u32				boost_voltage;
+u32				boost_voltage;
 };
 
 /*
@@ -342,18 +342,18 @@ static int rt9455_register_reset(struct rt9455_info *info)
 
 /* Charger power supply property routines */
 static enum power_supply_property rt9455_charger_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_SCOPE,
-	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_SCOPE,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
 };
 
 static char *rt9455_charger_supplied_to[] = {
@@ -361,7 +361,7 @@ static char *rt9455_charger_supplied_to[] = {
 };
 
 static int rt9455_charger_get_status(struct rt9455_info *info,
-				     union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	unsigned int v, pwr_rdy;
 	int ret;
@@ -378,7 +378,7 @@ static int rt9455_charger_get_status(struct rt9455_info *info,
 	 * STAT bits value must be checked.
 	 */
 	if (!pwr_rdy) {
-		val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		return 0;
 	}
 
@@ -395,31 +395,31 @@ static int rt9455_charger_get_status(struct rt9455_info *info,
 		 * may be in one of the following cases:
 		 * 1. CHG_EN bit is 0.
 		 * 2. CHG_EN bit is 1 but the battery is not connected.
-		 * In any of these cases, POWER_SUPPLY_STATUS_NOT_CHARGING is
+* In any of these cases, POWER_SUPPLY_STATUS_NOT_CHARGING is
 		 * returned.
 		 */
-		val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		return 0;
 	case 1:
-		val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		return 0;
 	case 2:
-		val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		return 0;
 	default:
-		val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 		return 0;
 	}
 }
 
 static int rt9455_charger_get_health(struct rt9455_info *info,
-				     union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	struct device *dev = &info->client->dev;
 	unsigned int v;
 	int ret;
 
-	val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 
 	ret = regmap_read(info->regmap, RT9455_REG_IRQ1, &v);
 	if (ret) {
@@ -428,15 +428,15 @@ static int rt9455_charger_get_health(struct rt9455_info *info,
 	}
 
 	if (v & GET_MASK(F_TSDI)) {
-		val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 		return 0;
 	}
 	if (v & GET_MASK(F_VINOVPI)) {
-		val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 		return 0;
 	}
 	if (v & GET_MASK(F_BATAB)) {
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		return 0;
 	}
 
@@ -447,11 +447,11 @@ static int rt9455_charger_get_health(struct rt9455_info *info,
 	}
 
 	if (v & GET_MASK(F_CHBATOVI)) {
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		return 0;
 	}
 	if (v & GET_MASK(F_CH32MI)) {
-		val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 		return 0;
 	}
 
@@ -462,19 +462,19 @@ static int rt9455_charger_get_health(struct rt9455_info *info,
 	}
 
 	if (v & GET_MASK(F_BSTBUSOVI)) {
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		return 0;
 	}
 	if (v & GET_MASK(F_BSTOLI)) {
-		val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 		return 0;
 	}
 	if (v & GET_MASK(F_BSTLOWVI)) {
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		return 0;
 	}
 	if (v & GET_MASK(F_BST32SI)) {
-		val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 		return 0;
 	}
 
@@ -485,7 +485,7 @@ static int rt9455_charger_get_health(struct rt9455_info *info,
 	}
 
 	if (v == RT9455_FAULT) {
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		return 0;
 	}
 
@@ -493,7 +493,7 @@ static int rt9455_charger_get_health(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_battery_presence(struct rt9455_info *info,
-					       union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	unsigned int v;
 	int ret;
@@ -514,7 +514,7 @@ static int rt9455_charger_get_battery_presence(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_online(struct rt9455_info *info,
-				     union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	unsigned int v;
 	int ret;
@@ -531,7 +531,7 @@ static int rt9455_charger_get_online(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_current(struct rt9455_info *info,
-				      union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int curr;
 	int ret;
@@ -551,7 +551,7 @@ static int rt9455_charger_get_current(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_current_max(struct rt9455_info *info,
-					  union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int idx = ARRAY_SIZE(rt9455_ichrg_values) - 1;
 
@@ -561,27 +561,27 @@ static int rt9455_charger_get_current_max(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_voltage(struct rt9455_info *info,
-				      union power_supply_propval *val)
+union power_supply_propval *val)
 {
-	int voltage;
+int voltage;
 	int ret;
 
 	ret = rt9455_get_field_val(info, F_VOREG,
 				   rt9455_voreg_values,
 				   ARRAY_SIZE(rt9455_voreg_values),
-				   &voltage);
+&voltage);
 	if (ret) {
 		dev_err(&info->client->dev, "Failed to read VOREG value\n");
 		return ret;
 	}
 
-	val->intval = voltage;
+val->intval = voltage;
 
 	return 0;
 }
 
 static int rt9455_charger_get_voltage_max(struct rt9455_info *info,
-					  union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int idx = ARRAY_SIZE(rt9455_vmreg_values) - 1;
 
@@ -591,7 +591,7 @@ static int rt9455_charger_get_voltage_max(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_term_current(struct rt9455_info *info,
-					   union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	struct device *dev = &info->client->dev;
 	int ichrg, ieoc_percentage, ret;
@@ -620,37 +620,37 @@ static int rt9455_charger_get_term_current(struct rt9455_info *info,
 }
 
 static int rt9455_charger_get_property(struct power_supply *psy,
-				       enum power_supply_property psp,
-				       union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct rt9455_info *info = power_supply_get_drvdata(psy);
+struct rt9455_info *info = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		return rt9455_charger_get_status(info, val);
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		return rt9455_charger_get_health(info, val);
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		return rt9455_charger_get_battery_presence(info, val);
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		return rt9455_charger_get_online(info, val);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		return rt9455_charger_get_current(info, val);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		return rt9455_charger_get_current_max(info, val);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-		return rt9455_charger_get_voltage(info, val);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
-		return rt9455_charger_get_voltage_max(info, val);
-	case POWER_SUPPLY_PROP_SCOPE:
-		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+return rt9455_charger_get_voltage(info, val);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+return rt9455_charger_get_voltage_max(info, val);
+case POWER_SUPPLY_PROP_SCOPE:
+val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
 		return 0;
-	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 		return rt9455_charger_get_term_current(info, val);
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = RT9455_MODEL_NAME;
 		return 0;
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = RT9455_MANUFACTURER;
 		return 0;
 	default:
@@ -667,7 +667,7 @@ static int rt9455_hw_init(struct rt9455_info *info, u32 ichrg,
 
 	ret = rt9455_register_reset(info);
 	if (ret) {
-		dev_err(dev, "Power On Reset failed\n");
+dev_err(dev, "Power On Reset failed\n");
 		return ret;
 	}
 
@@ -699,7 +699,7 @@ static int rt9455_hw_init(struct rt9455_info *info, u32 ichrg,
 	 * Disable Safety Timer. In charge mode, this timer terminates charging
 	 * if no read or write via I2C is done within 32 minutes. This timer
 	 * avoids overcharging the baterry when the OS is not loaded and the
-	 * charger is connected to a power source.
+* charger is connected to a power source.
 	 * In boost mode, this timer triggers BST32SI interrupt if no read or
 	 * write via I2C is done within 32 seconds.
 	 * When the OS is loaded and the charger driver is inserted, it is used
@@ -808,11 +808,11 @@ static int rt9455_hw_init(struct rt9455_info *info, u32 ichrg,
 
 #if IS_ENABLED(CONFIG_USB_PHY)
 /*
- * Before setting the charger into boost mode, boost output voltage is
- * set. This is needed because boost output voltage may differ from battery
- * regulation voltage. F_VOREG bits represent either battery regulation voltage
- * or boost output voltage, depending on the mode the charger is. Both battery
- * regulation voltage and boost output voltage are read from DT/ACPI during
+* Before setting the charger into boost mode, boost output voltage is
+* set. This is needed because boost output voltage may differ from battery
+* regulation voltage. F_VOREG bits represent either battery regulation voltage
+* or boost output voltage, depending on the mode the charger is. Both battery
+* regulation voltage and boost output voltage are read from DT/ACPI during
  * probe.
  */
 static int rt9455_set_boost_voltage_before_boost_mode(struct rt9455_info *info)
@@ -821,11 +821,11 @@ static int rt9455_set_boost_voltage_before_boost_mode(struct rt9455_info *info)
 	int ret;
 
 	ret = rt9455_set_field_val(info, F_VOREG,
-				   rt9455_boost_voltage_values,
-				   ARRAY_SIZE(rt9455_boost_voltage_values),
-				   info->boost_voltage);
+rt9455_boost_voltage_values,
+ARRAY_SIZE(rt9455_boost_voltage_values),
+info->boost_voltage);
 	if (ret) {
-		dev_err(dev, "Failed to set boost output voltage value\n");
+dev_err(dev, "Failed to set boost output voltage value\n");
 		return ret;
 	}
 
@@ -834,11 +834,11 @@ static int rt9455_set_boost_voltage_before_boost_mode(struct rt9455_info *info)
 #endif
 
 /*
- * Before setting the charger into charge mode, battery regulation voltage is
- * set. This is needed because boost output voltage may differ from battery
- * regulation voltage. F_VOREG bits represent either battery regulation voltage
- * or boost output voltage, depending on the mode the charger is. Both battery
- * regulation voltage and boost output voltage are read from DT/ACPI during
+* Before setting the charger into charge mode, battery regulation voltage is
+* set. This is needed because boost output voltage may differ from battery
+* regulation voltage. F_VOREG bits represent either battery regulation voltage
+* or boost output voltage, depending on the mode the charger is. Both battery
+* regulation voltage and boost output voltage are read from DT/ACPI during
  * probe.
  */
 static int rt9455_set_voreg_before_charge_mode(struct rt9455_info *info)
@@ -886,7 +886,7 @@ static int rt9455_irq_handler_check_irq1_register(struct rt9455_info *info,
 	}
 
 	if (irq1 & GET_MASK(F_VINOVPI)) {
-		dev_err(dev, "Overvoltage input occurred\n");
+dev_err(dev, "Overvoltage input occurred\n");
 		alert_userspace = true;
 	}
 
@@ -939,7 +939,7 @@ static int rt9455_irq_handler_check_irq1_register(struct rt9455_info *info,
 		 * Therefore, batt_presence_work is scheduled to check whether
 		 * the battery is still absent or not.
 		 */
-		queue_delayed_work(system_power_efficient_wq,
+queue_delayed_work(system_power_efficient_wq,
 				   &info->batt_presence_work,
 				   RT9455_BATT_PRESENCE_DELAY * HZ);
 	}
@@ -977,8 +977,8 @@ static int rt9455_irq_handler_check_irq2_register(struct rt9455_info *info,
 		dev_dbg(dev, "Charger fault occurred\n");
 		/*
 		 * CHRVPI bit is set in 2 cases:
-		 * 1. when the power source is connected to the charger.
-		 * 2. when the power source is disconnected from the charger.
+* 1. when the power source is connected to the charger.
+* 2. when the power source is disconnected from the charger.
 		 * To identify the case, PWR_RDY bit is checked. Because
 		 * PWR_RDY bit is set / cleared after CHRVPI interrupt is
 		 * triggered, it is used delayed_work to later read PWR_RDY bit.
@@ -986,7 +986,7 @@ static int rt9455_irq_handler_check_irq2_register(struct rt9455_info *info,
 		 * need to notify userspace when CHRVPI interrupt has occurred.
 		 * Userspace will be notified after PWR_RDY bit is read.
 		 */
-		queue_delayed_work(system_power_efficient_wq,
+queue_delayed_work(system_power_efficient_wq,
 				   &info->pwr_rdy_work,
 				   RT9455_PWR_RDY_DELAY * HZ);
 	}
@@ -1035,11 +1035,11 @@ static int rt9455_irq_handler_check_irq2_register(struct rt9455_info *info,
 		if (!is_battery_absent) {
 			/*
 			 * No need to check whether the charger is connected to
-			 * power source when CHRCHGI is received, since CHRCHGI
+* power source when CHRCHGI is received, since CHRCHGI
 			 * is not triggered if the charger is not connected to
-			 * the power source.
+* the power source.
 			 */
-			queue_delayed_work(system_power_efficient_wq,
+queue_delayed_work(system_power_efficient_wq,
 					   &info->max_charging_time_work,
 					   RT9455_MAX_CHARGING_TIME * HZ);
 			alert_userspace = true;
@@ -1056,7 +1056,7 @@ static int rt9455_irq_handler_check_irq2_register(struct rt9455_info *info,
 	}
 	if (irq2 & GET_MASK(F_CHMIVRI)) {
 		dev_dbg(dev,
-			"Charger warning. Input voltage MIVR loop active\n");
+"Charger warning. Input voltage MIVR loop active\n");
 	}
 
 	if (alert_userspace)
@@ -1086,7 +1086,7 @@ static int rt9455_irq_handler_check_irq3_register(struct rt9455_info *info,
 	}
 
 	if (irq3 & GET_MASK(F_BSTBUSOVI)) {
-		dev_err(dev, "Boost fault. Overvoltage input occurred\n");
+dev_err(dev, "Boost fault. Overvoltage input occurred\n");
 		alert_userspace = true;
 	}
 	if (irq3 & GET_MASK(F_BSTOLI)) {
@@ -1094,7 +1094,7 @@ static int rt9455_irq_handler_check_irq3_register(struct rt9455_info *info,
 		alert_userspace = true;
 	}
 	if (irq3 & GET_MASK(F_BSTLOWVI)) {
-		dev_err(dev, "Boost fault. Battery voltage too low\n");
+dev_err(dev, "Boost fault. Battery voltage too low\n");
 		alert_userspace = true;
 	}
 	if (irq3 & GET_MASK(F_BST32SI)) {
@@ -1156,7 +1156,7 @@ static irqreturn_t rt9455_irq_handler_thread(int irq, void *data)
 	 * rt9455_irq_handler_check_irq1_register() function sets to true
 	 * alert_userspace, but rt9455_irq_handler_check_irq2_register()
 	 * and rt9455_irq_handler_check_irq3_register() functions set to false
-	 * alert_userspace and power_supply_changed() is never called.
+* alert_userspace and power_supply_changed() is never called.
 	 */
 	ret = rt9455_irq_handler_check_irq1_register(info, &is_battery_absent,
 						     &alert_userspace);
@@ -1181,11 +1181,11 @@ static irqreturn_t rt9455_irq_handler_thread(int irq, void *data)
 	if (alert_userspace) {
 		/*
 		 * Sometimes, an interrupt occurs while rt9455_probe() function
-		 * is executing and power_supply_register() is not yet called.
-		 * Do not call power_supply_changed() in this case.
+* is executing and power_supply_register() is not yet called.
+* Do not call power_supply_changed() in this case.
 		 */
 		if (info->charger)
-			power_supply_changed(info->charger);
+power_supply_changed(info->charger);
 	}
 
 	return IRQ_HANDLED;
@@ -1203,7 +1203,7 @@ static int rt9455_discover_charger(struct rt9455_info *info, u32 *ichrg,
 		return -EINVAL;
 	}
 	/*
-	 * ICHRG, IEOC_PERCENTAGE, VOREG and boost output voltage are mandatory
+* ICHRG, IEOC_PERCENTAGE, VOREG and boost output voltage are mandatory
 	 * parameters.
 	 */
 	ret = device_property_read_u32(dev, "richtek,output-charge-current",
@@ -1221,17 +1221,17 @@ static int rt9455_discover_charger(struct rt9455_info *info, u32 *ichrg,
 	}
 
 	ret = device_property_read_u32(dev,
-				       "richtek,battery-regulation-voltage",
+"richtek,battery-regulation-voltage",
 				       &info->voreg);
 	if (ret) {
-		dev_err(dev, "Error: missing \"battery-regulation-voltage\" property\n");
+dev_err(dev, "Error: missing \"battery-regulation-voltage\" property\n");
 		return ret;
 	}
 
-	ret = device_property_read_u32(dev, "richtek,boost-output-voltage",
-				       &info->boost_voltage);
+ret = device_property_read_u32(dev, "richtek,boost-output-voltage",
+&info->boost_voltage);
 	if (ret) {
-		dev_err(dev, "Error: missing \"boost-output-voltage\" property\n");
+dev_err(dev, "Error: missing \"boost-output-voltage\" property\n");
 		return ret;
 	}
 
@@ -1239,7 +1239,7 @@ static int rt9455_discover_charger(struct rt9455_info *info, u32 *ichrg,
 	 * MIVR and IAICR are optional parameters. Do not return error if one of
 	 * them is not present in ACPI table or device tree specification.
 	 */
-	device_property_read_u32(dev, "richtek,min-input-voltage-regulation",
+device_property_read_u32(dev, "richtek,min-input-voltage-regulation",
 				 mivr);
 	device_property_read_u32(dev, "richtek,avg-input-current-regulation",
 				 iaicr);
@@ -1262,7 +1262,7 @@ static int rt9455_usb_event_none(struct rt9455_info *info,
 		}
 		/*
 		 * If the charger is in boost mode, and it has received
-		 * USB_EVENT_NONE, this means the consumer device powered by the
+* USB_EVENT_NONE, this means the consumer device powered by the
 		 * charger is not connected anymore.
 		 * In this case, the charger goes into charge mode.
 		 */
@@ -1302,7 +1302,7 @@ static int rt9455_usb_event_vbus(struct rt9455_info *info,
 		}
 		/*
 		 * If the charger is in boost mode, and it has received
-		 * USB_EVENT_VBUS, this means the consumer device powered by the
+* USB_EVENT_VBUS, this means the consumer device powered by the
 		 * charger is not connected anymore.
 		 * In this case, the charger goes into charge mode.
 		 */
@@ -1335,15 +1335,15 @@ static int rt9455_usb_event_id(struct rt9455_info *info,
 	int ret;
 
 	if (opa_mode == RT9455_CHARGE_MODE) {
-		ret = rt9455_set_boost_voltage_before_boost_mode(info);
+ret = rt9455_set_boost_voltage_before_boost_mode(info);
 		if (ret) {
-			dev_err(dev, "Failed to set boost output voltage before entering boost mode\n");
+dev_err(dev, "Failed to set boost output voltage before entering boost mode\n");
 			return ret;
 		}
 		/*
 		 * If the charger is in charge mode, and it has received
 		 * USB_EVENT_ID, this means a consumer device is connected and
-		 * it should be powered by the charger.
+* it should be powered by the charger.
 		 * In this case, the charger goes into boost mode.
 		 */
 		dev_dbg(dev, "USB_EVENT_ID received, therefore the charger goes into boost mode\n");
@@ -1382,7 +1382,7 @@ static int rt9455_usb_event_charger(struct rt9455_info *info,
 		}
 		/*
 		 * If the charger is in boost mode, and it has received
-		 * USB_EVENT_CHARGER, this means the consumer device powered by
+* USB_EVENT_CHARGER, this means the consumer device powered by
 		 * the charger is not connected anymore.
 		 * In this case, the charger goes into charge mode.
 		 */
@@ -1409,7 +1409,7 @@ static int rt9455_usb_event_charger(struct rt9455_info *info,
 }
 
 static int rt9455_usb_event(struct notifier_block *nb,
-			    unsigned long event, void *power)
+unsigned long event, void *power)
 {
 	struct rt9455_info *info = container_of(nb, struct rt9455_info, nb);
 	struct device *dev = &info->client->dev;
@@ -1466,27 +1466,27 @@ static void rt9455_pwr_rdy_work_callback(struct work_struct *work)
 	}
 	switch (pwr_rdy) {
 	case RT9455_PWR_FAULT:
-		dev_dbg(dev, "Charger disconnected from power source\n");
+dev_dbg(dev, "Charger disconnected from power source\n");
 		cancel_delayed_work_sync(&info->max_charging_time_work);
 		break;
 	case RT9455_PWR_GOOD:
-		dev_dbg(dev, "Charger connected to power source\n");
+dev_dbg(dev, "Charger connected to power source\n");
 		ret = regmap_field_write(info->regmap_fields[F_CHG_EN],
 					 RT9455_CHARGE_ENABLE);
 		if (ret) {
 			dev_err(dev, "Failed to enable charging\n");
 			return;
 		}
-		queue_delayed_work(system_power_efficient_wq,
+queue_delayed_work(system_power_efficient_wq,
 				   &info->max_charging_time_work,
 				   RT9455_MAX_CHARGING_TIME * HZ);
 		break;
 	}
 	/*
 	 * Notify userspace that the charger has been either connected to or
-	 * disconnected from the power source.
+* disconnected from the power source.
 	 */
-	power_supply_changed(info->charger);
+power_supply_changed(info->charger);
 }
 
 static void rt9455_max_charging_time_work_callback(struct work_struct *work)
@@ -1522,11 +1522,11 @@ static void rt9455_batt_presence_work_callback(struct work_struct *work)
 	 * Otherwise, max_charging_time is scheduled.
 	 */
 	if (irq1 & GET_MASK(F_BATAB)) {
-		queue_delayed_work(system_power_efficient_wq,
+queue_delayed_work(system_power_efficient_wq,
 				   &info->batt_presence_work,
 				   RT9455_BATT_PRESENCE_DELAY * HZ);
 	} else {
-		queue_delayed_work(system_power_efficient_wq,
+queue_delayed_work(system_power_efficient_wq,
 				   &info->max_charging_time_work,
 				   RT9455_MAX_CHARGING_TIME * HZ);
 
@@ -1546,13 +1546,13 @@ static void rt9455_batt_presence_work_callback(struct work_struct *work)
 		 * Notify userspace that the battery is now connected to the
 		 * charger.
 		 */
-		power_supply_changed(info->charger);
+power_supply_changed(info->charger);
 	}
 }
 
 static const struct power_supply_desc rt9455_charger_desc = {
 	.name			= RT9455_DRIVER_NAME,
-	.type			= POWER_SUPPLY_TYPE_USB,
+.type			= POWER_SUPPLY_TYPE_USB,
 	.properties		= rt9455_charger_properties,
 	.num_properties		= ARRAY_SIZE(rt9455_charger_properties),
 	.get_property		= rt9455_charger_get_property,
@@ -1598,10 +1598,10 @@ static int rt9455_probe(struct i2c_client *client,
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
 	struct device *dev = &client->dev;
 	struct rt9455_info *info;
-	struct power_supply_config rt9455_charger_config = {};
+struct power_supply_config rt9455_charger_config = {};
 	/*
 	 * Mandatory device-specific data values. Also, VOREG and boost output
-	 * voltage are mandatory values, but they are stored in rt9455_info
+* voltage are mandatory values, but they are stored in rt9455_info
 	 * structure.
 	 */
 	u32 ichrg, ieoc_percentage;
@@ -1689,7 +1689,7 @@ static int rt9455_probe(struct i2c_client *client,
 		goto put_usb_notifier;
 	}
 
-	info->charger = devm_power_supply_register(dev, &rt9455_charger_desc,
+info->charger = devm_power_supply_register(dev, &rt9455_charger_desc,
 						   &rt9455_charger_config);
 	if (IS_ERR(info->charger)) {
 		dev_err(dev, "Failed to register charger\n");

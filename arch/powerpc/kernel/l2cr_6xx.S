@@ -1,6 +1,6 @@
 /*
 	L2CR functions
-	Copyright © 1997-1998 by PowerLogix R & D, Inc.
+Copyright © 1997-1998 by PowerLogix R & D, Inc.
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 */
 /*
 	Thur, Dec. 12, 1998.
-	- First public release, contributed by PowerLogix.
+- First public release, contributed by PowerLogix.
 	***********
 	Sat, Aug. 7, 1999.
 	- Terry: Made sure code disabled interrupts before running. (Previously
@@ -120,7 +120,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ALTIVEC)
 	isync
 
 	/* Before we perform the global invalidation, we must disable dynamic
-	 * power management via HID0[DPM] to work around a processor bug where
+* power management via HID0[DPM] to work around a processor bug where
 	 * DPM can possibly interfere with the state machine in the processor
 	 * that invalidates the L2 cache tags.
 	 */

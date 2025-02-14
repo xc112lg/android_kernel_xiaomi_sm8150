@@ -3,7 +3,7 @@
  * Copyright 2011 Matt Evans <matt@ozlabs.org>, IBM Corporation
  *
  * Based on the x86 BPF compiler, by Eric Dumazet (eric.dumazet@gmail.com)
- * Ported to ppc32 by Denis Kirjanov <kda@linux-powerpc.org>
+* Ported to ppc32 by Denis Kirjanov <kda@linux-powerpc.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

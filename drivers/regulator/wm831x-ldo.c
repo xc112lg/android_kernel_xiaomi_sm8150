@@ -52,7 +52,7 @@ static irqreturn_t wm831x_ldo_uv_irq(int irq, void *data)
 	struct wm831x_ldo *ldo = data;
 
 	regulator_notifier_call_chain(ldo->regulator,
-				      REGULATOR_EVENT_UNDER_VOLTAGE,
+REGULATOR_EVENT_UNDER_VOLTAGE,
 				      NULL);
 
 	return IRQ_HANDLED;
@@ -74,7 +74,7 @@ static int wm831x_gp_ldo_set_suspend_voltage(struct regulator_dev *rdev,
 	struct wm831x *wm831x = ldo->wm831x;
 	int sel, reg = ldo->base + WM831X_LDO_SLEEP_CONTROL;
 
-	sel = regulator_map_voltage_linear_range(rdev, uV, uV);
+sel = regulator_map_voltage_linear_range(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -172,7 +172,7 @@ static int wm831x_gp_ldo_get_status(struct regulator_dev *rdev)
 	if (!(ret & mask))
 		return REGULATOR_STATUS_OFF;
 
-	/* Is it reporting under voltage? */
+/* Is it reporting under voltage? */
 	ret = wm831x_reg_read(wm831x, WM831X_LDO_UV_STATUS);
 	if (ret < 0)
 		return ret;
@@ -199,11 +199,11 @@ static unsigned int wm831x_gp_ldo_get_optimum_mode(struct regulator_dev *rdev,
 
 
 static const struct regulator_ops wm831x_gp_ldo_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.set_suspend_voltage = wm831x_gp_ldo_set_suspend_voltage,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.set_suspend_voltage = wm831x_gp_ldo_set_suspend_voltage,
 	.get_mode = wm831x_gp_ldo_get_mode,
 	.set_mode = wm831x_gp_ldo_set_mode,
 	.get_status = wm831x_gp_ldo_get_status,
@@ -252,12 +252,12 @@ static int wm831x_gp_ldo_probe(struct platform_device *pdev)
 	ldo->desc.name = ldo->name;
 
 	snprintf(ldo->supply_name, sizeof(ldo->supply_name),
-		 "LDO%dVDD", id + 1);
+"LDO%dVDD", id + 1);
 	ldo->desc.supply_name = ldo->supply_name;
 
 	ldo->desc.id = id;
-	ldo->desc.type = REGULATOR_VOLTAGE;
-	ldo->desc.n_voltages = 32;
+ldo->desc.type = REGULATOR_VOLTAGE;
+ldo->desc.n_voltages = 32;
 	ldo->desc.ops = &wm831x_gp_ldo_ops;
 	ldo->desc.owner = THIS_MODULE;
 	ldo->desc.vsel_reg = ldo->base + WM831X_LDO_ON_CONTROL;
@@ -327,7 +327,7 @@ static int wm831x_aldo_set_suspend_voltage(struct regulator_dev *rdev,
 	struct wm831x *wm831x = ldo->wm831x;
 	int sel, reg = ldo->base + WM831X_LDO_SLEEP_CONTROL;
 
-	sel = regulator_map_voltage_linear_range(rdev, uV, uV);
+sel = regulator_map_voltage_linear_range(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -395,7 +395,7 @@ static int wm831x_aldo_get_status(struct regulator_dev *rdev)
 	if (!(ret & mask))
 		return REGULATOR_STATUS_OFF;
 
-	/* Is it reporting under voltage? */
+/* Is it reporting under voltage? */
 	ret = wm831x_reg_read(wm831x, WM831X_LDO_UV_STATUS);
 	if (ret < 0)
 		return ret;
@@ -410,11 +410,11 @@ static int wm831x_aldo_get_status(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops wm831x_aldo_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.set_suspend_voltage = wm831x_aldo_set_suspend_voltage,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.set_suspend_voltage = wm831x_aldo_set_suspend_voltage,
 	.get_mode = wm831x_aldo_get_mode,
 	.set_mode = wm831x_aldo_set_mode,
 	.get_status = wm831x_aldo_get_status,
@@ -462,12 +462,12 @@ static int wm831x_aldo_probe(struct platform_device *pdev)
 	ldo->desc.name = ldo->name;
 
 	snprintf(ldo->supply_name, sizeof(ldo->supply_name),
-		 "LDO%dVDD", id + 1);
+"LDO%dVDD", id + 1);
 	ldo->desc.supply_name = ldo->supply_name;
 
 	ldo->desc.id = id;
-	ldo->desc.type = REGULATOR_VOLTAGE;
-	ldo->desc.n_voltages = 32;
+ldo->desc.type = REGULATOR_VOLTAGE;
+ldo->desc.n_voltages = 32;
 	ldo->desc.linear_ranges = wm831x_aldo_ranges;
 	ldo->desc.n_linear_ranges = ARRAY_SIZE(wm831x_aldo_ranges);
 	ldo->desc.ops = &wm831x_aldo_ops;
@@ -533,7 +533,7 @@ static int wm831x_alive_ldo_set_suspend_voltage(struct regulator_dev *rdev,
 	struct wm831x *wm831x = ldo->wm831x;
 	int sel, reg = ldo->base + WM831X_ALIVE_LDO_SLEEP_CONTROL;
 
-	sel = regulator_map_voltage_linear(rdev, uV, uV);
+sel = regulator_map_voltage_linear(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -558,11 +558,11 @@ static int wm831x_alive_ldo_get_status(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops wm831x_alive_ldo_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.set_suspend_voltage = wm831x_alive_ldo_set_suspend_voltage,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.set_suspend_voltage = wm831x_alive_ldo_set_suspend_voltage,
 	.get_status = wm831x_alive_ldo_get_status,
 
 	.is_enabled = regulator_is_enabled_regmap,
@@ -607,12 +607,12 @@ static int wm831x_alive_ldo_probe(struct platform_device *pdev)
 	ldo->desc.name = ldo->name;
 
 	snprintf(ldo->supply_name, sizeof(ldo->supply_name),
-		 "LDO%dVDD", id + 1);
+"LDO%dVDD", id + 1);
 	ldo->desc.supply_name = ldo->supply_name;
 
 	ldo->desc.id = id;
-	ldo->desc.type = REGULATOR_VOLTAGE;
-	ldo->desc.n_voltages = WM831X_ALIVE_LDO_MAX_SELECTOR + 1;
+ldo->desc.type = REGULATOR_VOLTAGE;
+ldo->desc.n_voltages = WM831X_ALIVE_LDO_MAX_SELECTOR + 1;
 	ldo->desc.ops = &wm831x_alive_ldo_ops;
 	ldo->desc.owner = THIS_MODULE;
 	ldo->desc.vsel_reg = ldo->base + WM831X_ALIVE_LDO_ON_CONTROL;

@@ -540,7 +540,7 @@ void __init bootx_init(unsigned long r3, unsigned long r4)
 						     4, "model");
 		if (model
 		    && (strcmp(model, "iMac,1") == 0
-			|| strcmp(model, "PowerMac1,1") == 0)) {
+|| strcmp(model, "PowerMac1,1") == 0)) {
 			bootx_printf("iMac,1 detected, shutting down USB\n");
 			out_le32((unsigned __iomem *)0x80880008, 1);	/* XXX */
 		}

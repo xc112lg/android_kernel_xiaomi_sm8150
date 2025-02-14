@@ -1,7 +1,7 @@
 /*
- * drivers/cpufreq/cpufreq_governor.c
+* drivers/cpufreq/cpufreq_governor.c
  *
- * CPUFREQ governors common code
+* CPUFREQ governors common code
  *
  * Copyright	(C) 2001 Russell King
  *		(C) 2003 Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>.
@@ -36,7 +36,7 @@ static DEFINE_MUTEX(gov_dbs_data_mutex);
  * dbs.sampling_rate might not be appropriate. For example, if the
  * original sampling_rate was 1 second and the requested new sampling rate is 10
  * ms because the user needs immediate reaction from ondemand governor, but not
- * sure if higher frequency will be required or not, then, the governor may
+* sure if higher frequency will be required or not, then, the governor may
  * change the sampling rate too late; up to 1 second later. Thus, if we are
  * reducing the sampling rate, we need to make the new value effective
  * immediately.
@@ -53,7 +53,7 @@ ssize_t store_sampling_rate(struct gov_attr_set *attr_set, const char *buf,
 	int ret;
 
 	ret = sscanf(buf, "%u", &sampling_interval);
-	if (ret != 1 || sampling_interval < CPUFREQ_DBS_MIN_SAMPLING_INTERVAL)
+if (ret != 1 || sampling_interval < CPUFREQ_DBS_MIN_SAMPLING_INTERVAL)
 		return -EINVAL;
 
 	dbs_data->sampling_rate = sampling_interval;
@@ -178,9 +178,9 @@ unsigned int dbs_update(struct cpufreq_policy *policy)
 			 *
 			 * To avoid this, reuse the 'load' from the previous
 			 * time-window and give this task a chance to start with
-			 * a reasonably high CPU frequency. However, that
+* a reasonably high CPU frequency. However, that
 			 * shouldn't be over-done, lest we get stuck at a high
-			 * load (high frequency) for too long, even when the
+* load (high frequency) for too long, even when the
 			 * current system load has actually dropped down, so
 			 * clear prev_load to guarantee that the load will be
 			 * computed again next time.
@@ -235,7 +235,7 @@ EXPORT_SYMBOL_GPL(dbs_update);
 static void dbs_work_handler(struct work_struct *work)
 {
 	struct policy_dbs_info *policy_dbs;
-	struct cpufreq_policy *policy;
+struct cpufreq_policy *policy;
 	struct dbs_governor *gov;
 
 	policy_dbs = container_of(work, struct policy_dbs_info, work);
@@ -243,7 +243,7 @@ static void dbs_work_handler(struct work_struct *work)
 	gov = dbs_governor_of(policy);
 
 	/*
-	 * Make sure cpufreq_governor_limits() isn't evaluating load or the
+* Make sure cpufreq_governor_limits() isn't evaluating load or the
 	 * ondemand governor isn't updating the sampling rate in parallel.
 	 */
 	mutex_lock(&policy_dbs->update_mutex);
@@ -276,7 +276,7 @@ static void dbs_update_util_handler(struct update_util_data *data, u64 time,
 	struct policy_dbs_info *policy_dbs = cdbs->policy_dbs;
 	u64 delta_ns, lst;
 
-	if (!cpufreq_can_do_remote_dvfs(policy_dbs->policy))
+if (!cpufreq_can_do_remote_dvfs(policy_dbs->policy))
 		return;
 
 	/*
@@ -325,7 +325,7 @@ static void dbs_update_util_handler(struct update_util_data *data, u64 time,
 static void gov_set_update_util(struct policy_dbs_info *policy_dbs,
 				unsigned int delay_us)
 {
-	struct cpufreq_policy *policy = policy_dbs->policy;
+struct cpufreq_policy *policy = policy_dbs->policy;
 	int cpu;
 
 	gov_update_sample_delay(policy_dbs, delay_us);
@@ -334,7 +334,7 @@ static void gov_set_update_util(struct policy_dbs_info *policy_dbs,
 	for_each_cpu(cpu, policy->cpus) {
 		struct cpu_dbs_info *cdbs = &per_cpu(cpu_dbs, cpu);
 
-		cpufreq_add_update_util_hook(cpu, &cdbs->update_util,
+cpufreq_add_update_util_hook(cpu, &cdbs->update_util,
 					     dbs_update_util_handler);
 	}
 }
@@ -344,7 +344,7 @@ static inline void gov_clear_update_util(struct cpufreq_policy *policy)
 	int i;
 
 	for_each_cpu(i, policy->cpus)
-		cpufreq_remove_update_util_hook(i);
+cpufreq_remove_update_util_hook(i);
 
 	synchronize_sched();
 }
@@ -440,8 +440,8 @@ int cpufreq_dbs_governor_init(struct cpufreq_policy *policy)
 	 * correctly.
 	 */
 	dbs_data->sampling_rate = max_t(unsigned int,
-					CPUFREQ_DBS_MIN_SAMPLING_INTERVAL,
-					cpufreq_policy_transition_delay_us(policy));
+CPUFREQ_DBS_MIN_SAMPLING_INTERVAL,
+cpufreq_policy_transition_delay_us(policy));
 
 	if (!have_governor_per_policy())
 		gov->gdbs_data = dbs_data;
@@ -559,14 +559,14 @@ void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy)
 {
 	struct policy_dbs_info *policy_dbs;
 
-	/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
+/* Protect gov->gdbs_data against cpufreq_dbs_governor_exit() */
 	mutex_lock(&gov_dbs_data_mutex);
 	policy_dbs = policy->governor_data;
 	if (!policy_dbs)
 		goto out;
 
 	mutex_lock(&policy_dbs->update_mutex);
-	cpufreq_policy_apply_limits(policy);
+cpufreq_policy_apply_limits(policy);
 	gov_update_sample_delay(policy_dbs, 0);
 	mutex_unlock(&policy_dbs->update_mutex);
 

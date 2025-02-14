@@ -87,7 +87,7 @@ enum ltc3589_reg {
 struct ltc3589_regulator {
 	struct regulator_desc desc;
 
-	/* External feedback voltage divider */
+/* External feedback voltage divider */
 	unsigned int r1;
 	unsigned int r2;
 };
@@ -135,7 +135,7 @@ static int ltc3589_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 	struct ltc3589 *ltc3589 = rdev_get_drvdata(rdev);
 	int sel;
 
-	sel = regulator_map_voltage_linear(rdev, uV, uV);
+sel = regulator_map_voltage_linear(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -166,12 +166,12 @@ static const struct regulator_ops ltc3589_linear_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 	.set_ramp_delay = ltc3589_set_ramp_delay,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
-	.set_suspend_voltage = ltc3589_set_suspend_voltage,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.set_suspend_voltage = ltc3589_set_suspend_voltage,
 	.set_suspend_mode = ltc3589_set_suspend_mode,
 };
 
@@ -191,9 +191,9 @@ static const struct regulator_ops ltc3589_table_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 };
 
 
@@ -201,13 +201,13 @@ static const struct regulator_ops ltc3589_table_regulator_ops = {
 	[LTC3589_ ## _name] = {						\
 		.desc = {						\
 			.name = #_name,					\
-			.n_voltages = (dtv_mask) + 1,			\
+.n_voltages = (dtv_mask) + 1,			\
 			.min_uV = (go_bit) ? 362500 : 0,		\
 			.uV_step = (go_bit) ? 12500 : 0,		\
 			.ramp_delay = (go_bit) ? 1750 : 0,		\
 			.fixed_uV = (dtv_mask) ? 0 : 800000,		\
 			.ops = &ltc3589_ ## _ops ## _regulator_ops,	\
-			.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 			.id = LTC3589_ ## _name,			\
 			.owner = THIS_MODULE,				\
 			.vsel_reg = (dtv1_reg),			\
@@ -275,16 +275,16 @@ static int ltc3589_parse_regulators_dt(struct ltc3589 *ltc3589)
 		return -EINVAL;
 	}
 
-	/* Parse feedback voltage dividers. LDO3 and LDO4 don't have them */
+/* Parse feedback voltage dividers. LDO3 and LDO4 don't have them */
 	for (i = 0; i < LTC3589_LDO3; i++) {
 		struct ltc3589_regulator *desc = &ltc3589->regulator_descs[i];
 		struct device_node *np = ltc3589_matches[i].of_node;
 		u32 vdiv[2];
 
-		ret = of_property_read_u32_array(np, "lltc,fb-voltage-divider",
+ret = of_property_read_u32_array(np, "lltc,fb-voltage-divider",
 						 vdiv, 2);
 		if (ret) {
-			dev_err(dev, "Failed to parse voltage divider: %d\n",
+dev_err(dev, "Failed to parse voltage divider: %d\n",
 				ret);
 			return ret;
 		}
@@ -424,7 +424,7 @@ static irqreturn_t ltc3589_isr(int irq, void *dev_id)
 	}
 
 	if (irqstat & LTC3589_IRQSTAT_UNDERVOLT_WARN) {
-		event = REGULATOR_EVENT_UNDER_VOLTAGE;
+event = REGULATOR_EVENT_UNDER_VOLTAGE;
 		for (i = 0; i < LTC3589_NUM_REGULATORS; i++)
 			regulator_notifier_call_chain(ltc3589->regulators[i],
 						      event, NULL);
@@ -508,7 +508,7 @@ static int ltc3589_probe(struct i2c_client *client,
 		init_data = match_init_data(i);
 
 		if (i < LTC3589_LDO3)
-			ltc3589_apply_fb_voltage_divider(rdesc);
+ltc3589_apply_fb_voltage_divider(rdesc);
 
 		config.dev = dev;
 		config.init_data = init_data;

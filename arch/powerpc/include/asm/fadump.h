@@ -34,7 +34,7 @@
 #define RMA_END		(ppc64_rma_size)
 
 /*
- * On some Power systems where RMO is 128MB, it still requires minimum of
+* On some Power systems where RMO is 128MB, it still requires minimum of
  * 256MB for kernel to boot successfully. When kdump infrastructure is
  * configured to save vmcore over network, we run into OOM issue while
  * loading modules related to network setup. Hence we need aditional 64M
@@ -108,7 +108,7 @@ struct fadump_section_header {
 
 /*
  * Firmware Assisted dump memory structure. This structure is required for
- * registering future kernel dump with power firmware through rtas call.
+* registering future kernel dump with power firmware through rtas call.
  *
  * No disk dump option. Hence disk dump path string section is not included.
  */

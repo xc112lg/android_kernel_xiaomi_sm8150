@@ -72,7 +72,7 @@ machine_late_initcall(pseries, init_ras_hotplug_IRQ);
 
 /*
  * Initialize handlers for the set of interrupts caused by hardware errors
- * and power system events.
+* and power system events.
  */
 static int __init init_ras_IRQ(void)
 {
@@ -108,29 +108,29 @@ static void handle_system_shutdown(char event_modifier)
 {
 	switch (event_modifier) {
 	case EPOW_SHUTDOWN_NORMAL:
-		pr_emerg("Power off requested\n");
-		orderly_poweroff(true);
+pr_emerg("Power off requested\n");
+orderly_poweroff(true);
 		break;
 
 	case EPOW_SHUTDOWN_ON_UPS:
-		pr_emerg("Loss of system power detected. System is running on"
+pr_emerg("Loss of system power detected. System is running on"
 			 " UPS/battery. Check RTAS error log for details\n");
 		break;
 
 	case EPOW_SHUTDOWN_LOSS_OF_CRITICAL_FUNCTIONS:
 		pr_emerg("Loss of system critical functions detected. Check"
 			 " RTAS error log for details\n");
-		orderly_poweroff(true);
+orderly_poweroff(true);
 		break;
 
 	case EPOW_SHUTDOWN_AMBIENT_TEMPERATURE_TOO_HIGH:
 		pr_emerg("High ambient temperature detected. Check RTAS"
 			 " error log for details\n");
-		orderly_poweroff(true);
+orderly_poweroff(true);
 		break;
 
 	default:
-		pr_err("Unknown power/cooling shutdown event (modifier = %d)\n",
+pr_err("Unknown power/cooling shutdown event (modifier = %d)\n",
 			event_modifier);
 	}
 }
@@ -169,7 +169,7 @@ static void rtas_parse_epow_errlog(struct rtas_error_log *log)
 	switch (action_code) {
 	case EPOW_RESET:
 		if (num_epow_events) {
-			pr_info("Non critical power/cooling issue cleared\n");
+pr_info("Non critical power/cooling issue cleared\n");
 			num_epow_events--;
 		}
 		break;
@@ -179,8 +179,8 @@ static void rtas_parse_epow_errlog(struct rtas_error_log *log)
 			" log for details\n");
 		break;
 
-	case EPOW_WARN_POWER:
-		pr_info("Non-critical power issue detected. Check RTAS error"
+case EPOW_WARN_POWER:
+pr_info("Non-critical power issue detected. Check RTAS error"
 			" log for details\n");
 		break;
 
@@ -189,21 +189,21 @@ static void rtas_parse_epow_errlog(struct rtas_error_log *log)
 		break;
 
 	case EPOW_SYSTEM_HALT:
-		pr_emerg("Critical power/cooling issue detected. Check RTAS"
-			 " error log for details. Powering off.\n");
-		orderly_poweroff(true);
+pr_emerg("Critical power/cooling issue detected. Check RTAS"
+" error log for details. Powering off.\n");
+orderly_poweroff(true);
 		break;
 
 	case EPOW_MAIN_ENCLOSURE:
-	case EPOW_POWER_OFF:
-		pr_emerg("System about to lose power. Check RTAS error log "
-			 " for details. Powering off immediately.\n");
+case EPOW_POWER_OFF:
+pr_emerg("System about to lose power. Check RTAS error log "
+" for details. Powering off immediately.\n");
 		emergency_sync();
-		kernel_power_off();
+kernel_power_off();
 		break;
 
 	default:
-		pr_err("Unknown power/cooling event (action code  = %d)\n",
+pr_err("Unknown power/cooling event (action code  = %d)\n",
 			action_code);
 	}
 
@@ -310,9 +310,9 @@ static irqreturn_t ras_error_interrupt(int irq, void *dev_id)
 
 	if (fatal) {
 		pr_emerg("Fatal hardware error detected. Check RTAS error"
-			 " log for details. Powering off immediately\n");
+" log for details. Powering off immediately\n");
 		emergency_sync();
-		kernel_power_off();
+kernel_power_off();
 	} else {
 		pr_err("Recoverable hardware error detected\n");
 	}
@@ -424,7 +424,7 @@ int pSeries_system_reset_exception(struct pt_regs *regs)
 
 /*
  * See if we can recover from a machine check exception.
- * This is only called on power4 (or above) and only via
+* This is only called on power4 (or above) and only via
  * the Firmware Non-Maskable Interrupts (fwnmi) handler
  * which provides the error analysis for us.
  *
@@ -474,11 +474,11 @@ static int recover_mce(struct pt_regs *regs, struct rtas_error_log *err)
 /*
  * Handle a machine check.
  *
- * Note that on Power 4 and beyond Firmware Non-Maskable Interrupts (fwnmi)
+* Note that on Power 4 and beyond Firmware Non-Maskable Interrupts (fwnmi)
  * should be present.  If so the handler which called us tells us if the
  * error was recovered (never true if RI=0).
  *
- * On hardware prior to Power 4 these exceptions were asynchronous which
+* On hardware prior to Power 4 these exceptions were asynchronous which
  * means we can't tell exactly where it occurred and so we can't recover.
  */
 int pSeries_machine_check_exception(struct pt_regs *regs)

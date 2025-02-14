@@ -196,7 +196,7 @@ static irqreturn_t msmcci_hwmon_intr_handler(int irq, void *dev)
 	/*
 	 * Multiple independent interrupts could fire together and trigger
 	 * update_cache_hwmon() for same device. If we don't lock, we
-	 * could end up calling devfreq_monitor_start/stop()
+* could end up calling devfreq_monitor_start/stop()
 	 * concurrently, which would cause timer/workqueue object
 	 * corruption. However, we can't re-evaluate a few times back to
 	 * back either because the very short window won't be
@@ -254,7 +254,7 @@ static unsigned long meas_mrps_and_set_irq(struct cache_hwmon *hw,
 	for (i = 0; i < m->num_counters; i++) {
 		count = mon_read_count_single(m, i);
 		/*
-		 * When CCI is power collapsed, counters are cleared. Add
+* When CCI is power collapsed, counters are cleared. Add
 		 * saved count to the current reading and clear saved count
 		 * to ensure we won't apply it more than once.
 		 */
@@ -266,7 +266,7 @@ static unsigned long meas_mrps_and_set_irq(struct cache_hwmon *hw,
 
 		mon_clear_single(m, i);
 		mon_set_limit_single(m, i, limit);
-		/* save current limit for restoring after power collapse */
+/* save current limit for restoring after power collapse */
 		m->cur_limit[i] = limit;
 
 		dev_dbg(m->dev, "Counter[%d] count 0x%lx, limit 0x%x\n",
@@ -295,9 +295,9 @@ static void msmcci_hwmon_save_state(void)
 			continue;
 		mon_disable(m);
 		/*
-		 * Power collapse might happen multiple times before
+* Power collapse might happen multiple times before
 		 * re-evaluation is done. Accumulate the saved count.
-		 * Clear counter after read in case power collapse is
+* Clear counter after read in case power collapse is
 		 * aborted and register values are not wiped.
 		 */
 		for (i = 0; i < m->num_counters; i++) {
@@ -316,7 +316,7 @@ static void msmcci_hwmon_restore_limit(struct msmcci_hwmon *m, int i)
 	} else {
 		/*
 		 * If counter is larger than limit, interrupt should have
-		 * fired and prevented power collapse from happening. Just
+* fired and prevented power collapse from happening. Just
 		 * in case the interrupt does not come, restore previous
 		 * limit so that interrupt will be triggered at some point.
 		 */
@@ -352,7 +352,7 @@ static int msmcci_hwmon_pm_callback(struct notifier_block *nb,
 		return NOTIFY_DONE;
 
 	/*
-	 * When CCI power collapse callback happens, only current CPU
+* When CCI power collapse callback happens, only current CPU
 	 * would be executing code. Thus there is no need to hold
 	 * mutex or spinlock.
 	 */

@@ -80,7 +80,7 @@ struct tps_info {
 	u8 table_len;
 	const unsigned int *table;
 
-	/* Does DCDC high or the low register defines output voltage? */
+/* Does DCDC high or the low register defines output voltage? */
 	bool defdcdc_default;
 };
 
@@ -353,10 +353,10 @@ static struct regulator_ops tps6507x_pmic_ops = {
 	.is_enabled = tps6507x_pmic_is_enabled,
 	.enable = tps6507x_pmic_enable,
 	.disable = tps6507x_pmic_disable,
-	.get_voltage_sel = tps6507x_pmic_get_voltage_sel,
-	.set_voltage_sel = tps6507x_pmic_set_voltage_sel,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
+.get_voltage_sel = tps6507x_pmic_get_voltage_sel,
+.set_voltage_sel = tps6507x_pmic_set_voltage_sel,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
 };
 
 static struct of_regulator_match tps6507x_matches[] = {
@@ -476,10 +476,10 @@ static int tps6507x_pmic_probe(struct platform_device *pdev)
 
 		tps->desc[i].name = info->name;
 		tps->desc[i].id = i;
-		tps->desc[i].n_voltages = info->table_len;
+tps->desc[i].n_voltages = info->table_len;
 		tps->desc[i].volt_table = info->table;
 		tps->desc[i].ops = &tps6507x_pmic_ops;
-		tps->desc[i].type = REGULATOR_VOLTAGE;
+tps->desc[i].type = REGULATOR_VOLTAGE;
 		tps->desc[i].owner = THIS_MODULE;
 
 		config.dev = tps6507x_dev->dev;

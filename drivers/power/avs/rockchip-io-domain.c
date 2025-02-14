@@ -1,5 +1,5 @@
 /*
- * Rockchip IO Voltage Domain driver
+* Rockchip IO Voltage Domain driver
  *
  * Copyright 2014 MundoReader S.L.
  * Copyright 2014 Google, Inc.
@@ -26,14 +26,14 @@
 #define MAX_SUPPLIES		16
 
 /*
- * The max voltage for 1.8V and 3.3V come from the Rockchip datasheet under
+* The max voltage for 1.8V and 3.3V come from the Rockchip datasheet under
  * "Recommended Operating Conditions" for "Digital GPIO".   When the typical
  * is 3.3V the max is 3.6V.  When the typical is 1.8V the max is 1.98V.
  *
  * They are used like this:
- * - If the voltage on a rail is above the "1.8" voltage (1.98V) we'll tell the
+* - If the voltage on a rail is above the "1.8" voltage (1.98V) we'll tell the
  *   SoC we're at 3.3.
- * - If the voltage on a rail is above the "3.3" voltage (3.6V) we'll consider
+* - If the voltage on a rail is above the "3.3" voltage (3.6V) we'll consider
  *   that to be an error.
  */
 #define MAX_VOLTAGE_1_8		1980000
@@ -58,7 +58,7 @@
 struct rockchip_iodomain;
 
 /**
- * @supplies: voltage settings matching the register bits.
+* @supplies: voltage settings matching the register bits.
  */
 struct rockchip_iodomain_soc_data {
 	int grf_offset;
@@ -88,7 +88,7 @@ static int rockchip_iodomain_write(struct rockchip_iodomain_supply *supply,
 	int ret;
 
 	/* set value bit */
-	val = (uV > MAX_VOLTAGE_1_8) ? 0 : 1;
+val = (uV > MAX_VOLTAGE_1_8) ? 0 : 1;
 	val <<= supply->idx;
 
 	/* apply hiword-mask */
@@ -112,23 +112,23 @@ static int rockchip_iodomain_notify(struct notifier_block *nb,
 
 	/*
 	 * According to Rockchip it's important to keep the SoC IO domain
-	 * higher than (or equal to) the external voltage.  That means we need
-	 * to change it before external voltage changes happen in the case
+* higher than (or equal to) the external voltage.  That means we need
+* to change it before external voltage changes happen in the case
 	 * of an increase.
 	 *
-	 * Note that in the "pre" change we pick the max possible voltage that
+* Note that in the "pre" change we pick the max possible voltage that
 	 * the regulator might end up at (the client requests a range and we
-	 * don't know for certain the exact voltage).  Right now we rely on the
-	 * slop in MAX_VOLTAGE_1_8 and MAX_VOLTAGE_3_3 to save us if clients
+* don't know for certain the exact voltage).  Right now we rely on the
+* slop in MAX_VOLTAGE_1_8 and MAX_VOLTAGE_3_3 to save us if clients
 	 * request something like a max of 3.6V when they really want 3.3V.
 	 * We could attempt to come up with better rules if this fails.
 	 */
-	if (event & REGULATOR_EVENT_PRE_VOLTAGE_CHANGE) {
-		struct pre_voltage_change_data *pvc_data = data;
+if (event & REGULATOR_EVENT_PRE_VOLTAGE_CHANGE) {
+struct pre_voltage_change_data *pvc_data = data;
 
 		uV = max_t(unsigned long, pvc_data->old_uV, pvc_data->max_uV);
-	} else if (event & (REGULATOR_EVENT_VOLTAGE_CHANGE |
-			    REGULATOR_EVENT_ABORT_VOLTAGE_CHANGE)) {
+} else if (event & (REGULATOR_EVENT_VOLTAGE_CHANGE |
+REGULATOR_EVENT_ABORT_VOLTAGE_CHANGE)) {
 		uV = (unsigned long)data;
 	} else {
 		return NOTIFY_OK;
@@ -136,15 +136,15 @@ static int rockchip_iodomain_notify(struct notifier_block *nb,
 
 	dev_dbg(supply->iod->dev, "Setting to %d\n", uV);
 
-	if (uV > MAX_VOLTAGE_3_3) {
-		dev_err(supply->iod->dev, "Voltage too high: %d\n", uV);
+if (uV > MAX_VOLTAGE_3_3) {
+dev_err(supply->iod->dev, "Voltage too high: %d\n", uV);
 
-		if (event == REGULATOR_EVENT_PRE_VOLTAGE_CHANGE)
+if (event == REGULATOR_EVENT_PRE_VOLTAGE_CHANGE)
 			return NOTIFY_BAD;
 	}
 
 	ret = rockchip_iodomain_write(supply, uV);
-	if (ret && event == REGULATOR_EVENT_PRE_VOLTAGE_CHANGE)
+if (ret && event == REGULATOR_EVENT_PRE_VOLTAGE_CHANGE)
 		return NOTIFY_BAD;
 
 	dev_dbg(supply->iod->dev, "Setting to %d done\n", uV);
@@ -266,16 +266,16 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3228 = {
 static const struct rockchip_iodomain_soc_data soc_data_rk3288 = {
 	.grf_offset = 0x380,
 	.supply_names = {
-		"lcdc",		/* LCDC_VDD */
-		"dvp",		/* DVPIO_VDD */
-		"flash0",	/* FLASH0_VDD (emmc) */
-		"flash1",	/* FLASH1_VDD (sdio1) */
-		"wifi",		/* APIO3_VDD  (sdio0) */
-		"bb",		/* APIO5_VDD */
-		"audio",	/* APIO4_VDD */
-		"sdcard",	/* SDMMC0_VDD (sdmmc) */
-		"gpio30",	/* APIO1_VDD */
-		"gpio1830",	/* APIO2_VDD */
+"lcdc",		/* LCDC_VDD */
+"dvp",		/* DVPIO_VDD */
+"flash0",	/* FLASH0_VDD (emmc) */
+"flash1",	/* FLASH1_VDD (sdio1) */
+"wifi",		/* APIO3_VDD  (sdio0) */
+"bb",		/* APIO5_VDD */
+"audio",	/* APIO4_VDD */
+"sdcard",	/* SDMMC0_VDD (sdmmc) */
+"gpio30",	/* APIO1_VDD */
+"gpio1830",	/* APIO2_VDD */
 	},
 	.init = rk3288_iodomain_init,
 };
@@ -298,14 +298,14 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3368 = {
 	.grf_offset = 0x900,
 	.supply_names = {
 		NULL,		/* reserved */
-		"dvp",		/* DVPIO_VDD */
-		"flash0",	/* FLASH0_VDD (emmc) */
-		"wifi",		/* APIO2_VDD (sdio0) */
+"dvp",		/* DVPIO_VDD */
+"flash0",	/* FLASH0_VDD (emmc) */
+"wifi",		/* APIO2_VDD (sdio0) */
 		NULL,
-		"audio",	/* APIO3_VDD */
-		"sdcard",	/* SDMMC0_VDD (sdmmc) */
-		"gpio30",	/* APIO1_VDD */
-		"gpio1830",	/* APIO4_VDD (gpujtag) */
+"audio",	/* APIO3_VDD */
+"sdcard",	/* SDMMC0_VDD (sdmmc) */
+"gpio30",	/* APIO1_VDD */
+"gpio1830",	/* APIO4_VDD (gpujtag) */
 	},
 	.init = rk3368_iodomain_init,
 };
@@ -325,10 +325,10 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3368_pmu = {
 static const struct rockchip_iodomain_soc_data soc_data_rk3399 = {
 	.grf_offset = 0xe640,
 	.supply_names = {
-		"bt656",		/* APIO2_VDD */
-		"audio",		/* APIO5_VDD */
-		"sdmmc",		/* SDMMC0_VDD */
-		"gpio1830",		/* APIO4_VDD */
+"bt656",		/* APIO2_VDD */
+"audio",		/* APIO5_VDD */
+"sdmmc",		/* SDMMC0_VDD */
+"gpio1830",		/* APIO4_VDD */
 	},
 };
 
@@ -344,7 +344,7 @@ static const struct rockchip_iodomain_soc_data soc_data_rk3399_pmu = {
 		NULL,
 		NULL,
 		NULL,
-		"pmu1830",		/* PMUIO2_VDD */
+"pmu1830",		/* PMUIO2_VDD */
 	},
 	.init = rk3399_pmu_iodomain_init,
 };
@@ -381,43 +381,43 @@ static const struct rockchip_iodomain_soc_data soc_data_rv1108_pmu = {
 
 static const struct of_device_id rockchip_iodomain_match[] = {
 	{
-		.compatible = "rockchip,rk3188-io-voltage-domain",
+.compatible = "rockchip,rk3188-io-voltage-domain",
 		.data = (void *)&soc_data_rk3188
 	},
 	{
-		.compatible = "rockchip,rk3228-io-voltage-domain",
+.compatible = "rockchip,rk3228-io-voltage-domain",
 		.data = (void *)&soc_data_rk3228
 	},
 	{
-		.compatible = "rockchip,rk3288-io-voltage-domain",
+.compatible = "rockchip,rk3288-io-voltage-domain",
 		.data = (void *)&soc_data_rk3288
 	},
 	{
-		.compatible = "rockchip,rk3328-io-voltage-domain",
+.compatible = "rockchip,rk3328-io-voltage-domain",
 		.data = (void *)&soc_data_rk3328
 	},
 	{
-		.compatible = "rockchip,rk3368-io-voltage-domain",
+.compatible = "rockchip,rk3368-io-voltage-domain",
 		.data = (void *)&soc_data_rk3368
 	},
 	{
-		.compatible = "rockchip,rk3368-pmu-io-voltage-domain",
+.compatible = "rockchip,rk3368-pmu-io-voltage-domain",
 		.data = (void *)&soc_data_rk3368_pmu
 	},
 	{
-		.compatible = "rockchip,rk3399-io-voltage-domain",
+.compatible = "rockchip,rk3399-io-voltage-domain",
 		.data = (void *)&soc_data_rk3399
 	},
 	{
-		.compatible = "rockchip,rk3399-pmu-io-voltage-domain",
+.compatible = "rockchip,rk3399-pmu-io-voltage-domain",
 		.data = (void *)&soc_data_rk3399_pmu
 	},
 	{
-		.compatible = "rockchip,rv1108-io-voltage-domain",
+.compatible = "rockchip,rv1108-io-voltage-domain",
 		.data = (void *)&soc_data_rv1108
 	},
 	{
-		.compatible = "rockchip,rv1108-pmu-io-voltage-domain",
+.compatible = "rockchip,rv1108-pmu-io-voltage-domain",
 		.data = (void *)&soc_data_rv1108_pmu
 	},
 	{ /* sentinel */ },
@@ -481,16 +481,16 @@ static int rockchip_iodomain_probe(struct platform_device *pdev)
 		}
 
 		/* set initial correct value */
-		uV = regulator_get_voltage(reg);
+uV = regulator_get_voltage(reg);
 
-		/* must be a regulator we can get the voltage of */
+/* must be a regulator we can get the voltage of */
 		if (uV < 0) {
-			dev_err(iod->dev, "Can't determine voltage: %s\n",
+dev_err(iod->dev, "Can't determine voltage: %s\n",
 				supply_name);
 			goto unreg_notify;
 		}
 
-		if (uV > MAX_VOLTAGE_3_3) {
+if (uV > MAX_VOLTAGE_3_3) {
 			dev_crit(iod->dev,
 				 "%d uV is too high. May damage SoC!\n",
 				 uV);

@@ -1,5 +1,5 @@
 /*
- * Miscellaneous procedures for dealing with the PowerMac hardware.
+* Miscellaneous procedures for dealing with the PowerMac hardware.
  * Contains support for the backlight.
  *
  *   Copyright (C) 2000 Benjamin Herrenschmidt
@@ -34,7 +34,7 @@ static int pmac_backlight_set_legacy_queued;
 
 /* The via-pmu code allows the backlight to be grabbed, in which case the
  * in-kernel control of the brightness needs to be disabled. This should
- * only be used by really old PowerBooks.
+* only be used by really old PowerBooks.
  */
 static atomic_t kernel_backlight_disabled = ATOMIC_INIT(0);
 

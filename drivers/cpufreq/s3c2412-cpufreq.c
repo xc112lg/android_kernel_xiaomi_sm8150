@@ -3,7 +3,7 @@
  *	http://armlinux.simtec.co.uk/
  *	Ben Dooks <ben@simtec.co.uk>
  *
- * S3C2412 CPU Frequency scalling
+* S3C2412 CPU Frequency scalling
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -46,8 +46,8 @@ static int s3c2412_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	unsigned long hclk, fclk, armclk, armdiv_clk;
 	unsigned long hclk_max;
 
-	fclk = cfg->freq.fclk;
-	armclk = cfg->freq.armclk;
+fclk = cfg->freq.fclk;
+armclk = cfg->freq.armclk;
 	hclk_max = cfg->max.hclk;
 
 	/* We can't run hclk above armclk as at the best we have to
@@ -56,11 +56,11 @@ static int s3c2412_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	if (hclk_max > armclk)
 		hclk_max = armclk;
 
-	s3c_freq_dbg("%s: fclk=%lu, armclk=%lu, hclk_max=%lu\n",
+s3c_freq_dbg("%s: fclk=%lu, armclk=%lu, hclk_max=%lu\n",
 		     __func__, fclk, armclk, hclk_max);
-	s3c_freq_dbg("%s: want f=%lu, arm=%lu, h=%lu, p=%lu\n",
-		     __func__, cfg->freq.fclk, cfg->freq.armclk,
-		     cfg->freq.hclk, cfg->freq.pclk);
+s3c_freq_dbg("%s: want f=%lu, arm=%lu, h=%lu, p=%lu\n",
+__func__, cfg->freq.fclk, cfg->freq.armclk,
+cfg->freq.hclk, cfg->freq.pclk);
 
 	armdiv = fclk / armclk;
 
@@ -76,15 +76,15 @@ static int s3c2412_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	if (hdiv < 1)
 		hdiv = 1;
 
-	cfg->freq.hclk = hclk = armdiv_clk / hdiv;
+cfg->freq.hclk = hclk = armdiv_clk / hdiv;
 
 	/* set dvs depending on whether we reached armclk or not. */
 	cfg->divs.dvs = dvs = armclk < armdiv_clk;
 
 	/* update the actual armclk we achieved. */
-	cfg->freq.armclk = dvs ? hclk : armdiv_clk;
+cfg->freq.armclk = dvs ? hclk : armdiv_clk;
 
-	s3c_freq_dbg("%s: armclk %lu, hclk %lu, armdiv %d, hdiv %d, dvs %d\n",
+s3c_freq_dbg("%s: armclk %lu, hclk %lu, armdiv %d, hdiv %d, dvs %d\n",
 		     __func__, armclk, hclk, armdiv, hdiv, cfg->divs.dvs);
 
 	if (hdiv > 4)
@@ -95,9 +95,9 @@ static int s3c2412_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	if ((hclk / pdiv) > cfg->max.pclk)
 		pdiv++;
 
-	cfg->freq.pclk = hclk / pdiv;
+cfg->freq.pclk = hclk / pdiv;
 
-	s3c_freq_dbg("%s: pdiv %d\n", __func__, pdiv);
+s3c_freq_dbg("%s: pdiv %d\n", __func__, pdiv);
 
 	if (pdiv > 2)
 		goto invalid;
@@ -136,7 +136,7 @@ static void s3c2412_cpufreq_setdivs(struct s3c_cpufreq_config *cfg)
 	if (cfg->divs.p_divisor != cfg->divs.h_divisor)
 		clkdiv |= S3C2412_CLKDIVN_PDIVN;
 
-	s3c_freq_dbg("%s: div %08lx => %08lx\n", __func__, olddiv, clkdiv);
+s3c_freq_dbg("%s: div %08lx => %08lx\n", __func__, olddiv, clkdiv);
 	__raw_writel(clkdiv, S3C2410_CLKDIVN);
 
 	clk_set_parent(armclk, cfg->divs.dvs ? hclk : fclk);
@@ -144,22 +144,22 @@ static void s3c2412_cpufreq_setdivs(struct s3c_cpufreq_config *cfg)
 
 static void s3c2412_cpufreq_setrefresh(struct s3c_cpufreq_config *cfg)
 {
-	struct s3c_cpufreq_board *board = cfg->board;
+struct s3c_cpufreq_board *board = cfg->board;
 	unsigned long refresh;
 
-	s3c_freq_dbg("%s: refresh %u ns, hclk %lu\n", __func__,
-		     board->refresh, cfg->freq.hclk);
+s3c_freq_dbg("%s: refresh %u ns, hclk %lu\n", __func__,
+board->refresh, cfg->freq.hclk);
 
-	/* Reduce both the refresh time (in ns) and the frequency (in MHz)
+/* Reduce both the refresh time (in ns) and the frequency (in MHz)
 	 * by 10 each to ensure that we do not overflow 32 bit numbers. This
 	 * should work for HCLK up to 133MHz and refresh period up to 30usec.
 	 */
 
 	refresh = (board->refresh / 10);
-	refresh *= (cfg->freq.hclk / 100);
+refresh *= (cfg->freq.hclk / 100);
 	refresh /= (1 * 1000 * 1000);	/* 10^6 */
 
-	s3c_freq_dbg("%s: setting refresh 0x%08lx\n", __func__, refresh);
+s3c_freq_dbg("%s: setting refresh 0x%08lx\n", __func__, refresh);
 	__raw_writel(refresh, S3C2412_REFRESH);
 }
 
@@ -181,15 +181,15 @@ static struct s3c_cpufreq_info s3c2412_cpufreq_info = {
 	.locktime_bits	= 16,
 
 	.name		= "s3c2412",
-	.set_refresh	= s3c2412_cpufreq_setrefresh,
-	.set_divs	= s3c2412_cpufreq_setdivs,
-	.calc_divs	= s3c2412_cpufreq_calcdivs,
+.set_refresh	= s3c2412_cpufreq_setrefresh,
+.set_divs	= s3c2412_cpufreq_setdivs,
+.calc_divs	= s3c2412_cpufreq_calcdivs,
 
 	.calc_iotiming	= s3c2412_iotiming_calc,
 	.set_iotiming	= s3c2412_iotiming_set,
 	.get_iotiming	= s3c2412_iotiming_get,
 
-	.debug_io_show  = s3c_cpufreq_debugfs_call(s3c2412_iotiming_debugfs),
+.debug_io_show  = s3c_cpufreq_debugfs_call(s3c2412_iotiming_debugfs),
 };
 
 static int s3c2412_cpufreq_add(struct device *dev,
@@ -213,9 +213,9 @@ static int s3c2412_cpufreq_add(struct device *dev,
 	if (fclk_rate > 200000000) {
 		pr_info("fclk %ld MHz, assuming 266MHz capable part\n",
 			fclk_rate / 1000000);
-		s3c2412_cpufreq_info.max.fclk = 266000000;
-		s3c2412_cpufreq_info.max.hclk = 133000000;
-		s3c2412_cpufreq_info.max.pclk =  66000000;
+s3c2412_cpufreq_info.max.fclk = 266000000;
+s3c2412_cpufreq_info.max.hclk = 133000000;
+s3c2412_cpufreq_info.max.pclk =  66000000;
 	}
 
 	armclk = clk_get(NULL, "armclk");
@@ -230,7 +230,7 @@ static int s3c2412_cpufreq_add(struct device *dev,
 		goto err_xtal;
 	}
 
-	return s3c_cpufreq_register(&s3c2412_cpufreq_info);
+return s3c_cpufreq_register(&s3c2412_cpufreq_info);
 
 err_xtal:
 	clk_put(armclk);
@@ -243,13 +243,13 @@ err_fclk:
 }
 
 static struct subsys_interface s3c2412_cpufreq_interface = {
-	.name		= "s3c2412_cpufreq",
+.name		= "s3c2412_cpufreq",
 	.subsys		= &s3c2412_subsys,
-	.add_dev	= s3c2412_cpufreq_add,
+.add_dev	= s3c2412_cpufreq_add,
 };
 
 static int s3c2412_cpufreq_init(void)
 {
-	return subsys_interface_register(&s3c2412_cpufreq_interface);
+return subsys_interface_register(&s3c2412_cpufreq_interface);
 }
 arch_initcall(s3c2412_cpufreq_init);

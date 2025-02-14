@@ -6,9 +6,9 @@
  * published by the Free Software Foundation.
  *
  * This driver provides the clk notifier callbacks that are used when
- * the cpufreq-dt driver changes to frequency to alert the highbank
+* the cpufreq-dt driver changes to frequency to alert the highbank
  * EnergyCore Management Engine (ECME) about the need to change
- * voltage. The ECME interfaces with the actual voltage regulators.
+* voltage. The ECME interfaces with the actual voltage regulators.
  */
 
 #define pr_fmt(fmt)	KBUILD_MODNAME ": " fmt
@@ -28,7 +28,7 @@
 
 static int hb_voltage_change(unsigned int freq)
 {
-	u32 msg[HB_CPUFREQ_IPC_LEN] = {HB_CPUFREQ_CHANGE_NOTE, freq / 1000000};
+u32 msg[HB_CPUFREQ_IPC_LEN] = {HB_CPUFREQ_CHANGE_NOTE, freq / 1000000};
 
 	return pl320_ipc_transmit(msg);
 }
@@ -41,13 +41,13 @@ static int hb_cpufreq_clk_notify(struct notifier_block *nb,
 
 	if (action == PRE_RATE_CHANGE) {
 		if (clk_data->new_rate > clk_data->old_rate)
-			while (hb_voltage_change(clk_data->new_rate))
-				if (i++ > HB_CPUFREQ_VOLT_RETRIES)
+while (hb_voltage_change(clk_data->new_rate))
+if (i++ > HB_CPUFREQ_VOLT_RETRIES)
 					return NOTIFY_BAD;
 	} else if (action == POST_RATE_CHANGE) {
 		if (clk_data->new_rate < clk_data->old_rate)
-			while (hb_voltage_change(clk_data->new_rate))
-				if (i++ > HB_CPUFREQ_VOLT_RETRIES)
+while (hb_voltage_change(clk_data->new_rate))
+if (i++ > HB_CPUFREQ_VOLT_RETRIES)
 					return NOTIFY_BAD;
 	}
 
@@ -55,12 +55,12 @@ static int hb_cpufreq_clk_notify(struct notifier_block *nb,
 }
 
 static struct notifier_block hb_cpufreq_clk_nb = {
-	.notifier_call = hb_cpufreq_clk_notify,
+.notifier_call = hb_cpufreq_clk_notify,
 };
 
 static int hb_cpufreq_driver_init(void)
 {
-	struct platform_device_info devinfo = { .name = "cpufreq-dt", };
+struct platform_device_info devinfo = { .name = "cpufreq-dt", };
 	struct device *cpu_dev;
 	struct clk *cpu_clk;
 	struct device_node *np;
@@ -72,13 +72,13 @@ static int hb_cpufreq_driver_init(void)
 
 	cpu_dev = get_cpu_device(0);
 	if (!cpu_dev) {
-		pr_err("failed to get highbank cpufreq device\n");
+pr_err("failed to get highbank cpufreq device\n");
 		return -ENODEV;
 	}
 
 	np = of_node_get(cpu_dev->of_node);
 	if (!np) {
-		pr_err("failed to find highbank cpufreq node\n");
+pr_err("failed to find highbank cpufreq node\n");
 		return -ENOENT;
 	}
 
@@ -89,13 +89,13 @@ static int hb_cpufreq_driver_init(void)
 		goto out_put_node;
 	}
 
-	ret = clk_notifier_register(cpu_clk, &hb_cpufreq_clk_nb);
+ret = clk_notifier_register(cpu_clk, &hb_cpufreq_clk_nb);
 	if (ret) {
 		pr_err("failed to register clk notifier: %d\n", ret);
 		goto out_put_node;
 	}
 
-	/* Instantiate cpufreq-dt */
+/* Instantiate cpufreq-dt */
 	platform_device_register_full(&devinfo);
 
 out_put_node:

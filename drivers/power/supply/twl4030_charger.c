@@ -92,7 +92,7 @@
 #define TWL4030_MSTATEC_COMPLETE4	0x0e
 
 /*
- * If AC (Accessory Charger) voltage exceeds 4.5V (MADC 11)
+* If AC (Accessory Charger) voltage exceeds 4.5V (MADC 11)
  * then AC is available.
  */
 static inline int ac_available(struct iio_channel *channel_vac)
@@ -114,8 +114,8 @@ MODULE_PARM_DESC(allow_usb, "Allow USB charge drawing default current");
 
 struct twl4030_bci {
 	struct device		*dev;
-	struct power_supply	*ac;
-	struct power_supply	*usb;
+struct power_supply	*ac;
+struct power_supply	*usb;
 	struct usb_phy		*transceiver;
 	struct notifier_block	usb_nb;
 	struct work_struct	work;
@@ -138,7 +138,7 @@ struct twl4030_bci {
 #define	CHARGE_LINEAR	2
 
 	/* When setting the USB current we slowly increase the
-	 * requested current until target is reached or the voltage
+* requested current until target is reached or the voltage
 	 * drops below 4.75V.  In the latter case we step back one
 	 * step.
 	 */
@@ -249,7 +249,7 @@ static int twl4030_charger_update_current(struct twl4030_bci *bci)
 	u8 boot_bci;
 
 	/*
-	 * If AC (Accessory Charger) voltage exceeds 4.5V (MADC 11)
+* If AC (Accessory Charger) voltage exceeds 4.5V (MADC 11)
 	 * and AC is enabled, set current for 'ac'
 	 */
 	if (ac_available(bci->channel_vac)) {
@@ -425,7 +425,7 @@ static void twl4030_current_worker(struct work_struct *data)
 		bci->usb_cur_target = bci->usb_cur;
 	} else if (bci->usb_cur >= bci->usb_cur_target ||
 		   bci->usb_cur + USB_CUR_STEP > USB_MAX_CURRENT) {
-		/* Reached target and voltage is OK - stop */
+/* Reached target and voltage is OK - stop */
 		return;
 	} else {
 		bci->usb_cur += USB_CUR_STEP;
@@ -448,7 +448,7 @@ static int twl4030_charger_enable_usb(struct twl4030_bci *bci, bool enable)
 
 		twl4030_charger_update_current(bci);
 
-		/* Need to keep phy powered */
+/* Need to keep phy powered */
 		if (!bci->usb_enabled) {
 			pm_runtime_get_sync(bci->transceiver->dev);
 			bci->usb_enabled = 1;
@@ -597,8 +597,8 @@ static irqreturn_t twl4030_charger_interrupt(int irq, void *arg)
 	/* reset current on each 'plug' event */
 	bci->ac_cur = 500000;
 	twl4030_charger_update_current(bci);
-	power_supply_changed(bci->ac);
-	power_supply_changed(bci->usb);
+power_supply_changed(bci->ac);
+power_supply_changed(bci->usb);
 
 	return IRQ_HANDLED;
 }
@@ -626,8 +626,8 @@ static irqreturn_t twl4030_bci_interrupt(int irq, void *arg)
 
 	if (irqs1 & (TWL4030_ICHGLOW | TWL4030_ICHGEOC)) {
 		/* charger state change, inform the core */
-		power_supply_changed(bci->ac);
-		power_supply_changed(bci->usb);
+power_supply_changed(bci->ac);
+power_supply_changed(bci->usb);
 	}
 	twl4030_charger_update_current(bci);
 
@@ -639,13 +639,13 @@ static irqreturn_t twl4030_bci_interrupt(int irq, void *arg)
 		dev_crit(bci->dev, "battery disconnected\n");
 
 	if (irqs2 & TWL4030_VBATOV)
-		dev_crit(bci->dev, "VBAT overvoltage\n");
+dev_crit(bci->dev, "VBAT overvoltage\n");
 
 	if (irqs2 & TWL4030_VBUSOV)
-		dev_crit(bci->dev, "VBUS overvoltage\n");
+dev_crit(bci->dev, "VBUS overvoltage\n");
 
 	if (irqs2 & TWL4030_ACCHGOV)
-		dev_crit(bci->dev, "Ac charger overvoltage\n");
+dev_crit(bci->dev, "Ac charger overvoltage\n");
 
 	return IRQ_HANDLED;
 }
@@ -782,17 +782,17 @@ static int twl4030_bci_state_to_status(int state)
 {
 	state &= TWL4030_MSTATEC_MASK;
 	if (TWL4030_MSTATEC_QUICK1 <= state && state <= TWL4030_MSTATEC_QUICK7)
-		return POWER_SUPPLY_STATUS_CHARGING;
+return POWER_SUPPLY_STATUS_CHARGING;
 	else if (TWL4030_MSTATEC_COMPLETE1 <= state &&
 					state <= TWL4030_MSTATEC_COMPLETE4)
-		return POWER_SUPPLY_STATUS_FULL;
+return POWER_SUPPLY_STATUS_FULL;
 	else
-		return POWER_SUPPLY_STATUS_NOT_CHARGING;
+return POWER_SUPPLY_STATUS_NOT_CHARGING;
 }
 
 static int twl4030_bci_get_property(struct power_supply *psy,
-				    enum power_supply_property psp,
-				    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct twl4030_bci *bci = dev_get_drvdata(psy->dev.parent);
 	int is_charging;
@@ -803,14 +803,14 @@ static int twl4030_bci_get_property(struct power_supply *psy,
 	if (state < 0)
 		return state;
 
-	if (psy->desc->type == POWER_SUPPLY_TYPE_USB)
+if (psy->desc->type == POWER_SUPPLY_TYPE_USB)
 		is_charging = state & TWL4030_MSTATEC_USB;
 	else
 		is_charging = state & TWL4030_MSTATEC_AC;
 	if (!is_charging) {
 		u8 s;
 		twl4030_bci_read(TWL4030_BCIMDEN, &s);
-		if (psy->desc->type == POWER_SUPPLY_TYPE_USB)
+if (psy->desc->type == POWER_SUPPLY_TYPE_USB)
 			is_charging = s & 1;
 		else
 			is_charging = s & 2;
@@ -820,17 +820,17 @@ static int twl4030_bci_get_property(struct power_supply *psy,
 	}
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (is_charging)
 			val->intval = twl4030_bci_state_to_status(state);
 		else
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		/* charging must be active for meaningful result */
 		if (!is_charging)
 			return -ENODATA;
-		if (psy->desc->type == POWER_SUPPLY_TYPE_USB) {
+if (psy->desc->type == POWER_SUPPLY_TYPE_USB) {
 			ret = twl4030bci_read_adc_val(TWL4030_BCIVBUS);
 			if (ret < 0)
 				return ret;
@@ -844,7 +844,7 @@ static int twl4030_bci_get_property(struct power_supply *psy,
 			val->intval = ret * 9775;
 		}
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		if (!is_charging)
 			return -ENODATA;
 		/* current measurement is shared between AC and USB */
@@ -853,14 +853,14 @@ static int twl4030_bci_get_property(struct power_supply *psy,
 			return ret;
 		val->intval = ret;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = is_charging &&
 			twl4030_bci_state_to_status(state) !=
-				POWER_SUPPLY_STATUS_NOT_CHARGING;
+POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		val->intval = -1;
-		if (psy->desc->type != POWER_SUPPLY_TYPE_USB) {
+if (psy->desc->type != POWER_SUPPLY_TYPE_USB) {
 			if (!bci->ac_is_active)
 				val->intval = bci->ac_cur;
 		} else {
@@ -888,14 +888,14 @@ static int twl4030_bci_get_property(struct power_supply *psy,
 }
 
 static int twl4030_bci_set_property(struct power_supply *psy,
-				    enum power_supply_property psp,
-				    const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
 	struct twl4030_bci *bci = dev_get_drvdata(psy->dev.parent);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
-		if (psy->desc->type == POWER_SUPPLY_TYPE_USB)
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+if (psy->desc->type == POWER_SUPPLY_TYPE_USB)
 			bci->usb_cur_target = val->intval;
 		else
 			bci->ac_cur = val->intval;
@@ -909,10 +909,10 @@ static int twl4030_bci_set_property(struct power_supply *psy,
 }
 
 static int twl4030_bci_property_is_writeable(struct power_supply *psy,
-				      enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		return true;
 	default:
 		return false;
@@ -920,11 +920,11 @@ static int twl4030_bci_property_is_writeable(struct power_supply *psy,
 }
 
 static enum power_supply_property twl4030_charger_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
 };
 
 #ifdef CONFIG_OF
@@ -957,7 +957,7 @@ twl4030_bci_parse_dt(struct device *dev)
 
 static const struct power_supply_desc twl4030_bci_ac_desc = {
 	.name		= "twl4030_ac",
-	.type		= POWER_SUPPLY_TYPE_MAINS,
+.type		= POWER_SUPPLY_TYPE_MAINS,
 	.properties	= twl4030_charger_props,
 	.num_properties	= ARRAY_SIZE(twl4030_charger_props),
 	.get_property	= twl4030_bci_get_property,
@@ -967,7 +967,7 @@ static const struct power_supply_desc twl4030_bci_ac_desc = {
 
 static const struct power_supply_desc twl4030_bci_usb_desc = {
 	.name		= "twl4030_usb",
-	.type		= POWER_SUPPLY_TYPE_USB,
+.type		= POWER_SUPPLY_TYPE_USB,
 	.properties	= twl4030_charger_props,
 	.num_properties	= ARRAY_SIZE(twl4030_charger_props),
 	.get_property	= twl4030_bci_get_property,
@@ -1040,7 +1040,7 @@ static int twl4030_bci_probe(struct platform_device *pdev)
 		}
 	}
 
-	bci->ac = devm_power_supply_register(&pdev->dev, &twl4030_bci_ac_desc,
+bci->ac = devm_power_supply_register(&pdev->dev, &twl4030_bci_ac_desc,
 					     NULL);
 	if (IS_ERR(bci->ac)) {
 		ret = PTR_ERR(bci->ac);
@@ -1048,7 +1048,7 @@ static int twl4030_bci_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-	bci->usb = devm_power_supply_register(&pdev->dev, &twl4030_bci_usb_desc,
+bci->usb = devm_power_supply_register(&pdev->dev, &twl4030_bci_usb_desc,
 					      NULL);
 	if (IS_ERR(bci->usb)) {
 		ret = PTR_ERR(bci->usb);

@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/boot/gamecube-head.S
+* arch/powerpc/boot/gamecube-head.S
  *
  * Nintendo GameCube bootwrapper entry.
  * Copyright (C) 2004-2009 The GameCube Linux Team

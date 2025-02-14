@@ -42,7 +42,7 @@ struct max8907_regulator {
 		.supply_name = "mbatt", \
 		.id = MAX8907_MBATT, \
 		.ops = &max8907_mbatt_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 	}
 
@@ -51,9 +51,9 @@ struct max8907_regulator {
 		.name = #ids, \
 		.supply_name = supply, \
 		.id = MAX8907_##ids, \
-		.n_voltages = ((max) - (min)) / (step) + 1, \
+.n_voltages = ((max) - (min)) / (step) + 1, \
 		.ops = &max8907_ldo_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		.min_uV = (min), \
 		.uV_step = (step), \
@@ -68,11 +68,11 @@ struct max8907_regulator {
 		.name = #ids, \
 		.supply_name = supply, \
 		.id = MAX8907_##ids, \
-		.n_voltages = 1, \
+.n_voltages = 1, \
 		.ops = &max8907_fixed_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
-		.min_uV = (voltage), \
+.min_uV = (voltage), \
 	}
 
 #define REG_OUT5V(ids, supply, base, voltage) \
@@ -80,11 +80,11 @@ struct max8907_regulator {
 		.name = #ids, \
 		.supply_name = supply, \
 		.id = MAX8907_##ids, \
-		.n_voltages = 1, \
+.n_voltages = 1, \
 		.ops = &max8907_out5v_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
-		.min_uV = (voltage), \
+.min_uV = (voltage), \
 		.enable_reg = (base), \
 		.enable_mask = MAX8907_MASK_OUT5V_EN, \
 	}
@@ -94,9 +94,9 @@ struct max8907_regulator {
 		.name = #ids, \
 		.supply_name = supply, \
 		.id = MAX8907_##ids, \
-		.n_voltages = ((max) - (min)) / (step) + 1, \
+.n_voltages = ((max) - (min)) / (step) + 1, \
 		.ops = &max8907_bbat_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		.min_uV = (min), \
 		.uV_step = (step), \
@@ -113,39 +113,39 @@ static const struct regulator_ops max8907_mbatt_ops = {
 };
 
 static struct regulator_ops max8907_ldo_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
 };
 
 static const struct regulator_ops max8907_ldo_hwctl_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 };
 
 static const struct regulator_ops max8907_fixed_ops = {
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 };
 
 static struct regulator_ops max8907_out5v_ops = {
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
 };
 
 static const struct regulator_ops max8907_out5v_hwctl_ops = {
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 };
 
 static const struct regulator_ops max8907_bbat_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 };
 
 static struct regulator_desc max8907_regulators[] = {
@@ -298,7 +298,7 @@ static int max8907_regulator_probe(struct platform_device *pdev)
 
 	memcpy(pmic->desc, max8907_regulators, sizeof(pmic->desc));
 
-	/* Backwards compatibility with MAX8907B; SD1 uses different voltages */
+/* Backwards compatibility with MAX8907B; SD1 uses different voltages */
 	ret = regmap_read(max8907->regmap_gen, MAX8907_REG_II2RR, &val);
 	if (ret)
 		return ret;
@@ -307,7 +307,7 @@ static int max8907_regulator_probe(struct platform_device *pdev)
 	    MAX8907_II2RR_VERSION_REV_B) {
 		pmic->desc[MAX8907_SD1].min_uV = 637500;
 		pmic->desc[MAX8907_SD1].uV_step = 12500;
-		pmic->desc[MAX8907_SD1].n_voltages =
+pmic->desc[MAX8907_SD1].n_voltages =
 						(1425000 - 637500) / 12500 + 1;
 	}
 

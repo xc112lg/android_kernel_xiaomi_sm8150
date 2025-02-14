@@ -32,7 +32,7 @@ const pem_event_action reset_display_phy_access_tasks[] = {
 };
 
 const pem_event_action broadcast_power_policy_tasks[] = {
-	/* PEM_Task_BroadcastPowerPolicyChange, */
+/* PEM_Task_BroadcastPowerPolicyChange, */
 	NULL
 };
 
@@ -43,7 +43,7 @@ const pem_event_action unregister_interrupt_tasks[] = {
 
 /* Disable GFX Voltage Islands Power Gating */
 const pem_event_action disable_gfx_voltage_island_powergating_tasks[] = {
-	pem_task_disable_voltage_island_power_gating,
+pem_task_disable_voltage_island_power_gating,
 	NULL
 };
 
@@ -53,13 +53,13 @@ const pem_event_action disable_gfx_clockgating_tasks[] = {
 };
 
 const pem_event_action block_adjust_power_state_tasks[] = {
-	pem_task_block_adjust_power_state,
+pem_task_block_adjust_power_state,
 	NULL
 };
 
 
 const pem_event_action unblock_adjust_power_state_tasks[] = {
-	pem_task_unblock_adjust_power_state,
+pem_task_unblock_adjust_power_state,
 	NULL
 };
 
@@ -92,9 +92,9 @@ const pem_event_action enable_dynamic_state_management_tasks[] = {
 };
 
 const pem_event_action enable_clock_power_gatings_tasks[] = {
-	pem_task_enable_clock_power_gatings_tasks,
-	pem_task_powerdown_uvd_tasks,
-	pem_task_powerdown_vce_tasks,
+pem_task_enable_clock_power_gatings_tasks,
+pem_task_powerdown_uvd_tasks,
+pem_task_powerdown_vce_tasks,
 	NULL
 };
 
@@ -105,9 +105,9 @@ const pem_event_action setup_asic_tasks[] = {
 
 const pem_event_action power_budget_tasks[] = {
 	/* TODO
-	 * PEM_Task_PowerBudgetWaiverAvailable,
-	 * PEM_Task_PowerBudgetWarningMessage,
-	 * PEM_Task_PruneStatesBasedOnPowerBudget,
+* PEM_Task_PowerBudgetWaiverAvailable,
+* PEM_Task_PowerBudgetWarningMessage,
+* PEM_Task_PruneStatesBasedOnPowerBudget,
 	*/
 	NULL
 };
@@ -134,7 +134,7 @@ const pem_event_action uninitialize_display_phy_access_tasks[] = {
 };
 
 const pem_event_action disable_gfx_voltage_island_power_gating_tasks[] = {
-	/* PEM_Task_DisableVoltageIslandPowerGating, */
+/* PEM_Task_DisableVoltageIslandPowerGating, */
 	NULL
 };
 
@@ -151,8 +151,8 @@ const pem_event_action set_boot_state_tasks[] = {
 
 const pem_event_action adjust_power_state_tasks[] = {
 	pem_task_notify_hw_mgr_display_configuration_change,
-	pem_task_adjust_power_state,
-	pem_task_notify_smc_display_config_after_power_state_adjustment,
+pem_task_adjust_power_state,
+pem_task_notify_smc_display_config_after_power_state_adjustment,
 	pem_task_update_allowed_performance_levels,
 	/* to do pem_task_Enable_disable_bapm, */
 	NULL
@@ -166,7 +166,7 @@ const pem_event_action disable_dynamic_state_management_tasks[] = {
 };
 
 const pem_event_action disable_clock_power_gatings_tasks[] = {
-	pem_task_disable_clock_power_gatings_tasks,
+pem_task_disable_clock_power_gatings_tasks,
 	NULL
 };
 
@@ -182,15 +182,15 @@ const pem_event_action prepare_for_pnp_stop_tasks[] = {
 };
 
 const pem_event_action set_power_source_tasks[] = {
-	pem_task_set_power_source,
-	pem_task_notify_hw_of_power_source,
+pem_task_set_power_source,
+pem_task_notify_hw_of_power_source,
 	NULL
 };
 
 const pem_event_action set_power_saving_state_tasks[] = {
-	pem_task_reset_power_saving_state,
-	pem_task_get_power_saving_state,
-	pem_task_set_power_saving_state,
+pem_task_reset_power_saving_state,
+pem_task_get_power_saving_state,
+pem_task_set_power_saving_state,
 	/* PEM_Task_ResetODDCState,
 	 * PEM_Task_GetODDCState,
 	 * PEM_Task_SetODDCState,*/
@@ -240,7 +240,7 @@ const pem_event_action reset_fan_speed_to_default_tasks[] = {
 
 const pem_event_action power_down_asic_tasks[] = {
 	/* PEM_Task_DisableFPS,*/
-	pem_task_power_down_asic,
+pem_task_power_down_asic,
 	NULL
 };
 
@@ -290,7 +290,7 @@ const pem_event_action vari_bright_resume_tasks[] = {
 };
 
 const pem_event_action notify_hw_power_source_tasks[] = {
-	pem_task_notify_hw_of_power_source,
+pem_task_notify_hw_of_power_source,
 	NULL
 };
 
@@ -305,7 +305,7 @@ const pem_event_action enable_gfx_clock_gating_tasks[] = {
 };
 
 const pem_event_action enable_gfx_voltage_island_power_gating_tasks[] = {
-	pem_task_enable_voltage_island_power_gating,
+pem_task_enable_voltage_island_power_gating,
 	NULL
 };
 
@@ -330,7 +330,7 @@ const pem_event_action execute_escape_sequence_tasks[] = {
 };
 
 const pem_event_action notify_power_state_change_tasks[] = {
-	pem_task_notify_power_state_change,
+pem_task_notify_power_state_change,
 	NULL
 };
 
@@ -352,18 +352,18 @@ const pem_event_action enable_user_2d_performance_tasks[] = {
 
 const pem_event_action add_user_2d_performance_state_tasks[] = {
 	/* PEM_Task_Get2DPerformanceTemplate,*/
-	/* PEM_Task_AllocateNewPowerStateMemory,*/
-	/* PEM_Task_CopyNewPowerStateInfo,*/
-	/* PEM_Task_UpdateNewPowerStateClocks,*/
-	/* PEM_Task_UpdateNewPowerStateUser2DPerformanceFlag,*/
-	/* PEM_Task_AddPowerState,*/
-	/* PEM_Task_ReleaseNewPowerStateMemory,*/
+/* PEM_Task_AllocateNewPowerStateMemory,*/
+/* PEM_Task_CopyNewPowerStateInfo,*/
+/* PEM_Task_UpdateNewPowerStateClocks,*/
+/* PEM_Task_UpdateNewPowerStateUser2DPerformanceFlag,*/
+/* PEM_Task_AddPowerState,*/
+/* PEM_Task_ReleaseNewPowerStateMemory,*/
 	NULL
 };
 
 const pem_event_action delete_user_2d_performance_state_tasks[] = {
 	/* PEM_Task_GetCurrentUser2DPerformanceStateID,*/
-	/* PEM_Task_DeletePowerState,*/
+/* PEM_Task_DeletePowerState,*/
 	/* PEM_Task_SetCurrentUser2DPerformanceStateID,*/
 	NULL
 };
@@ -405,6 +405,6 @@ const pem_event_action uninitialize_thermal_controller_tasks[] = {
 };
 
 const pem_event_action set_cpu_power_state[] = {
-	pem_task_set_cpu_power_state,
+pem_task_set_cpu_power_state,
 	NULL
 };

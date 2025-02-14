@@ -72,9 +72,9 @@
 		.supply_name    = (_supply),                            \
 		.of_match       = of_match_ptr(_match),                 \
 		.regulators_node = of_match_ptr("regulators"),          \
-		.type           = REGULATOR_VOLTAGE,                    \
+.type           = REGULATOR_VOLTAGE,                    \
 		.id             = (_id),                                \
-		.n_voltages     = (((_max) - (_min)) / (_step) + 1),    \
+.n_voltages     = (((_max) - (_min)) / (_step) + 1),    \
 		.owner          = THIS_MODULE,                          \
 		.min_uV         = (_min) * 1000,                        \
 		.uV_step        = (_step) * 1000,                       \
@@ -93,9 +93,9 @@
 		.supply_name	= (_supply),				\
 		.of_match	= of_match_ptr(_match),			\
 		.regulators_node = of_match_ptr("regulators"),		\
-		.type		= REGULATOR_VOLTAGE,			\
+.type		= REGULATOR_VOLTAGE,			\
 		.id		= (_id),				\
-		.n_voltages	= (((_max) - (_min)) / (_step) + 1),	\
+.n_voltages	= (((_max) - (_min)) / (_step) + 1),	\
 		.owner		= THIS_MODULE,				\
 		.min_uV		= (_min) * 1000,			\
 		.uV_step	= (_step) * 1000,			\
@@ -113,7 +113,7 @@
 		.supply_name	= (_supply),				\
 		.of_match	= of_match_ptr(_match),			\
 		.regulators_node = of_match_ptr("regulators"),		\
-		.type		= REGULATOR_VOLTAGE,			\
+.type		= REGULATOR_VOLTAGE,			\
 		.id		= (_id),				\
 		.enable_reg	= (_ereg),				\
 		.enable_mask	= (_emask),				\
@@ -147,7 +147,7 @@ static int rk808_buck1_2_get_voltage_sel_regmap(struct regulator_dev *rdev)
 	int ret;
 
 	if (!gpio || gpiod_get_value(gpio) == 0)
-		return regulator_get_voltage_sel_regmap(rdev);
+return regulator_get_voltage_sel_regmap(rdev);
 
 	ret = regmap_read(rdev->regmap,
 			  rdev->desc->vsel_reg + RK808_DVS_REG_OFFSET,
@@ -177,7 +177,7 @@ static int rk808_buck1_2_i2c_set_voltage_sel(struct regulator_dev *rdev,
 	delta_sel = sel - old_sel;
 
 	/*
-	 * If directly modify the register to change the voltage, we will face
+* If directly modify the register to change the voltage, we will face
 	 * the risk of overshoot. Put it into a multi-step, can effectively
 	 * avoid this problem, a step is 100mv here.
 	 */
@@ -189,7 +189,7 @@ static int rk808_buck1_2_i2c_set_voltage_sel(struct regulator_dev *rdev,
 		/*
 		 * i2c is 400kHz (2.5us per bit) and we must transmit _at least_
 		 * 3 bytes (24 bits) plus start and stop so 26 bits.  So we've
-		 * got more than 65 us between each voltage change and thus
+* got more than 65 us between each voltage change and thus
 		 * won't ramp faster than ~1500 uV / us.
 		 */
 		ret = regmap_write(rdev->regmap, rdev->desc->vsel_reg, val);
@@ -201,8 +201,8 @@ static int rk808_buck1_2_i2c_set_voltage_sel(struct regulator_dev *rdev,
 	ret = regmap_write(rdev->regmap, rdev->desc->vsel_reg, val);
 
 	/*
-	 * When we change the voltage register directly, the ramp rate is about
-	 * 100000uv/us, wait 1us to make sure the target voltage to be stable,
+* When we change the voltage register directly, the ramp rate is about
+* 100000uv/us, wait 1us to make sure the target voltage to be stable,
 	 * so we needn't wait extra time after that.
 	 */
 	udelay(1);
@@ -221,7 +221,7 @@ static int rk808_buck1_2_set_voltage_sel(struct regulator_dev *rdev,
 	int ret, gpio_level;
 
 	if (!gpio)
-		return rk808_buck1_2_i2c_set_voltage_sel(rdev, sel);
+return rk808_buck1_2_i2c_set_voltage_sel(rdev, sel);
 
 	gpio_level = gpiod_get_value(gpio);
 	if (gpio_level == 0) {
@@ -260,7 +260,7 @@ static int rk808_buck1_2_set_voltage_time_sel(struct regulator_dev *rdev,
 	if (!gpio)
 		return 0;
 
-	return regulator_set_voltage_time_sel(rdev, old_selector, new_selector);
+return regulator_set_voltage_time_sel(rdev, old_selector, new_selector);
 }
 
 static int rk808_set_ramp_delay(struct regulator_dev *rdev, int ramp_delay)
@@ -292,7 +292,7 @@ static int rk808_set_ramp_delay(struct regulator_dev *rdev, int ramp_delay)
 static int rk808_set_suspend_voltage(struct regulator_dev *rdev, int uv)
 {
 	unsigned int reg;
-	int sel = regulator_map_voltage_linear(rdev, uv, uv);
+int sel = regulator_map_voltage_linear(rdev, uv, uv);
 
 	if (sel < 0)
 		return -EINVAL;
@@ -307,7 +307,7 @@ static int rk808_set_suspend_voltage(struct regulator_dev *rdev, int uv)
 static int rk808_set_suspend_voltage_range(struct regulator_dev *rdev, int uv)
 {
 	unsigned int reg;
-	int sel = regulator_map_voltage_linear_range(rdev, uv, uv);
+int sel = regulator_map_voltage_linear_range(rdev, uv, uv);
 
 	if (sel < 0)
 		return -EINVAL;
@@ -364,14 +364,14 @@ static int rk808_set_suspend_disable(struct regulator_dev *rdev)
 }
 
 static struct regulator_ops rk805_reg_ops = {
-		.list_voltage           = regulator_list_voltage_linear,
-		.map_voltage            = regulator_map_voltage_linear,
-		.get_voltage_sel        = regulator_get_voltage_sel_regmap,
-		.set_voltage_sel        = regulator_set_voltage_sel_regmap,
+.list_voltage           = regulator_list_voltage_linear,
+.map_voltage            = regulator_map_voltage_linear,
+.get_voltage_sel        = regulator_get_voltage_sel_regmap,
+.set_voltage_sel        = regulator_set_voltage_sel_regmap,
 		.enable                 = regulator_enable_regmap,
 		.disable                = regulator_disable_regmap,
 		.is_enabled             = regulator_is_enabled_regmap,
-		.set_suspend_voltage    = rk808_set_suspend_voltage,
+.set_suspend_voltage    = rk808_set_suspend_voltage,
 		.set_suspend_enable     = rk805_set_suspend_enable,
 		.set_suspend_disable    = rk805_set_suspend_disable,
 };
@@ -385,42 +385,42 @@ static struct regulator_ops rk805_switch_ops = {
 };
 
 static struct regulator_ops rk808_buck1_2_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.get_voltage_sel	= rk808_buck1_2_get_voltage_sel_regmap,
-	.set_voltage_sel	= rk808_buck1_2_set_voltage_sel,
-	.set_voltage_time_sel	= rk808_buck1_2_set_voltage_time_sel,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= rk808_buck1_2_get_voltage_sel_regmap,
+.set_voltage_sel	= rk808_buck1_2_set_voltage_sel,
+.set_voltage_time_sel	= rk808_buck1_2_set_voltage_time_sel,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.set_ramp_delay		= rk808_set_ramp_delay,
-	.set_suspend_voltage	= rk808_set_suspend_voltage,
+.set_suspend_voltage	= rk808_set_suspend_voltage,
 	.set_suspend_enable	= rk808_set_suspend_enable,
 	.set_suspend_disable	= rk808_set_suspend_disable,
 };
 
 static struct regulator_ops rk808_reg_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
-	.set_suspend_voltage	= rk808_set_suspend_voltage,
+.set_suspend_voltage	= rk808_set_suspend_voltage,
 	.set_suspend_enable	= rk808_set_suspend_enable,
 	.set_suspend_disable	= rk808_set_suspend_disable,
 };
 
 static struct regulator_ops rk808_reg_ops_ranges = {
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
-	.set_suspend_voltage	= rk808_set_suspend_voltage_range,
+.set_suspend_voltage	= rk808_set_suspend_voltage_range,
 	.set_suspend_enable	= rk808_set_suspend_enable,
 	.set_suspend_disable	= rk808_set_suspend_disable,
 };
@@ -441,10 +441,10 @@ static const struct regulator_desc rk805_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK805_ID_DCDC1,
 		.ops = &rk805_reg_ops,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.min_uV = 712500,
 		.uV_step = 12500,
-		.n_voltages = 64,
+.n_voltages = 64,
 		.vsel_reg = RK805_BUCK1_ON_VSEL_REG,
 		.vsel_mask = RK818_BUCK_VSEL_MASK,
 		.enable_reg = RK805_DCDC_EN_REG,
@@ -457,10 +457,10 @@ static const struct regulator_desc rk805_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK805_ID_DCDC2,
 		.ops = &rk805_reg_ops,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.min_uV = 712500,
 		.uV_step = 12500,
-		.n_voltages = 64,
+.n_voltages = 64,
 		.vsel_reg = RK805_BUCK2_ON_VSEL_REG,
 		.vsel_mask = RK818_BUCK_VSEL_MASK,
 		.enable_reg = RK805_DCDC_EN_REG,
@@ -473,8 +473,8 @@ static const struct regulator_desc rk805_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK805_ID_DCDC3,
 		.ops = &rk805_switch_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
 		.enable_reg = RK805_DCDC_EN_REG,
 		.enable_mask = BIT(2),
 		.owner = THIS_MODULE,
@@ -503,10 +503,10 @@ static const struct regulator_desc rk808_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK808_ID_DCDC1,
 		.ops = &rk808_buck1_2_ops,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.min_uV = 712500,
 		.uV_step = 12500,
-		.n_voltages = 64,
+.n_voltages = 64,
 		.vsel_reg = RK808_BUCK1_ON_VSEL_REG,
 		.vsel_mask = RK808_BUCK_VSEL_MASK,
 		.enable_reg = RK808_DCDC_EN_REG,
@@ -519,10 +519,10 @@ static const struct regulator_desc rk808_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK808_ID_DCDC2,
 		.ops = &rk808_buck1_2_ops,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.min_uV = 712500,
 		.uV_step = 12500,
-		.n_voltages = 64,
+.n_voltages = 64,
 		.vsel_reg = RK808_BUCK2_ON_VSEL_REG,
 		.vsel_mask = RK808_BUCK_VSEL_MASK,
 		.enable_reg = RK808_DCDC_EN_REG,
@@ -535,8 +535,8 @@ static const struct regulator_desc rk808_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK808_ID_DCDC3,
 		.ops = &rk808_switch_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
 		.enable_reg = RK808_DCDC_EN_REG,
 		.enable_mask = BIT(2),
 		.owner = THIS_MODULE,
@@ -557,10 +557,10 @@ static const struct regulator_desc rk808_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK808_ID_LDO3,
 		.ops = &rk808_reg_ops_ranges,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 16,
-		.linear_ranges = rk808_ldo3_voltage_ranges,
-		.n_linear_ranges = ARRAY_SIZE(rk808_ldo3_voltage_ranges),
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 16,
+.linear_ranges = rk808_ldo3_voltage_ranges,
+.n_linear_ranges = ARRAY_SIZE(rk808_ldo3_voltage_ranges),
 		.vsel_reg = RK808_LDO3_ON_VSEL_REG,
 		.vsel_mask = RK808_BUCK4_VSEL_MASK,
 		.enable_reg = RK808_LDO_EN_REG,
@@ -597,10 +597,10 @@ static const struct regulator_desc rk818_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK818_ID_DCDC1,
 		.ops = &rk808_reg_ops,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.min_uV = 712500,
 		.uV_step = 12500,
-		.n_voltages = 64,
+.n_voltages = 64,
 		.vsel_reg = RK818_BUCK1_ON_VSEL_REG,
 		.vsel_mask = RK818_BUCK_VSEL_MASK,
 		.enable_reg = RK818_DCDC_EN_REG,
@@ -613,10 +613,10 @@ static const struct regulator_desc rk818_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK818_ID_DCDC2,
 		.ops = &rk808_reg_ops,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.min_uV = 712500,
 		.uV_step = 12500,
-		.n_voltages = 64,
+.n_voltages = 64,
 		.vsel_reg = RK818_BUCK2_ON_VSEL_REG,
 		.vsel_mask = RK818_BUCK_VSEL_MASK,
 		.enable_reg = RK818_DCDC_EN_REG,
@@ -629,8 +629,8 @@ static const struct regulator_desc rk818_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK818_ID_DCDC3,
 		.ops = &rk808_switch_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
 		.enable_reg = RK818_DCDC_EN_REG,
 		.enable_mask = BIT(2),
 		.owner = THIS_MODULE,
@@ -654,10 +654,10 @@ static const struct regulator_desc rk818_reg[] = {
 		.regulators_node = of_match_ptr("regulators"),
 		.id = RK818_ID_LDO3,
 		.ops = &rk808_reg_ops_ranges,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = 16,
-		.linear_ranges = rk808_ldo3_voltage_ranges,
-		.n_linear_ranges = ARRAY_SIZE(rk808_ldo3_voltage_ranges),
+.type = REGULATOR_VOLTAGE,
+.n_voltages = 16,
+.linear_ranges = rk808_ldo3_voltage_ranges,
+.n_linear_ranges = ARRAY_SIZE(rk808_ldo3_voltage_ranges),
 		.vsel_reg = RK818_LDO3_ON_VSEL_REG,
 		.vsel_mask = RK818_LDO3_ON_VSEL_MASK,
 		.enable_reg = RK818_LDO_EN_REG,

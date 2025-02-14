@@ -169,7 +169,7 @@ static u32 const vc_tbl[3][68][2] = {
 
 struct da9052_battery {
 	struct da9052 *da9052;
-	struct power_supply *psy;
+struct power_supply *psy;
 	struct notifier_block nb;
 	int charger_type;
 	int status;
@@ -191,7 +191,7 @@ static int da9052_read_chgend_current(struct da9052_battery *bat,
 {
 	int ret;
 
-	if (bat->status == POWER_SUPPLY_STATUS_DISCHARGING)
+if (bat->status == POWER_SUPPLY_STATUS_DISCHARGING)
 		return -EINVAL;
 
 	ret = da9052_reg_read(bat->da9052, DA9052_ICHG_END_REG);
@@ -207,7 +207,7 @@ static int da9052_read_chg_current(struct da9052_battery *bat, int *current_mA)
 {
 	int ret;
 
-	if (bat->status == POWER_SUPPLY_STATUS_DISCHARGING)
+if (bat->status == POWER_SUPPLY_STATUS_DISCHARGING)
 		return -EINVAL;
 
 	ret = da9052_reg_read(bat->da9052, DA9052_ICHG_AV_REG);
@@ -264,21 +264,21 @@ static int da9052_bat_check_status(struct da9052_battery *bat, int *status)
 				return ret;
 
 			if (chg_current >= chg_end_current)
-				bat->status = POWER_SUPPLY_STATUS_CHARGING;
+bat->status = POWER_SUPPLY_STATUS_CHARGING;
 			else
-				bat->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+bat->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		} else {
 			/* If Charging end flag is cleared then battery is
 			 * charging
 			*/
-			bat->status = POWER_SUPPLY_STATUS_CHARGING;
+bat->status = POWER_SUPPLY_STATUS_CHARGING;
 		}
 	} else if (dcindet || vbusdet) {
 			bat->charger_type = DA9052_CHARGER;
-			bat->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+bat->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	} else {
 		bat->charger_type = DA9052_NOCHARGER;
-		bat->status = POWER_SUPPLY_STATUS_DISCHARGING;
+bat->status = POWER_SUPPLY_STATUS_DISCHARGING;
 	}
 
 	if (status != NULL)
@@ -317,12 +317,12 @@ static int da9052_bat_check_presence(struct da9052_battery *bat, int *illegal)
 
 static int da9052_bat_interpolate(int vbat_lower, int  vbat_upper,
 				   int level_lower, int level_upper,
-				   int bat_voltage)
+int bat_voltage)
 {
 	int tmp;
 
 	tmp = ((level_upper - level_lower) * 1000) / (vbat_upper - vbat_lower);
-	tmp = level_lower + (((bat_voltage - vbat_lower) * tmp) / 1000);
+tmp = level_lower + (((bat_voltage - vbat_lower) * tmp) / 1000);
 
 	return tmp;
 }
@@ -357,7 +357,7 @@ static unsigned char da9052_determine_vc_tbl_index(unsigned char adc_temp)
 static int da9052_bat_read_capacity(struct da9052_battery *bat, int *capacity)
 {
 	int adc_temp;
-	int bat_voltage;
+int bat_voltage;
 	int vbat_lower;
 	int vbat_upper;
 	int level_upper;
@@ -367,7 +367,7 @@ static int da9052_bat_read_capacity(struct da9052_battery *bat, int *capacity)
 	int i = 0;
 	int j;
 
-	ret = da9052_bat_read_volt(bat, &bat_voltage);
+ret = da9052_bat_read_volt(bat, &bat_voltage);
 	if (ret < 0)
 		return ret;
 
@@ -377,19 +377,19 @@ static int da9052_bat_read_capacity(struct da9052_battery *bat, int *capacity)
 
 	i = da9052_determine_vc_tbl_index(adc_temp);
 
-	if (bat_voltage >= vc_tbl[i][0][0]) {
+if (bat_voltage >= vc_tbl[i][0][0]) {
 		*capacity = 100;
 		return 0;
 	}
-	if (bat_voltage <= vc_tbl[i][DA9052_VC_TBL_SZ - 1][0]) {
+if (bat_voltage <= vc_tbl[i][DA9052_VC_TBL_SZ - 1][0]) {
 		*capacity = 0;
 		return 0;
 	}
 	flag = 0;
 
 	for (j = 0; j < (DA9052_VC_TBL_SZ-1); j++) {
-		if ((bat_voltage <= vc_tbl[i][j][0]) &&
-		    (bat_voltage >= vc_tbl[i][j + 1][0])) {
+if ((bat_voltage <= vc_tbl[i][j][0]) &&
+(bat_voltage >= vc_tbl[i][j + 1][0])) {
 			vbat_upper = vc_tbl[i][j][0];
 			vbat_lower = vc_tbl[i][j + 1][0];
 			level_upper = vc_tbl[i][j][1];
@@ -402,7 +402,7 @@ static int da9052_bat_read_capacity(struct da9052_battery *bat, int *capacity)
 		return -EIO;
 
 	*capacity = da9052_bat_interpolate(vbat_lower, vbat_upper, level_lower,
-					   level_upper, bat_voltage);
+level_upper, bat_voltage);
 
 	return 0;
 }
@@ -418,18 +418,18 @@ static int da9052_bat_check_health(struct da9052_battery *bat, int *health)
 		return ret;
 
 	if (bat_illegal) {
-		bat->health = POWER_SUPPLY_HEALTH_UNKNOWN;
+bat->health = POWER_SUPPLY_HEALTH_UNKNOWN;
 		return 0;
 	}
 
-	if (bat->health != POWER_SUPPLY_HEALTH_OVERHEAT) {
+if (bat->health != POWER_SUPPLY_HEALTH_OVERHEAT) {
 		ret = da9052_bat_read_capacity(bat, &capacity);
 		if (ret < 0)
 			return ret;
 		if (capacity < DA9052_BAT_LOW_CAP)
-			bat->health = POWER_SUPPLY_HEALTH_DEAD;
+bat->health = POWER_SUPPLY_HEALTH_DEAD;
 		else
-			bat->health = POWER_SUPPLY_HEALTH_GOOD;
+bat->health = POWER_SUPPLY_HEALTH_GOOD;
 	}
 
 	*health = bat->health;
@@ -446,13 +446,13 @@ static irqreturn_t da9052_bat_irq(int irq, void *data)
 	irq -= virq;
 
 	if (irq == DA9052_IRQ_CHGEND)
-		bat->status = POWER_SUPPLY_STATUS_FULL;
+bat->status = POWER_SUPPLY_STATUS_FULL;
 	else
 		da9052_bat_check_status(bat, NULL);
 
 	if (irq == DA9052_IRQ_CHGEND || irq == DA9052_IRQ_DCIN ||
 	    irq == DA9052_IRQ_VBUS || irq == DA9052_IRQ_TBAT) {
-		power_supply_changed(bat->psy);
+power_supply_changed(bat->psy);
 	}
 
 	return IRQ_HANDLED;
@@ -468,7 +468,7 @@ static int da9052_USB_current_notifier(struct notifier_block *nb,
 	struct da9052_battery *bat = container_of(nb, struct da9052_battery,
 						  nb);
 
-	if (bat->status == POWER_SUPPLY_STATUS_DISCHARGING)
+if (bat->status == POWER_SUPPLY_STATUS_DISCHARGING)
 		return -EPERM;
 
 	ret = da9052_reg_read(bat->da9052, DA9052_CHGBUCK_REG);
@@ -494,52 +494,52 @@ static int da9052_USB_current_notifier(struct notifier_block *nb,
 }
 
 static int da9052_bat_get_property(struct power_supply *psy,
-				    enum power_supply_property psp,
-				    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	int ret;
 	int illegal;
-	struct da9052_battery *bat = power_supply_get_drvdata(psy);
+struct da9052_battery *bat = power_supply_get_drvdata(psy);
 
 	ret = da9052_bat_check_presence(bat, &illegal);
 	if (ret < 0)
 		return ret;
 
-	if (illegal && psp != POWER_SUPPLY_PROP_PRESENT)
+if (illegal && psp != POWER_SUPPLY_PROP_PRESENT)
 		return -ENODEV;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = da9052_bat_check_status(bat, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval =
 			(bat->charger_type == DA9052_NOCHARGER) ? 0 : 1;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		ret = da9052_bat_check_presence(bat, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		ret = da9052_bat_check_health(bat, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
 		val->intval = DA9052_BAT_CUTOFF_VOLT * 1000;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
 		ret = da9052_bat_read_volt(bat, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		ret = da9052_read_chg_current(bat, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = da9052_bat_read_capacity(bat, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		val->intval = da9052_adc_read_temp(bat->da9052);
 		ret = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+case POWER_SUPPLY_PROP_TECHNOLOGY:
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 		break;
 	default:
 		return -EINVAL;
@@ -548,21 +548,21 @@ static int da9052_bat_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property da9052_bat_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_TECHNOLOGY,
 };
 
 static struct power_supply_desc psy_desc = {
 	.name		= "da9052-bat",
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.properties	= da9052_bat_props,
 	.num_properties	= ARRAY_SIZE(da9052_bat_props),
 	.get_property	= da9052_bat_get_property,
@@ -590,7 +590,7 @@ static s32 da9052_bat_probe(struct platform_device *pdev)
 {
 	struct da9052_pdata *pdata;
 	struct da9052_battery *bat;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	int ret;
 	int i;
 
@@ -603,8 +603,8 @@ static s32 da9052_bat_probe(struct platform_device *pdev)
 
 	bat->da9052 = dev_get_drvdata(pdev->dev.parent);
 	bat->charger_type = DA9052_NOCHARGER;
-	bat->status = POWER_SUPPLY_STATUS_UNKNOWN;
-	bat->health = POWER_SUPPLY_HEALTH_UNKNOWN;
+bat->status = POWER_SUPPLY_STATUS_UNKNOWN;
+bat->health = POWER_SUPPLY_HEALTH_UNKNOWN;
 	bat->nb.notifier_call = da9052_USB_current_notifier;
 
 	pdata = bat->da9052->dev->platform_data;
@@ -626,7 +626,7 @@ static s32 da9052_bat_probe(struct platform_device *pdev)
 		}
 	}
 
-	bat->psy = power_supply_register(&pdev->dev, &psy_desc, &psy_cfg);
+bat->psy = power_supply_register(&pdev->dev, &psy_desc, &psy_cfg);
 	if (IS_ERR(bat->psy)) {
 		ret = PTR_ERR(bat->psy);
 		goto err;
@@ -649,7 +649,7 @@ static int da9052_bat_remove(struct platform_device *pdev)
 	for (i = 0; i < ARRAY_SIZE(da9052_bat_irqs); i++)
 		da9052_free_irq(bat->da9052, da9052_bat_irq_bits[i], bat);
 
-	power_supply_unregister(bat->psy);
+power_supply_unregister(bat->psy);
 
 	return 0;
 }

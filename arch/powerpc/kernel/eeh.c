@@ -59,7 +59,7 @@
  *  were "empty": all reads return 0xff's and all writes are silently
  *  ignored.  EEH slot isolation events can be triggered by parity
  *  errors on the address or data busses (e.g. during posted writes),
- *  which in turn might be caused by low voltage on the bus, dust,
+*  which in turn might be caused by low voltage on the bus, dust,
  *  vibration, humidity, radioactivity or plain-old failed hardware.
  *
  *  Note, however, that one of the leading causes of EEH slot
@@ -95,7 +95,7 @@
  * EEH probe mode support, which is part of the flags,
  * is to support multiple platforms for EEH. Some platforms
  * like pSeries do PCI emunation based on device tree.
- * However, other platforms like powernv probe PCI devices
+* However, other platforms like powernv probe PCI devices
  * from hardware. The flag is used to distinguish that.
  * In addition, struct eeh_ops::probe would be invoked for
  * particular OF node or PCI device so that the corresponding
@@ -374,7 +374,7 @@ static inline unsigned long eeh_token_to_phys(unsigned long token)
 }
 
 /*
- * On PowerNV platform, we might already have fenced PHB there.
+* On PowerNV platform, we might already have fenced PHB there.
  * For that case, it's meaningless to recover frozen PE. Intead,
  * We have to handle fenced PHB firstly.
  */
@@ -478,7 +478,7 @@ int eeh_dev_check_failure(struct eeh_dev *edev)
 	}
 
 	/*
-	 * On PowerNV platform, we might already have fenced PHB
+* On PowerNV platform, we might already have fenced PHB
 	 * there and we need take care of that firstly.
 	 */
 	ret = eeh_phb_check_failure(pe);
@@ -715,8 +715,8 @@ static void *eeh_disable_and_save_dev_state(void *data, void *userdata)
 	if (!pdev || pdev == dev)
 		return NULL;
 
-	/* Ensure we have D0 power state */
-	pci_set_power_state(pdev, PCI_D0);
+/* Ensure we have D0 power state */
+pci_set_power_state(pdev, PCI_D0);
 
 	/* Save device state */
 	pci_save_state(pdev);
@@ -990,7 +990,7 @@ static struct notifier_block eeh_reboot_nb = {
  * As a side effect we can determine here if eeh is supported at all.
  * Note that we leave EEH on so failed config cycles won't cause a machine
  * check.  If a user turns off EEH for a particular adapter they are really
- * telling Linux to ignore errors.  Some hardware (e.g. POWER5) won't
+* telling Linux to ignore errors.  Some hardware (e.g. POWER5) won't
  * grant access to a slot if EEH isn't enabled, and so we always enable
  * EEH for all slots/all devices.
  *
@@ -1006,12 +1006,12 @@ int eeh_init(void)
 	int ret = 0;
 
 	/*
-	 * We have to delay the initialization on PowerNV after
+* We have to delay the initialization on PowerNV after
 	 * the PCI hierarchy tree has been built because the PEs
 	 * are figured out based on PCI devices instead of device
 	 * tree nodes
 	 */
-	if (machine_is(powernv) && cnt++ <= 0)
+if (machine_is(powernv) && cnt++ <= 0)
 		return ret;
 
 	/* Register reboot notifier */
@@ -1804,14 +1804,14 @@ DEFINE_SIMPLE_ATTRIBUTE(eeh_freeze_dbgfs_ops, eeh_freeze_dbgfs_get,
 
 static int __init eeh_init_proc(void)
 {
-	if (machine_is(pseries) || machine_is(powernv)) {
-		proc_create("powerpc/eeh", 0, NULL, &proc_eeh_operations);
+if (machine_is(pseries) || machine_is(powernv)) {
+proc_create("powerpc/eeh", 0, NULL, &proc_eeh_operations);
 #ifdef CONFIG_DEBUG_FS
 		debugfs_create_file("eeh_enable", 0600,
-                                    powerpc_debugfs_root, NULL,
+powerpc_debugfs_root, NULL,
                                     &eeh_enable_dbgfs_ops);
 		debugfs_create_file("eeh_max_freezes", 0600,
-				    powerpc_debugfs_root, NULL,
+powerpc_debugfs_root, NULL,
 				    &eeh_freeze_dbgfs_ops);
 #endif
 	}

@@ -96,7 +96,7 @@
 /* Tokens for indicators */
 #define TONE_FREQUENCY		0x0001 /* 0 - 1000 (HZ)*/
 #define TONE_VOLUME		0x0002 /* 0 - 100 (%) */
-#define SYSTEM_POWER_STATE	0x0003 
+#define SYSTEM_POWER_STATE	0x0003
 #define WARNING_LIGHT		0x0004
 #define DISK_ACTIVITY_LIGHT	0x0005
 #define HEX_DISPLAY_UNIT	0x0006
@@ -168,14 +168,14 @@ static const struct file_operations ppc_rtas_sensors_operations = {
 
 static int poweron_open(struct inode *inode, struct file *file)
 {
-	return single_open(file, ppc_rtas_poweron_show, NULL);
+return single_open(file, ppc_rtas_poweron_show, NULL);
 }
 
 static const struct file_operations ppc_rtas_poweron_operations = {
-	.open		= poweron_open,
+.open		= poweron_open,
 	.read		= seq_read,
 	.llseek		= seq_lseek,
-	.write		= ppc_rtas_poweron_write,
+.write		= ppc_rtas_poweron_write,
 	.release	= single_release,
 };
 
@@ -207,14 +207,14 @@ static const struct file_operations ppc_rtas_clock_operations = {
 
 static int tone_freq_open(struct inode *inode, struct file *file)
 {
-	return single_open(file, ppc_rtas_tone_freq_show, NULL);
+return single_open(file, ppc_rtas_tone_freq_show, NULL);
 }
 
 static const struct file_operations ppc_rtas_tone_freq_operations = {
-	.open		= tone_freq_open,
+.open		= tone_freq_open,
 	.read		= seq_read,
 	.llseek		= seq_lseek,
-	.write		= ppc_rtas_tone_freq_write,
+.write		= ppc_rtas_tone_freq_write,
 	.release	= single_release,
 };
 
@@ -261,19 +261,19 @@ static int __init proc_rtas_init(void)
 	if (rtas_node == NULL)
 		return -ENODEV;
 
-	proc_create("powerpc/rtas/progress", S_IRUGO|S_IWUSR, NULL,
+proc_create("powerpc/rtas/progress", S_IRUGO|S_IWUSR, NULL,
 		    &ppc_rtas_progress_operations);
-	proc_create("powerpc/rtas/clock", S_IRUGO|S_IWUSR, NULL,
+proc_create("powerpc/rtas/clock", S_IRUGO|S_IWUSR, NULL,
 		    &ppc_rtas_clock_operations);
-	proc_create("powerpc/rtas/poweron", S_IWUSR|S_IRUGO, NULL,
-		    &ppc_rtas_poweron_operations);
-	proc_create("powerpc/rtas/sensors", S_IRUGO, NULL,
+proc_create("powerpc/rtas/poweron", S_IWUSR|S_IRUGO, NULL,
+&ppc_rtas_poweron_operations);
+proc_create("powerpc/rtas/sensors", S_IRUGO, NULL,
 		    &ppc_rtas_sensors_operations);
-	proc_create("powerpc/rtas/frequency", S_IWUSR|S_IRUGO, NULL,
-		    &ppc_rtas_tone_freq_operations);
-	proc_create("powerpc/rtas/volume", S_IWUSR|S_IRUGO, NULL,
+proc_create("powerpc/rtas/frequency", S_IWUSR|S_IRUGO, NULL,
+&ppc_rtas_tone_freq_operations);
+proc_create("powerpc/rtas/volume", S_IWUSR|S_IRUGO, NULL,
 		    &ppc_rtas_tone_volume_operations);
-	proc_create("powerpc/rtas/rmo_buffer", S_IRUSR, NULL,
+proc_create("powerpc/rtas/rmo_buffer", S_IRUSR, NULL,
 		    &ppc_rtas_rmo_buf_ops);
 	return 0;
 }
@@ -312,25 +312,25 @@ static ssize_t ppc_rtas_poweron_write(struct file *file,
 	if (error)
 		return error;
 
-	power_on_time = nowtime; /* save the time */
+power_on_time = nowtime; /* save the time */
 
 	to_tm(nowtime, &tm);
 
-	error = rtas_call(rtas_token("set-time-for-power-on"), 7, 1, NULL, 
+error = rtas_call(rtas_token("set-time-for-power-on"), 7, 1, NULL,
 			tm.tm_year, tm.tm_mon, tm.tm_mday, 
 			tm.tm_hour, tm.tm_min, tm.tm_sec, 0 /* nano */);
 	if (error)
-		printk(KERN_WARNING "error: setting poweron time returned: %s\n", 
+printk(KERN_WARNING "error: setting poweron time returned: %s\n",
 				ppc_rtas_process_error(error));
 	return count;
 }
 /* ****************************************************************** */
 static int ppc_rtas_poweron_show(struct seq_file *m, void *v)
 {
-	if (power_on_time == 0)
-		seq_printf(m, "Power on time not set\n");
+if (power_on_time == 0)
+seq_printf(m, "Power on time not set\n");
 	else
-		seq_printf(m, "%lu\n",power_on_time);
+seq_printf(m, "%lu\n",power_on_time);
 	return 0;
 }
 
@@ -519,13 +519,13 @@ static void ppc_rtas_process_sensor(struct seq_file *m,
 						"Maintenance" };
 	const char * enclosure_switch[]  = { "Closed", "Open" };
 	const char * lid_status[]        = { " ", "Open", "Closed" };
-	const char * power_source[]      = { "AC\t", "Battery", 
+const char * power_source[]      = { "AC\t", "Battery",
 		  				"AC & Battery" };
 	const char * battery_remaining[] = { "Very Low", "Low", "Mid", "High" };
 	const char * epow_sensor[]       = { 
-		"EPOW Reset", "Cooling warning", "Power warning",
+"EPOW Reset", "Cooling warning", "Power warning",
 		"System shutdown", "System halt", "EPOW main enclosure",
-		"EPOW power off" };
+"EPOW power off" };
 	const char * battery_cyclestate[]  = { "None", "In progress", 
 						"Requested" };
 	const char * battery_charging[]    = { "Charging", "Discharching", 
@@ -570,17 +570,17 @@ static void ppc_rtas_process_sensor(struct seq_file *m,
 				have_strings = 1;
 			}
 			break;
-		case POWER_SOURCE:
-			seq_printf(m, "Power source:\t");
-			num_states = sizeof(power_source) / sizeof(char *);
+case POWER_SOURCE:
+seq_printf(m, "Power source:\t");
+num_states = sizeof(power_source) / sizeof(char *);
 			if (state < num_states) {
 				seq_printf(m, "%s\t", 
-						power_source[state]);
+power_source[state]);
 				have_strings = 1;
 			}
 			break;
-		case BATTERY_VOLTAGE:
-			seq_printf(m, "Battery voltage:\t");
+case BATTERY_VOLTAGE:
+seq_printf(m, "Battery voltage:\t");
 			break;
 		case BATTERY_REMAINING:
 			seq_printf(m, "Battery remaining:\t");
@@ -628,8 +628,8 @@ static void ppc_rtas_process_sensor(struct seq_file *m,
 		case IBM_FANRPM:
 			seq_printf(m, "Fan (rpm):\t");
 			break;
-		case IBM_VOLTAGE:
-			seq_printf(m, "Voltage (mv):\t");
+case IBM_VOLTAGE:
+seq_printf(m, "Voltage (mv):\t");
 			break;
 		case IBM_DRCONNECTOR:
 			seq_printf(m, "DR connector:\t");
@@ -640,8 +640,8 @@ static void ppc_rtas_process_sensor(struct seq_file *m,
 				have_strings = 1;
 			}
 			break;
-		case IBM_POWERSUPPLY:
-			seq_printf(m, "Powersupply:\t");
+case IBM_POWERSUPPLY:
+seq_printf(m, "Powersupply:\t");
 			break;
 		default:
 			seq_printf(m,  "Unknown sensor (type %d), ignoring it\n",
@@ -679,8 +679,8 @@ static void check_location(struct seq_file *m, const char *c)
 		case LOC_RACKMOUNTED:
 			seq_printf(m, "Rack #%c", c[1]);
 			break;
-		case LOC_VOLTAGE:
-			seq_printf(m, "Voltage #%c", c[1]);
+case LOC_VOLTAGE:
+seq_printf(m, "Voltage #%c", c[1]);
 			break;
 		case LOC_LCD:
 			seq_printf(m, "LCD #%c", c[1]);
@@ -731,23 +731,23 @@ static void get_location_code(struct seq_file *m, struct individual_sensor *s,
 static ssize_t ppc_rtas_tone_freq_write(struct file *file,
 		const char __user *buf, size_t count, loff_t *ppos)
 {
-	unsigned long freq;
-	int error = parse_number(buf, count, &freq);
+unsigned long freq;
+int error = parse_number(buf, count, &freq);
 	if (error)
 		return error;
 
-	rtas_tone_frequency = freq; /* save it for later */
+rtas_tone_frequency = freq; /* save it for later */
 	error = rtas_call(rtas_token("set-indicator"), 3, 1, NULL,
-			TONE_FREQUENCY, 0, freq);
+TONE_FREQUENCY, 0, freq);
 	if (error)
-		printk(KERN_WARNING "error: setting tone frequency returned: %s\n", 
+printk(KERN_WARNING "error: setting tone frequency returned: %s\n",
 				ppc_rtas_process_error(error));
 	return count;
 }
 /* ****************************************************************** */
 static int ppc_rtas_tone_freq_show(struct seq_file *m, void *v)
 {
-	seq_printf(m, "%lu\n", rtas_tone_frequency);
+seq_printf(m, "%lu\n", rtas_tone_frequency);
 	return 0;
 }
 /* ****************************************************************** */

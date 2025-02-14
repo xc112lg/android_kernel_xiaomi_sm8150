@@ -145,7 +145,7 @@ ab3100_regulators[AB3100_NUM_REGULATORS] = {
 	},
 	{
 		.regreg = AB3100_LDO_EXT,
-		/* No voltages for the external regulator */
+/* No voltages for the external regulator */
 	},
 	{
 		.regreg = AB3100_BUCK,
@@ -200,7 +200,7 @@ static int ab3100_disable_regulator(struct regulator_dev *reg)
 	pr_info("Called ab3100_disable_regulator\n");
 	if (abreg->regreg == AB3100_LDO_D) {
 		dev_info(&reg->dev, "disabling LDO D - shut down system\n");
-		/* Setting LDO D to 0x00 cuts the power to the SoC */
+/* Setting LDO D to 0x00 cuts the power to the SoC */
 		return abx500_set_register_interruptible(abreg->dev, 0,
 							 AB3100_LDO_D, 0x00U);
 	}
@@ -245,7 +245,7 @@ static int ab3100_get_voltage_regulator(struct regulator_dev *reg)
 
 	/*
 	 * For variable types, read out setting and index into
-	 * supplied voltage list.
+* supplied voltage list.
 	 */
 	err = abx500_get_register_interruptible(abreg->dev, 0,
 						abreg->regreg, &regval);
@@ -256,13 +256,13 @@ static int ab3100_get_voltage_regulator(struct regulator_dev *reg)
 		return err;
 	}
 
-	/* The 3 highest bits index voltages */
+/* The 3 highest bits index voltages */
 	regval &= 0xE0;
 	regval >>= 5;
 
-	if (regval >= reg->desc->n_voltages) {
+if (regval >= reg->desc->n_voltages) {
 		dev_err(&reg->dev,
-			"regulator register %02x contains an illegal voltage setting\n",
+"regulator register %02x contains an illegal voltage setting\n",
 			abreg->regreg);
 		return -EINVAL;
 	}
@@ -315,8 +315,8 @@ static int ab3100_set_suspend_voltage_regulator(struct regulator_dev *reg,
 	else
 		return -EINVAL;
 
-	/* LDO E and BUCK have special suspend voltages you can set */
-	bestindex = regulator_map_voltage_iterate(reg, uV, uV);
+/* LDO E and BUCK have special suspend voltages you can set */
+bestindex = regulator_map_voltage_iterate(reg, uV, uV);
 
 	err = abx500_get_register_interruptible(abreg->dev, 0,
 						targetreg, &regval);
@@ -341,21 +341,21 @@ static int ab3100_set_suspend_voltage_regulator(struct regulator_dev *reg,
 }
 
 /*
- * The external regulator can just define a fixed voltage.
+* The external regulator can just define a fixed voltage.
  */
 static int ab3100_get_voltage_regulator_external(struct regulator_dev *reg)
 {
 	struct ab3100_regulator *abreg = rdev_get_drvdata(reg);
 
 	if (abreg->plfdata)
-		return abreg->plfdata->external_voltage;
+return abreg->plfdata->external_voltage;
 	else
-		/* TODO: encode external voltage into device tree */
+/* TODO: encode external voltage into device tree */
 		return 0;
 }
 
 static struct regulator_ops regulator_ops_fixed = {
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 	.enable      = ab3100_enable_regulator,
 	.disable     = ab3100_disable_regulator,
 	.is_enabled  = ab3100_is_enabled_regulator,
@@ -365,32 +365,32 @@ static struct regulator_ops regulator_ops_variable = {
 	.enable      = ab3100_enable_regulator,
 	.disable     = ab3100_disable_regulator,
 	.is_enabled  = ab3100_is_enabled_regulator,
-	.get_voltage = ab3100_get_voltage_regulator,
-	.set_voltage_sel = ab3100_set_voltage_regulator_sel,
-	.list_voltage = regulator_list_voltage_table,
+.get_voltage = ab3100_get_voltage_regulator,
+.set_voltage_sel = ab3100_set_voltage_regulator_sel,
+.list_voltage = regulator_list_voltage_table,
 };
 
 static struct regulator_ops regulator_ops_variable_sleepable = {
 	.enable      = ab3100_enable_regulator,
 	.disable     = ab3100_disable_regulator,
 	.is_enabled  = ab3100_is_enabled_regulator,
-	.get_voltage = ab3100_get_voltage_regulator,
-	.set_voltage_sel = ab3100_set_voltage_regulator_sel,
-	.set_suspend_voltage = ab3100_set_suspend_voltage_regulator,
-	.list_voltage = regulator_list_voltage_table,
+.get_voltage = ab3100_get_voltage_regulator,
+.set_voltage_sel = ab3100_set_voltage_regulator_sel,
+.set_suspend_voltage = ab3100_set_suspend_voltage_regulator,
+.list_voltage = regulator_list_voltage_table,
 };
 
 /*
  * LDO EXT is an external regulator so it is really
- * not possible to set any voltage locally here, AB3100
+* not possible to set any voltage locally here, AB3100
  * is an on/off switch plain an simple. The external
- * voltage is defined in the board set-up if any.
+* voltage is defined in the board set-up if any.
  */
 static struct regulator_ops regulator_ops_external = {
 	.enable      = ab3100_enable_regulator,
 	.disable     = ab3100_disable_regulator,
 	.is_enabled  = ab3100_is_enabled_regulator,
-	.get_voltage = ab3100_get_voltage_regulator_external,
+.get_voltage = ab3100_get_voltage_regulator_external,
 };
 
 static struct regulator_desc
@@ -399,39 +399,39 @@ ab3100_regulator_desc[AB3100_NUM_REGULATORS] = {
 		.name = "LDO_A",
 		.id   = AB3100_LDO_A,
 		.ops  = &regulator_ops_fixed,
-		.n_voltages = 1,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
-		.min_uV = LDO_A_VOLTAGE,
+.min_uV = LDO_A_VOLTAGE,
 		.enable_time = 200,
 	},
 	{
 		.name = "LDO_C",
 		.id   = AB3100_LDO_C,
 		.ops  = &regulator_ops_fixed,
-		.n_voltages = 1,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
-		.min_uV = LDO_C_VOLTAGE,
+.min_uV = LDO_C_VOLTAGE,
 		.enable_time = 200,
 	},
 	{
 		.name = "LDO_D",
 		.id   = AB3100_LDO_D,
 		.ops  = &regulator_ops_fixed,
-		.n_voltages = 1,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = 1,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
-		.min_uV = LDO_D_VOLTAGE,
+.min_uV = LDO_D_VOLTAGE,
 		.enable_time = 200,
 	},
 	{
 		.name = "LDO_E",
 		.id   = AB3100_LDO_E,
 		.ops  = &regulator_ops_variable_sleepable,
-		.n_voltages = ARRAY_SIZE(ldo_e_buck_typ_voltages),
-		.volt_table = ldo_e_buck_typ_voltages,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo_e_buck_typ_voltages),
+.volt_table = ldo_e_buck_typ_voltages,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 		.enable_time = 200,
 	},
@@ -439,9 +439,9 @@ ab3100_regulator_desc[AB3100_NUM_REGULATORS] = {
 		.name = "LDO_F",
 		.id   = AB3100_LDO_F,
 		.ops  = &regulator_ops_variable,
-		.n_voltages = ARRAY_SIZE(ldo_f_typ_voltages),
-		.volt_table = ldo_f_typ_voltages,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo_f_typ_voltages),
+.volt_table = ldo_f_typ_voltages,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 		.enable_time = 600,
 	},
@@ -449,9 +449,9 @@ ab3100_regulator_desc[AB3100_NUM_REGULATORS] = {
 		.name = "LDO_G",
 		.id   = AB3100_LDO_G,
 		.ops  = &regulator_ops_variable,
-		.n_voltages = ARRAY_SIZE(ldo_g_typ_voltages),
-		.volt_table = ldo_g_typ_voltages,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo_g_typ_voltages),
+.volt_table = ldo_g_typ_voltages,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 		.enable_time = 400,
 	},
@@ -459,9 +459,9 @@ ab3100_regulator_desc[AB3100_NUM_REGULATORS] = {
 		.name = "LDO_H",
 		.id   = AB3100_LDO_H,
 		.ops  = &regulator_ops_variable,
-		.n_voltages = ARRAY_SIZE(ldo_h_typ_voltages),
-		.volt_table = ldo_h_typ_voltages,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo_h_typ_voltages),
+.volt_table = ldo_h_typ_voltages,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 		.enable_time = 200,
 	},
@@ -469,9 +469,9 @@ ab3100_regulator_desc[AB3100_NUM_REGULATORS] = {
 		.name = "LDO_K",
 		.id   = AB3100_LDO_K,
 		.ops  = &regulator_ops_variable,
-		.n_voltages = ARRAY_SIZE(ldo_k_typ_voltages),
-		.volt_table = ldo_k_typ_voltages,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo_k_typ_voltages),
+.volt_table = ldo_k_typ_voltages,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 		.enable_time = 200,
 	},
@@ -479,16 +479,16 @@ ab3100_regulator_desc[AB3100_NUM_REGULATORS] = {
 		.name = "LDO_EXT",
 		.id   = AB3100_LDO_EXT,
 		.ops  = &regulator_ops_external,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "BUCK",
 		.id   = AB3100_BUCK,
 		.ops  = &regulator_ops_variable_sleepable,
-		.n_voltages = ARRAY_SIZE(ldo_e_buck_typ_voltages),
-		.volt_table = ldo_e_buck_typ_voltages,
-		.type = REGULATOR_VOLTAGE,
+.n_voltages = ARRAY_SIZE(ldo_e_buck_typ_voltages),
+.volt_table = ldo_e_buck_typ_voltages,
+.type = REGULATOR_VOLTAGE,
 		.owner = THIS_MODULE,
 		.enable_time = 1000,
 	},
@@ -566,7 +566,7 @@ static struct of_regulator_match ab3100_regulator_matches[] = {
 /*
  * Initial settings of ab3100 registers.
  * Common for below LDO regulator settings are that
- * bit 7-5 controls voltage. Bit 4 turns regulator ON(1) or OFF(0).
+* bit 7-5 controls voltage. Bit 4 turns regulator ON(1) or OFF(0).
  * Bit 3-2 controls sleep enable and bit 1-0 controls sleep mode.
  */
 /* LDO_A 0x16: 2.75V, ON, SLEEP_A, SLEEP OFF GND */

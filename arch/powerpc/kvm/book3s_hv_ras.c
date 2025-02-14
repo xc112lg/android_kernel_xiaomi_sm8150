@@ -64,7 +64,7 @@ static void reload_slb(struct kvm_vcpu *vcpu)
 }
 
 /*
- * On POWER7, see if we can handle a machine check that occurred inside
+* On POWER7, see if we can handle a machine check that occurred inside
  * the guest in real mode, without switching to the host partition.
  *
  * Returns: 0 => exit guest, 1 => deliver machine check to guest
@@ -158,7 +158,7 @@ out:
 
 long kvmppc_realmode_machine_check(struct kvm_vcpu *vcpu)
 {
-	return kvmppc_realmode_mc_power7(vcpu);
+return kvmppc_realmode_mc_power7(vcpu);
 }
 
 /* Check if dynamic split is in force and return subcore size accordingly. */

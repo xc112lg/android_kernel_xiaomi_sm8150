@@ -14,7 +14,7 @@
 
 /*
  * This table defines the system calls that an SPU can call.
- * It is currently a subset of the 64 bit powerpc system calls,
+* It is currently a subset of the 64 bit powerpc system calls,
  * with the exact semantics.
  *
  * The reasons for disabling some of the system calls are:

@@ -78,7 +78,7 @@ static const uint16_t tonga_clock_stretcher_lookup_table[2][4] = {
 };
 
 /* [FF, SS] type, [] 4 voltage ranges,
- * and [Floor Freq, Boundary Freq, VID min , VID max]
+* and [Floor Freq, Boundary Freq, VID min , VID max]
  */
 static const uint32_t tonga_clock_stretcher_ddt_table[2][4][4] = {
 	{ {265, 529, 120, 128}, {325, 650, 96, 119}, {430, 860, 32, 95}, {0, 0, 0, 31} },
@@ -98,64 +98,64 @@ static const uint8_t tonga_clock_stretch_amount_conversion[2][6] = {
 
 
 static int tonga_get_dependecy_volt_by_clk(struct pp_hwmgr *hwmgr,
-	phm_ppt_v1_clock_voltage_dependency_table *allowed_clock_voltage_table,
-	uint32_t clock, SMU_VoltageLevel *voltage, uint32_t *mvdd)
+phm_ppt_v1_clock_voltage_dependency_table *allowed_clock_voltage_table,
+uint32_t clock, SMU_VoltageLevel *voltage, uint32_t *mvdd)
 {
 	uint32_t i = 0;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			   (struct phm_ppt_v1_information *)(hwmgr->pptable);
 
-	/* clock - voltage dependency table is empty table */
-	if (allowed_clock_voltage_table->count == 0)
+/* clock - voltage dependency table is empty table */
+if (allowed_clock_voltage_table->count == 0)
 		return -EINVAL;
 
-	for (i = 0; i < allowed_clock_voltage_table->count; i++) {
+for (i = 0; i < allowed_clock_voltage_table->count; i++) {
 		/* find first sclk bigger than request */
-		if (allowed_clock_voltage_table->entries[i].clk >= clock) {
-			voltage->VddGfx = phm_get_voltage_index(
-					pptable_info->vddgfx_lookup_table,
-				allowed_clock_voltage_table->entries[i].vddgfx);
-			voltage->Vddc = phm_get_voltage_index(
-						pptable_info->vddc_lookup_table,
-				  allowed_clock_voltage_table->entries[i].vddc);
+if (allowed_clock_voltage_table->entries[i].clk >= clock) {
+voltage->VddGfx = phm_get_voltage_index(
+pptable_info->vddgfx_lookup_table,
+allowed_clock_voltage_table->entries[i].vddgfx);
+voltage->Vddc = phm_get_voltage_index(
+pptable_info->vddc_lookup_table,
+allowed_clock_voltage_table->entries[i].vddc);
 
-			if (allowed_clock_voltage_table->entries[i].vddci)
-				voltage->Vddci =
-					phm_get_voltage_id(&data->vddci_voltage_table, allowed_clock_voltage_table->entries[i].vddci);
+if (allowed_clock_voltage_table->entries[i].vddci)
+voltage->Vddci =
+phm_get_voltage_id(&data->vddci_voltage_table, allowed_clock_voltage_table->entries[i].vddci);
 			else
-				voltage->Vddci =
-					phm_get_voltage_id(&data->vddci_voltage_table,
-						allowed_clock_voltage_table->entries[i].vddc - VDDC_VDDCI_DELTA);
+voltage->Vddci =
+phm_get_voltage_id(&data->vddci_voltage_table,
+allowed_clock_voltage_table->entries[i].vddc - VDDC_VDDCI_DELTA);
 
 
-			if (allowed_clock_voltage_table->entries[i].mvdd)
-				*mvdd = (uint32_t) allowed_clock_voltage_table->entries[i].mvdd;
+if (allowed_clock_voltage_table->entries[i].mvdd)
+*mvdd = (uint32_t) allowed_clock_voltage_table->entries[i].mvdd;
 
-			voltage->Phases = 1;
+voltage->Phases = 1;
 			return 0;
 		}
 	}
 
 	/* sclk is bigger than max sclk in the dependence table */
-	voltage->VddGfx = phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
-		allowed_clock_voltage_table->entries[i-1].vddgfx);
-	voltage->Vddc = phm_get_voltage_index(pptable_info->vddc_lookup_table,
-		allowed_clock_voltage_table->entries[i-1].vddc);
+voltage->VddGfx = phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
+allowed_clock_voltage_table->entries[i-1].vddgfx);
+voltage->Vddc = phm_get_voltage_index(pptable_info->vddc_lookup_table,
+allowed_clock_voltage_table->entries[i-1].vddc);
 
-	if (allowed_clock_voltage_table->entries[i-1].vddci)
-		voltage->Vddci = phm_get_voltage_id(&data->vddci_voltage_table,
-			allowed_clock_voltage_table->entries[i-1].vddci);
+if (allowed_clock_voltage_table->entries[i-1].vddci)
+voltage->Vddci = phm_get_voltage_id(&data->vddci_voltage_table,
+allowed_clock_voltage_table->entries[i-1].vddci);
 
-	if (allowed_clock_voltage_table->entries[i-1].mvdd)
-		*mvdd = (uint32_t) allowed_clock_voltage_table->entries[i-1].mvdd;
+if (allowed_clock_voltage_table->entries[i-1].mvdd)
+*mvdd = (uint32_t) allowed_clock_voltage_table->entries[i-1].mvdd;
 
 	return 0;
 }
 
 
 /**
- * Vddc table preparation for SMC.
+* Vddc table preparation for SMC.
  *
  * @param    hwmgr      the address of the hardware manager
  * @param    table     the SMC DPM table structure to be populated
@@ -167,19 +167,19 @@ static int tonga_populate_smc_vddc_table(struct pp_hwmgr *hwmgr,
 	unsigned int count;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
-		table->VddcLevelCount = data->vddc_voltage_table.count;
-		for (count = 0; count < table->VddcLevelCount; count++) {
-			table->VddcTable[count] =
-				PP_HOST_TO_SMC_US(data->vddc_voltage_table.entries[count].value * VOLTAGE_SCALE);
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
+table->VddcLevelCount = data->vddc_voltage_table.count;
+for (count = 0; count < table->VddcLevelCount; count++) {
+table->VddcTable[count] =
+PP_HOST_TO_SMC_US(data->vddc_voltage_table.entries[count].value * VOLTAGE_SCALE);
 		}
-		CONVERT_FROM_HOST_TO_SMC_UL(table->VddcLevelCount);
+CONVERT_FROM_HOST_TO_SMC_UL(table->VddcLevelCount);
 	}
 	return 0;
 }
 
 /**
- * VddGfx table preparation for SMC.
+* VddGfx table preparation for SMC.
  *
  * @param    hwmgr      the address of the hardware manager
  * @param    table     the SMC DPM table structure to be populated
@@ -191,19 +191,19 @@ static int tonga_populate_smc_vdd_gfx_table(struct pp_hwmgr *hwmgr,
 	unsigned int count;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vdd_gfx_control) {
-		table->VddGfxLevelCount = data->vddgfx_voltage_table.count;
-		for (count = 0; count < data->vddgfx_voltage_table.count; count++) {
-			table->VddGfxTable[count] =
-				PP_HOST_TO_SMC_US(data->vddgfx_voltage_table.entries[count].value * VOLTAGE_SCALE);
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vdd_gfx_control) {
+table->VddGfxLevelCount = data->vddgfx_voltage_table.count;
+for (count = 0; count < data->vddgfx_voltage_table.count; count++) {
+table->VddGfxTable[count] =
+PP_HOST_TO_SMC_US(data->vddgfx_voltage_table.entries[count].value * VOLTAGE_SCALE);
 		}
-		CONVERT_FROM_HOST_TO_SMC_UL(table->VddGfxLevelCount);
+CONVERT_FROM_HOST_TO_SMC_UL(table->VddGfxLevelCount);
 	}
 	return 0;
 }
 
 /**
- * Vddci table preparation for SMC.
+* Vddci table preparation for SMC.
  *
  * @param    *hwmgr The address of the hardware manager.
  * @param    *table The SMC DPM table structure to be populated.
@@ -215,32 +215,32 @@ static int tonga_populate_smc_vdd_ci_table(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	uint32_t count;
 
-	table->VddciLevelCount = data->vddci_voltage_table.count;
-	for (count = 0; count < table->VddciLevelCount; count++) {
-		if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vddci_control) {
-			table->VddciTable[count] =
-				PP_HOST_TO_SMC_US(data->vddci_voltage_table.entries[count].value * VOLTAGE_SCALE);
-		} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->vddci_control) {
-			table->SmioTable1.Pattern[count].Voltage =
-				PP_HOST_TO_SMC_US(data->vddci_voltage_table.entries[count].value * VOLTAGE_SCALE);
-			/* Index into DpmTable.Smio. Drive bits from Smio entry to get this voltage level. */
+table->VddciLevelCount = data->vddci_voltage_table.count;
+for (count = 0; count < table->VddciLevelCount; count++) {
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vddci_control) {
+table->VddciTable[count] =
+PP_HOST_TO_SMC_US(data->vddci_voltage_table.entries[count].value * VOLTAGE_SCALE);
+} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->vddci_control) {
+table->SmioTable1.Pattern[count].Voltage =
+PP_HOST_TO_SMC_US(data->vddci_voltage_table.entries[count].value * VOLTAGE_SCALE);
+/* Index into DpmTable.Smio. Drive bits from Smio entry to get this voltage level. */
 			table->SmioTable1.Pattern[count].Smio =
 				(uint8_t) count;
 			table->Smio[count] |=
-				data->vddci_voltage_table.entries[count].smio_low;
-			table->VddciTable[count] =
-				PP_HOST_TO_SMC_US(data->vddci_voltage_table.entries[count].value * VOLTAGE_SCALE);
+data->vddci_voltage_table.entries[count].smio_low;
+table->VddciTable[count] =
+PP_HOST_TO_SMC_US(data->vddci_voltage_table.entries[count].value * VOLTAGE_SCALE);
 		}
 	}
 
-	table->SmioMask1 = data->vddci_voltage_table.mask_low;
-	CONVERT_FROM_HOST_TO_SMC_UL(table->VddciLevelCount);
+table->SmioMask1 = data->vddci_voltage_table.mask_low;
+CONVERT_FROM_HOST_TO_SMC_UL(table->VddciLevelCount);
 
 	return 0;
 }
 
 /**
- * Mvdd table preparation for SMC.
+* Mvdd table preparation for SMC.
  *
  * @param    *hwmgr The address of the hardware manager.
  * @param    *table The SMC DPM table structure to be populated.
@@ -252,27 +252,27 @@ static int tonga_populate_smc_mvdd_table(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	uint32_t count;
 
-	if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->mvdd_control) {
-		table->MvddLevelCount = data->mvdd_voltage_table.count;
-		for (count = 0; count < table->MvddLevelCount; count++) {
-			table->SmioTable2.Pattern[count].Voltage =
-				PP_HOST_TO_SMC_US(data->mvdd_voltage_table.entries[count].value * VOLTAGE_SCALE);
-			/* Index into DpmTable.Smio. Drive bits from Smio entry to get this voltage level.*/
+if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->mvdd_control) {
+table->MvddLevelCount = data->mvdd_voltage_table.count;
+for (count = 0; count < table->MvddLevelCount; count++) {
+table->SmioTable2.Pattern[count].Voltage =
+PP_HOST_TO_SMC_US(data->mvdd_voltage_table.entries[count].value * VOLTAGE_SCALE);
+/* Index into DpmTable.Smio. Drive bits from Smio entry to get this voltage level.*/
 			table->SmioTable2.Pattern[count].Smio =
 				(uint8_t) count;
 			table->Smio[count] |=
-				data->mvdd_voltage_table.entries[count].smio_low;
+data->mvdd_voltage_table.entries[count].smio_low;
 		}
-		table->SmioMask2 = data->mvdd_voltage_table.mask_low;
+table->SmioMask2 = data->mvdd_voltage_table.mask_low;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->MvddLevelCount);
+CONVERT_FROM_HOST_TO_SMC_UL(table->MvddLevelCount);
 	}
 
 	return 0;
 }
 
 /**
- * Preparation of vddc and vddgfx CAC tables for SMC.
+* Preparation of vddc and vddgfx CAC tables for SMC.
  *
  * @param    hwmgr      the address of the hardware manager
  * @param    table     the SMC DPM table structure to be populated
@@ -286,47 +286,47 @@ static int tonga_populate_cac_tables(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_voltage_lookup_table *vddgfx_lookup_table =
-					   pptable_info->vddgfx_lookup_table;
-	struct phm_ppt_v1_voltage_lookup_table *vddc_lookup_table =
-						pptable_info->vddc_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddgfx_lookup_table =
+pptable_info->vddgfx_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *vddc_lookup_table =
+pptable_info->vddc_lookup_table;
 
 	/* table is already swapped, so in order to use the value from it
 	 * we need to swap it back.
 	 */
-	uint32_t vddc_level_count = PP_SMC_TO_HOST_UL(table->VddcLevelCount);
-	uint32_t vddgfx_level_count = PP_SMC_TO_HOST_UL(table->VddGfxLevelCount);
+uint32_t vddc_level_count = PP_SMC_TO_HOST_UL(table->VddcLevelCount);
+uint32_t vddgfx_level_count = PP_SMC_TO_HOST_UL(table->VddGfxLevelCount);
 
-	for (count = 0; count < vddc_level_count; count++) {
-		/* We are populating vddc CAC data to BapmVddc table in split and merged mode */
-		index = phm_get_voltage_index(vddc_lookup_table,
-			data->vddc_voltage_table.entries[count].value);
-		table->BapmVddcVidLoSidd[count] =
-			convert_to_vid(vddc_lookup_table->entries[index].us_cac_low);
-		table->BapmVddcVidHiSidd[count] =
-			convert_to_vid(vddc_lookup_table->entries[index].us_cac_mid);
-		table->BapmVddcVidHiSidd2[count] =
-			convert_to_vid(vddc_lookup_table->entries[index].us_cac_high);
+for (count = 0; count < vddc_level_count; count++) {
+/* We are populating vddc CAC data to BapmVddc table in split and merged mode */
+index = phm_get_voltage_index(vddc_lookup_table,
+data->vddc_voltage_table.entries[count].value);
+table->BapmVddcVidLoSidd[count] =
+convert_to_vid(vddc_lookup_table->entries[index].us_cac_low);
+table->BapmVddcVidHiSidd[count] =
+convert_to_vid(vddc_lookup_table->entries[index].us_cac_mid);
+table->BapmVddcVidHiSidd2[count] =
+convert_to_vid(vddc_lookup_table->entries[index].us_cac_high);
 	}
 
-	if ((data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2)) {
-		/* We are populating vddgfx CAC data to BapmVddgfx table in split mode */
-		for (count = 0; count < vddgfx_level_count; count++) {
-			index = phm_get_voltage_index(vddgfx_lookup_table,
-				convert_to_vid(vddgfx_lookup_table->entries[index].us_cac_mid));
-			table->BapmVddGfxVidHiSidd2[count] =
-				convert_to_vid(vddgfx_lookup_table->entries[index].us_cac_high);
+if ((data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2)) {
+/* We are populating vddgfx CAC data to BapmVddgfx table in split mode */
+for (count = 0; count < vddgfx_level_count; count++) {
+index = phm_get_voltage_index(vddgfx_lookup_table,
+convert_to_vid(vddgfx_lookup_table->entries[index].us_cac_mid));
+table->BapmVddGfxVidHiSidd2[count] =
+convert_to_vid(vddgfx_lookup_table->entries[index].us_cac_high);
 		}
 	} else {
-		for (count = 0; count < vddc_level_count; count++) {
-			index = phm_get_voltage_index(vddc_lookup_table,
-				data->vddc_voltage_table.entries[count].value);
-			table->BapmVddGfxVidLoSidd[count] =
-				convert_to_vid(vddc_lookup_table->entries[index].us_cac_low);
-			table->BapmVddGfxVidHiSidd[count] =
-				convert_to_vid(vddc_lookup_table->entries[index].us_cac_mid);
-			table->BapmVddGfxVidHiSidd2[count] =
-				convert_to_vid(vddc_lookup_table->entries[index].us_cac_high);
+for (count = 0; count < vddc_level_count; count++) {
+index = phm_get_voltage_index(vddc_lookup_table,
+data->vddc_voltage_table.entries[count].value);
+table->BapmVddGfxVidLoSidd[count] =
+convert_to_vid(vddc_lookup_table->entries[index].us_cac_low);
+table->BapmVddGfxVidHiSidd[count] =
+convert_to_vid(vddc_lookup_table->entries[index].us_cac_mid);
+table->BapmVddGfxVidHiSidd2[count] =
+convert_to_vid(vddc_lookup_table->entries[index].us_cac_high);
 		}
 	}
 
@@ -334,7 +334,7 @@ static int tonga_populate_cac_tables(struct pp_hwmgr *hwmgr,
 }
 
 /**
- * Preparation of voltage tables for SMC.
+* Preparation of voltage tables for SMC.
  *
  * @param    hwmgr      the address of the hardware manager
  * @param    table     the SMC DPM table structure to be populated
@@ -346,29 +346,29 @@ static int tonga_populate_smc_voltage_tables(struct pp_hwmgr *hwmgr,
 {
 	int result;
 
-	result = tonga_populate_smc_vddc_table(hwmgr, table);
+result = tonga_populate_smc_vddc_table(hwmgr, table);
 	PP_ASSERT_WITH_CODE(!result,
-			"can not populate VDDC voltage table to SMC",
+"can not populate VDDC voltage table to SMC",
 			return -EINVAL);
 
-	result = tonga_populate_smc_vdd_ci_table(hwmgr, table);
+result = tonga_populate_smc_vdd_ci_table(hwmgr, table);
 	PP_ASSERT_WITH_CODE(!result,
-			"can not populate VDDCI voltage table to SMC",
+"can not populate VDDCI voltage table to SMC",
 			return -EINVAL);
 
-	result = tonga_populate_smc_vdd_gfx_table(hwmgr, table);
+result = tonga_populate_smc_vdd_gfx_table(hwmgr, table);
 	PP_ASSERT_WITH_CODE(!result,
-			"can not populate VDDGFX voltage table to SMC",
+"can not populate VDDGFX voltage table to SMC",
 			return -EINVAL);
 
-	result = tonga_populate_smc_mvdd_table(hwmgr, table);
+result = tonga_populate_smc_mvdd_table(hwmgr, table);
 	PP_ASSERT_WITH_CODE(!result,
-			"can not populate MVDD voltage table to SMC",
+"can not populate MVDD voltage table to SMC",
 			return -EINVAL);
 
 	result = tonga_populate_cac_tables(hwmgr, table);
 	PP_ASSERT_WITH_CODE(!result,
-			"can not populate CAC voltage tables to SMC",
+"can not populate CAC voltage tables to SMC",
 			return -EINVAL);
 
 	return 0;
@@ -383,15 +383,15 @@ static int tonga_populate_ulv_level(struct pp_hwmgr *hwmgr,
 	state->CcPwrDynRm = 0;
 	state->CcPwrDynRm1 = 0;
 
-	state->VddcOffset = (uint16_t) table_info->us_ulv_voltage_offset;
-	state->VddcOffsetVid = (uint8_t)(table_info->us_ulv_voltage_offset *
-			VOLTAGE_VID_OFFSET_SCALE2 / VOLTAGE_VID_OFFSET_SCALE1);
+state->VddcOffset = (uint16_t) table_info->us_ulv_voltage_offset;
+state->VddcOffsetVid = (uint8_t)(table_info->us_ulv_voltage_offset *
+VOLTAGE_VID_OFFSET_SCALE2 / VOLTAGE_VID_OFFSET_SCALE1);
 
-	state->VddcPhase = 1;
+state->VddcPhase = 1;
 
 	CONVERT_FROM_HOST_TO_SMC_UL(state->CcPwrDynRm);
 	CONVERT_FROM_HOST_TO_SMC_UL(state->CcPwrDynRm1);
-	CONVERT_FROM_HOST_TO_SMC_US(state->VddcOffset);
+CONVERT_FROM_HOST_TO_SMC_US(state->VddcOffset);
 
 	return 0;
 }
@@ -487,8 +487,8 @@ static int tonga_calculate_sclk_params(struct pp_hwmgr *hwmgr,
 			PHM_PlatformCaps_EngineSpreadSpectrumSupport)) {
 		pp_atomctrl_internal_ss_info ss_info;
 
-		uint32_t vcoFreq = engine_clock * dividers.uc_pll_post_div;
-		if (0 == atomctrl_get_engine_clock_spread_spectrum(hwmgr, vcoFreq, &ss_info)) {
+uint32_t vcoFreq = engine_clock * dividers.uc_pll_post_div;
+if (0 == atomctrl_get_engine_clock_spread_spectrum(hwmgr, vcoFreq, &ss_info)) {
 			/*
 			* ss_info.speed_spectrum_percentage -- in unit of 0.01%
 			* ss_info.speed_spectrum_rate -- in unit of khz
@@ -508,7 +508,7 @@ static int tonga_calculate_sclk_params(struct pp_hwmgr *hwmgr,
 		}
 	}
 
-	sclk->SclkFrequency        = engine_clock;
+sclk->SclkFrequency        = engine_clock;
 	sclk->CgSpllFuncCntl3      = spll_func_cntl_3;
 	sclk->CgSpllFuncCntl4      = spll_func_cntl_4;
 	sclk->SpllSpreadSpectrum   = cg_spll_spread_spectrum;
@@ -531,7 +531,7 @@ static int tonga_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 				SMU72_Discrete_GraphicsLevel *graphic_level)
 {
 	int result;
-	uint32_t mvdd;
+uint32_t mvdd;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			    (struct phm_ppt_v1_information *)(hwmgr->pptable);
@@ -540,14 +540,14 @@ static int tonga_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 
 	/* populate graphics levels*/
 	result = tonga_get_dependecy_volt_by_clk(hwmgr,
-		pptable_info->vdd_dep_on_sclk, engine_clock,
-		&graphic_level->MinVoltage, &mvdd);
+pptable_info->vdd_dep_on_sclk, engine_clock,
+&graphic_level->MinVoltage, &mvdd);
 	PP_ASSERT_WITH_CODE((!result),
-		"can not find VDDC voltage value for VDDC "
+"can not find VDDC voltage value for VDDC "
 		"engine clock dependency table", return result);
 
-	/* SCLK frequency in units of 10KHz*/
-	graphic_level->SclkFrequency = engine_clock;
+/* SCLK frequency in units of 10KHz*/
+graphic_level->SclkFrequency = engine_clock;
 	/* Indicates maximum activity level for this performance level. 50% for now*/
 	graphic_level->ActivityLevel = sclk_activity_level_threshold;
 
@@ -559,8 +559,8 @@ static int tonga_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 	graphic_level->EnabledForThrottle = 1;
 	graphic_level->UpHyst = 0;
 	graphic_level->DownHyst = 0;
-	graphic_level->VoltageDownHyst = 0;
-	graphic_level->PowerThrottle = 0;
+graphic_level->VoltageDownHyst = 0;
+graphic_level->PowerThrottle = 0;
 
 	data->display_timing.min_clock_in_sr =
 			hwmgr->display_config.min_core_set_clock_in_sr;
@@ -575,9 +575,9 @@ static int tonga_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 	graphic_level->DisplayWatermark = PPSMC_DISPLAY_WATERMARK_LOW;
 
 	if (!result) {
-		/* CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->MinVoltage);*/
-		/* CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->MinVddcPhases);*/
-		CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->SclkFrequency);
+/* CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->MinVoltage);*/
+/* CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->MinVddcPhases);*/
+CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->SclkFrequency);
 		CONVERT_FROM_HOST_TO_SMC_US(graphic_level->ActivityLevel);
 		CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->CgSpllFuncCntl3);
 		CONVERT_FROM_HOST_TO_SMC_UL(graphic_level->CgSpllFuncCntl4);
@@ -768,13 +768,13 @@ static int tonga_calculate_mclk_params(
 			PHM_PlatformCaps_MemorySpreadSpectrumSupport)) {
 		/*
 		 ************************************
-		 Fref = Reference Frequency
+Fref = Reference Frequency
 		 NF = Feedback divider ratio
 		 NR = Reference divider ratio
-		 Fnom = Nominal VCO output frequency = Fref * NF / NR
+Fnom = Nominal VCO output frequency = Fref * NF / NR
 		 Fs = Spreading Rate
 		 D = Percentage down-spread / 2
-		 Fint = Reference input frequency to PFD = Fref / NR
+Fint = Reference input frequency to PFD = Fref / NR
 		 NS = Spreading rate divider ratio = int(Fint / (2 * Fs))
 		 CLKS = NS - 1 = ISS_STEP_NUM[11:0]
 		 NV = D * Fs / Fnom * 4 * ((Fnom/Fref * NR) ^ 2)
@@ -782,32 +782,32 @@ static int tonga_calculate_mclk_params(
 		 *************************************
 		 */
 		pp_atomctrl_internal_ss_info ss_info;
-		uint32_t freq_nom;
+uint32_t freq_nom;
 		uint32_t tmp;
 		uint32_t reference_clock = atomctrl_get_mpll_reference_clock(hwmgr);
 
 		/* for GDDR5 for all modes and DDR3 */
 		if (1 == mpll_param.qdr)
-			freq_nom = memory_clock * 4 * (1 << mpll_param.mpll_post_divider);
+freq_nom = memory_clock * 4 * (1 << mpll_param.mpll_post_divider);
 		else
-			freq_nom = memory_clock * 2 * (1 << mpll_param.mpll_post_divider);
+freq_nom = memory_clock * 2 * (1 << mpll_param.mpll_post_divider);
 
-		/* tmp = (freq_nom / reference_clock * reference_divider) ^ 2  Note: S.I. reference_divider = 1*/
-		tmp = (freq_nom / reference_clock);
+/* tmp = (freq_nom / reference_clock * reference_divider) ^ 2  Note: S.I. reference_divider = 1*/
+tmp = (freq_nom / reference_clock);
 		tmp = tmp * tmp;
 
-		if (0 == atomctrl_get_memory_clock_spread_spectrum(hwmgr, freq_nom, &ss_info)) {
+if (0 == atomctrl_get_memory_clock_spread_spectrum(hwmgr, freq_nom, &ss_info)) {
 			/* ss_info.speed_spectrum_percentage -- in unit of 0.01% */
 			/* ss.Info.speed_spectrum_rate -- in unit of khz */
 			/* CLKS = reference_clock / (2 * speed_spectrum_rate * reference_divider) * 10 */
 			/*     = reference_clock * 5 / speed_spectrum_rate */
 			uint32_t clks = reference_clock * 5 / ss_info.speed_spectrum_rate;
 
-			/* CLKV = 65536 * speed_spectrum_percentage / 2 * spreadSpecrumRate / freq_nom * 4 / 100000 * ((freq_nom / reference_clock) ^ 2) */
-			/*     = 131 * speed_spectrum_percentage * speed_spectrum_rate / 100 * ((freq_nom / reference_clock) ^ 2) / freq_nom */
+/* CLKV = 65536 * speed_spectrum_percentage / 2 * spreadSpecrumRate / freq_nom * 4 / 100000 * ((freq_nom / reference_clock) ^ 2) */
+/*     = 131 * speed_spectrum_percentage * speed_spectrum_rate / 100 * ((freq_nom / reference_clock) ^ 2) / freq_nom */
 			uint32_t clkv =
 				(uint32_t)((((131 * ss_info.speed_spectrum_percentage *
-							ss_info.speed_spectrum_rate) / 100) * tmp) / freq_nom);
+ss_info.speed_spectrum_rate) / 100) * tmp) / freq_nom);
 
 			mpll_ss1 = PHM_SET_FIELD(mpll_ss1, MPLL_SS1, CLKV, clkv);
 			mpll_ss2 = PHM_SET_FIELD(mpll_ss2, MPLL_SS2, CLKS, clks);
@@ -823,7 +823,7 @@ static int tonga_calculate_mclk_params(
 		MCLK_PWRMGT_CNTL, MRDCK1_PDNB, dllStateOn);
 
 	/* Save the result data to outpupt memory level structure */
-	mclk->MclkFrequency   = memory_clock;
+mclk->MclkFrequency   = memory_clock;
 	mclk->MpllFuncCntl    = mpll_func_cntl;
 	mclk->MpllFuncCntl_1  = mpll_func_cntl_1;
 	mclk->MpllFuncCntl_2  = mpll_func_cntl_2;
@@ -882,7 +882,7 @@ static int tonga_populate_single_memory_level(
 		SMU72_Discrete_MemoryLevel *memory_level
 		)
 {
-	uint32_t mvdd = 0;
+uint32_t mvdd = 0;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			  (struct phm_ppt_v1_information *)(hwmgr->pptable);
@@ -894,28 +894,28 @@ static int tonga_populate_single_memory_level(
 	uint32_t mclk_edc_enable_threshold = 40000;
 	uint32_t mclk_strobe_mode_threshold = 40000;
 
-	if (NULL != pptable_info->vdd_dep_on_mclk) {
+if (NULL != pptable_info->vdd_dep_on_mclk) {
 		result = tonga_get_dependecy_volt_by_clk(hwmgr,
-				pptable_info->vdd_dep_on_mclk,
+pptable_info->vdd_dep_on_mclk,
 				memory_clock,
-				&memory_level->MinVoltage, &mvdd);
+&memory_level->MinVoltage, &mvdd);
 		PP_ASSERT_WITH_CODE(
 			!result,
-			"can not find MinVddc voltage value from memory VDDC "
-			"voltage dependency table",
+"can not find MinVddc voltage value from memory VDDC "
+"voltage dependency table",
 			return result);
 	}
 
-	if (data->mvdd_control == SMU7_VOLTAGE_CONTROL_NONE)
-		memory_level->MinMvdd = data->vbios_boot_state.mvdd_bootup_value;
+if (data->mvdd_control == SMU7_VOLTAGE_CONTROL_NONE)
+memory_level->MinMvdd = data->vbios_boot_state.mvdd_bootup_value;
 	else
-		memory_level->MinMvdd = mvdd;
+memory_level->MinMvdd = mvdd;
 
 	memory_level->EnabledForThrottle = 1;
 	memory_level->EnabledForActivity = 0;
 	memory_level->UpHyst = 0;
 	memory_level->DownHyst = 100;
-	memory_level->VoltageDownHyst = 0;
+memory_level->VoltageDownHyst = 0;
 
 	/* Indicates maximum activity level for this performance level.*/
 	memory_level->ActivityLevel = (uint16_t)data->mclk_activity_target;
@@ -945,7 +945,7 @@ static int tonga_populate_single_memory_level(
 
 	/* decide EDC mode and memory clock ratio*/
 	if (data->is_memory_gddr5) {
-		memory_level->StrobeRatio = tonga_get_mclk_frequency_ratio(memory_clock,
+memory_level->StrobeRatio = tonga_get_mclk_frequency_ratio(memory_clock,
 					memory_level->StrobeEnable);
 
 		if ((mclk_edc_enable_threshold != 0) &&
@@ -959,7 +959,7 @@ static int tonga_populate_single_memory_level(
 		}
 
 		if (memory_level->StrobeEnable) {
-			if (tonga_get_mclk_frequency_ratio(memory_clock, 1) >=
+if (tonga_get_mclk_frequency_ratio(memory_clock, 1) >=
 					((cgs_read_register(hwmgr->device, mmMC_SEQ_MISC7) >> 16) & 0xf)) {
 				dll_state_on = ((cgs_read_register(hwmgr->device, mmMC_SEQ_MISC5) >> 1) & 0x1) ? 1 : 0;
 			} else {
@@ -971,7 +971,7 @@ static int tonga_populate_single_memory_level(
 		}
 	} else {
 		memory_level->StrobeRatio =
-			tonga_get_ddr3_mclk_frequency_ratio(memory_clock);
+tonga_get_ddr3_mclk_frequency_ratio(memory_clock);
 		dll_state_on = ((cgs_read_register(hwmgr->device, mmMC_SEQ_MISC5) >> 1) & 0x1) ? 1 : 0;
 	}
 
@@ -979,9 +979,9 @@ static int tonga_populate_single_memory_level(
 		memory_clock, memory_level, memory_level->StrobeEnable, dll_state_on);
 
 	if (!result) {
-		CONVERT_FROM_HOST_TO_SMC_UL(memory_level->MinMvdd);
-		/* MCLK frequency in units of 10KHz*/
-		CONVERT_FROM_HOST_TO_SMC_UL(memory_level->MclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(memory_level->MinMvdd);
+/* MCLK frequency in units of 10KHz*/
+CONVERT_FROM_HOST_TO_SMC_UL(memory_level->MclkFrequency);
 		/* Indicates maximum activity level for this performance level.*/
 		CONVERT_FROM_HOST_TO_SMC_US(memory_level->ActivityLevel);
 		CONVERT_FROM_HOST_TO_SMC_UL(memory_level->MpllFuncCntl);
@@ -1063,19 +1063,19 @@ static int tonga_populate_mvdd_value(struct pp_hwmgr *hwmgr,
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
 	uint32_t i = 0;
 
-	if (SMU7_VOLTAGE_CONTROL_NONE != data->mvdd_control) {
-		/* find mvdd value which clock is more than request */
-		for (i = 0; i < table_info->vdd_dep_on_mclk->count; i++) {
-			if (mclk <= table_info->vdd_dep_on_mclk->entries[i].clk) {
-				/* Always round to higher voltage. */
-				smio_pattern->Voltage =
-				      data->mvdd_voltage_table.entries[i].value;
+if (SMU7_VOLTAGE_CONTROL_NONE != data->mvdd_control) {
+/* find mvdd value which clock is more than request */
+for (i = 0; i < table_info->vdd_dep_on_mclk->count; i++) {
+if (mclk <= table_info->vdd_dep_on_mclk->entries[i].clk) {
+/* Always round to higher voltage. */
+smio_pattern->Voltage =
+data->mvdd_voltage_table.entries[i].value;
 				break;
 			}
 		}
 
-		PP_ASSERT_WITH_CODE(i < table_info->vdd_dep_on_mclk->count,
-			"MVDD Voltage is outside the supported range.",
+PP_ASSERT_WITH_CODE(i < table_info->vdd_dep_on_mclk->count,
+"MVDD Voltage is outside the supported range.",
 			return -EINVAL);
 	} else {
 		return -EINVAL;
@@ -1094,7 +1094,7 @@ static int tonga_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 	const struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct pp_atomctrl_clock_dividers_vi dividers;
 
-	SMIO_Pattern voltage_level;
+SMIO_Pattern voltage_level;
 	uint32_t spll_func_cntl    = data->clock_registers.vCG_SPLL_FUNC_CNTL;
 	uint32_t spll_func_cntl_2  = data->clock_registers.vCG_SPLL_FUNC_CNTL_2;
 	uint32_t dll_cntl          = data->clock_registers.vDLL_CNTL;
@@ -1103,15 +1103,15 @@ static int tonga_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 	/* The ACPI state should not do DPM on DC (or ever).*/
 	table->ACPILevel.Flags &= ~PPSMC_SWSTATE_FLAG_DC;
 
-	table->ACPILevel.MinVoltage =
-			smu_data->smc_state_table.GraphicsLevel[0].MinVoltage;
+table->ACPILevel.MinVoltage =
+smu_data->smc_state_table.GraphicsLevel[0].MinVoltage;
 
 	/* assign zero for now*/
-	table->ACPILevel.SclkFrequency = atomctrl_get_reference_clock(hwmgr);
+table->ACPILevel.SclkFrequency = atomctrl_get_reference_clock(hwmgr);
 
 	/* get the engine clock dividers for this clock value*/
 	result = atomctrl_get_engine_pll_dividers_vi(hwmgr,
-		table->ACPILevel.SclkFrequency,  &dividers);
+table->ACPILevel.SclkFrequency,  &dividers);
 
 	PP_ASSERT_WITH_CODE(result == 0,
 		"Error retrieving Engine Clock dividers from VBIOS.",
@@ -1141,8 +1141,8 @@ static int tonga_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 
 	/* For various features to be enabled/disabled while this level is active.*/
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.Flags);
-	/* SCLK frequency in units of 10KHz*/
-	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.SclkFrequency);
+/* SCLK frequency in units of 10KHz*/
+CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.SclkFrequency);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CgSpllFuncCntl);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CgSpllFuncCntl2);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CgSpllFuncCntl3);
@@ -1152,17 +1152,17 @@ static int tonga_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CcPwrDynRm);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CcPwrDynRm1);
 
-	/* table->MemoryACPILevel.MinVddcPhases = table->ACPILevel.MinVddcPhases;*/
-	table->MemoryACPILevel.MinVoltage =
-			    smu_data->smc_state_table.MemoryLevel[0].MinVoltage;
+/* table->MemoryACPILevel.MinVddcPhases = table->ACPILevel.MinVddcPhases;*/
+table->MemoryACPILevel.MinVoltage =
+smu_data->smc_state_table.MemoryLevel[0].MinVoltage;
 
-	/*  CONVERT_FROM_HOST_TO_SMC_UL(table->MemoryACPILevel.MinVoltage);*/
+/*  CONVERT_FROM_HOST_TO_SMC_UL(table->MemoryACPILevel.MinVoltage);*/
 
-	if (0 == tonga_populate_mvdd_value(hwmgr, 0, &voltage_level))
-		table->MemoryACPILevel.MinMvdd =
-			PP_HOST_TO_SMC_UL(voltage_level.Voltage * VOLTAGE_SCALE);
+if (0 == tonga_populate_mvdd_value(hwmgr, 0, &voltage_level))
+table->MemoryACPILevel.MinMvdd =
+PP_HOST_TO_SMC_UL(voltage_level.Voltage * VOLTAGE_SCALE);
 	else
-		table->MemoryACPILevel.MinMvdd = 0;
+table->MemoryACPILevel.MinMvdd = 0;
 
 	/* Force reset on DLL*/
 	mclk_pwrmgt_cntl    = PHM_SET_FIELD(mclk_pwrmgt_cntl,
@@ -1205,7 +1205,7 @@ static int tonga_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 	table->MemoryACPILevel.EnabledForActivity = 0;
 	table->MemoryACPILevel.UpHyst = 0;
 	table->MemoryACPILevel.DownHyst = 100;
-	table->MemoryACPILevel.VoltageDownHyst = 0;
+table->MemoryACPILevel.VoltageDownHyst = 0;
 	/* Indicates maximum activity level for this performance level.*/
 	table->MemoryACPILevel.ActivityLevel =
 			PP_HOST_TO_SMC_US((uint16_t)data->mclk_activity_target);
@@ -1229,31 +1229,31 @@ static int tonga_populate_smc_uvd_level(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 				(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 						pptable_info->mm_dep_table;
 
 	table->UvdLevelCount = (uint8_t) (mm_table->count);
 	table->UvdBootLevel = 0;
 
 	for (count = 0; count < table->UvdLevelCount; count++) {
-		table->UvdLevel[count].VclkFrequency = mm_table->entries[count].vclk;
-		table->UvdLevel[count].DclkFrequency = mm_table->entries[count].dclk;
-		table->UvdLevel[count].MinVoltage.Vddc =
-			phm_get_voltage_index(pptable_info->vddc_lookup_table,
-						mm_table->entries[count].vddc);
-		table->UvdLevel[count].MinVoltage.VddGfx =
-			(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
-			phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
-						mm_table->entries[count].vddgfx) : 0;
-		table->UvdLevel[count].MinVoltage.Vddci =
-			phm_get_voltage_id(&data->vddci_voltage_table,
-					     mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
-		table->UvdLevel[count].MinVoltage.Phases = 1;
+table->UvdLevel[count].VclkFrequency = mm_table->entries[count].vclk;
+table->UvdLevel[count].DclkFrequency = mm_table->entries[count].dclk;
+table->UvdLevel[count].MinVoltage.Vddc =
+phm_get_voltage_index(pptable_info->vddc_lookup_table,
+mm_table->entries[count].vddc);
+table->UvdLevel[count].MinVoltage.VddGfx =
+(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
+phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
+mm_table->entries[count].vddgfx) : 0;
+table->UvdLevel[count].MinVoltage.Vddci =
+phm_get_voltage_id(&data->vddci_voltage_table,
+mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
+table->UvdLevel[count].MinVoltage.Phases = 1;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(
 					hwmgr,
-					table->UvdLevel[count].VclkFrequency,
+table->UvdLevel[count].VclkFrequency,
 					&dividers);
 
 		PP_ASSERT_WITH_CODE((!result),
@@ -1263,7 +1263,7 @@ static int tonga_populate_smc_uvd_level(struct pp_hwmgr *hwmgr,
 		table->UvdLevel[count].VclkDivider = (uint8_t)dividers.pll_post_divider;
 
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-							  table->UvdLevel[count].DclkFrequency, &dividers);
+table->UvdLevel[count].DclkFrequency, &dividers);
 		PP_ASSERT_WITH_CODE((!result),
 				    "can not find divide id for Dclk clock",
 					return result);
@@ -1271,8 +1271,8 @@ static int tonga_populate_smc_uvd_level(struct pp_hwmgr *hwmgr,
 		table->UvdLevel[count].DclkDivider =
 					(uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].VclkFrequency);
-		CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].DclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].VclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].DclkFrequency);
 	}
 
 	return result;
@@ -1289,37 +1289,37 @@ static int tonga_populate_smc_vce_level(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			      (struct phm_ppt_v1_information *)(hwmgr->pptable);
-	phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 						     pptable_info->mm_dep_table;
 
 	table->VceLevelCount = (uint8_t) (mm_table->count);
 	table->VceBootLevel = 0;
 
 	for (count = 0; count < table->VceLevelCount; count++) {
-		table->VceLevel[count].Frequency =
+table->VceLevel[count].Frequency =
 			mm_table->entries[count].eclk;
-		table->VceLevel[count].MinVoltage.Vddc =
-			phm_get_voltage_index(pptable_info->vddc_lookup_table,
-				mm_table->entries[count].vddc);
-		table->VceLevel[count].MinVoltage.VddGfx =
-			(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
-			phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
-				mm_table->entries[count].vddgfx) : 0;
-		table->VceLevel[count].MinVoltage.Vddci =
-			phm_get_voltage_id(&data->vddci_voltage_table,
-				mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
-		table->VceLevel[count].MinVoltage.Phases = 1;
+table->VceLevel[count].MinVoltage.Vddc =
+phm_get_voltage_index(pptable_info->vddc_lookup_table,
+mm_table->entries[count].vddc);
+table->VceLevel[count].MinVoltage.VddGfx =
+(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
+phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
+mm_table->entries[count].vddgfx) : 0;
+table->VceLevel[count].MinVoltage.Vddci =
+phm_get_voltage_id(&data->vddci_voltage_table,
+mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
+table->VceLevel[count].MinVoltage.Phases = 1;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-					table->VceLevel[count].Frequency, &dividers);
+table->VceLevel[count].Frequency, &dividers);
 		PP_ASSERT_WITH_CODE((!result),
 				"can not find divide id for VCE engine clock",
 				return result);
 
 		table->VceLevel[count].Divider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->VceLevel[count].Frequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->VceLevel[count].Frequency);
 	}
 
 	return result;
@@ -1334,36 +1334,36 @@ static int tonga_populate_smc_acp_level(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			     (struct phm_ppt_v1_information *)(hwmgr->pptable);
-	phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 						    pptable_info->mm_dep_table;
 
 	table->AcpLevelCount = (uint8_t) (mm_table->count);
 	table->AcpBootLevel = 0;
 
 	for (count = 0; count < table->AcpLevelCount; count++) {
-		table->AcpLevel[count].Frequency =
+table->AcpLevel[count].Frequency =
 			pptable_info->mm_dep_table->entries[count].aclk;
-		table->AcpLevel[count].MinVoltage.Vddc =
-			phm_get_voltage_index(pptable_info->vddc_lookup_table,
-			mm_table->entries[count].vddc);
-		table->AcpLevel[count].MinVoltage.VddGfx =
-			(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
-			phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
-				mm_table->entries[count].vddgfx) : 0;
-		table->AcpLevel[count].MinVoltage.Vddci =
-			phm_get_voltage_id(&data->vddci_voltage_table,
-				mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
-		table->AcpLevel[count].MinVoltage.Phases = 1;
+table->AcpLevel[count].MinVoltage.Vddc =
+phm_get_voltage_index(pptable_info->vddc_lookup_table,
+mm_table->entries[count].vddc);
+table->AcpLevel[count].MinVoltage.VddGfx =
+(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
+phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
+mm_table->entries[count].vddgfx) : 0;
+table->AcpLevel[count].MinVoltage.Vddci =
+phm_get_voltage_id(&data->vddci_voltage_table,
+mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
+table->AcpLevel[count].MinVoltage.Phases = 1;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-			table->AcpLevel[count].Frequency, &dividers);
+table->AcpLevel[count].Frequency, &dividers);
 		PP_ASSERT_WITH_CODE((!result),
 			"can not find divide id for engine clock", return result);
 
 		table->AcpLevel[count].Divider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->AcpLevel[count].Frequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->AcpLevel[count].Frequency);
 	}
 
 	return result;
@@ -1378,7 +1378,7 @@ static int tonga_populate_smc_samu_level(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *pptable_info =
 			     (struct phm_ppt_v1_information *)(hwmgr->pptable);
-	phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 						    pptable_info->mm_dep_table;
 
 	table->SamuBootLevel = 0;
@@ -1386,29 +1386,29 @@ static int tonga_populate_smc_samu_level(struct pp_hwmgr *hwmgr,
 
 	for (count = 0; count < table->SamuLevelCount; count++) {
 		/* not sure whether we need evclk or not */
-		table->SamuLevel[count].Frequency =
+table->SamuLevel[count].Frequency =
 			pptable_info->mm_dep_table->entries[count].samclock;
-		table->SamuLevel[count].MinVoltage.Vddc =
-			phm_get_voltage_index(pptable_info->vddc_lookup_table,
-				mm_table->entries[count].vddc);
-		table->SamuLevel[count].MinVoltage.VddGfx =
-			(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
-			phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
-				mm_table->entries[count].vddgfx) : 0;
-		table->SamuLevel[count].MinVoltage.Vddci =
-			phm_get_voltage_id(&data->vddci_voltage_table,
-				mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
-		table->SamuLevel[count].MinVoltage.Phases = 1;
+table->SamuLevel[count].MinVoltage.Vddc =
+phm_get_voltage_index(pptable_info->vddc_lookup_table,
+mm_table->entries[count].vddc);
+table->SamuLevel[count].MinVoltage.VddGfx =
+(data->vdd_gfx_control == SMU7_VOLTAGE_CONTROL_BY_SVID2) ?
+phm_get_voltage_index(pptable_info->vddgfx_lookup_table,
+mm_table->entries[count].vddgfx) : 0;
+table->SamuLevel[count].MinVoltage.Vddci =
+phm_get_voltage_id(&data->vddci_voltage_table,
+mm_table->entries[count].vddc - VDDC_VDDCI_DELTA);
+table->SamuLevel[count].MinVoltage.Phases = 1;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-					table->SamuLevel[count].Frequency, &dividers);
+table->SamuLevel[count].Frequency, &dividers);
 		PP_ASSERT_WITH_CODE((!result),
 			"can not find divide id for samu clock", return result);
 
 		table->SamuLevel[count].Divider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->SamuLevel[count].Frequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->SamuLevel[count].Frequency);
 	}
 
 	return result;
@@ -1446,9 +1446,9 @@ static int tonga_populate_memory_timing_parameters(
 /**
  * Setup parameters for the MC ARB.
  *
- * @param    hwmgr  the address of the powerplay hardware manager.
+* @param    hwmgr  the address of the powerplay hardware manager.
  * @return   always 0
- * This function is to be called from the SetPowerState table.
+* This function is to be called from the SetPowerState table.
  */
 static int tonga_program_memory_timing_parameters(struct pp_hwmgr *hwmgr)
 {
@@ -1503,7 +1503,7 @@ static int tonga_populate_smc_boot_level(struct pp_hwmgr *hwmgr,
 
 	if (result != 0) {
 		smu_data->smc_state_table.GraphicsBootLevel = 0;
-		pr_err("[powerplay] VBIOS did not find boot engine "
+pr_err("[powerplay] VBIOS did not find boot engine "
 				"clock value in dependency table. "
 				"Using Graphics DPM level 0 !");
 		result = 0;
@@ -1515,41 +1515,41 @@ static int tonga_populate_smc_boot_level(struct pp_hwmgr *hwmgr,
 
 	if (result != 0) {
 		smu_data->smc_state_table.MemoryBootLevel = 0;
-		pr_err("[powerplay] VBIOS did not find boot "
+pr_err("[powerplay] VBIOS did not find boot "
 				"engine clock value in dependency table."
 				"Using Memory DPM level 0 !");
 		result = 0;
 	}
 
-	table->BootVoltage.Vddc =
-		phm_get_voltage_id(&(data->vddc_voltage_table),
-			data->vbios_boot_state.vddc_bootup_value);
-	table->BootVoltage.VddGfx =
-		phm_get_voltage_id(&(data->vddgfx_voltage_table),
-			data->vbios_boot_state.vddgfx_bootup_value);
-	table->BootVoltage.Vddci =
-		phm_get_voltage_id(&(data->vddci_voltage_table),
-			data->vbios_boot_state.vddci_bootup_value);
-	table->BootMVdd = data->vbios_boot_state.mvdd_bootup_value;
+table->BootVoltage.Vddc =
+phm_get_voltage_id(&(data->vddc_voltage_table),
+data->vbios_boot_state.vddc_bootup_value);
+table->BootVoltage.VddGfx =
+phm_get_voltage_id(&(data->vddgfx_voltage_table),
+data->vbios_boot_state.vddgfx_bootup_value);
+table->BootVoltage.Vddci =
+phm_get_voltage_id(&(data->vddci_voltage_table),
+data->vbios_boot_state.vddci_bootup_value);
+table->BootMVdd = data->vbios_boot_state.mvdd_bootup_value;
 
-	CONVERT_FROM_HOST_TO_SMC_US(table->BootMVdd);
+CONVERT_FROM_HOST_TO_SMC_US(table->BootMVdd);
 
 	return result;
 }
 
 static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 {
-	uint32_t ro, efuse, efuse2, clock_freq, volt_without_cks,
+uint32_t ro, efuse, efuse2, clock_freq, volt_without_cks,
 			volt_with_cks, value;
-	uint16_t clock_freq_u16;
+uint16_t clock_freq_u16;
 	struct tonga_smumgr *smu_data =
 				(struct tonga_smumgr *)(hwmgr->smumgr->backend);
 	uint8_t type, i, j, cks_setting, stretch_amount, stretch_amount2,
 			volt_offset = 0;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_clock_voltage_dependency_table *sclk_table =
-			table_info->vdd_dep_on_sclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *sclk_table =
+table_info->vdd_dep_on_sclk;
 	uint32_t hw_revision, dev_id;
 	struct cgs_system_info sys_info = {0};
 
@@ -1590,7 +1590,7 @@ static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 	smu_data->smc_state_table.ClockStretcherAmount = stretch_amount;
 
 
-	/* Populate Sclk_CKS_masterEn0_7 and Sclk_voltageOffset */
+/* Populate Sclk_CKS_masterEn0_7 and Sclk_voltageOffset */
 	for (i = 0; i < sclk_table->count; i++) {
 		smu_data->smc_state_table.Sclk_CKS_masterEn0_7 |=
 				sclk_table->entries[i].cks_enable << i;
@@ -1612,7 +1612,7 @@ static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 		if (volt_without_cks >= volt_with_cks)
 			volt_offset = (uint8_t)(((volt_without_cks - volt_with_cks +
 					sclk_table->entries[i].cks_voffset) * 100 / 625) + 1);
-		smu_data->smc_state_table.Sclk_voltageOffset[i] = volt_offset;
+smu_data->smc_state_table.Sclk_voltageOffset[i] = volt_offset;
 	}
 
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC, PWR_CKS_ENABLE,
@@ -1640,18 +1640,18 @@ static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 	value = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 			ixPWR_CKS_CNTL);
 	value &= 0xFFC2FF87;
-	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].minFreq =
+smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].minFreq =
 			tonga_clock_stretcher_lookup_table[stretch_amount2][0];
-	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].maxFreq =
+smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].maxFreq =
 			tonga_clock_stretcher_lookup_table[stretch_amount2][1];
-	clock_freq_u16 = (uint16_t)(PP_SMC_TO_HOST_UL(smu_data->smc_state_table.
+clock_freq_u16 = (uint16_t)(PP_SMC_TO_HOST_UL(smu_data->smc_state_table.
 			GraphicsLevel[smu_data->smc_state_table.GraphicsDpmLevelCount - 1].
-			SclkFrequency) / 100);
+SclkFrequency) / 100);
 	if (tonga_clock_stretcher_lookup_table[stretch_amount2][0] <
-			clock_freq_u16 &&
+clock_freq_u16 &&
 	    tonga_clock_stretcher_lookup_table[stretch_amount2][1] >
-			clock_freq_u16) {
-		/* Program PWR_CKS_CNTL. CKS_USE_FOR_LOW_FREQ */
+clock_freq_u16) {
+/* Program PWR_CKS_CNTL. CKS_USE_FOR_LOW_FREQ */
 		value |= (tonga_clock_stretcher_lookup_table[stretch_amount2][3]) << 16;
 		/* Program PWR_CKS_CNTL. CKS_LDO_REFSEL */
 		value |= (tonga_clock_stretcher_lookup_table[stretch_amount2][2]) << 18;
@@ -1661,9 +1661,9 @@ static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 				 [stretch_amount]) << 3;
 	}
 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.CKS_LOOKUPTable.
-			CKS_LOOKUPTableEntry[0].minFreq);
+CKS_LOOKUPTableEntry[0].minFreq);
 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.CKS_LOOKUPTable.
-			CKS_LOOKUPTableEntry[0].maxFreq);
+CKS_LOOKUPTableEntry[0].maxFreq);
 	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].setting =
 			tonga_clock_stretcher_lookup_table[stretch_amount2][2] & 0x7F;
 	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].setting |=
@@ -1675,7 +1675,7 @@ static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 	/* Populate DDT Lookup Table */
 	for (i = 0; i < 4; i++) {
 		/* Assign the minimum and maximum VID stored
-		 * in the last row of Clock Stretcher Voltage Table.
+* in the last row of Clock Stretcher Voltage Table.
 		 */
 		smu_data->smc_state_table.ClockStretcherDataTable.
 		ClockStretcherDataTableEntry[i].minVID =
@@ -1683,21 +1683,21 @@ static int tonga_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 		smu_data->smc_state_table.ClockStretcherDataTable.
 		ClockStretcherDataTableEntry[i].maxVID =
 				(uint8_t) tonga_clock_stretcher_ddt_table[type][i][3];
-		/* Loop through each SCLK and check the frequency
-		 * to see if it lies within the frequency for clock stretcher.
+/* Loop through each SCLK and check the frequency
+* to see if it lies within the frequency for clock stretcher.
 		 */
 		for (j = 0; j < smu_data->smc_state_table.GraphicsDpmLevelCount; j++) {
 			cks_setting = 0;
-			clock_freq = PP_SMC_TO_HOST_UL(
-					smu_data->smc_state_table.GraphicsLevel[j].SclkFrequency);
-			/* Check the allowed frequency against the sclk level[j].
+clock_freq = PP_SMC_TO_HOST_UL(
+smu_data->smc_state_table.GraphicsLevel[j].SclkFrequency);
+/* Check the allowed frequency against the sclk level[j].
 			 *  Sclk's endianness has already been converted,
 			 *  and it's in 10Khz unit,
 			 *  as opposed to Data table, which is in Mhz unit.
 			 */
-			if (clock_freq >= tonga_clock_stretcher_ddt_table[type][i][0] * 100) {
+if (clock_freq >= tonga_clock_stretcher_ddt_table[type][i][0] * 100) {
 				cks_setting |= 0x2;
-				if (clock_freq < tonga_clock_stretcher_ddt_table[type][i][1] * 100)
+if (clock_freq < tonga_clock_stretcher_ddt_table[type][i][1] * 100)
 					cks_setting |= 0x1;
 			}
 			smu_data->smc_state_table.ClockStretcherDataTable.
@@ -1730,46 +1730,46 @@ static int tonga_populate_vr_config(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	uint16_t config;
 
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vdd_gfx_control) {
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vdd_gfx_control) {
 		/*  Splitted mode */
 		config = VR_SVI2_PLANE_1;
-		table->VRConfig |= (config<<VRCONF_VDDGFX_SHIFT);
+table->VRConfig |= (config<<VRCONF_VDDGFX_SHIFT);
 
-		if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
 			config = VR_SVI2_PLANE_2;
 			table->VRConfig |= config;
 		} else {
-			pr_err("VDDC and VDDGFX should "
+pr_err("VDDC and VDDGFX should "
 				"be both on SVI2 control in splitted mode !\n");
 		}
 	} else {
 		/* Merged mode  */
-		config = VR_MERGED_WITH_VDDC;
-		table->VRConfig |= (config<<VRCONF_VDDGFX_SHIFT);
+config = VR_MERGED_WITH_VDDC;
+table->VRConfig |= (config<<VRCONF_VDDGFX_SHIFT);
 
-		/* Set Vddc Voltage Controller  */
-		if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
+/* Set Vddc Voltage Controller  */
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
 			config = VR_SVI2_PLANE_1;
 			table->VRConfig |= config;
 		} else {
-			pr_err("VDDC should be on "
+pr_err("VDDC should be on "
 					"SVI2 control in merged mode !\n");
 		}
 	}
 
-	/* Set Vddci Voltage Controller  */
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vddci_control) {
+/* Set Vddci Voltage Controller  */
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vddci_control) {
 		config = VR_SVI2_PLANE_2;  /* only in merged mode */
-		table->VRConfig |= (config<<VRCONF_VDDCI_SHIFT);
-	} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->vddci_control) {
+table->VRConfig |= (config<<VRCONF_VDDCI_SHIFT);
+} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->vddci_control) {
 		config = VR_SMIO_PATTERN_1;
-		table->VRConfig |= (config<<VRCONF_VDDCI_SHIFT);
+table->VRConfig |= (config<<VRCONF_VDDCI_SHIFT);
 	}
 
-	/* Set Mvdd Voltage Controller */
-	if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->mvdd_control) {
+/* Set Mvdd Voltage Controller */
+if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->mvdd_control) {
 		config = VR_SMIO_PATTERN_2;
-		table->VRConfig |= (config<<VRCONF_MVDD_SHIFT);
+table->VRConfig |= (config<<VRCONF_MVDD_SHIFT);
 	}
 
 	return 0;
@@ -1779,7 +1779,7 @@ static int tonga_populate_vr_config(struct pp_hwmgr *hwmgr,
 /**
  * Initialize the ARB DRAM timing table's index field.
  *
- * @param    hwmgr  the address of the powerplay hardware manager.
+* @param    hwmgr  the address of the powerplay hardware manager.
  * @return   always 0
  */
 static int tonga_init_arb_table_index(struct pp_smumgr *smumgr)
@@ -1804,7 +1804,7 @@ static int tonga_init_arb_table_index(struct pp_smumgr *smumgr)
 		return result;
 
 	tmp &= 0x00FFFFFF;
-	tmp |= ((uint32_t)MC_CG_ARB_FREQ_F1) << 24;
+tmp |= ((uint32_t)MC_CG_ARB_FREQ_F1) << 24;
 
 	return smu7_write_smc_sram_dword(smumgr,
 			smu_data->smu7_data.arb_table_start, tmp, SMC_RAM_END);
@@ -1815,7 +1815,7 @@ static int tonga_populate_bapm_parameters_in_dpm_table(struct pp_hwmgr *hwmgr)
 {
 	struct tonga_smumgr *smu_data =
 				(struct tonga_smumgr *)(hwmgr->smumgr->backend);
-	const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
 	SMU72_Discrete_DpmTable  *dpm_table = &(smu_data->smc_state_table);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
@@ -1862,12 +1862,12 @@ static int tonga_populate_svi_load_line(struct pp_hwmgr *hwmgr)
 {
 	struct tonga_smumgr *smu_data =
 				(struct tonga_smumgr *)(hwmgr->smumgr->backend);
-	const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
 
-	smu_data->power_tune_table.SviLoadLineEn = defaults->svi_load_line_en;
-	smu_data->power_tune_table.SviLoadLineVddC = defaults->svi_load_line_vddC;
-	smu_data->power_tune_table.SviLoadLineTrimVddC = 3;
-	smu_data->power_tune_table.SviLoadLineOffsetVddC = 0;
+smu_data->power_tune_table.SviLoadLineEn = defaults->svi_load_line_en;
+smu_data->power_tune_table.SviLoadLineVddC = defaults->svi_load_line_vddC;
+smu_data->power_tune_table.SviLoadLineTrimVddC = 3;
+smu_data->power_tune_table.SviLoadLineOffsetVddC = 0;
 
 	return 0;
 }
@@ -1877,7 +1877,7 @@ static int tonga_populate_tdc_limit(struct pp_hwmgr *hwmgr)
 	uint16_t tdc_limit;
 	struct tonga_smumgr *smu_data =
 				(struct tonga_smumgr *)(hwmgr->smumgr->backend);
-	const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
 
@@ -1885,11 +1885,11 @@ static int tonga_populate_tdc_limit(struct pp_hwmgr *hwmgr)
 	 * for Fiji as requested by SMC team
 	 */
 	tdc_limit = (uint16_t)(table_info->cac_dtp_table->usTDC * 256);
-	smu_data->power_tune_table.TDC_VDDC_PkgLimit =
+smu_data->power_tune_table.TDC_VDDC_PkgLimit =
 			CONVERT_FROM_HOST_TO_SMC_US(tdc_limit);
-	smu_data->power_tune_table.TDC_VDDC_ThrottleReleaseLimitPerc =
-			defaults->tdc_vddc_throttle_release_limit_perc;
-	smu_data->power_tune_table.TDC_MAWt = defaults->tdc_mawt;
+smu_data->power_tune_table.TDC_VDDC_ThrottleReleaseLimitPerc =
+defaults->tdc_vddc_throttle_release_limit_perc;
+smu_data->power_tune_table.TDC_MAWt = defaults->tdc_mawt;
 
 	return 0;
 }
@@ -1898,7 +1898,7 @@ static int tonga_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset
 {
 	struct tonga_smumgr *smu_data =
 			(struct tonga_smumgr *)(hwmgr->smumgr->backend);
-	const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct tonga_pt_defaults *defaults = smu_data->power_tune_defaults;
 	uint32_t temp;
 
 	if (smu7_read_smc_sram_dword(hwmgr->smumgr,
@@ -1910,7 +1910,7 @@ static int tonga_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset
 				"(SviLoadLineEn) from SMC Failed !",
 				return -EINVAL);
 	else
-		smu_data->power_tune_table.TdcWaterfallCtl = defaults->tdc_waterfall_ctl;
+smu_data->power_tune_table.TdcWaterfallCtl = defaults->tdc_waterfall_ctl;
 
 	return 0;
 }
@@ -1923,7 +1923,7 @@ static int tonga_populate_temperature_scaler(struct pp_hwmgr *hwmgr)
 
 	/* Currently not used. Set all to zero. */
 	for (i = 0; i < 16; i++)
-		smu_data->power_tune_table.LPMLTemperatureScaler[i] = 0;
+smu_data->power_tune_table.LPMLTemperatureScaler[i] = 0;
 
 	return 0;
 }
@@ -1939,7 +1939,7 @@ static int tonga_populate_fuzzy_fan(struct pp_hwmgr *hwmgr)
 		usFanOutputSensitivity = hwmgr->thermal_controller.
 			advanceFanControlParameters.usDefaultFanOutputSensitivity;
 
-	smu_data->power_tune_table.FuzzyFan_PwmSetDelta =
+smu_data->power_tune_table.FuzzyFan_PwmSetDelta =
 			PP_HOST_TO_SMC_US(hwmgr->thermal_controller.
 					advanceFanControlParameters.usFanOutputSensitivity);
 	return 0;
@@ -1953,7 +1953,7 @@ static int tonga_populate_gnb_lpml(struct pp_hwmgr *hwmgr)
 
 	/* Currently not used. Set all to zero. */
 	for (i = 0; i < 16; i++)
-		smu_data->power_tune_table.GnbLPML[i] = 0;
+smu_data->power_tune_table.GnbLPML[i] = 0;
 
 	return 0;
 }
@@ -1969,16 +1969,16 @@ static int tonga_populate_bapm_vddc_base_leakage_sidd(struct pp_hwmgr *hwmgr)
 				(struct tonga_smumgr *)(hwmgr->smumgr->backend);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	uint16_t hi_sidd = smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd;
-	uint16_t lo_sidd = smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd;
+uint16_t hi_sidd = smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd;
+uint16_t lo_sidd = smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd;
 	struct phm_cac_tdp_table *cac_table = table_info->cac_dtp_table;
 
 	hi_sidd = (uint16_t)(cac_table->usHighCACLeakage / 100 * 256);
 	lo_sidd = (uint16_t)(cac_table->usLowCACLeakage / 100 * 256);
 
-	smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd =
+smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd =
 			CONVERT_FROM_HOST_TO_SMC_US(hi_sidd);
-	smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd =
+smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd =
 			CONVERT_FROM_HOST_TO_SMC_US(lo_sidd);
 
 	return 0;
@@ -1991,7 +1991,7 @@ static int tonga_populate_pm_fuses(struct pp_hwmgr *hwmgr)
 	uint32_t pm_fuse_table_offset;
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_PowerContainment)) {
+PHM_PlatformCaps_PowerContainment)) {
 		if (smu7_read_smc_sram_dword(hwmgr->smumgr,
 				SMU72_FIRMWARE_HEADER_LOCATION +
 				offsetof(SMU72_Firmware_Header, PmFuseTable),
@@ -2036,22 +2036,22 @@ static int tonga_populate_pm_fuses(struct pp_hwmgr *hwmgr)
 				return -EINVAL);
 
 		/* DW19 */
-		if (tonga_min_max_vgnb_lpml_id_from_bapm_vddc(hwmgr))
+if (tonga_min_max_vgnb_lpml_id_from_bapm_vddc(hwmgr))
 			PP_ASSERT_WITH_CODE(false,
 				"Attempt to populate GnbLPML "
 				"Min and Max Vid Failed !",
 				return -EINVAL);
 
 		/* DW20 */
-		if (tonga_populate_bapm_vddc_base_leakage_sidd(hwmgr))
+if (tonga_populate_bapm_vddc_base_leakage_sidd(hwmgr))
 			PP_ASSERT_WITH_CODE(
 				false,
-				"Attempt to populate BapmVddCBaseLeakage "
+"Attempt to populate BapmVddCBaseLeakage "
 				"Hi and Lo Sidd Failed !",
 				return -EINVAL);
 
 		if (smu7_copy_bytes_to_smc(hwmgr->smumgr, pm_fuse_table_offset,
-				(uint8_t *)&smu_data->power_tune_table,
+(uint8_t *)&smu_data->power_tune_table,
 				sizeof(struct SMU72_Discrete_PmFuses), SMC_RAM_END))
 			PP_ASSERT_WITH_CODE(false,
 					"Attempt to download PmFuseTable Failed !",
@@ -2210,13 +2210,13 @@ static void tonga_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
 			(struct  phm_ppt_v1_information *)(hwmgr->pptable);
 
 	if (table_info &&
-			table_info->cac_dtp_table->usPowerTuneDataSetID <= POWERTUNE_DEFAULT_SET_MAX &&
-			table_info->cac_dtp_table->usPowerTuneDataSetID)
-		smu_data->power_tune_defaults =
-				&tonga_power_tune_data_set_array
-				[table_info->cac_dtp_table->usPowerTuneDataSetID - 1];
+table_info->cac_dtp_table->usPowerTuneDataSetID <= POWERTUNE_DEFAULT_SET_MAX &&
+table_info->cac_dtp_table->usPowerTuneDataSetID)
+smu_data->power_tune_defaults =
+&tonga_power_tune_data_set_array
+[table_info->cac_dtp_table->usPowerTuneDataSetID - 1];
 	else
-		smu_data->power_tune_defaults = &tonga_power_tune_data_set_array[0];
+smu_data->power_tune_defaults = &tonga_power_tune_data_set_array[0];
 }
 
 static void tonga_save_default_power_profile(struct pp_hwmgr *hwmgr)
@@ -2226,18 +2226,18 @@ static void tonga_save_default_power_profile(struct pp_hwmgr *hwmgr)
 				data->smc_state_table.GraphicsLevel;
 	unsigned min_level = 1;
 
-	hwmgr->default_gfx_power_profile.activity_threshold =
+hwmgr->default_gfx_power_profile.activity_threshold =
 			be16_to_cpu(levels[0].ActivityLevel);
-	hwmgr->default_gfx_power_profile.up_hyst = levels[0].UpHyst;
-	hwmgr->default_gfx_power_profile.down_hyst = levels[0].DownHyst;
-	hwmgr->default_gfx_power_profile.type = AMD_PP_GFX_PROFILE;
+hwmgr->default_gfx_power_profile.up_hyst = levels[0].UpHyst;
+hwmgr->default_gfx_power_profile.down_hyst = levels[0].DownHyst;
+hwmgr->default_gfx_power_profile.type = AMD_PP_GFX_PROFILE;
 
-	hwmgr->default_compute_power_profile = hwmgr->default_gfx_power_profile;
-	hwmgr->default_compute_power_profile.type = AMD_PP_COMPUTE_PROFILE;
+hwmgr->default_compute_power_profile = hwmgr->default_gfx_power_profile;
+hwmgr->default_compute_power_profile.type = AMD_PP_COMPUTE_PROFILE;
 
 	/* Workaround compute SDMA instability: disable lowest SCLK
-	 * DPM level. Optimize compute power profile: Use only highest
-	 * 2 power levels (if more than 2 are available), Hysteresis:
+* DPM level. Optimize compute power profile: Use only highest
+* 2 power levels (if more than 2 are available), Hysteresis:
 	 * 0ms up, 5ms down
 	 */
 	if (data->smc_state_table.GraphicsDpmLevelCount > 2)
@@ -2246,20 +2246,20 @@ static void tonga_save_default_power_profile(struct pp_hwmgr *hwmgr)
 		min_level = 1;
 	else
 		min_level = 0;
-	hwmgr->default_compute_power_profile.min_sclk =
-			be32_to_cpu(levels[min_level].SclkFrequency);
-	hwmgr->default_compute_power_profile.up_hyst = 0;
-	hwmgr->default_compute_power_profile.down_hyst = 5;
+hwmgr->default_compute_power_profile.min_sclk =
+be32_to_cpu(levels[min_level].SclkFrequency);
+hwmgr->default_compute_power_profile.up_hyst = 0;
+hwmgr->default_compute_power_profile.down_hyst = 5;
 
-	hwmgr->gfx_power_profile = hwmgr->default_gfx_power_profile;
-	hwmgr->compute_power_profile = hwmgr->default_compute_power_profile;
+hwmgr->gfx_power_profile = hwmgr->default_gfx_power_profile;
+hwmgr->compute_power_profile = hwmgr->default_compute_power_profile;
 }
 
 /**
  * Initializes the SMC table and uploads it
  *
- * @param    hwmgr  the address of the powerplay hardware manager.
- * @param    pInput  the pointer to input data (PowerState)
+* @param    hwmgr  the address of the powerplay hardware manager.
+* @param    pInput  the pointer to input data (PowerState)
  * @return   always 0
  */
 int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
@@ -2278,10 +2278,10 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 
 	memset(&(smu_data->smc_state_table), 0x00, sizeof(smu_data->smc_state_table));
 
-	tonga_initialize_power_tune_defaults(hwmgr);
+tonga_initialize_power_tune_defaults(hwmgr);
 
-	if (SMU7_VOLTAGE_CONTROL_NONE != data->voltage_control)
-		tonga_populate_smc_voltage_tables(hwmgr, table);
+if (SMU7_VOLTAGE_CONTROL_NONE != data->voltage_control)
+tonga_populate_smc_voltage_tables(hwmgr, table);
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_AutomaticDCTransition))
@@ -2289,8 +2289,8 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_StepVddc))
-		table->SystemFlags |= PPSMC_SYSTEMFLAG_STEPVDDC;
+PHM_PlatformCaps_StepVddc))
+table->SystemFlags |= PPSMC_SYSTEMFLAG_STEPVDDC;
 
 	if (data->is_memory_gddr5)
 		table->SystemFlags |= PPSMC_SYSTEMFLAG_GDDR5;
@@ -2300,7 +2300,7 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 	if (i == 1 || i == 0)
 		table->SystemFlags |= 0x40;
 
-	if (data->ulv_supported && table_info->us_ulv_voltage_offset) {
+if (data->ulv_supported && table_info->us_ulv_voltage_offset) {
 		result = tonga_populate_ulv_state(hwmgr, table);
 		PP_ASSERT_WITH_CODE(!result,
 			"Failed to initialize ULV state !",
@@ -2366,10 +2366,10 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 			"Failed to populate Clock Stretcher Data Table !",
 			return result;);
 	}
-	table->GraphicsVoltageChangeEnable  = 1;
+table->GraphicsVoltageChangeEnable  = 1;
 	table->GraphicsThermThrottleEnable  = 1;
 	table->GraphicsInterval = 1;
-	table->VoltageInterval  = 1;
+table->VoltageInterval  = 1;
 	table->ThermalInterval  = 1;
 	table->TemperatureLimitHigh =
 		table_info->cac_dtp_table->usTargetOperatingTemp *
@@ -2377,9 +2377,9 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 	table->TemperatureLimitLow =
 		(table_info->cac_dtp_table->usTargetOperatingTemp - 1) *
 		SMU7_Q88_FORMAT_CONVERSION_UNIT;
-	table->MemoryVoltageChangeEnable  = 1;
+table->MemoryVoltageChangeEnable  = 1;
 	table->MemoryInterval  = 1;
-	table->VoltageResponseTime  = 0;
+table->VoltageResponseTime  = 0;
 	table->PhaseResponseTime  = 0;
 	table->MemoryThermThrottleEnable  = 1;
 
@@ -2387,9 +2387,9 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 	* Cail reads current link status and reports it as cap (we cannot
 	* change this due to some previous issues we had)
 	* SMC drops the link status to lowest level after enabling
-	* DPM by PowerPlay. After pnp or toggling CF, driver gets reloaded again
+* DPM by PowerPlay. After pnp or toggling CF, driver gets reloaded again
 	* but this time Cail reads current link status which was set to low by
-	* SMC and reports it as cap to powerplay
+* SMC and reports it as cap to powerplay
 	* To avoid it, we set PCIeBootLinkLevel to highest dpm level
 	*/
 	PP_ASSERT_WITH_CODE((1 <= data->dpm_table.pcie_speed_table.count),
@@ -2407,7 +2407,7 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 	table->ThermGpio  = 17;
 	table->SclkStepSize = 0x4000;
 
-	if (atomctrl_get_pp_assign_pin(hwmgr, VDDC_VRHOT_GPIO_PINID,
+if (atomctrl_get_pp_assign_pin(hwmgr, VDDC_VRHOT_GPIO_PINID,
 						&gpio_pin_assignment)) {
 		table->VRHotGpio = gpio_pin_assignment.uc_gpio_pin_bit_shift;
 		phm_cap_set(hwmgr->platform_descriptor.platformCaps,
@@ -2478,7 +2478,7 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 	CONVERT_FROM_HOST_TO_SMC_UL(table->SclkStepSize);
 	CONVERT_FROM_HOST_TO_SMC_US(table->TemperatureLimitHigh);
 	CONVERT_FROM_HOST_TO_SMC_US(table->TemperatureLimitLow);
-	CONVERT_FROM_HOST_TO_SMC_US(table->VoltageResponseTime);
+CONVERT_FROM_HOST_TO_SMC_US(table->VoltageResponseTime);
 	CONVERT_FROM_HOST_TO_SMC_US(table->PhaseResponseTime);
 
 	/* Upload all dpm data to SMC memory.(dpm level, dpm level count etc) */
@@ -2504,7 +2504,7 @@ int tonga_init_smc_table(struct pp_hwmgr *hwmgr)
 	PP_ASSERT_WITH_CODE((!result),
 		"Failed to populate initialize MC Reg table !", return result);
 
-	tonga_save_default_power_profile(hwmgr);
+tonga_save_default_power_profile(hwmgr);
 
 	return 0;
 }
@@ -2672,8 +2672,8 @@ uint32_t tonga_get_offsetof(uint32_t type, uint32_t member)
 		switch (member) {
 		case HandshakeDisables:
 			return offsetof(SMU72_SoftRegisters, HandshakeDisables);
-		case VoltageChangeTimeout:
-			return offsetof(SMU72_SoftRegisters, VoltageChangeTimeout);
+case VoltageChangeTimeout:
+return offsetof(SMU72_SoftRegisters, VoltageChangeTimeout);
 		case AverageGraphicsActivity:
 			return offsetof(SMU72_SoftRegisters, AverageGraphicsActivity);
 		case PreVBlankGap:
@@ -2710,14 +2710,14 @@ uint32_t tonga_get_mac_definition(uint32_t value)
 		return SMU72_MAX_LEVELS_LINK;
 	case SMU_MAX_ENTRIES_SMIO:
 		return SMU72_MAX_ENTRIES_SMIO;
-	case SMU_MAX_LEVELS_VDDC:
-		return SMU72_MAX_LEVELS_VDDC;
-	case SMU_MAX_LEVELS_VDDGFX:
-		return SMU72_MAX_LEVELS_VDDGFX;
-	case SMU_MAX_LEVELS_VDDCI:
-		return SMU72_MAX_LEVELS_VDDCI;
-	case SMU_MAX_LEVELS_MVDD:
-		return SMU72_MAX_LEVELS_MVDD;
+case SMU_MAX_LEVELS_VDDC:
+return SMU72_MAX_LEVELS_VDDC;
+case SMU_MAX_LEVELS_VDDGFX:
+return SMU72_MAX_LEVELS_VDDGFX;
+case SMU_MAX_LEVELS_VDDCI:
+return SMU72_MAX_LEVELS_VDDCI;
+case SMU_MAX_LEVELS_MVDD:
+return SMU72_MAX_LEVELS_MVDD;
 	}
 	pr_warn("can't get the mac value %x\n", value);
 
@@ -2750,11 +2750,11 @@ static int tonga_update_uvd_smc_table(struct pp_hwmgr *hwmgr)
 				mm_boot_level_offset, mm_boot_level_value);
 
 	if (!phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_UVDDPM) ||
+PHM_PlatformCaps_UVDDPM) ||
 		phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_StablePState))
 		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-				PPSMC_MSG_UVDDPM_SetEnabledMask,
+PPSMC_MSG_UVDDPM_SetEnabledMask,
 				(uint32_t)(1 << smu_data->smc_state_table.UvdBootLevel));
 	return 0;
 }
@@ -2838,7 +2838,7 @@ int tonga_update_smc_table(struct pp_hwmgr *hwmgr, uint32_t type)
 /**
  * Get the location of various tables inside the FW image.
  *
- * @param    hwmgr  the address of the powerplay hardware manager.
+* @param    hwmgr  the address of the powerplay hardware manager.
  * @return   always 0
  */
 int tonga_process_firmware_header(struct pp_hwmgr *hwmgr)
@@ -3066,7 +3066,7 @@ static int tonga_copy_vbios_smc_reg_table(const pp_atomctrl_mc_reg_table *table,
  * 2.   when we see mmMC_SEQ_RESERVE_M, bit[15:0] EMRS2, need to be write to
  *      mmMC_PMG_CMD_MRS1/_LP[15:0].
  * 3.   need to set these data for each clock range
- * @param    hwmgr the address of the powerplay hardware manager.
+* @param    hwmgr the address of the powerplay hardware manager.
  * @param    table the address of MCRegTable
  * @return   always 0
  */
@@ -3245,7 +3245,7 @@ int tonga_initialize_mc_reg_table(struct pp_hwmgr *hwmgr)
 bool tonga_is_dpm_running(struct pp_hwmgr *hwmgr)
 {
 	return (1 == PHM_READ_INDIRECT_FIELD(hwmgr->device,
-			CGS_IND_REG__SMC, FEATURE_STATUS, VOLTAGE_CONTROLLER_ON))
+CGS_IND_REG__SMC, FEATURE_STATUS, VOLTAGE_CONTROLLER_ON))
 			? true : false;
 }
 

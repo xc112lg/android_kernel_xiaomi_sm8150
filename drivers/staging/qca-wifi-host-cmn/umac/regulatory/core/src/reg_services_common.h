@@ -49,8 +49,8 @@
 #define REG_MAX_24GHZ_CH_FREQ channel_map[MAX_24GHZ_CHANNEL].center_freq
 
 #define REG_IS_24GHZ_CH_FREQ(freq) \
-	(((freq) >= REG_MIN_24GHZ_CH_FREQ) &&   \
-	((freq) <= REG_MAX_24GHZ_CH_FREQ))
+(((freq) >= REG_MIN_24GHZ_CH_FREQ) &&   \
+((freq) <= REG_MAX_24GHZ_CH_FREQ))
 
 #ifdef CONFIG_CHAN_FREQ_API
 #define REG_MIN_5GHZ_CH_FREQ channel_map[MIN_5GHZ_CHANNEL].center_freq
@@ -61,8 +61,8 @@
 #define REG_MAX_49GHZ_CH_FREQ channel_map[MAX_49GHZ_CHANNEL].center_freq
 
 #define REG_IS_49GHZ_FREQ(freq) \
-	(((freq) >= REG_MIN_49GHZ_CH_FREQ) &&   \
-	((freq) <= REG_MAX_49GHZ_CH_FREQ))
+(((freq) >= REG_MIN_49GHZ_CH_FREQ) &&   \
+((freq) <= REG_MAX_49GHZ_CH_FREQ))
 
 #ifdef CONFIG_CHAN_NUM_API
 #define REG_IS_5GHZ_CH(chan_num) \
@@ -71,8 +71,8 @@
 #endif /* CONFIG_CHAN_NUM_API */
 
 #define REG_IS_5GHZ_FREQ(freq) \
-	(((freq) >= channel_map[MIN_5GHZ_CHANNEL].center_freq) &&	\
-	 ((freq) <= channel_map[MAX_5GHZ_CHANNEL].center_freq))
+(((freq) >= channel_map[MIN_5GHZ_CHANNEL].center_freq) &&	\
+((freq) <= channel_map[MAX_5GHZ_CHANNEL].center_freq))
 
 #ifdef CONFIG_BAND_6GHZ
 #define FREQ_LEFT_SHIFT         55
@@ -117,7 +117,7 @@ extern const struct chan_map channel_map_global[];
 enum channel_enum reg_get_chan_enum(uint8_t chan_num);
 
 /**
- * reg_get_channel_list_with_power() - Provides the channel list with power
+* reg_get_channel_list_with_power() - Provides the channel list with power
  * @pdev: Pointer to pdev
  * @ch_list: Pointer to the channel list.
  * @num_chan: Pointer to save number of channels
@@ -125,7 +125,7 @@ enum channel_enum reg_get_chan_enum(uint8_t chan_num);
  * Return: QDF_STATUS
  */
 QDF_STATUS reg_get_channel_list_with_power(struct wlan_objmgr_pdev *pdev,
-					   struct channel_power *ch_list,
+struct channel_power *ch_list,
 					   uint8_t *num_chan);
 
 /**
@@ -214,21 +214,21 @@ void reg_get_current_dfs_region(struct wlan_objmgr_pdev *pdev,
 
 #ifdef CONFIG_CHAN_NUM_API
 /**
- * reg_get_channel_reg_power() - Get the txpower for the given channel
+* reg_get_channel_reg_power() - Get the txpower for the given channel
  * @pdev: Pointer to pdev
  * @chan_num: Channel number
  *
- * Return: txpower
+* Return: txpower
  */
 uint32_t reg_get_channel_reg_power(struct wlan_objmgr_pdev *pdev,
 				   uint8_t chan_num);
 
 /**
- * reg_get_channel_freq() - Get the channel frequency
+* reg_get_channel_freq() - Get the channel frequency
  * @pdev: Pointer to pdev
  * @chan_num: Channel number
  *
- * Return: frequency
+* Return: frequency
  */
 qdf_freq_t reg_get_channel_freq(struct wlan_objmgr_pdev *pdev,
 				uint8_t chan_num);
@@ -296,9 +296,9 @@ bool reg_is_dfs_ch(struct wlan_objmgr_pdev *pdev, uint8_t chan);
 #endif /* CONFIG_CHAN_NUM_API */
 
 /**
- * reg_freq_to_chan() - Get channel number from frequency.
+* reg_freq_to_chan() - Get channel number from frequency.
  * @pdev: Pointer to pdev
- * @freq: Channel frequency
+* @freq: Channel frequency
  *
  * Return: Channel number if success, otherwise 0
  */
@@ -306,20 +306,20 @@ uint8_t reg_freq_to_chan(struct wlan_objmgr_pdev *pdev, qdf_freq_t freq);
 
 #ifdef CONFIG_CHAN_NUM_API
 /**
- * reg_chan_to_freq() - Get frequency from channel number
+* reg_chan_to_freq() - Get frequency from channel number
  * @pdev: Pointer to pdev
  * @chan_num: Channel number
  *
- * Return: Channel frequency if success, otherwise 0
+* Return: Channel frequency if success, otherwise 0
  */
 qdf_freq_t reg_chan_to_freq(struct wlan_objmgr_pdev *pdev, uint8_t chan_num);
 
 /**
- * reg_legacy_chan_to_freq() - Get freq from chan noumber, for 2G and 5G
+* reg_legacy_chan_to_freq() - Get freq from chan noumber, for 2G and 5G
  * @pdev: Pointer to pdev
  * @chan_num: Channel number
  *
- * Return: Channel frequency if success, otherwise 0
+* Return: Channel frequency if success, otherwise 0
  */
 uint16_t reg_legacy_chan_to_freq(struct wlan_objmgr_pdev *pdev,
 				 uint8_t chan_num);
@@ -414,17 +414,17 @@ QDF_STATUS reg_set_hal_reg_cap(
 /**
  * reg_chan_in_range() - Check if the given channel is in pdev's channel range
  * @chan_list: Pointer to regulatory channel list.
- * @low_freq_2g: Low frequency 2G.
- * @high_freq_2g: High frequency 2G.
- * @low_freq_5g: Low frequency 5G.
- * @high_freq_5g: High frequency 5G.
+* @low_freq_2g: Low frequency 2G.
+* @high_freq_2g: High frequency 2G.
+* @low_freq_5g: Low frequency 5G.
+* @high_freq_5g: High frequency 5G.
  * @ch_enum: Channel enum.
  *
  * Return: true if ch_enum is with in pdev's channel range, else false.
  */
 bool reg_chan_in_range(struct regulatory_channel *chan_list,
-		       qdf_freq_t low_freq_2g, qdf_freq_t high_freq_2g,
-		       qdf_freq_t low_freq_5g, qdf_freq_t high_freq_5g,
+qdf_freq_t low_freq_2g, qdf_freq_t high_freq_2g,
+qdf_freq_t low_freq_5g, qdf_freq_t high_freq_5g,
 		       enum channel_enum ch_enum);
 
 /**
@@ -474,72 +474,72 @@ bool reg_is_5ghz_ch(uint32_t chan);
 #endif /* CONFIG_CHAN_NUM_API */
 
 /**
- * reg_is_24ghz_ch_freq() - Check if the given channel frequency is 2.4GHz
- * @freq: Channel frequency
+* reg_is_24ghz_ch_freq() - Check if the given channel frequency is 2.4GHz
+* @freq: Channel frequency
  *
- * Return: true if channel frequency is 2.4GHz, else false
+* Return: true if channel frequency is 2.4GHz, else false
  */
 bool reg_is_24ghz_ch_freq(uint32_t freq);
 
 /**
- * reg_is_5ghz_ch_freq() - Check if the given channel frequency is 5GHz
- * @freq: Channel frequency
+* reg_is_5ghz_ch_freq() - Check if the given channel frequency is 5GHz
+* @freq: Channel frequency
  *
- * Return: true if channel frequency is 5GHz, else false
+* Return: true if channel frequency is 5GHz, else false
  */
 bool reg_is_5ghz_ch_freq(uint32_t freq);
 
 /**
- * reg_is_freq_indoor() - Check if the input frequency is an indoor frequency.
+* reg_is_freq_indoor() - Check if the input frequency is an indoor frequency.
  * @pdev: Pointer to pdev.
- * @freq: Channel frequency.
+* @freq: Channel frequency.
  *
- * Return: Return true if the input frequency is indoor, else false.
+* Return: Return true if the input frequency is indoor, else false.
  */
 bool reg_is_freq_indoor(struct wlan_objmgr_pdev *pdev, qdf_freq_t freq);
 
 #ifdef CONFIG_BAND_6GHZ
 /**
- * reg_is_6ghz_chan_freq() - Check if the given channel frequency is 6GHz
- * @freq: Channel frequency
+* reg_is_6ghz_chan_freq() - Check if the given channel frequency is 6GHz
+* @freq: Channel frequency
  *
- * Return: true if channel frequency is 6GHz, else false
+* Return: true if channel frequency is 6GHz, else false
  */
 bool reg_is_6ghz_chan_freq(uint16_t freq);
 
 /**
- * REG_IS_6GHZ_FREQ() - Check if the given channel frequency is 6GHz
- * @freq: Channel frequency
+* REG_IS_6GHZ_FREQ() - Check if the given channel frequency is 6GHz
+* @freq: Channel frequency
  *
- * Return: true if channel frequency is 6GHz, else false
+* Return: true if channel frequency is 6GHz, else false
  */
 static inline bool REG_IS_6GHZ_FREQ(uint16_t freq)
 {
-	return ((freq >= REG_MIN_6GHZ_CHAN_FREQ) &&
-		(freq <= REG_MAX_6GHZ_CHAN_FREQ));
+return ((freq >= REG_MIN_6GHZ_CHAN_FREQ) &&
+(freq <= REG_MAX_6GHZ_CHAN_FREQ));
 }
 
 /**
- * reg_is_6ghz_psc_chan_freq() - Check if the given 6GHz channel frequency is
- * preferred scanning channel frequency.
- * @freq: Channel frequency
+* reg_is_6ghz_psc_chan_freq() - Check if the given 6GHz channel frequency is
+* preferred scanning channel frequency.
+* @freq: Channel frequency
  *
- * Return: true if given 6GHz channel frequency is preferred scanning channel
- * frequency, else false
+* Return: true if given 6GHz channel frequency is preferred scanning channel
+* frequency, else false
  */
 bool reg_is_6ghz_psc_chan_freq(uint16_t freq);
 
 /**
- * reg_min_6ghz_chan_freq() - Get minimum 6GHz channel center frequency
+* reg_min_6ghz_chan_freq() - Get minimum 6GHz channel center frequency
  *
- * Return: Minimum 6GHz channel center frequency
+* Return: Minimum 6GHz channel center frequency
  */
 uint16_t reg_min_6ghz_chan_freq(void);
 
 /**
- * reg_max_6ghz_chan_freq() - Get maximum 6GHz channel center frequency
+* reg_max_6ghz_chan_freq() - Get maximum 6GHz channel center frequency
  *
- * Return: Maximum 6GHz channel center frequency
+* Return: Maximum 6GHz channel center frequency
  */
 uint16_t reg_max_6ghz_chan_freq(void);
 #else
@@ -585,13 +585,13 @@ uint16_t reg_get_band_channel_list(struct wlan_objmgr_pdev *pdev,
 				   struct regulatory_channel *channel_list);
 
 /**
- * reg_chan_band_to_freq - Return channel frequency based on the channel number
+* reg_chan_band_to_freq - Return channel frequency based on the channel number
  * and band.
  * @pdev: pdev ptr
  * @chan: Channel Number
  * @band_mask: Bitmap for bands
  *
- * Return: Return channel frequency or return 0, if the channel is disabled or
+* Return: Return channel frequency or return 0, if the channel is disabled or
  * if the input channel number or band_mask is invalid. Composite bands are
  * supported only for 2.4Ghz and 5Ghz bands. For other bands the following
  * priority is given: 1) 6Ghz 2) 5Ghz 3) 2.4Ghz.
@@ -601,10 +601,10 @@ qdf_freq_t reg_chan_band_to_freq(struct wlan_objmgr_pdev *pdev,
 				 uint8_t band_mask);
 
 /**
- * reg_is_49ghz_freq() - Check if the given channel frequency is 4.9GHz
- * @freq: Channel frequency
+* reg_is_49ghz_freq() - Check if the given channel frequency is 4.9GHz
+* @freq: Channel frequency
  *
- * Return: true if channel frequency is 4.9GHz, else false
+* Return: true if channel frequency is 4.9GHz, else false
  */
 bool reg_is_49ghz_freq(qdf_freq_t freq);
 
@@ -617,10 +617,10 @@ bool reg_is_49ghz_freq(qdf_freq_t freq);
 qdf_freq_t reg_ch_num(uint32_t ch_enum);
 
 /**
- * reg_ch_to_freq() - Get channel frequency from channel enum
+* reg_ch_to_freq() - Get channel frequency from channel enum
  * @ch_enum: Channel enum
  *
- * Return: channel frequency
+* Return: channel frequency
  */
 qdf_freq_t reg_ch_to_freq(uint32_t ch_enum);
 
@@ -674,30 +674,30 @@ uint8_t reg_max_5ghz_ch_num(void);
 
 #ifdef CONFIG_CHAN_FREQ_API
 /**
- * reg_min_24ghz_chan_freq() - Get minimum 2.4GHz channel frequency
+* reg_min_24ghz_chan_freq() - Get minimum 2.4GHz channel frequency
  *
- * Return: Minimum 2.4GHz channel frequency
+* Return: Minimum 2.4GHz channel frequency
  */
 qdf_freq_t reg_min_24ghz_chan_freq(void);
 
 /**
- * reg_max_24ghz_chan_freq() - Get maximum 2.4GHz channel frequency
+* reg_max_24ghz_chan_freq() - Get maximum 2.4GHz channel frequency
  *
- * Return: Maximum 2.4GHz channel frequency
+* Return: Maximum 2.4GHz channel frequency
  */
 qdf_freq_t reg_max_24ghz_chan_freq(void);
 
 /**
- * reg_min_5ghz_chan_freq() - Get minimum 5GHz channel frequency
+* reg_min_5ghz_chan_freq() - Get minimum 5GHz channel frequency
  *
- * Return: Minimum 5GHz channel frequency
+* Return: Minimum 5GHz channel frequency
  */
 qdf_freq_t reg_min_5ghz_chan_freq(void);
 
 /**
- * reg_max_5ghz_chan_freq() - Get maximum 5GHz channel frequency
+* reg_max_5ghz_chan_freq() - Get maximum 5GHz channel frequency
  *
- * Return: Maximum 5GHz channel frequency
+* Return: Maximum 5GHz channel frequency
  */
 qdf_freq_t reg_max_5ghz_chan_freq(void);
 #endif /* CONFIG_CHAN_FREQ_API */
@@ -743,31 +743,31 @@ QDF_STATUS reg_disable_chan_coex(struct wlan_objmgr_pdev *pdev,
 
 #ifdef CONFIG_CHAN_FREQ_API
 /**
- * reg_is_freq_present_in_cur_chan_list() - Check the input frequency
+* reg_is_freq_present_in_cur_chan_list() - Check the input frequency
  * @pdev: Pointer to pdev
- * @freq: Channel center frequency in MHz
+* @freq: Channel center frequency in MHz
  *
- * Check if the input channel center frequency is present in the current
+* Check if the input channel center frequency is present in the current
  * channel list
  *
- * Return: Return true if channel center frequency is present in the current
+* Return: Return true if channel center frequency is present in the current
  * channel list, else return false.
  */
 bool
 reg_is_freq_present_in_cur_chan_list(struct wlan_objmgr_pdev *pdev,
-				     qdf_freq_t freq);
+qdf_freq_t freq);
 
 /**
- * reg_get_chan_enum_for_freq() - Get channel enum for given channel frequency
- * @freq: Channel Frequency
+* reg_get_chan_enum_for_freq() - Get channel enum for given channel frequency
+* @freq: Channel Frequency
  *
  * Return: Channel enum
  */
 enum channel_enum reg_get_chan_enum_for_freq(qdf_freq_t freq);
 
 /**
- * reg_get_channel_list_with_power_for_freq() - Provides the channel list with
- * power
+* reg_get_channel_list_with_power_for_freq() - Provides the channel list with
+* power
  * @pdev: Pointer to pdev
  * @ch_list: Pointer to the channel list.
  * @num_chan: Pointer to save number of channels
@@ -776,112 +776,112 @@ enum channel_enum reg_get_chan_enum_for_freq(qdf_freq_t freq);
  */
 QDF_STATUS
 reg_get_channel_list_with_power_for_freq(struct wlan_objmgr_pdev *pdev,
-					 struct channel_power *ch_list,
+struct channel_power *ch_list,
 					 uint8_t *num_chan);
 
 /**
- * reg_get_channel_state_for_freq() - Get channel state from regulatory
+* reg_get_channel_state_for_freq() - Get channel state from regulatory
  * @pdev: Pointer to pdev
- * @freq: channel center frequency.
+* @freq: channel center frequency.
  *
  * Return: channel state
  */
 enum channel_state reg_get_channel_state_for_freq(struct wlan_objmgr_pdev *pdev,
-						  qdf_freq_t freq);
+qdf_freq_t freq);
 
 /**
- * reg_get_5g_bonded_channel_state_for_freq() - Get channel state for
- * 5G bonded channel using the channel frequency
+* reg_get_5g_bonded_channel_state_for_freq() - Get channel state for
+* 5G bonded channel using the channel frequency
  * @pdev: Pointer to pdev
- * @freq: channel center frequency.
+* @freq: channel center frequency.
  * @bw: channel band width
  *
  * Return: channel state
  */
 enum channel_state
 reg_get_5g_bonded_channel_state_for_freq(struct wlan_objmgr_pdev *pdev,
-					 qdf_freq_t freq,
+qdf_freq_t freq,
 					 enum phy_ch_width bw);
 
 /**
- * reg_get_2g_bonded_channel_state_for_freq() - Get channel state for 2G
+* reg_get_2g_bonded_channel_state_for_freq() - Get channel state for 2G
  * bonded channel
- * @freq: channel center frequency.
+* @freq: channel center frequency.
  * @pdev: Pointer to pdev
- * @oper_ch_freq: Primary channel center frequency
- * @sec_ch_freq: Secondary channel center frequency
+* @oper_ch_freq: Primary channel center frequency
+* @sec_ch_freq: Secondary channel center frequency
  * @bw: channel band width
  *
  * Return: channel state
  */
 enum channel_state
 reg_get_2g_bonded_channel_state_for_freq(struct wlan_objmgr_pdev *pdev,
-					 qdf_freq_t oper_ch_freq,
-					 qdf_freq_t sec_ch_freq,
+qdf_freq_t oper_ch_freq,
+qdf_freq_t sec_ch_freq,
 					 enum phy_ch_width bw);
 
 /**
- * reg_set_channel_params_for_freq () - Sets channel parameteres for given
+* reg_set_channel_params_for_freq () - Sets channel parameteres for given
  * bandwidth
  * @pdev: Pointer to pdev
- * @freq: Channel center frequency.
- * @sec_ch_2g_freq: Secondary 2G channel frequency
+* @freq: Channel center frequency.
+* @sec_ch_2g_freq: Secondary 2G channel frequency
  * @ch_params: pointer to the channel parameters.
  *
  * Return: None
  */
 void reg_set_channel_params_for_freq(struct wlan_objmgr_pdev *pdev,
-				     qdf_freq_t freq,
-				     qdf_freq_t sec_ch_2g_freq,
+qdf_freq_t freq,
+qdf_freq_t sec_ch_2g_freq,
 				     struct ch_params *ch_params);
 
 /**
- * reg_get_channel_reg_power_for_freq() - Get the txpower for the given channel
+* reg_get_channel_reg_power_for_freq() - Get the txpower for the given channel
  * @pdev: Pointer to pdev
- * @freq: Channel frequency
+* @freq: Channel frequency
  *
- * Return: txpower
+* Return: txpower
  */
 uint8_t reg_get_channel_reg_power_for_freq(struct wlan_objmgr_pdev *pdev,
-					   qdf_freq_t freq);
+qdf_freq_t freq);
 
 /**
- * reg_update_nol_ch_for_freq () - Updates NOL channels in current channel list
+* reg_update_nol_ch_for_freq () - Updates NOL channels in current channel list
  * @pdev: pointer to pdev object
- * @chan_freq_list: pointer to NOL channel list
+* @chan_freq_list: pointer to NOL channel list
  * @num_ch: No.of channels in list
  * @update_nol: set/reset the NOL status
  *
  * Return: None
  */
 void reg_update_nol_ch_for_freq(struct wlan_objmgr_pdev *pdev,
-				uint16_t *chan_freq_list,
+uint16_t *chan_freq_list,
 				uint8_t num_chan,
 				bool nol_chan);
 /**
- * reg_is_dfs_for_freq () - Checks the channel state for DFS
+* reg_is_dfs_for_freq () - Checks the channel state for DFS
  * @pdev: pdev ptr
- * @freq: Channel center frequency
+* @freq: Channel center frequency
  *
  * Return: true or false
  */
 bool reg_is_dfs_for_freq(struct wlan_objmgr_pdev *pdev, qdf_freq_t freq);
 
 /**
- * reg_chan_freq_is_49ghz() - Check if the input channel center frequency is
+* reg_chan_freq_is_49ghz() - Check if the input channel center frequency is
  * 4.9GHz
  * @pdev: Pdev pointer
- * @chan_num: Input channel center frequency
+* @chan_num: Input channel center frequency
  *
- * Return: true if the frequency is 4.9GHz else false.
+* Return: true if the frequency is 4.9GHz else false.
  */
 bool reg_chan_freq_is_49ghz(qdf_freq_t freq);
 
 /**
- * reg_update_nol_history_ch_for_freq() - Set nol-history flag for the channels
+* reg_update_nol_history_ch_for_freq() - Set nol-history flag for the channels
  * in the list.
  * @pdev: Pdev ptr.
- * @chan_list: Input channel freqeuncy list.
+* @chan_list: Input channel freqeuncy list.
  * @num_ch: Number of channels.
  * @nol_history_ch: NOL-History flag.
  *
@@ -893,69 +893,69 @@ void reg_update_nol_history_ch_for_freq(struct wlan_objmgr_pdev *pdev,
 					bool nol_history_chan);
 
 /**
- * reg_is_same_5g_band_freqs() - Check if given channel center
- * frequencies have same band
- * @freq1: Channel Center Frequency 1
- * @freq2: Channel Center Frequency 2
+* reg_is_same_5g_band_freqs() - Check if given channel center
+* frequencies have same band
+* @freq1: Channel Center Frequency 1
+* @freq2: Channel Center Frequency 2
  *
- * Return: true if both the frequencies has the same band.
+* Return: true if both the frequencies has the same band.
  */
 bool reg_is_same_band_freqs(qdf_freq_t freq1, qdf_freq_t freq2);
 
 /**
- * reg_is_frequency_valid_5g_sbs() Check if the given frequency is 5G SBS.
- * @curfreq: current channel frequency
- * @newfreq: new channel center frequency
+* reg_is_frequency_valid_5g_sbs() Check if the given frequency is 5G SBS.
+* @curfreq: current channel frequency
+* @newfreq: new channel center frequency
  *
- * Return: true if the given center frequency is a valid 5G SBS
+* Return: true if the given center frequency is a valid 5G SBS
  */
 bool reg_is_frequency_valid_5g_sbs(qdf_freq_t curfreq, qdf_freq_t newfreq);
 
 /**
- * reg_freq_to_band() - Get band from channel frequency
- * @chan_num: channel frequency
+* reg_freq_to_band() - Get band from channel frequency
+* @chan_num: channel frequency
  *
  * Return: wifi band
  */
 enum reg_wifi_band reg_freq_to_band(qdf_freq_t freq);
 
 /**
- * reg_min_chan_freq() - minimum channel frequency supported
+* reg_min_chan_freq() - minimum channel frequency supported
  *
- * Return: channel frequency
+* Return: channel frequency
  */
 qdf_freq_t reg_min_chan_freq(void);
 
 /**
- * reg_max_chan_freq() - maximum channel frequency supported
+* reg_max_chan_freq() - maximum channel frequency supported
  *
- * Return: channel frequency
+* Return: channel frequency
  */
 qdf_freq_t reg_max_chan_freq(void);
 
 /**
- * reg_get_5g_bonded_channel_for_freq()- Return the channel state for a
- * 5G or 6G channel frequency based on the channel width and bonded channel
+* reg_get_5g_bonded_channel_for_freq()- Return the channel state for a
+* 5G or 6G channel frequency based on the channel width and bonded channel
  * @pdev: Pointer to pdev.
- * @freq: Channel center frequency.
+* @freq: Channel center frequency.
  * @ch_width: Channel Width.
- * @bonded_chan_ptr_ptr: Pointer to bonded_channel_freq.
+* @bonded_chan_ptr_ptr: Pointer to bonded_channel_freq.
  *
  * Return: Channel State
  */
 enum channel_state
 reg_get_5g_bonded_channel_for_freq(struct wlan_objmgr_pdev *pdev,
-				   uint16_t freq,
+uint16_t freq,
 				   enum phy_ch_width ch_width,
-				   const struct bonded_channel_freq
+const struct bonded_channel_freq
 				   **bonded_chan_ptr_ptr);
 #endif /* CONFIG_CHAN_FREQ_API */
 
 /**
- * reg_get_max_tx_power() - Get maximum tx power from the current channel list
+* reg_get_max_tx_power() - Get maximum tx power from the current channel list
  * @pdev: Pointer to pdev
  *
- * Return: return the value of the maximum tx power in the current channel list
+* Return: return the value of the maximum tx power in the current channel list
  *
  */
 uint8_t reg_get_max_tx_power(struct wlan_objmgr_pdev *pdev);

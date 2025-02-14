@@ -133,6 +133,6 @@ void __init cbe_pervasive_init(void)
 					    CBE_PMD_PAUSE_ZERO_CONTROL);
 	}
 
-	ppc_md.power_save = cbe_power_save;
+ppc_md.power_save = cbe_power_save;
 	ppc_md.system_reset_exception = cbe_system_reset_exception;
 }

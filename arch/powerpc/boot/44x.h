@@ -1,5 +1,5 @@
 /*
- * PowerPC 44x related functions
+* PowerPC 44x related functions
  *
  * Copyright 2007 David Gibson, IBM Corporation.
  *

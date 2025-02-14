@@ -26,7 +26,7 @@
 struct cpu_sync {
 	int cpu;
 	unsigned int input_boost_min;
-	unsigned int input_boost_freq;
+unsigned int input_boost_freq;
 };
 
 static DEFINE_PER_CPU(struct cpu_sync, sync_info);
@@ -63,7 +63,7 @@ static int set_input_boost_freq(const char *buf, const struct kernel_param *kp)
 		if (sscanf(buf, "%u\n", &val) != 1)
 			return -EINVAL;
 		for_each_possible_cpu(i)
-			per_cpu(sync_info, i).input_boost_freq = val;
+per_cpu(sync_info, i).input_boost_freq = val;
 		goto check_enable;
 	}
 
@@ -78,14 +78,14 @@ static int set_input_boost_freq(const char *buf, const struct kernel_param *kp)
 		if (cpu >= num_possible_cpus())
 			return -EINVAL;
 
-		per_cpu(sync_info, cpu).input_boost_freq = val;
+per_cpu(sync_info, cpu).input_boost_freq = val;
 		cp = strnchr(cp, PAGE_SIZE - (cp - buf), ' ');
 		cp++;
 	}
 
 check_enable:
 	for_each_possible_cpu(i) {
-		if (per_cpu(sync_info, i).input_boost_freq) {
+if (per_cpu(sync_info, i).input_boost_freq) {
 			enabled = true;
 			break;
 		}
@@ -103,33 +103,33 @@ static int get_input_boost_freq(char *buf, const struct kernel_param *kp)
 	for_each_possible_cpu(cpu) {
 		s = &per_cpu(sync_info, cpu);
 		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt,
-				"%d:%u ", cpu, s->input_boost_freq);
+"%d:%u ", cpu, s->input_boost_freq);
 	}
 	cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "\n");
 	return cnt;
 }
 
 static const struct kernel_param_ops param_ops_input_boost_freq = {
-	.set = set_input_boost_freq,
-	.get = get_input_boost_freq,
+.set = set_input_boost_freq,
+.get = get_input_boost_freq,
 };
 module_param_cb(input_boost_freq, &param_ops_input_boost_freq, NULL, 0644);
 
 /*
- * The CPUFREQ_ADJUST notifier is used to override the current policy min to
- * make sure policy min >= boost_min. The cpufreq framework then does the job
+* The CPUFREQ_ADJUST notifier is used to override the current policy min to
+* make sure policy min >= boost_min. The cpufreq framework then does the job
  * of enforcing the new policy.
  */
 static int boost_adjust_notify(struct notifier_block *nb, unsigned long val,
 				void *data)
 {
-	struct cpufreq_policy *policy = data;
+struct cpufreq_policy *policy = data;
 	unsigned int cpu = policy->cpu;
 	struct cpu_sync *s = &per_cpu(sync_info, cpu);
 	unsigned int ib_min = s->input_boost_min;
 
 	switch (val) {
-	case CPUFREQ_ADJUST:
+case CPUFREQ_ADJUST:
 		if (!ib_min)
 			break;
 
@@ -137,7 +137,7 @@ static int boost_adjust_notify(struct notifier_block *nb, unsigned long val,
 			 cpu, policy->min);
 		pr_debug("CPU%u boost min: %u kHz\n", cpu, ib_min);
 
-		cpufreq_verify_within_limits(policy, ib_min, UINT_MAX);
+cpufreq_verify_within_limits(policy, ib_min, UINT_MAX);
 
 		pr_debug("CPU%u policy min after boost: %u kHz\n",
 			 cpu, policy->min);
@@ -159,7 +159,7 @@ static void update_policy_online(void)
 	get_online_cpus();
 	for_each_online_cpu(i) {
 		pr_debug("Updating policy for CPU%d\n", i);
-		cpufreq_update_policy(i);
+cpufreq_update_policy(i);
 	}
 	put_online_cpus();
 }
@@ -202,7 +202,7 @@ static void do_input_boost(struct work_struct *work)
 	pr_debug("Setting input boost min for all CPUs\n");
 	for_each_possible_cpu(i) {
 		i_sync_info = &per_cpu(sync_info, i);
-		i_sync_info->input_boost_min = i_sync_info->input_boost_freq;
+i_sync_info->input_boost_min = i_sync_info->input_boost_freq;
 	}
 
 	/* Update policies for all online CPUs */
@@ -252,7 +252,7 @@ static int cpuboost_input_connect(struct input_handler *handler,
 
 	handle->dev = dev;
 	handle->handler = handler;
-	handle->name = "cpufreq";
+handle->name = "cpufreq";
 
 	error = input_register_handle(handle);
 	if (error)
@@ -327,7 +327,7 @@ static int cpu_boost_init(void)
 		s = &per_cpu(sync_info, cpu);
 		s->cpu = cpu;
 	}
-	cpufreq_register_notifier(&boost_adjust_nb, CPUFREQ_POLICY_NOTIFIER);
+cpufreq_register_notifier(&boost_adjust_nb, CPUFREQ_POLICY_NOTIFIER);
 
 	ret = input_register_handler(&cpuboost_input_handler);
 	return 0;

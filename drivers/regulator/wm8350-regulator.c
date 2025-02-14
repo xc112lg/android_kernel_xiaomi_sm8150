@@ -1,5 +1,5 @@
 /*
- * wm8350.c  --  Voltage and current regulation for the Wolfson WM8350 PMIC
+* wm8350.c  --  Voltage and current regulation for the Wolfson WM8350 PMIC
  *
  * Copyright 2007, 2008 Wolfson Microelectronics PLC.
  *
@@ -173,7 +173,7 @@ static int wm8350_isink_enable(struct regulator_dev *rdev)
 		switch (wm8350->pmic.isink_A_dcdc) {
 		case WM8350_DCDC_2:
 		case WM8350_DCDC_5:
-			wm8350_set_bits(wm8350, WM8350_POWER_MGMT_7,
+wm8350_set_bits(wm8350, WM8350_POWER_MGMT_7,
 					WM8350_CS1_ENA);
 			wm8350_set_bits(wm8350, WM8350_CSA_FLASH_CONTROL,
 					WM8350_CS1_DRIVE);
@@ -189,7 +189,7 @@ static int wm8350_isink_enable(struct regulator_dev *rdev)
 		switch (wm8350->pmic.isink_B_dcdc) {
 		case WM8350_DCDC_2:
 		case WM8350_DCDC_5:
-			wm8350_set_bits(wm8350, WM8350_POWER_MGMT_7,
+wm8350_set_bits(wm8350, WM8350_POWER_MGMT_7,
 					WM8350_CS2_ENA);
 			wm8350_set_bits(wm8350, WM8350_CSB_FLASH_CONTROL,
 					WM8350_CS2_DRIVE);
@@ -220,7 +220,7 @@ static int wm8350_isink_disable(struct regulator_dev *rdev)
 			wm8350_clear_bits(wm8350, WM8350_DCDC_LDO_REQUESTED,
 					  1 << (wm8350->pmic.isink_A_dcdc -
 						WM8350_DCDC_1));
-			wm8350_clear_bits(wm8350, WM8350_POWER_MGMT_7,
+wm8350_clear_bits(wm8350, WM8350_POWER_MGMT_7,
 					  WM8350_CS1_ENA);
 			break;
 		default:
@@ -234,7 +234,7 @@ static int wm8350_isink_disable(struct regulator_dev *rdev)
 			wm8350_clear_bits(wm8350, WM8350_DCDC_LDO_REQUESTED,
 					  1 << (wm8350->pmic.isink_B_dcdc -
 						WM8350_DCDC_1));
-			wm8350_clear_bits(wm8350, WM8350_POWER_MGMT_7,
+wm8350_clear_bits(wm8350, WM8350_POWER_MGMT_7,
 					  WM8350_CS2_ENA);
 			break;
 		default:
@@ -342,16 +342,16 @@ static int wm8350_dcdc_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 
 	switch (dcdc) {
 	case WM8350_DCDC_1:
-		volt_reg = WM8350_DCDC1_LOW_POWER;
+volt_reg = WM8350_DCDC1_LOW_POWER;
 		break;
 	case WM8350_DCDC_3:
-		volt_reg = WM8350_DCDC3_LOW_POWER;
+volt_reg = WM8350_DCDC3_LOW_POWER;
 		break;
 	case WM8350_DCDC_4:
-		volt_reg = WM8350_DCDC4_LOW_POWER;
+volt_reg = WM8350_DCDC4_LOW_POWER;
 		break;
 	case WM8350_DCDC_6:
-		volt_reg = WM8350_DCDC6_LOW_POWER;
+volt_reg = WM8350_DCDC6_LOW_POWER;
 		break;
 	case WM8350_DCDC_2:
 	case WM8350_DCDC_5:
@@ -359,7 +359,7 @@ static int wm8350_dcdc_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 		return -EINVAL;
 	}
 
-	sel = regulator_map_voltage_linear(rdev, uV, uV);
+sel = regulator_map_voltage_linear(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -377,27 +377,27 @@ static int wm8350_dcdc_set_suspend_enable(struct regulator_dev *rdev)
 
 	switch (dcdc) {
 	case WM8350_DCDC_1:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC1_LOW_POWER)
+val = wm8350_reg_read(wm8350, WM8350_DCDC1_LOW_POWER)
 			& ~WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC1_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC1_LOW_POWER,
 			val | wm8350->pmic.dcdc1_hib_mode);
 		break;
 	case WM8350_DCDC_3:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC3_LOW_POWER)
+val = wm8350_reg_read(wm8350, WM8350_DCDC3_LOW_POWER)
 			& ~WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC3_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC3_LOW_POWER,
 			val | wm8350->pmic.dcdc3_hib_mode);
 		break;
 	case WM8350_DCDC_4:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC4_LOW_POWER)
+val = wm8350_reg_read(wm8350, WM8350_DCDC4_LOW_POWER)
 			& ~WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC4_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC4_LOW_POWER,
 			val | wm8350->pmic.dcdc4_hib_mode);
 		break;
 	case WM8350_DCDC_6:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC6_LOW_POWER)
+val = wm8350_reg_read(wm8350, WM8350_DCDC6_LOW_POWER)
 			& ~WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC6_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC6_LOW_POWER,
 			val | wm8350->pmic.dcdc6_hib_mode);
 		break;
 	case WM8350_DCDC_2:
@@ -417,27 +417,27 @@ static int wm8350_dcdc_set_suspend_disable(struct regulator_dev *rdev)
 
 	switch (dcdc) {
 	case WM8350_DCDC_1:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC1_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC1_LOW_POWER);
 		wm8350->pmic.dcdc1_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC1_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC1_LOW_POWER,
 				 val | WM8350_DCDC_HIB_MODE_DIS);
 		break;
 	case WM8350_DCDC_3:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC3_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC3_LOW_POWER);
 		wm8350->pmic.dcdc3_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC3_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC3_LOW_POWER,
 				 val | WM8350_DCDC_HIB_MODE_DIS);
 		break;
 	case WM8350_DCDC_4:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC4_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC4_LOW_POWER);
 		wm8350->pmic.dcdc4_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC4_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC4_LOW_POWER,
 				 val | WM8350_DCDC_HIB_MODE_DIS);
 		break;
 	case WM8350_DCDC_6:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC6_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC6_LOW_POWER);
 		wm8350->pmic.dcdc6_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
-		wm8350_reg_write(wm8350, WM8350_DCDC6_LOW_POWER,
+wm8350_reg_write(wm8350, WM8350_DCDC6_LOW_POWER,
 				 val | WM8350_DCDC_HIB_MODE_DIS);
 		break;
 	case WM8350_DCDC_2:
@@ -557,22 +557,22 @@ static int wm8350_ldo_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 
 	switch (ldo) {
 	case WM8350_LDO_1:
-		volt_reg = WM8350_LDO1_LOW_POWER;
+volt_reg = WM8350_LDO1_LOW_POWER;
 		break;
 	case WM8350_LDO_2:
-		volt_reg = WM8350_LDO2_LOW_POWER;
+volt_reg = WM8350_LDO2_LOW_POWER;
 		break;
 	case WM8350_LDO_3:
-		volt_reg = WM8350_LDO3_LOW_POWER;
+volt_reg = WM8350_LDO3_LOW_POWER;
 		break;
 	case WM8350_LDO_4:
-		volt_reg = WM8350_LDO4_LOW_POWER;
+volt_reg = WM8350_LDO4_LOW_POWER;
 		break;
 	default:
 		return -EINVAL;
 	}
 
-	sel = regulator_map_voltage_linear_range(rdev, uV, uV);
+sel = regulator_map_voltage_linear_range(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -590,16 +590,16 @@ static int wm8350_ldo_set_suspend_enable(struct regulator_dev *rdev)
 
 	switch (ldo) {
 	case WM8350_LDO_1:
-		volt_reg = WM8350_LDO1_LOW_POWER;
+volt_reg = WM8350_LDO1_LOW_POWER;
 		break;
 	case WM8350_LDO_2:
-		volt_reg = WM8350_LDO2_LOW_POWER;
+volt_reg = WM8350_LDO2_LOW_POWER;
 		break;
 	case WM8350_LDO_3:
-		volt_reg = WM8350_LDO3_LOW_POWER;
+volt_reg = WM8350_LDO3_LOW_POWER;
 		break;
 	case WM8350_LDO_4:
-		volt_reg = WM8350_LDO4_LOW_POWER;
+volt_reg = WM8350_LDO4_LOW_POWER;
 		break;
 	default:
 		return -EINVAL;
@@ -619,16 +619,16 @@ static int wm8350_ldo_set_suspend_disable(struct regulator_dev *rdev)
 
 	switch (ldo) {
 	case WM8350_LDO_1:
-		volt_reg = WM8350_LDO1_LOW_POWER;
+volt_reg = WM8350_LDO1_LOW_POWER;
 		break;
 	case WM8350_LDO_2:
-		volt_reg = WM8350_LDO2_LOW_POWER;
+volt_reg = WM8350_LDO2_LOW_POWER;
 		break;
 	case WM8350_LDO_3:
-		volt_reg = WM8350_LDO3_LOW_POWER;
+volt_reg = WM8350_LDO3_LOW_POWER;
 		break;
 	case WM8350_LDO_4:
-		volt_reg = WM8350_LDO4_LOW_POWER;
+volt_reg = WM8350_LDO4_LOW_POWER;
 		break;
 	default:
 		return -EINVAL;
@@ -942,17 +942,17 @@ static unsigned int wm8350_dcdc_get_optimum_mode(struct regulator_dev *rdev,
 }
 
 static const struct regulator_ops wm8350_dcdc_ops = {
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
 	.get_mode = wm8350_dcdc_get_mode,
 	.set_mode = wm8350_dcdc_set_mode,
 	.get_optimum_mode = wm8350_dcdc_get_optimum_mode,
-	.set_suspend_voltage = wm8350_dcdc_set_suspend_voltage,
+.set_suspend_voltage = wm8350_dcdc_set_suspend_voltage,
 	.set_suspend_enable = wm8350_dcdc_set_suspend_enable,
 	.set_suspend_disable = wm8350_dcdc_set_suspend_disable,
 	.set_suspend_mode = wm8350_dcdc_set_suspend_mode,
@@ -967,15 +967,15 @@ static const struct regulator_ops wm8350_dcdc2_5_ops = {
 };
 
 static const struct regulator_ops wm8350_ldo_ops = {
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
 	.get_mode = wm8350_ldo_get_mode,
-	.set_suspend_voltage = wm8350_ldo_set_suspend_voltage,
+.set_suspend_voltage = wm8350_ldo_set_suspend_voltage,
 	.set_suspend_enable = wm8350_ldo_set_suspend_enable,
 	.set_suspend_disable = wm8350_ldo_set_suspend_disable,
 };
@@ -995,8 +995,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_DCDC_1,
 		.ops = &wm8350_dcdc_ops,
 		.irq = WM8350_IRQ_UV_DC1,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
 		.min_uV = 850000,
 		.uV_step = 25000,
 		.vsel_reg = WM8350_DCDC1_CONTROL,
@@ -1010,7 +1010,7 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_DCDC_2,
 		.ops = &wm8350_dcdc2_5_ops,
 		.irq = WM8350_IRQ_UV_DC2,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.enable_reg = WM8350_DCDC_LDO_REQUESTED,
 		.enable_mask = WM8350_DC2_ENA,
 		.owner = THIS_MODULE,
@@ -1020,8 +1020,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_DCDC_3,
 		.ops = &wm8350_dcdc_ops,
 		.irq = WM8350_IRQ_UV_DC3,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
 		.min_uV = 850000,
 		.uV_step = 25000,
 		.vsel_reg = WM8350_DCDC3_CONTROL,
@@ -1035,8 +1035,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_DCDC_4,
 		.ops = &wm8350_dcdc_ops,
 		.irq = WM8350_IRQ_UV_DC4,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
 		.min_uV = 850000,
 		.uV_step = 25000,
 		.vsel_reg = WM8350_DCDC4_CONTROL,
@@ -1050,7 +1050,7 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_DCDC_5,
 		.ops = &wm8350_dcdc2_5_ops,
 		.irq = WM8350_IRQ_UV_DC5,
-		.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 		.enable_reg = WM8350_DCDC_LDO_REQUESTED,
 		.enable_mask = WM8350_DC5_ENA,
 		.owner = THIS_MODULE,
@@ -1060,8 +1060,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_DCDC_6,
 		.ops = &wm8350_dcdc_ops,
 		.irq = WM8350_IRQ_UV_DC6,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_DCDC_MAX_VSEL + 1,
 		.min_uV = 850000,
 		.uV_step = 25000,
 		.vsel_reg = WM8350_DCDC6_CONTROL,
@@ -1075,8 +1075,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_LDO_1,
 		.ops = &wm8350_ldo_ops,
 		.irq = WM8350_IRQ_UV_LDO1,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_LDO1_VSEL_MASK + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_LDO1_VSEL_MASK + 1,
 		.linear_ranges = wm8350_ldo_ranges,
 		.n_linear_ranges = ARRAY_SIZE(wm8350_ldo_ranges),
 		.vsel_reg = WM8350_LDO1_CONTROL,
@@ -1090,8 +1090,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_LDO_2,
 		.ops = &wm8350_ldo_ops,
 		.irq = WM8350_IRQ_UV_LDO2,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_LDO2_VSEL_MASK + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_LDO2_VSEL_MASK + 1,
 		.linear_ranges = wm8350_ldo_ranges,
 		.n_linear_ranges = ARRAY_SIZE(wm8350_ldo_ranges),
 		.vsel_reg = WM8350_LDO2_CONTROL,
@@ -1105,8 +1105,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_LDO_3,
 		.ops = &wm8350_ldo_ops,
 		.irq = WM8350_IRQ_UV_LDO3,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_LDO3_VSEL_MASK + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_LDO3_VSEL_MASK + 1,
 		.linear_ranges = wm8350_ldo_ranges,
 		.n_linear_ranges = ARRAY_SIZE(wm8350_ldo_ranges),
 		.vsel_reg = WM8350_LDO3_CONTROL,
@@ -1120,8 +1120,8 @@ static const struct regulator_desc wm8350_reg[NUM_WM8350_REGULATORS] = {
 		.id = WM8350_LDO_4,
 		.ops = &wm8350_ldo_ops,
 		.irq = WM8350_IRQ_UV_LDO4,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8350_LDO4_VSEL_MASK + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8350_LDO4_VSEL_MASK + 1,
 		.linear_ranges = wm8350_ldo_ranges,
 		.n_linear_ranges = ARRAY_SIZE(wm8350_ldo_ranges),
 		.vsel_reg = WM8350_LDO4_CONTROL,
@@ -1159,7 +1159,7 @@ static irqreturn_t pmic_uv_handler(int irq, void *data)
 					      NULL);
 	else
 		regulator_notifier_call_chain(rdev,
-					      REGULATOR_EVENT_UNDER_VOLTAGE,
+REGULATOR_EVENT_UNDER_VOLTAGE,
 					      NULL);
 	mutex_unlock(&rdev->mutex);
 
@@ -1180,19 +1180,19 @@ static int wm8350_regulator_probe(struct platform_device *pdev)
 	/* do any regulatior specific init */
 	switch (pdev->id) {
 	case WM8350_DCDC_1:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC1_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC1_LOW_POWER);
 		wm8350->pmic.dcdc1_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
 		break;
 	case WM8350_DCDC_3:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC3_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC3_LOW_POWER);
 		wm8350->pmic.dcdc3_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
 		break;
 	case WM8350_DCDC_4:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC4_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC4_LOW_POWER);
 		wm8350->pmic.dcdc4_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
 		break;
 	case WM8350_DCDC_6:
-		val = wm8350_reg_read(wm8350, WM8350_DCDC6_LOW_POWER);
+val = wm8350_reg_read(wm8350, WM8350_DCDC6_LOW_POWER);
 		wm8350->pmic.dcdc6_hib_mode = val & WM8350_DCDC_HIB_MODE_MASK;
 		break;
 	}
@@ -1286,7 +1286,7 @@ EXPORT_SYMBOL_GPL(wm8350_register_regulator);
  * @param pdata Configuration for the LED.
  *
  * The WM8350 supports the use of an ISINK together with a DCDC to
- * provide a power-efficient LED driver.  This function registers the
+* provide a power-efficient LED driver.  This function registers the
  * regulators and instantiates the platform device for a LED.  The
  * operating modes for the LED regulators must be configured using
  * wm8350_isink_set_flash(), wm8350_dcdc25_set_mode() and

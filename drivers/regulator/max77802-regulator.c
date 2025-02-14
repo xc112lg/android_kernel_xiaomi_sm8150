@@ -118,7 +118,7 @@ static int max77802_set_suspend_disable(struct regulator_dev *rdev)
 }
 
 /*
- * Some LDOs support Low Power Mode while the system is running.
+* Some LDOs support Low Power Mode while the system is running.
  *
  * LDOs 1, 3, 20, 21.
  */
@@ -131,7 +131,7 @@ static int max77802_set_mode(struct regulator_dev *rdev, unsigned int mode)
 
 	switch (mode) {
 	case REGULATOR_MODE_STANDBY:
-		val = MAX77802_OPMODE_LP;	/* ON in Low Power Mode */
+val = MAX77802_OPMODE_LP;	/* ON in Low Power Mode */
 		break;
 	case REGULATOR_MODE_NORMAL:
 		val = MAX77802_OPMODE_NORMAL;	/* ON in Normal Mode */
@@ -201,8 +201,8 @@ static int max77802_set_suspend_mode(struct regulator_dev *rdev,
 	case REGULATOR_MODE_STANDBY:
 		/*
 		 * If the regulator opmode is normal then enable
-		 * ON in Low Power Mode by PWRREQ. If the mode is
-		 * already Low Power then no action is required.
+* ON in Low Power Mode by PWRREQ. If the mode is
+* already Low Power then no action is required.
 		 */
 		if (max77802->opmode[id] == MAX77802_OPMODE_NORMAL)
 			val = MAX77802_LP_PWRREQ;
@@ -211,12 +211,12 @@ static int max77802_set_suspend_mode(struct regulator_dev *rdev,
 		break;
 	case REGULATOR_MODE_NORMAL:
 		/*
-		 * If the regulator operating mode is Low Power then
+* If the regulator operating mode is Low Power then
 		 * normal is not a valid opmode in suspend. If the
 		 * mode is already normal then no action is required.
 		 */
 		if (max77802->opmode[id] == MAX77802_OPMODE_LP)
-			dev_warn(&rdev->dev, "%s: in Low Power: 0x%x invalid\n",
+dev_warn(&rdev->dev, "%s: in Low Power: 0x%x invalid\n",
 				 rdev->desc->name, mode);
 		return 0;
 	default:
@@ -301,14 +301,14 @@ static int max77802_set_ramp_delay_4bit(struct regulator_dev *rdev,
  * LDOs 2, 4-19, 22-35
  */
 static const struct regulator_ops max77802_ldo_ops_logic1 = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77802_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_suspend_disable	= max77802_set_suspend_disable,
 	.set_suspend_mode	= max77802_set_suspend_mode,
 };
@@ -317,14 +317,14 @@ static const struct regulator_ops max77802_ldo_ops_logic1 = {
  * LDOs 1, 20, 21, 3
  */
 static const struct regulator_ops max77802_ldo_ops_logic2 = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77802_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_mode		= max77802_set_mode,
 	.get_mode		= max77802_get_mode,
 	.set_suspend_mode	= max77802_set_suspend_mode,
@@ -332,28 +332,28 @@ static const struct regulator_ops max77802_ldo_ops_logic2 = {
 
 /* BUCKS 1, 6 */
 static const struct regulator_ops max77802_buck_16_dvs_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77802_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= max77802_set_ramp_delay_4bit,
 	.set_suspend_disable	= max77802_set_suspend_disable,
 };
 
 /* BUCKs 2-4 */
 static const struct regulator_ops max77802_buck_234_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77802_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= max77802_set_ramp_delay_2bit,
 	.set_suspend_disable	= max77802_set_suspend_disable,
 	.set_suspend_mode	= max77802_set_suspend_mode,
@@ -361,14 +361,14 @@ static const struct regulator_ops max77802_buck_234_ops = {
 
 /* BUCKs 5, 7-10 */
 static const struct regulator_ops max77802_buck_dvs_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77802_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= max77802_set_ramp_delay_2bit,
 	.set_suspend_disable	= max77802_set_suspend_disable,
 };
@@ -381,12 +381,12 @@ static const struct regulator_ops max77802_buck_dvs_ops = {
 	.id		= MAX77802_LDO##num,				\
 	.supply_name	= "inl"#supply,					\
 	.ops		= &max77802_ldo_ops_logic##log,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= 800000,					\
 	.uV_step	= 50000,					\
 	.ramp_delay	= MAX77802_RAMP_DELAY,				\
-	.n_voltages	= 1 << 6,					\
+.n_voltages	= 1 << 6,					\
 	.vsel_reg	= MAX77802_REG_LDO1CTRL1 + num - 1,		\
 	.vsel_mask	= MAX77802_VSEL_MASK,				\
 	.enable_reg	= MAX77802_REG_LDO1CTRL1 + num - 1,		\
@@ -402,12 +402,12 @@ static const struct regulator_ops max77802_buck_dvs_ops = {
 	.id		= MAX77802_LDO##num,				\
 	.supply_name	= "inl"#supply,					\
 	.ops		= &max77802_ldo_ops_logic##log,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= 800000,					\
 	.uV_step	= 25000,					\
 	.ramp_delay	= MAX77802_RAMP_DELAY,				\
-	.n_voltages	= 1 << 6,					\
+.n_voltages	= 1 << 6,					\
 	.vsel_reg	= MAX77802_REG_LDO1CTRL1 + num - 1,		\
 	.vsel_mask	= MAX77802_VSEL_MASK,				\
 	.enable_reg	= MAX77802_REG_LDO1CTRL1 + num - 1,		\
@@ -423,12 +423,12 @@ static const struct regulator_ops max77802_buck_dvs_ops = {
 	.id		= MAX77802_BUCK##num,				\
 	.supply_name	= "inb"#num,					\
 	.ops		= &max77802_buck_16_dvs_ops,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= 612500,					\
 	.uV_step	= 6250,						\
 	.ramp_delay	= MAX77802_RAMP_DELAY,				\
-	.n_voltages	= 1 << 8,					\
+.n_voltages	= 1 << 8,					\
 	.vsel_reg	= MAX77802_REG_BUCK ## num ## DVS1,		\
 	.vsel_mask	= MAX77802_DVS_VSEL_MASK,			\
 	.enable_reg	= MAX77802_REG_BUCK ## num ## CTRL,		\
@@ -444,12 +444,12 @@ static const struct regulator_ops max77802_buck_dvs_ops = {
 	.id		= MAX77802_BUCK##num,				\
 	.supply_name	= "inb"#num,					\
 	.ops		= &max77802_buck_234_ops,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= 600000,					\
 	.uV_step	= 6250,						\
 	.ramp_delay	= MAX77802_RAMP_DELAY,				\
-	.n_voltages	= 0x91,						\
+.n_voltages	= 0x91,						\
 	.vsel_reg	= MAX77802_REG_BUCK ## num ## DVS1,		\
 	.vsel_mask	= MAX77802_DVS_VSEL_MASK,			\
 	.enable_reg	= MAX77802_REG_BUCK ## num ## CTRL1,		\
@@ -466,12 +466,12 @@ static const struct regulator_ops max77802_buck_dvs_ops = {
 	.id		= MAX77802_BUCK##num,				\
 	.supply_name	= "inb"#num,					\
 	.ops		= &max77802_buck_dvs_ops,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= 750000,					\
 	.uV_step	= 50000,					\
 	.ramp_delay	= MAX77802_RAMP_DELAY,				\
-	.n_voltages	= 1 << 6,					\
+.n_voltages	= 1 << 6,					\
 	.vsel_reg	= MAX77802_REG_BUCK5OUT,			\
 	.vsel_mask	= MAX77802_VSEL_MASK,				\
 	.enable_reg	= MAX77802_REG_BUCK5CTRL,			\
@@ -487,12 +487,12 @@ static const struct regulator_ops max77802_buck_dvs_ops = {
 	.id		= MAX77802_BUCK##num,				\
 	.supply_name	= "inb"#num,					\
 	.ops		= &max77802_buck_dvs_ops,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= 750000,					\
 	.uV_step	= 50000,					\
 	.ramp_delay	= MAX77802_RAMP_DELAY,				\
-	.n_voltages	= 1 << 6,					\
+.n_voltages	= 1 << 6,					\
 	.vsel_reg	= MAX77802_REG_BUCK7OUT + (num - 7) * 3,	\
 	.vsel_mask	= MAX77802_VSEL_MASK,				\
 	.enable_reg	= MAX77802_REG_BUCK7CTRL + (num - 7) * 3,	\

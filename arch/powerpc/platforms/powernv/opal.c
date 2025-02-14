@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL high level interfaces
+* PowerNV OPAL high level interfaces
  *
  * Copyright 2011 IBM Corp.
  *
@@ -81,7 +81,7 @@ void opal_configure_cores(void)
 #endif
 
 	/*
-	 * POWER9 always support running hash:
+* POWER9 always support running hash:
 	 *  ie. Host hash  supports  hash guests
 	 *      Host radix supports  hash/radix guests
 	 */
@@ -126,7 +126,7 @@ int __init early_init_dt_scan_opal(unsigned long node,
 		 opal.size, sizep, runtimesz);
 
 	if (of_flat_dt_is_compatible(node, "ibm,opal-v3")) {
-		powerpc_firmware_features |= FW_FEATURE_OPAL;
+powerpc_firmware_features |= FW_FEATURE_OPAL;
 		pr_info("OPAL detected !\n");
 	} else {
 		panic("OPAL != V3 detected, no longer supported.\n");
@@ -196,7 +196,7 @@ static int __init opal_register_exception_handlers(void)
 #ifdef __BIG_ENDIAN__
 	u64 glue;
 
-	if (!(powerpc_firmware_features & FW_FEATURE_OPAL))
+if (!(powerpc_firmware_features & FW_FEATURE_OPAL))
 		return -ENODEV;
 
 	/* Hookup some exception handlers except machine check. We use the
@@ -209,7 +209,7 @@ static int __init opal_register_exception_handlers(void)
 	 * OPAL_HANDLE_HMI token. If yes, then don't ask OPAL to patch
 	 * the HMI interrupt and we catch it directly in Linux.
 	 *
-	 * For older firmware (i.e currently released POWER8 System Firmware
+* For older firmware (i.e currently released POWER8 System Firmware
 	 * as of today <= SV810_087), we fallback to old behavior and let OPAL
 	 * patch the HMI vector and handle it inside OPAL firmware.
 	 *
@@ -884,10 +884,10 @@ static int __init opal_init(void)
 	/* Initialise OPAL kmsg dumper for flushing console on panic */
 	opal_kmsg_init();
 
-	/* Initialise OPAL powercap interface */
-	opal_powercap_init();
+/* Initialise OPAL powercap interface */
+opal_powercap_init();
 
-	/* Initialise OPAL Power-Shifting-Ratio interface */
+/* Initialise OPAL Power-Shifting-Ratio interface */
 	opal_psr_init();
 
 	/* Initialise OPAL sensor groups */

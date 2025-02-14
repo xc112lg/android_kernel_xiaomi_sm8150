@@ -106,12 +106,12 @@ static void sme_ps_fill_uapsd_req_params(struct mac_context *mac_ctx,
 
 	uapsdParams->voTriggerEnabled =
 		LIM_UAPSD_GET(ACVO, uapsd_trigger_mask);
-	if (ps_param->ps_state != FULL_POWER_MODE) {
+if (ps_param->ps_state != FULL_POWER_MODE) {
 		uapsdParams->enable_ps = true;
 		*ps_state = UAPSD_MODE;
 	} else {
 		uapsdParams->enable_ps = false;
-		*ps_state = FULL_POWER_MODE;
+*ps_state = FULL_POWER_MODE;
 	}
 }
 
@@ -132,7 +132,7 @@ static void sme_get_ps_state(struct mac_context *mac_ctx,
 	*ps_state = ps_param->ps_state;
 }
 /**
- * sme_ps_enable_ps_req_params(): enables power save req params
+* sme_ps_enable_ps_req_params(): enables power save req params
  * @mac_ctx: global mac context
  * @session_id: session id
  *
@@ -159,7 +159,7 @@ sme_ps_enable_ps_req_params(struct mac_context *mac_ctx, uint32_t vdev_id)
 		enable_ps_req_params->uapsdParams.enable_ps = true;
 	} else {
 		enable_ps_req_params->psSetting = eSIR_ADDON_NOTHING;
-		ps_state = LEGACY_POWER_SAVE_MODE;
+ps_state = LEGACY_POWER_SAVE_MODE;
 	}
 	enable_ps_req_params->sessionid = vdev_id;
 
@@ -167,14 +167,14 @@ sme_ps_enable_ps_req_params(struct mac_context *mac_ctx, uint32_t vdev_id)
 
 	qdf_mem_free(enable_ps_req_params);
 
-	sme_debug("Powersave Enable sent to FW");
+sme_debug("Powersave Enable sent to FW");
 	ps_param->ps_state = ps_state;
 
 	return QDF_STATUS_SUCCESS;
 }
 
 /**
- * sme_ps_disable_ps_req_params(): Disable power save req params
+* sme_ps_disable_ps_req_params(): Disable power save req params
  * @mac_ctx: global mac context
  * @session_id: session id
  *
@@ -195,8 +195,8 @@ static QDF_STATUS sme_ps_disable_ps_req_params(struct mac_context *mac_ctx,
 	wma_disable_sta_ps_mode(disable_ps_req_params);
 	qdf_mem_free(disable_ps_req_params);
 
-	sme_debug("Powersave disable sent to FW");
-	sme_set_ps_state(mac_ctx, vdev_id, FULL_POWER_MODE);
+sme_debug("Powersave disable sent to FW");
+sme_set_ps_state(mac_ctx, vdev_id, FULL_POWER_MODE);
 
 	return QDF_STATUS_SUCCESS;
 }
@@ -269,16 +269,16 @@ static QDF_STATUS sme_ps_disable_uapsd_req_params(struct mac_context *mac_ctx,
 
 	QDF_TRACE(QDF_MODULE_ID_SME, QDF_TRACE_LEVEL_DEBUG,
 		FL("Message WMA_DISABLE_UAPSD_REQ Successfully sent to WMA"));
-	sme_set_ps_state(mac_ctx, session_id, LEGACY_POWER_SAVE_MODE);
+sme_set_ps_state(mac_ctx, session_id, LEGACY_POWER_SAVE_MODE);
 	return QDF_STATUS_SUCCESS;
 }
 
 /**
- * sme_ps_process_command(): Sme process power save messages
+* sme_ps_process_command(): Sme process power save messages
  *			and pass messages to WMA.
  * @mac_ctx: global mac context
  * @session_id: session id
- * sme_ps_cmd: power save message
+* sme_ps_cmd: power save message
  *
  * Return: QDF_STATUS
  */
@@ -292,7 +292,7 @@ QDF_STATUS sme_ps_process_command(struct mac_context *mac_ctx, uint32_t session_
 		return QDF_STATUS_E_INVAL;
 	}
 	QDF_TRACE(QDF_MODULE_ID_SME, QDF_TRACE_LEVEL_DEBUG,
-			FL("Power Save command %d"), command);
+FL("Power Save command %d"), command);
 	switch (command) {
 	case SME_PS_ENABLE:
 		status = sme_ps_enable_ps_req_params(mac_ctx, session_id);
@@ -319,11 +319,11 @@ QDF_STATUS sme_ps_process_command(struct mac_context *mac_ctx, uint32_t session_
 }
 
 /**
- * sme_enable_sta_ps_check(): Checks if it is ok to enable power save or not.
+* sme_enable_sta_ps_check(): Checks if it is ok to enable power save or not.
  * @mac_ctx: global mac context
  * @session_id: session id
  * @ command: sme_ps_cmd
- * Pre Condition for enabling sta mode power save
+* Pre Condition for enabling sta mode power save
  * 1) Sta Mode Ps should be enabled in ini file.
  * 2) Session should be in infra mode and in connected state.
  *
@@ -332,15 +332,15 @@ QDF_STATUS sme_ps_process_command(struct mac_context *mac_ctx, uint32_t session_
 QDF_STATUS sme_enable_sta_ps_check(struct mac_context *mac_ctx,
 				   uint32_t session_id, enum sme_ps_cmd command)
 {
-	struct wlan_mlme_powersave *powersave_params;
+struct wlan_mlme_powersave *powersave_params;
 
 	QDF_BUG(session_id < WLAN_MAX_VDEVS);
 	if (session_id >= WLAN_MAX_VDEVS)
 		return QDF_STATUS_E_INVAL;
 
 	/* Check if Sta Ps is enabled. */
-	powersave_params = &mac_ctx->mlme_cfg->ps_params;
-	if (!powersave_params->is_bmps_enabled) {
+powersave_params = &mac_ctx->mlme_cfg->ps_params;
+if (!powersave_params->is_bmps_enabled) {
 		sme_debug("Cannot initiate PS. PS is disabled in ini");
 		return QDF_STATUS_E_FAILURE;
 	}
@@ -351,7 +351,7 @@ QDF_STATUS sme_enable_sta_ps_check(struct mac_context *mac_ctx,
 	}
 
 	/* Check whether the given session is Infra and in Connected State
-	 * also if command is power save disable  there is not need to check
+* also if command is power save disable  there is not need to check
 	 * for connected state as firmware can handle this
 	 */
 	if (!csr_is_conn_state_connected_infra(mac_ctx, session_id)) {
@@ -375,7 +375,7 @@ void sme_save_usr_ps_cfg(mac_handle_t mac_handle, bool val)
  * sme_ps_enable_disable(): function to enable/disable PS.
  * @mac_handle: Opaque handle to the global MAC context
  * @session_id: session id
- * sme_ps_cmd: power save message
+* sme_ps_cmd: power save message
  *
  * Return: QDF_STATUS
  */
@@ -388,7 +388,7 @@ QDF_STATUS sme_ps_enable_disable(mac_handle_t mac_handle, uint32_t session_id,
 	status =  sme_enable_sta_ps_check(mac_ctx, session_id, command);
 	if (status != QDF_STATUS_SUCCESS) {
 		/*
-		 * In non associated state driver wont handle the power save
+* In non associated state driver wont handle the power save
 		 * But kernel expects return status success even
 		 * in the disconnected state.
 		 */
@@ -415,7 +415,7 @@ QDF_STATUS sme_ps_timer_flush_sync(mac_handle_t mac_handle, uint8_t session_id)
 
 	status = sme_enable_sta_ps_check(mac_ctx, session_id, SME_PS_ENABLE);
 	if (QDF_IS_STATUS_ERROR(status)) {
-		sme_debug("Power save not allowed for vdev id %d", session_id);
+sme_debug("Power save not allowed for vdev id %d", session_id);
 		return QDF_STATUS_SUCCESS;
 	}
 
@@ -424,7 +424,7 @@ QDF_STATUS sme_ps_timer_flush_sync(mac_handle_t mac_handle, uint8_t session_id)
 	if (tstate != QDF_TIMER_STATE_RUNNING)
 		return QDF_STATUS_SUCCESS;
 
-	sme_debug("flushing powersave enable for vdev %u", session_id);
+sme_debug("flushing powersave enable for vdev %u", session_id);
 
 	qdf_mc_timer_stop(&ps_parm->auto_ps_enable_timer);
 
@@ -440,7 +440,7 @@ QDF_STATUS sme_ps_timer_flush_sync(mac_handle_t mac_handle, uint8_t session_id)
 		req->uapsdParams.enable_ps = true;
 	} else {
 		req->psSetting = eSIR_ADDON_NOTHING;
-		ps_state = LEGACY_POWER_SAVE_MODE;
+ps_state = LEGACY_POWER_SAVE_MODE;
 	}
 	req->sessionid = session_id;
 
@@ -865,7 +865,7 @@ void sme_auto_ps_entry_timer_expired(void *data)
 		return;
 	}
 	session_id = ps_params->session_id;
-	sme_debug("auto_ps_timer expired, enabling powersave");
+sme_debug("auto_ps_timer expired, enabling powersave");
 
 	status = sme_enable_sta_ps_check(mac_ctx, session_id, SME_PS_ENABLE);
 	if (QDF_STATUS_SUCCESS == status)

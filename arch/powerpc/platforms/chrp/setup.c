@@ -586,7 +586,7 @@ static int __init chrp_probe(void)
 	DMA_MODE_READ = 0x44;
 	DMA_MODE_WRITE = 0x48;
 
-	pm_power_off = rtas_power_off;
+pm_power_off = rtas_power_off;
 
 	chrp_init();
 

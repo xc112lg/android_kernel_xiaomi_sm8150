@@ -99,7 +99,7 @@ int vega10_fan_ctrl_get_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t *speed)
 {
 	struct vega10_hwmgr *data = (struct vega10_hwmgr *)(hwmgr->backend);
 	uint32_t tach_period;
-	uint32_t crystal_clock_freq;
+uint32_t crystal_clock_freq;
 	int result = 0;
 
 	if (hwmgr->thermal_controller.fanInfo.bNoFan)
@@ -117,9 +117,9 @@ int vega10_fan_ctrl_get_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t *speed)
 		if (tach_period == 0)
 			return -EINVAL;
 
-		crystal_clock_freq = smu7_get_xclk(hwmgr);
+crystal_clock_freq = smu7_get_xclk(hwmgr);
 
-		*speed = 60 * crystal_clock_freq * 10000 / tach_period;
+*speed = 60 * crystal_clock_freq * 10000 / tach_period;
 	}
 
 	return result;
@@ -194,7 +194,7 @@ int vega10_fan_ctrl_set_default_mode(struct pp_hwmgr *hwmgr)
  * @fn vega10_enable_fan_control_feature
  * @brief Enables the SMC Fan Control Feature.
  *
- * @param    hwmgr - the address of the powerplay hardware manager.
+* @param    hwmgr - the address of the powerplay hardware manager.
  * @return   0 on success. -1 otherwise.
  */
 static int vega10_enable_fan_control_feature(struct pp_hwmgr *hwmgr)
@@ -337,7 +337,7 @@ int vega10_fan_ctrl_reset_fan_speed_to_default(struct pp_hwmgr *hwmgr)
 int vega10_fan_ctrl_set_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t speed)
 {
 	uint32_t tach_period;
-	uint32_t crystal_clock_freq;
+uint32_t crystal_clock_freq;
 	int result = 0;
 	uint32_t reg;
 
@@ -351,8 +351,8 @@ int vega10_fan_ctrl_set_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t speed)
 		result = vega10_fan_ctrl_stop_smc_fan_control(hwmgr);
 
 	if (!result) {
-		crystal_clock_freq = smu7_get_xclk(hwmgr);
-		tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
+crystal_clock_freq = smu7_get_xclk(hwmgr);
+tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
 		reg = soc15_get_register_offset(THM_HWID, 0,
 				mmCG_TACH_STATUS_BASE_IDX, mmCG_TACH_STATUS);
 		cgs_write_register(hwmgr->device, reg,
@@ -587,10 +587,10 @@ int tf_vega10_thermal_setup_fan_table(struct pp_hwmgr *hwmgr,
 			advanceFanControlParameters.usFanGainHotspot;
 	table->FanGainLiquid = hwmgr->thermal_controller.
 			advanceFanControlParameters.usFanGainLiquid;
-	table->FanGainVrVddc = hwmgr->thermal_controller.
-			advanceFanControlParameters.usFanGainVrVddc;
-	table->FanGainVrMvdd = hwmgr->thermal_controller.
-			advanceFanControlParameters.usFanGainVrMvdd;
+table->FanGainVrVddc = hwmgr->thermal_controller.
+advanceFanControlParameters.usFanGainVrVddc;
+table->FanGainVrMvdd = hwmgr->thermal_controller.
+advanceFanControlParameters.usFanGainVrMvdd;
 	table->FanGainPlx = hwmgr->thermal_controller.
 			advanceFanControlParameters.usFanGainPlx;
 	table->FanGainHbm = hwmgr->thermal_controller.

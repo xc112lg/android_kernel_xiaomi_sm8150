@@ -70,7 +70,7 @@ struct core99_header {
 };
 
 /*
- * Read and write the non-volatile RAM on PowerMacs and CHRP machines.
+* Read and write the non-volatile RAM on PowerMacs and CHRP machines.
  */
 static int nvram_naddrs;
 static volatile unsigned char __iomem *nvram_data;

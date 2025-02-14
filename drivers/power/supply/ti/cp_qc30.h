@@ -101,7 +101,7 @@ enum hvdcp3_type {
 #define JEITA_COOL_NOT_ALLOW_CP_THR 100
 /*
  * add hysteresis for warm threshold to avoid flash
- * charge and normal charge switch frequently at
+* charge and normal charge switch frequently at
  * the warm threshold
  */
 #define JEITA_HYSTERESIS 20
@@ -216,10 +216,10 @@ typedef struct {
 	struct sw_charger sw_chager;
 	struct votable *fcc_votable;
 
-	struct power_supply *fc_psy;
-	struct power_supply *sw_psy;
-	struct power_supply *usb_psy;
-	struct power_supply *bms_psy;
+struct power_supply *fc_psy;
+struct power_supply *sw_psy;
+struct power_supply *usb_psy;
+struct power_supply *bms_psy;
 	/* jeita or thermal related */
 	bool jeita_triggered;
 	bool batt_cell_volt_triggered;

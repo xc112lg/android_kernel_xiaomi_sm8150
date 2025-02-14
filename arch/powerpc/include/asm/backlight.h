@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
- * Routines for handling backlight control on PowerBooks
+* Routines for handling backlight control on PowerBooks
  *
  * For now, implementation resides in
- * arch/powerpc/platforms/powermac/backlight.c
+* arch/powerpc/platforms/powermac/backlight.c
  *
  */
 #ifndef __ASM_POWERPC_BACKLIGHT_H

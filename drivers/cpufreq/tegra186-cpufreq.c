@@ -47,25 +47,25 @@ static const struct tegra186_cpufreq_cluster_info tegra186_clusters[] = {
 };
 
 struct tegra186_cpufreq_cluster {
-	const struct tegra186_cpufreq_cluster_info *info;
-	struct cpufreq_frequency_table *table;
+const struct tegra186_cpufreq_cluster_info *info;
+struct cpufreq_frequency_table *table;
 };
 
 struct tegra186_cpufreq_data {
 	void __iomem *regs;
 
 	size_t num_clusters;
-	struct tegra186_cpufreq_cluster *clusters;
+struct tegra186_cpufreq_cluster *clusters;
 };
 
 static int tegra186_cpufreq_init(struct cpufreq_policy *policy)
 {
-	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
 	unsigned int i;
 
 	for (i = 0; i < data->num_clusters; i++) {
-		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
-		const struct tegra186_cpufreq_cluster_info *info =
+struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
+const struct tegra186_cpufreq_cluster_info *info =
 			cluster->info;
 		int core;
 
@@ -77,8 +77,8 @@ static int tegra186_cpufreq_init(struct cpufreq_policy *policy)
 			continue;
 
 		policy->driver_data =
-			data->regs + info->offset + EDVD_CORE_VOLT_FREQ(core);
-		cpufreq_table_validate_and_show(policy, cluster->table);
+data->regs + info->offset + EDVD_CORE_VOLT_FREQ(core);
+cpufreq_table_validate_and_show(policy, cluster->table);
 	}
 
 	policy->cpuinfo.transition_latency = 300 * 1000;
@@ -89,7 +89,7 @@ static int tegra186_cpufreq_init(struct cpufreq_policy *policy)
 static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
 				       unsigned int index)
 {
-	struct cpufreq_frequency_table *tbl = policy->freq_table + index;
+struct cpufreq_frequency_table *tbl = policy->freq_table + index;
 	void __iomem *edvd_reg = policy->driver_data;
 	u32 edvd_val = tbl->driver_data;
 
@@ -100,18 +100,18 @@ static int tegra186_cpufreq_set_target(struct cpufreq_policy *policy,
 
 static struct cpufreq_driver tegra186_cpufreq_driver = {
 	.name = "tegra186",
-	.flags = CPUFREQ_STICKY | CPUFREQ_HAVE_GOVERNOR_PER_POLICY,
-	.verify = cpufreq_generic_frequency_table_verify,
-	.target_index = tegra186_cpufreq_set_target,
-	.init = tegra186_cpufreq_init,
-	.attr = cpufreq_generic_attr,
+.flags = CPUFREQ_STICKY | CPUFREQ_HAVE_GOVERNOR_PER_POLICY,
+.verify = cpufreq_generic_frequency_table_verify,
+.target_index = tegra186_cpufreq_set_target,
+.init = tegra186_cpufreq_init,
+.attr = cpufreq_generic_attr,
 };
 
 static struct cpufreq_frequency_table *init_vhint_table(
 	struct platform_device *pdev, struct tegra_bpmp *bpmp,
 	unsigned int cluster_id)
 {
-	struct cpufreq_frequency_table *table;
+struct cpufreq_frequency_table *table;
 	struct mrq_cpu_vhint_request req;
 	struct tegra_bpmp_message msg;
 	struct cpu_vhint_data *data;
@@ -147,7 +147,7 @@ static struct cpufreq_frequency_table *init_vhint_table(
 		if (ndiv < data->ndiv_min || ndiv > data->ndiv_max)
 			continue;
 
-		/* Only store lowest voltage index for each rate */
+/* Only store lowest voltage index for each rate */
 		if (i > 0 && ndiv == data->ndiv[i - 1])
 			continue;
 
@@ -162,27 +162,27 @@ static struct cpufreq_frequency_table *init_vhint_table(
 	}
 
 	for (i = data->vfloor, j = 0; i <= data->vceil; i++) {
-		struct cpufreq_frequency_table *point;
+struct cpufreq_frequency_table *point;
 		u16 ndiv = data->ndiv[i];
 		u32 edvd_val = 0;
 
 		if (ndiv < data->ndiv_min || ndiv > data->ndiv_max)
 			continue;
 
-		/* Only store lowest voltage index for each rate */
+/* Only store lowest voltage index for each rate */
 		if (i > 0 && ndiv == data->ndiv[i - 1])
 			continue;
 
-		edvd_val |= i << EDVD_CORE_VOLT_FREQ_V_SHIFT;
-		edvd_val |= ndiv << EDVD_CORE_VOLT_FREQ_F_SHIFT;
+edvd_val |= i << EDVD_CORE_VOLT_FREQ_V_SHIFT;
+edvd_val |= ndiv << EDVD_CORE_VOLT_FREQ_F_SHIFT;
 
 		point = &table[j++];
 		point->driver_data = edvd_val;
-		point->frequency = data->ref_clk_hz * ndiv / data->pdiv /
+point->frequency = data->ref_clk_hz * ndiv / data->pdiv /
 			data->mdiv / 1000;
 	}
 
-	table[j].frequency = CPUFREQ_TABLE_END;
+table[j].frequency = CPUFREQ_TABLE_END;
 
 free:
 	dma_free_coherent(bpmp->dev, sizeof(*data), virt, phys);
@@ -192,7 +192,7 @@ free:
 
 static int tegra186_cpufreq_probe(struct platform_device *pdev)
 {
-	struct tegra186_cpufreq_data *data;
+struct tegra186_cpufreq_data *data;
 	struct tegra_bpmp *bpmp;
 	struct resource *res;
 	unsigned int i = 0, err;
@@ -220,7 +220,7 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
 	}
 
 	for (i = 0; i < data->num_clusters; i++) {
-		struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
+struct tegra186_cpufreq_cluster *cluster = &data->clusters[i];
 
 		cluster->info = &tegra186_clusters[i];
 		cluster->table = init_vhint_table(
@@ -233,9 +233,9 @@ static int tegra186_cpufreq_probe(struct platform_device *pdev)
 
 	tegra_bpmp_put(bpmp);
 
-	tegra186_cpufreq_driver.driver_data = data;
+tegra186_cpufreq_driver.driver_data = data;
 
-	err = cpufreq_register_driver(&tegra186_cpufreq_driver);
+err = cpufreq_register_driver(&tegra186_cpufreq_driver);
 	if (err)
 		return err;
 
@@ -249,7 +249,7 @@ put_bpmp:
 
 static int tegra186_cpufreq_remove(struct platform_device *pdev)
 {
-	cpufreq_unregister_driver(&tegra186_cpufreq_driver);
+cpufreq_unregister_driver(&tegra186_cpufreq_driver);
 
 	return 0;
 }
@@ -262,11 +262,11 @@ MODULE_DEVICE_TABLE(of, tegra186_cpufreq_of_match);
 
 static struct platform_driver tegra186_cpufreq_platform_driver = {
 	.driver = {
-		.name = "tegra186-cpufreq",
-		.of_match_table = tegra186_cpufreq_of_match,
+.name = "tegra186-cpufreq",
+.of_match_table = tegra186_cpufreq_of_match,
 	},
-	.probe = tegra186_cpufreq_probe,
-	.remove = tegra186_cpufreq_remove,
+.probe = tegra186_cpufreq_probe,
+.remove = tegra186_cpufreq_remove,
 };
 module_platform_driver(tegra186_cpufreq_platform_driver);
 

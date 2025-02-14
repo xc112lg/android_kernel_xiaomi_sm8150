@@ -2,7 +2,7 @@
 #define _ASM_WORD_AT_A_TIME_H
 
 /*
- * Word-at-a-time interfaces for PowerPC.
+* Word-at-a-time interfaces for PowerPC.
  */
 
 #include <linux/kernel.h>

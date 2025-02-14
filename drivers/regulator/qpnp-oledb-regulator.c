@@ -168,8 +168,8 @@ struct qpnp_oledb {
 	u32					base;
 	u8					mod_enable;
 	u8					ext_pinctl_state;
-	int					current_voltage;
-	int					default_voltage;
+int					current_voltage;
+int					default_voltage;
 	int					vout_mv;
 	int					warmup_delay;
 	int					peak_curr_limit;
@@ -428,9 +428,9 @@ static int qpnp_oledb_regulator_set_voltage(struct regulator_dev *rdev,
 		return rc;
 	}
 
-	oledb->current_voltage = min_uV;
-	pr_debug("register-control mode, current voltage %d\n",
-						oledb->current_voltage);
+oledb->current_voltage = min_uV;
+pr_debug("register-control mode, current voltage %d\n",
+oledb->current_voltage);
 
 	return 0;
 }
@@ -442,15 +442,15 @@ static int qpnp_oledb_regulator_get_voltage(struct regulator_dev *rdev)
 	if (oledb->swire_control)
 		return 0;
 
-	return oledb->current_voltage;
+return oledb->current_voltage;
 }
 
 static struct regulator_ops qpnp_oledb_ops = {
 	.enable			= qpnp_oledb_regulator_enable,
 	.disable		= qpnp_oledb_regulator_disable,
 	.is_enabled		= qpnp_oledb_regulator_is_enabled,
-	.set_voltage		= qpnp_oledb_regulator_set_voltage,
-	.get_voltage		= qpnp_oledb_regulator_get_voltage,
+.set_voltage		= qpnp_oledb_regulator_set_voltage,
+.get_voltage		= qpnp_oledb_regulator_get_voltage,
 };
 
 static int qpnp_oledb_register_regulator(struct qpnp_oledb *oledb)
@@ -470,7 +470,7 @@ static int qpnp_oledb_register_regulator(struct qpnp_oledb *oledb)
 
 	if (init_data->constraints.name) {
 		rdesc->owner		= THIS_MODULE;
-		rdesc->type		= REGULATOR_VOLTAGE;
+rdesc->type		= REGULATOR_VOLTAGE;
 		rdesc->ops		= &qpnp_oledb_ops;
 		rdesc->name		= init_data->constraints.name;
 
@@ -484,7 +484,7 @@ static int qpnp_oledb_register_regulator(struct qpnp_oledb *oledb)
 			init_data->supply_regulator = "parent";
 
 		init_data->constraints.valid_ops_mask
-				|= REGULATOR_CHANGE_VOLTAGE |
+|= REGULATOR_CHANGE_VOLTAGE |
 					REGULATOR_CHANGE_STATUS;
 
 		oledb->rdev = devm_regulator_register(oledb->dev, rdesc, &cfg);
@@ -504,7 +504,7 @@ static int qpnp_oledb_register_regulator(struct qpnp_oledb *oledb)
 }
 
 static int qpnp_oledb_get_curr_voltage(struct qpnp_oledb *oledb,
-					u16 *current_voltage)
+u16 *current_voltage)
 {
 	int rc = 0;
 	u8 val;
@@ -525,7 +525,7 @@ static int qpnp_oledb_get_curr_voltage(struct qpnp_oledb *oledb,
 		}
 	}
 
-	*current_voltage = (val * OLEDB_VOUT_STEP_MV) + OLEDB_VOUT_MIN_MV;
+*current_voltage = (val * OLEDB_VOUT_STEP_MV) + OLEDB_VOUT_MIN_MV;
 
 	return rc;
 }
@@ -706,10 +706,10 @@ static int qpnp_oledb_hw_init(struct qpnp_oledb *oledb)
 {
 	int rc, i = 0;
 	u8 val = 0, mask = 0;
-	u16 current_voltage;
+u16 current_voltage;
 
-	if (oledb->default_voltage != -EINVAL) {
-		val = (oledb->default_voltage - OLEDB_VOUT_MIN_MV) /
+if (oledb->default_voltage != -EINVAL) {
+val = (oledb->default_voltage - OLEDB_VOUT_MIN_MV) /
 					 OLEDB_VOUT_STEP_MV;
 		rc = qpnp_oledb_write(oledb, oledb->base +
 					OLEDB_VOUT_DEFAULT, &val, 1);
@@ -733,7 +733,7 @@ static int qpnp_oledb_hw_init(struct qpnp_oledb *oledb)
 		return rc;
 	}
 
-	rc = qpnp_oledb_get_curr_voltage(oledb, &current_voltage);
+rc = qpnp_oledb_get_curr_voltage(oledb, &current_voltage);
 	if (rc < 0)
 		return rc;
 
@@ -896,18 +896,18 @@ static int qpnp_oledb_hw_init(struct qpnp_oledb *oledb)
 			}
 		}
 
-		oledb->current_voltage = current_voltage;
+oledb->current_voltage = current_voltage;
 	} else {
 		 /* module is enabled */
-		if (oledb->current_voltage == -EINVAL) {
-			oledb->current_voltage = current_voltage;
+if (oledb->current_voltage == -EINVAL) {
+oledb->current_voltage = current_voltage;
 		} else if (!oledb->swire_control) {
-			if (oledb->current_voltage < OLEDB_VOUT_MIN_MV) {
-				pr_err("current_voltage %d is less than min_volt %d\n",
-				    oledb->current_voltage, OLEDB_VOUT_MIN_MV);
+if (oledb->current_voltage < OLEDB_VOUT_MIN_MV) {
+pr_err("current_voltage %d is less than min_volt %d\n",
+oledb->current_voltage, OLEDB_VOUT_MIN_MV);
 				return -EINVAL;
 			}
-			val = DIV_ROUND_UP(oledb->current_voltage -
+val = DIV_ROUND_UP(oledb->current_voltage -
 					OLEDB_VOUT_MIN_MV, OLEDB_VOUT_STEP_MV);
 			rc = qpnp_oledb_write(oledb, oledb->base +
 						OLEDB_VOUT_PGM, &val, 1);
@@ -1148,21 +1148,21 @@ static int qpnp_oledb_parse_dt(struct qpnp_oledb *oledb)
 		}
 	}
 
-	oledb->current_voltage = -EINVAL;
-	rc = of_property_read_u32(of_node, "qcom,oledb-init-voltage-mv",
-						&oledb->current_voltage);
-	if (!rc && (oledb->current_voltage < OLEDB_VOUT_MIN_MV ||
-				oledb->current_voltage > OLEDB_VOUT_MAX_MV)) {
-		pr_err("Invalid value in qcom,oledb-init-voltage-mv\n");
+oledb->current_voltage = -EINVAL;
+rc = of_property_read_u32(of_node, "qcom,oledb-init-voltage-mv",
+&oledb->current_voltage);
+if (!rc && (oledb->current_voltage < OLEDB_VOUT_MIN_MV ||
+oledb->current_voltage > OLEDB_VOUT_MAX_MV)) {
+pr_err("Invalid value in qcom,oledb-init-voltage-mv\n");
 		return -EINVAL;
 	}
 
-	oledb->default_voltage = -EINVAL;
-	rc = of_property_read_u32(of_node, "qcom,oledb-default-voltage-mv",
-					&oledb->default_voltage);
-	if (!rc && (oledb->default_voltage < OLEDB_VOUT_MIN_MV ||
-				oledb->default_voltage > OLEDB_VOUT_MAX_MV)) {
-		pr_err("Invalid value in qcom,oledb-default-voltage-mv\n");
+oledb->default_voltage = -EINVAL;
+rc = of_property_read_u32(of_node, "qcom,oledb-default-voltage-mv",
+&oledb->default_voltage);
+if (!rc && (oledb->default_voltage < OLEDB_VOUT_MIN_MV ||
+oledb->default_voltage > OLEDB_VOUT_MAX_MV)) {
+pr_err("Invalid value in qcom,oledb-default-voltage-mv\n");
 		return -EINVAL;
 	}
 
@@ -1345,9 +1345,9 @@ static int qpnp_oledb_regulator_probe(struct platform_device *pdev)
 		pr_err("Failed to register regulator rc=%d\n", rc);
 		goto out;
 	}
-	pr_info("OLEDB registered successfully, ext_pin_en=%d mod_en=%d current_voltage=%d mV\n",
+pr_info("OLEDB registered successfully, ext_pin_en=%d mod_en=%d current_voltage=%d mV\n",
 			oledb->ext_pin_control, oledb->mod_enable,
-						oledb->current_voltage);
+oledb->current_voltage);
 	return 0;
 
 out:

@@ -603,7 +603,7 @@ struct ps3av_pkt_audio_mode {
 	u8 reserved0[3];
 	u32 mask;		/* in: mask */
 	u32 audio_num_of_ch;	/* in: number of ch */
-	u32 audio_fs;		/* in: sampling freq */
+u32 audio_fs;		/* in: sampling freq */
 	u32 audio_word_bits;	/* in: sample bit size */
 	u32 audio_format;	/* in: audio output format */
 	u32 audio_source;	/* in: audio source */

@@ -47,17 +47,17 @@ struct uid_entry {
 };
 
 /**
- * struct cpu_freqs - per-cpu frequency information
- * @offset: start of these freqs' stats in task time_in_state array
- * @max_state: number of entries in freq_table
- * @last_index: index in freq_table of last frequency switched to
- * @freq_table: list of available frequencies
+* struct cpu_freqs - per-cpu frequency information
+* @offset: start of these freqs' stats in task time_in_state array
+* @max_state: number of entries in freq_table
+* @last_index: index in freq_table of last frequency switched to
+* @freq_table: list of available frequencies
  */
 struct cpu_freqs {
 	unsigned int offset;
 	unsigned int max_state;
 	unsigned int last_index;
-	unsigned int freq_table[0];
+unsigned int freq_table[0];
 };
 
 static struct cpu_freqs *all_freqs[NR_CPUS];
@@ -102,7 +102,7 @@ static struct uid_entry *find_or_register_uid_locked(uid_t uid)
 	if (uid_entry) {
 		if (uid_entry->max_state == max_state)
 			return uid_entry;
-		/* uid_entry->time_in_state is too small to track all freqs, so
+/* uid_entry->time_in_state is too small to track all freqs, so
 		 * expand it.
 		 */
 		temp = __krealloc(uid_entry, alloc_size, GFP_ATOMIC);
@@ -189,19 +189,19 @@ static void uid_seq_stop(struct seq_file *seq, void *v) { }
 static int uid_time_in_state_seq_show(struct seq_file *m, void *v)
 {
 	struct uid_entry *uid_entry;
-	struct cpu_freqs *freqs, *last_freqs = NULL;
+struct cpu_freqs *freqs, *last_freqs = NULL;
 	int i, cpu;
 
 	if (v == uid_hash_table) {
 		seq_puts(m, "uid:");
 		for_each_possible_cpu(cpu) {
-			freqs = all_freqs[cpu];
-			if (!freqs || freqs == last_freqs)
+freqs = all_freqs[cpu];
+if (!freqs || freqs == last_freqs)
 				continue;
-			last_freqs = freqs;
-			for (i = 0; i < freqs->max_state; i++) {
+last_freqs = freqs;
+for (i = 0; i < freqs->max_state; i++) {
 				seq_put_decimal_ull(m, " ",
-						    freqs->freq_table[i]);
+freqs->freq_table[i]);
 			}
 		}
 		seq_putc(m, '\n');
@@ -276,28 +276,28 @@ static inline atomic64_t *get_policy_times(struct concurrent_times *times)
 static int concurrent_policy_time_seq_show(struct seq_file *m, void *v)
 {
 	int i;
-	struct cpu_freqs *freqs, *last_freqs = NULL;
+struct cpu_freqs *freqs, *last_freqs = NULL;
 
 	if (v == uid_hash_table) {
 		int cnt = 0;
 
 		for_each_possible_cpu(i) {
-			freqs = all_freqs[i];
-			if (!freqs)
+freqs = all_freqs[i];
+if (!freqs)
 				continue;
-			if (freqs != last_freqs) {
-				if (last_freqs) {
+if (freqs != last_freqs) {
+if (last_freqs) {
 					seq_put_decimal_ull(m, ": ", cnt);
 					seq_putc(m, ' ');
 					cnt = 0;
 				}
 				seq_put_decimal_ull(m, "policy", i);
 
-				last_freqs = freqs;
+last_freqs = freqs;
 			}
 			cnt++;
 		}
-		if (last_freqs) {
+if (last_freqs) {
 			seq_put_decimal_ull(m, ": ", cnt);
 			seq_putc(m, '\n');
 		}
@@ -370,23 +370,23 @@ int proc_time_in_state_show(struct seq_file *m, struct pid_namespace *ns,
 	unsigned int cpu, i;
 	u64 cputime;
 	unsigned long flags;
-	struct cpu_freqs *freqs;
-	struct cpu_freqs *last_freqs = NULL;
+struct cpu_freqs *freqs;
+struct cpu_freqs *last_freqs = NULL;
 
 	spin_lock_irqsave(&task_time_in_state_lock, flags);
 	for_each_possible_cpu(cpu) {
-		freqs = all_freqs[cpu];
-		if (!freqs || freqs == last_freqs)
+freqs = all_freqs[cpu];
+if (!freqs || freqs == last_freqs)
 			continue;
-		last_freqs = freqs;
+last_freqs = freqs;
 
 		seq_printf(m, "cpu%u\n", cpu);
-		for (i = 0; i < freqs->max_state; i++) {
+for (i = 0; i < freqs->max_state; i++) {
 			cputime = 0;
-			if (freqs->offset + i < p->max_state &&
+if (freqs->offset + i < p->max_state &&
 			    p->time_in_state)
-				cputime = p->time_in_state[freqs->offset + i];
-			seq_printf(m, "%u %lu\n", freqs->freq_table[i],
+cputime = p->time_in_state[freqs->offset + i];
+seq_printf(m, "%u %lu\n", freqs->freq_table[i],
 				   (unsigned long)nsec_to_clock_t(cputime));
 		}
 	}
@@ -402,18 +402,18 @@ void cpufreq_acct_update_power(struct task_struct *p, u64 cputime)
 	unsigned int policy_cpu_cnt = 0;
 	unsigned int policy_first_cpu;
 	struct uid_entry *uid_entry;
-	struct cpu_freqs *freqs = all_freqs[task_cpu(p)];
-	struct cpufreq_policy *policy;
+struct cpu_freqs *freqs = all_freqs[task_cpu(p)];
+struct cpufreq_policy *policy;
 	uid_t uid = from_kuid_munged(current_user_ns(), task_uid(p));
 	int cpu = 0;
 
-	if (!freqs || is_idle_task(p) || p->flags & PF_EXITING)
+if (!freqs || is_idle_task(p) || p->flags & PF_EXITING)
 		return;
 
-	state = freqs->offset + READ_ONCE(freqs->last_index);
+state = freqs->offset + READ_ONCE(freqs->last_index);
 
 	spin_lock_irqsave(&task_time_in_state_lock, flags);
-	if ((state < p->max_state || !cpufreq_task_times_realloc_locked(p)) &&
+if ((state < p->max_state || !cpufreq_task_times_realloc_locked(p)) &&
 	    p->time_in_state)
 		p->time_in_state[state] += cputime;
 	spin_unlock_irqrestore(&task_time_in_state_lock, flags);
@@ -438,10 +438,10 @@ void cpufreq_acct_update_power(struct task_struct *p, u64 cputime)
 	atomic64_add(cputime,
 		     &uid_entry->concurrent_times->active[active_cpu_cnt - 1]);
 
-	policy = cpufreq_cpu_get(task_cpu(p));
+policy = cpufreq_cpu_get(task_cpu(p));
 	if (!policy) {
 		/*
-		 * This CPU may have just come up and not have a cpufreq policy
+* This CPU may have just come up and not have a cpufreq policy
 		 * yet.
 		 */
 		rcu_read_unlock();
@@ -453,7 +453,7 @@ void cpufreq_acct_update_power(struct task_struct *p, u64 cputime)
 			++policy_cpu_cnt;
 
 	policy_first_cpu = cpumask_first(policy->related_cpus);
-	cpufreq_cpu_put(policy);
+cpufreq_cpu_put(policy);
 
 	atomic64_add(cputime,
 		     &uid_entry->concurrent_times->policy[policy_first_cpu +
@@ -464,8 +464,8 @@ void cpufreq_acct_update_power(struct task_struct *p, u64 cputime)
 static int cpufreq_times_get_index(struct cpu_freqs *freqs, unsigned int freq)
 {
 	int index;
-        for (index = 0; index < freqs->max_state; ++index) {
-		if (freqs->freq_table[index] == freq)
+for (index = 0; index < freqs->max_state; ++index) {
+if (freqs->freq_table[index] == freq)
 			return index;
         }
 	return -1;
@@ -475,39 +475,39 @@ void cpufreq_times_create_policy(struct cpufreq_policy *policy)
 {
 	int cpu, index = 0;
 	unsigned int count = 0;
-	struct cpufreq_frequency_table *pos, *table;
-	struct cpu_freqs *freqs;
+struct cpufreq_frequency_table *pos, *table;
+struct cpu_freqs *freqs;
 	void *tmp;
 
-	if (all_freqs[policy->cpu])
+if (all_freqs[policy->cpu])
 		return;
 
-	table = policy->freq_table;
+table = policy->freq_table;
 	if (!table)
 		return;
 
-	cpufreq_for_each_valid_entry(pos, table)
+cpufreq_for_each_valid_entry(pos, table)
 		count++;
 
-	tmp =  kzalloc(sizeof(*freqs) + sizeof(freqs->freq_table[0]) * count,
+tmp =  kzalloc(sizeof(*freqs) + sizeof(freqs->freq_table[0]) * count,
 		       GFP_KERNEL);
 	if (!tmp)
 		return;
 
-	freqs = tmp;
-	freqs->max_state = count;
+freqs = tmp;
+freqs->max_state = count;
 
-	cpufreq_for_each_valid_entry(pos, table)
-		freqs->freq_table[index++] = pos->frequency;
+cpufreq_for_each_valid_entry(pos, table)
+freqs->freq_table[index++] = pos->frequency;
 
-	index = cpufreq_times_get_index(freqs, policy->cur);
+index = cpufreq_times_get_index(freqs, policy->cur);
 	if (index >= 0)
-		WRITE_ONCE(freqs->last_index, index);
+WRITE_ONCE(freqs->last_index, index);
 
-	freqs->offset = next_offset;
-	WRITE_ONCE(next_offset, freqs->offset + count);
+freqs->offset = next_offset;
+WRITE_ONCE(next_offset, freqs->offset + count);
 	for_each_cpu(cpu, policy->related_cpus)
-		all_freqs[cpu] = freqs;
+all_freqs[cpu] = freqs;
 }
 
 static void uid_entry_reclaim(struct rcu_head *rcu)
@@ -540,16 +540,16 @@ void cpufreq_task_times_remove_uids(uid_t uid_start, uid_t uid_end)
 }
 
 void cpufreq_times_record_transition(struct cpufreq_policy *policy,
-	unsigned int new_freq)
+unsigned int new_freq)
 {
 	int index;
-	struct cpu_freqs *freqs = all_freqs[policy->cpu];
-	if (!freqs)
+struct cpu_freqs *freqs = all_freqs[policy->cpu];
+if (!freqs)
 		return;
 
-	index = cpufreq_times_get_index(freqs, new_freq);
+index = cpufreq_times_get_index(freqs, new_freq);
 	if (index >= 0)
-		WRITE_ONCE(freqs->last_index, index);
+WRITE_ONCE(freqs->last_index, index);
 }
 
 static const struct seq_operations uid_time_in_state_seq_ops = {

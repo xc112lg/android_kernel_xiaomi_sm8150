@@ -33,8 +33,8 @@ enum bd9571mwv_regulators { VD09, VD18, VD25, VD33, DVFS };
 		.regulators_node	= "regulators",		\
 		.id			= _id,			\
 		.ops			= &_ops,		\
-		.n_voltages		= _nv,			\
-		.type			= REGULATOR_VOLTAGE,	\
+.n_voltages		= _nv,			\
+.type			= REGULATOR_VOLTAGE,	\
 		.owner			= THIS_MODULE,		\
 		.vsel_reg		= _vr,			\
 		.vsel_mask		= _vm,			\
@@ -96,25 +96,25 @@ static int bd9571mwv_reg_set_voltage_sel_regmap(struct regulator_dev *rdev,
 
 /* Operations permitted on AVS voltage regulator */
 static struct regulator_ops avs_ops = {
-	.set_voltage_sel	= bd9571mwv_avs_set_voltage_sel_regmap,
-	.map_voltage		= regulator_map_voltage_linear,
-	.get_voltage_sel	= bd9571mwv_avs_get_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.set_voltage_sel	= bd9571mwv_avs_set_voltage_sel_regmap,
+.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= bd9571mwv_avs_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
 };
 
 /* Operations permitted on voltage regulators */
 static struct regulator_ops reg_ops = {
-	.set_voltage_sel	= bd9571mwv_reg_set_voltage_sel_regmap,
-	.map_voltage		= regulator_map_voltage_linear,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.set_voltage_sel	= bd9571mwv_reg_set_voltage_sel_regmap,
+.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
 };
 
 /* Operations permitted on voltage monitors */
 static struct regulator_ops vid_ops = {
-	.map_voltage		= regulator_map_voltage_linear,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
 };
 
 static struct regulator_desc regulators[] = {

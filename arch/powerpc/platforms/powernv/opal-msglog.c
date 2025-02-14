@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL in-memory console interface
+* PowerNV OPAL in-memory console interface
  *
  * Copyright 2014 IBM Corp.
  *

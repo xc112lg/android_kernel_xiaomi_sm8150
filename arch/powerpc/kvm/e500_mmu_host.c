@@ -8,7 +8,7 @@
  *         Alexander Graf, agraf@suse.de
  *
  * Description:
- * This file is based on arch/powerpc/kvm/44x_tlb.c,
+* This file is based on arch/powerpc/kvm/44x_tlb.c,
  * by Hollis Blanchard <hollisb@us.ibm.com>.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -785,8 +785,8 @@ int e500_mmu_host_init(struct kvmppc_vcpu_e500 *vcpu_e500)
 				  TLBnCFG_ASSOC_SHIFT;
 	host_tlb_params[1].ways = host_tlb_params[1].entries;
 
-	if (!is_power_of_2(host_tlb_params[0].entries) ||
-	    !is_power_of_2(host_tlb_params[0].ways) ||
+if (!is_power_of_2(host_tlb_params[0].entries) ||
+!is_power_of_2(host_tlb_params[0].ways) ||
 	    host_tlb_params[0].entries < host_tlb_params[0].ways ||
 	    host_tlb_params[0].ways == 0) {
 		pr_err("%s: bad tlb0 host config: %u entries %u ways\n",

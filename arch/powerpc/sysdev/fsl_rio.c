@@ -431,7 +431,7 @@ static inline void fsl_rio_info(struct device *dev, u32 ccsr)
 }
 
 /**
- * fsl_rio_setup - Setup Freescale PowerPC RapidIO interface
+* fsl_rio_setup - Setup Freescale PowerPC RapidIO interface
  * @dev: platform_device pointer
  *
  * Initializes MPC85xx RapidIO hardware interface, configures

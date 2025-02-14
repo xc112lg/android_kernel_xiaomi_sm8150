@@ -1,5 +1,5 @@
 /*
- * Generic PowerPC 44x platform support
+* Generic PowerPC 44x platform support
  *
  * Copyright 2008 IBM Corporation
  *
@@ -7,7 +7,7 @@
  * under the terms of the GNU General Public License as published by the
  * Free Software Foundation; version 2 of the License.
  *
- * This implements simple platform support for PowerPC 44x chips.  This is
+* This implements simple platform support for PowerPC 44x chips.  This is
  * mostly used for eval boards or other simple and "generic" 44x boards.  If
  * your board has custom functions or hardware, then you will likely want to
  * implement your own board.c file to accommodate it.
@@ -80,7 +80,7 @@ static int __init ppc44x_probe(void)
 }
 
 define_machine(ppc44x_simple) {
-	.name = "PowerPC 44x Platform",
+.name = "PowerPC 44x Platform",
 	.probe = ppc44x_probe,
 	.progress = udbg_progress,
 	.init_IRQ = uic_init_tree,

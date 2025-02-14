@@ -2,7 +2,7 @@
 /*
  * Written by Kanoj Sarcar (kanoj@sgi.com) Aug 99
  *
- * PowerPC64 port:
+* PowerPC64 port:
  * Copyright (C) 2002 Anton Blanchard, IBM Corp.
  */
 #ifndef _ASM_MMZONE_H_

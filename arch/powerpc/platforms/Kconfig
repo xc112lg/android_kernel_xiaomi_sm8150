@@ -165,7 +165,7 @@ config MPIC_BROKEN_REGREAD
 
 config EEH
 	bool
-	depends on (PPC_POWERNV || PPC_PSERIES) && PCI
+depends on (PPC_POWERNV || PPC_PSERIES) && PCI
 	default y
 
 config PPC_MPC106
@@ -199,7 +199,7 @@ config PPC601_SYNC_FIX
 	bool "Workarounds for PPC601 bugs"
 	depends on 6xx && PPC_PMAC
 	help
-	  Some versions of the PPC601 (the first PowerPC chip) have bugs which
+Some versions of the PPC601 (the first PowerPC chip) have bugs which
 	  mean that extra synchronization instructions are required near
 	  certain instructions, typically those that make major changes to the
 	  CPU state.  These extra instructions reduce performance slightly.
@@ -303,7 +303,7 @@ config GEN_RTC
 	select RTC_DRV_GENERIC
 	help
 	  This option provides backwards compatibility with the old gen_rtc.ko
-	  module that was traditionally used for old PowerPC machines.
+module that was traditionally used for old PowerPC machines.
 	  Platforms should migrate to enabling the RTC_DRV_GENERIC by hand
 	  replacing their get_rtc_time/set_rtc_time callbacks with
 	  a proper RTC device driver.
@@ -315,7 +315,7 @@ config SIMPLE_GPIO
 	help
 	  Say Y here to support simple, memory-mapped GPIO controllers.
 	  These are usually BCSRs used to control board's switches, LEDs,
-	  chip-selects, Ethernet/USB PHY's power and various other small
+chip-selects, Ethernet/USB PHY's power and various other small
 	  on-board peripherals.
 
 config MCU_MPC8349EMITX
@@ -323,7 +323,7 @@ config MCU_MPC8349EMITX
 	depends on I2C=y && PPC_83xx
 	select GPIOLIB
 	help
-	  Say Y here to enable soft power-off functionality on the Freescale
+Say Y here to enable soft power-off functionality on the Freescale
 	  boards with the MPC8349E-mITX-compatible MCU chips. This driver will
 	  also register MCU GPIOs with the generic GPIO API, so you'll able
 	  to use MCU pins as GPIOs.

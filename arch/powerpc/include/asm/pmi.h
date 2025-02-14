@@ -2,7 +2,7 @@
 #define _POWERPC_PMI_H
 
 /*
- * Definitions for talking with PMI device on PowerPC
+* Definitions for talking with PMI device on PowerPC
  *
  * PMI (Platform Management Interrupt) is a way to communicate
  * with the BMC (Baseboard Management Controller) via interrupts.

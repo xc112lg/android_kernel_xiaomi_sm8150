@@ -107,7 +107,7 @@ extern unsigned long ioremap_bot;
 	pr_err("%s:%d: bad pgd %08lx.\n", __FILE__, __LINE__, pgd_val(e))
 /*
  * Bits in a linux-style PTE.  These match the bits in the
- * (hardware-defined) PowerPC PTE as closely as possible.
+* (hardware-defined) PowerPC PTE as closely as possible.
  */
 
 #define pte_clear(mm, addr, ptep) \

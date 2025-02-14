@@ -1,5 +1,5 @@
 /*
- * AVR power-management chip interface for the Buffalo Linkstation /
+* AVR power-management chip interface for the Buffalo Linkstation /
  * Kurobox Platform.
  *
  * Author: 2006 (c) G. Liakhovetski
@@ -121,7 +121,7 @@ static int __init ls_uarts_init(void)
 	if (!avr)
 		return -EINVAL;
 
-	avr_clock = *(u32*)of_get_property(avr, "clock-frequency", &len);
+avr_clock = *(u32*)of_get_property(avr, "clock-frequency", &len);
 	phys_addr = ((u32*)of_get_property(avr, "reg", &len))[0];
 
 	if (!avr_clock || !phys_addr)

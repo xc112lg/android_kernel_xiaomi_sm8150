@@ -233,21 +233,21 @@ static const unsigned int mc13783_pwgtdrv_val[] = {
 static struct regulator_ops mc13783_gpo_regulator_ops;
 
 #define MC13783_DEFINE(prefix, name, reg, vsel_reg, voltages)	\
-	MC13xxx_DEFINE(MC13783_REG_, name, reg, vsel_reg, voltages, \
+MC13xxx_DEFINE(MC13783_REG_, name, reg, vsel_reg, voltages, \
 			mc13xxx_regulator_ops)
 
 #define MC13783_FIXED_DEFINE(prefix, name, reg, voltages)		\
-	MC13xxx_FIXED_DEFINE(MC13783_REG_, name, reg, voltages, \
+MC13xxx_FIXED_DEFINE(MC13783_REG_, name, reg, voltages, \
 			mc13xxx_fixed_regulator_ops)
 
 #define MC13783_GPO_DEFINE(prefix, name, reg, voltages)		\
-	MC13xxx_GPO_DEFINE(MC13783_REG_, name, reg, voltages, \
+MC13xxx_GPO_DEFINE(MC13783_REG_, name, reg, voltages, \
 			mc13783_gpo_regulator_ops)
 
 #define MC13783_DEFINE_SW(_name, _reg, _vsel_reg, _voltages)		\
-	MC13783_DEFINE(REG, _name, _reg, _vsel_reg, _voltages)
+MC13783_DEFINE(REG, _name, _reg, _vsel_reg, _voltages)
 #define MC13783_DEFINE_REGU(_name, _reg, _vsel_reg, _voltages)		\
-	MC13783_DEFINE(REG, _name, _reg, _vsel_reg, _voltages)
+MC13783_DEFINE(REG, _name, _reg, _vsel_reg, _voltages)
 
 static struct mc13xxx_regulator mc13783_regulators[] = {
 	MC13783_DEFINE_SW(SW1A, SWITCHERS0, SWITCHERS0, mc13783_sw1x_val),
@@ -287,12 +287,12 @@ static struct mc13xxx_regulator mc13783_regulators[] = {
 			    mc13783_vmmc_val),
 	MC13783_DEFINE_REGU(VMMC2, REGULATORMODE1, REGULATORSETTING1,
 			    mc13783_vmmc_val),
-	MC13783_GPO_DEFINE(REG, GPO1, POWERMISC, mc13783_gpo_val),
-	MC13783_GPO_DEFINE(REG, GPO2, POWERMISC, mc13783_gpo_val),
-	MC13783_GPO_DEFINE(REG, GPO3, POWERMISC, mc13783_gpo_val),
-	MC13783_GPO_DEFINE(REG, GPO4, POWERMISC, mc13783_gpo_val),
-	MC13783_GPO_DEFINE(REG, PWGT1SPI, POWERMISC, mc13783_pwgtdrv_val),
-	MC13783_GPO_DEFINE(REG, PWGT2SPI, POWERMISC, mc13783_pwgtdrv_val),
+MC13783_GPO_DEFINE(REG, GPO1, POWERMISC, mc13783_gpo_val),
+MC13783_GPO_DEFINE(REG, GPO2, POWERMISC, mc13783_gpo_val),
+MC13783_GPO_DEFINE(REG, GPO3, POWERMISC, mc13783_gpo_val),
+MC13783_GPO_DEFINE(REG, GPO4, POWERMISC, mc13783_gpo_val),
+MC13783_GPO_DEFINE(REG, PWGT1SPI, POWERMISC, mc13783_pwgtdrv_val),
+MC13783_GPO_DEFINE(REG, PWGT2SPI, POWERMISC, mc13783_pwgtdrv_val),
 };
 
 static int mc13783_powermisc_rmw(struct mc13xxx_regulator_priv *priv, u32 mask,
@@ -305,22 +305,22 @@ static int mc13783_powermisc_rmw(struct mc13xxx_regulator_priv *priv, u32 mask,
 	BUG_ON(val & ~mask);
 
 	mc13xxx_lock(priv->mc13xxx);
-	ret = mc13xxx_reg_read(mc13783, MC13783_REG_POWERMISC, &valread);
+ret = mc13xxx_reg_read(mc13783, MC13783_REG_POWERMISC, &valread);
 	if (ret)
 		goto out;
 
-	/* Update the stored state for Power Gates. */
-	priv->powermisc_pwgt_state =
-				(priv->powermisc_pwgt_state & ~mask) | val;
-	priv->powermisc_pwgt_state &= MC13783_REG_POWERMISC_PWGTSPI_M;
+/* Update the stored state for Power Gates. */
+priv->powermisc_pwgt_state =
+(priv->powermisc_pwgt_state & ~mask) | val;
+priv->powermisc_pwgt_state &= MC13783_REG_POWERMISC_PWGTSPI_M;
 
 	/* Construct the new register value */
 	valread = (valread & ~mask) | val;
 	/* Overwrite the PWGTxEN with the stored version */
-	valread = (valread & ~MC13783_REG_POWERMISC_PWGTSPI_M) |
-						priv->powermisc_pwgt_state;
+valread = (valread & ~MC13783_REG_POWERMISC_PWGTSPI_M) |
+priv->powermisc_pwgt_state;
 
-	ret = mc13xxx_reg_write(mc13783, MC13783_REG_POWERMISC, valread);
+ret = mc13xxx_reg_write(mc13783, MC13783_REG_POWERMISC, valread);
 out:
 	mc13xxx_unlock(priv->mc13xxx);
 	return ret;
@@ -335,12 +335,12 @@ static int mc13783_gpo_regulator_enable(struct regulator_dev *rdev)
 
 	dev_dbg(rdev_get_dev(rdev), "%s id: %d\n", __func__, id);
 
-	/* Power Gate enable value is 0 */
+/* Power Gate enable value is 0 */
 	if (id == MC13783_REG_PWGT1SPI ||
 	    id == MC13783_REG_PWGT2SPI)
 		en_val = 0;
 
-	return mc13783_powermisc_rmw(priv, mc13xxx_regulators[id].enable_bit,
+return mc13783_powermisc_rmw(priv, mc13xxx_regulators[id].enable_bit,
 					en_val);
 }
 
@@ -353,12 +353,12 @@ static int mc13783_gpo_regulator_disable(struct regulator_dev *rdev)
 
 	dev_dbg(rdev_get_dev(rdev), "%s id: %d\n", __func__, id);
 
-	/* Power Gate disable value is 1 */
+/* Power Gate disable value is 1 */
 	if (id == MC13783_REG_PWGT1SPI ||
 	    id == MC13783_REG_PWGT2SPI)
 		dis_val = mc13xxx_regulators[id].enable_bit;
 
-	return mc13783_powermisc_rmw(priv, mc13xxx_regulators[id].enable_bit,
+return mc13783_powermisc_rmw(priv, mc13xxx_regulators[id].enable_bit,
 					dis_val);
 }
 
@@ -376,10 +376,10 @@ static int mc13783_gpo_regulator_is_enabled(struct regulator_dev *rdev)
 	if (ret)
 		return ret;
 
-	/* Power Gates state is stored in powermisc_pwgt_state
+/* Power Gates state is stored in powermisc_pwgt_state
 	 * where the meaning of bits is negated */
-	val = (val & ~MC13783_REG_POWERMISC_PWGTSPI_M) |
-	      (priv->powermisc_pwgt_state ^ MC13783_REG_POWERMISC_PWGTSPI_M);
+val = (val & ~MC13783_REG_POWERMISC_PWGTSPI_M) |
+(priv->powermisc_pwgt_state ^ MC13783_REG_POWERMISC_PWGTSPI_M);
 
 	return (val & mc13xxx_regulators[id].enable_bit) != 0;
 }
@@ -388,8 +388,8 @@ static struct regulator_ops mc13783_gpo_regulator_ops = {
 	.enable = mc13783_gpo_regulator_enable,
 	.disable = mc13783_gpo_regulator_disable,
 	.is_enabled = mc13783_gpo_regulator_is_enabled,
-	.list_voltage = regulator_list_voltage_table,
-	.set_voltage = mc13xxx_fixed_regulator_set_voltage,
+.list_voltage = regulator_list_voltage_table,
+.set_voltage = mc13xxx_fixed_regulator_set_voltage,
 };
 
 static int mc13783_regulator_probe(struct platform_device *pdev)

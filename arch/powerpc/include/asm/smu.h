@@ -3,7 +3,7 @@
 #define _SMU_H
 
 /*
- * Definitions for talking to the SMU chip in newer G5 PowerMacs
+* Definitions for talking to the SMU chip in newer G5 PowerMacs
  */
 #ifdef __KERNEL__
 #include <linux/list.h>
@@ -84,7 +84,7 @@
  * Real time clock control
  *
  * This is a "mux", first data byte contains the "sub" command.
- * The "RTC" part of the SMU controls the date, time, powerup
+* The "RTC" part of the SMU controls the date, time, powerup
  * timer, but also a PRAM
  *
  * Dates are in BCD format on 7 bytes:
@@ -171,21 +171,21 @@
 #define   SMU_I2C_TRANSFER_COMBINED	0x02
 
 /*
- * Power supply control
+* Power supply control
  *
  * The "sub" command is an ASCII string in the data, the
  * data length is that of the string.
  *
- * The VSLEW command can be used to get or set the voltage slewing.
+* The VSLEW command can be used to get or set the voltage slewing.
  *  - length 5 (only "VSLEW") : it returns "DONE" and 3 bytes of
  *    reply at data offset 6, 7 and 8.
  *  - length 8 ("VSLEWxyz") has 3 additional bytes appended, and is
- *    used to set the voltage slewing point. The SMU replies with "DONE"
+*    used to set the voltage slewing point. The SMU replies with "DONE"
  * I yet have to figure out their exact meaning of those 3 bytes in
  * both cases. They seem to be:
  *  x = processor mask
  *  y = op. point index
- *  z = processor freq. step index
+*  z = processor freq. step index
  * I haven't yet deciphered result codes
  *
  */
@@ -218,7 +218,7 @@
  * I did not yet understand how it exactly works or what it does.
  *
  * Guessing from OF code, 0x02 activates the display backlight. Apple uses/used
- * the same codebase for all OF versions. On PowerBooks, this command would
+* the same codebase for all OF versions. On PowerBooks, this command would
  * enable the backlight. For the G5s, it only activates the front LED. However,
  * don't take this for granted.
  *
@@ -228,12 +228,12 @@
 #define   SMU_CMD_MISC_df_SET_DISPLAY_LIT	0x02
 
 /*
- * Sets mode of power switch.
+* Sets mode of power switch.
  *
  * What this actually does is not yet known. Maybe it enables some interrupt.
  *
  * Parameters:
- *   2: enable power switch? [0x00 or 0x01]
+*   2: enable power switch? [0x00 or 0x01]
  *   3 (optional): enable nmi? [0x00 or 0x01]
  *
  * Returns:
@@ -245,7 +245,7 @@
 /* Sets LED dimm offset.
  *
  * The front LED dimms itself during sleep. Its brightness (or, well, the PWM
- * frequency) depends on current time. Therefore, the SMU needs to know the
+* frequency) depends on current time. Therefore, the SMU needs to know the
  * timezone.
  *
  * Parameters:
@@ -327,7 +327,7 @@
 
 
 /*
- * Power related commands
+* Power related commands
  *
  * Parameters:
  *   1: subcommand
@@ -336,9 +336,9 @@
 
 /* SMU_POWER_EVENTS subcommands */
 enum {
-	SMU_PWR_GET_POWERUP_EVENTS      = 0x00,
-	SMU_PWR_SET_POWERUP_EVENTS      = 0x01,
-	SMU_PWR_CLR_POWERUP_EVENTS      = 0x02,
+SMU_PWR_GET_POWERUP_EVENTS      = 0x00,
+SMU_PWR_SET_POWERUP_EVENTS      = 0x01,
+SMU_PWR_CLR_POWERUP_EVENTS      = 0x02,
 	SMU_PWR_GET_WAKEUP_EVENTS       = 0x03,
 	SMU_PWR_SET_WAKEUP_EVENTS       = 0x04,
 	SMU_PWR_CLR_WAKEUP_EVENTS       = 0x05,
@@ -552,7 +552,7 @@ struct smu_sdbp_header {
 #define SMU_SDB_FVT_ID			0x12
 
 struct smu_sdbp_fvt {
-	__u32	sysclk;			/* Base SysClk frequency in Hz for
+__u32	sysclk;			/* Base SysClk frequency in Hz for
 					 * this operating point. Value need to
 					 * be unmixed with SMU_U32_MIX()
 					 */
@@ -561,8 +561,8 @@ struct smu_sdbp_fvt {
 					 * operating point
 					 */
 
-	__u16	volts[3];		/* CPU core voltage for the 3
-					 * PowerTune modes, a mode with
+__u16	volts[3];		/* CPU core voltage for the 3
+* PowerTune modes, a mode with
 					 * 0V = not supported. Value need
 					 * to be unmixed with SMU_U16_MIX()
 					 */
@@ -578,7 +578,7 @@ struct smu_sdbp_cpuvcp {
 	__s16	volt_offset;		/* s4.12 fixed point */
 	__u16	curr_scale;		/* u4.12 fixed point */
 	__s16	curr_offset;		/* s4.12 fixed point */
-	__s32	power_quads[3];		/* s4.28 fixed point */
+__s32	power_quads[3];		/* s4.28 fixed point */
 };
 
 /* This partition contains CPU thermal diode calibration
@@ -621,8 +621,8 @@ struct smu_sdbp_cpupiddata {
 	__u8	target_temp_delta;
 	__u8	unknown2;
 	__u8	history_len;
-	__s16	power_adj;
-	__u16	max_power;
+__s16	power_adj;
+__u16	max_power;
 	__s32	gp,gr,gd;
 };
 

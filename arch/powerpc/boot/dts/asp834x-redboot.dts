@@ -28,16 +28,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8347@0 {
+PowerPC,8347@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <32768>;
 			i-cache-size = <32768>;
-			timebase-frequency = <0>;	// from bootloader
-			bus-frequency = <0>;		// from bootloader
-			clock-frequency = <0>;		// from bootloader
+timebase-frequency = <0>;	// from bootloader
+bus-frequency = <0>;		// from bootloader
+clock-frequency = <0>;		// from bootloader
 		};
 	};
 
@@ -74,7 +74,7 @@
 		device_type = "soc";
 		ranges = <0x0 0xff000000 0x00100000>;
 		reg = <0xff000000 0x00000200>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		wdt@200 {
 			device_type = "watchdog";
@@ -256,7 +256,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <400000000>;
+clock-frequency = <400000000>;
 			interrupts = <9 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -266,7 +266,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <400000000>;
+clock-frequency = <400000000>;
 			interrupts = <10 0x8>;
 			interrupt-parent = <&ipic>;
 		};

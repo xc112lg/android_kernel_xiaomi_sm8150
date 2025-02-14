@@ -2,10 +2,10 @@
  * This file contains common routines for dealing with free of page tables
  * Along with common page table handling code
  *
- *  Derived from arch/powerpc/mm/tlb_64.c:
+*  Derived from arch/powerpc/mm/tlb_64.c:
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *

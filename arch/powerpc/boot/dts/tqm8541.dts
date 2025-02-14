@@ -29,16 +29,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8541@0 {
+PowerPC,8541@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <32768>;
 			i-cache-size = <32768>;
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			next-level-cache = <&L2>;
 		};
 	};
@@ -53,7 +53,7 @@
 		#size-cells = <1>;
 		device_type = "soc";
 		ranges = <0x0 0xe0000000 0x100000>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 		compatible = "fsl,mpc8541-immr", "simple-bus";
 
 		ecm-law@0 {
@@ -223,7 +223,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>; 	// reg base, size
-			clock-frequency = <0>; 	// should we fill in in uboot?
+clock-frequency = <0>; 	// should we fill in in uboot?
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
 		};
@@ -233,7 +233,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;	// reg base, size
-			clock-frequency = <0>; 	// should we fill in in uboot?
+clock-frequency = <0>; 	// should we fill in in uboot?
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
 		};
@@ -281,7 +281,7 @@
 				             "fsl,cpm2-brg",
 				             "fsl,cpm-brg";
 				reg = <0x919f0 0x10 0x915f0 0x10>;
-				clock-frequency = <0>;
+clock-frequency = <0>;
 			};
 
 			cpmpic: pic@90c00 {
@@ -303,7 +303,7 @@
 		compatible = "fsl,mpc8540-pcix", "fsl,mpc8540-pci";
 		device_type = "pci";
 		reg = <0xe0008000 0x1000>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 		interrupt-map = <
 				/* IDSEL 28 */

@@ -214,7 +214,7 @@ static int lite5200_pm_enter(suspend_state_t state)
 	/* effectively save FP regs */
 	enable_kernel_fp();
 
-	lite5200_low_power(sram, mbar);
+lite5200_low_power(sram, mbar);
 
 	lite5200_restore_regs();
 

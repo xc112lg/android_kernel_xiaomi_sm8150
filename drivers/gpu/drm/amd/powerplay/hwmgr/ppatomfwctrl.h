@@ -49,7 +49,7 @@ struct pp_atomfwctrl_voltage_table {
 	uint8_t max_vid_step;
 	uint8_t telemetry_offset;
 	uint8_t telemetry_slope;
-	struct pp_atomfwctrl_voltage_table_entry entries[PP_ATOMFWCTRL_MAX_VOLTAGE_ENTRIES];
+struct pp_atomfwctrl_voltage_table_entry entries[PP_ATOMFWCTRL_MAX_VOLTAGE_ENTRIES];
 };
 
 struct pp_atomfwctrl_gpio_pin_assignment {
@@ -69,8 +69,8 @@ struct pp_atomfwctrl_clock_dividers_soc15 {
 };
 
 struct pp_atomfwctrl_avfs_parameters {
-	uint32_t   ulMaxVddc;
-	uint32_t   ulMinVddc;
+uint32_t   ulMaxVddc;
+uint32_t   ulMinVddc;
 
 	uint32_t   ulMeanNsigmaAcontant0;
 	uint32_t   ulMeanNsigmaAcontant1;
@@ -136,10 +136,10 @@ struct pp_atomfwctrl_bios_boot_up_values {
 	uint32_t   ulUClk;
 	uint32_t   ulSocClk;
 	uint32_t   ulDCEFClk;
-	uint16_t   usVddc;
-	uint16_t   usVddci;
-	uint16_t   usMvddc;
-	uint16_t   usVddGfx;
+uint16_t   usVddc;
+uint16_t   usVddci;
+uint16_t   usMvddc;
+uint16_t   usVddGfx;
 };
 
 int pp_atomfwctrl_get_gpu_pll_dividers_vega10(struct pp_hwmgr *hwmgr,
@@ -150,9 +150,9 @@ bool pp_atomfwctrl_get_pp_assign_pin(struct pp_hwmgr *hwmgr, const uint32_t pin_
 		struct pp_atomfwctrl_gpio_pin_assignment *gpio_pin_assignment);
 
 int pp_atomfwctrl_get_voltage_table_v4(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
-		uint8_t voltage_mode, struct pp_atomfwctrl_voltage_table *voltage_table);
+uint8_t voltage_mode, struct pp_atomfwctrl_voltage_table *voltage_table);
 bool pp_atomfwctrl_is_voltage_controlled_by_gpio_v4(struct pp_hwmgr *hwmgr,
-		uint8_t voltage_type, uint8_t voltage_mode);
+uint8_t voltage_type, uint8_t voltage_mode);
 
 int pp_atomfwctrl_get_avfs_information(struct pp_hwmgr *hwmgr,
 		struct pp_atomfwctrl_avfs_parameters *param);

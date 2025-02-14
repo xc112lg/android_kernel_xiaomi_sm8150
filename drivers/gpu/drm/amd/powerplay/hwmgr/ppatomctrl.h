@@ -163,9 +163,9 @@ typedef struct pp_atomctrl_internal_ss_info pp_atomctrl_internal_ss_info;
 
 struct pp_atomctrl_kong_system_info {
 	uint32_t			ul_bootup_uma_clock;          /* in 10kHz unit */
-	uint16_t			us_max_nb_voltage;            /* high NB voltage, calculated using current VDDNB (D24F2xDC) and VDDNB offset fuse; */
-	uint16_t			us_min_nb_voltage;            /* low NB voltage, calculated using current VDDNB (D24F2xDC) and VDDNB offset fuse; */
-	uint16_t			us_bootup_nb_voltage;         /* boot up NB voltage */
+uint16_t			us_max_nb_voltage;            /* high NB voltage, calculated using current VDDNB (D24F2xDC) and VDDNB offset fuse; */
+uint16_t			us_min_nb_voltage;            /* low NB voltage, calculated using current VDDNB (D24F2xDC) and VDDNB offset fuse; */
+uint16_t			us_bootup_nb_voltage;         /* boot up NB voltage */
 	uint8_t			uc_htc_tmp_lmt;               /* bit [22:16] of D24F3x64 Hardware Thermal Control (HTC) Register, may not be needed, TBD */
 	uint8_t			uc_tj_offset;                /* bit [28:22] of D24F3xE4 Thermtrip Status Register,may not be needed, TBD */
 	/* 0: default 1: uvd 2: fs-3d */
@@ -199,8 +199,8 @@ typedef struct pp_atomctrl_voltage_table_entry pp_atomctrl_voltage_table_entry;
 struct pp_atomctrl_voltage_table {
 	uint32_t count;
 	uint32_t mask_low;
-	uint32_t phase_delay;   /* Used for ATOM_GPIO_VOLTAGE_OBJECT_V3 and later */
-	pp_atomctrl_voltage_table_entry entries[PP_ATOMCTRL_MAX_VOLTAGE_ENTRIES];
+uint32_t phase_delay;   /* Used for ATOM_GPIO_VOLTAGE_OBJECT_V3 and later */
+pp_atomctrl_voltage_table_entry entries[PP_ATOMCTRL_MAX_VOLTAGE_ENTRIES];
 };
 
 typedef struct pp_atomctrl_voltage_table pp_atomctrl_voltage_table;
@@ -269,13 +269,13 @@ struct pp_atom_ctrl__avfs_parameters {
 	uint32_t  ulAVFSGB_FUSE_TABLE_CKSON_m1;
 	uint16_t  usAVFSGB_FUSE_TABLE_CKSON_m2;
 	uint32_t  ulAVFSGB_FUSE_TABLE_CKSON_b;
-	uint16_t  usMaxVoltage_0_25mv;
+uint16_t  usMaxVoltage_0_25mv;
 	uint8_t  ucEnableGB_VDROOP_TABLE_CKSOFF;
 	uint8_t  ucEnableGB_VDROOP_TABLE_CKSON;
 	uint8_t  ucEnableGB_FUSE_TABLE_CKSOFF;
 	uint8_t  ucEnableGB_FUSE_TABLE_CKSON;
 	uint16_t usPSM_Age_ComFactor;
-	uint8_t  ucEnableApplyAVFS_CKS_OFF_Voltage;
+uint8_t  ucEnableApplyAVFS_CKS_OFF_Voltage;
 	uint8_t  ucReserved;
 };
 
@@ -301,12 +301,12 @@ extern int atomctrl_get_engine_pll_dividers_kong(struct pp_hwmgr *hwmgr,
 extern int atomctrl_read_efuse(void *device, uint16_t start_index,
 		uint16_t end_index, uint32_t mask, uint32_t *efuse);
 extern int atomctrl_calculate_voltage_evv_on_sclk(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
-		uint32_t sclk, uint16_t virtual_voltage_Id, uint16_t *voltage, uint16_t dpm_level, bool debug);
+uint32_t sclk, uint16_t virtual_voltage_Id, uint16_t *voltage, uint16_t dpm_level, bool debug);
 extern int atomctrl_get_engine_pll_dividers_ai(struct pp_hwmgr *hwmgr, uint32_t clock_value, pp_atomctrl_clock_dividers_ai *dividers);
 extern int atomctrl_set_ac_timing_ai(struct pp_hwmgr *hwmgr, uint32_t memory_clock,
 								uint8_t level);
 extern int atomctrl_get_voltage_evv_on_sclk_ai(struct pp_hwmgr *hwmgr, uint8_t voltage_type,
-				uint32_t sclk, uint16_t virtual_voltage_Id, uint32_t *voltage);
+uint32_t sclk, uint16_t virtual_voltage_Id, uint32_t *voltage);
 extern int atomctrl_get_smc_sclk_range_table(struct pp_hwmgr *hwmgr, struct pp_atom_ctrl_sclk_range_table *table);
 
 extern int atomctrl_get_avfs_information(struct pp_hwmgr *hwmgr, struct pp_atom_ctrl__avfs_parameters *param);

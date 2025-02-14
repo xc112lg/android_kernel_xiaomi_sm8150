@@ -34,16 +34,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8360@0 {
+PowerPC,8360@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;	// 32 bytes
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <32768>;		// L1, 32K
 			i-cache-size = <32768>;		// L1, 32K
-			timebase-frequency = <66000000>;
-			bus-frequency = <264000000>;
-			clock-frequency = <528000000>;
+timebase-frequency = <66000000>;
+bus-frequency = <264000000>;
+clock-frequency = <528000000>;
 		};
 	};
 
@@ -91,7 +91,7 @@
 		compatible = "simple-bus";
 		ranges = <0x0 0xe0000000 0x00100000>;
 		reg = <0xe0000000 0x00000200>;
-		bus-frequency = <264000000>;
+bus-frequency = <264000000>;
 
 		wdt@200 {
 			device_type = "watchdog";
@@ -99,7 +99,7 @@
 			reg = <0x200 0x100>;
 		};
 
-		pmc: power@b00 {
+pmc: power@b00 {
 			compatible = "fsl,mpc8360-pmc", "fsl,mpc8349-pmc";
 			reg = <0xb00 0x100 0xa00 0x100>;
 			interrupts = <80 0x8>;
@@ -138,7 +138,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <264000000>;
+clock-frequency = <264000000>;
 			interrupts = <9 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -148,7 +148,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <264000000>;
+clock-frequency = <264000000>;
 			interrupts = <10 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -295,8 +295,8 @@
 		compatible = "fsl,qe";
 		ranges = <0x0 0xe0100000 0x00100000>;
 		reg = <0xe0100000 0x480>;
-		brg-frequency = <0>;
-		bus-frequency = <396000000>;
+brg-frequency = <0>;
+bus-frequency = <396000000>;
 		fsl,qe-num-riscs = <2>;
 		fsl,qe-num-snums = <28>;
 
@@ -317,7 +317,7 @@
 			compatible = "fsl,mpc8360-qe-gtm",
 				     "fsl,qe-gtm", "fsl,gtm";
 			reg = <0x440 0x40>;
-			clock-frequency = <132000000>;
+clock-frequency = <132000000>;
 			interrupts = <12 13 14 15>;
 			interrupt-parent = <&qeic>;
 		};
@@ -354,7 +354,7 @@
 				 &qe_pio_b  9 0   /* USBRP */
 				 &qe_pio_b 11 0   /* USBRN */
 				 &bcsr13    5 0   /* SPEED */
-				 &bcsr13    4 1>; /* POWER */
+&bcsr13    4 1>; /* POWER */
 		};
 
 		enet0: ucc@2000 {
@@ -472,7 +472,7 @@
 		ranges = <0x02000000 0x0 0xa0000000 0xa0000000 0x0 0x10000000
 			  0x42000000 0x0 0x80000000 0x80000000 0x0 0x10000000
 			  0x01000000 0x0 0x00000000 0xe2000000 0x0 0x00100000>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
 		#address-cells = <3>;

@@ -147,15 +147,15 @@ static int wm831x_dcdc_get_status(struct regulator_dev *rdev)
 		return ret;
 
 	if (ret & (1 << rdev_get_id(rdev))) {
-		dev_dbg(wm831x->dev, "DCDC%d under voltage\n",
+dev_dbg(wm831x->dev, "DCDC%d under voltage\n",
 			rdev_get_id(rdev) + 1);
 		return REGULATOR_STATUS_ERROR;
 	}
 
-	/* DCDC1 and DCDC2 can additionally detect high voltage/current */
+/* DCDC1 and DCDC2 can additionally detect high voltage/current */
 	if (rdev_get_id(rdev) < 2) {
 		if (ret & (WM831X_DC1_OV_STS << rdev_get_id(rdev))) {
-			dev_dbg(wm831x->dev, "DCDC%d over voltage\n",
+dev_dbg(wm831x->dev, "DCDC%d over voltage\n",
 				rdev_get_id(rdev) + 1);
 			return REGULATOR_STATUS_ERROR;
 		}
@@ -184,7 +184,7 @@ static irqreturn_t wm831x_dcdc_uv_irq(int irq, void *data)
 	struct wm831x_dcdc *dcdc = data;
 
 	regulator_notifier_call_chain(dcdc->regulator,
-				      REGULATOR_EVENT_UNDER_VOLTAGE,
+REGULATOR_EVENT_UNDER_VOLTAGE,
 				      NULL);
 
 	return IRQ_HANDLED;
@@ -227,7 +227,7 @@ static int wm831x_buckv_map_voltage(struct regulator_dev *rdev,
 	else
 		return -EINVAL;
 
-	if (wm831x_buckv_list_voltage(rdev, vsel) > max_uV)
+if (wm831x_buckv_list_voltage(rdev, vsel) > max_uV)
 		return -EINVAL;
 
 	return vsel;
@@ -267,7 +267,7 @@ static int wm831x_buckv_set_voltage_sel(struct regulator_dev *rdev,
 	if (dcdc->dvs_gpio && dcdc->dvs_vsel == vsel)
 		return wm831x_buckv_set_dvs(rdev, 1);
 
-	/* Always set the ON status to the minimum voltage */
+/* Always set the ON status to the minimum voltage */
 	ret = wm831x_set_bits(wm831x, on_reg, WM831X_DC1_ON_VSEL_MASK, vsel);
 	if (ret < 0)
 		return ret;
@@ -276,15 +276,15 @@ static int wm831x_buckv_set_voltage_sel(struct regulator_dev *rdev,
 	if (!dcdc->dvs_gpio)
 		return ret;
 
-	/* Kick the voltage transition now */
+/* Kick the voltage transition now */
 	ret = wm831x_buckv_set_dvs(rdev, 0);
 	if (ret < 0)
 		return ret;
 
 	/*
 	 * If this VSEL is higher than the last one we've seen then
-	 * remember it as the DVS VSEL.  This is optimised for CPUfreq
-	 * usage where we want to get to the highest voltage very
+* remember it as the DVS VSEL.  This is optimised for CPUfreq
+* usage where we want to get to the highest voltage very
 	 * quickly.
 	 */
 	if (vsel > dcdc->dvs_vsel) {
@@ -309,7 +309,7 @@ static int wm831x_buckv_set_suspend_voltage(struct regulator_dev *rdev,
 	u16 reg = dcdc->base + WM831X_DCDC_SLEEP_CONTROL;
 	int vsel;
 
-	vsel = wm831x_buckv_map_voltage(rdev, uV, uV);
+vsel = wm831x_buckv_map_voltage(rdev, uV, uV);
 	if (vsel < 0)
 		return vsel;
 
@@ -366,11 +366,11 @@ static int wm831x_buckv_get_current_limit(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops wm831x_buckv_ops = {
-	.set_voltage_sel = wm831x_buckv_set_voltage_sel,
-	.get_voltage_sel = wm831x_buckv_get_voltage_sel,
-	.list_voltage = wm831x_buckv_list_voltage,
-	.map_voltage = wm831x_buckv_map_voltage,
-	.set_suspend_voltage = wm831x_buckv_set_suspend_voltage,
+.set_voltage_sel = wm831x_buckv_set_voltage_sel,
+.get_voltage_sel = wm831x_buckv_get_voltage_sel,
+.list_voltage = wm831x_buckv_list_voltage,
+.map_voltage = wm831x_buckv_map_voltage,
+.set_suspend_voltage = wm831x_buckv_set_suspend_voltage,
 	.set_current_limit = wm831x_buckv_set_current_limit,
 	.get_current_limit = wm831x_buckv_get_current_limit,
 
@@ -399,7 +399,7 @@ static void wm831x_buckv_dvs_init(struct platform_device *pdev,
 		return;
 
 	/* gpiolib won't let us read the GPIO status so pick the higher
-	 * of the two existing voltages so we take it as platform data.
+* of the two existing voltages so we take it as platform data.
 	 */
 	dcdc->dvs_gpio_state = pdata->dvs_init_state;
 
@@ -486,12 +486,12 @@ static int wm831x_buckv_probe(struct platform_device *pdev)
 	dcdc->desc.name = dcdc->name;
 
 	snprintf(dcdc->supply_name, sizeof(dcdc->supply_name),
-		 "DC%dVDD", id + 1);
+"DC%dVDD", id + 1);
 	dcdc->desc.supply_name = dcdc->supply_name;
 
 	dcdc->desc.id = id;
-	dcdc->desc.type = REGULATOR_VOLTAGE;
-	dcdc->desc.n_voltages = WM831X_BUCKV_MAX_SELECTOR + 1;
+dcdc->desc.type = REGULATOR_VOLTAGE;
+dcdc->desc.n_voltages = WM831X_BUCKV_MAX_SELECTOR + 1;
 	dcdc->desc.ops = &wm831x_buckv_ops;
 	dcdc->desc.owner = THIS_MODULE;
 	dcdc->desc.enable_reg = WM831X_DCDC_ENABLE;
@@ -578,7 +578,7 @@ static int wm831x_buckp_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 	u16 reg = dcdc->base + WM831X_DCDC_SLEEP_CONTROL;
 	int sel;
 
-	sel = regulator_map_voltage_linear(rdev, uV, uV);
+sel = regulator_map_voltage_linear(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -586,11 +586,11 @@ static int wm831x_buckp_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 }
 
 static const struct regulator_ops wm831x_buckp_ops = {
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.set_suspend_voltage = wm831x_buckp_set_suspend_voltage,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.set_suspend_voltage = wm831x_buckp_set_suspend_voltage,
 
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
@@ -638,12 +638,12 @@ static int wm831x_buckp_probe(struct platform_device *pdev)
 	dcdc->desc.name = dcdc->name;
 
 	snprintf(dcdc->supply_name, sizeof(dcdc->supply_name),
-		 "DC%dVDD", id + 1);
+"DC%dVDD", id + 1);
 	dcdc->desc.supply_name = dcdc->supply_name;
 
 	dcdc->desc.id = id;
-	dcdc->desc.type = REGULATOR_VOLTAGE;
-	dcdc->desc.n_voltages = WM831X_BUCKP_MAX_SELECTOR + 1;
+dcdc->desc.type = REGULATOR_VOLTAGE;
+dcdc->desc.n_voltages = WM831X_BUCKP_MAX_SELECTOR + 1;
 	dcdc->desc.ops = &wm831x_buckp_ops;
 	dcdc->desc.owner = THIS_MODULE;
 	dcdc->desc.vsel_reg = dcdc->base + WM831X_DCDC_ON_CONFIG;
@@ -710,7 +710,7 @@ static int wm831x_boostp_get_status(struct regulator_dev *rdev)
 		return ret;
 
 	if (ret & (1 << rdev_get_id(rdev))) {
-		dev_dbg(wm831x->dev, "DCDC%d under voltage\n",
+dev_dbg(wm831x->dev, "DCDC%d under voltage\n",
 			rdev_get_id(rdev) + 1);
 		return REGULATOR_STATUS_ERROR;
 	}
@@ -764,7 +764,7 @@ static int wm831x_boostp_probe(struct platform_device *pdev)
 	snprintf(dcdc->name, sizeof(dcdc->name), "DCDC%d", id + 1);
 	dcdc->desc.name = dcdc->name;
 	dcdc->desc.id = id;
-	dcdc->desc.type = REGULATOR_VOLTAGE;
+dcdc->desc.type = REGULATOR_VOLTAGE;
 	dcdc->desc.ops = &wm831x_boostp_ops;
 	dcdc->desc.owner = THIS_MODULE;
 	dcdc->desc.enable_reg = WM831X_DCDC_ENABLE;
@@ -810,7 +810,7 @@ static struct platform_driver wm831x_boostp_driver = {
 };
 
 /*
- * External Power Enable
+* External Power Enable
  *
  * These aren't actually DCDCs but look like them in hardware so share
  * code.
@@ -849,7 +849,7 @@ static int wm831x_epe_probe(struct platform_device *pdev)
 	dcdc->desc.name = dcdc->name;
 	dcdc->desc.id = id + WM831X_EPE_BASE; /* Offset in DCDC registers */
 	dcdc->desc.ops = &wm831x_epe_ops;
-	dcdc->desc.type = REGULATOR_VOLTAGE;
+dcdc->desc.type = REGULATOR_VOLTAGE;
 	dcdc->desc.owner = THIS_MODULE;
 	dcdc->desc.enable_reg = WM831X_DCDC_ENABLE;
 	dcdc->desc.enable_mask = 1 << dcdc->desc.id;

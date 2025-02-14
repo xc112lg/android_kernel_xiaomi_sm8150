@@ -9,7 +9,7 @@
  * 2 of the License, or (at your option) any later version.
  *
  * This provides the Initiate Coprocessor Store Word Indexed (ICSWX)
- * instruction.  This instruction is used to communicate with PowerPC
+* instruction.  This instruction is used to communicate with PowerPC
  * coprocessors.  This also provides definitions of the structures used
  * to communicate with the coprocessor.
  *

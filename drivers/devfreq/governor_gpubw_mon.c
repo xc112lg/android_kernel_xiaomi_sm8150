@@ -41,27 +41,27 @@ static void _update_cutoff(struct devfreq_msm_adreno_tz_data *priv,
 }
 
 static inline int devfreq_get_freq_level(struct devfreq *devfreq,
-	unsigned long freq)
+unsigned long freq)
 {
 	int lev;
 
-	for (lev = 0; lev < devfreq->profile->max_state; lev++)
-		if (freq == devfreq->profile->freq_table[lev])
+for (lev = 0; lev < devfreq->profile->max_state; lev++)
+if (freq == devfreq->profile->freq_table[lev])
 			return lev;
 
 	return -EINVAL;
 }
 
 static int devfreq_gpubw_get_target(struct devfreq *df,
-				unsigned long *freq)
+unsigned long *freq)
 {
 
-	struct devfreq_msm_adreno_tz_data *priv = df->data;
+struct devfreq_msm_adreno_tz_data *priv = df->data;
 	struct msm_busmon_extended_profile *bus_profile = container_of(
 					(df->profile),
 					struct msm_busmon_extended_profile,
 					profile);
-	struct devfreq_dev_status stats;
+struct devfreq_dev_status stats;
 	struct xstats b;
 	int result;
 	int level = 0;
@@ -71,7 +71,7 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 	int wait_active_percent;
 	int gpu_percent;
 	/*
-	 * Normalized AB should at max usage be the gpu_bimc frequency in MHz.
+* Normalized AB should at max usage be the gpu_bimc frequency in MHz.
 	 * Start with a reasonable value and let the system push it up to max.
 	 */
 	static int norm_ab_max = 300;
@@ -85,14 +85,14 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 
 	result = df->profile->get_dev_status(df->dev.parent, &stats);
 
-	*freq = stats.current_frequency;
+*freq = stats.current_frequency;
 
 	priv->bus.total_time += stats.total_time;
 	priv->bus.gpu_time += stats.busy_time;
 	priv->bus.ram_time += b.ram_time;
 	priv->bus.ram_wait += b.ram_wait;
 
-	level = devfreq_get_freq_level(df, stats.current_frequency);
+level = devfreq_get_freq_level(df, stats.current_frequency);
 
 	if (priv->bus.total_time < LONG_FLOOR)
 		return result;
@@ -113,7 +113,7 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 	 */
 	if (norm_max_cycles > priv->bus.max) {
 		_update_cutoff(priv, norm_max_cycles);
-		bus_profile->flag = DEVFREQ_FLAG_FAST_HINT;
+bus_profile->flag = DEVFREQ_FLAG_FAST_HINT;
 	} else {
 		/* GPU votes for IB not AB so don't under vote the system */
 		norm_cycles = (100 * norm_cycles) / TARGET;
@@ -124,9 +124,9 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 		if ((norm_cycles > priv->bus.up[act_level] ||
 				wait_active_percent > WAIT_THRESHOLD) &&
 				gpu_percent > CAP)
-			bus_profile->flag = DEVFREQ_FLAG_FAST_HINT;
+bus_profile->flag = DEVFREQ_FLAG_FAST_HINT;
 		else if (norm_cycles < priv->bus.down[act_level] && level)
-			bus_profile->flag = DEVFREQ_FLAG_SLOW_HINT;
+bus_profile->flag = DEVFREQ_FLAG_SLOW_HINT;
 	}
 
 	/* Calculate the AB vote based on bus width if defined */
@@ -155,18 +155,18 @@ static int devfreq_gpubw_get_target(struct devfreq *df,
 
 static int gpubw_start(struct devfreq *devfreq)
 {
-	struct devfreq_msm_adreno_tz_data *priv;
+struct devfreq_msm_adreno_tz_data *priv;
 
 	struct msm_busmon_extended_profile *bus_profile = container_of(
-					(devfreq->profile),
+(devfreq->profile),
 					struct msm_busmon_extended_profile,
 					profile);
 	unsigned int t1, t2 = 2 * HIST;
 	int i, bus_size;
 
 
-	devfreq->data = bus_profile->private_data;
-	priv = devfreq->data;
+devfreq->data = bus_profile->private_data;
+priv = devfreq->data;
 
 	bus_size = sizeof(u32) * priv->bus.num;
 	priv->bus.up = kzalloc(bus_size, GFP_KERNEL);
@@ -198,7 +198,7 @@ static int gpubw_start(struct devfreq *devfreq)
 
 static int gpubw_stop(struct devfreq *devfreq)
 {
-	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
+struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 
 	if (priv) {
 		kfree(priv->bus.up);
@@ -206,7 +206,7 @@ static int gpubw_stop(struct devfreq *devfreq)
 		kfree(priv->bus.p_up);
 		kfree(priv->bus.p_down);
 	}
-	devfreq->data = NULL;
+devfreq->data = NULL;
 	return 0;
 }
 
@@ -214,24 +214,24 @@ static int devfreq_gpubw_event_handler(struct devfreq *devfreq,
 				unsigned int event, void *data)
 {
 	int result = 0;
-	unsigned long freq;
+unsigned long freq;
 
-	mutex_lock(&devfreq->lock);
-	freq = devfreq->previous_freq;
+mutex_lock(&devfreq->lock);
+freq = devfreq->previous_freq;
 	switch (event) {
-	case DEVFREQ_GOV_START:
-		result = gpubw_start(devfreq);
+case DEVFREQ_GOV_START:
+result = gpubw_start(devfreq);
 		break;
-	case DEVFREQ_GOV_STOP:
-		result = gpubw_stop(devfreq);
+case DEVFREQ_GOV_STOP:
+result = gpubw_stop(devfreq);
 		break;
-	case DEVFREQ_GOV_RESUME:
+case DEVFREQ_GOV_RESUME:
 		/* TODO ..... */
-		/* ret = update_devfreq(devfreq); */
+/* ret = update_devfreq(devfreq); */
 		break;
-	case DEVFREQ_GOV_SUSPEND:
+case DEVFREQ_GOV_SUSPEND:
 		{
-			struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
+struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 			if (priv) {
 				priv->bus.total_time = 0;
 				priv->bus.gpu_time = 0;
@@ -243,19 +243,19 @@ static int devfreq_gpubw_event_handler(struct devfreq *devfreq,
 		result = 0;
 		break;
 	}
-	mutex_unlock(&devfreq->lock);
+mutex_unlock(&devfreq->lock);
 	return result;
 }
 
 static struct devfreq_governor devfreq_gpubw = {
 	.name = "gpubw_mon",
-	.get_target_freq = devfreq_gpubw_get_target,
-	.event_handler = devfreq_gpubw_event_handler,
+.get_target_freq = devfreq_gpubw_get_target,
+.event_handler = devfreq_gpubw_event_handler,
 };
 
 static int __init devfreq_gpubw_init(void)
 {
-	return devfreq_add_governor(&devfreq_gpubw);
+return devfreq_add_governor(&devfreq_gpubw);
 }
 subsys_initcall(devfreq_gpubw_init);
 
@@ -263,7 +263,7 @@ static void __exit devfreq_gpubw_exit(void)
 {
 	int ret;
 
-	ret = devfreq_remove_governor(&devfreq_gpubw);
+ret = devfreq_remove_governor(&devfreq_gpubw);
 	if (ret)
 		pr_err("%s: failed remove governor %d\n", __func__, ret);
 

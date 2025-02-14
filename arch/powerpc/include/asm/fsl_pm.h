@@ -1,5 +1,5 @@
 /*
- * Support Power Management
+* Support Power Management
  *
  * Copyright 2014-2015 Freescale Semiconductor Inc.
  *
@@ -37,10 +37,10 @@ struct fsl_pm_ops {
 	int (*plat_enter_sleep)(void);
 	void (*freeze_time_base)(bool freeze);
 
-	/* keep the power of IP blocks during sleep/deep sleep */
-	void (*set_ip_power)(bool enable, u32 mask);
+/* keep the power of IP blocks during sleep/deep sleep */
+void (*set_ip_power)(bool enable, u32 mask);
 
-	/* get platform supported power management modes */
+/* get platform supported power management modes */
 	unsigned int (*get_pm_modes)(void);
 };
 

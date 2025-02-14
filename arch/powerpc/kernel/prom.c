@@ -4,7 +4,7 @@
  * Paul Mackerras	August 1996.
  * Copyright (C) 1996-2005 Paul Mackerras.
  * 
- *  Adapted for 64bit PowerPC by Dave Engebretsen and Peter Bergner.
+*  Adapted for 64bit PowerPC by Dave Engebretsen and Peter Bergner.
  *    {engebret|bergner}@us.ibm.com 
  *
  *      This program is free software; you can redistribute it and/or
@@ -375,14 +375,14 @@ static int __init early_init_dt_scan_cpus(unsigned long node,
 	 * logical PVR value in order to use the cpu feature
 	 * bits appropriate for the architecture level.
 	 *
-	 * A POWER6 partition in "POWER6 architected" mode
-	 * uses the 0x0f000002 PVR value; in POWER5+ mode
+* A POWER6 partition in "POWER6 architected" mode
+* uses the 0x0f000002 PVR value; in POWER5+ mode
 	 * it uses 0x0f000001.
 	 *
 	 * If we're using device tree CPU feature discovery then we don't
 	 * support the cpu-version property, and it's the responsibility of the
 	 * firmware/hypervisor to provide the correct feature set for the
-	 * architecture level via the ibm,powerpc-cpu-features binding.
+* architecture level via the ibm,powerpc-cpu-features binding.
 	 */
 	if (!dt_cpu_ftrs_in_use()) {
 		prop = of_get_flat_dt_prop(node, "cpu-version", NULL);
@@ -790,7 +790,7 @@ void __init early_init_devtree(void *params)
 #ifdef CONFIG_PPC_PS3
 	/* Identify PS3 firmware */
 	if (of_flat_dt_is_compatible(of_get_flat_dt_root(), "sony,ps3"))
-		powerpc_firmware_features |= FW_FEATURE_PS3_POSSIBLE;
+powerpc_firmware_features |= FW_FEATURE_PS3_POSSIBLE;
 #endif
 
 	DBG(" <- early_init_devtree()\n");

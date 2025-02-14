@@ -73,7 +73,7 @@
 	#size-cells = <1>;
 	device_type = "soc";
 	compatible = "fsl,bsc9132-immr", "simple-bus";
-	bus-frequency = <0>;		// Filled out by uboot.
+bus-frequency = <0>;		// Filled out by uboot.
 
 	ecm-law@0 {
 		compatible = "fsl,ecm-law";

@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER7 processors.
+* Performance counter support for POWER7 processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  *
@@ -15,7 +15,7 @@
 #include <asm/cputable.h>
 
 /*
- * Bits in event code for POWER7
+* Bits in event code for POWER7
  */
 #define PM_PMC_SH	16	/* PMC number (1-based) for direct events */
 #define PM_PMC_MSK	0xf
@@ -30,7 +30,7 @@
 #define PM_PMCSEL_MSK	0xff
 
 /*
- * Bits in MMCR1 for POWER7
+* Bits in MMCR1 for POWER7
  */
 #define MMCR1_TTM0SEL_SH	60
 #define MMCR1_TTM1SEL_SH	56
@@ -51,7 +51,7 @@
 #define MMCR1_PMCSEL_MSK	0xff
 
 /*
- * Power7 event codes.
+* Power7 event codes.
  */
 #define EVENT(_name, _code) \
 	_name = _code,
@@ -295,7 +295,7 @@ static int power7_compute_mmcr(u64 event[], int n_ev,
 				mmcr1 |= (unsigned long) l2sel
 					<< MMCR1_L2SEL_SH;
 		}
-		if (power7_marked_instr_event(event[i]))
+if (power7_marked_instr_event(event[i]))
 			mmcra |= MMCRA_SAMPLE_ENABLE;
 		hwc[i] = pmc;
 	}
@@ -399,14 +399,14 @@ static struct attribute *power7_events_attr[] = {
 	GENERIC_EVENT_PTR(PM_BRU_FIN),
 	GENERIC_EVENT_PTR(PM_BR_MPRED),
 
-	#include "power7-events-list.h"
+#include "power7-events-list.h"
 	#undef EVENT
 	NULL
 };
 
 static struct attribute_group power7_pmu_events_group = {
 	.name = "events",
-	.attrs = power7_events_attr,
+.attrs = power7_events_attr,
 };
 
 PMU_FORMAT_ATTR(event, "config:0-19");
@@ -418,42 +418,42 @@ static struct attribute *power7_pmu_format_attr[] = {
 
 static struct attribute_group power7_pmu_format_group = {
 	.name = "format",
-	.attrs = power7_pmu_format_attr,
+.attrs = power7_pmu_format_attr,
 };
 
 static const struct attribute_group *power7_pmu_attr_groups[] = {
-	&power7_pmu_format_group,
-	&power7_pmu_events_group,
+&power7_pmu_format_group,
+&power7_pmu_events_group,
 	NULL,
 };
 
 static struct power_pmu power7_pmu = {
-	.name			= "POWER7",
+.name			= "POWER7",
 	.n_counter		= 6,
 	.max_alternatives	= MAX_ALT + 1,
 	.add_fields		= 0x1555ul,
 	.test_adder		= 0x3000ul,
-	.compute_mmcr		= power7_compute_mmcr,
-	.get_constraint		= power7_get_constraint,
-	.get_alternatives	= power7_get_alternatives,
-	.disable_pmc		= power7_disable_pmc,
+.compute_mmcr		= power7_compute_mmcr,
+.get_constraint		= power7_get_constraint,
+.get_alternatives	= power7_get_alternatives,
+.disable_pmc		= power7_disable_pmc,
 	.flags			= PPMU_ALT_SIPR,
-	.attr_groups		= power7_pmu_attr_groups,
-	.n_generic		= ARRAY_SIZE(power7_generic_events),
-	.generic_events		= power7_generic_events,
-	.cache_events		= &power7_cache_events,
+.attr_groups		= power7_pmu_attr_groups,
+.n_generic		= ARRAY_SIZE(power7_generic_events),
+.generic_events		= power7_generic_events,
+.cache_events		= &power7_cache_events,
 };
 
 static int __init init_power7_pmu(void)
 {
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power7"))
+strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power7"))
 		return -ENODEV;
 
-	if (pvr_version_is(PVR_POWER7p))
-		power7_pmu.flags |= PPMU_SIAR_VALID;
+if (pvr_version_is(PVR_POWER7p))
+power7_pmu.flags |= PPMU_SIAR_VALID;
 
-	return register_power_pmu(&power7_pmu);
+return register_power_pmu(&power7_pmu);
 }
 
 early_initcall(init_power7_pmu);

@@ -60,7 +60,7 @@ static void __init at91_wakeup_status(void)
 	u32 reg = readl(at91_shdwc_base + AT91_SHDW_SR);
 	char *reason = "unknown";
 
-	/* Simple power-on, just bail out */
+/* Simple power-on, just bail out */
 	if (!reg)
 		return;
 
@@ -86,7 +86,7 @@ static void at91_lpddr_poweroff(void)
 		/* Ensure AT91_SHDW_CR is in the TLB by reading it */
 		"	ldr	r6, [%2, #" __stringify(AT91_SHDW_CR) "]\n\t"
 
-		/* Power down SDRAM0 */
+/* Power down SDRAM0 */
 		"	str	%1, [%0, #" __stringify(AT91_DDRSDRC_LPR) "]\n\t"
 		/* Shutdown CPU */
 		"	str	%3, [%2, #" __stringify(AT91_SHDW_CR) "]\n\t"
@@ -123,7 +123,7 @@ static void at91_poweroff_dt_set_wakeup_mode(struct platform_device *pdev)
 	int wakeup_mode;
 	u32 mode = 0, tmp;
 
-	wakeup_mode = at91_poweroff_get_wakeup_mode(np);
+wakeup_mode = at91_poweroff_get_wakeup_mode(np);
 	if (wakeup_mode < 0) {
 		dev_warn(&pdev->dev, "shdwc unknown wakeup mode\n");
 		return;
@@ -175,9 +175,9 @@ static int __init at91_poweroff_probe(struct platform_device *pdev)
 	at91_wakeup_status();
 
 	if (pdev->dev.of_node)
-		at91_poweroff_dt_set_wakeup_mode(pdev);
+at91_poweroff_dt_set_wakeup_mode(pdev);
 
-	pm_power_off = at91_poweroff;
+pm_power_off = at91_poweroff;
 
 	np = of_find_compatible_node(NULL, NULL, "atmel,sama5d3-ddramc");
 	if (!np)
@@ -192,7 +192,7 @@ static int __init at91_poweroff_probe(struct platform_device *pdev)
 	ddr_type = readl(mpddrc_base + AT91_DDRSDRC_MDR) & AT91_DDRSDRC_MD;
 	if ((ddr_type == AT91_DDRSDRC_MD_LPDDR2) ||
 	    (ddr_type == AT91_DDRSDRC_MD_LPDDR3))
-		pm_power_off = at91_lpddr_poweroff;
+pm_power_off = at91_lpddr_poweroff;
 	else
 		iounmap(mpddrc_base);
 
@@ -201,9 +201,9 @@ static int __init at91_poweroff_probe(struct platform_device *pdev)
 
 static int __exit at91_poweroff_remove(struct platform_device *pdev)
 {
-	if (pm_power_off == at91_poweroff ||
-	    pm_power_off == at91_lpddr_poweroff)
-		pm_power_off = NULL;
+if (pm_power_off == at91_poweroff ||
+pm_power_off == at91_lpddr_poweroff)
+pm_power_off = NULL;
 
 	clk_disable_unprepare(sclk);
 
@@ -224,10 +224,10 @@ static const struct of_device_id at91_poweroff_of_match[] = {
 MODULE_DEVICE_TABLE(of, at91_poweroff_of_match);
 
 static struct platform_driver at91_poweroff_driver = {
-	.remove = __exit_p(at91_poweroff_remove),
+.remove = __exit_p(at91_poweroff_remove),
 	.driver = {
-		.name = "at91-poweroff",
-		.of_match_table = at91_poweroff_of_match,
+.name = "at91-poweroff",
+.of_match_table = at91_poweroff_of_match,
 	},
 };
 module_platform_driver_probe(at91_poweroff_driver, at91_poweroff_probe);

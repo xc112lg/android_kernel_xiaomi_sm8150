@@ -18,7 +18,7 @@
  * any page table pointer.  In other words all pagetables, even tiny
  * ones, must be aligned to allow at least enough low 0 bits to
  * contain this value.  This value is also used as a mask, so it must
- * be one less than a power of two.
+* be one less than a power of two.
  */
 #define MAX_PGTABLE_INDEX_SIZE	0xf
 

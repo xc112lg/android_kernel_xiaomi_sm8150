@@ -56,7 +56,7 @@ start_head_addr=$(cat .tmp_symbols.txt | grep " t start_first_256B$" | cut -d' '
 if [ "$start_head_addr" != "$expected_start_head_addr" ]; then
 	echo "ERROR: head code starts at $start_head_addr, should be $expected_start_head_addr"
 	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
-	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
+echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
 
 	exit 1
 fi
@@ -70,7 +70,7 @@ start_text_addr=$(cat .tmp_symbols.txt | grep " t start_text$" | cut -d' ' -f1)
 if [ "$start_text_addr" != "$expected_start_text_addr" ]; then
 	echo "ERROR: start_text address is $start_text_addr, should be $expected_start_text_addr"
 	echo "ERROR: try to enable LD_HEAD_STUB_CATCH config option"
-	echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
+echo "ERROR: see comments in arch/powerpc/tools/head_check.sh"
 
 	exit 1
 fi

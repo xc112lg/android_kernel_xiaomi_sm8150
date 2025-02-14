@@ -17,7 +17,7 @@
  */
 
 /**
- * DOC: This file contains centralized definitions of power save related
+* DOC: This file contains centralized definitions of power save related
  * converged configurations.
  */
 
@@ -31,11 +31,11 @@
  * @Max: 1
  * @Default: 1
  *
- * This ini is used to enable/Disable IMPS(IdleModePowerSave) Mode
+* This ini is used to enable/Disable IMPS(IdleModePowerSave) Mode
  *
  * Related: None
  *
- * Supported Feature: Power Save
+* Supported Feature: Power Save
  *
  * Usage: External
  *
@@ -53,11 +53,11 @@
  * @Max: 1
  * @Default: 1
  *
- * This ini is used to enable/Disable BMPS(BeaconModePowerSave) Mode
+* This ini is used to enable/Disable BMPS(BeaconModePowerSave) Mode
  *
  * Related: None
  *
- * Supported Feature: Power Save
+* Supported Feature: Power Save
  *
  * Usage: External
  *
@@ -79,7 +79,7 @@
  *
  * Related: gEnableBmps
  *
- * Supported Feature: Power Save
+* Supported Feature: Power Save
  *
  * Usage: External
  *
@@ -100,12 +100,12 @@
  * @Max: 65535
  * @Default: 1
  *
- * This ini is used to set BMPS Minimum Listen Interval. If gPowerUsage
+* This ini is used to set BMPS Minimum Listen Interval. If gPowerUsage
  * is set "Min", this INI need to be set.
  *
- * Related: gEnableBmps, gPowerUsage
+* Related: gEnableBmps, gPowerUsage
  *
- * Supported Feature: Power Save
+* Supported Feature: Power Save
  *
  * Usage: External
  *
@@ -126,12 +126,12 @@
  * @Max: 65535
  * @Default: 1
  *
- * This ini is used to set BMPS Maximum Listen Interval. If gPowerUsage
+* This ini is used to set BMPS Maximum Listen Interval. If gPowerUsage
  * is set "Max", this INI need to be set.
  *
- * Related: gEnableBmps, gPowerUsage
+* Related: gEnableBmps, gPowerUsage
  *
- * Supported Feature: Power Save
+* Supported Feature: Power Save
  *
  * Usage: External
  *

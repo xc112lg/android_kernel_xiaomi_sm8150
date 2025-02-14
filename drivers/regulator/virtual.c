@@ -38,11 +38,11 @@ static void update_voltage_constraints(struct device *dev,
 	    && data->min_uV <= data->max_uV) {
 		dev_dbg(dev, "Requesting %d-%duV\n",
 			data->min_uV, data->max_uV);
-		ret = regulator_set_voltage(data->regulator,
+ret = regulator_set_voltage(data->regulator,
 					data->min_uV, data->max_uV);
 		if (ret != 0) {
 			dev_err(dev,
-				"regulator_set_voltage() failed: %d\n", ret);
+"regulator_set_voltage() failed: %d\n", ret);
 			return;
 		}
 	}
@@ -127,7 +127,7 @@ static ssize_t set_min_uV(struct device *dev, struct device_attribute *attr,
 	mutex_lock(&data->lock);
 
 	data->min_uV = val;
-	update_voltage_constraints(dev, data);
+update_voltage_constraints(dev, data);
 
 	mutex_unlock(&data->lock);
 
@@ -153,7 +153,7 @@ static ssize_t set_max_uV(struct device *dev, struct device_attribute *attr,
 	mutex_lock(&data->lock);
 
 	data->max_uV = val;
-	update_voltage_constraints(dev, data);
+update_voltage_constraints(dev, data);
 
 	mutex_unlock(&data->lock);
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014 Zhang, Keguang <keguang.zhang@gmail.com>
  *
- * Loongson 1 CPUFreq platform support.
+* Loongson 1 CPUFreq platform support.
  *
  * This program is free software; you can redistribute	it and/or modify it
  * under  the terms of	the GNU General	 Public License as published by the
@@ -15,8 +15,8 @@
 struct plat_ls1x_cpufreq {
 	const char	*clk_name;	/* CPU clk */
 	const char	*osc_clk_name;	/* OSC clk */
-	unsigned int	max_freq;	/* in kHz */
-	unsigned int	min_freq;	/* in kHz */
+unsigned int	max_freq;	/* in kHz */
+unsigned int	min_freq;	/* in kHz */
 };
 
 #endif /* __ASM_MACH_LOONGSON32_CPUFREQ_H */

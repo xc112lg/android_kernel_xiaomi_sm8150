@@ -33,16 +33,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,5125@0 {
+PowerPC,5125@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <0x20>;	// 32 bytes
 			i-cache-line-size = <0x20>;	// 32 bytes
 			d-cache-size = <0x8000>;	// L1, 32K
 			i-cache-size = <0x8000>;	// L1, 32K
-			timebase-frequency = <49500000>;// 49.5 MHz (csb/4)
-			bus-frequency = <198000000>;	// 198 MHz csb bus
-			clock-frequency = <396000000>;	// 396 MHz ppc core
+timebase-frequency = <49500000>;// 49.5 MHz (csb/4)
+bus-frequency = <198000000>;	// 198 MHz csb bus
+clock-frequency = <396000000>;	// 396 MHz ppc core
 		};
 	};
 
@@ -63,7 +63,7 @@
 		osc: osc {
 			compatible = "fixed-clock";
 			#clock-cells = <0>;
-			clock-frequency = <33000000>;
+clock-frequency = <33000000>;
 		};
 	};
 
@@ -73,7 +73,7 @@
 		#size-cells = <1>;
 		ranges = <0x0 0x80000000 0x400000>;
 		reg = <0x80000000 0x400000>;
-		bus-frequency = <66000000>;	// 66 MHz ips bus
+bus-frequency = <66000000>;	// 66 MHz ips bus
 
 		// IPIC
 		// interrupts cell = <intr #, sense>
@@ -108,7 +108,7 @@
 			clock-names = "osc";
 		};
 
-		pmc@1000{  // Power Management Controller
+pmc@1000{  // Power Management Controller
 			compatible = "fsl,mpc5121-pmc";
 			reg = <0x1000 0x100>;
 			interrupts = <83 0x2>;

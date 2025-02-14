@@ -65,7 +65,7 @@ static int global_invalidates(struct kvm *kvm, unsigned long flags)
 		cpumask_setall(&kvm->arch.need_tlb_flush);
 		cpu = local_paca->kvm_hstate.kvm_vcore->pcpu;
 		/*
-		 * On POWER9, threads are independent but the TLB is shared,
+* On POWER9, threads are independent but the TLB is shared,
 		 * so use the bit for the first thread to represent the core.
 		 */
 		if (cpu_has_feature(CPU_FTR_ARCH_300))
@@ -466,7 +466,7 @@ static void do_tlbies(struct kvm *kvm, unsigned long *rbvalues,
 	long i;
 
 	/*
-	 * We use the POWER9 5-operand versions of tlbie and tlbiel here.
+* We use the POWER9 5-operand versions of tlbie and tlbiel here.
 	 * Since we are using RIC=0 PRS=0 R=0, and P7/P8 tlbiel ignores
 	 * the RS field, this is backwards-compatible with P7 and P8.
 	 */

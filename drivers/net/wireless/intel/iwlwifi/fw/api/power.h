@@ -130,44 +130,44 @@ struct iwl_ltr_config_cmd {
 #define POWER_LPRX_RSSI_THRESHOLD_MIN	30
 
 /**
- * enum iwl_power_flags - masks for power table command flags
- * @POWER_FLAGS_POWER_SAVE_ENA_MSK: '1' Allow to save power by turning off
+* enum iwl_power_flags - masks for power table command flags
+* @POWER_FLAGS_POWER_SAVE_ENA_MSK: '1' Allow to save power by turning off
  *		receiver and transmitter. '0' - does not allow.
- * @POWER_FLAGS_POWER_MANAGEMENT_ENA_MSK: '0' Driver disables power management,
+* @POWER_FLAGS_POWER_MANAGEMENT_ENA_MSK: '0' Driver disables power management,
  *		'1' Driver enables PM (use rest of parameters)
- * @POWER_FLAGS_SKIP_OVER_DTIM_MSK: '0' PM have to walk up every DTIM,
+* @POWER_FLAGS_SKIP_OVER_DTIM_MSK: '0' PM have to walk up every DTIM,
  *		'1' PM could sleep over DTIM till listen Interval.
- * @POWER_FLAGS_SNOOZE_ENA_MSK: Enable snoozing only if uAPSD is enabled and all
+* @POWER_FLAGS_SNOOZE_ENA_MSK: Enable snoozing only if uAPSD is enabled and all
  *		access categories are both delivery and trigger enabled.
- * @POWER_FLAGS_BT_SCO_ENA: Enable BT SCO coex only if uAPSD and
+* @POWER_FLAGS_BT_SCO_ENA: Enable BT SCO coex only if uAPSD and
  *		PBW Snoozing enabled
- * @POWER_FLAGS_ADVANCE_PM_ENA_MSK: Advanced PM (uAPSD) enable mask
- * @POWER_FLAGS_LPRX_ENA_MSK: Low Power RX enable.
- * @POWER_FLAGS_UAPSD_MISBEHAVING_ENA_MSK: AP/GO's uAPSD misbehaving
+* @POWER_FLAGS_ADVANCE_PM_ENA_MSK: Advanced PM (uAPSD) enable mask
+* @POWER_FLAGS_LPRX_ENA_MSK: Low Power RX enable.
+* @POWER_FLAGS_UAPSD_MISBEHAVING_ENA_MSK: AP/GO's uAPSD misbehaving
  *		detection enablement
 */
 enum iwl_power_flags {
-	POWER_FLAGS_POWER_SAVE_ENA_MSK		= BIT(0),
-	POWER_FLAGS_POWER_MANAGEMENT_ENA_MSK	= BIT(1),
-	POWER_FLAGS_SKIP_OVER_DTIM_MSK		= BIT(2),
-	POWER_FLAGS_SNOOZE_ENA_MSK		= BIT(5),
-	POWER_FLAGS_BT_SCO_ENA			= BIT(8),
-	POWER_FLAGS_ADVANCE_PM_ENA_MSK		= BIT(9),
-	POWER_FLAGS_LPRX_ENA_MSK		= BIT(11),
-	POWER_FLAGS_UAPSD_MISBEHAVING_ENA_MSK	= BIT(12),
+POWER_FLAGS_POWER_SAVE_ENA_MSK		= BIT(0),
+POWER_FLAGS_POWER_MANAGEMENT_ENA_MSK	= BIT(1),
+POWER_FLAGS_SKIP_OVER_DTIM_MSK		= BIT(2),
+POWER_FLAGS_SNOOZE_ENA_MSK		= BIT(5),
+POWER_FLAGS_BT_SCO_ENA			= BIT(8),
+POWER_FLAGS_ADVANCE_PM_ENA_MSK		= BIT(9),
+POWER_FLAGS_LPRX_ENA_MSK		= BIT(11),
+POWER_FLAGS_UAPSD_MISBEHAVING_ENA_MSK	= BIT(12),
 };
 
 #define IWL_POWER_VEC_SIZE 5
 
 /**
- * struct iwl_powertable_cmd - legacy power command. Beside old API support this
- *	is used also with a new	power API for device wide power settings.
- * POWER_TABLE_CMD = 0x77 (command, has simple generic response)
+* struct iwl_powertable_cmd - legacy power command. Beside old API support this
+*	is used also with a new	power API for device wide power settings.
+* POWER_TABLE_CMD = 0x77 (command, has simple generic response)
  *
- * @flags:		Power table command flags from POWER_FLAGS_*
+* @flags:		Power table command flags from POWER_FLAGS_*
  * @keep_alive_seconds: Keep alive period in seconds. Default - 25 sec.
  *			Minimum allowed:- 3 * DTIM. Keep alive period must be
- *			set regardless of power scheme or current power state.
+*			set regardless of power scheme or current power state.
  *			FW use this value also when PM is disabled.
  * @debug_flags:	debug flags
  * @rx_data_timeout:    Minimum time (usec) from last Rx packet for AM to
@@ -182,48 +182,48 @@ enum iwl_power_flags {
  *			Default: 80dbm
  */
 struct iwl_powertable_cmd {
-	/* PM_POWER_TABLE_CMD_API_S_VER_6 */
+/* PM_POWER_TABLE_CMD_API_S_VER_6 */
 	__le16 flags;
 	u8 keep_alive_seconds;
 	u8 debug_flags;
 	__le32 rx_data_timeout;
 	__le32 tx_data_timeout;
-	__le32 sleep_interval[IWL_POWER_VEC_SIZE];
+__le32 sleep_interval[IWL_POWER_VEC_SIZE];
 	__le32 skip_dtim_periods;
 	__le32 lprx_rssi_threshold;
 } __packed;
 
 /**
- * enum iwl_device_power_flags - masks for device power command flags
- * @DEVICE_POWER_FLAGS_POWER_SAVE_ENA_MSK:
- *	'1' Allow to save power by turning off
+* enum iwl_device_power_flags - masks for device power command flags
+* @DEVICE_POWER_FLAGS_POWER_SAVE_ENA_MSK:
+*	'1' Allow to save power by turning off
  *	receiver and transmitter. '0' - does not allow.
 */
 enum iwl_device_power_flags {
-	DEVICE_POWER_FLAGS_POWER_SAVE_ENA_MSK	= BIT(0),
+DEVICE_POWER_FLAGS_POWER_SAVE_ENA_MSK	= BIT(0),
 };
 
 /**
- * struct iwl_device_power_cmd - device wide power command.
- * DEVICE_POWER_CMD = 0x77 (command, has simple generic response)
+* struct iwl_device_power_cmd - device wide power command.
+* DEVICE_POWER_CMD = 0x77 (command, has simple generic response)
  *
- * @flags:	Power table command flags from &enum iwl_device_power_flags
+* @flags:	Power table command flags from &enum iwl_device_power_flags
  * @reserved: reserved (padding)
  */
 struct iwl_device_power_cmd {
-	/* PM_POWER_TABLE_CMD_API_S_VER_6 */
+/* PM_POWER_TABLE_CMD_API_S_VER_6 */
 	__le16 flags;
 	__le16 reserved;
 } __packed;
 
 /**
- * struct iwl_mac_power_cmd - New power command containing uAPSD support
- * MAC_PM_POWER_TABLE = 0xA9 (command, has simple generic response)
+* struct iwl_mac_power_cmd - New power command containing uAPSD support
+* MAC_PM_POWER_TABLE = 0xA9 (command, has simple generic response)
  * @id_and_color:	MAC contex identifier, &enum iwl_ctxt_id_and_color
- * @flags:		Power table command flags from POWER_FLAGS_*
+* @flags:		Power table command flags from POWER_FLAGS_*
  * @keep_alive_seconds:	Keep alive period in seconds. Default - 25 sec.
  *			Minimum allowed:- 3 * DTIM. Keep alive period must be
- *			set regardless of power scheme or current power state.
+*			set regardless of power scheme or current power state.
  *			FW use this value also when PM is disabled.
  * @rx_data_timeout:    Minimum time (usec) from last Rx packet for AM to
  *			PSM transition - legacy PM
@@ -262,7 +262,7 @@ struct iwl_mac_power_cmd {
 	/* CONTEXT_DESC_API_T_VER_1 */
 	__le32 id_and_color;
 
-	/* CLIENT_PM_POWER_TABLE_S_VER_1 */
+/* CLIENT_PM_POWER_TABLE_S_VER_1 */
 	__le16 flags;
 	__le16 keep_alive_seconds;
 	__le32 rx_data_timeout;
@@ -299,11 +299,11 @@ struct iwl_uapsd_misbehaving_ap_notif {
 } __packed;
 
 /**
- * struct iwl_reduce_tx_power_cmd - TX power reduction command
- * REDUCE_TX_POWER_CMD = 0x9f
+* struct iwl_reduce_tx_power_cmd - TX power reduction command
+* REDUCE_TX_POWER_CMD = 0x9f
  * @flags: (reserved for future implementation)
- * @mac_context_id: id of the mac ctx for which we are reducing TX power.
- * @pwr_restriction: TX power restriction in dBms.
+* @mac_context_id: id of the mac ctx for which we are reducing TX power.
+* @pwr_restriction: TX power restriction in dBms.
  */
 struct iwl_reduce_tx_power_cmd {
 	u8 flags;
@@ -312,23 +312,23 @@ struct iwl_reduce_tx_power_cmd {
 } __packed; /* TX_REDUCED_POWER_API_S_VER_1 */
 
 enum iwl_dev_tx_power_cmd_mode {
-	IWL_TX_POWER_MODE_SET_MAC = 0,
-	IWL_TX_POWER_MODE_SET_DEVICE = 1,
-	IWL_TX_POWER_MODE_SET_CHAINS = 2,
-	IWL_TX_POWER_MODE_SET_ACK = 3,
+IWL_TX_POWER_MODE_SET_MAC = 0,
+IWL_TX_POWER_MODE_SET_DEVICE = 1,
+IWL_TX_POWER_MODE_SET_CHAINS = 2,
+IWL_TX_POWER_MODE_SET_ACK = 3,
 }; /* TX_POWER_REDUCED_FLAGS_TYPE_API_E_VER_4 */;
 
 #define IWL_NUM_CHAIN_LIMITS	2
 #define IWL_NUM_SUB_BANDS	5
 
 /**
- * struct iwl_dev_tx_power_cmd - TX power reduction command
- * @set_mode: see &enum iwl_dev_tx_power_cmd_mode
- * @mac_context_id: id of the mac ctx for which we are reducing TX power.
- * @pwr_restriction: TX power restriction in 1/8 dBms.
- * @dev_24: device TX power restriction in 1/8 dBms
- * @dev_52_low: device TX power restriction upper band - low
- * @dev_52_high: device TX power restriction upper band - high
+* struct iwl_dev_tx_power_cmd - TX power reduction command
+* @set_mode: see &enum iwl_dev_tx_power_cmd_mode
+* @mac_context_id: id of the mac ctx for which we are reducing TX power.
+* @pwr_restriction: TX power restriction in 1/8 dBms.
+* @dev_24: device TX power restriction in 1/8 dBms
+* @dev_52_low: device TX power restriction upper band - low
+* @dev_52_high: device TX power restriction upper band - high
  * @per_chain_restriction: per chain restrictions
  */
 struct iwl_dev_tx_power_cmd_v3 {
@@ -344,15 +344,15 @@ struct iwl_dev_tx_power_cmd_v3 {
 #define IWL_DEV_MAX_TX_POWER 0x7FFF
 
 /**
- * struct iwl_dev_tx_power_cmd - TX power reduction command
+* struct iwl_dev_tx_power_cmd - TX power reduction command
  * @v3: version 3 of the command, embedded here for easier software handling
- * @enable_ack_reduction: enable or disable close range ack TX power
+* @enable_ack_reduction: enable or disable close range ack TX power
  *	reduction.
  * @reserved: reserved (padding)
  */
 struct iwl_dev_tx_power_cmd {
 	/* v4 is just an extension of v3 - keep this here */
-	struct iwl_dev_tx_power_cmd_v3 v3;
+struct iwl_dev_tx_power_cmd_v3 v3;
 	u8 enable_ack_reduction;
 	u8 reserved[3];
 } __packed; /* TX_REDUCED_POWER_API_S_VER_4 */
@@ -371,13 +371,13 @@ enum iwl_geo_per_chain_offset_operation {
 };  /* GEO_TX_POWER_LIMIT FLAGS TYPE */
 
 /**
- * struct iwl_per_chain_offset - embedded struct for GEO_TX_POWER_LIMIT.
- * @max_tx_power: maximum allowed tx power.
- * @chain_a: tx power offset for chain a.
- * @chain_b: tx power offset for chain b.
+* struct iwl_per_chain_offset - embedded struct for GEO_TX_POWER_LIMIT.
+* @max_tx_power: maximum allowed tx power.
+* @chain_a: tx power offset for chain a.
+* @chain_b: tx power offset for chain b.
  */
 struct iwl_per_chain_offset {
-	__le16 max_tx_power;
+__le16 max_tx_power;
 	u8 chain_a;
 	u8 chain_b;
 } __packed; /* PER_CHAIN_LIMIT_OFFSET_PER_CHAIN_S_VER_1 */
@@ -388,7 +388,7 @@ struct iwl_per_chain_offset_group {
 } __packed; /* PER_CHAIN_LIMIT_OFFSET_GROUP_S_VER_1 */
 
 /**
- * struct iwl_geo_tx_power_profile_cmd - struct for GEO_TX_POWER_LIMIT cmd.
+* struct iwl_geo_tx_power_profile_cmd - struct for GEO_TX_POWER_LIMIT cmd.
  * @ops: operations, value from &enum iwl_geo_per_chain_offset_operation
  * @table: offset profile per band.
  */
@@ -398,7 +398,7 @@ struct iwl_geo_tx_power_profiles_cmd {
 } __packed; /* GEO_TX_POWER_LIMIT */
 
 /**
- * struct iwl_geo_tx_power_profiles_resp -  response to GEO_TX_POWER_LIMIT cmd
+* struct iwl_geo_tx_power_profiles_resp -  response to GEO_TX_POWER_LIMIT cmd
  * @profile_idx: current geo profile in use
  */
 struct iwl_geo_tx_power_profiles_resp {

@@ -51,7 +51,7 @@ void *mpc85xx_cache_sram_alloc(unsigned int size,
 	}
 
 	if ((align & (align - 1)) || align <= 1) {
-		pr_err("%s(): align(=%x) must be power of two and >1\n",
+pr_err("%s(): align(=%x) must be power of two and >1\n",
 			__func__, align);
 		return NULL;
 	}

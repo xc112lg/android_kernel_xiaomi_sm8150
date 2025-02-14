@@ -35,8 +35,8 @@
 		.of_match       = of_match_ptr(_of_match),    \
 		.regulators_node= of_match_ptr("regulators"), \
 		.ops		= &_ops,		\
-		.n_voltages	= _n,			\
-		.type		= REGULATOR_VOLTAGE,	\
+.n_voltages	= _n,			\
+.type		= REGULATOR_VOLTAGE,	\
 		.owner		= THIS_MODULE,		\
 		.vsel_reg	= _vr,			\
 		.vsel_mask	= _vm,			\
@@ -104,11 +104,11 @@ static int tps65217_pmic_set_voltage_sel(struct regulator_dev *dev,
 	struct tps65217 *tps = rdev_get_drvdata(dev);
 	unsigned int rid = rdev_get_id(dev);
 
-	/* Set the voltage based on vsel value and write protect level is 2 */
+/* Set the voltage based on vsel value and write protect level is 2 */
 	ret = tps65217_set_bits(tps, dev->desc->vsel_reg, dev->desc->vsel_mask,
 				selector, TPS65217_PROTECT_L2);
 
-	/* Set GO bit for DCDCx to initiate voltage transistion */
+/* Set GO bit for DCDCx to initiate voltage transistion */
 	switch (rid) {
 	case TPS65217_DCDC_1 ... TPS65217_DCDC_3:
 		ret = tps65217_set_bits(tps, TPS65217_REG_DEFSLEW,
@@ -154,10 +154,10 @@ static struct regulator_ops tps65217_pmic_ops = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= tps65217_pmic_enable,
 	.disable		= tps65217_pmic_disable,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= tps65217_pmic_set_voltage_sel,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= tps65217_pmic_set_voltage_sel,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
 	.set_suspend_enable	= tps65217_pmic_set_suspend_enable,
 	.set_suspend_disable	= tps65217_pmic_set_suspend_disable,
 };
@@ -167,10 +167,10 @@ static struct regulator_ops tps65217_pmic_ldo1_ops = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= tps65217_pmic_enable,
 	.disable		= tps65217_pmic_disable,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= tps65217_pmic_set_voltage_sel,
-	.list_voltage		= regulator_list_voltage_table,
-	.map_voltage		= regulator_map_voltage_ascend,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= tps65217_pmic_set_voltage_sel,
+.list_voltage		= regulator_list_voltage_table,
+.map_voltage		= regulator_map_voltage_ascend,
 	.set_suspend_enable	= tps65217_pmic_set_suspend_enable,
 	.set_suspend_disable	= tps65217_pmic_set_suspend_disable,
 };

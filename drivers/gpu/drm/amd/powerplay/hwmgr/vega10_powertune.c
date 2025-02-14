@@ -37,20 +37,20 @@ static const struct vega10_didt_config_reg SEDiDtTuningCtrlConfig_Vega10[] =
  * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  */
 	/* DIDT_SQ */
-	{   ixDIDT_SQ_TUNING_CTRL,             DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,        DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,        0x3853 },
-	{   ixDIDT_SQ_TUNING_CTRL,             DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,        DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,        0x3153 },
+{   ixDIDT_SQ_TUNING_CTRL,             DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,        DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,        0x3853 },
+{   ixDIDT_SQ_TUNING_CTRL,             DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,        DIDT_SQ_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,        0x3153 },
 
 	/* DIDT_TD */
-	{   ixDIDT_TD_TUNING_CTRL,             DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,        DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,        0x0dde },
-	{   ixDIDT_TD_TUNING_CTRL,             DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,        DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,        0x0dde },
+{   ixDIDT_TD_TUNING_CTRL,             DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,        DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,        0x0dde },
+{   ixDIDT_TD_TUNING_CTRL,             DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,        DIDT_TD_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,        0x0dde },
 
 	/* DIDT_TCP */
-	{   ixDIDT_TCP_TUNING_CTRL,            DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,       DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,       0x3dde },
-	{   ixDIDT_TCP_TUNING_CTRL,            DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,       DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,       0x3dde },
+{   ixDIDT_TCP_TUNING_CTRL,            DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,       DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,       0x3dde },
+{   ixDIDT_TCP_TUNING_CTRL,            DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,       DIDT_TCP_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,       0x3dde },
 
 	/* DIDT_DB */
-	{   ixDIDT_DB_TUNING_CTRL,             DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,        DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,        0x3dde },
-	{   ixDIDT_DB_TUNING_CTRL,             DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,        DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,        0x3dde },
+{   ixDIDT_DB_TUNING_CTRL,             DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_HI_MASK,        DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_HI__SHIFT,        0x3dde },
+{   ixDIDT_DB_TUNING_CTRL,             DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_LO_MASK,        DIDT_DB_TUNING_CTRL__MAX_POWER_DELTA_LO__SHIFT,        0x3dde },
 
 	{   0xFFFFFFFF  }  /* End of list */
 };
@@ -66,7 +66,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl3Config_vega10[] =
 	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__GC_DIDT_CLK_EN_OVERRIDE_MASK,       DIDT_SQ_CTRL3__GC_DIDT_CLK_EN_OVERRIDE__SHIFT,             0x0000 },
 	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__THROTTLE_POLICY_MASK,       DIDT_SQ_CTRL3__THROTTLE_POLICY__SHIFT,             0x0003 },
 	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT_MASK,       DIDT_SQ_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT__SHIFT,             0x0000 },
-	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,       DIDT_SQ_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,             0x0000 },
+{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,       DIDT_SQ_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,             0x0000 },
 	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS_MASK,       DIDT_SQ_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS__SHIFT,             0x0003 },
 	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__GC_DIDT_LEVEL_COMB_EN_MASK,       DIDT_SQ_CTRL3__GC_DIDT_LEVEL_COMB_EN__SHIFT,             0x0000 },
 	{   ixDIDT_SQ_CTRL3,     DIDT_SQ_CTRL3__SE_DIDT_LEVEL_COMB_EN_MASK,       DIDT_SQ_CTRL3__SE_DIDT_LEVEL_COMB_EN__SHIFT,             0x0000 },
@@ -80,7 +80,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl3Config_vega10[] =
 	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__GC_DIDT_CLK_EN_OVERRIDE_MASK,      DIDT_TCP_CTRL3__GC_DIDT_CLK_EN_OVERRIDE__SHIFT,            0x0000 },
 	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__THROTTLE_POLICY_MASK,      DIDT_TCP_CTRL3__THROTTLE_POLICY__SHIFT,            0x0003 },
 	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT_MASK,      DIDT_TCP_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT__SHIFT,            0x0000 },
-	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,      DIDT_TCP_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,            0x0000 },
+{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,      DIDT_TCP_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,            0x0000 },
 	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS_MASK,      DIDT_TCP_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS__SHIFT,            0x0003 },
 	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__GC_DIDT_LEVEL_COMB_EN_MASK,      DIDT_TCP_CTRL3__GC_DIDT_LEVEL_COMB_EN__SHIFT,            0x0000 },
 	{   ixDIDT_TCP_CTRL3,    DIDT_TCP_CTRL3__SE_DIDT_LEVEL_COMB_EN_MASK,      DIDT_TCP_CTRL3__SE_DIDT_LEVEL_COMB_EN__SHIFT,            0x0000 },
@@ -94,7 +94,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl3Config_vega10[] =
 	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__GC_DIDT_CLK_EN_OVERRIDE_MASK,       DIDT_TD_CTRL3__GC_DIDT_CLK_EN_OVERRIDE__SHIFT,             0x0000 },
 	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__THROTTLE_POLICY_MASK,       DIDT_TD_CTRL3__THROTTLE_POLICY__SHIFT,             0x0003 },
 	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT_MASK,       DIDT_TD_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT__SHIFT,             0x0000 },
-	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,       DIDT_TD_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,             0x0000 },
+{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,       DIDT_TD_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,             0x0000 },
 	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS_MASK,       DIDT_TD_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS__SHIFT,             0x0003 },
 	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__GC_DIDT_LEVEL_COMB_EN_MASK,       DIDT_TD_CTRL3__GC_DIDT_LEVEL_COMB_EN__SHIFT,             0x0000 },
 	{   ixDIDT_TD_CTRL3,     DIDT_TD_CTRL3__SE_DIDT_LEVEL_COMB_EN_MASK,       DIDT_TD_CTRL3__SE_DIDT_LEVEL_COMB_EN__SHIFT,             0x0000 },
@@ -108,7 +108,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl3Config_vega10[] =
 	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__GC_DIDT_CLK_EN_OVERRIDE_MASK,       DIDT_DB_CTRL3__GC_DIDT_CLK_EN_OVERRIDE__SHIFT,             0x0000 },
 	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__THROTTLE_POLICY_MASK,       DIDT_DB_CTRL3__THROTTLE_POLICY__SHIFT,             0x0003 },
 	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT_MASK,       DIDT_DB_CTRL3__DIDT_TRIGGER_THROTTLE_LOWBIT__SHIFT,             0x0000 },
-	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,       DIDT_DB_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,             0x0000 },
+{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__DIDT_POWER_LEVEL_LOWBIT_MASK,       DIDT_DB_CTRL3__DIDT_POWER_LEVEL_LOWBIT__SHIFT,             0x0000 },
 	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS_MASK,       DIDT_DB_CTRL3__DIDT_STALL_PATTERN_BIT_NUMS__SHIFT,             0x0003 },
 	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__GC_DIDT_LEVEL_COMB_EN_MASK,       DIDT_DB_CTRL3__GC_DIDT_LEVEL_COMB_EN__SHIFT,             0x0000 },
 	{   ixDIDT_DB_CTRL3,     DIDT_DB_CTRL3__SE_DIDT_LEVEL_COMB_EN_MASK,       DIDT_DB_CTRL3__SE_DIDT_LEVEL_COMB_EN__SHIFT,             0x0000 },
@@ -127,22 +127,22 @@ static const struct vega10_didt_config_reg SEDiDtCtrl2Config_Vega10[] =
  * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  */
 	/* DIDT_SQ */
-	{   ixDIDT_SQ_CTRL2,                  DIDT_SQ_CTRL2__MAX_POWER_DELTA_MASK,                 DIDT_SQ_CTRL2__MAX_POWER_DELTA__SHIFT,                 0x3853 },
+{   ixDIDT_SQ_CTRL2,                  DIDT_SQ_CTRL2__MAX_POWER_DELTA_MASK,                 DIDT_SQ_CTRL2__MAX_POWER_DELTA__SHIFT,                 0x3853 },
 	{   ixDIDT_SQ_CTRL2,                  DIDT_SQ_CTRL2__SHORT_TERM_INTERVAL_SIZE_MASK,        DIDT_SQ_CTRL2__SHORT_TERM_INTERVAL_SIZE__SHIFT,        0x00c0 },
 	{   ixDIDT_SQ_CTRL2,                  DIDT_SQ_CTRL2__LONG_TERM_INTERVAL_RATIO_MASK,        DIDT_SQ_CTRL2__LONG_TERM_INTERVAL_RATIO__SHIFT,        0x0000 },
 
 	/* DIDT_TD */
-	{   ixDIDT_TD_CTRL2,                  DIDT_TD_CTRL2__MAX_POWER_DELTA_MASK,                 DIDT_TD_CTRL2__MAX_POWER_DELTA__SHIFT,                 0x3fff },
+{   ixDIDT_TD_CTRL2,                  DIDT_TD_CTRL2__MAX_POWER_DELTA_MASK,                 DIDT_TD_CTRL2__MAX_POWER_DELTA__SHIFT,                 0x3fff },
 	{   ixDIDT_TD_CTRL2,                  DIDT_TD_CTRL2__SHORT_TERM_INTERVAL_SIZE_MASK,        DIDT_TD_CTRL2__SHORT_TERM_INTERVAL_SIZE__SHIFT,        0x00c0 },
 	{   ixDIDT_TD_CTRL2,                  DIDT_TD_CTRL2__LONG_TERM_INTERVAL_RATIO_MASK,        DIDT_TD_CTRL2__LONG_TERM_INTERVAL_RATIO__SHIFT,        0x0001 },
 
 	/* DIDT_TCP */
-	{   ixDIDT_TCP_CTRL2,                 DIDT_TCP_CTRL2__MAX_POWER_DELTA_MASK,                DIDT_TCP_CTRL2__MAX_POWER_DELTA__SHIFT,                0x3dde },
+{   ixDIDT_TCP_CTRL2,                 DIDT_TCP_CTRL2__MAX_POWER_DELTA_MASK,                DIDT_TCP_CTRL2__MAX_POWER_DELTA__SHIFT,                0x3dde },
 	{   ixDIDT_TCP_CTRL2,                 DIDT_TCP_CTRL2__SHORT_TERM_INTERVAL_SIZE_MASK,       DIDT_TCP_CTRL2__SHORT_TERM_INTERVAL_SIZE__SHIFT,       0x00c0 },
 	{   ixDIDT_TCP_CTRL2,                 DIDT_TCP_CTRL2__LONG_TERM_INTERVAL_RATIO_MASK,       DIDT_TCP_CTRL2__LONG_TERM_INTERVAL_RATIO__SHIFT,       0x0001 },
 
 	/* DIDT_DB */
-	{   ixDIDT_DB_CTRL2,                  DIDT_DB_CTRL2__MAX_POWER_DELTA_MASK,                 DIDT_DB_CTRL2__MAX_POWER_DELTA__SHIFT,                 0x3dde },
+{   ixDIDT_DB_CTRL2,                  DIDT_DB_CTRL2__MAX_POWER_DELTA_MASK,                 DIDT_DB_CTRL2__MAX_POWER_DELTA__SHIFT,                 0x3dde },
 	{   ixDIDT_DB_CTRL2,                  DIDT_DB_CTRL2__SHORT_TERM_INTERVAL_SIZE_MASK,        DIDT_DB_CTRL2__SHORT_TERM_INTERVAL_SIZE__SHIFT,        0x00c0 },
 	{   ixDIDT_DB_CTRL2,                  DIDT_DB_CTRL2__LONG_TERM_INTERVAL_RATIO_MASK,        DIDT_DB_CTRL2__LONG_TERM_INTERVAL_RATIO__SHIFT,        0x0001 },
 
@@ -156,17 +156,17 @@ static const struct vega10_didt_config_reg SEDiDtCtrl1Config_Vega10[] =
  * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  */
 	/* DIDT_SQ */
-	{   ixDIDT_SQ_CTRL1,                   DIDT_SQ_CTRL1__MIN_POWER_MASK,                       DIDT_SQ_CTRL1__MIN_POWER__SHIFT,                       0x0000 },
-	{   ixDIDT_SQ_CTRL1,                   DIDT_SQ_CTRL1__MAX_POWER_MASK,                       DIDT_SQ_CTRL1__MAX_POWER__SHIFT,                       0xffff },
+{   ixDIDT_SQ_CTRL1,                   DIDT_SQ_CTRL1__MIN_POWER_MASK,                       DIDT_SQ_CTRL1__MIN_POWER__SHIFT,                       0x0000 },
+{   ixDIDT_SQ_CTRL1,                   DIDT_SQ_CTRL1__MAX_POWER_MASK,                       DIDT_SQ_CTRL1__MAX_POWER__SHIFT,                       0xffff },
 	/* DIDT_TD */
-	{   ixDIDT_TD_CTRL1,                   DIDT_TD_CTRL1__MIN_POWER_MASK,                       DIDT_TD_CTRL1__MIN_POWER__SHIFT,                       0x0000 },
-	{   ixDIDT_TD_CTRL1,                   DIDT_TD_CTRL1__MAX_POWER_MASK,                       DIDT_TD_CTRL1__MAX_POWER__SHIFT,                       0xffff },
+{   ixDIDT_TD_CTRL1,                   DIDT_TD_CTRL1__MIN_POWER_MASK,                       DIDT_TD_CTRL1__MIN_POWER__SHIFT,                       0x0000 },
+{   ixDIDT_TD_CTRL1,                   DIDT_TD_CTRL1__MAX_POWER_MASK,                       DIDT_TD_CTRL1__MAX_POWER__SHIFT,                       0xffff },
 	/* DIDT_TCP */
-	{   ixDIDT_TCP_CTRL1,                  DIDT_TCP_CTRL1__MIN_POWER_MASK,                      DIDT_TCP_CTRL1__MIN_POWER__SHIFT,                      0x0000 },
-	{   ixDIDT_TCP_CTRL1,                  DIDT_TCP_CTRL1__MAX_POWER_MASK,                      DIDT_TCP_CTRL1__MAX_POWER__SHIFT,                      0xffff },
+{   ixDIDT_TCP_CTRL1,                  DIDT_TCP_CTRL1__MIN_POWER_MASK,                      DIDT_TCP_CTRL1__MIN_POWER__SHIFT,                      0x0000 },
+{   ixDIDT_TCP_CTRL1,                  DIDT_TCP_CTRL1__MAX_POWER_MASK,                      DIDT_TCP_CTRL1__MAX_POWER__SHIFT,                      0xffff },
 	/* DIDT_DB */
-	{   ixDIDT_DB_CTRL1,                   DIDT_DB_CTRL1__MIN_POWER_MASK,                       DIDT_DB_CTRL1__MIN_POWER__SHIFT,                       0x0000 },
-	{   ixDIDT_DB_CTRL1,                   DIDT_DB_CTRL1__MAX_POWER_MASK,                       DIDT_DB_CTRL1__MAX_POWER__SHIFT,                       0xffff },
+{   ixDIDT_DB_CTRL1,                   DIDT_DB_CTRL1__MIN_POWER_MASK,                       DIDT_DB_CTRL1__MIN_POWER__SHIFT,                       0x0000 },
+{   ixDIDT_DB_CTRL1,                   DIDT_DB_CTRL1__MAX_POWER_MASK,                       DIDT_DB_CTRL1__MAX_POWER__SHIFT,                       0xffff },
 
 	{   0xFFFFFFFF  }  /* End of list */
 };
@@ -215,7 +215,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl0Config_Vega10[] =
 	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_STALL_CTRL_EN_MASK,   DIDT_SQ_CTRL0__DIDT_STALL_CTRL_EN__SHIFT,  0x0001 },
 	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_TUNING_CTRL_EN_MASK,   DIDT_SQ_CTRL0__DIDT_TUNING_CTRL_EN__SHIFT,  0x0001 },
 	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_STALL_AUTO_RELEASE_EN_MASK,   DIDT_SQ_CTRL0__DIDT_STALL_AUTO_RELEASE_EN__SHIFT,  0x0001 },
-	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,   DIDT_SQ_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT,  0xffff },
+{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,   DIDT_SQ_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT,  0xffff },
 	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_AUTO_MPD_EN_MASK,   DIDT_SQ_CTRL0__DIDT_AUTO_MPD_EN__SHIFT,  0x0000 },
 	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_STALL_EVENT_EN_MASK,   DIDT_SQ_CTRL0__DIDT_STALL_EVENT_EN__SHIFT,  0x0000 },
 	{  ixDIDT_SQ_CTRL0,                   DIDT_SQ_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR_MASK,   DIDT_SQ_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR__SHIFT,  0x0000 },
@@ -227,7 +227,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl0Config_Vega10[] =
 	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_STALL_CTRL_EN_MASK,   DIDT_TD_CTRL0__DIDT_STALL_CTRL_EN__SHIFT,  0x0001 },
 	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_TUNING_CTRL_EN_MASK,   DIDT_TD_CTRL0__DIDT_TUNING_CTRL_EN__SHIFT,  0x0001 },
 	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_STALL_AUTO_RELEASE_EN_MASK,   DIDT_TD_CTRL0__DIDT_STALL_AUTO_RELEASE_EN__SHIFT,  0x0001 },
-	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,   DIDT_TD_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT,  0xffff },
+{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,   DIDT_TD_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT,  0xffff },
 	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_AUTO_MPD_EN_MASK,   DIDT_TD_CTRL0__DIDT_AUTO_MPD_EN__SHIFT,  0x0000 },
 	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_STALL_EVENT_EN_MASK,   DIDT_TD_CTRL0__DIDT_STALL_EVENT_EN__SHIFT,  0x0000 },
 	{  ixDIDT_TD_CTRL0,                   DIDT_TD_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR_MASK,   DIDT_TD_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR__SHIFT,  0x0000 },
@@ -239,7 +239,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl0Config_Vega10[] =
 	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_STALL_CTRL_EN_MASK,  DIDT_TCP_CTRL0__DIDT_STALL_CTRL_EN__SHIFT, 0x0001 },
 	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_TUNING_CTRL_EN_MASK,  DIDT_TCP_CTRL0__DIDT_TUNING_CTRL_EN__SHIFT, 0x0001 },
 	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_STALL_AUTO_RELEASE_EN_MASK,  DIDT_TCP_CTRL0__DIDT_STALL_AUTO_RELEASE_EN__SHIFT, 0x0001 },
-	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,  DIDT_TCP_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT, 0xffff },
+{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,  DIDT_TCP_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT, 0xffff },
 	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_AUTO_MPD_EN_MASK,  DIDT_TCP_CTRL0__DIDT_AUTO_MPD_EN__SHIFT, 0x0000 },
 	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_STALL_EVENT_EN_MASK,  DIDT_TCP_CTRL0__DIDT_STALL_EVENT_EN__SHIFT, 0x0000 },
 	{  ixDIDT_TCP_CTRL0,                  DIDT_TCP_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR_MASK,  DIDT_TCP_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR__SHIFT, 0x0000 },
@@ -251,7 +251,7 @@ static const struct vega10_didt_config_reg SEDiDtCtrl0Config_Vega10[] =
 	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_STALL_CTRL_EN_MASK,   DIDT_DB_CTRL0__DIDT_STALL_CTRL_EN__SHIFT,  0x0001 },
 	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_TUNING_CTRL_EN_MASK,   DIDT_DB_CTRL0__DIDT_TUNING_CTRL_EN__SHIFT,  0x0001 },
 	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_STALL_AUTO_RELEASE_EN_MASK,   DIDT_DB_CTRL0__DIDT_STALL_AUTO_RELEASE_EN__SHIFT,  0x0001 },
-	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,   DIDT_DB_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT,  0xffff },
+{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_HI_POWER_THRESHOLD_MASK,   DIDT_DB_CTRL0__DIDT_HI_POWER_THRESHOLD__SHIFT,  0xffff },
 	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_AUTO_MPD_EN_MASK,   DIDT_DB_CTRL0__DIDT_AUTO_MPD_EN__SHIFT,  0x0000 },
 	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_STALL_EVENT_EN_MASK,   DIDT_DB_CTRL0__DIDT_STALL_EVENT_EN__SHIFT,  0x0000 },
 	{  ixDIDT_DB_CTRL0,                   DIDT_DB_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR_MASK,   DIDT_DB_CTRL0__DIDT_STALL_EVENT_COUNTER_CLEAR__SHIFT,  0x0000 },
@@ -1327,15 +1327,15 @@ void vega10_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
 	struct phm_tdp_table *tdp_table = table_info->tdp_table;
 	PPTable_t *table = &(data->smc_state_table.pp_table);
 
-	table->SocketPowerLimit = cpu_to_le16(
-			tdp_table->usMaximumPowerDeliveryLimit);
+table->SocketPowerLimit = cpu_to_le16(
+tdp_table->usMaximumPowerDeliveryLimit);
 	table->TdcLimit = cpu_to_le16(tdp_table->usTDC);
 	table->EdcLimit = cpu_to_le16(tdp_table->usEDCLimit);
 	table->TedgeLimit = cpu_to_le16(tdp_table->usTemperatureLimitTedge);
 	table->ThotspotLimit = cpu_to_le16(tdp_table->usTemperatureLimitHotspot);
 	table->ThbmLimit = cpu_to_le16(tdp_table->usTemperatureLimitHBM);
-	table->Tvr_socLimit = cpu_to_le16(tdp_table->usTemperatureLimitVrVddc);
-	table->Tvr_memLimit = cpu_to_le16(tdp_table->usTemperatureLimitVrMvdd);
+table->Tvr_socLimit = cpu_to_le16(tdp_table->usTemperatureLimitVrVddc);
+table->Tvr_memLimit = cpu_to_le16(tdp_table->usTemperatureLimitVrMvdd);
 	table->Tliquid1Limit = cpu_to_le16(tdp_table->usTemperatureLimitLiquid1);
 	table->Tliquid2Limit = cpu_to_le16(tdp_table->usTemperatureLimitLiquid2);
 	table->TplxLimit = cpu_to_le16(tdp_table->usTemperatureLimitPlx);
@@ -1378,11 +1378,11 @@ int vega10_enable_power_containment(struct pp_hwmgr *hwmgr)
 			(struct phm_ppt_v2_information *)(hwmgr->pptable);
 	struct phm_tdp_table *tdp_table = table_info->tdp_table;
 	uint32_t default_pwr_limit =
-			(uint32_t)(tdp_table->usMaximumPowerDeliveryLimit);
+(uint32_t)(tdp_table->usMaximumPowerDeliveryLimit);
 	int result = 0;
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_PowerContainment)) {
+PHM_PlatformCaps_PowerContainment)) {
 		if (data->smu_features[GNLD_PPT].supported)
 			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr->smumgr,
 					true, data->smu_features[GNLD_PPT].smu_feature_bitmap),
@@ -1395,9 +1395,9 @@ int vega10_enable_power_containment(struct pp_hwmgr *hwmgr)
 					"Attempt to enable PPT feature Failed!",
 					data->smu_features[GNLD_TDC].supported = false);
 
-		result = vega10_set_power_limit(hwmgr, default_pwr_limit);
+result = vega10_set_power_limit(hwmgr, default_pwr_limit);
 		PP_ASSERT_WITH_CODE(!result,
-				"Failed to set Default Power Limit in SMC!",
+"Failed to set Default Power Limit in SMC!",
 				return result);
 	}
 
@@ -1410,7 +1410,7 @@ int vega10_disable_power_containment(struct pp_hwmgr *hwmgr)
 			(struct vega10_hwmgr *)(hwmgr->backend);
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_PowerContainment)) {
+PHM_PlatformCaps_PowerContainment)) {
 		if (data->smu_features[GNLD_PPT].supported)
 			PP_ASSERT_WITH_CODE(!vega10_enable_smc_features(hwmgr->smumgr,
 					false, data->smu_features[GNLD_PPT].smu_feature_bitmap),
@@ -1439,7 +1439,7 @@ int vega10_power_control_set_level(struct pp_hwmgr *hwmgr)
 	int adjust_percent, result = 0;
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_PowerContainment)) {
+PHM_PlatformCaps_PowerContainment)) {
 		adjust_percent =
 				hwmgr->platform_descriptor.TDPAdjustmentPolarity ?
 				hwmgr->platform_descriptor.TDPAdjustment :

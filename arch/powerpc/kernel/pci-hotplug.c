@@ -1,5 +1,5 @@
 /*
- * Derived from "arch/powerpc/platforms/pseries/pci_dlpar.c"
+* Derived from "arch/powerpc/platforms/pseries/pci_dlpar.c"
  *
  * Copyright (C) 2003 Linda Xie <lxie@us.ibm.com>
  * Copyright (C) 2005 International Business Machines
@@ -71,7 +71,7 @@ void pcibios_release_device(struct pci_dev *dev)
  * @bus: the indicated PCI bus
  *
  * Remove all of the PCI devices under this bus both from the
- * linux pci device tree, and from the powerpc EEH address cache.
+* linux pci device tree, and from the powerpc EEH address cache.
  */
 void pci_hp_remove_devices(struct pci_bus *bus)
 {

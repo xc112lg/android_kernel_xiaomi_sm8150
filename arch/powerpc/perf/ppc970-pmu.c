@@ -497,7 +497,7 @@ static int __init init_ppc970_pmu(void)
 	     && strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/970MP")))
 		return -ENODEV;
 
-	return register_power_pmu(&ppc970_pmu);
+return register_power_pmu(&ppc970_pmu);
 }
 
 early_initcall(init_ppc970_pmu);

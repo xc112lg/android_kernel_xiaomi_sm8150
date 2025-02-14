@@ -1,7 +1,7 @@
 /*
- * drivers/cpufreq/cpufreq_governor.h
+* drivers/cpufreq/cpufreq_governor.h
  *
- * Header file for CPUFreq governors common code
+* Header file for CPUFreq governors common code
  *
  * Copyright	(C) 2001 Russell King
  *		(C) 2003 Venkatesh Pallipadi <venkatesh.pallipadi@intel.com>.
@@ -80,7 +80,7 @@ __ATTR(_name, 0644, show_##_name, store_##_name)
 
 /* Common to all CPUs of a policy */
 struct policy_dbs_info {
-	struct cpufreq_policy *policy;
+struct cpufreq_policy *policy;
 	/*
 	 * Per policy mutex that serializes load evaluation from limit-change
 	 * and work-handler.
@@ -127,21 +127,21 @@ struct cpu_dbs_info {
 
 /* Common Governor data across policies */
 struct dbs_governor {
-	struct cpufreq_governor gov;
+struct cpufreq_governor gov;
 	struct kobj_type kobj_type;
 
 	/*
 	 * Common data for platforms that don't set
-	 * CPUFREQ_HAVE_GOVERNOR_PER_POLICY
+* CPUFREQ_HAVE_GOVERNOR_PER_POLICY
 	 */
 	struct dbs_data *gdbs_data;
 
-	unsigned int (*gov_dbs_update)(struct cpufreq_policy *policy);
+unsigned int (*gov_dbs_update)(struct cpufreq_policy *policy);
 	struct policy_dbs_info *(*alloc)(void);
 	void (*free)(struct policy_dbs_info *policy_dbs);
 	int (*init)(struct dbs_data *dbs_data);
 	void (*exit)(struct dbs_data *dbs_data);
-	void (*start)(struct cpufreq_policy *policy);
+void (*start)(struct cpufreq_policy *policy);
 };
 
 static inline struct dbs_governor *dbs_governor_of(struct cpufreq_policy *policy)
@@ -161,23 +161,23 @@ void cpufreq_dbs_governor_limits(struct cpufreq_policy *policy);
 		.name = _name_,						\
 		.dynamic_switching = true,				\
 		.owner = THIS_MODULE,					\
-		.init = cpufreq_dbs_governor_init,			\
-		.exit = cpufreq_dbs_governor_exit,			\
-		.start = cpufreq_dbs_governor_start,			\
-		.stop = cpufreq_dbs_governor_stop,			\
-		.limits = cpufreq_dbs_governor_limits,			\
+.init = cpufreq_dbs_governor_init,			\
+.exit = cpufreq_dbs_governor_exit,			\
+.start = cpufreq_dbs_governor_start,			\
+.stop = cpufreq_dbs_governor_stop,			\
+.limits = cpufreq_dbs_governor_limits,			\
 	}
 
 /* Governor specific operations */
 struct od_ops {
-	unsigned int (*powersave_bias_target)(struct cpufreq_policy *policy,
-			unsigned int freq_next, unsigned int relation);
+unsigned int (*powersave_bias_target)(struct cpufreq_policy *policy,
+unsigned int freq_next, unsigned int relation);
 };
 
 unsigned int dbs_update(struct cpufreq_policy *policy);
 void od_register_powersave_bias_handler(unsigned int (*f)
-		(struct cpufreq_policy *, unsigned int, unsigned int),
-		unsigned int powersave_bias);
+(struct cpufreq_policy *, unsigned int, unsigned int),
+unsigned int powersave_bias);
 void od_unregister_powersave_bias_handler(void);
 ssize_t store_sampling_rate(struct gov_attr_set *attr_set, const char *buf,
 			    size_t count);

@@ -33,16 +33,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8560@0 {
+PowerPC,8560@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;	// 32 bytes
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <0x8000>;		// L1, 32K
 			i-cache-size = <0x8000>;		// L1, 32K
-			timebase-frequency = <82500000>;
-			bus-frequency = <330000000>;
-			clock-frequency = <825000000>;
+timebase-frequency = <82500000>;
+bus-frequency = <330000000>;
+clock-frequency = <825000000>;
 		};
 	};
 
@@ -57,7 +57,7 @@
 		device_type = "soc";
 		compatible = "simple-bus";
 		ranges = <0x0 0xe0000000 0x100000>;
-		bus-frequency = <330000000>;
+bus-frequency = <330000000>;
 
 		ecm-law@0 {
 			compatible = "fsl,ecm-law";
@@ -237,7 +237,7 @@
 				             "fsl,cpm2-brg",
 				             "fsl,cpm-brg";
 				reg = <0x919f0 0x10 0x915f0 0x10>;
-				clock-frequency = <165000000>;
+clock-frequency = <165000000>;
 			};
 
 			cpmpic: pic@90c00 {
@@ -307,7 +307,7 @@
 		compatible = "fsl,mpc8540-pcix", "fsl,mpc8540-pci";
 		device_type = "pci";
 		reg = <0xe0008000 0x1000>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 		interrupt-map = <
 

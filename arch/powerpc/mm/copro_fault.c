@@ -29,7 +29,7 @@
 #include <misc/cxl-base.h>
 
 /*
- * This ought to be kept in sync with the powerpc specific do_page_fault
+* This ought to be kept in sync with the powerpc specific do_page_fault
  * function. Currently, there are a few corner cases that we haven't had
  * to handle fortunately.
  */

@@ -17,9 +17,9 @@
  */
 
 /**
- * DOC: wlan_hdd_power.c
+* DOC: wlan_hdd_power.c
  *
- * WLAN power management functions
+* WLAN power management functions
  *
  */
 
@@ -537,8 +537,8 @@ out:
  * hdd_send_ps_config_to_fw() - Check user pwr save config set/reset PS
  * @adapter: pointer to hdd adapter
  *
- * This function checks the power save configuration saved in MAC context
- * and sends power save config to FW.
+* This function checks the power save configuration saved in MAC context
+* and sends power save config to FW.
  *
  * Return: None
  */
@@ -1561,7 +1561,7 @@ static void hdd_restore_sar_config(struct hdd_context *hdd_ctx)
 	if (!hdd_ctx->sar_cmd_params)
 		return;
 
-	status = sme_set_sar_power_limits(hdd_ctx->mac_handle,
+status = sme_set_sar_power_limits(hdd_ctx->mac_handle,
 					  hdd_ctx->sar_cmd_params);
 	if (QDF_IS_STATUS_ERROR(status))
 		hdd_err("Unable to configured SAR after SSR");
@@ -1575,7 +1575,7 @@ QDF_STATUS hdd_wlan_re_init(void)
 	bool bug_on_reinit_failure = CFG_BUG_ON_REINIT_FAILURE_DEFAULT;
 	bool value;
 
-	hdd_prevent_suspend(WIFI_POWER_EVENT_WAKELOCK_DRIVER_REINIT);
+hdd_prevent_suspend(WIFI_POWER_EVENT_WAKELOCK_DRIVER_REINIT);
 
 	/* Get the HDD context */
 	hdd_ctx = cds_get_context(QDF_MODULE_ID_HDD);
@@ -1612,8 +1612,8 @@ QDF_STATUS hdd_wlan_re_init(void)
 	hdd_ctx->bt_coex_mode_set = false;
 
 	/* Allow the phone to go to sleep */
-	hdd_allow_suspend(WIFI_POWER_EVENT_WAKELOCK_DRIVER_REINIT);
-	/* set chip power save failure detected callback */
+hdd_allow_suspend(WIFI_POWER_EVENT_WAKELOCK_DRIVER_REINIT);
+/* set chip power save failure detected callback */
 	sme_set_chip_pwr_save_fail_cb(hdd_ctx->mac_handle,
 				      hdd_chip_pwr_save_fail_detected_cb);
 
@@ -1639,14 +1639,14 @@ err_re_init:
 
 err_ctx_null:
 	/* Allow the phone to go to sleep */
-	hdd_allow_suspend(WIFI_POWER_EVENT_WAKELOCK_DRIVER_REINIT);
+hdd_allow_suspend(WIFI_POWER_EVENT_WAKELOCK_DRIVER_REINIT);
 	if (bug_on_reinit_failure)
 		QDF_BUG(0);
 	return -EPERM;
 }
 
 int wlan_hdd_set_powersave(struct hdd_adapter *adapter,
-	bool allow_power_save, uint32_t timeout)
+bool allow_power_save, uint32_t timeout)
 {
 	mac_handle_t mac_handle;
 	struct hdd_context *hdd_ctx;
@@ -1664,25 +1664,25 @@ int wlan_hdd_set_powersave(struct hdd_adapter *adapter,
 		return -EINVAL;
 	}
 
-	hdd_debug("Allow power save: %d", allow_power_save);
+hdd_debug("Allow power save: %d", allow_power_save);
 	mac_handle = hdd_ctx->mac_handle;
 
 	/*
 	 * This is a workaround for defective AP's that send a disassoc
-	 * immediately after WPS connection completes. Defer powersave by a
+* immediately after WPS connection completes. Defer powersave by a
 	 * small amount if the affected AP is detected.
 	 */
-	if (allow_power_save &&
+if (allow_power_save &&
 	    adapter->device_mode == QDF_STA_MODE &&
-	    !adapter->session.station.ap_supports_immediate_power_save) {
+!adapter->session.station.ap_supports_immediate_power_save) {
 		timeout = AUTO_PS_DEFER_TIMEOUT_MS;
-		hdd_debug("Defer power-save due to AP spec non-conformance");
+hdd_debug("Defer power-save due to AP spec non-conformance");
 	}
 
-	if (allow_power_save) {
+if (allow_power_save) {
 		if (QDF_STA_MODE == adapter->device_mode ||
 		    QDF_P2P_CLIENT_MODE == adapter->device_mode) {
-			hdd_debug("Disabling Auto Power save timer");
+hdd_debug("Disabling Auto Power save timer");
 			status = sme_ps_disable_auto_ps_timer(mac_handle,
 						adapter->vdev_id);
 			if (status != QDF_STATUS_SUCCESS)
@@ -1691,10 +1691,10 @@ int wlan_hdd_set_powersave(struct hdd_adapter *adapter,
 
 		ucfg_mlme_is_bmps_enabled(hdd_ctx->psoc, &is_bmps_enabled);
 		if (is_bmps_enabled) {
-			hdd_debug("Wlan driver Entering Power save");
+hdd_debug("Wlan driver Entering Power save");
 
 			/*
-			 * Enter Power Save command received from GUI
+* Enter Power Save command received from GUI
 			 * this means DHCP is completed
 			 */
 			if (timeout) {
@@ -1711,13 +1711,13 @@ int wlan_hdd_set_powersave(struct hdd_adapter *adapter,
 					goto end;
 			}
 		} else {
-			hdd_debug("Power Save is not enabled in the cfg");
+hdd_debug("Power Save is not enabled in the cfg");
 		}
 	} else {
-		hdd_debug("Wlan driver Entering Full Power");
+hdd_debug("Wlan driver Entering Full Power");
 
 		/*
-		 * Enter Full power command received from GUI
+* Enter Full power command received from GUI
 		 * this means we are disconnected
 		 */
 		status = sme_ps_disable_auto_ps_timer(mac_handle,
@@ -2018,7 +2018,7 @@ static int __wlan_hdd_cfg80211_suspend_wlan(struct wiphy *wiphy,
 		return -EINVAL;
 	}
 
-	/* flush any pending powersave timers */
+/* flush any pending powersave timers */
 	hdd_for_each_adapter_dev_held_safe(hdd_ctx, adapter, next_adapter,
 					   dbgid) {
 		if (wlan_hdd_validate_vdev_id(adapter->vdev_id)) {
@@ -2191,11 +2191,11 @@ static void hdd_stop_dhcp_ind(struct hdd_adapter *adapter)
 {
 	struct hdd_context *hdd_ctx = WLAN_HDD_GET_CTX(adapter);
 
-	hdd_debug("DHCP stop indicated through power save");
+hdd_debug("DHCP stop indicated through power save");
 	sme_dhcp_stop_ind(hdd_ctx->mac_handle, adapter->device_mode,
 			  adapter->mac_addr.bytes,
 			  adapter->vdev_id);
-	hdd_allow_suspend(WIFI_POWER_EVENT_WAKELOCK_DHCP);
+hdd_allow_suspend(WIFI_POWER_EVENT_WAKELOCK_DHCP);
 	qdf_runtime_pm_allow_suspend(&hdd_ctx->runtime_context.connect);
 }
 
@@ -2212,27 +2212,27 @@ static void hdd_start_dhcp_ind(struct hdd_adapter *adapter)
 {
 	struct hdd_context *hdd_ctx = WLAN_HDD_GET_CTX(adapter);
 
-	hdd_debug("DHCP start indicated through power save");
+hdd_debug("DHCP start indicated through power save");
 	qdf_runtime_pm_prevent_suspend(&hdd_ctx->runtime_context.connect);
 	hdd_prevent_suspend_timeout(HDD_WAKELOCK_TIMEOUT_CONNECT,
-				    WIFI_POWER_EVENT_WAKELOCK_DHCP);
+WIFI_POWER_EVENT_WAKELOCK_DHCP);
 	sme_dhcp_start_ind(hdd_ctx->mac_handle, adapter->device_mode,
 			   adapter->mac_addr.bytes,
 			   adapter->vdev_id);
 }
 
 /**
- * __wlan_hdd_cfg80211_set_power_mgmt() - set cfg80211 power management config
+* __wlan_hdd_cfg80211_set_power_mgmt() - set cfg80211 power management config
  * @wiphy: Pointer to wiphy
  * @dev: Pointer to network device
- * @allow_power_save: is wlan allowed to go into power save mode
+* @allow_power_save: is wlan allowed to go into power save mode
  * @timeout: Timeout value in ms
  *
  * Return: 0 for success, non-zero for failure
  */
 static int __wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 					      struct net_device *dev,
-					      bool allow_power_save,
+bool allow_power_save,
 					      int timeout)
 {
 	struct hdd_adapter *adapter = WLAN_HDD_GET_PRIV_PTR(dev);
@@ -2242,7 +2242,7 @@ static int __wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 	hdd_enter();
 
 	if (timeout < 0) {
-		hdd_debug("User space timeout: %d; Enter full power or power save",
+hdd_debug("User space timeout: %d; Enter full power or power save",
 			  timeout);
 		timeout = 0;
 	}
@@ -2256,7 +2256,7 @@ static int __wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 		return -EINVAL;
 
 	qdf_mtrace(QDF_MODULE_ID_HDD, QDF_MODULE_ID_HDD,
-		   TRACE_CODE_HDD_CFG80211_SET_POWER_MGMT,
+TRACE_CODE_HDD_CFG80211_SET_POWER_MGMT,
 		   adapter->vdev_id, timeout);
 
 	hdd_ctx = WLAN_HDD_GET_CTX(adapter);
@@ -2270,9 +2270,9 @@ static int __wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 		return 0;
 	}
 
-	status = wlan_hdd_set_powersave(adapter, allow_power_save, timeout);
+status = wlan_hdd_set_powersave(adapter, allow_power_save, timeout);
 
-	allow_power_save ? hdd_stop_dhcp_ind(adapter) :
+allow_power_save ? hdd_stop_dhcp_ind(adapter) :
 		hdd_start_dhcp_ind(adapter);
 
 	hdd_exit();
@@ -2281,7 +2281,7 @@ static int __wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 
 int wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 				     struct net_device *dev,
-				     bool allow_power_save,
+bool allow_power_save,
 				     int timeout)
 {
 	int errno;
@@ -2291,7 +2291,7 @@ int wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 	if (errno)
 		return errno;
 
-	errno = __wlan_hdd_cfg80211_set_power_mgmt(wiphy, dev, allow_power_save,
+errno = __wlan_hdd_cfg80211_set_power_mgmt(wiphy, dev, allow_power_save,
 						   timeout);
 
 	osif_vdev_sync_op_stop(vdev_sync);
@@ -2300,17 +2300,17 @@ int wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 }
 
 /**
- * __wlan_hdd_cfg80211_set_txpower() - set TX power
+* __wlan_hdd_cfg80211_set_txpower() - set TX power
  * @wiphy: Pointer to wiphy
  * @wdev: Pointer to network device
- * @type: TX power setting type
- * @mbm: TX power in mBm
+* @type: TX power setting type
+* @mbm: TX power in mBm
  *
  * Return: 0 for success, non-zero for failure
  */
 static int __wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 					   struct wireless_dev *wdev,
-					   enum nl80211_tx_power_setting type,
+enum nl80211_tx_power_setting type,
 					   int mbm)
 {
 	struct hdd_context *hdd_ctx = (struct hdd_context *) wiphy_priv(wiphy);
@@ -2325,7 +2325,7 @@ static int __wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 	hdd_enter();
 
 	if (!wdev) {
-		hdd_err("wdev is null, set tx power failed");
+hdd_err("wdev is null, set tx power failed");
 		return -EIO;
 	}
 
@@ -2337,7 +2337,7 @@ static int __wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 	}
 
 	qdf_mtrace(QDF_MODULE_ID_HDD, QDF_MODULE_ID_HDD,
-		   TRACE_CODE_HDD_CFG80211_SET_TXPOWER,
+TRACE_CODE_HDD_CFG80211_SET_TXPOWER,
 		   NO_SESSION, type);
 
 	errno = wlan_hdd_validate_context(hdd_ctx);
@@ -2366,41 +2366,41 @@ static int __wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 	dbm = MBM_TO_DBM(mbm);
 
 	/*
-	 * the original implementation of this function expected power
+* the original implementation of this function expected power
 	 * values in dBm instead of mBm. If the conversion from mBm to
 	 * dBm is zero, then assume dBm was passed.
 	 */
 	if (!dbm)
 		dbm = mbm;
 
-	status = ucfg_mlme_set_current_tx_power_level(hdd_ctx->psoc, dbm);
+status = ucfg_mlme_set_current_tx_power_level(hdd_ctx->psoc, dbm);
 	if (QDF_IS_STATUS_ERROR(status)) {
-		hdd_err("sme_cfg_set_int failed for tx power %hu, %d",
+hdd_err("sme_cfg_set_int failed for tx power %hu, %d",
 			dbm, status);
 		return -EIO;
 	}
 
-	hdd_debug("Set tx power level %d dbm", dbm);
+hdd_debug("Set tx power level %d dbm", dbm);
 
 	switch (type) {
-	/* Automatically determine transmit power */
-	case NL80211_TX_POWER_AUTOMATIC:
+/* Automatically determine transmit power */
+case NL80211_TX_POWER_AUTOMATIC:
 	/* Fall through */
-	case NL80211_TX_POWER_LIMITED:
-	/* Limit TX power by the mBm parameter */
-		status = sme_set_max_tx_power(mac_handle, bssid, selfmac, dbm);
+case NL80211_TX_POWER_LIMITED:
+/* Limit TX power by the mBm parameter */
+status = sme_set_max_tx_power(mac_handle, bssid, selfmac, dbm);
 		if (QDF_IS_STATUS_ERROR(status)) {
-			hdd_err("Setting maximum tx power failed, %d", status);
+hdd_err("Setting maximum tx power failed, %d", status);
 			return -EIO;
 		}
 		break;
 
-	case NL80211_TX_POWER_FIXED:    /* Fix TX power to the mBm parameter */
-		hdd_err("NL80211_TX_POWER_FIXED not supported");
+case NL80211_TX_POWER_FIXED:    /* Fix TX power to the mBm parameter */
+hdd_err("NL80211_TX_POWER_FIXED not supported");
 		return -EOPNOTSUPP;
 
 	default:
-		hdd_err("Invalid power setting type %d", type);
+hdd_err("Invalid power setting type %d", type);
 		return -EIO;
 	}
 
@@ -2410,7 +2410,7 @@ static int __wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 
 int wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 				  struct wireless_dev *wdev,
-				  enum nl80211_tx_power_setting type,
+enum nl80211_tx_power_setting type,
 				  int mbm)
 {
 	struct osif_psoc_sync *psoc_sync;
@@ -2420,7 +2420,7 @@ int wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 	if (errno)
 		return errno;
 
-	errno = __wlan_hdd_cfg80211_set_txpower(wiphy, wdev, type, mbm);
+errno = __wlan_hdd_cfg80211_set_txpower(wiphy, wdev, type, mbm);
 
 	osif_psoc_sync_op_stop(psoc_sync);
 
@@ -2430,7 +2430,7 @@ int wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 static void wlan_hdd_get_tx_power(struct hdd_adapter *adapter, int *dbm)
 
 {
-	wlan_cfg80211_mc_cp_stats_get_tx_power(adapter->vdev, dbm);
+wlan_cfg80211_mc_cp_stats_get_tx_power(adapter->vdev, dbm);
 }
 
 #ifdef FEATURE_ANI_LEVEL_REQUEST
@@ -2439,7 +2439,7 @@ static void hdd_get_ani_level_cb(struct wmi_host_ani_level_event *ani,
 {
 	struct osif_request *request;
 	struct ani_priv *priv;
-	uint8_t min_recv_freqs = QDF_MIN(num, MAX_NUM_FREQS_FOR_ANI_LEVEL);
+uint8_t min_recv_freqs = QDF_MIN(num, MAX_NUM_FREQS_FOR_ANI_LEVEL);
 
 	request = osif_request_get(context);
 	if (!request) {
@@ -2449,14 +2449,14 @@ static void hdd_get_ani_level_cb(struct wmi_host_ani_level_event *ani,
 
 	/* propagate response back to requesting thread */
 	priv = osif_request_priv(request);
-	priv->ani = qdf_mem_malloc(min_recv_freqs *
+priv->ani = qdf_mem_malloc(min_recv_freqs *
 				   sizeof(struct wmi_host_ani_level_event));
 	if (!priv->ani)
 		goto complete;
 
-	priv->num_freq = min_recv_freqs;
+priv->num_freq = min_recv_freqs;
 	qdf_mem_copy(priv->ani, ani,
-		     min_recv_freqs * sizeof(struct wmi_host_ani_level_event));
+min_recv_freqs * sizeof(struct wmi_host_ani_level_event));
 
 complete:
 	osif_request_complete(request);
@@ -2479,8 +2479,8 @@ static void wlan_hdd_get_ani_level_dealloc(void *priv)
 
 QDF_STATUS wlan_hdd_get_ani_level(struct hdd_adapter *adapter,
 				  struct wmi_host_ani_level_event *ani,
-				  uint32_t *parsed_freqs,
-				  uint8_t num_freqs)
+uint32_t *parsed_freqs,
+uint8_t num_freqs)
 {
 	struct hdd_context *hdd_ctx = WLAN_HDD_GET_CTX(adapter);
 	int ret;
@@ -2506,8 +2506,8 @@ QDF_STATUS wlan_hdd_get_ani_level(struct hdd_adapter *adapter,
 	}
 	cookie = osif_request_cookie(request);
 
-	status = sme_get_ani_level(hdd_ctx->mac_handle, parsed_freqs,
-				   num_freqs, hdd_get_ani_level_cb, cookie);
+status = sme_get_ani_level(hdd_ctx->mac_handle, parsed_freqs,
+num_freqs, hdd_get_ani_level_cb, cookie);
 
 	if (QDF_IS_STATUS_ERROR(status)) {
 		hdd_err("Unable to retrieve ani level");
@@ -2525,7 +2525,7 @@ QDF_STATUS wlan_hdd_get_ani_level(struct hdd_adapter *adapter,
 	priv = osif_request_priv(request);
 
 	qdf_mem_copy(ani, priv->ani, sizeof(struct wmi_host_ani_level_event) *
-		     priv->num_freq);
+priv->num_freq);
 
 complete:
 	/*
@@ -2541,10 +2541,10 @@ complete:
 #endif
 
 /**
- * __wlan_hdd_cfg80211_get_txpower() - get TX power
+* __wlan_hdd_cfg80211_get_txpower() - get TX power
  * @wiphy: Pointer to wiphy
  * @wdev: Pointer to network device
- * @dbm: Pointer to TX power in dbm
+* @dbm: Pointer to TX power in dbm
  *
  * Return: 0 for success, non-zero for failure
  */
@@ -2599,7 +2599,7 @@ static int __wlan_hdd_cfg80211_get_txpower(struct wiphy *wiphy,
 		}
 		break;
 	default:
-		hdd_debug_rl("Current interface is not supported for get tx_power");
+hdd_debug_rl("Current interface is not supported for get tx_power");
 		return 0;
 	}
 
@@ -2614,11 +2614,11 @@ static int __wlan_hdd_cfg80211_get_txpower(struct wiphy *wiphy,
 	}
 
 	qdf_mtrace(QDF_MODULE_ID_HDD, QDF_MODULE_ID_HDD,
-		   TRACE_CODE_HDD_CFG80211_GET_TXPOWER,
+TRACE_CODE_HDD_CFG80211_GET_TXPOWER,
 		   adapter->vdev_id, adapter->device_mode);
 
-	wlan_hdd_get_tx_power(adapter, dbm);
-	hdd_debug("power: %d", *dbm);
+wlan_hdd_get_tx_power(adapter, dbm);
+hdd_debug("power: %d", *dbm);
 
 	return 0;
 }
@@ -2634,7 +2634,7 @@ int wlan_hdd_cfg80211_get_txpower(struct wiphy *wiphy,
 	if (errno)
 		return errno;
 
-	errno = __wlan_hdd_cfg80211_get_txpower(wiphy, wdev, dbm);
+errno = __wlan_hdd_cfg80211_get_txpower(wiphy, wdev, dbm);
 
 	osif_psoc_sync_op_stop(psoc_sync);
 
@@ -2643,36 +2643,36 @@ int wlan_hdd_cfg80211_get_txpower(struct wiphy *wiphy,
 
 int hdd_set_power_config(struct hdd_context *hddctx,
 			 struct hdd_adapter *adapter,
-			 uint8_t power)
+uint8_t power)
 {
 	QDF_STATUS status;
 
 	if (adapter->device_mode != QDF_STA_MODE &&
 	    adapter->device_mode != QDF_P2P_CLIENT_MODE) {
-		hdd_info("Advanced power save only allowed in STA/P2P-Client modes:%d",
+hdd_info("Advanced power save only allowed in STA/P2P-Client modes:%d",
 			 adapter->device_mode);
 		return -EINVAL;
 	}
 
-	if (power > PMO_PS_ADVANCED_POWER_SAVE_ENABLE ||
-	    power < PMO_PS_ADVANCED_POWER_SAVE_DISABLE) {
-		hdd_err("invalid power value: %d", power);
+if (power > PMO_PS_ADVANCED_POWER_SAVE_ENABLE ||
+power < PMO_PS_ADVANCED_POWER_SAVE_DISABLE) {
+hdd_err("invalid power value: %d", power);
 		return -EINVAL;
 	}
 
 	if (ucfg_pmo_get_max_ps_poll(hddctx->psoc)) {
-		hdd_info("Disable advanced power save since max ps poll is enabled");
-		power = PMO_PS_ADVANCED_POWER_SAVE_DISABLE;
+hdd_info("Disable advanced power save since max ps poll is enabled");
+power = PMO_PS_ADVANCED_POWER_SAVE_DISABLE;
 	}
 
-	status = wma_set_power_config(adapter->vdev_id, power);
+status = wma_set_power_config(adapter->vdev_id, power);
 	if (status != QDF_STATUS_SUCCESS) {
-		hdd_err("failed to configure power: %d", status);
+hdd_err("failed to configure power: %d", status);
 		return -EINVAL;
 	}
 
-	/* cache latest userspace power save config to reapply after SSR */
-	ucfg_pmo_set_power_save_mode(hddctx->psoc, power);
+/* cache latest userspace power save config to reapply after SSR */
+ucfg_pmo_set_power_save_mode(hddctx->psoc, power);
 
 	return 0;
 }

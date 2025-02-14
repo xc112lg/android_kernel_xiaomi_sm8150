@@ -268,7 +268,7 @@ static bool is_usb_available(struct qpnp_qg *chip)
 	if (chip->usb_psy)
 		return true;
 
-	chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 	if (!chip->usb_psy)
 		return false;
 
@@ -280,7 +280,7 @@ static bool is_dc_available(struct qpnp_qg *chip)
 	if (chip->dc_psy)
 		return true;
 
-	chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 	if (!chip->dc_psy)
 		return false;
 
@@ -289,22 +289,22 @@ static bool is_dc_available(struct qpnp_qg *chip)
 
 bool is_usb_present(struct qpnp_qg *chip)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (is_usb_available(chip))
-		power_supply_get_property(chip->usb_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 
 	return pval.intval ? true : false;
 }
 
 bool is_dc_present(struct qpnp_qg *chip)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (is_dc_available(chip))
-		power_supply_get_property(chip->dc_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 
 	return pval.intval ? true : false;
 }
@@ -319,7 +319,7 @@ static bool is_parallel_available(struct qpnp_qg *chip)
 	if (chip->parallel_psy)
 		return true;
 
-	chip->parallel_psy = power_supply_get_by_name("parallel");
+chip->parallel_psy = power_supply_get_by_name("parallel");
 	if (!chip->parallel_psy)
 		return false;
 
@@ -328,11 +328,11 @@ static bool is_parallel_available(struct qpnp_qg *chip)
 
 bool is_parallel_enabled(struct qpnp_qg *chip)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (is_parallel_available(chip)) {
-		power_supply_get_property(chip->parallel_psy,
-			POWER_SUPPLY_PROP_CHARGING_ENABLED, &pval);
+power_supply_get_property(chip->parallel_psy,
+POWER_SUPPLY_PROP_CHARGING_ENABLED, &pval);
 	}
 
 	return pval.intval ? true : false;

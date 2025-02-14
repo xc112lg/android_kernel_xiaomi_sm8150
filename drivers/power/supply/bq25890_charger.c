@@ -66,13 +66,13 @@ enum bq25890_fields {
 /* initial field values, converted to register values */
 struct bq25890_init_data {
 	u8 ichg;	/* charge current		*/
-	u8 vreg;	/* regulation voltage		*/
+u8 vreg;	/* regulation voltage		*/
 	u8 iterm;	/* termination current		*/
 	u8 iprechg;	/* precharge current		*/
-	u8 sysvmin;	/* minimum system voltage limit */
-	u8 boostv;	/* boost regulation voltage	*/
+u8 sysvmin;	/* minimum system voltage limit */
+u8 boostv;	/* boost regulation voltage	*/
 	u8 boosti;	/* boost current limit		*/
-	u8 boostf;	/* boost frequency		*/
+u8 boostf;	/* boost frequency		*/
 	u8 ilim_en;	/* enable ILIM pin		*/
 	u8 treg;	/* thermal regulation threshold */
 };
@@ -89,7 +89,7 @@ struct bq25890_state {
 struct bq25890_device {
 	struct i2c_client *client;
 	struct device *dev;
-	struct power_supply *charger;
+struct power_supply *charger;
 
 	struct usb_phy *usb_phy;
 	struct notifier_block usb_nb;
@@ -370,11 +370,11 @@ enum bq25890_chrg_fault {
 };
 
 static int bq25890_power_supply_get_property(struct power_supply *psy,
-					     enum power_supply_property psp,
-					     union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	int ret;
-	struct bq25890_device *bq = power_supply_get_drvdata(psy);
+struct bq25890_device *bq = power_supply_get_drvdata(psy);
 	struct bq25890_state state;
 
 	mutex_lock(&bq->lock);
@@ -382,43 +382,43 @@ static int bq25890_power_supply_get_property(struct power_supply *psy,
 	mutex_unlock(&bq->lock);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (!state.online)
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (state.chrg_status == STATUS_NOT_CHARGING)
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		else if (state.chrg_status == STATUS_PRE_CHARGING ||
 			 state.chrg_status == STATUS_FAST_CHARGING)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else if (state.chrg_status == STATUS_TERMINATION_DONE)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else
-			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 
 		break;
 
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = BQ25890_MANUFACTURER;
 		break;
 
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = state.online;
 		break;
 
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		if (!state.chrg_fault && !state.bat_fault && !state.boost_fault)
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 		else if (state.bat_fault)
-			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 		else if (state.chrg_fault == CHRG_FAULT_TIMER_EXPIRED)
-			val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 		else if (state.chrg_fault == CHRG_FAULT_THERMAL_SHUTDOWN)
-			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 		else
-			val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		ret = bq25890_field_read(bq, F_ICHGR); /* read measured value */
 		if (ret < 0)
 			return ret;
@@ -427,11 +427,11 @@ static int bq25890_power_supply_get_property(struct power_supply *psy,
 		val->intval = ret * 50000;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		val->intval = bq25890_tables[TBL_ICHG].rt.max;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		if (!state.online) {
 			val->intval = 0;
 			break;
@@ -445,11 +445,11 @@ static int bq25890_power_supply_get_property(struct power_supply *psy,
 		val->intval = 2304000 + ret * 20000;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
 		val->intval = bq25890_tables[TBL_VREG].rt.max;
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 		val->intval = bq25890_find_val(bq->init_data.iterm, TBL_ITERM);
 		break;
 
@@ -519,13 +519,13 @@ static void bq25890_handle_state_change(struct bq25890_device *bq,
 	old_state = bq->state;
 	mutex_unlock(&bq->lock);
 
-	if (!new_state->online) {			     /* power removed */
+if (!new_state->online) {			     /* power removed */
 		/* disable ADC */
 		ret = bq25890_field_write(bq, F_CONV_RATE, 0);
 		if (ret < 0)
 			goto error;
-	} else if (!old_state.online) {			    /* power inserted */
-		/* enable ADC, to have control of charge current/voltage */
+} else if (!old_state.online) {			    /* power inserted */
+/* enable ADC, to have control of charge current/voltage */
 		ret = bq25890_field_write(bq, F_CONV_RATE, 1);
 		if (ret < 0)
 			goto error;
@@ -556,7 +556,7 @@ static irqreturn_t bq25890_irq_handler_thread(int irq, void *private)
 	bq->state = state;
 	mutex_unlock(&bq->lock);
 
-	power_supply_changed(bq->charger);
+power_supply_changed(bq->charger);
 
 handled:
 	return IRQ_HANDLED;
@@ -616,7 +616,7 @@ static int bq25890_hw_init(struct bq25890_device *bq)
 	if (ret < 0)
 		return ret;
 
-	/* initialize currents/voltages and other parameters */
+/* initialize currents/voltages and other parameters */
 	for (i = 0; i < ARRAY_SIZE(init_data); i++) {
 		ret = bq25890_field_write(bq, init_data[i].id,
 					  init_data[i].value);
@@ -641,15 +641,15 @@ static int bq25890_hw_init(struct bq25890_device *bq)
 }
 
 static enum power_supply_property bq25890_power_supply_props[] = {
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
 };
 
 static char *bq25890_charger_supplied_to[] = {
@@ -658,20 +658,20 @@ static char *bq25890_charger_supplied_to[] = {
 
 static const struct power_supply_desc bq25890_power_supply_desc = {
 	.name = "bq25890-charger",
-	.type = POWER_SUPPLY_TYPE_USB,
-	.properties = bq25890_power_supply_props,
-	.num_properties = ARRAY_SIZE(bq25890_power_supply_props),
-	.get_property = bq25890_power_supply_get_property,
+.type = POWER_SUPPLY_TYPE_USB,
+.properties = bq25890_power_supply_props,
+.num_properties = ARRAY_SIZE(bq25890_power_supply_props),
+.get_property = bq25890_power_supply_get_property,
 };
 
 static int bq25890_power_supply_init(struct bq25890_device *bq)
 {
-	struct power_supply_config psy_cfg = { .drv_data = bq, };
+struct power_supply_config psy_cfg = { .drv_data = bq, };
 
 	psy_cfg.supplied_to = bq25890_charger_supplied_to;
 	psy_cfg.num_supplicants = ARRAY_SIZE(bq25890_charger_supplied_to);
 
-	bq->charger = power_supply_register(bq->dev, &bq25890_power_supply_desc,
+bq->charger = power_supply_register(bq->dev, &bq25890_power_supply_desc,
 					    &psy_cfg);
 
 	return PTR_ERR_OR_ZERO(bq->charger);
@@ -697,7 +697,7 @@ static void bq25890_usb_work(struct work_struct *data)
 		if (ret < 0)
 			goto error;
 
-		power_supply_changed(bq->charger);
+power_supply_changed(bq->charger);
 		break;
 	}
 
@@ -714,7 +714,7 @@ static int bq25890_usb_notifier(struct notifier_block *nb, unsigned long val,
 			container_of(nb, struct bq25890_device, usb_nb);
 
 	bq->usb_event = val;
-	queue_work(system_power_efficient_wq, &bq->usb_work);
+queue_work(system_power_efficient_wq, &bq->usb_work);
 
 	return NOTIFY_OK;
 }
@@ -746,11 +746,11 @@ static int bq25890_fw_read_u32_props(struct bq25890_device *bq)
 	} props[] = {
 		/* required properties */
 		{"ti,charge-current", false, TBL_ICHG, &init->ichg},
-		{"ti,battery-regulation-voltage", false, TBL_VREG, &init->vreg},
+{"ti,battery-regulation-voltage", false, TBL_VREG, &init->vreg},
 		{"ti,termination-current", false, TBL_ITERM, &init->iterm},
 		{"ti,precharge-current", false, TBL_ITERM, &init->iprechg},
-		{"ti,minimum-sys-voltage", false, TBL_SYSVMIN, &init->sysvmin},
-		{"ti,boost-voltage", false, TBL_BOOSTV, &init->boostv},
+{"ti,minimum-sys-voltage", false, TBL_SYSVMIN, &init->sysvmin},
+{"ti,boost-voltage", false, TBL_BOOSTV, &init->boostv},
 		{"ti,boost-max-current", false, TBL_BOOSTI, &init->boosti},
 
 		/* optional properties */
@@ -787,7 +787,7 @@ static int bq25890_fw_probe(struct bq25890_device *bq)
 		return ret;
 
 	init->ilim_en = device_property_read_bool(bq->dev, "ti,use-ilim-pin");
-	init->boostf = device_property_read_bool(bq->dev, "ti,boost-low-freq");
+init->boostf = device_property_read_bool(bq->dev, "ti,boost-low-freq");
 
 	return 0;
 }
@@ -884,9 +884,9 @@ static int bq25890_probe(struct i2c_client *client,
 	if (ret)
 		goto irq_fail;
 
-	ret = bq25890_power_supply_init(bq);
+ret = bq25890_power_supply_init(bq);
 	if (ret < 0) {
-		dev_err(dev, "Failed to register power supply\n");
+dev_err(dev, "Failed to register power supply\n");
 		goto irq_fail;
 	}
 
@@ -903,7 +903,7 @@ static int bq25890_remove(struct i2c_client *client)
 {
 	struct bq25890_device *bq = i2c_get_clientdata(client);
 
-	power_supply_unregister(bq->charger);
+power_supply_unregister(bq->charger);
 
 	if (!IS_ERR_OR_NULL(bq->usb_phy))
 		usb_unregister_notifier(bq->usb_phy, &bq->usb_nb);
@@ -921,7 +921,7 @@ static int bq25890_suspend(struct device *dev)
 
 	/*
 	 * If charger is removed, while in suspend, make sure ADC is diabled
-	 * since it consumes slightly more power.
+* since it consumes slightly more power.
 	 */
 	return bq25890_field_write(bq, F_CONV_START, 0);
 }
@@ -948,7 +948,7 @@ static int bq25890_resume(struct device *dev)
 	}
 
 	/* signal userspace, maybe state changed while suspended */
-	power_supply_changed(bq->charger);
+power_supply_changed(bq->charger);
 
 	return 0;
 }

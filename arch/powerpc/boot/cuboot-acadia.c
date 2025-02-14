@@ -45,7 +45,7 @@ static void get_clocks(void)
 {
 	unsigned long sysclk, cpr_plld, cpr_pllc, cpr_primad, plloutb, i;
 	unsigned long pllFwdDiv, pllFwdDivB, pllFbkDiv, pllPlbDiv, pllExtBusDiv;
-	unsigned long pllOpbDiv, freqEBC, freqUART, freqOPB;
+unsigned long pllOpbDiv, freqEBC, freqUART, freqOPB;
 	unsigned long div;		/* total divisor udiv * bdiv */
 	unsigned long umin;		/* minimum udiv	*/
 	unsigned short diff;		/* smallest diff */
@@ -111,12 +111,12 @@ static void get_clocks(void)
 		pllOpbDiv = 16;
 
 	/* There is a bug in U-Boot that prevents us from using
-	 * bd.bi_opbfreq because U-Boot doesn't populate it for
+* bd.bi_opbfreq because U-Boot doesn't populate it for
 	 * 405EZ.  We get to calculate it, yay!
 	 */
-	freqOPB = (sysclk *pllFbkDiv) /pllOpbDiv;
+freqOPB = (sysclk *pllFbkDiv) /pllOpbDiv;
 
-	freqEBC = (sysclk * pllFbkDiv) / pllExtBusDiv;
+freqEBC = (sysclk * pllFbkDiv) / pllExtBusDiv;
 
 	plloutb = ((sysclk * ((cpr_pllc & PLLC_SRC_MASK) ?
 					   pllFwdDivB : pllFwdDiv) *
@@ -128,7 +128,7 @@ static void get_clocks(void)
 
 	udiv = 256;			/* Assume lowest possible serial clk */
 	div = plloutb / (16 * baud); /* total divisor */
-	umin = (plloutb / freqOPB) << 1;	/* 2 x OPB divisor */
+umin = (plloutb / freqOPB) << 1;	/* 2 x OPB divisor */
 	diff = 256;			/* highest possible */
 
 	/* i is the test udiv value -- start with the largest
@@ -147,13 +147,13 @@ static void get_clocks(void)
 			diff = idiff;   /* update lowest diff*/
 		}
 	}
-	freqUART = plloutb / udiv;
+freqUART = plloutb / udiv;
 
-	dt_fixup_cpu_clocks(bd.bi_procfreq, bd.bi_intfreq, bd.bi_plb_busfreq);
-	dt_fixup_clock("/plb/ebc", freqEBC);
-	dt_fixup_clock("/plb/opb", freqOPB);
-	dt_fixup_clock("/plb/opb/serial@ef600300", freqUART);
-	dt_fixup_clock("/plb/opb/serial@ef600400", freqUART);
+dt_fixup_cpu_clocks(bd.bi_procfreq, bd.bi_intfreq, bd.bi_plb_busfreq);
+dt_fixup_clock("/plb/ebc", freqEBC);
+dt_fixup_clock("/plb/opb", freqOPB);
+dt_fixup_clock("/plb/opb/serial@ef600300", freqUART);
+dt_fixup_clock("/plb/opb/serial@ef600400", freqUART);
 }
 
 static void acadia_fixups(void)

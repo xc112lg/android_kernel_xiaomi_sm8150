@@ -47,12 +47,12 @@ static int vexpress_regulator_set_voltage(struct regulator_dev *regdev,
 }
 
 static struct regulator_ops vexpress_regulator_ops_ro = {
-	.get_voltage = vexpress_regulator_get_voltage,
+.get_voltage = vexpress_regulator_get_voltage,
 };
 
 static struct regulator_ops vexpress_regulator_ops = {
-	.get_voltage = vexpress_regulator_get_voltage,
-	.set_voltage = vexpress_regulator_set_voltage,
+.get_voltage = vexpress_regulator_get_voltage,
+.set_voltage = vexpress_regulator_set_voltage,
 };
 
 static int vexpress_regulator_probe(struct platform_device *pdev)
@@ -70,9 +70,9 @@ static int vexpress_regulator_probe(struct platform_device *pdev)
 		return PTR_ERR(reg->regmap);
 
 	reg->desc.name = dev_name(&pdev->dev);
-	reg->desc.type = REGULATOR_VOLTAGE;
+reg->desc.type = REGULATOR_VOLTAGE;
 	reg->desc.owner = THIS_MODULE;
-	reg->desc.continuous_voltage_range = true;
+reg->desc.continuous_voltage_range = true;
 
 	init_data = of_get_regulator_init_data(&pdev->dev, pdev->dev.of_node,
 					       &reg->desc);

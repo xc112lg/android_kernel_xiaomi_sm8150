@@ -93,7 +93,7 @@ static void ps3_power_off(void)
 	DBG("%s:%d\n", __func__, __LINE__);
 
 	smp_send_stop();
-	ps3_sys_manager_power_off(); /* never returns */
+ps3_sys_manager_power_off(); /* never returns */
 }
 
 static void __noreturn ps3_halt(void)
@@ -111,7 +111,7 @@ static void ps3_panic(char *str)
 	smp_send_stop();
 	printk("\n");
 	printk("   System does not reboot automatically.\n");
-	printk("   Please press POWER button.\n");
+printk("   Please press POWER button.\n");
 	printk("\n");
 
 	while(1)
@@ -215,7 +215,7 @@ static void __init ps3_setup_arch(void)
 	prealloc_ps3fb_videomemory();
 	prealloc_ps3flash_bounce_buffer();
 
-	ppc_md.power_save = ps3_power_save;
+ppc_md.power_save = ps3_power_save;
 	ps3_os_area_init();
 
 	DBG(" <- %s:%d\n", __func__, __LINE__);
@@ -244,7 +244,7 @@ static int __init ps3_probe(void)
 
 	ps3_os_area_save_params();
 
-	pm_power_off = ps3_power_off;
+pm_power_off = ps3_power_off;
 
 	DBG(" <- %s:%d\n", __func__, __LINE__);
 	return 1;

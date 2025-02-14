@@ -27,24 +27,24 @@
 
 
 static const union atom_voltage_object_v4 *pp_atomfwctrl_lookup_voltage_type_v4(
-		const struct atom_voltage_objects_info_v4_1 *voltage_object_info_table,
-		uint8_t voltage_type, uint8_t voltage_mode)
+const struct atom_voltage_objects_info_v4_1 *voltage_object_info_table,
+uint8_t voltage_type, uint8_t voltage_mode)
 {
 	unsigned int size = le16_to_cpu(
-			voltage_object_info_table->table_header.structuresize);
+voltage_object_info_table->table_header.structuresize);
 	unsigned int offset =
-			offsetof(struct atom_voltage_objects_info_v4_1, voltage_object[0]);
-	unsigned long start = (unsigned long)voltage_object_info_table;
+offsetof(struct atom_voltage_objects_info_v4_1, voltage_object[0]);
+unsigned long start = (unsigned long)voltage_object_info_table;
 
 	while (offset < size) {
-		const union atom_voltage_object_v4 *voltage_object =
-				(const union atom_voltage_object_v4 *)(start + offset);
+const union atom_voltage_object_v4 *voltage_object =
+(const union atom_voltage_object_v4 *)(start + offset);
 
-        if (voltage_type == voltage_object->gpio_voltage_obj.header.voltage_type &&
-            voltage_mode == voltage_object->gpio_voltage_obj.header.voltage_mode)
-            return voltage_object;
+if (voltage_type == voltage_object->gpio_voltage_obj.header.voltage_type &&
+voltage_mode == voltage_object->gpio_voltage_obj.header.voltage_mode)
+return voltage_object;
 
-        offset += le16_to_cpu(voltage_object->gpio_voltage_obj.header.object_size);
+offset += le16_to_cpu(voltage_object->gpio_voltage_obj.header.object_size);
 
     }
 
@@ -57,7 +57,7 @@ static struct atom_voltage_objects_info_v4_1 *pp_atomfwctrl_get_voltage_info_tab
     const void *table_address;
     uint16_t idx;
 
-    idx = GetIndexIntoMasterDataTable(voltageobject_info);
+idx = GetIndexIntoMasterDataTable(voltageobject_info);
     table_address =	cgs_atom_get_data_table(hwmgr->device,
     		idx, NULL, NULL, NULL);
 
@@ -66,7 +66,7 @@ static struct atom_voltage_objects_info_v4_1 *pp_atomfwctrl_get_voltage_info_tab
         "Error retrieving BIOS Table Address!",
         return NULL);
 
-    return (struct atom_voltage_objects_info_v4_1 *)table_address;
+return (struct atom_voltage_objects_info_v4_1 *)table_address;
 }
 
 /**
@@ -75,85 +75,85 @@ static struct atom_voltage_objects_info_v4_1 *pp_atomfwctrl_get_voltage_info_tab
 * voltage_mode is one of ATOM_SET_VOLTAGE, ATOM_SET_VOLTAGE_PHASE
 */
 bool pp_atomfwctrl_is_voltage_controlled_by_gpio_v4(struct pp_hwmgr *hwmgr,
-		uint8_t voltage_type, uint8_t voltage_mode)
+uint8_t voltage_type, uint8_t voltage_mode)
 {
-	struct atom_voltage_objects_info_v4_1 *voltage_info =
-			(struct atom_voltage_objects_info_v4_1 *)
-			pp_atomfwctrl_get_voltage_info_table(hwmgr);
+struct atom_voltage_objects_info_v4_1 *voltage_info =
+(struct atom_voltage_objects_info_v4_1 *)
+pp_atomfwctrl_get_voltage_info_table(hwmgr);
 	bool ret;
 
-	/* If we cannot find the table do NOT try to control this voltage. */
-	PP_ASSERT_WITH_CODE(voltage_info,
-			"Could not find Voltage Table in BIOS.",
+/* If we cannot find the table do NOT try to control this voltage. */
+PP_ASSERT_WITH_CODE(voltage_info,
+"Could not find Voltage Table in BIOS.",
 			return false);
 
-	ret = (pp_atomfwctrl_lookup_voltage_type_v4(voltage_info,
-			voltage_type, voltage_mode)) ? true : false;
+ret = (pp_atomfwctrl_lookup_voltage_type_v4(voltage_info,
+voltage_type, voltage_mode)) ? true : false;
 
 	return ret;
 }
 
 int pp_atomfwctrl_get_voltage_table_v4(struct pp_hwmgr *hwmgr,
-		uint8_t voltage_type, uint8_t voltage_mode,
-		struct pp_atomfwctrl_voltage_table *voltage_table)
+uint8_t voltage_type, uint8_t voltage_mode,
+struct pp_atomfwctrl_voltage_table *voltage_table)
 {
-	struct atom_voltage_objects_info_v4_1 *voltage_info =
-			(struct atom_voltage_objects_info_v4_1 *)
-			pp_atomfwctrl_get_voltage_info_table(hwmgr);
-	const union atom_voltage_object_v4 *voltage_object;
+struct atom_voltage_objects_info_v4_1 *voltage_info =
+(struct atom_voltage_objects_info_v4_1 *)
+pp_atomfwctrl_get_voltage_info_table(hwmgr);
+const union atom_voltage_object_v4 *voltage_object;
 	unsigned int i;
 	int result = 0;
 
-	PP_ASSERT_WITH_CODE(voltage_info,
-			"Could not find Voltage Table in BIOS.",
+PP_ASSERT_WITH_CODE(voltage_info,
+"Could not find Voltage Table in BIOS.",
 			return -1);
 
-	voltage_object = pp_atomfwctrl_lookup_voltage_type_v4(voltage_info,
-			voltage_type, voltage_mode);
+voltage_object = pp_atomfwctrl_lookup_voltage_type_v4(voltage_info,
+voltage_type, voltage_mode);
 
-	if (!voltage_object)
+if (!voltage_object)
 		return -1;
 
-	voltage_table->count = 0;
-	if (voltage_mode == VOLTAGE_OBJ_GPIO_LUT) {
+voltage_table->count = 0;
+if (voltage_mode == VOLTAGE_OBJ_GPIO_LUT) {
 		PP_ASSERT_WITH_CODE(
-				(voltage_object->gpio_voltage_obj.gpio_entry_num <=
-				PP_ATOMFWCTRL_MAX_VOLTAGE_ENTRIES),
-				"Too many voltage entries!",
+(voltage_object->gpio_voltage_obj.gpio_entry_num <=
+PP_ATOMFWCTRL_MAX_VOLTAGE_ENTRIES),
+"Too many voltage entries!",
 				result = -1);
 
 		if (!result) {
-			for (i = 0; i < voltage_object->gpio_voltage_obj.
+for (i = 0; i < voltage_object->gpio_voltage_obj.
 							gpio_entry_num; i++) {
-				voltage_table->entries[i].value =
-						le16_to_cpu(voltage_object->gpio_voltage_obj.
-						voltage_gpio_lut[i].voltage_level_mv);
-				voltage_table->entries[i].smio_low =
-						le32_to_cpu(voltage_object->gpio_voltage_obj.
-						voltage_gpio_lut[i].voltage_gpio_reg_val);
+voltage_table->entries[i].value =
+le16_to_cpu(voltage_object->gpio_voltage_obj.
+voltage_gpio_lut[i].voltage_level_mv);
+voltage_table->entries[i].smio_low =
+le32_to_cpu(voltage_object->gpio_voltage_obj.
+voltage_gpio_lut[i].voltage_gpio_reg_val);
 			}
-			voltage_table->count =
-					voltage_object->gpio_voltage_obj.gpio_entry_num;
-			voltage_table->mask_low =
+voltage_table->count =
+voltage_object->gpio_voltage_obj.gpio_entry_num;
+voltage_table->mask_low =
 					le32_to_cpu(
-					voltage_object->gpio_voltage_obj.gpio_mask_val);
-			voltage_table->phase_delay =
-					voltage_object->gpio_voltage_obj.phase_delay_us;
+voltage_object->gpio_voltage_obj.gpio_mask_val);
+voltage_table->phase_delay =
+voltage_object->gpio_voltage_obj.phase_delay_us;
 		}
-	} else if (voltage_mode == VOLTAGE_OBJ_SVID2) {
-		voltage_table->psi1_enable =
-			(voltage_object->svid2_voltage_obj.loadline_psi1 & 0x20) >> 5;
-		voltage_table->psi0_enable =
-			voltage_object->svid2_voltage_obj.psi0_enable & 0x1;
-		voltage_table->max_vid_step =
-			voltage_object->svid2_voltage_obj.maxvstep;
-		voltage_table->telemetry_offset =
-			voltage_object->svid2_voltage_obj.telemetry_offset;
-		voltage_table->telemetry_slope =
-			voltage_object->svid2_voltage_obj.telemetry_gain;
+} else if (voltage_mode == VOLTAGE_OBJ_SVID2) {
+voltage_table->psi1_enable =
+(voltage_object->svid2_voltage_obj.loadline_psi1 & 0x20) >> 5;
+voltage_table->psi0_enable =
+voltage_object->svid2_voltage_obj.psi0_enable & 0x1;
+voltage_table->max_vid_step =
+voltage_object->svid2_voltage_obj.maxvstep;
+voltage_table->telemetry_offset =
+voltage_object->svid2_voltage_obj.telemetry_offset;
+voltage_table->telemetry_slope =
+voltage_object->svid2_voltage_obj.telemetry_gain;
 	} else
 		PP_ASSERT_WITH_CODE(false,
-				"Unsupported Voltage Object Mode!",
+"Unsupported Voltage Object Mode!",
 				result = -1);
 
 	return result;
@@ -214,7 +214,7 @@ bool pp_atomfwctrl_get_pp_assign_pin(struct pp_hwmgr *hwmgr,
 	struct atom_gpio_pin_lut_v2_1 *gpio_lookup_table =
 			pp_atomfwctrl_get_gpio_lookup_table(hwmgr);
 
-	/* If we cannot find the table do NOT try to control this voltage. */
+/* If we cannot find the table do NOT try to control this voltage. */
 	PP_ASSERT_WITH_CODE(gpio_lookup_table,
 			"Could not find GPIO lookup Table in BIOS.",
 			return false);
@@ -232,7 +232,7 @@ bool pp_atomfwctrl_get_pp_assign_pin(struct pp_hwmgr *hwmgr,
 int pp_atomfwctrl_enter_self_refresh(struct pp_hwmgr *hwmgr)
 {
 	/* 0 - no action
-	 * 1 - leave power to video memory always on
+* 1 - leave power to video memory always on
 	 */
 	return 0;
 }
@@ -293,8 +293,8 @@ int pp_atomfwctrl_get_avfs_information(struct pp_hwmgr *hwmgr,
 	content_revision = ((struct atom_common_table_header *)profile)->content_revision;
 
 	if (format_revision == 4 && content_revision == 1) {
-		param->ulMaxVddc = le32_to_cpu(profile->maxvddc);
-		param->ulMinVddc = le32_to_cpu(profile->minvddc);
+param->ulMaxVddc = le32_to_cpu(profile->maxvddc);
+param->ulMinVddc = le32_to_cpu(profile->minvddc);
 		param->ulMeanNsigmaAcontant0 =
 				le32_to_cpu(profile->avfs_meannsigma_acontant0);
 		param->ulMeanNsigmaAcontant1 =
@@ -373,8 +373,8 @@ int pp_atomfwctrl_get_avfs_information(struct pp_hwmgr *hwmgr,
 		param->ucAcgEnableGbFuseTable         = 0;
 	} else if (format_revision == 4 && content_revision == 2) {
 		profile_v4_2 = (struct atom_asic_profiling_info_v4_2 *)profile;
-		param->ulMaxVddc = le32_to_cpu(profile_v4_2->maxvddc);
-		param->ulMinVddc = le32_to_cpu(profile_v4_2->minvddc);
+param->ulMaxVddc = le32_to_cpu(profile_v4_2->maxvddc);
+param->ulMinVddc = le32_to_cpu(profile_v4_2->minvddc);
 		param->ulMeanNsigmaAcontant0 =
 				le32_to_cpu(profile_v4_2->avfs_meannsigma_acontant0);
 		param->ulMeanNsigmaAcontant1 =
@@ -494,12 +494,12 @@ int pp_atomfwctrl__get_clk_information_by_clkid(struct pp_hwmgr *hwmgr, BIOS_CLK
 	uint32_t ix;
 
 	parameters.clk_id = id;
-	parameters.command = GET_SMU_CLOCK_INFO_V3_1_GET_CLOCK_FREQ;
+parameters.command = GET_SMU_CLOCK_INFO_V3_1_GET_CLOCK_FREQ;
 
 	ix = GetIndexIntoMasterCmdTable(getsmuclockinfo);
 	if (!cgs_atom_exec_cmd_table(hwmgr->device, ix, &parameters)) {
 		output = (struct atom_get_smu_clock_info_output_parameters_v3_1 *)&parameters;
-		*frequency = output->atom_smu_outputclkfreq.smu_clock_freq_hz / 10000;
+*frequency = output->atom_smu_outputclkfreq.smu_clock_freq_hz / 10000;
 	} else {
 		pr_info("Error execute_table getsmuclockinfo!");
 		return -1;
@@ -513,7 +513,7 @@ int pp_atomfwctrl_get_vbios_bootup_values(struct pp_hwmgr *hwmgr,
 {
 	struct atom_firmware_info_v3_1 *info = NULL;
 	uint16_t ix;
-	uint32_t frequency = 0;
+uint32_t frequency = 0;
 
 	ix = GetIndexIntoMasterDataTable(firmwareinfo);
 	info = (struct atom_firmware_info_v3_1 *)
@@ -528,18 +528,18 @@ int pp_atomfwctrl_get_vbios_bootup_values(struct pp_hwmgr *hwmgr,
 	boot_values->ulRevision = info->firmware_revision;
 	boot_values->ulGfxClk   = info->bootup_sclk_in10khz;
 	boot_values->ulUClk     = info->bootup_mclk_in10khz;
-	boot_values->usVddc     = info->bootup_vddc_mv;
-	boot_values->usVddci    = info->bootup_vddci_mv;
-	boot_values->usMvddc    = info->bootup_mvddc_mv;
-	boot_values->usVddGfx   = info->bootup_vddgfx_mv;
+boot_values->usVddc     = info->bootup_vddc_mv;
+boot_values->usVddci    = info->bootup_vddci_mv;
+boot_values->usMvddc    = info->bootup_mvddc_mv;
+boot_values->usVddGfx   = info->bootup_vddgfx_mv;
 	boot_values->ulSocClk   = 0;
 	boot_values->ulDCEFClk   = 0;
 
-	if (!pp_atomfwctrl__get_clk_information_by_clkid(hwmgr, SMU9_SYSPLL0_SOCCLK_ID, &frequency))
-		boot_values->ulSocClk   = frequency;
+if (!pp_atomfwctrl__get_clk_information_by_clkid(hwmgr, SMU9_SYSPLL0_SOCCLK_ID, &frequency))
+boot_values->ulSocClk   = frequency;
 
-	if (!pp_atomfwctrl__get_clk_information_by_clkid(hwmgr, SMU9_SYSPLL0_DCEFCLK_ID, &frequency))
-		boot_values->ulDCEFClk   = frequency;
+if (!pp_atomfwctrl__get_clk_information_by_clkid(hwmgr, SMU9_SYSPLL0_DCEFCLK_ID, &frequency))
+boot_values->ulDCEFClk   = frequency;
 
 	return 0;
 }

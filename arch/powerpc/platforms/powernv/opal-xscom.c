@@ -1,5 +1,5 @@
 /*
- * PowerNV LPC bus handling.
+* PowerNV LPC bus handling.
  *
  * Copyright 2013 IBM Corp.
  *

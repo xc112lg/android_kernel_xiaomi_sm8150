@@ -20,7 +20,7 @@
 
 /*
  * Flush and disable all data caches (dL1, L2, L3). This is used
- * when going to sleep, when doing a PMU based cpufreq transition,
+* when going to sleep, when doing a PMU based cpufreq transition,
  * or when "offlining" a CPU on SMP machines. This code is over
  * paranoid, but I've had enough issues with various CPU revs and
  * bugs that I decided it was worth being over cautious

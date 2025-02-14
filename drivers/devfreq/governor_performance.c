@@ -1,5 +1,5 @@
 /*
- *  linux/drivers/devfreq/governor_performance.c
+*  linux/drivers/devfreq/governor_performance.c
  *
  *  Copyright (C) 2011 Samsung Electronics
  *	MyungJoo Ham <myungjoo.ham@samsung.com>
@@ -14,16 +14,16 @@
 #include "governor.h"
 
 static int devfreq_performance_func(struct devfreq *df,
-				    unsigned long *freq)
+unsigned long *freq)
 {
 	/*
 	 * target callback should be able to get floor value as
-	 * said in devfreq.h
+* said in devfreq.h
 	 */
-	if (!df->max_freq)
-		*freq = UINT_MAX;
+if (!df->max_freq)
+*freq = UINT_MAX;
 	else
-		*freq = df->max_freq;
+*freq = df->max_freq;
 	return 0;
 }
 
@@ -32,10 +32,10 @@ static int devfreq_performance_handler(struct devfreq *devfreq,
 {
 	int ret = 0;
 
-	if (event == DEVFREQ_GOV_START || event == DEVFREQ_GOV_RESUME) {
-		mutex_lock(&devfreq->lock);
-		ret = update_devfreq(devfreq);
-		mutex_unlock(&devfreq->lock);
+if (event == DEVFREQ_GOV_START || event == DEVFREQ_GOV_RESUME) {
+mutex_lock(&devfreq->lock);
+ret = update_devfreq(devfreq);
+mutex_unlock(&devfreq->lock);
 	}
 
 	return ret;
@@ -43,13 +43,13 @@ static int devfreq_performance_handler(struct devfreq *devfreq,
 
 static struct devfreq_governor devfreq_performance = {
 	.name = "performance",
-	.get_target_freq = devfreq_performance_func,
-	.event_handler = devfreq_performance_handler,
+.get_target_freq = devfreq_performance_func,
+.event_handler = devfreq_performance_handler,
 };
 
 static int __init devfreq_performance_init(void)
 {
-	return devfreq_add_governor(&devfreq_performance);
+return devfreq_add_governor(&devfreq_performance);
 }
 subsys_initcall(devfreq_performance_init);
 
@@ -57,7 +57,7 @@ static void __exit devfreq_performance_exit(void)
 {
 	int ret;
 
-	ret = devfreq_remove_governor(&devfreq_performance);
+ret = devfreq_remove_governor(&devfreq_performance);
 	if (ret)
 		pr_err("%s: failed remove governor %d\n", __func__, ret);
 

@@ -57,6 +57,6 @@ enum Vega10_I2CLineID {
 extern const struct pp_table_func vega10_pptable_funcs;
 extern int vega10_get_number_of_powerplay_table_entries(struct pp_hwmgr *hwmgr);
 extern int vega10_get_powerplay_table_entry(struct pp_hwmgr *hwmgr, uint32_t entry_index,
-		struct pp_power_state *power_state, int (*call_back_func)(struct pp_hwmgr *, void *,
-				struct pp_power_state *, void *, uint32_t));
+struct pp_power_state *power_state, int (*call_back_func)(struct pp_hwmgr *, void *,
+struct pp_power_state *, void *, uint32_t));
 #endif

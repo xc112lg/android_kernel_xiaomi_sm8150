@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL power control for graceful shutdown handling
+* PowerNV OPAL power control for graceful shutdown handling
  *
  * Copyright 2015 IBM Corp.
  *
@@ -46,9 +46,9 @@ static bool detect_epow(void)
 		epow = be16_to_cpu(opal_epow_status[i]);
 
 		/* Filter events which do not need shutdown. */
-		if (i == OPAL_SYSEPOW_POWER)
-			epow &= ~(OPAL_SYSPOWER_CHNG | OPAL_SYSPOWER_FAIL |
-					OPAL_SYSPOWER_INCL);
+if (i == OPAL_SYSEPOW_POWER)
+epow &= ~(OPAL_SYSPOWER_CHNG | OPAL_SYSPOWER_FAIL |
+OPAL_SYSPOWER_INCL);
 		if (epow)
 			return true;
 	}
@@ -87,13 +87,13 @@ static int opal_power_control_event(struct notifier_block *nb,
 	switch (msg_type) {
 	case OPAL_MSG_EPOW:
 		if (detect_epow()) {
-			pr_info("EPOW msg received. Powering off system\n");
-			orderly_poweroff(true);
+pr_info("EPOW msg received. Powering off system\n");
+orderly_poweroff(true);
 		}
 		break;
 	case OPAL_MSG_DPO:
-		pr_info("DPO msg received. Powering off system\n");
-		orderly_poweroff(true);
+pr_info("DPO msg received. Powering off system\n");
+orderly_poweroff(true);
 		break;
 	case OPAL_MSG_SHUTDOWN:
 		type = be64_to_cpu(((struct opal_msg *)msg)->params[0]);
@@ -103,11 +103,11 @@ static int opal_power_control_event(struct notifier_block *nb,
 			orderly_reboot();
 			break;
 		case SOFT_OFF:
-			pr_info("Poweroff requested\n");
-			orderly_poweroff(true);
+pr_info("Poweroff requested\n");
+orderly_poweroff(true);
 			break;
 		default:
-			pr_err("Unknown power-control type %llu\n", type);
+pr_err("Unknown power-control type %llu\n", type);
 		}
 		break;
 	default:
@@ -119,21 +119,21 @@ static int opal_power_control_event(struct notifier_block *nb,
 
 /* OPAL EPOW event notifier block */
 static struct notifier_block opal_epow_nb = {
-	.notifier_call	= opal_power_control_event,
+.notifier_call	= opal_power_control_event,
 	.next		= NULL,
 	.priority	= 0,
 };
 
 /* OPAL DPO event notifier block */
 static struct notifier_block opal_dpo_nb = {
-	.notifier_call	= opal_power_control_event,
+.notifier_call	= opal_power_control_event,
 	.next		= NULL,
 	.priority	= 0,
 };
 
 /* OPAL power-control event notifier block */
 static struct notifier_block opal_power_control_nb = {
-	.notifier_call	= opal_power_control_event,
+.notifier_call	= opal_power_control_event,
 	.next		= NULL,
 	.priority	= 0,
 };
@@ -143,9 +143,9 @@ static int __init opal_power_control_init(void)
 	int ret, supported = 0;
 	struct device_node *np;
 
-	/* Register OPAL power-control events notifier */
+/* Register OPAL power-control events notifier */
 	ret = opal_message_notifier_register(OPAL_MSG_SHUTDOWN,
-						&opal_power_control_nb);
+&opal_power_control_nb);
 	if (ret)
 		pr_err("Failed to register SHUTDOWN notifier, ret = %d\n", ret);
 
@@ -171,8 +171,8 @@ static int __init opal_power_control_init(void)
 		pr_err("Failed to register DPO notifier, ret = %d\n", ret);
 
 	/* Check for any pending EPOW or DPO events. */
-	if (poweroff_pending())
-		orderly_poweroff(true);
+if (poweroff_pending())
+orderly_poweroff(true);
 
 	return 0;
 }

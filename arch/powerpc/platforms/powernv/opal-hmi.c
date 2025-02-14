@@ -129,7 +129,7 @@ static void print_nx_checkstop_reason(const char *level,
 					"UE error on CRB(CSB address, CCB)" },
 		{ NX_CHECKSTOP_DMA_CRB_SUE, "DMA & Engine",
 					"SUE error on CRB(CSB address, CCB)" },
-		{ NX_CHECKSTOP_PBI_ISN_UE, "PowerBus Interface",
+{ NX_CHECKSTOP_PBI_ISN_UE, "PowerBus Interface",
 		"CRB Kill ISN received while holding ISN with UE error" },
 	};
 
@@ -177,7 +177,7 @@ static void print_hmi_event_info(struct OpalHMIEvent *hmi_evt)
 		"Processor recovery occurred for masked error",
 		"Timer facility experienced an error",
 		"TFMR SPR is corrupted",
-		"UPS (Uniterrupted Power System) Overflow indication",
+"UPS (Uniterrupted Power System) Overflow indication",
 		"An XSCOM operation failure",
 		"An XSCOM operation completed",
 		"SCOM has set a reserved FIR bit to cause recovery",

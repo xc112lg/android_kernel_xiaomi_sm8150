@@ -265,7 +265,7 @@ static int spu_run_fini(struct spu_context *ctx, u32 *npc,
 /*
  * SPU syscall restarting is tricky because we violate the basic
  * assumption that the signal handler is running on the interrupted
- * thread. Here instead, the handler runs on PowerPC user space code,
+* thread. Here instead, the handler runs on PowerPC user space code,
  * while the syscall was called from the SPU.
  * This means we can only do a very rough approximation of POSIX
  * signal semantics.

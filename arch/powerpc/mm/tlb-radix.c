@@ -92,7 +92,7 @@ static inline void _tlbiel_pid(unsigned long pid, unsigned long ric)
 	}
 
 	/* For the remaining sets, just flush the TLB */
-	for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
+for (set = 1; set < POWER9_TLB_SETS_RADIX ; set++)
 		__tlbiel_pid(pid, set, RIC_FLUSH_TLB);
 
 	asm volatile("ptesync": : :"memory");
@@ -532,7 +532,7 @@ void radix__flush_tlb_pte_p9_dd1(unsigned long old_pte, struct mm_struct *mm,
 	 * We track page size in pte only for DD1, So we can
 	 * call this only on DD1.
 	 */
-	if (!cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (!cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 		VM_WARN_ON(1);
 		return;
 	}

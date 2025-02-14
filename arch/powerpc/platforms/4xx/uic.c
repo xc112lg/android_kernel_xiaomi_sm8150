@@ -1,7 +1,7 @@
 /*
- * arch/powerpc/sysdev/uic.c
+* arch/powerpc/sysdev/uic.c
  *
- * IBM PowerPC 4xx Universal Interrupt Controller
+* IBM PowerPC 4xx Universal Interrupt Controller
  *
  * Copyright 2007 David Gibson <dwg@au1.ibm.com>, IBM Corporation.
  *

@@ -18,7 +18,7 @@
 #include <asm/cputable.h>
 
 /*
- * Raw event encoding for PowerISA v2.07:
+* Raw event encoding for PowerISA v2.07:
  *
  *        60        56        52        48        44        40        36        32
  * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |

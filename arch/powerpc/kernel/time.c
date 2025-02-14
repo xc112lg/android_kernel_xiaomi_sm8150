@@ -16,7 +16,7 @@
  * xtime (which required locks for consistency). (mikejc@us.ibm.com)
  *
  * TODO (not necessarily in this file):
- * - improve precision and reproducibility of timebase frequency
+* - improve precision and reproducibility of timebase frequency
  * measurement at boot time.
  * - for astronomical applications: add a new function to get
  * non ambiguous timestamps even around leap seconds. This needs
@@ -722,7 +722,7 @@ static int __init get_freq(char *name, int cells, unsigned long *val)
 	const __be32 *fp;
 	int found = 0;
 
-	/* The cpu node should have timebase and clock frequency properties */
+/* The cpu node should have timebase and clock frequency properties */
 	cpu = of_find_node_by_type(NULL, "cpu");
 
 	if (cpu) {
@@ -759,21 +759,21 @@ static void start_cpu_decrementer(void)
 
 void __init generic_calibrate_decr(void)
 {
-	ppc_tb_freq = DEFAULT_TB_FREQ;		/* hardcoded default */
+ppc_tb_freq = DEFAULT_TB_FREQ;		/* hardcoded default */
 
-	if (!get_freq("ibm,extended-timebase-frequency", 2, &ppc_tb_freq) &&
-	    !get_freq("timebase-frequency", 1, &ppc_tb_freq)) {
+if (!get_freq("ibm,extended-timebase-frequency", 2, &ppc_tb_freq) &&
+!get_freq("timebase-frequency", 1, &ppc_tb_freq)) {
 
-		printk(KERN_ERR "WARNING: Estimating decrementer frequency "
+printk(KERN_ERR "WARNING: Estimating decrementer frequency "
 				"(not found)\n");
 	}
 
-	ppc_proc_freq = DEFAULT_PROC_FREQ;	/* hardcoded default */
+ppc_proc_freq = DEFAULT_PROC_FREQ;	/* hardcoded default */
 
-	if (!get_freq("ibm,extended-clock-frequency", 2, &ppc_proc_freq) &&
-	    !get_freq("clock-frequency", 1, &ppc_proc_freq)) {
+if (!get_freq("ibm,extended-clock-frequency", 2, &ppc_proc_freq) &&
+!get_freq("clock-frequency", 1, &ppc_proc_freq)) {
 
-		printk(KERN_ERR "WARNING: Estimating processor frequency "
+printk(KERN_ERR "WARNING: Estimating processor frequency "
 				"(not found)\n");
 	}
 }
@@ -868,13 +868,13 @@ void update_vsyscall(struct timekeeper *tk)
 	 * This computes ((2^20 / 1e9) * mult) >> shift as a
 	 * 0.64 fixed-point fraction.
 	 * The computation in the else clause below won't overflow
-	 * (as long as the timebase frequency is >= 1.049 MHz)
+* (as long as the timebase frequency is >= 1.049 MHz)
 	 * but loses precision because we lose the low bits of the constant
 	 * in the shift.  Note that 19342813113834067 ~= 2^(20+64) / 1e9.
 	 * For a shift of 24 the error is about 0.5e-9, or about 0.5ns
 	 * over a second.  (Shift values are usually 22, 23 or 24.)
-	 * For high frequency clocks such as the 512MHz timebase clock
-	 * on POWER[6789], the mult value is small (e.g. 32768000)
+* For high frequency clocks such as the 512MHz timebase clock
+* on POWER[6789], the mult value is small (e.g. 32768000)
 	 * and so we can shift the constant by 16 initially
 	 * (295147905179 ~= 2^(20+64-16) / 1e9) and then do the
 	 * remaining shifts after the multiplication, which gives a
@@ -985,7 +985,7 @@ static void register_decrementer_clockevent(int cpu)
 	*dec = decrementer_clockevent;
 	dec->cpumask = cpumask_of(cpu);
 
-	clockevents_config_and_register(dec, ppc_tb_freq, 2, decrementer_max);
+clockevents_config_and_register(dec, ppc_tb_freq, 2, decrementer_max);
 
 	printk_once(KERN_DEBUG "clockevent: %s mult[%x] shift[%d] cpu[%d]\n",
 		    dec->name, dec->mult, dec->shift, cpu);
@@ -1067,25 +1067,25 @@ void __init time_init(void)
 
 	if (__USE_RTC()) {
 		/* 601 processor: dec counts down by 128 every 128ns */
-		ppc_tb_freq = 1000000000;
+ppc_tb_freq = 1000000000;
 	} else {
-		/* Normal PowerPC with timebase register */
+/* Normal PowerPC with timebase register */
 		ppc_md.calibrate_decr();
-		printk(KERN_DEBUG "time_init: decrementer frequency = %lu.%.6lu MHz\n",
-		       ppc_tb_freq / 1000000, ppc_tb_freq % 1000000);
-		printk(KERN_DEBUG "time_init: processor frequency   = %lu.%.6lu MHz\n",
-		       ppc_proc_freq / 1000000, ppc_proc_freq % 1000000);
+printk(KERN_DEBUG "time_init: decrementer frequency = %lu.%.6lu MHz\n",
+ppc_tb_freq / 1000000, ppc_tb_freq % 1000000);
+printk(KERN_DEBUG "time_init: processor frequency   = %lu.%.6lu MHz\n",
+ppc_proc_freq / 1000000, ppc_proc_freq % 1000000);
 	}
 
-	tb_ticks_per_jiffy = ppc_tb_freq / HZ;
-	tb_ticks_per_sec = ppc_tb_freq;
-	tb_ticks_per_usec = ppc_tb_freq / 1000000;
+tb_ticks_per_jiffy = ppc_tb_freq / HZ;
+tb_ticks_per_sec = ppc_tb_freq;
+tb_ticks_per_usec = ppc_tb_freq / 1000000;
 	calc_cputime_factors();
 
 	/*
 	 * Compute scale factor for sched_clock.
 	 * The calibrate_decr() function has set tb_ticks_per_sec,
-	 * which is the timebase frequency.
+* which is the timebase frequency.
 	 * We compute 1e9 * 2^64 / tb_ticks_per_sec and interpret
 	 * the 128-bit result as a 64.64 fixed-point number.
 	 * We then shift that number right until it is less than 1.0,

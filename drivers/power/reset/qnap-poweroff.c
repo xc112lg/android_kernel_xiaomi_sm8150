@@ -1,5 +1,5 @@
 /*
- * QNAP Turbo NAS Board power off. Can also be used on Synology devices.
+* QNAP Turbo NAS Board power off. Can also be used on Synology devices.
  *
  * Copyright (C) 2012 Andrew Lunn <andrew@lunn.ch>
  *
@@ -41,11 +41,11 @@ static const struct power_off_cfg synology_power_off_cfg = {
 };
 
 static const struct of_device_id qnap_power_off_of_match_table[] = {
-	{ .compatible = "qnap,power-off",
-	  .data = &qnap_power_off_cfg,
+{ .compatible = "qnap,power-off",
+.data = &qnap_power_off_cfg,
 	},
-	{ .compatible = "synology,power-off",
-	  .data = &synology_power_off_cfg,
+{ .compatible = "synology,power-off",
+.data = &synology_power_off_cfg,
 	},
 	{}
 };
@@ -59,7 +59,7 @@ static void qnap_power_off(void)
 {
 	const unsigned divisor = ((tclk + (8 * cfg->baud)) / (16 * cfg->baud));
 
-	pr_err("%s: triggering power-off...\n", __func__);
+pr_err("%s: triggering power-off...\n", __func__);
 
 	/* hijack UART1 and reset into sane state */
 	writel(0x83, UART1_REG(LCR));
@@ -70,7 +70,7 @@ static void qnap_power_off(void)
 	writel(0x00, UART1_REG(FCR));
 	writel(0x00, UART1_REG(MCR));
 
-	/* send the power-off command to PIC */
+/* send the power-off command to PIC */
 	writel(cfg->cmd, UART1_REG(TX));
 }
 
@@ -82,7 +82,7 @@ static int qnap_power_off_probe(struct platform_device *pdev)
 	char symname[KSYM_NAME_LEN];
 
 	const struct of_device_id *match =
-		of_match_node(qnap_power_off_of_match_table, np);
+of_match_node(qnap_power_off_of_match_table, np);
 	cfg = match->data;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
@@ -107,30 +107,30 @@ static int qnap_power_off_probe(struct platform_device *pdev)
 	tclk = clk_get_rate(clk);
 
 	/* Check that nothing else has already setup a handler */
-	if (pm_power_off) {
-		lookup_symbol_name((ulong)pm_power_off, symname);
+if (pm_power_off) {
+lookup_symbol_name((ulong)pm_power_off, symname);
 		dev_err(&pdev->dev,
-			"pm_power_off already claimed %p %s",
-			pm_power_off, symname);
+"pm_power_off already claimed %p %s",
+pm_power_off, symname);
 		return -EBUSY;
 	}
-	pm_power_off = qnap_power_off;
+pm_power_off = qnap_power_off;
 
 	return 0;
 }
 
 static int qnap_power_off_remove(struct platform_device *pdev)
 {
-	pm_power_off = NULL;
+pm_power_off = NULL;
 	return 0;
 }
 
 static struct platform_driver qnap_power_off_driver = {
-	.probe	= qnap_power_off_probe,
-	.remove	= qnap_power_off_remove,
+.probe	= qnap_power_off_probe,
+.remove	= qnap_power_off_remove,
 	.driver	= {
-		.name	= "qnap_power_off",
-		.of_match_table = of_match_ptr(qnap_power_off_of_match_table),
+.name	= "qnap_power_off",
+.of_match_table = of_match_ptr(qnap_power_off_of_match_table),
 	},
 };
 module_platform_driver(qnap_power_off_driver);

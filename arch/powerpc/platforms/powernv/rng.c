@@ -35,9 +35,9 @@ static DEFINE_PER_CPU(struct powernv_rng *, powernv_rng);
 
 int powernv_hwrng_present(void)
 {
-	struct powernv_rng *rng;
+struct powernv_rng *rng;
 
-	rng = get_cpu_var(powernv_rng);
+rng = get_cpu_var(powernv_rng);
 	put_cpu_var(rng);
 	return rng != NULL;
 }
@@ -60,9 +60,9 @@ static unsigned long rng_whiten(struct powernv_rng *rng, unsigned long val)
 
 int powernv_get_random_real_mode(unsigned long *v)
 {
-	struct powernv_rng *rng;
+struct powernv_rng *rng;
 
-	rng = raw_cpu_read(powernv_rng);
+rng = raw_cpu_read(powernv_rng);
 	if (!rng)
 		return 0;
 
@@ -95,8 +95,8 @@ static int initialise_darn(void)
 		return -ENODEV;
 
 	for (i = 0; i < 10; i++) {
-		if (powernv_get_random_darn(&val)) {
-			ppc_md.get_random_seed = powernv_get_random_darn;
+if (powernv_get_random_darn(&val)) {
+ppc_md.get_random_seed = powernv_get_random_darn;
 			return 0;
 		}
 	}
@@ -105,9 +105,9 @@ static int initialise_darn(void)
 
 int powernv_get_random_long(unsigned long *v)
 {
-	struct powernv_rng *rng;
+struct powernv_rng *rng;
 
-	rng = get_cpu_var(powernv_rng);
+rng = get_cpu_var(powernv_rng);
 
 	*v = rng_whiten(rng, in_be64(rng->regs));
 
@@ -127,16 +127,16 @@ static __init void rng_init_per_cpu(struct powernv_rng *rng,
 		pr_warn("No ibm,chip-id found for %pOF.\n", dn);
 
 	for_each_possible_cpu(cpu) {
-		if (per_cpu(powernv_rng, cpu) == NULL ||
+if (per_cpu(powernv_rng, cpu) == NULL ||
 		    cpu_to_chip_id(cpu) == chip_id) {
-			per_cpu(powernv_rng, cpu) = rng;
+per_cpu(powernv_rng, cpu) = rng;
 		}
 	}
 }
 
 static __init int rng_create(struct device_node *dn)
 {
-	struct powernv_rng *rng;
+struct powernv_rng *rng;
 	struct resource res;
 	unsigned long val;
 
@@ -162,7 +162,7 @@ static __init int rng_create(struct device_node *dn)
 
 	rng_init_per_cpu(rng, dn);
 
-	ppc_md.get_random_seed = powernv_get_random_long;
+ppc_md.get_random_seed = powernv_get_random_long;
 
 	return 0;
 }
@@ -178,7 +178,7 @@ static int __init pnv_get_random_long_early(unsigned long *v)
 		    NULL) != pnv_get_random_long_early)
 		return 0;
 
-	for_each_compatible_node(dn, NULL, "ibm,power-rng")
+for_each_compatible_node(dn, NULL, "ibm,power-rng")
 		rng_create(dn);
 
 	if (!ppc_md.get_random_seed)
@@ -194,7 +194,7 @@ void __init pnv_rng_init(void)
 	if (!initialise_darn())
 		return;
 
-	dn = of_find_compatible_node(NULL, NULL, "ibm,power-rng");
+dn = of_find_compatible_node(NULL, NULL, "ibm,power-rng");
 	if (dn)
 		ppc_md.get_random_seed = pnv_get_random_long_early;
 
@@ -210,8 +210,8 @@ static int __init pnv_rng_late_init(void)
 	if (ppc_md.get_random_seed == pnv_get_random_long_early)
 		pnv_get_random_long_early(&v);
 
-	if (ppc_md.get_random_seed == powernv_get_random_long) {
-		for_each_compatible_node(dn, NULL, "ibm,power-rng")
+if (ppc_md.get_random_seed == powernv_get_random_long) {
+for_each_compatible_node(dn, NULL, "ibm,power-rng")
 			of_platform_device_create(dn, NULL, NULL);
 	}
 

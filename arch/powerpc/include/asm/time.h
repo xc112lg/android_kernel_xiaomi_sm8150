@@ -157,7 +157,7 @@ static inline u64 get_dec(void)
 }
 
 /*
- * Note: Book E and 4xx processors differ from other PowerPC processors
+* Note: Book E and 4xx processors differ from other PowerPC processors
  * in when the decrementer generates its interrupt: on the 1 to 0
  * transition for Book E/4xx, but on the 0 to -1 transition for others.
  */

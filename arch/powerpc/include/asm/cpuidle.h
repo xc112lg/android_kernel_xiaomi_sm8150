@@ -10,7 +10,7 @@
 #define PNV_THREAD_WINKLE               3
 
 /*
- * Core state used in powernv idle for POWER8.
+* Core state used in powernv idle for POWER8.
  *
  * The lock bit synchronizes updates to the state, as well as parts of the
  * sleep/wake code (see kernel/idle_book3s.S).

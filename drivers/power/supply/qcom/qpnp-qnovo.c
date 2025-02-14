@@ -176,10 +176,10 @@ struct qnovo {
 	s64			internal_i_gain_mega;
 	s64			v_gain_mega;
 	struct notifier_block	nb;
-	struct power_supply	*batt_psy;
-	struct power_supply	*bms_psy;
-	struct power_supply	*usb_psy;
-	struct power_supply	*dc_psy;
+struct power_supply	*batt_psy;
+struct power_supply	*bms_psy;
+struct power_supply	*usb_psy;
+struct power_supply	*dc_psy;
 	struct work_struct	status_change_work;
 	int			fv_uV_request;
 	int			fcc_uA_request;
@@ -268,7 +268,7 @@ unlock:
 static bool is_batt_available(struct qnovo *chip)
 {
 	if (!chip->batt_psy)
-		chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 
 	if (!chip->batt_psy)
 		return false;
@@ -279,7 +279,7 @@ static bool is_batt_available(struct qnovo *chip)
 static bool is_fg_available(struct qnovo *chip)
 {
 	if (!chip->bms_psy)
-		chip->bms_psy = power_supply_get_by_name("bms");
+chip->bms_psy = power_supply_get_by_name("bms");
 
 	if (!chip->bms_psy)
 		return false;
@@ -290,7 +290,7 @@ static bool is_fg_available(struct qnovo *chip)
 static bool is_usb_available(struct qnovo *chip)
 {
 	if (!chip->usb_psy)
-		chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 
 	if (!chip->usb_psy)
 		return false;
@@ -301,7 +301,7 @@ static bool is_usb_available(struct qnovo *chip)
 static bool is_dc_available(struct qnovo *chip)
 {
 	if (!chip->dc_psy)
-		chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 
 	if (!chip->dc_psy)
 		return false;
@@ -311,7 +311,7 @@ static bool is_dc_available(struct qnovo *chip)
 
 static int qnovo_batt_psy_update(struct qnovo *chip, bool disable)
 {
-	union power_supply_propval pval = {0};
+union power_supply_propval pval = {0};
 	int rc = 0;
 
 	if (!is_batt_available(chip))
@@ -319,8 +319,8 @@ static int qnovo_batt_psy_update(struct qnovo *chip, bool disable)
 
 	if (chip->fv_uV_request != -EINVAL) {
 		pval.intval = disable ? -EINVAL : chip->fv_uV_request;
-		rc = power_supply_set_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_VOLTAGE_QNOVO,
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_QNOVO,
 			&pval);
 		if (rc < 0) {
 			pr_err("Couldn't set prop qnovo_fv rc = %d\n", rc);
@@ -330,8 +330,8 @@ static int qnovo_batt_psy_update(struct qnovo *chip, bool disable)
 
 	if (chip->fcc_uA_request != -EINVAL) {
 		pval.intval = disable ? -EINVAL : chip->fcc_uA_request;
-		rc = power_supply_set_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CURRENT_QNOVO,
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CURRENT_QNOVO,
 			&pval);
 		if (rc < 0) {
 			pr_err("Couldn't set prop qnovo_fcc rc = %d\n", rc);
@@ -346,15 +346,15 @@ static int qnovo_disable_cb(struct votable *votable, void *data, int disable,
 					const char *client)
 {
 	struct qnovo *chip = data;
-	union power_supply_propval pval = {0};
+union power_supply_propval pval = {0};
 	int rc;
 
 	if (!is_batt_available(chip))
 		return -EINVAL;
 
 	pval.intval = !disable;
-	rc = power_supply_set_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE,
+rc = power_supply_set_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE,
 			&pval);
 	if (rc < 0) {
 		pr_err("Couldn't set prop qnovo_enable rc = %d\n", rc);
@@ -367,8 +367,8 @@ static int qnovo_disable_cb(struct votable *votable, void *data, int disable,
 	 */
 
 	if (is_fg_available(chip))
-		power_supply_set_property(chip->bms_psy,
-				POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE,
+power_supply_set_property(chip->bms_psy,
+POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE,
 				&pval);
 
 	vote(chip->pt_dis_votable, QNOVO_OVERALL_VOTER, disable, 0);
@@ -750,23 +750,23 @@ static struct param_info params[] = {
 		.units_str		= "pulses",
 	},
 	[VBATT]	= {
-		.name			= "POWER_SUPPLY_PROP_VOLTAGE_NOW",
-		.start_addr		= POWER_SUPPLY_PROP_VOLTAGE_NOW,
+.name			= "POWER_SUPPLY_PROP_VOLTAGE_NOW",
+.start_addr		= POWER_SUPPLY_PROP_VOLTAGE_NOW,
 		.units_str		= "uV",
 	},
 	[IBATT]	= {
-		.name			= "POWER_SUPPLY_PROP_CURRENT_NOW",
-		.start_addr		= POWER_SUPPLY_PROP_CURRENT_NOW,
+.name			= "POWER_SUPPLY_PROP_CURRENT_NOW",
+.start_addr		= POWER_SUPPLY_PROP_CURRENT_NOW,
 		.units_str		= "uA",
 	},
 	[BATTTEMP] = {
-		.name			= "POWER_SUPPLY_PROP_TEMP",
-		.start_addr		= POWER_SUPPLY_PROP_TEMP,
+.name			= "POWER_SUPPLY_PROP_TEMP",
+.start_addr		= POWER_SUPPLY_PROP_TEMP,
 		.units_str		= "uV",
 	},
 	[BATTSOC] = {
-		.name			= "POWER_SUPPLY_PROP_CAPACITY",
-		.start_addr		= POWER_SUPPLY_PROP_CAPACITY,
+.name			= "POWER_SUPPLY_PROP_CAPACITY",
+.start_addr		= POWER_SUPPLY_PROP_CAPACITY,
 		.units_str		= "%",
 	},
 };
@@ -1171,12 +1171,12 @@ static ssize_t batt_prop_show(struct class *c, struct class_attribute *attr,
 	struct qnovo *chip = container_of(c, struct qnovo, qnovo_class);
 	int rc = -EINVAL;
 	int prop = params[i].start_addr;
-	union power_supply_propval pval = {0};
+union power_supply_propval pval = {0};
 
 	if (!is_batt_available(chip))
 		return -EINVAL;
 
-	rc = power_supply_get_property(chip->batt_psy, prop, &pval);
+rc = power_supply_get_property(chip->batt_psy, prop, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't read battery prop %s rc = %d\n",
 				params[i].name, rc);
@@ -1305,7 +1305,7 @@ static void status_change_work(struct work_struct *work)
 {
 	struct qnovo *chip = container_of(work,
 			struct qnovo, status_change_work);
-	union power_supply_propval pval;
+union power_supply_propval pval;
 	bool usb_present = false, dc_present = false;
 	int rc;
 
@@ -1313,8 +1313,8 @@ static void status_change_work(struct work_struct *work)
 		vote(chip->disable_votable, FG_AVAILABLE_VOTER, false, 0);
 
 	if (is_usb_available(chip)) {
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 		usb_present = (rc < 0) ? 0 : pval.intval;
 	}
 
@@ -1333,8 +1333,8 @@ static void status_change_work(struct work_struct *work)
 	}
 
 	if (is_dc_available(chip)) {
-		rc = power_supply_get_property(chip->dc_psy,
-			POWER_SUPPLY_PROP_PRESENT,
+rc = power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_PRESENT,
 			&pval);
 		dc_present = (rc < 0) ? 0 : pval.intval;
 	}
@@ -1431,7 +1431,7 @@ clean_up:
 static int qnovo_notifier_call(struct notifier_block *nb,
 		unsigned long ev, void *v)
 {
-	struct power_supply *psy = v;
+struct power_supply *psy = v;
 	struct qnovo *chip = container_of(nb, struct qnovo, nb);
 
 	if (ev != PSY_EVENT_PROP_CHANGED)
@@ -1449,7 +1449,7 @@ static int qnovo_notifier_call(struct notifier_block *nb,
 static irqreturn_t handle_ptrain_done(int irq, void *data)
 {
 	struct qnovo *chip = data;
-	union power_supply_propval pval = {0};
+union power_supply_propval pval = {0};
 
 	qnovo_update_status(chip);
 
@@ -1465,8 +1465,8 @@ static irqreturn_t handle_ptrain_done(int irq, void *data)
 	if (is_fg_available(chip)
 		&& !get_client_vote(chip->disable_votable, USER_VOTER)
 		&& !get_effective_result(chip->not_ok_to_qnovo_votable))
-		power_supply_set_property(chip->bms_psy,
-				POWER_SUPPLY_PROP_RESISTANCE,
+power_supply_set_property(chip->bms_psy,
+POWER_SUPPLY_PROP_RESISTANCE,
 				&pval);
 
 	vote(chip->pt_dis_votable, ESR_VOTER, false, 0);
@@ -1583,7 +1583,7 @@ static int qnovo_register_notifier(struct qnovo *chip)
 	int rc;
 
 	chip->nb.notifier_call = qnovo_notifier_call;
-	rc = power_supply_reg_notifier(&chip->nb);
+rc = power_supply_reg_notifier(&chip->nb);
 	if (rc < 0) {
 		pr_err("Couldn't register psy notifier rc = %d\n", rc);
 		return rc;
@@ -1727,7 +1727,7 @@ static int qnovo_probe(struct platform_device *pdev)
 	return rc;
 
 unreg_notifier:
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 destroy_awake_votable:
 	destroy_votable(chip->awake_votable);
 destroy_chg_ready_votable:
@@ -1748,7 +1748,7 @@ static int qnovo_remove(struct platform_device *pdev)
 	struct qnovo *chip = platform_get_drvdata(pdev);
 
 	class_unregister(&chip->qnovo_class);
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 	destroy_votable(chip->chg_ready_votable);
 	destroy_votable(chip->not_ok_to_qnovo_votable);
 	destroy_votable(chip->pt_dis_votable);

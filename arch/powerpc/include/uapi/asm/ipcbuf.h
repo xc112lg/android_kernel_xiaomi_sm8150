@@ -3,7 +3,7 @@
 #define _ASM_POWERPC_IPCBUF_H
 
 /*
- * The ipc64_perm structure for the powerpc is identical to
+* The ipc64_perm structure for the powerpc is identical to
  * kern_ipc_perm as we have always had 32-bit UIDs and GIDs in the
  * kernel.  Note extra padding because this structure is passed back
  * and forth between kernel and user space.  Pad space is left for:

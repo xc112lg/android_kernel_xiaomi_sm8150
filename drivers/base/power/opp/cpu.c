@@ -25,14 +25,14 @@
 #ifdef CONFIG_CPU_FREQ
 
 /**
- * dev_pm_opp_init_cpufreq_table() - create a cpufreq table for a device
+* dev_pm_opp_init_cpufreq_table() - create a cpufreq table for a device
  * @dev:	device for which we do this operation
- * @table:	Cpufreq table returned back to caller
+* @table:	Cpufreq table returned back to caller
  *
- * Generate a cpufreq table for a provided device- this assumes that the
+* Generate a cpufreq table for a provided device- this assumes that the
  * opp table is already initialized and ready for usage.
  *
- * This function allocates required memory for the cpufreq table. It is
+* This function allocates required memory for the cpufreq table. It is
  * expected that the caller does the required maintenance such as freeing
  * the table as required.
  *
@@ -44,10 +44,10 @@
  * the table if any of the mentioned functions have been invoked in the interim.
  */
 int dev_pm_opp_init_cpufreq_table(struct device *dev,
-				  struct cpufreq_frequency_table **table)
+struct cpufreq_frequency_table **table)
 {
 	struct dev_pm_opp *opp;
-	struct cpufreq_frequency_table *freq_table = NULL;
+struct cpufreq_frequency_table *freq_table = NULL;
 	int i, max_opps, ret = 0;
 	unsigned long rate;
 
@@ -55,49 +55,49 @@ int dev_pm_opp_init_cpufreq_table(struct device *dev,
 	if (max_opps <= 0)
 		return max_opps ? max_opps : -ENODATA;
 
-	freq_table = kcalloc((max_opps + 1), sizeof(*freq_table), GFP_ATOMIC);
-	if (!freq_table)
+freq_table = kcalloc((max_opps + 1), sizeof(*freq_table), GFP_ATOMIC);
+if (!freq_table)
 		return -ENOMEM;
 
 	for (i = 0, rate = 0; i < max_opps; i++, rate++) {
 		/* find next rate */
-		opp = dev_pm_opp_find_freq_ceil(dev, &rate);
+opp = dev_pm_opp_find_freq_ceil(dev, &rate);
 		if (IS_ERR(opp)) {
 			ret = PTR_ERR(opp);
 			goto out;
 		}
-		freq_table[i].driver_data = i;
-		freq_table[i].frequency = rate / 1000;
+freq_table[i].driver_data = i;
+freq_table[i].frequency = rate / 1000;
 
 		/* Is Boost/turbo opp ? */
 		if (dev_pm_opp_is_turbo(opp))
-			freq_table[i].flags = CPUFREQ_BOOST_FREQ;
+freq_table[i].flags = CPUFREQ_BOOST_FREQ;
 
 		dev_pm_opp_put(opp);
 	}
 
-	freq_table[i].driver_data = i;
-	freq_table[i].frequency = CPUFREQ_TABLE_END;
+freq_table[i].driver_data = i;
+freq_table[i].frequency = CPUFREQ_TABLE_END;
 
-	*table = &freq_table[0];
+*table = &freq_table[0];
 
 out:
 	if (ret)
-		kfree(freq_table);
+kfree(freq_table);
 
 	return ret;
 }
 EXPORT_SYMBOL_GPL(dev_pm_opp_init_cpufreq_table);
 
 /**
- * dev_pm_opp_free_cpufreq_table() - free the cpufreq table
+* dev_pm_opp_free_cpufreq_table() - free the cpufreq table
  * @dev:	device for which we do this operation
  * @table:	table to free
  *
- * Free up the table allocated by dev_pm_opp_init_cpufreq_table
+* Free up the table allocated by dev_pm_opp_init_cpufreq_table
  */
 void dev_pm_opp_free_cpufreq_table(struct device *dev,
-				   struct cpufreq_frequency_table **table)
+struct cpufreq_frequency_table **table)
 {
 	if (!table)
 		return;

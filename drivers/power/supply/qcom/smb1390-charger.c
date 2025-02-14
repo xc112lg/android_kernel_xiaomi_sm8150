@@ -134,10 +134,10 @@ struct smb1390 {
 	struct votable		*fv_votable;
 	struct votable		*cp_awake_votable;
 
-	/* power supplies */
-	struct power_supply	*usb_psy;
-	struct power_supply	*batt_psy;
-	struct power_supply	*dc_psy;
+/* power supplies */
+struct power_supply	*usb_psy;
+struct power_supply	*batt_psy;
+struct power_supply	*dc_psy;
 
 	int			irqs[NUM_IRQS];
 	bool			status_change_running;
@@ -187,7 +187,7 @@ static int smb1390_masked_write(struct smb1390 *chip, int reg, int mask,
 static bool is_psy_voter_available(struct smb1390 *chip)
 {
 	if (!chip->batt_psy) {
-		chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 		if (!chip->batt_psy) {
 			pr_debug("Couldn't find battery psy\n");
 			return false;
@@ -195,7 +195,7 @@ static bool is_psy_voter_available(struct smb1390 *chip)
 	}
 
 	if (!chip->usb_psy) {
-		chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 		if (!chip->usb_psy) {
 			pr_debug("Couldn't find usb psy\n");
 			return false;
@@ -203,7 +203,7 @@ static bool is_psy_voter_available(struct smb1390 *chip)
 	}
 
 	if (!chip->dc_psy) {
-		chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 		if (!chip->dc_psy) {
 			pr_debug("Couldn't find dc psy\n");
 			return false;
@@ -242,13 +242,13 @@ static void cp_toggle_switcher(struct smb1390 *chip)
 static int smb1390_is_batt_soc_valid(struct smb1390 *chip)
 {
 	int rc;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (!chip->batt_psy)
 		goto out;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CAPACITY, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't get CAPACITY rc=%d\n", rc);
 		goto out;
@@ -583,7 +583,7 @@ static int smb1390_notifier_cb(struct notifier_block *nb,
 			       unsigned long event, void *data)
 {
 	struct smb1390 *chip = container_of(nb, struct smb1390, nb);
-	struct power_supply *psy = data;
+struct power_supply *psy = data;
 	unsigned long flags;
 
 	if (event != PSY_EVENT_PROP_CHANGED)
@@ -613,7 +613,7 @@ static void smb1390_status_change_work(struct work_struct *work)
 {
 	struct smb1390 *chip = container_of(work, struct smb1390,
 					    status_change_work);
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int max_fcc_ma, rc;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 	int capacity, batt_temp, charge_type;
@@ -625,16 +625,16 @@ static void smb1390_status_change_work(struct work_struct *work)
 	vote(chip->disable_votable, SOC_LEVEL_VOTER,
 			smb1390_is_batt_soc_valid(chip) ? false : true, 0);
 
-	rc = power_supply_get_property(chip->usb_psy,
-			POWER_SUPPLY_PROP_SMB_EN_MODE, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_SMB_EN_MODE, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't get usb present rc=%d\n", rc);
 		goto out;
 	}
 
-	if (pval.intval == POWER_SUPPLY_CHARGER_SEC_CP) {
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_SMB_EN_REASON, &pval);
+if (pval.intval == POWER_SUPPLY_CHARGER_SEC_CP) {
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_SMB_EN_REASON, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get cp reason rc=%d\n", rc);
 			goto out;
@@ -647,13 +647,13 @@ static void smb1390_status_change_work(struct work_struct *work)
 		 * ensures VBUS does not collapse due to the current drawn via
 		 * MID.
 		 */
-		if (pval.intval == POWER_SUPPLY_CP_WIRELESS) {
+if (pval.intval == POWER_SUPPLY_CP_WIRELESS) {
 			vote(chip->ilim_votable, ICL_VOTER, false, 0);
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 			vote(chip->ilim_votable, ICL_CHANGE_VOTER, false, 0);
 #endif
-			rc = power_supply_get_property(chip->dc_psy,
-					POWER_SUPPLY_PROP_CURRENT_MAX, &pval);
+rc = power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX, &pval);
 			if (rc < 0)
 				pr_err("Couldn't get dc icl rc=%d\n", rc);
 			else
@@ -661,8 +661,8 @@ static void smb1390_status_change_work(struct work_struct *work)
 								pval.intval);
 		} else { /* QC3 or PPS */
 			vote(chip->ilim_votable, WIRELESS_VOTER, false, 0);
-			rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED, &pval);
 			if (rc < 0)
 				pr_err("Couldn't get usb icl rc=%d\n", rc);
 			else
@@ -675,8 +675,8 @@ static void smb1390_status_change_work(struct work_struct *work)
 				get_effective_result(chip->fcc_votable) / 2);
 
 		/*
-		 * Remove SMB1390 Taper condition disable vote if float voltage
-		 * increased in comparison to voltage at which it entered taper.
+* Remove SMB1390 Taper condition disable vote if float voltage
+* increased in comparison to voltage at which it entered taper.
 		 */
 		if (chip->taper_entry_fv <
 				get_effective_result(chip->fv_votable))
@@ -691,24 +691,24 @@ static void smb1390_status_change_work(struct work_struct *work)
 			goto out;
 
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-		rc = power_supply_get_property(chip->batt_psy,
-			       POWER_SUPPLY_PROP_CAPACITY, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get batt capacity rc=%d\n", rc);
 			goto out;
 		}
 		capacity = pval.intval;
 
-		rc = power_supply_get_property(chip->batt_psy,
-			       POWER_SUPPLY_PROP_TEMP, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_TEMP, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get batt temp rc=%d\n", rc);
 			goto out;
 		}
 		batt_temp = pval.intval;
 
-		rc = power_supply_get_property(chip->batt_psy,
-					POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get charge type rc=%d\n", rc);
 			goto out;
@@ -727,7 +727,7 @@ static void smb1390_status_change_work(struct work_struct *work)
 		 */
 		if ((capacity < TAPER_CAPACITY_THR)
 			&& (batt_temp >= BATT_COOL_THR)
-			&& (charge_type == POWER_SUPPLY_CHARGE_TYPE_FAST)
+&& (charge_type == POWER_SUPPLY_CHARGE_TYPE_FAST)
 			&& chip->taper_early_trigger) {
 			if (is_client_vote_enabled(chip->fcc_votable,
 							CP_VOTER)) {
@@ -741,12 +741,12 @@ static void smb1390_status_change_work(struct work_struct *work)
 		}
 #endif
 
-		rc = power_supply_get_property(chip->batt_psy,
-				POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get charge type rc=%d\n", rc);
 		} else if (pval.intval ==
-				POWER_SUPPLY_CHARGE_TYPE_TAPER) {
+POWER_SUPPLY_CHARGE_TYPE_TAPER) {
 			/*
 			 * mutual exclusion is already guaranteed by
 			 * chip->status_change_running
@@ -778,7 +778,7 @@ out:
 static void smb1390_taper_work(struct work_struct *work)
 {
 	struct smb1390 *chip = container_of(work, struct smb1390, taper_work);
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc, fcc_uA;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 	int capacity;
@@ -790,8 +790,8 @@ static void smb1390_taper_work(struct work_struct *work)
 	chip->taper_entry_fv = get_effective_result(chip->fv_votable);
 	while (true) {
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-		rc = power_supply_get_property(chip->batt_psy,
-			       POWER_SUPPLY_PROP_CAPACITY, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get batt capacity rc=%d\n", rc);
 			goto out;
@@ -808,8 +808,8 @@ static void smb1390_taper_work(struct work_struct *work)
 			chip->taper_early_trigger = true;
 #endif
 
-		rc = power_supply_get_property(chip->batt_psy,
-					POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get charge type rc=%d\n", rc);
 			goto out;
@@ -817,14 +817,14 @@ static void smb1390_taper_work(struct work_struct *work)
 
 		if (get_effective_result(chip->fv_votable) >
 						chip->taper_entry_fv) {
-			pr_debug("Float voltage increased. Exiting taper\n");
+pr_debug("Float voltage increased. Exiting taper\n");
 			goto out;
 		} else {
 			chip->taper_entry_fv =
 					get_effective_result(chip->fv_votable);
 		}
 
-		if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER) {
+if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER) {
 			fcc_uA = get_client_vote(chip->fcc_votable, CP_VOTER)
 								- 100000;
 			pr_debug("taper work reducing FCC to %duA\n", fcc_uA);
@@ -1068,7 +1068,7 @@ static int smb1390_probe(struct platform_device *pdev)
 	}
 
 	chip->nb.notifier_call = smb1390_notifier_cb;
-	rc = power_supply_reg_notifier(&chip->nb);
+rc = power_supply_reg_notifier(&chip->nb);
 	if (rc < 0) {
 		pr_err("Couldn't register psy notifier rc=%d\n", rc);
 		goto out_votables;
@@ -1096,7 +1096,7 @@ static int smb1390_probe(struct platform_device *pdev)
 out_class:
 	class_unregister(&chip->cp_class);
 out_notifier:
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 out_votables:
 	smb1390_destroy_votables(chip);
 out_work:
@@ -1111,7 +1111,7 @@ static int smb1390_remove(struct platform_device *pdev)
 	struct smb1390 *chip = platform_get_drvdata(pdev);
 
 	class_unregister(&chip->cp_class);
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 
 	/* explicitly disable charging */
 	vote(chip->disable_votable, USER_VOTER, true, 0);

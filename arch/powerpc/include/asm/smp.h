@@ -1,5 +1,5 @@
 /* 
- * smp.h: PowerPC-specific SMP code.
+* smp.h: PowerPC-specific SMP code.
  *
  * Original was a copy of sparc smp.h.  Now heavily modified
  * for PPC.

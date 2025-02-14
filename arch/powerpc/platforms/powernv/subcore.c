@@ -86,7 +86,7 @@
  * Unsplitting is the simpler procedure. It requires thread 0 to request the
  * unsplit while all other threads NAP.
  *
- * Thread 0 clears HID0_POWER8_DYNLPARDIS (Dynamic LPAR Disable). This tells
+* Thread 0 clears HID0_POWER8_DYNLPARDIS (Dynamic LPAR Disable). This tells
  * the hardware that if all threads except 0 are napping, the hardware should
  * unsplit the core.
  *
@@ -117,7 +117,7 @@
  * to see the core split.
  *
  * Thread 0 waits to see that all secondaries are in real mode, and then begins
- * the splitting procedure. It firstly sets HID0_POWER8_DYNLPARDIS, which
+* the splitting procedure. It firstly sets HID0_POWER8_DYNLPARDIS, which
  * prevents the hardware from unsplitting. Then it sets the appropriate HID bit
  * to request the split, and spins waiting to see that the split has happened.
  *
@@ -178,20 +178,20 @@ static void unsplit_core(void)
 	u64 hid0, mask;
 	int i, cpu;
 
-	mask = HID0_POWER8_2LPARMODE | HID0_POWER8_4LPARMODE;
+mask = HID0_POWER8_2LPARMODE | HID0_POWER8_4LPARMODE;
 
 	cpu = smp_processor_id();
 	if (cpu_thread_in_core(cpu) != 0) {
 		while (mfspr(SPRN_HID0) & mask)
-			power7_idle_insn(PNV_THREAD_NAP);
+power7_idle_insn(PNV_THREAD_NAP);
 
 		per_cpu(split_state, cpu).step = SYNC_STEP_UNSPLIT;
 		return;
 	}
 
 	hid0 = mfspr(SPRN_HID0);
-	hid0 &= ~HID0_POWER8_DYNLPARDIS;
-	update_power8_hid0(hid0);
+hid0 &= ~HID0_POWER8_DYNLPARDIS;
+update_power8_hid0(hid0);
 	update_hid_in_slw(hid0);
 
 	while (mfspr(SPRN_HID0) & mask)
@@ -207,8 +207,8 @@ static void unsplit_core(void)
 static void split_core(int new_mode)
 {
 	struct {  u64 value; u64 mask; } split_parms[2] = {
-		{ HID0_POWER8_1TO2LPAR, HID0_POWER8_2LPARMODE },
-		{ HID0_POWER8_1TO4LPAR, HID0_POWER8_4LPARMODE }
+{ HID0_POWER8_1TO2LPAR, HID0_POWER8_2LPARMODE },
+{ HID0_POWER8_1TO4LPAR, HID0_POWER8_4LPARMODE }
 	};
 	int i, cpu;
 	u64 hid0;
@@ -227,8 +227,8 @@ static void split_core(int new_mode)
 
 	/* Write new mode */
 	hid0  = mfspr(SPRN_HID0);
-	hid0 |= HID0_POWER8_DYNLPARDIS | split_parms[i].value;
-	update_power8_hid0(hid0);
+hid0 |= HID0_POWER8_DYNLPARDIS | split_parms[i].value;
+update_power8_hid0(hid0);
 	update_hid_in_slw(hid0);
 
 	/* Wait for it to happen */
@@ -413,9 +413,9 @@ static int subcore_init(void)
 
 	pvr_ver = PVR_VER(mfspr(SPRN_PVR));
 
-	if (pvr_ver != PVR_POWER8 &&
-	    pvr_ver != PVR_POWER8E &&
-	    pvr_ver != PVR_POWER8NVL)
+if (pvr_ver != PVR_POWER8 &&
+pvr_ver != PVR_POWER8E &&
+pvr_ver != PVR_POWER8NVL)
 		return 0;
 
 	/*

@@ -1,5 +1,5 @@
 /*
- * PowerNV LED Driver
+* PowerNV LED Driver
  *
  * Copyright IBM Corp. 2015
  *
@@ -35,7 +35,7 @@ static const struct led_type_map led_type_map[] = {
 
 struct powernv_led_common {
 	/*
-	 * By default unload path resets all the LEDs. But on PowerNV
+* By default unload path resets all the LEDs. But on PowerNV
 	 * platform we want to retain LED state across reboot as these
 	 * are controlled by firmware. Also service processor can modify
 	 * the LEDs independent of OS. Hence avoid resetting LEDs in
@@ -56,7 +56,7 @@ struct powernv_led_data {
 	char			*loc_code;	/* LED location code */
 	int			led_type;	/* OPAL_SLOT_LED_TYPE_* */
 
-	struct powernv_led_common *common;
+struct powernv_led_common *common;
 };
 
 
@@ -84,12 +84,12 @@ static int powernv_led_set(struct powernv_led_data *powernv_led,
 	u64 led_mask, led_value = 0;
 	__be64 max_type;
 	struct opal_msg msg;
-	struct device *dev = powernv_led->cdev.dev;
-	struct powernv_led_common *powernv_led_common = powernv_led->common;
+struct device *dev = powernv_led->cdev.dev;
+struct powernv_led_common *powernv_led_common = powernv_led->common;
 
 	/* Prepare for the OPAL call */
-	max_type = powernv_led_common->max_led_type;
-	led_mask = OPAL_SLOT_LED_STATE_ON << powernv_led->led_type;
+max_type = powernv_led_common->max_led_type;
+led_mask = OPAL_SLOT_LED_STATE_ON << powernv_led->led_type;
 	if (value)
 		led_value = led_mask;
 
@@ -102,11 +102,11 @@ static int powernv_led_set(struct powernv_led_data *powernv_led,
 		return token;
 	}
 
-	rc = opal_leds_set_ind(token, powernv_led->loc_code,
+rc = opal_leds_set_ind(token, powernv_led->loc_code,
 			       led_mask, led_value, &max_type);
 	if (rc != OPAL_ASYNC_COMPLETION) {
 		dev_err(dev, "%s: OPAL set LED call failed for %s [rc=%d]\n",
-			__func__, powernv_led->loc_code, rc);
+__func__, powernv_led->loc_code, rc);
 		goto out_token;
 	}
 
@@ -137,15 +137,15 @@ static enum led_brightness powernv_led_get(struct powernv_led_data *powernv_led)
 	int rc;
 	__be64 mask, value, max_type;
 	u64 led_mask, led_value;
-	struct device *dev = powernv_led->cdev.dev;
-	struct powernv_led_common *powernv_led_common = powernv_led->common;
+struct device *dev = powernv_led->cdev.dev;
+struct powernv_led_common *powernv_led_common = powernv_led->common;
 
 	/* Fetch all LED status */
 	mask = cpu_to_be64(0);
 	value = cpu_to_be64(0);
-	max_type = powernv_led_common->max_led_type;
+max_type = powernv_led_common->max_led_type;
 
-	rc = opal_leds_get_ind(powernv_led->loc_code,
+rc = opal_leds_get_ind(powernv_led->loc_code,
 			       &mask, &value, &max_type);
 	if (rc != OPAL_SUCCESS && rc != OPAL_PARTIAL) {
 		dev_err(dev, "%s: OPAL get led call failed [rc=%d]\n",
@@ -157,14 +157,14 @@ static enum led_brightness powernv_led_get(struct powernv_led_data *powernv_led)
 	led_value = be64_to_cpu(value);
 
 	/* LED status available */
-	if (!((led_mask >> powernv_led->led_type) & OPAL_SLOT_LED_STATE_ON)) {
+if (!((led_mask >> powernv_led->led_type) & OPAL_SLOT_LED_STATE_ON)) {
 		dev_err(dev, "%s: LED status not available for %s\n",
-			__func__, powernv_led->cdev.name);
+__func__, powernv_led->cdev.name);
 		return LED_OFF;
 	}
 
 	/* LED status value */
-	if ((led_value >> powernv_led->led_type) & OPAL_SLOT_LED_STATE_ON)
+if ((led_value >> powernv_led->led_type) & OPAL_SLOT_LED_STATE_ON)
 		return LED_FULL;
 
 	return LED_OFF;
@@ -177,18 +177,18 @@ static enum led_brightness powernv_led_get(struct powernv_led_data *powernv_led)
 static int powernv_brightness_set(struct led_classdev *led_cdev,
 				   enum led_brightness value)
 {
-	struct powernv_led_data *powernv_led =
-		container_of(led_cdev, struct powernv_led_data, cdev);
-	struct powernv_led_common *powernv_led_common = powernv_led->common;
+struct powernv_led_data *powernv_led =
+container_of(led_cdev, struct powernv_led_data, cdev);
+struct powernv_led_common *powernv_led_common = powernv_led->common;
 	int rc;
 
 	/* Do not modify LED in unload path */
-	if (powernv_led_common->led_disabled)
+if (powernv_led_common->led_disabled)
 		return 0;
 
-	mutex_lock(&powernv_led_common->lock);
-	rc = powernv_led_set(powernv_led, value);
-	mutex_unlock(&powernv_led_common->lock);
+mutex_lock(&powernv_led_common->lock);
+rc = powernv_led_set(powernv_led, value);
+mutex_unlock(&powernv_led_common->lock);
 
 	return rc;
 }
@@ -196,10 +196,10 @@ static int powernv_brightness_set(struct led_classdev *led_cdev,
 /* LED classdev 'brightness_get' function */
 static enum led_brightness powernv_brightness_get(struct led_classdev *led_cdev)
 {
-	struct powernv_led_data *powernv_led =
-		container_of(led_cdev, struct powernv_led_data, cdev);
+struct powernv_led_data *powernv_led =
+container_of(led_cdev, struct powernv_led_data, cdev);
 
-	return powernv_led_get(powernv_led);
+return powernv_led_get(powernv_led);
 }
 
 /*
@@ -207,36 +207,36 @@ static enum led_brightness powernv_brightness_get(struct led_classdev *led_cdev)
  * a given child LED device node.
  */
 static int powernv_led_create(struct device *dev,
-			      struct powernv_led_data *powernv_led,
+struct powernv_led_data *powernv_led,
 			      const char *led_type_desc)
 {
 	int rc;
 
 	/* Make sure LED type is supported */
-	powernv_led->led_type = powernv_get_led_type(led_type_desc);
-	if (powernv_led->led_type == -1) {
+powernv_led->led_type = powernv_get_led_type(led_type_desc);
+if (powernv_led->led_type == -1) {
 		dev_warn(dev, "%s: No support for led type : %s\n",
 			 __func__, led_type_desc);
 		return -EINVAL;
 	}
 
 	/* Create the name for classdev */
-	powernv_led->cdev.name = devm_kasprintf(dev, GFP_KERNEL, "%s:%s",
-						powernv_led->loc_code,
+powernv_led->cdev.name = devm_kasprintf(dev, GFP_KERNEL, "%s:%s",
+powernv_led->loc_code,
 						led_type_desc);
-	if (!powernv_led->cdev.name)
+if (!powernv_led->cdev.name)
 		return -ENOMEM;
 
-	powernv_led->cdev.brightness_set_blocking = powernv_brightness_set;
-	powernv_led->cdev.brightness_get = powernv_brightness_get;
-	powernv_led->cdev.brightness = LED_OFF;
-	powernv_led->cdev.max_brightness = LED_FULL;
+powernv_led->cdev.brightness_set_blocking = powernv_brightness_set;
+powernv_led->cdev.brightness_get = powernv_brightness_get;
+powernv_led->cdev.brightness = LED_OFF;
+powernv_led->cdev.max_brightness = LED_FULL;
 
 	/* Register the classdev */
-	rc = devm_led_classdev_register(dev, &powernv_led->cdev);
+rc = devm_led_classdev_register(dev, &powernv_led->cdev);
 	if (rc) {
 		dev_err(dev, "%s: Classdev registration failed for %s\n",
-			__func__, powernv_led->cdev.name);
+__func__, powernv_led->cdev.name);
 	}
 
 	return rc;
@@ -245,30 +245,30 @@ static int powernv_led_create(struct device *dev,
 /* Go through LED device tree node and register LED classdev structure */
 static int powernv_led_classdev(struct platform_device *pdev,
 				struct device_node *led_node,
-				struct powernv_led_common *powernv_led_common)
+struct powernv_led_common *powernv_led_common)
 {
 	const char *cur = NULL;
 	int rc = -1;
 	struct property *p;
 	struct device_node *np;
-	struct powernv_led_data *powernv_led;
+struct powernv_led_data *powernv_led;
 	struct device *dev = &pdev->dev;
 
 	for_each_child_of_node(led_node, np) {
 		p = of_find_property(np, "led-types", NULL);
 
 		while ((cur = of_prop_next_string(p, cur)) != NULL) {
-			powernv_led = devm_kzalloc(dev, sizeof(*powernv_led),
+powernv_led = devm_kzalloc(dev, sizeof(*powernv_led),
 						   GFP_KERNEL);
-			if (!powernv_led) {
+if (!powernv_led) {
 				of_node_put(np);
 				return -ENOMEM;
 			}
 
-			powernv_led->common = powernv_led_common;
-			powernv_led->loc_code = (char *)np->name;
+powernv_led->common = powernv_led_common;
+powernv_led->loc_code = (char *)np->name;
 
-			rc = powernv_led_create(dev, powernv_led, cur);
+rc = powernv_led_create(dev, powernv_led, cur);
 			if (rc) {
 				of_node_put(np);
 				return rc;
@@ -283,7 +283,7 @@ static int powernv_led_classdev(struct platform_device *pdev,
 static int powernv_led_probe(struct platform_device *pdev)
 {
 	struct device_node *led_node;
-	struct powernv_led_common *powernv_led_common;
+struct powernv_led_common *powernv_led_common;
 	struct device *dev = &pdev->dev;
 
 	led_node = of_find_node_by_path("/ibm,opal/leds");
@@ -293,32 +293,32 @@ static int powernv_led_probe(struct platform_device *pdev)
 		return -EINVAL;
 	}
 
-	powernv_led_common = devm_kzalloc(dev, sizeof(*powernv_led_common),
+powernv_led_common = devm_kzalloc(dev, sizeof(*powernv_led_common),
 					  GFP_KERNEL);
-	if (!powernv_led_common)
+if (!powernv_led_common)
 		return -ENOMEM;
 
-	mutex_init(&powernv_led_common->lock);
-	powernv_led_common->max_led_type = cpu_to_be64(OPAL_SLOT_LED_TYPE_MAX);
+mutex_init(&powernv_led_common->lock);
+powernv_led_common->max_led_type = cpu_to_be64(OPAL_SLOT_LED_TYPE_MAX);
 
-	platform_set_drvdata(pdev, powernv_led_common);
+platform_set_drvdata(pdev, powernv_led_common);
 
-	return powernv_led_classdev(pdev, led_node, powernv_led_common);
+return powernv_led_classdev(pdev, led_node, powernv_led_common);
 }
 
 /* Platform driver remove */
 static int powernv_led_remove(struct platform_device *pdev)
 {
-	struct powernv_led_common *powernv_led_common;
+struct powernv_led_common *powernv_led_common;
 
 	/* Disable LED operation */
-	powernv_led_common = platform_get_drvdata(pdev);
-	powernv_led_common->led_disabled = true;
+powernv_led_common = platform_get_drvdata(pdev);
+powernv_led_common->led_disabled = true;
 
 	/* Destroy lock */
-	mutex_destroy(&powernv_led_common->lock);
+mutex_destroy(&powernv_led_common->lock);
 
-	dev_info(&pdev->dev, "PowerNV led module unregistered\n");
+dev_info(&pdev->dev, "PowerNV led module unregistered\n");
 	return 0;
 }
 
@@ -332,11 +332,11 @@ static const struct of_device_id powernv_led_match[] = {
 MODULE_DEVICE_TABLE(of, powernv_led_match);
 
 static struct platform_driver powernv_led_driver = {
-	.probe	= powernv_led_probe,
-	.remove = powernv_led_remove,
+.probe	= powernv_led_probe,
+.remove = powernv_led_remove,
 	.driver = {
-		.name = "powernv-led-driver",
-		.of_match_table = powernv_led_match,
+.name = "powernv-led-driver",
+.of_match_table = powernv_led_match,
 	},
 };
 

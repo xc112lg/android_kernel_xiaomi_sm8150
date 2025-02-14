@@ -74,14 +74,14 @@ struct rv_dpm_entry {
 
 struct rv_power_level {
 	uint32_t engine_clock;
-	uint8_t vddc_index;
+uint8_t vddc_index;
 	uint8_t ds_divider_index;
 	uint8_t ss_divider_index;
 	uint8_t allow_gnb_slow;
 	uint8_t force_nbp_state;
 	uint8_t display_wm;
 	uint8_t vce_wm;
-	uint8_t num_simd_to_powerdown;
+uint8_t num_simd_to_powerdown;
 	uint8_t hysteresis_up;
 	uint8_t rsv[3];
 };
@@ -143,7 +143,7 @@ struct rv_power_state {
 
 	enum rv_pstate_previous_action action;
 
-	struct rv_power_level levels[RAVEN_MAX_HARDWARE_POWERLEVELS];
+struct rv_power_level levels[RAVEN_MAX_HARDWARE_POWERLEVELS];
 	struct pp_disable_nbpslo_flags nbpslo_flags;
 };
 
@@ -175,7 +175,7 @@ struct rv_system_info{
 #define MAX_REGULAR_DPM_NUMBER 8
 
 struct rv_mclk_latency_entries {
-	uint32_t  frequency;
+uint32_t  frequency;
 	uint32_t  latency;
 };
 
@@ -192,17 +192,17 @@ struct rv_clock_voltage_dependency_record {
 
 struct rv_voltage_dependency_table {
 	uint32_t count;
-	struct rv_clock_voltage_dependency_record entries[1];
+struct rv_clock_voltage_dependency_record entries[1];
 };
 
 struct rv_clock_voltage_information {
-	struct rv_voltage_dependency_table    *vdd_dep_on_dcefclk;
-	struct rv_voltage_dependency_table    *vdd_dep_on_socclk;
-	struct rv_voltage_dependency_table    *vdd_dep_on_fclk;
-	struct rv_voltage_dependency_table    *vdd_dep_on_mclk;
-	struct rv_voltage_dependency_table    *vdd_dep_on_dispclk;
-	struct rv_voltage_dependency_table    *vdd_dep_on_dppclk;
-	struct rv_voltage_dependency_table    *vdd_dep_on_phyclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_dcefclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_socclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_fclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_mclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_dispclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_dppclk;
+struct rv_voltage_dependency_table    *vdd_dep_on_phyclk;
 };
 
 struct rv_hwmgr {
@@ -211,7 +211,7 @@ struct rv_hwmgr {
 	struct rv_system_info sys_info;
 	struct rv_mclk_latency_table mclk_latency_table;
 
-	uint32_t ddi_power_gating_disabled;
+uint32_t ddi_power_gating_disabled;
 
 	struct rv_display_phy_info_entry            display_phy_info;
 	uint32_t dce_slow_sclk_threshold;
@@ -224,17 +224,17 @@ struct rv_hwmgr {
 	bool battery_state;
 
 	uint32_t is_nb_dpm_enabled;
-	uint32_t is_voltage_island_enabled;
+uint32_t is_voltage_island_enabled;
 	uint32_t disable_smu_acp_s3_handshake;
 	uint32_t disable_notify_smu_vpu_recovery;
 	bool                           in_vpu_recovery;
 	bool pg_acp_init;
 	uint8_t disp_config;
 
-	/* PowerTune */
-	uint32_t power_containment_features;
+/* PowerTune */
+uint32_t power_containment_features;
 	bool cac_enabled;
-	bool disable_uvd_power_tune_feature;
+bool disable_uvd_power_tune_feature;
 	bool enable_bapm_feature;
 	bool enable_tdc_limit_feature;
 
@@ -259,12 +259,12 @@ struct rv_hwmgr {
 	struct rv_dpm_entry uvd_dpm;
 	struct rv_dpm_entry vce_dpm;
 	struct rv_dpm_entry acp_dpm;
-	bool acp_power_up_no_dsp;
+bool acp_power_up_no_dsp;
 
 	uint32_t max_sclk_level;
 	uint32_t num_of_clk_entries;
 
-	/* CPU Power State */
+/* CPU Power State */
 	uint32_t                          separation_time;
 	bool                              cc6_disable;
 	bool                              pstate_disable;
@@ -272,24 +272,24 @@ struct rv_hwmgr {
 
 	uint32_t                             ulTotalActiveCUs;
 
-	bool                           isp_tileA_power_gated;
-	bool                           isp_tileB_power_gated;
-	uint32_t                       isp_actual_hard_min_freq;
-	uint32_t                       soc_actual_hard_min_freq;
-	uint32_t                       dcf_actual_hard_min_freq;
+bool                           isp_tileA_power_gated;
+bool                           isp_tileB_power_gated;
+uint32_t                       isp_actual_hard_min_freq;
+uint32_t                       soc_actual_hard_min_freq;
+uint32_t                       dcf_actual_hard_min_freq;
 
-	uint32_t                        f_actual_hard_min_freq;
-	uint32_t                        fabric_actual_soft_min_freq;
+uint32_t                        f_actual_hard_min_freq;
+uint32_t                        fabric_actual_soft_min_freq;
 	uint32_t                        vclk_soft_min;
 	uint32_t                        dclk_soft_min;
-	uint32_t                        gfx_actual_soft_min_freq;
+uint32_t                        gfx_actual_soft_min_freq;
 
-	bool                           vcn_power_gated;
+bool                           vcn_power_gated;
 	bool                           vcn_dpg_mode;
 
 	bool                           gfx_off_controled_by_driver;
 	Watermarks_t                      water_marks_table;
-	struct rv_clock_voltage_information   clock_vol_info;
+struct rv_clock_voltage_information   clock_vol_info;
 	DpmClocks_t                       clock_table;
 
 	uint32_t active_process_mask;

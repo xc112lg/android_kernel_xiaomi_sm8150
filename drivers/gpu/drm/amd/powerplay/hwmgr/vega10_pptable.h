@@ -80,19 +80,19 @@ typedef struct _ATOM_Vega10_POWERPLAYTABLE {
 	ULONG  ulPlatformCaps;                     /* See ATOM_Vega10_CAPS_* */
 	ULONG  ulMaxODEngineClock;                 /* For Overdrive. */
 	ULONG  ulMaxODMemoryClock;                 /* For Overdrive. */
-	USHORT usPowerControlLimit;
-	USHORT usUlvVoltageOffset;                 /* in mv units */
+USHORT usPowerControlLimit;
+USHORT usUlvVoltageOffset;                 /* in mv units */
 	USHORT usUlvSmnclkDid;
 	USHORT usUlvMp1clkDid;
 	USHORT usUlvGfxclkBypass;
 	USHORT usGfxclkSlewRate;
-	UCHAR  ucGfxVoltageMode;
-	UCHAR  ucSocVoltageMode;
-	UCHAR  ucUclkVoltageMode;
-	UCHAR  ucUvdVoltageMode;
-	UCHAR  ucVceVoltageMode;
-	UCHAR  ucMp0VoltageMode;
-	UCHAR  ucDcefVoltageMode;
+UCHAR  ucGfxVoltageMode;
+UCHAR  ucSocVoltageMode;
+UCHAR  ucUclkVoltageMode;
+UCHAR  ucUvdVoltageMode;
+UCHAR  ucVceVoltageMode;
+UCHAR  ucMp0VoltageMode;
+UCHAR  ucDcefVoltageMode;
 	USHORT usStateArrayOffset;                 /* points to ATOM_Vega10_State_Array */
 	USHORT usFanTableOffset;                   /* points to ATOM_Vega10_Fan_Table */
 	USHORT usThermalControllerOffset;          /* points to ATOM_Vega10_Thermal_Controller */
@@ -100,14 +100,14 @@ typedef struct _ATOM_Vega10_POWERPLAYTABLE {
 	USHORT usMclkDependencyTableOffset;        /* points to ATOM_Vega10_MCLK_Dependency_Table */
 	USHORT usGfxclkDependencyTableOffset;      /* points to ATOM_Vega10_GFXCLK_Dependency_Table */
 	USHORT usDcefclkDependencyTableOffset;     /* points to ATOM_Vega10_DCEFCLK_Dependency_Table */
-	USHORT usVddcLookupTableOffset;            /* points to ATOM_Vega10_Voltage_Lookup_Table */
-	USHORT usVddmemLookupTableOffset;          /* points to ATOM_Vega10_Voltage_Lookup_Table */
+USHORT usVddcLookupTableOffset;            /* points to ATOM_Vega10_Voltage_Lookup_Table */
+USHORT usVddmemLookupTableOffset;          /* points to ATOM_Vega10_Voltage_Lookup_Table */
 	USHORT usMMDependencyTableOffset;          /* points to ATOM_Vega10_MM_Dependency_Table */
 	USHORT usVCEStateTableOffset;              /* points to ATOM_Vega10_VCE_State_Table */
 	USHORT usReserve;                          /* No PPM Support for Vega10 */
-	USHORT usPowerTuneTableOffset;             /* points to ATOM_Vega10_PowerTune_Table */
+USHORT usPowerTuneTableOffset;             /* points to ATOM_Vega10_PowerTune_Table */
 	USHORT usHardLimitTableOffset;             /* points to ATOM_Vega10_Hard_Limit_Table */
-	USHORT usVddciLookupTableOffset;           /* points to ATOM_Vega10_Voltage_Lookup_Table */
+USHORT usVddciLookupTableOffset;           /* points to ATOM_Vega10_Voltage_Lookup_Table */
 	USHORT usPCIETableOffset;                  /* points to ATOM_Vega10_PCIE_Table */
 	USHORT usPixclkDependencyTableOffset;      /* points to ATOM_Vega10_PIXCLK_Dependency_Table */
 	USHORT usDispClkDependencyTableOffset;     /* points to ATOM_Vega10_DISPCLK_Dependency_Table */
@@ -133,20 +133,20 @@ typedef struct _ATOM_Vega10_State_Array {
 } ATOM_Vega10_State_Array;
 
 typedef struct _ATOM_Vega10_CLK_Dependency_Record {
-	ULONG  ulClk;                                               /* Frequency of Clock */
-	UCHAR  ucVddInd;                                            /* Base voltage */
+ULONG  ulClk;                                               /* Frequency of Clock */
+UCHAR  ucVddInd;                                            /* Base voltage */
 } ATOM_Vega10_CLK_Dependency_Record;
 
 typedef struct _ATOM_Vega10_GFXCLK_Dependency_Record {
-	ULONG  ulClk;                                               /* Clock Frequency */
-	UCHAR  ucVddInd;                                            /* SOC_VDD index */
-	USHORT usCKSVOffsetandDisable;                              /* Bits 0~30: Voltage offset for CKS, Bit 31: Disable/enable for the GFXCLK level. */
-	USHORT usAVFSOffset;                                        /* AVFS Voltage offset */
+ULONG  ulClk;                                               /* Clock Frequency */
+UCHAR  ucVddInd;                                            /* SOC_VDD index */
+USHORT usCKSVOffsetandDisable;                              /* Bits 0~30: Voltage offset for CKS, Bit 31: Disable/enable for the GFXCLK level. */
+USHORT usAVFSOffset;                                        /* AVFS Voltage offset */
 } ATOM_Vega10_GFXCLK_Dependency_Record;
 
 typedef struct _ATOM_Vega10_GFXCLK_Dependency_Record_V2 {
 	ULONG  ulClk;
-	UCHAR  ucVddInd;
+UCHAR  ucVddInd;
 	USHORT usCKSVOffsetandDisable;
 	USHORT usAVFSOffset;
 	UCHAR  ucACGEnable;
@@ -154,10 +154,10 @@ typedef struct _ATOM_Vega10_GFXCLK_Dependency_Record_V2 {
 } ATOM_Vega10_GFXCLK_Dependency_Record_V2;
 
 typedef struct _ATOM_Vega10_MCLK_Dependency_Record {
-	ULONG  ulMemClk;                                            /* Clock Frequency */
-	UCHAR  ucVddInd;                                            /* SOC_VDD index */
-	UCHAR  ucVddMemInd;                                         /* MEM_VDD - only non zero for MCLK record */
-	UCHAR  ucVddciInd;                                          /* VDDCI   = only non zero for MCLK record */
+ULONG  ulMemClk;                                            /* Clock Frequency */
+UCHAR  ucVddInd;                                            /* SOC_VDD index */
+UCHAR  ucVddMemInd;                                         /* MEM_VDD - only non zero for MCLK record */
+UCHAR  ucVddciInd;                                          /* VDDCI   = only non zero for MCLK record */
 } ATOM_Vega10_MCLK_Dependency_Record;
 
 typedef struct _ATOM_Vega10_GFXCLK_Dependency_Table {
@@ -203,7 +203,7 @@ typedef struct _ATOM_Vega10_PHYCLK_Dependency_Table {
 } ATOM_Vega10_PHYCLK_Dependency_Table;
 
 typedef struct _ATOM_Vega10_MM_Dependency_Record {
-    UCHAR  ucVddcInd;                                           /* SOC_VDD voltage */
+UCHAR  ucVddcInd;                                           /* SOC_VDD voltage */
     ULONG  ulDClk;                                              /* UVD D-clock */
     ULONG  ulVClk;                                              /* UVD V-clock */
     ULONG  ulEClk;                                              /* VCE clock */
@@ -229,13 +229,13 @@ typedef struct _ATOM_Vega10_PCIE_Table {
 } ATOM_Vega10_PCIE_Table;
 
 typedef struct _ATOM_Vega10_Voltage_Lookup_Record {
-	USHORT usVdd;                                               /* Base voltage */
+USHORT usVdd;                                               /* Base voltage */
 } ATOM_Vega10_Voltage_Lookup_Record;
 
 typedef struct _ATOM_Vega10_Voltage_Lookup_Table {
 	UCHAR ucRevId;
 	UCHAR ucNumEntries;                                          /* Number of entries */
-	ATOM_Vega10_Voltage_Lookup_Record entries[1];             /* Dynamically allocate entries */
+ATOM_Vega10_Voltage_Lookup_Record entries[1];             /* Dynamically allocate entries */
 } ATOM_Vega10_Voltage_Lookup_Table;
 
 typedef struct _ATOM_Vega10_Fan_Table {
@@ -243,15 +243,15 @@ typedef struct _ATOM_Vega10_Fan_Table {
 	USHORT  usFanOutputSensitivity;          /* Sensitivity of fan reaction to temepature changes. */
 	USHORT  usFanRPMMax;                     /* The default value in RPM. */
 	USHORT  usThrottlingRPM;
-	USHORT  usFanAcousticLimit;              /* Minimum Fan Controller Frequency Acoustic Limit. */
+USHORT  usFanAcousticLimit;              /* Minimum Fan Controller Frequency Acoustic Limit. */
 	USHORT  usTargetTemperature;             /* The default ideal temperature in Celcius. */
 	USHORT  usMinimumPWMLimit;               /* The minimum PWM that the advanced fan controller can set. */
-	USHORT  usTargetGfxClk;                   /* The ideal Fan Controller GFXCLK Frequency Acoustic Limit. */
+USHORT  usTargetGfxClk;                   /* The ideal Fan Controller GFXCLK Frequency Acoustic Limit. */
 	USHORT  usFanGainEdge;
 	USHORT  usFanGainHotspot;
 	USHORT  usFanGainLiquid;
-	USHORT  usFanGainVrVddc;
-	USHORT  usFanGainVrMvdd;
+USHORT  usFanGainVrVddc;
+USHORT  usFanGainVrMvdd;
 	USHORT  usFanGainPlx;
 	USHORT  usFanGainHbm;
 	UCHAR   ucEnableZeroRPM;
@@ -270,8 +270,8 @@ typedef struct _ATOM_Vega10_Fan_Table_V2 {
 	USHORT  usFanGainEdge;
 	USHORT  usFanGainHotspot;
 	USHORT  usFanGainLiquid;
-	USHORT  usFanGainVrVddc;
-	USHORT  usFanGainVrMvdd;
+USHORT  usFanGainVrVddc;
+USHORT  usFanGainVrMvdd;
 	USHORT  usFanGainPlx;
 	USHORT  usFanGainHbm;
 	UCHAR   ucEnableZeroRPM;
@@ -310,9 +310,9 @@ typedef struct _ATOM_Vega10_VCE_State_Table
 
 typedef struct _ATOM_Vega10_PowerTune_Table {
 	UCHAR  ucRevId;
-	USHORT usSocketPowerLimit;
-	USHORT usBatteryPowerLimit;
-	USHORT usSmallPowerLimit;
+USHORT usSocketPowerLimit;
+USHORT usBatteryPowerLimit;
+USHORT usSmallPowerLimit;
 	USHORT usTdcLimit;
 	USHORT usEdcLimit;
 	USHORT usSoftwareShutdownTemp;
@@ -340,9 +340,9 @@ typedef struct _ATOM_Vega10_PowerTune_Table {
 typedef struct _ATOM_Vega10_PowerTune_Table_V2
 {
 	UCHAR  ucRevId;
-	USHORT usSocketPowerLimit;
-	USHORT usBatteryPowerLimit;
-	USHORT usSmallPowerLimit;
+USHORT usSocketPowerLimit;
+USHORT usBatteryPowerLimit;
+USHORT usSmallPowerLimit;
 	USHORT usTdcLimit;
 	USHORT usEdcLimit;
 	USHORT usSoftwareShutdownTemp;
@@ -367,9 +367,9 @@ typedef struct _ATOM_Vega10_PowerTune_Table_V2
 typedef struct _ATOM_Vega10_PowerTune_Table_V3
 {
 	UCHAR  ucRevId;
-	USHORT usSocketPowerLimit;
-	USHORT usBatteryPowerLimit;
-	USHORT usSmallPowerLimit;
+USHORT usSocketPowerLimit;
+USHORT usBatteryPowerLimit;
+USHORT usSmallPowerLimit;
 	USHORT usTdcLimit;
 	USHORT usEdcLimit;
 	USHORT usSoftwareShutdownTemp;
@@ -399,9 +399,9 @@ typedef struct _ATOM_Vega10_Hard_Limit_Record {
     ULONG  ulSOCCLKLimit;
     ULONG  ulGFXCLKLimit;
     ULONG  ulMCLKLimit;
-    USHORT usVddcLimit;
-    USHORT usVddciLimit;
-    USHORT usVddMemLimit;
+USHORT usVddcLimit;
+USHORT usVddciLimit;
+USHORT usVddMemLimit;
 } ATOM_Vega10_Hard_Limit_Record;
 
 typedef struct _ATOM_Vega10_Hard_Limit_Table

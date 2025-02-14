@@ -7,7 +7,7 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * This driver adds basic cpufreq support for SMU & 970FX based G5 Macs,
+* This driver adds basic cpufreq support for SMU & 970FX based G5 Macs,
  * that is iMac G5 and latest single CPU desktop.
  */
 
@@ -55,19 +55,19 @@
 #define PSR_CUR_SPEED_SHIFT	(56)
 
 /*
- * The G5 only supports two frequencies (Quarter speed is not supported)
+* The G5 only supports two frequencies (Quarter speed is not supported)
  */
 #define CPUFREQ_HIGH                  0
 #define CPUFREQ_LOW                   1
 
 static struct cpufreq_frequency_table maple_cpu_freqs[] = {
-	{0, CPUFREQ_HIGH,		0},
-	{0, CPUFREQ_LOW,		0},
-	{0, 0,				CPUFREQ_TABLE_END},
+{0, CPUFREQ_HIGH,		0},
+{0, CPUFREQ_LOW,		0},
+{0, 0,				CPUFREQ_TABLE_END},
 };
 
 /* Power mode data is an array of the 32 bits PCR values to use for
- * the various frequencies, retrieved from the device-tree
+* the various frequencies, retrieved from the device-tree
  */
 static int maple_pmode_cur;
 
@@ -75,7 +75,7 @@ static const u32 *maple_pmode_data;
 static int maple_pmode_max;
 
 /*
- * SCOM based frequency switching for 970FX rev3
+* SCOM based frequency switching for 970FX rev3
  */
 static int maple_scom_switch_freq(int speed_mode)
 {
@@ -109,7 +109,7 @@ static int maple_scom_switch_freq(int speed_mode)
 	local_irq_restore(flags);
 
 	maple_pmode_cur = speed_mode;
-	ppc_proc_freq = maple_cpu_freqs[speed_mode].frequency * 1000ul;
+ppc_proc_freq = maple_cpu_freqs[speed_mode].frequency * 1000ul;
 
 	return 0;
 }
@@ -127,46 +127,46 @@ static int maple_scom_query_freq(void)
 }
 
 /*
- * Common interface to the cpufreq core
+* Common interface to the cpufreq core
  */
 
 static int maple_cpufreq_target(struct cpufreq_policy *policy,
 	unsigned int index)
 {
-	return maple_scom_switch_freq(index);
+return maple_scom_switch_freq(index);
 }
 
 static unsigned int maple_cpufreq_get_speed(unsigned int cpu)
 {
-	return maple_cpu_freqs[maple_pmode_cur].frequency;
+return maple_cpu_freqs[maple_pmode_cur].frequency;
 }
 
 static int maple_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
-	return cpufreq_generic_init(policy, maple_cpu_freqs, 12000);
+return cpufreq_generic_init(policy, maple_cpu_freqs, 12000);
 }
 
 static struct cpufreq_driver maple_cpufreq_driver = {
 	.name		= "maple",
-	.flags		= CPUFREQ_CONST_LOOPS,
-	.init		= maple_cpufreq_cpu_init,
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= maple_cpufreq_target,
-	.get		= maple_cpufreq_get_speed,
-	.attr		= cpufreq_generic_attr,
+.flags		= CPUFREQ_CONST_LOOPS,
+.init		= maple_cpufreq_cpu_init,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= maple_cpufreq_target,
+.get		= maple_cpufreq_get_speed,
+.attr		= cpufreq_generic_attr,
 };
 
 static int __init maple_cpufreq_init(void)
 {
 	struct device_node *cpunode;
 	unsigned int psize;
-	unsigned long max_freq;
+unsigned long max_freq;
 	const u32 *valp;
 	u32 pvr_hi;
 	int rc = -ENODEV;
 
 	/*
-	 * Behave here like powermac driver which checks machine compatibility
+* Behave here like powermac driver which checks machine compatibility
 	 * to ease merging of two drivers in future.
 	 */
 	if (!of_machine_is_compatible("Momentum,Maple") &&
@@ -188,48 +188,48 @@ static int __init maple_cpufreq_init(void)
 		goto bail_noprops;
 	}
 
-	/* Look for the powertune data in the device-tree */
+/* Look for the powertune data in the device-tree */
 	/*
 	 * On Maple this property is provided by PIBS in dual-processor config,
 	 * not provided by PIBS in CPU0 config and also not provided by SLOF,
 	 * so YMMV
 	 */
-	maple_pmode_data = of_get_property(cpunode, "power-mode-data", &psize);
+maple_pmode_data = of_get_property(cpunode, "power-mode-data", &psize);
 	if (!maple_pmode_data) {
-		DBG("No power-mode-data !\n");
+DBG("No power-mode-data !\n");
 		goto bail_noprops;
 	}
 	maple_pmode_max = psize / sizeof(u32) - 1;
 
 	/*
-	 * From what I see, clock-frequency is always the maximal frequency.
+* From what I see, clock-frequency is always the maximal frequency.
 	 * The current driver can not slew sysclk yet, so we really only deal
-	 * with powertune steps for now. We also only implement full freq and
-	 * half freq in this version. So far, I haven't yet seen a machine
+* with powertune steps for now. We also only implement full freq and
+* half freq in this version. So far, I haven't yet seen a machine
 	 * supporting anything else.
 	 */
-	valp = of_get_property(cpunode, "clock-frequency", NULL);
+valp = of_get_property(cpunode, "clock-frequency", NULL);
 	if (!valp)
 		return -ENODEV;
-	max_freq = (*valp)/1000;
-	maple_cpu_freqs[0].frequency = max_freq;
-	maple_cpu_freqs[1].frequency = max_freq/2;
+max_freq = (*valp)/1000;
+maple_cpu_freqs[0].frequency = max_freq;
+maple_cpu_freqs[1].frequency = max_freq/2;
 
-	/* Force apply current frequency to make sure everything is in
-	 * sync (voltage is right for example). Firmware may leave us with
+/* Force apply current frequency to make sure everything is in
+* sync (voltage is right for example). Firmware may leave us with
 	 * a strange setting ...
 	 */
 	msleep(10);
 	maple_pmode_cur = -1;
-	maple_scom_switch_freq(maple_scom_query_freq());
+maple_scom_switch_freq(maple_scom_query_freq());
 
-	pr_info("Registering Maple CPU frequency driver\n");
+pr_info("Registering Maple CPU frequency driver\n");
 	pr_info("Low: %d Mhz, High: %d Mhz, Cur: %d MHz\n",
-		maple_cpu_freqs[1].frequency/1000,
-		maple_cpu_freqs[0].frequency/1000,
-		maple_cpu_freqs[maple_pmode_cur].frequency/1000);
+maple_cpu_freqs[1].frequency/1000,
+maple_cpu_freqs[0].frequency/1000,
+maple_cpu_freqs[maple_pmode_cur].frequency/1000);
 
-	rc = cpufreq_register_driver(&maple_cpufreq_driver);
+rc = cpufreq_register_driver(&maple_cpufreq_driver);
 
 	of_node_put(cpunode);
 

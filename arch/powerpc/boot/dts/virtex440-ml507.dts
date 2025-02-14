@@ -39,8 +39,8 @@
 		#cpus = <1>;
 		#size-cells = <0>;
 		ppc440_0: cpu@0 {
-			clock-frequency = <400000000>;
-			compatible = "PowerPC,440", "ibm,ppc440";
+clock-frequency = <400000000>;
+compatible = "PowerPC,440", "ibm,ppc440";
 			d-cache-line-size = <0x20>;
 			d-cache-size = <0x8000>;
 			dcr-access-method = "native";
@@ -48,9 +48,9 @@
 			device_type = "cpu";
 			i-cache-line-size = <0x20>;
 			i-cache-size = <0x8000>;
-			model = "PowerPC,440";
+model = "PowerPC,440";
 			reg = <0>;
-			timebase-frequency = <400000000>;
+timebase-frequency = <400000000>;
 			xlnx,apu-control = <1>;
 			xlnx,apu-udi-0 = <0>;
 			xlnx,apu-udi-1 = <0>;
@@ -275,7 +275,7 @@
 				xlnx,txcsum = <1>;
 				xlnx,txfifo = <0x1000>;
                                 phy-handle = <&phy7>;
-                                clock-frequency = <100000000>;
+clock-frequency = <100000000>;
                                 phy7: phy@7 {
                                           compatible = "marvell,88e1111";
                                           reg = <7>;
@@ -287,10 +287,10 @@
 			interrupt-parent = <&xps_intc_0>;
 			interrupts = < 6 2 >;
 			reg = < 0x81600000 0x10000 >;
-			xlnx,clk-freq = <0x5f5e100>;
+xlnx,clk-freq = <0x5f5e100>;
 			xlnx,family = "virtex5";
 			xlnx,gpo-width = <0x1>;
-			xlnx,iic-freq = <0x186a0>;
+xlnx,iic-freq = <0x186a0>;
 			xlnx,scl-inertial-delay = <0x0>;
 			xlnx,sda-inertial-delay = <0x0>;
 			xlnx,ten-bit-adr = <0x0>;
@@ -346,7 +346,7 @@
 			xlnx,tri-default-2 = <0xffffffff>;
 		} ;
 		RS232_Uart_1: serial@83e00000 {
-			clock-frequency = <100000000>;
+clock-frequency = <100000000>;
 			compatible = "xlnx,xps-uart16550-2.00.b", "ns16550";
 			current-speed = <9600>;
 			device_type = "serial";

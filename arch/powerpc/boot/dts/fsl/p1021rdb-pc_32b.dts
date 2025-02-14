@@ -87,8 +87,8 @@
 	qe: qe@ffe80000 {
                 ranges = <0x0 0x0 0xffe80000 0x40000>;
                 reg = <0 0xffe80000 0 0x480>;
-                brg-frequency = <0>;
-                bus-frequency = <0>;
+brg-frequency = <0>;
+bus-frequency = <0>;
         };
 };
 

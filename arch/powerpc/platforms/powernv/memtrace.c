@@ -288,7 +288,7 @@ DEFINE_SIMPLE_ATTRIBUTE(memtrace_init_fops, memtrace_enable_get,
 static int memtrace_init(void)
 {
 	memtrace_debugfs_dir = debugfs_create_dir("memtrace",
-						  powerpc_debugfs_root);
+powerpc_debugfs_root);
 	if (!memtrace_debugfs_dir)
 		return -1;
 

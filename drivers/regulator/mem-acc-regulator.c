@@ -309,7 +309,7 @@ static int mem_acc_regulator_set_voltage(struct regulator_dev *rdev,
 
 	mutex_unlock(&mem_acc_memory_mutex);
 
-	pr_debug("new voltage corner set %d\n", corner);
+pr_debug("new voltage corner set %d\n", corner);
 
 	mem_acc_vreg->corner = corner;
 
@@ -324,8 +324,8 @@ static int mem_acc_regulator_get_voltage(struct regulator_dev *rdev)
 }
 
 static struct regulator_ops mem_acc_corner_ops = {
-	.set_voltage		= mem_acc_regulator_set_voltage,
-	.get_voltage		= mem_acc_regulator_get_voltage,
+.set_voltage		= mem_acc_regulator_set_voltage,
+.get_voltage		= mem_acc_regulator_get_voltage,
 };
 
 static int __mem_acc_sel_init(struct mem_acc_regulator *mem_acc_vreg,
@@ -1456,7 +1456,7 @@ static int mem_acc_regulator_probe(struct platform_device *pdev)
 	}
 
 	init_data->constraints.input_uV = init_data->constraints.max_uV;
-	init_data->constraints.valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
+init_data->constraints.valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
 
 	mem_acc_vreg = devm_kzalloc(&pdev->dev, sizeof(*mem_acc_vreg),
 			GFP_KERNEL);
@@ -1474,7 +1474,7 @@ static int mem_acc_regulator_probe(struct platform_device *pdev)
 
 	rdesc			= &mem_acc_vreg->rdesc;
 	rdesc->owner		= THIS_MODULE;
-	rdesc->type		= REGULATOR_VOLTAGE;
+rdesc->type		= REGULATOR_VOLTAGE;
 	rdesc->ops		= &mem_acc_corner_ops;
 	rdesc->name		= init_data->constraints.name;
 

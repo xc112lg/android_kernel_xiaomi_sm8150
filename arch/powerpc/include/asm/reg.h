@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
- * Contains the definition of registers common to all PowerPC variants.
- * If a register definition has been changed in a different PowerPC
+* Contains the definition of registers common to all PowerPC variants.
+* If a register definition has been changed in a different PowerPC
  * variant, we will case it in #ifndef XXX ... #endif, and have the
  * number used in the Programming Environments Manual For 32-Bit
- * Implementations of the PowerPC Architecture (a.k.a. Green Book) here.
+* Implementations of the PowerPC Architecture (a.k.a. Green Book) here.
  */
 
 #ifndef _ASM_POWERPC_REG_H
@@ -1008,7 +1008,7 @@
  *        HV mode in which case it is HSPRG0
  *
  * 64-bit server:
- *	- SPRG0 scratch for TM recheckpoint/reclaim (reserved for HV on Power4)
+*	- SPRG0 scratch for TM recheckpoint/reclaim (reserved for HV on Power4)
  *	- SPRG2 scratch for exception vectors
  *	- SPRG3 CPU and NUMA node for VDSO getcpu (user visible)
  *      - HSPRG0 stores PACA in HV mode
@@ -1197,8 +1197,8 @@
 #define pvr_version_is(pvr)	(PVR_VER(mfspr(SPRN_PVR)) == (pvr))
 
 /*
- * IBM has further subdivided the standard PowerPC 16-bit version and
- * revision subfields of the PVR for the PowerPC 403s into the following:
+* IBM has further subdivided the standard PowerPC 16-bit version and
+* revision subfields of the PVR for the PowerPC 403s into the following:
  */
 
 #define PVR_FAM(pvr)	(((pvr) >> 20) & 0xFFF)	/* Family field */
@@ -1247,7 +1247,7 @@
 
 /*
  * For the 8xx processors, all of them report the same PVR family for
- * the PowerPC core. The various versions of these processors must be
+* the PowerPC core. The various versions of these processors must be
  * differentiated by the version number in the Communication Processor
  * Module (CPM).
  */
@@ -1404,7 +1404,7 @@ extern void ppc_save_regs(struct pt_regs *regs);
 static inline void update_power8_hid0(unsigned long hid0)
 {
 	/*
-	 *  The HID0 update on Power8 should at the very least be
+*  The HID0 update on Power8 should at the very least be
 	 *  preceded by a a SYNC instruction followed by an ISYNC
 	 *  instruction
 	 */

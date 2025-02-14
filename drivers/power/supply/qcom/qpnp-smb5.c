@@ -42,8 +42,8 @@ static struct smb_params smb5_pmi632_params = {
 		.step_u = 50000,
 	},
 	.fv			= {
-		.name   = "float voltage",
-		.reg    = CHGR_FLOAT_VOLTAGE_CFG_REG,
+.name   = "float voltage",
+.reg    = CHGR_FLOAT_VOLTAGE_CFG_REG,
 		.min_u  = 3600000,
 		.max_u  = 4800000,
 		.step_u = 10000,
@@ -99,13 +99,13 @@ static struct smb_params smb5_pmi632_params = {
 		.max_u	= 1575000,
 		.step_u	= 25000,
 	},
-	.freq_switcher		= {
-		.name	= "switching frequency",
+.freq_switcher		= {
+.name	= "switching frequency",
 		.reg	= DCDC_FSW_SEL_REG,
 		.min_u	= 600,
 		.max_u	= 1200,
 		.step_u	= 400,
-		.set_proc = smblib_set_chg_freq,
+.set_proc = smblib_set_chg_freq,
 	},
 	.aicl_5v_threshold		= {
 		.name   = "AICL 5V threshold",
@@ -134,8 +134,8 @@ static struct smb_params smb5_pm8150b_params = {
 		.step_u = 50000,
 	},
 	.fv			= {
-		.name   = "float voltage",
-		.reg    = CHGR_FLOAT_VOLTAGE_CFG_REG,
+.name   = "float voltage",
+.reg    = CHGR_FLOAT_VOLTAGE_CFG_REG,
 		.min_u  = 3600000,
 		.max_u  = 4790000,
 		.step_u = 10000,
@@ -200,13 +200,13 @@ static struct smb_params smb5_pm8150b_params = {
 		.step_u	= 25000,
 		.set_proc = NULL,
 	},
-	.freq_switcher		= {
-		.name	= "switching frequency",
+.freq_switcher		= {
+.name	= "switching frequency",
 		.reg	= DCDC_FSW_SEL_REG,
 		.min_u	= 600,
 		.max_u	= 1200,
 		.step_u	= 400,
-		.set_proc = smblib_set_chg_freq,
+.set_proc = smblib_set_chg_freq,
 	},
 	.aicl_5v_threshold		= {
 		.name   = "AICL 5V threshold",
@@ -317,22 +317,22 @@ EXPORT_SYMBOL(pen_charge_state_notifier_call_chain);
 
 #if defined(CONFIG_MACH_XIAOMI_SM8150) && !(defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU))
 static int smb5_get_prop_input_voltage_regulation(struct smb_charger *chg,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 /*
         if (!chg->idtp_psy) {
-                chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
                 if (!chg->idtp_psy)
                         return -EINVAL;
         }
 */
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy)
 		chg->wls_chip_psy = chg->idtp_psy;
 	else {
-		chg->wip_psy = power_supply_get_by_name("rx1618");
+chg->wip_psy = power_supply_get_by_name("rx1618");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -340,8 +340,8 @@ static int smb5_get_prop_input_voltage_regulation(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
 
 	val->intval = 1000*val->intval;//IDT in mV
 
@@ -420,13 +420,13 @@ static int smb5_chg_config_init(struct smb5 *chip)
 		goto out;
 	}
 
-	chg->chg_freq.freq_5V			= 600;
-	chg->chg_freq.freq_6V_8V		= 800;
-	chg->chg_freq.freq_9V			= 1050;
-	chg->chg_freq.freq_12V                  = 1200;
-	chg->chg_freq.freq_removal		= 1050;
-	chg->chg_freq.freq_below_otg_threshold	= 800;
-	chg->chg_freq.freq_above_otg_threshold	= 800;
+chg->chg_freq.freq_5V			= 600;
+chg->chg_freq.freq_6V_8V		= 800;
+chg->chg_freq.freq_9V			= 1050;
+chg->chg_freq.freq_12V                  = 1200;
+chg->chg_freq.freq_removal		= 1050;
+chg->chg_freq.freq_below_otg_threshold	= 800;
+chg->chg_freq.freq_above_otg_threshold	= 800;
 
 	if (of_property_read_bool(node, "qcom,disable-sw-thermal-regulation"))
 		chg->wa_flags &= ~SW_THERM_REGULATION_WA;
@@ -583,12 +583,12 @@ static int smb5_parse_dt(struct smb5 *chip)
 	of_property_read_u32(node, "qcom,sec-charger-config",
 					&chip->dt.sec_charger_config);
 	chg->sec_cp_present =
-		chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP ||
-		chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP_PL;
+chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP ||
+chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP_PL;
 
 	chg->sec_pl_present =
-		chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_PL ||
-		chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP_PL;
+chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_PL ||
+chip->dt.sec_charger_config == POWER_SUPPLY_CHARGER_SEC_CP_PL;
 
 	chg->step_chg_enabled = of_property_read_bool(node,
 				"qcom,step-charging-enable");
@@ -1120,17 +1120,17 @@ static int smb5_parse_dt(struct smb5 *chip)
 
 	/* Extract ADC channels */
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	rc = smblib_get_iio_channel(chg, "usb_in_voltage",
+rc = smblib_get_iio_channel(chg, "usb_in_voltage",
 					&chg->iio.usbin_v_chan);
 	if (rc < 0)
 		return rc;
 #endif
 
-	rc = smblib_get_iio_channel(chg, "mid_voltage", &chg->iio.mid_chan);
+rc = smblib_get_iio_channel(chg, "mid_voltage", &chg->iio.mid_chan);
 	if (rc < 0)
 		return rc;
 
-	rc = smblib_get_iio_channel(chg, "usb_in_voltage",
+rc = smblib_get_iio_channel(chg, "usb_in_voltage",
 					&chg->iio.usbin_v_chan);
 	if (rc < 0)
 		return rc;
@@ -1148,7 +1148,7 @@ static int smb5_parse_dt(struct smb5 *chip)
 	if (rc < 0)
 		return rc;
 
-	rc = smblib_get_iio_channel(chg, "vph_voltage", &chg->iio.vph_v_chan);
+rc = smblib_get_iio_channel(chg, "vph_voltage", &chg->iio.vph_v_chan);
 	if (rc < 0)
 		return rc;
 
@@ -1324,7 +1324,7 @@ static int smb5_parse_dt(struct smb5 *chip)
 }
 
 static int smb5_set_prop_comp_clamp_level(struct smb_charger *chg,
-			     const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc = 0, i;
 	struct clamp_config clamp_config;
@@ -1352,25 +1352,25 @@ static int smb5_set_prop_comp_clamp_level(struct smb_charger *chg,
 
 #ifdef CONFIG_MACH_XIAOMI_NABU
 int smblib_set_prop_tx_mac(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc = 0;
 	chg->tx_bt_mac = val->int64val;
 	if (!chg->wls_psy) {
-		chg->wls_psy = power_supply_get_by_name("wireless");
+chg->wls_psy = power_supply_get_by_name("wireless");
 		if (!chg->wls_psy)
 			return -ENODEV;
 	}
-	power_supply_changed(chg->wls_psy);
+power_supply_changed(chg->wls_psy);
 	return rc;
 }
 
 int smblib_set_prop_rx_cr(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc = 0;
 	if (!chg->wls_psy) {
-		chg->wls_psy = power_supply_get_by_name("wireless");
+chg->wls_psy = power_supply_get_by_name("wireless");
 		if (!chg->wls_psy) {
 			return -ENODEV;
 		}
@@ -1380,16 +1380,16 @@ int smblib_set_prop_rx_cr(struct smb_charger *chg,
 	chg->oob_rpp_msg_cnt %= 9;
 	chg->oob_rpp_msg_cnt++;
 	chg->rpp = (val->int64val | chg->oob_rpp_msg_cnt << 48);
-	power_supply_changed(chg->wls_psy);
+power_supply_changed(chg->wls_psy);
 	return rc;
 }
 
 int smblib_set_prop_rx_cep(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc = 0;
 	if (!chg->wls_psy) {
-		chg->wls_psy = power_supply_get_by_name("wireless");
+chg->wls_psy = power_supply_get_by_name("wireless");
 		if (!chg->wls_psy) {
 			return -ENODEV;
 		}
@@ -1399,7 +1399,7 @@ int smblib_set_prop_rx_cep(struct smb_charger *chg,
 	chg->oob_cep_msg_cnt %= 9;
 	chg->oob_cep_msg_cnt++;
 	chg->cep = (val->int64val | chg->oob_cep_msg_cnt << 48);
-	power_supply_changed(chg->wls_psy);
+power_supply_changed(chg->wls_psy);
 	return rc;
 }
 #define BLE_CONNECT	1
@@ -1409,7 +1409,7 @@ int smblib_set_prop_rx_cep(struct smb_charger *chg,
 extern int idtp_op_ble_flag(int en);
 extern int rx_op_ble_flag(int en);
 int smblib_set_prop_bt_state(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int bt_state = -2;
 
@@ -1446,78 +1446,78 @@ int smblib_set_prop_bt_state(struct smb_charger *chg,
  * USB PSY REGISTRATION *
  ************************/
 static enum power_supply_property smb5_usb_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_PD_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_TYPE,
-	POWER_SUPPLY_PROP_TYPEC_MODE,
-	POWER_SUPPLY_PROP_TYPEC_POWER_ROLE,
-	POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION,
-	POWER_SUPPLY_PROP_LOW_POWER,
-	POWER_SUPPLY_PROP_PD_ACTIVE,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_PD_CURRENT_MAX,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_TYPE,
+POWER_SUPPLY_PROP_TYPEC_MODE,
+POWER_SUPPLY_PROP_TYPEC_POWER_ROLE,
+POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION,
+POWER_SUPPLY_PROP_LOW_POWER,
+POWER_SUPPLY_PROP_PD_ACTIVE,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	POWER_SUPPLY_PROP_PD_AUTHENTICATION,
+POWER_SUPPLY_PROP_PD_AUTHENTICATION,
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	POWER_SUPPLY_PROP_FASTCHARGE_MODE,
-	POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION,
+POWER_SUPPLY_PROP_FASTCHARGE_MODE,
+POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION,
 #endif
 #endif
-	POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_NOW,
-	POWER_SUPPLY_PROP_BOOST_CURRENT,
-	POWER_SUPPLY_PROP_PE_START,
-	POWER_SUPPLY_PROP_CTM_CURRENT_MAX,
-	POWER_SUPPLY_PROP_HW_CURRENT_MAX,
-	POWER_SUPPLY_PROP_REAL_TYPE,
+POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED,
+POWER_SUPPLY_PROP_INPUT_CURRENT_NOW,
+POWER_SUPPLY_PROP_BOOST_CURRENT,
+POWER_SUPPLY_PROP_PE_START,
+POWER_SUPPLY_PROP_CTM_CURRENT_MAX,
+POWER_SUPPLY_PROP_HW_CURRENT_MAX,
+POWER_SUPPLY_PROP_REAL_TYPE,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	POWER_SUPPLY_PROP_HVDCP3_TYPE,
-	POWER_SUPPLY_PROP_QUICK_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_PR_SWAP,
+POWER_SUPPLY_PROP_HVDCP3_TYPE,
+POWER_SUPPLY_PROP_QUICK_CHARGE_TYPE,
+POWER_SUPPLY_PROP_PR_SWAP,
 #endif
-	POWER_SUPPLY_PROP_PD_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_PD_VOLTAGE_MIN,
-	POWER_SUPPLY_PROP_CONNECTOR_TYPE,
-	POWER_SUPPLY_PROP_CONNECTOR_HEALTH,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT,
-	POWER_SUPPLY_PROP_SMB_EN_MODE,
-	POWER_SUPPLY_PROP_SMB_EN_REASON,
+POWER_SUPPLY_PROP_PD_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_PD_VOLTAGE_MIN,
+POWER_SUPPLY_PROP_CONNECTOR_TYPE,
+POWER_SUPPLY_PROP_CONNECTOR_HEALTH,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT,
+POWER_SUPPLY_PROP_SMB_EN_MODE,
+POWER_SUPPLY_PROP_SMB_EN_REASON,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	POWER_SUPPLY_PROP_TYPE_RECHECK,
+POWER_SUPPLY_PROP_TYPE_RECHECK,
 #endif
-	POWER_SUPPLY_PROP_ADAPTER_CC_MODE,
-	POWER_SUPPLY_PROP_SCOPE,
-	POWER_SUPPLY_PROP_MOISTURE_DETECTED,
-	POWER_SUPPLY_PROP_HVDCP_OPTI_ALLOWED,
-	POWER_SUPPLY_PROP_QC_OPTI_DISABLE,
-	POWER_SUPPLY_PROP_VOLTAGE_VPH,
-	POWER_SUPPLY_PROP_THERM_ICL_LIMIT,
-	POWER_SUPPLY_PROP_SKIN_HEALTH,
-	POWER_SUPPLY_PROP_APSD_RERUN,
-	POWER_SUPPLY_PROP_APSD_TIMEOUT,
+POWER_SUPPLY_PROP_ADAPTER_CC_MODE,
+POWER_SUPPLY_PROP_SCOPE,
+POWER_SUPPLY_PROP_MOISTURE_DETECTED,
+POWER_SUPPLY_PROP_HVDCP_OPTI_ALLOWED,
+POWER_SUPPLY_PROP_QC_OPTI_DISABLE,
+POWER_SUPPLY_PROP_VOLTAGE_VPH,
+POWER_SUPPLY_PROP_THERM_ICL_LIMIT,
+POWER_SUPPLY_PROP_SKIN_HEALTH,
+POWER_SUPPLY_PROP_APSD_RERUN,
+POWER_SUPPLY_PROP_APSD_TIMEOUT,
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	POWER_SUPPLY_PROP_APDO_MAX,
+POWER_SUPPLY_PROP_APDO_MAX,
 #endif
 };
 
 static int smb5_usb_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
-	union power_supply_propval pval;
+union power_supply_propval pval;
 	int rc = 0;
 	val->intval = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = smblib_get_prop_usb_present(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 		if (chg->report_usb_absent) {
 			val->intval = 0;
@@ -1529,14 +1529,14 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 		if (!val->intval)
 			break;
 
-		if (((chg->typec_mode == POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) ||
-		   (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB))
-			&& (chg->real_charger_type == POWER_SUPPLY_TYPE_USB))
+if (((chg->typec_mode == POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) ||
+(chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB))
+&& (chg->real_charger_type == POWER_SUPPLY_TYPE_USB))
 			val->intval = 0;
 		else
 			val->intval = 1;
 
-		if (chg->real_charger_type == POWER_SUPPLY_TYPE_UNKNOWN) {
+if (chg->real_charger_type == POWER_SUPPLY_TYPE_UNKNOWN) {
 			if (chg->dcin_uusb_over_gpio_en &&
 				gpio_is_valid(chg->dc_9v_gpio) &&
 				gpio_get_value(chg->dc_9v_gpio))
@@ -1545,44 +1545,44 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 				val->intval = 0;
 		}
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		rc = smblib_get_prop_usb_voltage_max_design(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+rc = smblib_get_prop_usb_voltage_max_design(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
-		rc = smblib_get_prop_usb_voltage_max(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+rc = smblib_get_prop_usb_voltage_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT:
 		if (chg->usbin_forced_max_uv)
 			val->intval = chg->usbin_forced_max_uv;
 		else
-			smblib_get_prop_usb_voltage_max_design(chg, val);
+smblib_get_prop_usb_voltage_max_design(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		rc = smblib_get_prop_usb_voltage_now(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+rc = smblib_get_prop_usb_voltage_now(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_CURRENT_MAX:
+case POWER_SUPPLY_PROP_PD_CURRENT_MAX:
 		val->intval = get_client_vote(chg->usb_icl_votable, PD_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smblib_get_prop_input_current_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TYPE:
-		val->intval = POWER_SUPPLY_TYPE_USB_PD;
+case POWER_SUPPLY_PROP_TYPE:
+val->intval = POWER_SUPPLY_TYPE_USB_PD;
 		break;
-	case POWER_SUPPLY_PROP_REAL_TYPE:
+case POWER_SUPPLY_PROP_REAL_TYPE:
 		val->intval = chg->real_charger_type;
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_HVDCP3_TYPE:
+case POWER_SUPPLY_PROP_HVDCP3_TYPE:
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-		if (chg->real_charger_type != POWER_SUPPLY_TYPE_USB_HVDCP_3
-				&& chg->real_charger_type != POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+if (chg->real_charger_type != POWER_SUPPLY_TYPE_USB_HVDCP_3
+&& chg->real_charger_type != POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
 			val->intval = HVDCP3_NONE; /* 0: none hvdcp3 insert */
 		} else {
-			if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
-				if (chg->qc3p5_power_limit_w == 18)
+if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5) {
+if (chg->qc3p5_power_limit_w == 18)
 					val->intval = HVDCP3P5_CLASSA_18W;
-				else if (chg->qc3p5_power_limit_w == 27)
+else if (chg->qc3p5_power_limit_w == 27)
 					val->intval = HVDCP3P5_CLASSB_27W;
 				else
 					val->intval = HVDCP3_NONE;
@@ -1595,7 +1595,7 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 					else
 						val->intval = HVDCP3_NONE;
 				} else {/* for F10 */
-					if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3)
+if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3)
 						val->intval = HVDCP3_CLASSA_18W; /* 18W hvdcp3 insert  */
 					else
 						val->intval = HVDCP3_NONE;
@@ -1603,7 +1603,7 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 			}
 		}
 #else
-		if (chg->real_charger_type != POWER_SUPPLY_TYPE_USB_HVDCP_3)
+if (chg->real_charger_type != POWER_SUPPLY_TYPE_USB_HVDCP_3)
 			val->intval = HVDCP3_NONE; /* 0: none hvdcp3 insert */
 		else {
 			if (chg->is_qc_class_a)
@@ -1617,155 +1617,155 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 		break;
 #endif
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_QUICK_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_QUICK_CHARGE_TYPE:
 		val->intval = smblib_get_quick_charge_type(chg);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_TYPEC_MODE:
-		if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
-			val->intval = POWER_SUPPLY_TYPEC_NONE;
+case POWER_SUPPLY_PROP_TYPEC_MODE:
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
+val->intval = POWER_SUPPLY_TYPEC_NONE;
 		else
 			val->intval = chg->typec_mode;
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
-		if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
-			val->intval = POWER_SUPPLY_TYPEC_PR_NONE;
+case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
+val->intval = POWER_SUPPLY_TYPEC_PR_NONE;
 		else
-			rc = smblib_get_prop_typec_power_role(chg, val);
+rc = smblib_get_prop_typec_power_role(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION:
-		if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
+case POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION:
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
 			val->intval = 0;
 		else
 			rc = smblib_get_prop_typec_cc_orientation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_SRC_RP:
+case POWER_SUPPLY_PROP_TYPEC_SRC_RP:
 		rc = smblib_get_prop_typec_select_rp(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_LOW_POWER:
+case POWER_SUPPLY_PROP_LOW_POWER:
 		if (chg->sink_src_mode == SRC_MODE)
-			rc = smblib_get_prop_low_power(chg, val);
+rc = smblib_get_prop_low_power(chg, val);
 		else
 			rc = -ENODATA;
 		break;
-	case POWER_SUPPLY_PROP_PD_ACTIVE:
+case POWER_SUPPLY_PROP_PD_ACTIVE:
 		val->intval = chg->pd_active;
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_PD_AUTHENTICATION:
+case POWER_SUPPLY_PROP_PD_AUTHENTICATION:
 		val->intval = chg->pd_verifed;
 		break;
 #endif
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
+case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
 		val->intval = smblib_get_fastcharge_mode(chg);
 		break;
-	case POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION:
+case POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION:
 		val->intval = chg->remove_comp;
 		break;
 #endif
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED:
 		rc = smblib_get_prop_input_current_settled(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_NOW:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_NOW:
 		rc = smblib_get_prop_usb_current_now(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_BOOST_CURRENT:
+case POWER_SUPPLY_PROP_BOOST_CURRENT:
 		val->intval = chg->boost_current_ua;
 		break;
-	case POWER_SUPPLY_PROP_PD_IN_HARD_RESET:
+case POWER_SUPPLY_PROP_PD_IN_HARD_RESET:
 		rc = smblib_get_prop_pd_in_hard_reset(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_USB_SUSPEND_SUPPORTED:
+case POWER_SUPPLY_PROP_PD_USB_SUSPEND_SUPPORTED:
 		val->intval = chg->system_suspend_supported;
 		break;
-	case POWER_SUPPLY_PROP_PE_START:
+case POWER_SUPPLY_PROP_PE_START:
 		rc = smblib_get_pe_start(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
 		val->intval = get_client_vote(chg->usb_icl_votable, CTM_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_HW_CURRENT_MAX:
+case POWER_SUPPLY_PROP_HW_CURRENT_MAX:
 		rc = smblib_get_charge_current(chg, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_PR_SWAP:
+case POWER_SUPPLY_PROP_PR_SWAP:
 		rc = smblib_get_prop_pr_swap_in_progress(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_VOLTAGE_MAX:
-		val->intval = chg->voltage_max_uv;
+case POWER_SUPPLY_PROP_PD_VOLTAGE_MAX:
+val->intval = chg->voltage_max_uv;
 		break;
-	case POWER_SUPPLY_PROP_PD_VOLTAGE_MIN:
-		val->intval = chg->voltage_min_uv;
+case POWER_SUPPLY_PROP_PD_VOLTAGE_MIN:
+val->intval = chg->voltage_min_uv;
 		break;
-	case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
 		val->intval = get_client_vote(chg->usb_icl_votable,
 					      USB_PSY_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_CONNECTOR_TYPE:
+case POWER_SUPPLY_PROP_CONNECTOR_TYPE:
 		val->intval = chg->connector_type;
 		break;
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
 		if (chg->connector_health == -EINVAL)
 			val->intval = smblib_get_prop_connector_health(chg);
 		else
 			val->intval = chg->connector_health;
 		break;
-	case POWER_SUPPLY_PROP_SCOPE:
-		val->intval = POWER_SUPPLY_SCOPE_UNKNOWN;
+case POWER_SUPPLY_PROP_SCOPE:
+val->intval = POWER_SUPPLY_SCOPE_UNKNOWN;
 		rc = smblib_get_prop_usb_present(chg, &pval);
 		if (rc < 0)
 			break;
-		val->intval = pval.intval ? POWER_SUPPLY_SCOPE_DEVICE
-				: chg->otg_present ? POWER_SUPPLY_SCOPE_SYSTEM
-				: POWER_SUPPLY_SCOPE_UNKNOWN;
+val->intval = pval.intval ? POWER_SUPPLY_SCOPE_DEVICE
+: chg->otg_present ? POWER_SUPPLY_SCOPE_SYSTEM
+: POWER_SUPPLY_SCOPE_UNKNOWN;
 		break;
-	case POWER_SUPPLY_PROP_SMB_EN_MODE:
+case POWER_SUPPLY_PROP_SMB_EN_MODE:
 		mutex_lock(&chg->smb_lock);
 		val->intval = chg->sec_chg_selected;
 		mutex_unlock(&chg->smb_lock);
 		break;
-	case POWER_SUPPLY_PROP_SMB_EN_REASON:
+case POWER_SUPPLY_PROP_SMB_EN_REASON:
 		val->intval = chg->cp_reason;
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_TYPE_RECHECK:
+case POWER_SUPPLY_PROP_TYPE_RECHECK:
 		rc = smblib_get_prop_type_recheck(chg, val);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_MOISTURE_DETECTED:
+case POWER_SUPPLY_PROP_MOISTURE_DETECTED:
 		val->intval = chg->moisture_present;
 		break;
-	case POWER_SUPPLY_PROP_HVDCP_OPTI_ALLOWED:
+case POWER_SUPPLY_PROP_HVDCP_OPTI_ALLOWED:
 		val->intval = !chg->flash_active;
 		break;
-	case POWER_SUPPLY_PROP_QC_OPTI_DISABLE:
+case POWER_SUPPLY_PROP_QC_OPTI_DISABLE:
 		if (chg->hw_die_temp_mitigation)
-			val->intval = POWER_SUPPLY_QC_THERMAL_BALANCE_DISABLE
-					| POWER_SUPPLY_QC_INOV_THERMAL_DISABLE;
+val->intval = POWER_SUPPLY_QC_THERMAL_BALANCE_DISABLE
+| POWER_SUPPLY_QC_INOV_THERMAL_DISABLE;
 		if (chg->hw_connector_mitigation)
-			val->intval |= POWER_SUPPLY_QC_CTM_DISABLE;
+val->intval |= POWER_SUPPLY_QC_CTM_DISABLE;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_VPH:
-		rc = smblib_get_prop_vph_voltage_now(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_VPH:
+rc = smblib_get_prop_vph_voltage_now(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_THERM_ICL_LIMIT:
+case POWER_SUPPLY_PROP_THERM_ICL_LIMIT:
 		val->intval = get_client_vote(chg->usb_icl_votable,
 					THERMAL_THROTTLE_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_ADAPTER_CC_MODE:
+case POWER_SUPPLY_PROP_ADAPTER_CC_MODE:
 		val->intval = chg->adapter_cc_mode;
 		break;
-	case POWER_SUPPLY_PROP_SKIN_HEALTH:
+case POWER_SUPPLY_PROP_SKIN_HEALTH:
 		val->intval = smblib_get_skin_temp_status(chg);
 		break;
-	case POWER_SUPPLY_PROP_APSD_RERUN:
+case POWER_SUPPLY_PROP_APSD_RERUN:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_APSD_TIMEOUT:
+case POWER_SUPPLY_PROP_APSD_TIMEOUT:
 		val->intval = chg->apsd_ext_timeout;
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_APDO_MAX:
+case POWER_SUPPLY_PROP_APDO_MAX:
 		val->intval = chg->apdo_max;
 		break;
 #endif
@@ -1785,28 +1785,28 @@ static int smb5_usb_get_prop(struct power_supply *psy,
 
 #define MIN_THERMAL_VOTE_UA	500000
 static int smb5_usb_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int icl, rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PD_CURRENT_MAX:
+case POWER_SUPPLY_PROP_PD_CURRENT_MAX:
 		rc = smblib_set_prop_pd_current_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
-		rc = smblib_set_prop_typec_power_role(chg, val);
+case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
+rc = smblib_set_prop_typec_power_role(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_SRC_RP:
+case POWER_SUPPLY_PROP_TYPEC_SRC_RP:
 		rc = smblib_set_prop_typec_select_rp(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_ACTIVE:
+case POWER_SUPPLY_PROP_PD_ACTIVE:
 		rc = smblib_set_prop_pd_active(chg, val);
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_PD_AUTHENTICATION:
+case POWER_SUPPLY_PROP_PD_AUTHENTICATION:
 		chg->pd_verifed = val->intval;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 		/*if set pd authentication auto set fastcharge mode*/
@@ -1818,48 +1818,48 @@ static int smb5_usb_set_prop(struct power_supply *psy,
 #endif
 #endif
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
-		power_supply_changed(chg->usb_psy);
+case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
+power_supply_changed(chg->usb_psy);
 		if (chg->support_ffc) {
 			rc = smblib_set_fastcharge_mode(chg, val->intval);
 		}
 		schedule_delayed_work(&chg->report_soc_decimal_work,
 				msecs_to_jiffies(REPORT_SOC_DECIMAL_MS));
 		break;
-	case POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION:
+case POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION:
 		chg->remove_comp = val->intval;
 		break;
 #endif
-	case POWER_SUPPLY_PROP_PD_IN_HARD_RESET:
+case POWER_SUPPLY_PROP_PD_IN_HARD_RESET:
 		rc = smblib_set_prop_pd_in_hard_reset(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_USB_SUSPEND_SUPPORTED:
+case POWER_SUPPLY_PROP_PD_USB_SUSPEND_SUPPORTED:
 		chg->system_suspend_supported = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_BOOST_CURRENT:
+case POWER_SUPPLY_PROP_BOOST_CURRENT:
 		rc = smblib_set_prop_boost_current(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
 		rc = vote(chg->usb_icl_votable, CTM_VOTER,
 						val->intval >= 0, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_PR_SWAP:
+case POWER_SUPPLY_PROP_PR_SWAP:
 		rc = smblib_set_prop_pr_swap_in_progress(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_VOLTAGE_MAX:
-		rc = smblib_set_prop_pd_voltage_max(chg, val);
+case POWER_SUPPLY_PROP_PD_VOLTAGE_MAX:
+rc = smblib_set_prop_pd_voltage_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PD_VOLTAGE_MIN:
-		rc = smblib_set_prop_pd_voltage_min(chg, val);
+case POWER_SUPPLY_PROP_PD_VOLTAGE_MIN:
+rc = smblib_set_prop_pd_voltage_min(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
 		rc = smblib_set_prop_sdp_current_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
 		chg->connector_health = val->intval;
-		power_supply_changed(chg->usb_psy);
+power_supply_changed(chg->usb_psy);
 		break;
-	case POWER_SUPPLY_PROP_THERM_ICL_LIMIT:
+case POWER_SUPPLY_PROP_THERM_ICL_LIMIT:
 		if (!is_client_vote_enabled(chg->usb_icl_votable,
 						THERMAL_THROTTLE_VOTER)) {
 			chg->init_thermal_ua = get_effective_result(
@@ -1878,22 +1878,22 @@ static int smb5_usb_set_prop(struct power_supply *psy,
 			rc = -EINVAL;
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_TYPE_RECHECK:
+case POWER_SUPPLY_PROP_TYPE_RECHECK:
 		rc = smblib_set_prop_type_recheck(chg, val);
 #endif
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT:
-		smblib_set_prop_usb_voltage_max_limit(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT:
+smblib_set_prop_usb_voltage_max_limit(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_ADAPTER_CC_MODE:
+case POWER_SUPPLY_PROP_ADAPTER_CC_MODE:
 		chg->adapter_cc_mode = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_APSD_RERUN:
+case POWER_SUPPLY_PROP_APSD_RERUN:
 		del_timer_sync(&chg->apsd_timer);
 		chg->apsd_ext_timeout = false;
 		smblib_rerun_apsd(chg);
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_APDO_MAX:
+case POWER_SUPPLY_PROP_APDO_MAX:
 		chg->apdo_max = val->intval;
 		break;
 #endif
@@ -1907,24 +1907,24 @@ static int smb5_usb_set_prop(struct power_supply *psy,
 }
 
 static int smb5_usb_prop_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
-	case POWER_SUPPLY_PROP_THERM_ICL_LIMIT:
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT:
-	case POWER_SUPPLY_PROP_ADAPTER_CC_MODE:
+case POWER_SUPPLY_PROP_CTM_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_THERM_ICL_LIMIT:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_LIMIT:
+case POWER_SUPPLY_PROP_ADAPTER_CC_MODE:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_PD_AUTHENTICATION:
+case POWER_SUPPLY_PROP_PD_AUTHENTICATION:
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
-	case POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION:
+case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
+case POWER_SUPPLY_PROP_PD_REMOVE_COMPENSATION:
 #endif
 #endif
-	case POWER_SUPPLY_PROP_APSD_RERUN:
+case POWER_SUPPLY_PROP_APSD_RERUN:
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_APDO_MAX:
+case POWER_SUPPLY_PROP_APDO_MAX:
 #endif
 		return 1;
 	default:
@@ -1936,7 +1936,7 @@ static int smb5_usb_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc usb_psy_desc = {
 	.name = "usb",
-	.type = POWER_SUPPLY_TYPE_USB_PD,
+.type = POWER_SUPPLY_TYPE_USB_PD,
 	.properties = smb5_usb_props,
 	.num_properties = ARRAY_SIZE(smb5_usb_props),
 	.get_property = smb5_usb_get_prop,
@@ -1946,7 +1946,7 @@ static const struct power_supply_desc usb_psy_desc = {
 
 static int smb5_init_usb_psy(struct smb5 *chip)
 {
-	struct power_supply_config usb_cfg = {};
+struct power_supply_config usb_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 #ifdef CONFIG_MACH_XIAOMI_SM8150
@@ -1954,7 +1954,7 @@ static int smb5_init_usb_psy(struct smb5 *chip)
 #endif
 	usb_cfg.drv_data = chip;
 	usb_cfg.of_node = chg->dev->of_node;
-	chg->usb_psy = devm_power_supply_register(chg->dev,
+chg->usb_psy = devm_power_supply_register(chg->dev,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 						  &chg->usb_psy_desc,
 #else
@@ -1962,7 +1962,7 @@ static int smb5_init_usb_psy(struct smb5 *chip)
 #endif
 						  &usb_cfg);
 	if (IS_ERR(chg->usb_psy)) {
-		pr_err("Couldn't register USB power supply\n");
+pr_err("Couldn't register USB power supply\n");
 		return PTR_ERR(chg->usb_psy);
 	}
 
@@ -1973,25 +1973,25 @@ static int smb5_init_usb_psy(struct smb5 *chip)
  * USB PC_PORT PSY REGISTRATION *
  ********************************/
 static enum power_supply_property smb5_usb_port_props[] = {
-	POWER_SUPPLY_PROP_TYPE,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_TYPE,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 };
 
 static int smb5_usb_port_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_TYPE:
-		val->intval = POWER_SUPPLY_TYPE_USB;
+case POWER_SUPPLY_PROP_TYPE:
+val->intval = POWER_SUPPLY_TYPE_USB;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 		if (chg->report_usb_absent) {
 			val->intval = 0;
@@ -2003,17 +2003,17 @@ static int smb5_usb_port_get_prop(struct power_supply *psy,
 		if (!val->intval)
 			break;
 
-		if (((chg->typec_mode == POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) ||
-		   (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB))
-			&& (chg->real_charger_type == POWER_SUPPLY_TYPE_USB))
+if (((chg->typec_mode == POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) ||
+(chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB))
+&& (chg->real_charger_type == POWER_SUPPLY_TYPE_USB))
 			val->intval = 1;
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		val->intval = 5000000;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smblib_get_prop_input_current_settled(chg, val);
 		break;
 	default:
@@ -2031,8 +2031,8 @@ static int smb5_usb_port_get_prop(struct power_supply *psy,
 }
 
 static int smb5_usb_port_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
 	int rc = 0;
 
@@ -2049,7 +2049,7 @@ static int smb5_usb_port_set_prop(struct power_supply *psy,
 
 static const struct power_supply_desc usb_port_psy_desc = {
 	.name		= "pc_port",
-	.type		= POWER_SUPPLY_TYPE_USB,
+.type		= POWER_SUPPLY_TYPE_USB,
 	.properties	= smb5_usb_port_props,
 	.num_properties	= ARRAY_SIZE(smb5_usb_port_props),
 	.get_property	= smb5_usb_port_get_prop,
@@ -2058,16 +2058,16 @@ static const struct power_supply_desc usb_port_psy_desc = {
 
 static int smb5_init_usb_port_psy(struct smb5 *chip)
 {
-	struct power_supply_config usb_port_cfg = {};
+struct power_supply_config usb_port_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	usb_port_cfg.drv_data = chip;
 	usb_port_cfg.of_node = chg->dev->of_node;
-	chg->usb_port_psy = devm_power_supply_register(chg->dev,
+chg->usb_port_psy = devm_power_supply_register(chg->dev,
 						  &usb_port_psy_desc,
 						  &usb_port_cfg);
 	if (IS_ERR(chg->usb_port_psy)) {
-		pr_err("Couldn't register USB pc_port power supply\n");
+pr_err("Couldn't register USB pc_port power supply\n");
 		return PTR_ERR(chg->usb_port_psy);
 	}
 
@@ -2079,84 +2079,84 @@ static int smb5_init_usb_port_psy(struct smb5 *chip)
  *****************************/
 
 static enum power_supply_property smb5_usb_main_props[] = {
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_TYPE,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_SETTLED,
-	POWER_SUPPLY_PROP_FCC_DELTA,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_FLASH_ACTIVE,
-	POWER_SUPPLY_PROP_FLASH_TRIGGER,
-	POWER_SUPPLY_PROP_TOGGLE_STAT,
-	POWER_SUPPLY_PROP_MAIN_FCC_MAX,
-	POWER_SUPPLY_PROP_IRQ_STATUS,
-	POWER_SUPPLY_PROP_FORCE_MAIN_FCC,
-	POWER_SUPPLY_PROP_FORCE_MAIN_ICL,
-	POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_HOT_TEMP,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_TYPE,
+POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_SETTLED,
+POWER_SUPPLY_PROP_FCC_DELTA,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_FLASH_ACTIVE,
+POWER_SUPPLY_PROP_FLASH_TRIGGER,
+POWER_SUPPLY_PROP_TOGGLE_STAT,
+POWER_SUPPLY_PROP_MAIN_FCC_MAX,
+POWER_SUPPLY_PROP_IRQ_STATUS,
+POWER_SUPPLY_PROP_FORCE_MAIN_FCC,
+POWER_SUPPLY_PROP_FORCE_MAIN_ICL,
+POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_HOT_TEMP,
 };
 
 static int smb5_usb_main_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		rc = smblib_get_charge_param(chg, &chg->param.fv, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		rc = smblib_get_charge_param(chg, &chg->param.fcc,
 							&val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TYPE:
-		val->intval = POWER_SUPPLY_TYPE_MAIN;
+case POWER_SUPPLY_PROP_TYPE:
+val->intval = POWER_SUPPLY_TYPE_MAIN;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED:
 		rc = smblib_get_prop_input_current_settled(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_SETTLED:
-		rc = smblib_get_prop_input_voltage_settled(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_SETTLED:
+rc = smblib_get_prop_input_voltage_settled(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_FCC_DELTA:
+case POWER_SUPPLY_PROP_FCC_DELTA:
 		rc = smblib_get_prop_fcc_delta(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smblib_get_icl_current(chg, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_FLASH_ACTIVE:
+case POWER_SUPPLY_PROP_FLASH_ACTIVE:
 		val->intval = chg->flash_active;
 		break;
-	case POWER_SUPPLY_PROP_FLASH_TRIGGER:
+case POWER_SUPPLY_PROP_FLASH_TRIGGER:
 		rc = schgm_flash_get_vreg_ok(chg, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TOGGLE_STAT:
+case POWER_SUPPLY_PROP_TOGGLE_STAT:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_MAIN_FCC_MAX:
+case POWER_SUPPLY_PROP_MAIN_FCC_MAX:
 		val->intval = chg->main_fcc_max;
 		break;
-	case POWER_SUPPLY_PROP_IRQ_STATUS:
+case POWER_SUPPLY_PROP_IRQ_STATUS:
 		rc = smblib_get_irq_status(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_FORCE_MAIN_FCC:
+case POWER_SUPPLY_PROP_FORCE_MAIN_FCC:
 		rc = smblib_get_charge_param(chg, &chg->param.fcc,
 							&val->intval);
 		break;
-	case POWER_SUPPLY_PROP_FORCE_MAIN_ICL:
+case POWER_SUPPLY_PROP_FORCE_MAIN_ICL:
 		rc = smblib_get_charge_param(chg, &chg->param.usb_icl,
 							&val->intval);
 		break;
-	case POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL:
+case POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL:
 		val->intval = chg->comp_clamp_level;
 		break;
 	/* Use this property to report SMB health */
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 		if (chg->use_bq_pump) {
 			rc = val->intval = -ENODATA;
@@ -2166,7 +2166,7 @@ static int smb5_usb_main_get_prop(struct power_supply *psy,
 		rc = val->intval = smblib_get_prop_smb_health(chg);
 		break;
 	/* Use this property to report overheat status */
-	case POWER_SUPPLY_PROP_HOT_TEMP:
+case POWER_SUPPLY_PROP_HOT_TEMP:
 		val->intval = chg->thermal_overheat;
 		break;
 	default:
@@ -2181,23 +2181,23 @@ static int smb5_usb_main_get_prop(struct power_supply *psy,
 }
 
 static int smb5_usb_main_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
-	union power_supply_propval pval = {0, };
-	enum power_supply_type real_chg_type = chg->real_charger_type;
+union power_supply_propval pval = {0, };
+enum power_supply_type real_chg_type = chg->real_charger_type;
 	int rc = 0, offset_ua = 0;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	int parallel_output_mode = 0;
 #endif
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		rc = smblib_set_charge_param(chg, &chg->param.fv, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		/* Adjust Main FCC for QC3.0 + SMB1390 */
 		rc = smblib_get_qc3_main_icl_offset(chg, &offset_ua);
 		if (rc < 0)
@@ -2205,7 +2205,7 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
 
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 		if (chg->six_pin_step_charge_enable) {
-                        rc = smblib_get_prop_from_bms(chg, POWER_SUPPLY_PROP_TEMP, &pval);
+rc = smblib_get_prop_from_bms(chg, POWER_SUPPLY_PROP_TEMP, &pval);
                         /* if temp out of soft jeita normal zone, do not add fast charge current offset */
                         if (pval.intval >= CP_WARM_THRESHOLD - SOFT_JEITA_HYSTERESIS || pval.intval <= CP_COOL_THRESHOLD + SOFT_JEITA_HYSTERESIS
                                         || chg->index_vfloat == MAX_STEP_ENTRIES - 1)
@@ -2215,13 +2215,13 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
                                 rc = smblib_set_charge_param(chg, &chg->param.fcc,val->intval + offset_ua);
                 } else {
                         if (chg->cp_psy) {
-                                rc = power_supply_get_property(chg->cp_psy,
-                                                POWER_SUPPLY_PROP_PARALLEL_OUTPUT_MODE, &pval);
+rc = power_supply_get_property(chg->cp_psy,
+POWER_SUPPLY_PROP_PARALLEL_OUTPUT_MODE, &pval);
                                 if (rc >= 0)
                                         parallel_output_mode = pval.intval;
                         }
                         /* only parallel output mode is output to vbat need add offset */
-                        if (parallel_output_mode == POWER_SUPPLY_PL_OUTPUT_VBAT)
+if (parallel_output_mode == POWER_SUPPLY_PL_OUTPUT_VBAT)
                                 rc = smblib_set_charge_param(chg, &chg->param.fcc, val->intval + offset_ua);
                         else
                                 rc = smblib_set_charge_param(chg, &chg->param.fcc, val->intval);
@@ -2231,10 +2231,10 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
 						val->intval + offset_ua);
 #endif
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smblib_set_icl_current(chg, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_FLASH_ACTIVE:
+case POWER_SUPPLY_PROP_FLASH_ACTIVE:
 		if ((chg->chg_param.smb_version == PMI632_SUBTYPE)
 				&& (chg->flash_active != val->intval)) {
 			chg->flash_active = val->intval;
@@ -2244,7 +2244,7 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
 				pr_err("Failed to get USB preset status rc=%d\n",
 						rc);
 			if (pval.intval) {
-				rc = smblib_force_vbus_voltage(chg,
+rc = smblib_force_vbus_voltage(chg,
 					chg->flash_active ? FORCE_5V_BIT
 								: IDLE_BIT);
 				if (rc < 0)
@@ -2262,17 +2262,17 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
 
 			/* Update userspace */
 			if (chg->batt_psy)
-				power_supply_changed(chg->batt_psy);
+power_supply_changed(chg->batt_psy);
 		}
 		break;
-	case POWER_SUPPLY_PROP_TOGGLE_STAT:
+case POWER_SUPPLY_PROP_TOGGLE_STAT:
 		rc = smblib_toggle_smb_en(chg, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_MAIN_FCC_MAX:
+case POWER_SUPPLY_PROP_MAIN_FCC_MAX:
 		chg->main_fcc_max = val->intval;
 		rerun_election(chg->fcc_votable);
 		break;
-	case POWER_SUPPLY_PROP_FORCE_MAIN_FCC:
+case POWER_SUPPLY_PROP_FORCE_MAIN_FCC:
 		vote_override(chg->fcc_main_votable, CC_MODE_VOTER,
 				(val->intval < 0) ? false : true, val->intval);
 		if (val->intval >= 0)
@@ -2281,18 +2281,18 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
 		/* Main FCC updated re-calculate FCC */
 		rerun_election(chg->fcc_votable);
 		break;
-	case POWER_SUPPLY_PROP_FORCE_MAIN_ICL:
+case POWER_SUPPLY_PROP_FORCE_MAIN_ICL:
 		vote_override(chg->usb_icl_votable, CC_MODE_VOTER,
 				(val->intval < 0) ? false : true, val->intval);
 		/* Main ICL updated re-calculate ILIM */
-		if (real_chg_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 ||
-			real_chg_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
+if (real_chg_type == POWER_SUPPLY_TYPE_USB_HVDCP_3 ||
+real_chg_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
 			rerun_election(chg->fcc_votable);
 		break;
-	case POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL:
+case POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL:
 		rc = smb5_set_prop_comp_clamp_level(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_HOT_TEMP:
+case POWER_SUPPLY_PROP_HOT_TEMP:
 		rc = smblib_set_prop_thermal_overheat(chg, val->intval);
 		break;
 	default:
@@ -2305,17 +2305,17 @@ static int smb5_usb_main_set_prop(struct power_supply *psy,
 }
 
 static int smb5_usb_main_prop_is_writeable(struct power_supply *psy,
-				enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_TOGGLE_STAT:
-	case POWER_SUPPLY_PROP_MAIN_FCC_MAX:
-	case POWER_SUPPLY_PROP_FORCE_MAIN_FCC:
-	case POWER_SUPPLY_PROP_FORCE_MAIN_ICL:
-	case POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL:
-	case POWER_SUPPLY_PROP_HOT_TEMP:
+case POWER_SUPPLY_PROP_TOGGLE_STAT:
+case POWER_SUPPLY_PROP_MAIN_FCC_MAX:
+case POWER_SUPPLY_PROP_FORCE_MAIN_FCC:
+case POWER_SUPPLY_PROP_FORCE_MAIN_ICL:
+case POWER_SUPPLY_PROP_COMP_CLAMP_LEVEL:
+case POWER_SUPPLY_PROP_HOT_TEMP:
 		rc = 1;
 		break;
 	default:
@@ -2328,7 +2328,7 @@ static int smb5_usb_main_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc usb_main_psy_desc = {
 	.name		= "main",
-	.type		= POWER_SUPPLY_TYPE_MAIN,
+.type		= POWER_SUPPLY_TYPE_MAIN,
 	.properties	= smb5_usb_main_props,
 	.num_properties	= ARRAY_SIZE(smb5_usb_main_props),
 	.get_property	= smb5_usb_main_get_prop,
@@ -2338,16 +2338,16 @@ static const struct power_supply_desc usb_main_psy_desc = {
 
 static int smb5_init_usb_main_psy(struct smb5 *chip)
 {
-	struct power_supply_config usb_main_cfg = {};
+struct power_supply_config usb_main_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	usb_main_cfg.drv_data = chip;
 	usb_main_cfg.of_node = chg->dev->of_node;
-	chg->usb_main_psy = devm_power_supply_register(chg->dev,
+chg->usb_main_psy = devm_power_supply_register(chg->dev,
 						  &usb_main_psy_desc,
 						  &usb_main_cfg);
 	if (IS_ERR(chg->usb_main_psy)) {
-		pr_err("Couldn't register USB main power supply\n");
+pr_err("Couldn't register USB main power supply\n");
 		return PTR_ERR(chg->usb_main_psy);
 	}
 
@@ -2359,58 +2359,58 @@ static int smb5_init_usb_main_psy(struct smb5 *chip)
  *************************/
 
 static enum power_supply_property smb5_dc_props[] = {
-	POWER_SUPPLY_PROP_INPUT_SUSPEND,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
-	POWER_SUPPLY_PROP_REAL_TYPE,
-	POWER_SUPPLY_PROP_DC_RESET,
+POWER_SUPPLY_PROP_INPUT_SUSPEND,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_REAL_TYPE,
+POWER_SUPPLY_PROP_DC_RESET,
 };
 
 static int smb5_dc_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		val->intval = get_effective_result(chg->dc_suspend_votable);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = smblib_get_prop_dc_present(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		rc = smblib_get_prop_dc_online(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		rc = smblib_get_prop_dc_voltage_now(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+rc = smblib_get_prop_dc_voltage_now(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smblib_get_prop_dc_current_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
-		rc = smblib_get_prop_dc_voltage_max(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+rc = smblib_get_prop_dc_voltage_max(chg, val);
 		break;
 #if defined(CONFIG_MACH_XIAOMI_SM8150) && !(defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU))
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		smb5_get_prop_input_voltage_regulation(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+smb5_get_prop_input_voltage_regulation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_REAL_TYPE:
-		val->intval = POWER_SUPPLY_TYPE_WIPOWER;
+case POWER_SUPPLY_PROP_REAL_TYPE:
+val->intval = POWER_SUPPLY_TYPE_WIPOWER;
 		break;
-	case POWER_SUPPLY_PROP_DC_RESET:
+case POWER_SUPPLY_PROP_DC_RESET:
 		val->intval = 0;
 		break;
 #endif
 #ifndef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		rc = smblib_get_prop_voltage_wls_output(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+rc = smblib_get_prop_voltage_wls_output(chg, val);
 		break;
 #endif
 	default:
@@ -2424,25 +2424,25 @@ static int smb5_dc_get_prop(struct power_supply *psy,
 }
 
 static int smb5_dc_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = vote(chg->dc_suspend_votable, WBC_VOTER,
 				(bool)val->intval, 0);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smblib_set_prop_dc_current_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		rc = smblib_set_prop_voltage_wls_output(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+rc = smblib_set_prop_voltage_wls_output(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_DC_RESET:
+case POWER_SUPPLY_PROP_DC_RESET:
 		rc = smblib_set_prop_dc_reset(chg);
 		break;
 	default:
@@ -2453,13 +2453,13 @@ static int smb5_dc_set_prop(struct power_supply *psy,
 }
 
 static int smb5_dc_prop_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 #endif
 		return 1;
 	default:
@@ -2471,7 +2471,7 @@ static int smb5_dc_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc dc_psy_desc = {
 	.name = "dc",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = smb5_dc_props,
 	.num_properties = ARRAY_SIZE(smb5_dc_props),
 	.get_property = smb5_dc_get_prop,
@@ -2481,16 +2481,16 @@ static const struct power_supply_desc dc_psy_desc = {
 
 static int smb5_init_dc_psy(struct smb5 *chip)
 {
-	struct power_supply_config dc_cfg = {};
+struct power_supply_config dc_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	dc_cfg.drv_data = chip;
 	dc_cfg.of_node = chg->dev->of_node;
-	chg->dc_psy = devm_power_supply_register(chg->dev,
+chg->dc_psy = devm_power_supply_register(chg->dev,
 						  &dc_psy_desc,
 						  &dc_cfg);
 	if (IS_ERR(chg->dc_psy)) {
-		pr_err("Couldn't register USB power supply\n");
+pr_err("Couldn't register USB power supply\n");
 		return PTR_ERR(chg->dc_psy);
 	}
 
@@ -2499,15 +2499,15 @@ static int smb5_init_dc_psy(struct smb5 *chip)
 
 #ifdef CONFIG_MACH_XIAOMI_NABU
 static int smb5_get_prop_input_voltage_regulation(struct smb_charger *chg,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2516,8 +2516,8 @@ static int smb5_get_prop_input_voltage_regulation(struct smb_charger *chg,
 
 	//msleep(200);
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
 
 	val->intval = 1000*val->intval;//IDT in mV
 
@@ -2525,15 +2525,15 @@ static int smb5_get_prop_input_voltage_regulation(struct smb_charger *chg,
 }
 
 static int smb5_get_prop_input_voltage_vrect(struct smb_charger *chg,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2543,8 +2543,8 @@ static int smb5_get_prop_input_voltage_vrect(struct smb_charger *chg,
 	//msleep(200);
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT, val);
 
 	val->intval = 1000*val->intval;//IDT in mV
 
@@ -2552,15 +2552,15 @@ static int smb5_get_prop_input_voltage_vrect(struct smb_charger *chg,
 }
 
 static int smb5_get_prop_rx_iout(struct smb_charger *chg,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2568,8 +2568,8 @@ static int smb5_get_prop_rx_iout(struct smb_charger *chg,
 	}
 	//msleep(100);
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_RX_IOUT, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_RX_IOUT, val);
 
 	val->intval = 1000*val->intval;//IDT in mV
 
@@ -2577,15 +2577,15 @@ static int smb5_get_prop_rx_iout(struct smb_charger *chg,
 }
 
 static int smb5_get_prop_wireless_signal(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2593,22 +2593,22 @@ static int smb5_get_prop_wireless_signal(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_SIGNAL_STRENGTH, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH, val);
 
 	return rc;
 }
 
 static int smb5_set_prop_input_voltage_regulation(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2616,22 +2616,22 @@ static int smb5_set_prop_input_voltage_regulation(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_set_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
+rc = power_supply_set_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
 
 	return rc;
 }
 
 static int smb5_get_prop_wirless_type(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy)
 		chg->wls_chip_psy = chg->idtp_psy;
 	else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2639,22 +2639,22 @@ static int smb5_get_prop_wirless_type(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_TX_ADAPTER, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_TX_ADAPTER, val);
 
 	return rc;
 }
 
 static int smb5_get_prop_reverse_pen_soc(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy)
 		chg->wls_chip_psy = chg->idtp_psy;
 	else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2662,23 +2662,23 @@ static int smb5_get_prop_reverse_pen_soc(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_REVERSE_PEN_SOC, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_REVERSE_PEN_SOC, val);
 
 	return rc;
 }
 
 /*set mode of DIV 2*/
 static int smb5_set_prop_div2_mode(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc;
 
 	dev_info(chg->dev, "%s: set mode is = %d\n",
 				__func__, val->intval);
 
-	chg->ln_psy = power_supply_get_by_name("lionsemi");
-	//chg->halo_psy = power_supply_get_by_name("halo");
+chg->ln_psy = power_supply_get_by_name("lionsemi");
+//chg->halo_psy = power_supply_get_by_name("halo");
 	if (chg->ln_psy)
 		chg->cp_chip_psy = chg->ln_psy;
 	/*else if (chg->halo_psy)
@@ -2687,19 +2687,19 @@ static int smb5_set_prop_div2_mode(struct smb_charger *chg,
 		return -EINVAL;
 
 	if (chg->cp_chip_psy)
-		rc = power_supply_set_property(chg->cp_chip_psy,
-				POWER_SUPPLY_PROP_DIV_2_MODE, val);
+rc = power_supply_set_property(chg->cp_chip_psy,
+POWER_SUPPLY_PROP_DIV_2_MODE, val);
 
 	return rc;
 }
 
 static int smb5_get_prop_div2_mode(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	dev_info(chg->dev, "%s: get div2 mode\n", __func__);
 
-	chg->ln_psy = power_supply_get_by_name("lionsemi");
-	//chg->halo_psy = power_supply_get_by_name("halo");
+chg->ln_psy = power_supply_get_by_name("lionsemi");
+//chg->halo_psy = power_supply_get_by_name("halo");
 
 	if (chg->ln_psy)
 		chg->cp_chip_psy = chg->ln_psy;
@@ -2709,8 +2709,8 @@ static int smb5_get_prop_div2_mode(struct smb_charger *chg,
 		return -EINVAL;
 
 	if (chg->cp_chip_psy) {
-		power_supply_get_property(chg->cp_chip_psy,
-			POWER_SUPPLY_PROP_DIV_2_MODE, val);
+power_supply_get_property(chg->cp_chip_psy,
+POWER_SUPPLY_PROP_DIV_2_MODE, val);
 		dev_info(chg->dev, "%s: get mode is = %d\n",
 				__func__, val->intval);
 	}
@@ -2718,18 +2718,18 @@ static int smb5_get_prop_div2_mode(struct smb_charger *chg,
 	return 1;
 }
 static int smb5_set_prop_reverse_chg_mode(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc;
 
 	dev_info(chg->dev, "%s: set mode is = %d\n",
 				__func__, val->intval);
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2737,25 +2737,25 @@ static int smb5_set_prop_reverse_chg_mode(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_set_property(chg->wls_chip_psy,
-				POWER_SUPPLY_PROP_REVERSE_CHG_MODE, val);
+rc = power_supply_set_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_REVERSE_CHG_MODE, val);
 
 	return rc;
 }
 
 static int smb5_set_prop_otg_mode(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc;
 
 	dev_info(chg->dev, "%s: set mode is = %d\n",
 				__func__, val->intval);
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2763,22 +2763,22 @@ static int smb5_set_prop_otg_mode(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_set_property(chg->wls_chip_psy,
-				POWER_SUPPLY_PROP_OTG_STATE, val);
+rc = power_supply_set_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_OTG_STATE, val);
 
 	return rc;
 }
 
 static int smb5_get_prop_reverse_chg_mode(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2786,8 +2786,8 @@ static int smb5_get_prop_reverse_chg_mode(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy) {
-		rc = power_supply_get_property(chg->wls_chip_psy,
-				POWER_SUPPLY_PROP_REVERSE_CHG_MODE, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_REVERSE_CHG_MODE, val);
 		dev_info(chg->dev, "%s: get mode is = %d\n",
 				__func__, val->intval);
 	}
@@ -2796,15 +2796,15 @@ static int smb5_get_prop_reverse_chg_mode(struct smb_charger *chg,
 }
 
 static int smb5_get_prop_wirless_chip_ok(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy) {
 		chg->wls_chip_psy = chg->idtp_psy;
 	} else {
-		chg->wip_psy = power_supply_get_by_name("rx1619");
+chg->wip_psy = power_supply_get_by_name("rx1619");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -2812,8 +2812,8 @@ static int smb5_get_prop_wirless_chip_ok(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy) {
-		rc = power_supply_get_property(chg->wls_chip_psy,
-				POWER_SUPPLY_PROP_CHIP_OK, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_CHIP_OK, val);
 		dev_info(chg->dev, "%s: get chip status is = %d\n",
 				__func__, val->intval);
 	}
@@ -2845,95 +2845,95 @@ int smblib_enable_aicl(struct smb_charger *chg, int enable)
  *************************/
 
 static enum power_supply_property smb5_wireless_props[] = {
-	POWER_SUPPLY_PROP_WIRELESS_VERSION,
-	POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
-	POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT,
-	POWER_SUPPLY_PROP_RX_IOUT,
-	POWER_SUPPLY_PROP_WIRELESS_CP_EN,
-	POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
-	POWER_SUPPLY_PROP_SW_DISABLE_DC_EN,
-	POWER_SUPPLY_PROP_TX_ADAPTER,
-	POWER_SUPPLY_PROP_TX_MAC,
-	POWER_SUPPLY_PROP_PEN_MAC,
-	POWER_SUPPLY_PROP_REVERSE_PEN_SOC,
-	POWER_SUPPLY_PROP_BT_STATE,
-	POWER_SUPPLY_PROP_RX_CR,
-	POWER_SUPPLY_PROP_RX_CEP,
-	POWER_SUPPLY_PROP_DC_RESET,
-	POWER_SUPPLY_PROP_DIV_2_MODE,
-	POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
-	POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE,
-	POWER_SUPPLY_PROP_REVERSE_GPIO_STATE,
-	POWER_SUPPLY_PROP_AICL_ENABLE,
-	POWER_SUPPLY_PROP_OTG_STATE,
-	POWER_SUPPLY_PROP_WIRELESS_FW_VERSION,
-	POWER_SUPPLY_PROP_CHIP_OK,
+POWER_SUPPLY_PROP_WIRELESS_VERSION,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT,
+POWER_SUPPLY_PROP_RX_IOUT,
+POWER_SUPPLY_PROP_WIRELESS_CP_EN,
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
+POWER_SUPPLY_PROP_SW_DISABLE_DC_EN,
+POWER_SUPPLY_PROP_TX_ADAPTER,
+POWER_SUPPLY_PROP_TX_MAC,
+POWER_SUPPLY_PROP_PEN_MAC,
+POWER_SUPPLY_PROP_REVERSE_PEN_SOC,
+POWER_SUPPLY_PROP_BT_STATE,
+POWER_SUPPLY_PROP_RX_CR,
+POWER_SUPPLY_PROP_RX_CEP,
+POWER_SUPPLY_PROP_DC_RESET,
+POWER_SUPPLY_PROP_DIV_2_MODE,
+POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
+POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE,
+POWER_SUPPLY_PROP_REVERSE_GPIO_STATE,
+POWER_SUPPLY_PROP_AICL_ENABLE,
+POWER_SUPPLY_PROP_OTG_STATE,
+POWER_SUPPLY_PROP_WIRELESS_FW_VERSION,
+POWER_SUPPLY_PROP_CHIP_OK,
 };
 
 static int smb5_wireless_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		dev_info(chg->dev, "set version=%d\n", val->intval);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
+case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
 		rc = smblib_set_prop_wireless_wakelock(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		smb5_set_prop_input_voltage_regulation(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+smb5_set_prop_input_voltage_regulation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
+case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
 		smblib_set_wirless_cp_enable(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
-		smblib_set_wirless_power_good_enable(chg, val);
+case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
+smblib_set_wirless_power_good_enable(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SW_DISABLE_DC_EN:
+case POWER_SUPPLY_PROP_SW_DISABLE_DC_EN:
 		smblib_set_sw_disable_dc_en(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_DC_RESET:
+case POWER_SUPPLY_PROP_DC_RESET:
 		rc = smblib_set_prop_dc_reset(chg);
 		break;
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		rc = smb5_set_prop_div2_mode(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TX_MAC:
+case POWER_SUPPLY_PROP_TX_MAC:
 		smblib_set_prop_tx_mac(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PEN_MAC:
+case POWER_SUPPLY_PROP_PEN_MAC:
 		smblib_set_prop_pen_mac(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_RX_CR:
+case POWER_SUPPLY_PROP_RX_CR:
 		smblib_set_prop_rx_cr(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_RX_CEP:
+case POWER_SUPPLY_PROP_RX_CEP:
 		smblib_set_prop_rx_cep(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_BT_STATE:
+case POWER_SUPPLY_PROP_BT_STATE:
 		smblib_set_prop_bt_state(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		rc = smb5_set_prop_reverse_chg_mode(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE:
+case POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE:
 		chg->reverse_chg_state = val->intval;
 		pen_charge_state_notifier_call_chain(chg->reverse_chg_state == 4, NULL);
 		break;
-	case POWER_SUPPLY_PROP_AICL_ENABLE:
+case POWER_SUPPLY_PROP_AICL_ENABLE:
 		rc = smblib_enable_aicl(chg, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_GPIO_STATE:
+case POWER_SUPPLY_PROP_REVERSE_GPIO_STATE:
 		chg->reverse_gpio_state = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_OTG_STATE:
+case POWER_SUPPLY_PROP_OTG_STATE:
 		rc = smb5_set_prop_otg_mode(chg, val);
 		break;
 	default:
@@ -2944,90 +2944,90 @@ static int smb5_wireless_set_prop(struct power_supply *psy,
 }
 
 static int smb5_wireless_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		rc = smblib_get_prop_wireless_version(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_FW_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_FW_VERSION:
 		rc = smblib_get_prop_wireless_fw_version(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		smb5_get_prop_wireless_signal(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
+case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
 		val->intval = 1;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		smb5_get_prop_input_voltage_regulation(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+smb5_get_prop_input_voltage_regulation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT:
-		smb5_get_prop_input_voltage_vrect(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT:
+smb5_get_prop_input_voltage_vrect(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_RX_IOUT:
+case POWER_SUPPLY_PROP_RX_IOUT:
 		smb5_get_prop_rx_iout(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
+case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
 		if (chg->wireless_bq)
 			val->intval = chg->en_bq_flag;
 		else
 			val->intval = chg->flag_dc_present;
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
-		val->intval = chg->power_good_en;
+case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
+val->intval = chg->power_good_en;
 		break;
-	case POWER_SUPPLY_PROP_TX_ADAPTER:
+case POWER_SUPPLY_PROP_TX_ADAPTER:
 		smb5_get_prop_wirless_type(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_PEN_SOC:
+case POWER_SUPPLY_PROP_REVERSE_PEN_SOC:
 		smb5_get_prop_reverse_pen_soc(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_DC_RESET:
+case POWER_SUPPLY_PROP_DC_RESET:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		smb5_get_prop_div2_mode(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TX_MAC:
+case POWER_SUPPLY_PROP_TX_MAC:
 		val->int64val = chg->tx_bt_mac;
 		break;
-	case POWER_SUPPLY_PROP_PEN_MAC:
+case POWER_SUPPLY_PROP_PEN_MAC:
 		val->int64val = chg->pen_bt_mac;
 		break;
-	case POWER_SUPPLY_PROP_RX_CR:
+case POWER_SUPPLY_PROP_RX_CR:
 		val->int64val = chg->rpp;
 		break;
-	case POWER_SUPPLY_PROP_RX_CEP:
+case POWER_SUPPLY_PROP_RX_CEP:
 		val->int64val = chg->cep;
 		break;
-	case POWER_SUPPLY_PROP_BT_STATE:
+case POWER_SUPPLY_PROP_BT_STATE:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_SW_DISABLE_DC_EN:
+case POWER_SUPPLY_PROP_SW_DISABLE_DC_EN:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		smb5_get_prop_reverse_chg_mode(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE:
+case POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE:
 		val->intval = chg->reverse_chg_state;
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_GPIO_STATE:
+case POWER_SUPPLY_PROP_REVERSE_GPIO_STATE:
 		val->intval = chg->reverse_gpio_state;
 		break;
-	case POWER_SUPPLY_PROP_AICL_ENABLE:
+case POWER_SUPPLY_PROP_AICL_ENABLE:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CHIP_OK:
+case POWER_SUPPLY_PROP_CHIP_OK:
 		smb5_get_prop_wirless_chip_ok(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_OTG_STATE:
+case POWER_SUPPLY_PROP_OTG_STATE:
 		val->intval = 0;
 		break;
 
@@ -3042,24 +3042,24 @@ static int smb5_wireless_get_prop(struct power_supply *psy,
 }
 
 static int smb5_wireless_prop_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
-	case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-	case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
-	case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
-	case POWER_SUPPLY_PROP_SW_DISABLE_DC_EN:
-	case POWER_SUPPLY_PROP_RX_CR:
-	case POWER_SUPPLY_PROP_RX_CEP:
-	case POWER_SUPPLY_PROP_TX_MAC:
-	case POWER_SUPPLY_PROP_PEN_MAC:
-	case POWER_SUPPLY_PROP_BT_STATE:
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
-	case POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE:
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
+case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
+case POWER_SUPPLY_PROP_SW_DISABLE_DC_EN:
+case POWER_SUPPLY_PROP_RX_CR:
+case POWER_SUPPLY_PROP_RX_CEP:
+case POWER_SUPPLY_PROP_TX_MAC:
+case POWER_SUPPLY_PROP_PEN_MAC:
+case POWER_SUPPLY_PROP_BT_STATE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		return 1;
 	default:
 		break;
@@ -3070,7 +3070,7 @@ static int smb5_wireless_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc wireless_psy_desc = {
 	.name = "wireless",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = smb5_wireless_props,
 	.num_properties = ARRAY_SIZE(smb5_wireless_props),
 	.get_property = smb5_wireless_get_prop,
@@ -3080,16 +3080,16 @@ static const struct power_supply_desc wireless_psy_desc = {
 
 static int smb5_init_wireless_psy(struct smb5 *chip)
 {
-	struct power_supply_config wireless_cfg = {};
+struct power_supply_config wireless_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	wireless_cfg.drv_data = chip;
 	wireless_cfg.of_node = chg->dev->of_node;
-	chg->wireless_psy = power_supply_register(chg->dev,
+chg->wireless_psy = power_supply_register(chg->dev,
 						  &wireless_psy_desc,
 						  &wireless_cfg);
 	if (IS_ERR(chg->wireless_psy)) {
-		pr_err("Couldn't register wireless power supply\n");
+pr_err("Couldn't register wireless power supply\n");
 		return PTR_ERR(chg->wireless_psy);
 	}
 
@@ -3099,22 +3099,22 @@ static int smb5_init_wireless_psy(struct smb5 *chip)
 
 #if defined(CONFIG_MACH_XIAOMI_SM8150) && !(defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU))
 static int smb5_get_prop_wireless_signal(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 
 /*
 	if (!chg->idtp_psy) {
-		chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 		if (!chg->idtp_psy)
 			return -EINVAL;
 	}
 */
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy)
 		chg->wls_chip_psy = chg->idtp_psy;
 	else {
-		chg->wip_psy = power_supply_get_by_name("rx1618");
+chg->wip_psy = power_supply_get_by_name("rx1618");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -3122,30 +3122,30 @@ static int smb5_get_prop_wireless_signal(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_get_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_SIGNAL_STRENGTH, val);
+rc = power_supply_get_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH, val);
 
 	return rc;
 }
 
 static int smb5_set_prop_input_voltage_regulation(struct smb_charger *chg,
-				const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	int rc;
 
 /*
 	if (!chg->idtp_psy) {
-		chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 		if (!chg->idtp_psy)
 			return -EINVAL;
 	}
 */
 
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy)
 		chg->wls_chip_psy = chg->idtp_psy;
 	else {
-		chg->wip_psy = power_supply_get_by_name("rx1618");
+chg->wip_psy = power_supply_get_by_name("rx1618");
 		if (chg->wip_psy)
 			chg->wls_chip_psy = chg->wip_psy;
 		else
@@ -3153,19 +3153,19 @@ static int smb5_set_prop_input_voltage_regulation(struct smb_charger *chg,
 	}
 
 	if (chg->wls_chip_psy)
-		rc = power_supply_set_property(chg->wls_chip_psy,
-			POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
+rc = power_supply_set_property(chg->wls_chip_psy,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION, val);
 
 	return rc;
 }
 
 static int smb5_get_prop_wirless_type(struct smb_charger *chg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
-	chg->idtp_psy = power_supply_get_by_name("idt");
+chg->idtp_psy = power_supply_get_by_name("idt");
 	if (chg->idtp_psy)
-		power_supply_get_property(chg->idtp_psy,
-			POWER_SUPPLY_PROP_TX_ADAPTER, val);
+power_supply_get_property(chg->idtp_psy,
+POWER_SUPPLY_PROP_TX_ADAPTER, val);
 
 	return 1;
 }
@@ -3175,38 +3175,38 @@ static int smb5_get_prop_wirless_type(struct smb_charger *chg,
  *************************/
 
 static enum power_supply_property smb5_wireless_props[] = {
-	POWER_SUPPLY_PROP_WIRELESS_VERSION,
-	POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
-	POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
-	POWER_SUPPLY_PROP_WIRELESS_CP_EN,
-	POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
-	POWER_SUPPLY_PROP_TX_ADAPTER,
+POWER_SUPPLY_PROP_WIRELESS_VERSION,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_WIRELESS_CP_EN,
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
+POWER_SUPPLY_PROP_TX_ADAPTER,
 };
 
 static int smb5_wireless_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		dev_info(chg->dev, "set version=%d\n", val->intval);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
+case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
 		rc = smblib_set_prop_wireless_wakelock(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		smb5_set_prop_input_voltage_regulation(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+smb5_set_prop_input_voltage_regulation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
+case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
 		smblib_set_wirless_cp_enable(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
-		smblib_set_wirless_power_good_enable(chg, val);
+case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
+smblib_set_wirless_power_good_enable(chg, val);
 		break;
 	default:
 		return -EINVAL;
@@ -3216,33 +3216,33 @@ static int smb5_wireless_set_prop(struct power_supply *psy,
 }
 
 static int smb5_wireless_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb5 *chip = power_supply_get_drvdata(psy);
+struct smb5 *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		rc = smblib_get_prop_wireless_version(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		smb5_get_prop_wireless_signal(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
+case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
 		val->intval = 1;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		smb5_get_prop_input_voltage_regulation(chg, val);
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+smb5_get_prop_input_voltage_regulation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
+case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
 		val->intval = chg->flag_dc_present;
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
-		val->intval = chg->power_good_en;
+case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
+val->intval = chg->power_good_en;
 		break;
-	case POWER_SUPPLY_PROP_TX_ADAPTER:
+case POWER_SUPPLY_PROP_TX_ADAPTER:
 		smb5_get_prop_wirless_type(chg, val);
 		break;
 	default:
@@ -3256,14 +3256,14 @@ static int smb5_wireless_get_prop(struct power_supply *psy,
 }
 
 static int smb5_wireless_prop_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
-	case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-	case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
-	case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_WAKELOCK:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_WIRELESS_CP_EN:
+case POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN:
 		return 1;
 	default:
 		break;
@@ -3274,7 +3274,7 @@ static int smb5_wireless_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc wireless_psy_desc = {
 	.name = "wireless",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = smb5_wireless_props,
 	.num_properties = ARRAY_SIZE(smb5_wireless_props),
 	.get_property = smb5_wireless_get_prop,
@@ -3284,16 +3284,16 @@ static const struct power_supply_desc wireless_psy_desc = {
 
 static int smb5_init_wireless_psy(struct smb5 *chip)
 {
-	struct power_supply_config wireless_cfg = {};
+struct power_supply_config wireless_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	wireless_cfg.drv_data = chip;
 	wireless_cfg.of_node = chg->dev->of_node;
-	chg->wireless_psy = power_supply_register(chg->dev,
+chg->wireless_psy = power_supply_register(chg->dev,
 						  &wireless_psy_desc,
 						  &wireless_cfg);
 	if (IS_ERR(chg->wireless_psy)) {
-		pr_err("Couldn't register wireless power supply\n");
+pr_err("Couldn't register wireless power supply\n");
 		return PTR_ERR(chg->wireless_psy);
 	}
 
@@ -3305,251 +3305,251 @@ static int smb5_init_wireless_psy(struct smb5 *chip)
  * BATT PSY REGISTRATION *
  *************************/
 static enum power_supply_property smb5_batt_props[] = {
-	POWER_SUPPLY_PROP_INPUT_SUSPEND,
+POWER_SUPPLY_PROP_INPUT_SUSPEND,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	POWER_SUPPLY_PROP_LIQUID_DETECTION,
-	POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED,
+POWER_SUPPLY_PROP_LIQUID_DETECTION,
+POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED,
 #endif
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CHARGER_TEMP,
-	POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_QNOVO,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CURRENT_QNOVO,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED,
-	POWER_SUPPLY_PROP_SW_JEITA_ENABLED,
-	POWER_SUPPLY_PROP_CHARGE_DONE,
-	POWER_SUPPLY_PROP_PARALLEL_DISABLE,
-	POWER_SUPPLY_PROP_SET_SHIP_MODE,
-	POWER_SUPPLY_PROP_DIE_HEALTH,
-	POWER_SUPPLY_PROP_RERUN_AICL,
-	POWER_SUPPLY_PROP_DP_DM,
-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX,
-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_CYCLE_COUNT,
-	POWER_SUPPLY_PROP_RECHARGE_SOC,
-	POWER_SUPPLY_PROP_CHARGE_FULL,
-	POWER_SUPPLY_PROP_FORCE_RECHARGE,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CHARGER_TEMP,
+POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_QNOVO,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CURRENT_QNOVO,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_SW_JEITA_ENABLED,
+POWER_SUPPLY_PROP_CHARGE_DONE,
+POWER_SUPPLY_PROP_PARALLEL_DISABLE,
+POWER_SUPPLY_PROP_SET_SHIP_MODE,
+POWER_SUPPLY_PROP_DIE_HEALTH,
+POWER_SUPPLY_PROP_RERUN_AICL,
+POWER_SUPPLY_PROP_DP_DM,
+POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX,
+POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_CYCLE_COUNT,
+POWER_SUPPLY_PROP_RECHARGE_SOC,
+POWER_SUPPLY_PROP_CHARGE_FULL,
+POWER_SUPPLY_PROP_FORCE_RECHARGE,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+POWER_SUPPLY_PROP_CAPACITY_LEVEL,
 #endif
-	POWER_SUPPLY_PROP_TIME_TO_FULL_NOW,
-	POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE,
+POWER_SUPPLY_PROP_TIME_TO_FULL_NOW,
+POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED,
 #endif
-	POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 #endif
 };
 
 #define DEBUG_ACCESSORY_TEMP_DECIDEGC	250
 static int smb5_batt_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb_charger *chg = power_supply_get_drvdata(psy);
+struct smb_charger *chg = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		rc = smblib_get_prop_batt_status(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		rc = smblib_get_prop_batt_health(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = smblib_get_prop_batt_present(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smblib_get_prop_input_suspend(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		rc = smblib_get_prop_batt_charge_type(chg, val);
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
 		rc = smblib_get_prop_batt_capacity_level(chg, val);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		rc = smblib_get_prop_batt_capacity(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		rc = smblib_get_prop_system_temp_level(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
 		rc = smblib_get_prop_system_temp_level_max(chg, val);
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_DC_THERMAL_LEVELS:
+case POWER_SUPPLY_PROP_DC_THERMAL_LEVELS:
 		rc = smblib_get_prop_dc_temp_level(chg, val);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_CHARGER_TEMP:
+case POWER_SUPPLY_PROP_CHARGER_TEMP:
 		rc = smblib_get_prop_charger_temp(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
+case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
 		val->intval = chg->charger_temp_max;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
 		rc = smblib_get_prop_input_current_limited(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
 		val->intval = chg->step_chg_enabled;
 		break;
-	case POWER_SUPPLY_PROP_SW_JEITA_ENABLED:
+case POWER_SUPPLY_PROP_SW_JEITA_ENABLED:
 		val->intval = chg->sw_jeita_enabled;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_VOLTAGE_NOW, val);
+POWER_SUPPLY_PROP_VOLTAGE_NOW, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		val->intval = get_client_vote(chg->fv_votable,
 				BATT_PROFILE_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_QNOVO:
+case POWER_SUPPLY_PROP_VOLTAGE_QNOVO:
 		val->intval = get_client_vote_locked(chg->fv_votable,
 				QNOVO_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_CURRENT_NOW, val);
+POWER_SUPPLY_PROP_CURRENT_NOW, val);
 #ifndef CONFIG_MACH_XIAOMI_SM8150
 		if (!rc)
 			val->intval *= (-1);
 #endif
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_QNOVO:
+case POWER_SUPPLY_PROP_CURRENT_QNOVO:
 		val->intval = get_client_vote_locked(chg->fcc_votable,
 				QNOVO_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		val->intval = get_client_vote(chg->fcc_votable,
 					      BATT_PROFILE_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		val->intval = get_effective_result(chg->fcc_votable);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 		rc = smblib_get_prop_batt_iterm(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
-		if (chg->typec_mode == POWER_SUPPLY_TYPEC_SINK_DEBUG_ACCESSORY)
+case POWER_SUPPLY_PROP_TEMP:
+if (chg->typec_mode == POWER_SUPPLY_TYPEC_SINK_DEBUG_ACCESSORY)
 			val->intval = DEBUG_ACCESSORY_TEMP_DECIDEGC;
 		else
 			rc = smblib_get_prop_from_bms(chg,
-						POWER_SUPPLY_PROP_TEMP, val);
+POWER_SUPPLY_PROP_TEMP, val);
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LIPO;
+val->intval = POWER_SUPPLY_TECHNOLOGY_LIPO;
 #else
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 #endif
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_DONE:
+case POWER_SUPPLY_PROP_CHARGE_DONE:
 		rc = smblib_get_prop_batt_charge_done(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
+case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
 		val->intval = get_client_vote(chg->pl_disable_votable,
 					      USER_VOTER);
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as device is active */
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_DIE_HEALTH:
+case POWER_SUPPLY_PROP_DIE_HEALTH:
 		if (chg->die_health == -EINVAL)
 			val->intval = smblib_get_prop_die_health(chg);
 		else
 			val->intval = chg->die_health;
 		break;
-	case POWER_SUPPLY_PROP_DP_DM:
+case POWER_SUPPLY_PROP_DP_DM:
 		val->intval = chg->pulse_cnt;
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_DP_DM_BQ:
+case POWER_SUPPLY_PROP_DP_DM_BQ:
 		val->intval = chg->pulse_cnt;
 		break;
 #endif
-	case POWER_SUPPLY_PROP_RERUN_AICL:
+case POWER_SUPPLY_PROP_RERUN_AICL:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_CHARGE_COUNTER, val);
+POWER_SUPPLY_PROP_CHARGE_COUNTER, val);
 		break;
-	case POWER_SUPPLY_PROP_CYCLE_COUNT:
+case POWER_SUPPLY_PROP_CYCLE_COUNT:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_CYCLE_COUNT, val);
+POWER_SUPPLY_PROP_CYCLE_COUNT, val);
 		break;
-	case POWER_SUPPLY_PROP_RECHARGE_SOC:
+case POWER_SUPPLY_PROP_RECHARGE_SOC:
 		val->intval = chg->auto_recharge_soc;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE:
+case POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_CHARGE_FULL, val);
+POWER_SUPPLY_PROP_CHARGE_FULL, val);
 		break;
-	case POWER_SUPPLY_PROP_FORCE_RECHARGE:
+case POWER_SUPPLY_PROP_FORCE_RECHARGE:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN, val);
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN, val);
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
 		rc = smblib_get_prop_from_bms(chg,
-				POWER_SUPPLY_PROP_TIME_TO_FULL_NOW, val);
+POWER_SUPPLY_PROP_TIME_TO_FULL_NOW, val);
 		break;
-	case POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE:
+case POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE:
 		val->intval = chg->fcc_stepper_enable;
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_LIQUID_DETECTION:
+case POWER_SUPPLY_PROP_LIQUID_DETECTION:
 		if (chg->support_liquid == true)
 			rc = smblib_get_prop_liquid_status(chg, val);
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED:
+case POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED:
 		val->intval = chg->dynamic_fv_enabled;
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
 		rc = smblib_get_prop_battery_charging_enabled(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED:
+case POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED:
 		rc = smblib_get_prop_battery_charging_limited(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SLOWLY_CHARGING:
+case POWER_SUPPLY_PROP_SLOWLY_CHARGING:
 		rc = smblib_get_prop_battery_slowly_charging(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_BQ_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_BQ_INPUT_SUSPEND:
 		rc = smblib_get_prop_battery_bq_input_suspend(chg, val);
 		break;
 #endif
 #endif
 	default:
-		pr_err("batt power supply prop %d not supported\n", psp);
+pr_err("batt power supply prop %d not supported\n", psp);
 		return -EINVAL;
 	}
 
@@ -3562,23 +3562,23 @@ static int smb5_batt_get_prop(struct power_supply *psy,
 }
 
 static int smb5_batt_set_prop(struct power_supply *psy,
-		enum power_supply_property prop,
-		const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
 	int rc = 0;
-	struct smb_charger *chg = power_supply_get_drvdata(psy);
+struct smb_charger *chg = power_supply_get_drvdata(psy);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	union power_supply_propval pval = {0,};
+union power_supply_propval pval = {0,};
 #endif
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		rc = smblib_set_prop_batt_status(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smblib_set_prop_input_suspend(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 		if (disable_thermal) {
 			smblib_set_prop_system_temp_level(chg, &pval);
@@ -3588,38 +3588,38 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 		rc = smblib_set_prop_system_temp_level(chg, val);
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_DC_THERMAL_LEVELS:
+case POWER_SUPPLY_PROP_DC_THERMAL_LEVELS:
 		if (chg->support_wireless)
 			rc = smblib_set_prop_dc_temp_level(chg, val);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		rc = smblib_set_prop_batt_capacity(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
+case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
 		vote(chg->pl_disable_votable, USER_VOTER, (bool)val->intval, 0);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		chg->batt_profile_fv_uv = val->intval;
 		vote(chg->fv_votable, BATT_PROFILE_VOTER, true, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_QNOVO:
+case POWER_SUPPLY_PROP_VOLTAGE_QNOVO:
 		vote(chg->fv_votable, QNOVO_VOTER, (val->intval >= 0),
 			val->intval);
 		break;
-	case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
 		chg->step_chg_enabled = !!val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		chg->batt_profile_fcc_ua = val->intval;
 		vote(chg->fcc_votable, BATT_PROFILE_VOTER, true, val->intval);
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 		smb5_config_iterm(chg, val->intval, 50);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_CURRENT_QNOVO:
+case POWER_SUPPLY_PROP_CURRENT_QNOVO:
 		vote(chg->pl_disable_votable, PL_QNOVO_VOTER,
 			val->intval != -EINVAL && val->intval < 2000000, 0);
 		if (val->intval == -EINVAL) {
@@ -3631,39 +3631,39 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 			vote(chg->fcc_votable, BATT_PROFILE_VOTER, false, 0);
 		}
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as the device is active */
 		if (!val->intval)
 			break;
 		if (chg->pl.psy)
-			power_supply_set_property(chg->pl.psy,
-				POWER_SUPPLY_PROP_SET_SHIP_MODE, val);
+power_supply_set_property(chg->pl.psy,
+POWER_SUPPLY_PROP_SET_SHIP_MODE, val);
 		rc = smblib_set_prop_ship_mode(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_RERUN_AICL:
+case POWER_SUPPLY_PROP_RERUN_AICL:
 		rc = smblib_run_aicl(chg, RERUN_AICL);
 		break;
-	case POWER_SUPPLY_PROP_DP_DM:
+case POWER_SUPPLY_PROP_DP_DM:
 		if (!chg->flash_active)
 			rc = smblib_dp_dm(chg, val->intval);
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_DP_DM_BQ:
+case POWER_SUPPLY_PROP_DP_DM_BQ:
 		if (chg->use_bq_pump)
 			rc = smblib_dp_dm_bq(chg, val->intval);
 		break;
 #endif
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
 		rc = smblib_set_prop_input_current_limited(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_DIE_HEALTH:
+case POWER_SUPPLY_PROP_DIE_HEALTH:
 		chg->die_health = val->intval;
-		power_supply_changed(chg->batt_psy);
+power_supply_changed(chg->batt_psy);
 		break;
-	case POWER_SUPPLY_PROP_RECHARGE_SOC:
+case POWER_SUPPLY_PROP_RECHARGE_SOC:
 		rc = smblib_set_prop_rechg_soc_thresh(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_FORCE_RECHARGE:
+case POWER_SUPPLY_PROP_FORCE_RECHARGE:
 			/* toggle charging to force recharge */
 			vote(chg->chg_disable_votable, FORCE_RECHARGE_VOTER,
 					true, 0);
@@ -3673,19 +3673,19 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 					false, 0);
 		break;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_LIQUID_DETECTION:
+case POWER_SUPPLY_PROP_LIQUID_DETECTION:
 		chg->lpd_status = val->intval;
-		power_supply_changed(chg->batt_psy);
+power_supply_changed(chg->batt_psy);
 		break;
-	case POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED:
+case POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED:
 		chg->dynamic_fv_enabled = !!val->intval;
 		break;
 #endif
-	case POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE:
+case POWER_SUPPLY_PROP_FCC_STEPPER_ENABLE:
 		chg->fcc_stepper_enable = val->intval;
 		break;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
 		if (chg->use_bq_pump) {
 			if (val->intval == 0)
 				vote(chg->usb_icl_votable, MAIN_CHG_VOTER,
@@ -3696,16 +3696,16 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 			rerun_election(chg->usb_icl_votable);
 		}
 		break;
-	case POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED:
+case POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED:
 		if (chg->use_bq_pump) {
 			if (val->intval == 0) {
 				vote(chg->usb_icl_votable, MAIN_CHG_VOTER,
 							false, MAIN_CHARGER_ICL);
 			} else {
-				if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3)
+if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3)
 					vote(chg->usb_icl_votable, MAIN_CHG_VOTER,
 								true, QC3_CHARGER_ICL);
-				else if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
+else if (chg->real_charger_type == POWER_SUPPLY_TYPE_USB_HVDCP_3P5)
 					vote(chg->usb_icl_votable, MAIN_CHG_VOTER,
 								true, QC3P5_CHARGER_ICL);
 				else
@@ -3715,7 +3715,7 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 			rerun_election(chg->usb_icl_votable);
 		}
 		break;
-	case POWER_SUPPLY_PROP_SLOWLY_CHARGING:
+case POWER_SUPPLY_PROP_SLOWLY_CHARGING:
 			rc = smblib_set_prop_battery_slowly_charging(chg, val);
 		break;
 #endif
@@ -3727,31 +3727,31 @@ static int smb5_batt_set_prop(struct power_supply *psy,
 }
 
 static int smb5_batt_prop_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
-	case POWER_SUPPLY_PROP_SYSTEM_TEMP_LEVEL:
-	case POWER_SUPPLY_PROP_CAPACITY:
-	case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
-	case POWER_SUPPLY_PROP_DP_DM:
+case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_SYSTEM_TEMP_LEVEL:
+case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
+case POWER_SUPPLY_PROP_DP_DM:
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_DP_DM_BQ:
+case POWER_SUPPLY_PROP_DP_DM_BQ:
 #endif
-	case POWER_SUPPLY_PROP_RERUN_AICL:
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
-	case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
-	case POWER_SUPPLY_PROP_DIE_HEALTH:
+case POWER_SUPPLY_PROP_RERUN_AICL:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
+case POWER_SUPPLY_PROP_STEP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_DIE_HEALTH:
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	case POWER_SUPPLY_PROP_DC_THERMAL_LEVELS:
-	case POWER_SUPPLY_PROP_LIQUID_DETECTION:
-	case POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED:
+case POWER_SUPPLY_PROP_DC_THERMAL_LEVELS:
+case POWER_SUPPLY_PROP_LIQUID_DETECTION:
+case POWER_SUPPLY_PROP_DYNAMIC_FV_ENABLED:
 #endif
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
-	case POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED:
-	case POWER_SUPPLY_PROP_SLOWLY_CHARGING:
+case POWER_SUPPLY_PROP_BATTERY_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_BATTERY_CHARGING_LIMITED:
+case POWER_SUPPLY_PROP_SLOWLY_CHARGING:
 #endif
 		return 1;
 	default:
@@ -3763,7 +3763,7 @@ static int smb5_batt_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc batt_psy_desc = {
 	.name = "battery",
-	.type = POWER_SUPPLY_TYPE_BATTERY,
+.type = POWER_SUPPLY_TYPE_BATTERY,
 	.properties = smb5_batt_props,
 	.num_properties = ARRAY_SIZE(smb5_batt_props),
 	.get_property = smb5_batt_get_prop,
@@ -3773,17 +3773,17 @@ static const struct power_supply_desc batt_psy_desc = {
 
 static int smb5_init_batt_psy(struct smb5 *chip)
 {
-	struct power_supply_config batt_cfg = {};
+struct power_supply_config batt_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	batt_cfg.drv_data = chg;
 	batt_cfg.of_node = chg->dev->of_node;
-	chg->batt_psy = devm_power_supply_register(chg->dev,
+chg->batt_psy = devm_power_supply_register(chg->dev,
 					   &batt_psy_desc,
 					   &batt_cfg);
 	if (IS_ERR(chg->batt_psy)) {
-		pr_err("Couldn't register battery power supply\n");
+pr_err("Couldn't register battery power supply\n");
 		return PTR_ERR(chg->batt_psy);
 	}
 
@@ -3804,7 +3804,7 @@ static int smb5_dr_get_property(struct dual_role_phy_instance *dual_role,
 			enum dual_role_property prop, unsigned int *val)
 {
 	struct smb_charger *chg = dual_role_get_drvdata(dual_role);
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	/* Initializing pr, dr and mode to value 2 corresponding to NONE case */
 	int mode = 2, pr = 2, dr = 2, rc = 0;
 
@@ -3817,23 +3817,23 @@ static int smb5_dr_get_property(struct dual_role_phy_instance *dual_role,
 		return rc;
 	}
 
-	if (chg->connector_type == POWER_SUPPLY_CONNECTOR_TYPEC) {
-		if (chg->typec_mode == POWER_SUPPLY_TYPEC_NONE) {
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_TYPEC) {
+if (chg->typec_mode == POWER_SUPPLY_TYPEC_NONE) {
 			mode = DUAL_ROLE_PROP_MODE_NONE;
 			pr = DUAL_ROLE_PROP_PR_NONE;
 			dr = DUAL_ROLE_PROP_DR_NONE;
 		} else if (chg->typec_mode <
-				POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) {
+POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) {
 			mode = DUAL_ROLE_PROP_MODE_DFP;
 			pr = DUAL_ROLE_PROP_PR_SRC;
 			dr = DUAL_ROLE_PROP_DR_HOST;
 		} else if (chg->typec_mode >=
-				POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) {
+POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) {
 			mode = DUAL_ROLE_PROP_MODE_UFP;
 			pr = DUAL_ROLE_PROP_PR_SNK;
 			dr = DUAL_ROLE_PROP_DR_DEVICE;
 		}
-	} else if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB) {
+} else if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB) {
 		pr = DUAL_ROLE_PROP_PR_NONE;
 
 		if (chg->otg_present) {
@@ -3887,7 +3887,7 @@ static int smb5_dr_set_property(struct dual_role_phy_instance *dual_role,
 		switch (*val) {
 		case DUAL_ROLE_PROP_MODE_UFP:
 			if (chg->typec_mode >=
-					POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) {
+POWER_SUPPLY_TYPEC_SOURCE_DEFAULT) {
 				chg->dr_mode = DUAL_ROLE_PROP_MODE_UFP;
 			} else {
 				chg->pr_swap_in_progress = true;
@@ -3901,8 +3901,8 @@ static int smb5_dr_set_property(struct dual_role_phy_instance *dual_role,
 			}
 			break;
 		case DUAL_ROLE_PROP_MODE_DFP:
-			if (chg->typec_mode < POWER_SUPPLY_TYPEC_SOURCE_DEFAULT
-				&& chg->typec_mode != POWER_SUPPLY_TYPEC_NONE) {
+if (chg->typec_mode < POWER_SUPPLY_TYPEC_SOURCE_DEFAULT
+&& chg->typec_mode != POWER_SUPPLY_TYPEC_NONE) {
 				chg->dr_mode = DUAL_ROLE_PROP_MODE_DFP;
 			} else {
 				chg->pr_swap_in_progress = true;
@@ -3949,7 +3949,7 @@ static int smb5_dr_prop_writeable(struct dual_role_phy_instance *dual_role,
 		return -ENODEV;
 
 	/* uUSB connector does not support role switch */
-	if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
 		return 0;
 
 	switch (prop) {
@@ -4018,7 +4018,7 @@ static int smb5_init_vbus_regulator(struct smb5 *chip)
 	cfg.driver_data = chip;
 
 	chg->vbus_vreg->rdesc.owner = THIS_MODULE;
-	chg->vbus_vreg->rdesc.type = REGULATOR_VOLTAGE;
+chg->vbus_vreg->rdesc.type = REGULATOR_VOLTAGE;
 	chg->vbus_vreg->rdesc.ops = &smb5_vbus_reg_ops;
 	chg->vbus_vreg->rdesc.of_match = "qcom,smb5-vbus";
 	chg->vbus_vreg->rdesc.name = "qcom,smb5-vbus";
@@ -4051,7 +4051,7 @@ static int smb5_init_vconn_regulator(struct smb5 *chip)
 	struct regulator_config cfg = {};
 	int rc = 0;
 
-	if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_MICRO_USB)
 		return 0;
 
 	chg->vconn_vreg = devm_kzalloc(chg->dev, sizeof(*chg->vconn_vreg),
@@ -4063,7 +4063,7 @@ static int smb5_init_vconn_regulator(struct smb5 *chip)
 	cfg.driver_data = chip;
 
 	chg->vconn_vreg->rdesc.owner = THIS_MODULE;
-	chg->vconn_vreg->rdesc.type = REGULATOR_VOLTAGE;
+chg->vconn_vreg->rdesc.type = REGULATOR_VOLTAGE;
 	chg->vconn_vreg->rdesc.ops = &smb5_vconn_reg_ops;
 	chg->vconn_vreg->rdesc.of_match = "qcom,smb5-vconn";
 	chg->vconn_vreg->rdesc.name = "qcom,smb5-vconn";
@@ -4085,7 +4085,7 @@ static int smb5_init_vconn_regulator(struct smb5 *chip)
  ***************************/
 static int smb5_configure_typec(struct smb_charger *chg)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc;
 	u8 val = 0;
 
@@ -4104,8 +4104,8 @@ static int smb5_configure_typec(struct smb_charger *chg)
 	 * reset legacy cable detection by disabling/enabling typeC mode.
 	 */
 	if (chg->pd_not_supported && (val & TYPEC_LEGACY_CABLE_STATUS_BIT)) {
-		pval.intval = POWER_SUPPLY_TYPEC_PR_NONE;
-		smblib_set_prop_typec_power_role(chg, &pval);
+pval.intval = POWER_SUPPLY_TYPEC_PR_NONE;
+smblib_set_prop_typec_power_role(chg, &pval);
 		if (rc < 0) {
 			dev_err(chg->dev, "Couldn't disable TYPEC rc=%d\n", rc);
 			return rc;
@@ -4114,8 +4114,8 @@ static int smb5_configure_typec(struct smb_charger *chg)
 		/* delay before enabling typeC */
 		msleep(50);
 
-		pval.intval = POWER_SUPPLY_TYPEC_PR_DUAL;
-		smblib_set_prop_typec_power_role(chg, &pval);
+pval.intval = POWER_SUPPLY_TYPEC_PR_DUAL;
+smblib_set_prop_typec_power_role(chg, &pval);
 		if (rc < 0) {
 			dev_err(chg->dev, "Couldn't enable TYPEC rc=%d\n", rc);
 			return rc;
@@ -4209,7 +4209,7 @@ static int smb5_configure_typec(struct smb_charger *chg)
 				SEL_SRC_UPPER_REF_BIT, SEL_SRC_UPPER_REF_BIT);
 	if (rc < 0)
 		dev_err(chg->dev,
-			"Couldn't configure CC threshold voltage rc=%d\n", rc);
+"Couldn't configure CC threshold voltage rc=%d\n", rc);
 
 	return rc;
 }
@@ -4449,7 +4449,7 @@ static int smb5_init_hw(struct smb5 *chip)
 	struct smb_charger *chg = &chip->chg;
 	int rc, type = 0;
 	u8 val = 0, mask = 0;
-	union power_supply_propval pval;
+union power_supply_propval pval;
 
 	if (chip->dt.no_battery)
 		chg->fake_capacity = 50;
@@ -4567,10 +4567,10 @@ static int smb5_init_hw(struct smb5 *chip)
 	pr_debug("Connector type=%s\n", type ? "Micro USB" : "TypeC");
 
 	if (type) {
-		chg->connector_type = POWER_SUPPLY_CONNECTOR_MICRO_USB;
+chg->connector_type = POWER_SUPPLY_CONNECTOR_MICRO_USB;
 		rc = smb5_configure_micro_usb(chg);
 	} else {
-		chg->connector_type = POWER_SUPPLY_CONNECTOR_TYPEC;
+chg->connector_type = POWER_SUPPLY_CONNECTOR_TYPEC;
 		rc = smb5_configure_typec(chg);
 	}
 	if (rc < 0) {
@@ -4954,7 +4954,7 @@ static int smb5_init_hw(struct smb5 *chip)
 static int smb5_post_init(struct smb5 *chip)
 {
 	struct smb_charger *chg = &chip->chg;
-	union power_supply_propval pval;
+union power_supply_propval pval;
 	int rc;
 
 	/*
@@ -4964,9 +4964,9 @@ static int smb5_post_init(struct smb5 *chip)
 	 */
 	rerun_election(chg->usb_icl_votable);
 
-	/* configure power role for dual-role */
-	pval.intval = POWER_SUPPLY_TYPEC_PR_DUAL;
-	rc = smblib_set_prop_typec_power_role(chg, &pval);
+/* configure power role for dual-role */
+pval.intval = POWER_SUPPLY_TYPEC_PR_DUAL;
+rc = smblib_set_prop_typec_power_role(chg, &pval);
 	if (rc < 0) {
 		dev_err(chg->dev, "Couldn't configure DRP role rc=%d\n",
 				rc);
@@ -4986,7 +4986,7 @@ static int smb5_determine_initial_status(struct smb5 *chip)
 {
 	struct smb_irq_data irq_data = {chip, "determine-initial-status"};
 	struct smb_charger *chg = &chip->chg;
-	union power_supply_propval val;
+union power_supply_propval val;
 	int rc;
 
 	rc = smblib_get_prop_usb_present(chg, &val);
@@ -5084,9 +5084,9 @@ static struct smb_irq_info smb5_irqs[] = {
 	[CONCURRENT_MODE_DISABLE_IRQ] = {
 		.name		= "concurrent-mode-disable",
 	},
-	[SWITCHER_POWER_OK_IRQ] = {
-		.name		= "switcher-power-ok",
-		.handler	= switcher_power_ok_irq_handler,
+[SWITCHER_POWER_OK_IRQ] = {
+.name		= "switcher-power-ok",
+.handler	= switcher_power_ok_irq_handler,
 	},
 	/* BATTERY IRQs */
 	[BAT_TEMP_IRQ] = {
@@ -5380,7 +5380,7 @@ static int smb5_request_interrupts(struct smb5 *chip)
 	}
 
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	/*enable batt_temp irq when plugin usb poweron charging*/
+/*enable batt_temp irq when plugin usb poweron charging*/
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	if (chg->irq_info[BAT_TEMP_IRQ].irq && (chg->early_usb_attach || chg->early_dc_attach)) {
 #else
@@ -5428,7 +5428,7 @@ static int force_batt_psy_update_write(void *data, u64 val)
 {
 	struct smb_charger *chg = data;
 
-	power_supply_changed(chg->batt_psy);
+power_supply_changed(chg->batt_psy);
 	return 0;
 }
 DEFINE_SIMPLE_ATTRIBUTE(force_batt_psy_update_ops, NULL,
@@ -5438,7 +5438,7 @@ static int force_usb_psy_update_write(void *data, u64 val)
 {
 	struct smb_charger *chg = data;
 
-	power_supply_changed(chg->usb_psy);
+power_supply_changed(chg->usb_psy);
 	return 0;
 }
 DEFINE_SIMPLE_ATTRIBUTE(force_usb_psy_update_ops, NULL,
@@ -5448,7 +5448,7 @@ static int force_dc_psy_update_write(void *data, u64 val)
 {
 	struct smb_charger *chg = data;
 
-	power_supply_changed(chg->dc_psy);
+power_supply_changed(chg->dc_psy);
 	return 0;
 }
 DEFINE_SIMPLE_ATTRIBUTE(force_dc_psy_update_ops, NULL,
@@ -5494,7 +5494,7 @@ static void smb5_create_debugfs(struct smb5 *chip)
 static int smb5_show_charger_status(struct smb5 *chip)
 {
 	struct smb_charger *chg = &chip->chg;
-	union power_supply_propval val;
+union power_supply_propval val;
 	int usb_present, batt_present, batt_health, batt_charge_type;
 	int rc;
 
@@ -5515,7 +5515,7 @@ static int smb5_show_charger_status(struct smb5 *chip)
 	rc = smblib_get_prop_batt_health(chg, &val);
 	if (rc < 0) {
 		pr_err("Couldn't get batt health rc=%d\n", rc);
-		val.intval = POWER_SUPPLY_HEALTH_UNKNOWN;
+val.intval = POWER_SUPPLY_HEALTH_UNKNOWN;
 	}
 	batt_health = val.intval;
 
@@ -5814,10 +5814,10 @@ static void smb5_shutdown(struct platform_device *pdev)
 	/* disable all interrupts */
 	smb5_disable_interrupts(chg);
 
-	/* configure power role for UFP */
-	if (chg->connector_type == POWER_SUPPLY_CONNECTOR_TYPEC)
+/* configure power role for UFP */
+if (chg->connector_type == POWER_SUPPLY_CONNECTOR_TYPEC)
 		smblib_masked_write(chg, TYPE_C_MODE_CFG_REG,
-				TYPEC_POWER_ROLE_CMD_MASK, EN_SNK_ONLY_BIT);
+TYPEC_POWER_ROLE_CMD_MASK, EN_SNK_ONLY_BIT);
 
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	/*fix PD bug.Set 0x1360 = 0x0c when shutdown*/

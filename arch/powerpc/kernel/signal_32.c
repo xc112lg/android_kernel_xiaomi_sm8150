@@ -1,7 +1,7 @@
 /*
  * Signal handling for 32bit PPC and 32bit tasks on 64bit PPC
  *
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  * Copyright (C) 2001 IBM
  * Copyright (C) 1997,1998 Jakub Jelinek (jj@sunsite.mff.cuni.cz)

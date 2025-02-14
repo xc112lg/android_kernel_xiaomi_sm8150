@@ -1,5 +1,5 @@
 /*
- * PowerPC64 LPAR Configuration Information Driver
+* PowerPC64 LPAR Configuration Information Driver
  *
  * Dave Engebretsen engebret@us.ibm.com
  *    Copyright (c) 2003 Dave Engebretsen
@@ -428,7 +428,7 @@ static void parse_em_data(struct seq_file *m)
 
 	if (firmware_has_feature(FW_FEATURE_LPAR) &&
 	    plpar_hcall(H_GET_EM_PARMS, retbuf) == H_SUCCESS)
-		seq_printf(m, "power_mode_data=%016lx\n", retbuf[0]);
+seq_printf(m, "power_mode_data=%016lx\n", retbuf[0]);
 }
 
 static int pseries_lparcfg_data(struct seq_file *m, void *v)
@@ -703,8 +703,8 @@ static int __init lparcfg_init(void)
 	if (firmware_has_feature(FW_FEATURE_SPLPAR))
 		mode |= S_IWUSR;
 
-	if (!proc_create("powerpc/lparcfg", mode, NULL, &lparcfg_fops)) {
-		printk(KERN_ERR "Failed to create powerpc/lparcfg\n");
+if (!proc_create("powerpc/lparcfg", mode, NULL, &lparcfg_fops)) {
+printk(KERN_ERR "Failed to create powerpc/lparcfg\n");
 		return -EIO;
 	}
 	return 0;

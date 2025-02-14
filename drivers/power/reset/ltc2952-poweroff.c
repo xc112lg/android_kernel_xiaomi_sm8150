@@ -1,8 +1,8 @@
 /*
- * LTC2952 (PowerPath) driver
+* LTC2952 (PowerPath) driver
  *
  * Copyright (C) 2014, Xsens Technologies BV <info@xsens.com>
- * Maintainer: René Moll <linux@r-moll.nl>
+ * Maintainer: Ren Moll <linux@r-moll.nl>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +18,7 @@
  * - Description
  * ----------------------------------------
  *
- * This driver is to be used with an external PowerPath Controller (LTC2952).
+* This driver is to be used with an external PowerPath Controller (LTC2952).
  * Its function is to determine when a external shut down is triggered
  * and react by properly shutting down the system.
  *
@@ -33,7 +33,7 @@
  *     A level change indicates the shut-down trigger. If it's state reverts
  *     within the time-out defined by trigger_delay, the shut down is not
  *     executed. If no pin is assigned to this input, the driver will start the
- *     watchdog toggle immediately. The chip will only power off the system if
+*     watchdog toggle immediately. The chip will only power off the system if
  *     it is requested to do so through the kill line.
  *
  * - watchdog (output)
@@ -42,7 +42,7 @@
  *
  * - kill (output)
  *     The last action during shut down is triggering this signalling, such
- *     that the PowerPath Control will power down the hardware.
+*     that the PowerPath Control will power down the hardware.
  *
  * ----------------------------------------
  * - Interrupts
@@ -85,13 +85,13 @@ struct ltc2952_poweroff {
 #define to_ltc2952(p, m) container_of(p, struct ltc2952_poweroff, m)
 
 /*
- * This global variable is only needed for pm_power_off. We should
+* This global variable is only needed for pm_power_off. We should
  * remove it entirely once we don't need the global state anymore.
  */
 static struct ltc2952_poweroff *ltc2952_data;
 
 /**
- * ltc2952_poweroff_timer_wde - Timer callback
+* ltc2952_poweroff_timer_wde - Timer callback
  * Toggles the watchdog reset signal each wde_interval
  *
  * @timer: corresponding timer
@@ -104,7 +104,7 @@ static enum hrtimer_restart ltc2952_poweroff_timer_wde(struct hrtimer *timer)
 	ktime_t now;
 	int state;
 	unsigned long overruns;
-	struct ltc2952_poweroff *data = to_ltc2952(timer, timer_wde);
+struct ltc2952_poweroff *data = to_ltc2952(timer, timer_wde);
 
 	if (data->kernel_panic)
 		return HRTIMER_NORESTART;
@@ -126,17 +126,17 @@ static void ltc2952_poweroff_start_wde(struct ltc2952_poweroff *data)
 static enum hrtimer_restart
 ltc2952_poweroff_timer_trigger(struct hrtimer *timer)
 {
-	struct ltc2952_poweroff *data = to_ltc2952(timer, timer_trigger);
+struct ltc2952_poweroff *data = to_ltc2952(timer, timer_trigger);
 
-	ltc2952_poweroff_start_wde(data);
+ltc2952_poweroff_start_wde(data);
 	dev_info(data->dev, "executing shutdown\n");
-	orderly_poweroff(true);
+orderly_poweroff(true);
 
 	return HRTIMER_NORESTART;
 }
 
 /**
- * ltc2952_poweroff_handler - Interrupt handler
+* ltc2952_poweroff_handler - Interrupt handler
  * Triggered each time the trigger signal changes state and (de)activates a
  * time-out (timer_trigger). Once the time-out is actually reached the shut
  * down is executed.
@@ -146,7 +146,7 @@ ltc2952_poweroff_timer_trigger(struct hrtimer *timer)
  */
 static irqreturn_t ltc2952_poweroff_handler(int irq, void *dev_id)
 {
-	struct ltc2952_poweroff *data = dev_id;
+struct ltc2952_poweroff *data = dev_id;
 
 	if (data->kernel_panic || hrtimer_active(&data->timer_wde)) {
 		/* shutdown is already triggered, nothing to do any more */
@@ -173,18 +173,18 @@ static void ltc2952_poweroff_default(struct ltc2952_poweroff *data)
 	data->trigger_delay = ktime_set(2, 500L * NSEC_PER_MSEC);
 
 	hrtimer_init(&data->timer_trigger, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-	data->timer_trigger.function = ltc2952_poweroff_timer_trigger;
+data->timer_trigger.function = ltc2952_poweroff_timer_trigger;
 
 	hrtimer_init(&data->timer_wde, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-	data->timer_wde.function = ltc2952_poweroff_timer_wde;
+data->timer_wde.function = ltc2952_poweroff_timer_wde;
 }
 
 static int ltc2952_poweroff_init(struct platform_device *pdev)
 {
 	int ret;
-	struct ltc2952_poweroff *data = platform_get_drvdata(pdev);
+struct ltc2952_poweroff *data = platform_get_drvdata(pdev);
 
-	ltc2952_poweroff_default(data);
+ltc2952_poweroff_default(data);
 
 	data->gpio_watchdog = devm_gpiod_get(&pdev->dev, "watchdog",
 					     GPIOD_OUT_LOW);
@@ -214,9 +214,9 @@ static int ltc2952_poweroff_init(struct platform_device *pdev)
 	}
 
 	if (devm_request_irq(&pdev->dev, gpiod_to_irq(data->gpio_trigger),
-			     ltc2952_poweroff_handler,
+ltc2952_poweroff_handler,
 			     (IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING),
-			     "ltc2952-poweroff",
+"ltc2952-poweroff",
 			     data)) {
 		/*
 		 * Some things may have happened:
@@ -226,11 +226,11 @@ static int ltc2952_poweroff_init(struct platform_device *pdev)
 		 * - We couldn't register an interrupt handler
 		 *
 		 * None of these really are problems, but all of them
-		 * disqualify the push button from controlling the power.
+* disqualify the push button from controlling the power.
 		 *
 		 * It is therefore important to note that if the ltc2952
 		 * detects a button press for long enough, it will still start
-		 * its own powerdown window and cut the power on us if we don't
+* its own powerdown window and cut the power on us if we don't
 		 * start the watchdog trigger.
 		 */
 		if (data->gpio_trigger) {
@@ -240,8 +240,8 @@ static int ltc2952_poweroff_init(struct platform_device *pdev)
 			data->gpio_trigger = NULL;
 		}
 		dev_info(&pdev->dev,
-			 "power down trigger input will not be used\n");
-		ltc2952_poweroff_start_wde(data);
+"power down trigger input will not be used\n");
+ltc2952_poweroff_start_wde(data);
 	}
 
 	return 0;
@@ -250,7 +250,7 @@ static int ltc2952_poweroff_init(struct platform_device *pdev)
 static int ltc2952_poweroff_notify_panic(struct notifier_block *nb,
 					 unsigned long code, void *unused)
 {
-	struct ltc2952_poweroff *data = to_ltc2952(nb, panic_notifier);
+struct ltc2952_poweroff *data = to_ltc2952(nb, panic_notifier);
 
 	data->kernel_panic = true;
 	return NOTIFY_DONE;
@@ -259,10 +259,10 @@ static int ltc2952_poweroff_notify_panic(struct notifier_block *nb,
 static int ltc2952_poweroff_probe(struct platform_device *pdev)
 {
 	int ret;
-	struct ltc2952_poweroff *data;
+struct ltc2952_poweroff *data;
 
-	if (pm_power_off) {
-		dev_err(&pdev->dev, "pm_power_off already registered");
+if (pm_power_off) {
+dev_err(&pdev->dev, "pm_power_off already registered");
 		return -EBUSY;
 	}
 
@@ -273,15 +273,15 @@ static int ltc2952_poweroff_probe(struct platform_device *pdev)
 	data->dev = &pdev->dev;
 	platform_set_drvdata(pdev, data);
 
-	ret = ltc2952_poweroff_init(pdev);
+ret = ltc2952_poweroff_init(pdev);
 	if (ret)
 		return ret;
 
 	/* TODO: remove ltc2952_data */
 	ltc2952_data = data;
-	pm_power_off = ltc2952_poweroff_kill;
+pm_power_off = ltc2952_poweroff_kill;
 
-	data->panic_notifier.notifier_call = ltc2952_poweroff_notify_panic;
+data->panic_notifier.notifier_call = ltc2952_poweroff_notify_panic;
 	atomic_notifier_chain_register(&panic_notifier_list,
 				       &data->panic_notifier);
 	dev_info(&pdev->dev, "probe successful\n");
@@ -291,9 +291,9 @@ static int ltc2952_poweroff_probe(struct platform_device *pdev)
 
 static int ltc2952_poweroff_remove(struct platform_device *pdev)
 {
-	struct ltc2952_poweroff *data = platform_get_drvdata(pdev);
+struct ltc2952_poweroff *data = platform_get_drvdata(pdev);
 
-	pm_power_off = NULL;
+pm_power_off = NULL;
 	hrtimer_cancel(&data->timer_trigger);
 	hrtimer_cancel(&data->timer_wde);
 	atomic_notifier_chain_unregister(&panic_notifier_list,
@@ -308,16 +308,16 @@ static const struct of_device_id of_ltc2952_poweroff_match[] = {
 MODULE_DEVICE_TABLE(of, of_ltc2952_poweroff_match);
 
 static struct platform_driver ltc2952_poweroff_driver = {
-	.probe = ltc2952_poweroff_probe,
-	.remove = ltc2952_poweroff_remove,
+.probe = ltc2952_poweroff_probe,
+.remove = ltc2952_poweroff_remove,
 	.driver = {
-		.name = "ltc2952-poweroff",
-		.of_match_table = of_ltc2952_poweroff_match,
+.name = "ltc2952-poweroff",
+.of_match_table = of_ltc2952_poweroff_match,
 	},
 };
 
 module_platform_driver(ltc2952_poweroff_driver);
 
-MODULE_AUTHOR("René Moll <rene.moll@xsens.com>");
+MODULE_AUTHOR("Ren Moll <rene.moll@xsens.com>");
 MODULE_DESCRIPTION("LTC PowerPath power-off driver");
 MODULE_LICENSE("GPL v2");

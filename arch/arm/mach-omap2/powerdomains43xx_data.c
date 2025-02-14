@@ -1,5 +1,5 @@
 /*
- * AM43xx Power domains framework
+* AM43xx Power domains framework
  *
  * Copyright (C) 2013 Texas Instruments, Inc.
  *
@@ -27,7 +27,7 @@ static struct powerdomain gfx_43xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* gfx_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 static struct powerdomain mpu_43xx_pwrdm = {
@@ -48,7 +48,7 @@ static struct powerdomain mpu_43xx_pwrdm = {
 		[1] = PWRSTS_ON,	/* mpu_l2 */
 		[2] = PWRSTS_ON,	/* mpu_ram */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 static struct powerdomain rtc_43xx_pwrdm = {
@@ -85,7 +85,7 @@ static struct powerdomain cefuse_43xx_pwrdm = {
 	.prcm_offs	  = AM43XX_PRM_CEFUSE_INST,
 	.prcm_partition	  = AM43XX_PRM_PARTITION,
 	.pwrsts		  = PWRSTS_OFF_ON,
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 static struct powerdomain per_43xx_pwrdm = {
@@ -108,7 +108,7 @@ static struct powerdomain per_43xx_pwrdm = {
 		[2] = PWRSTS_ON,	/* ram1_mem */
 		[3] = PWRSTS_ON,	/* ram2_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 static struct powerdomain *powerdomains_am43xx[] __initdata = {
@@ -131,6 +131,6 @@ void __init am43xx_powerdomains_init(void)
 {
 	omap4_pwrdm_operations.pwrdm_has_voltdm = am43xx_check_vcvp;
 	pwrdm_register_platform_funcs(&omap4_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_am43xx);
+pwrdm_register_pwrdms(powerdomains_am43xx);
 	pwrdm_complete_init();
 }

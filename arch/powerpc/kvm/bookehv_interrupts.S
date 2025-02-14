@@ -18,7 +18,7 @@
  * Author: Scott Wood <scotwood@freescale.com>
  * Author: Mihai Caraman <mihai.caraman@freescale.com>
  *
- * This file is derived from arch/powerpc/kvm/booke_interrupts.S
+* This file is derived from arch/powerpc/kvm/booke_interrupts.S
  */
 
 #include <asm/ppc_asm.h>
@@ -176,7 +176,7 @@ END_BTB_FLUSH_SECTION
 #define EX_TLB			6
 
 /*
- * For input register values, see arch/powerpc/include/asm/kvm_booke_hv_asm.h
+* For input register values, see arch/powerpc/include/asm/kvm_booke_hv_asm.h
  */
 .macro kvm_handler intno type scratch, paca_ex, ex_r10, ex_r11, srr0, srr1, flags
  _GLOBAL(kvmppc_handler_\intno\()_\srr1)
@@ -286,7 +286,7 @@ kvm_handler BOOKE_INTERRUPT_LRAT_ERROR, EX_PARAMS(GEN), \
 	SPRN_SRR0, SPRN_SRR1, (NEED_EMU | NEED_DEAR | NEED_ESR)
 #else
 /*
- * For input register values, see arch/powerpc/include/asm/kvm_booke_hv_asm.h
+* For input register values, see arch/powerpc/include/asm/kvm_booke_hv_asm.h
  */
 .macro kvm_handler intno srr0, srr1, flags
 _GLOBAL(kvmppc_handler_\intno\()_\srr1)

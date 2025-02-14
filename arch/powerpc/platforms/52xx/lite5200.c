@@ -130,20 +130,20 @@ static void lite5200_suspend_prepare(void __iomem *mbar)
 	mpc52xx_set_wakeup_gpio(pin, level);
 
 	/*
-	 * power down usb port
+* power down usb port
 	 * this needs to be called before of-ohci suspend code
 	 */
 
-	/* set ports to "power switched" and "powered at the same time"
+/* set ports to "power switched" and "powered at the same time"
 	 * USB Rh descriptor A: NPS = 0, PSM = 0 */
 	out_be32(mbar + 0x1048, in_be32(mbar + 0x1048) & ~0x300);
-	/* USB Rh status: LPS = 1 - turn off power */
+/* USB Rh status: LPS = 1 - turn off power */
 	out_be32(mbar + 0x1050, 0x00000001);
 }
 
 static void lite5200_resume_finish(void __iomem *mbar)
 {
-	/* USB Rh status: LPSC = 1 - turn on power */
+/* USB Rh status: LPSC = 1 - turn on power */
 	out_be32(mbar + 0x1050, 0x00010000);
 }
 #endif

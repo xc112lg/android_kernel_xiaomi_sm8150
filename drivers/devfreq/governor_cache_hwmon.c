@@ -62,7 +62,7 @@ static DEFINE_MUTEX(monitor_lock);
 static ssize_t show_##name(struct device *dev,				\
 			struct device_attribute *attr, char *buf)	\
 {									\
-	struct devfreq *df = to_devfreq(dev);				\
+struct devfreq *df = to_devfreq(dev);				\
 	struct cache_hwmon_node *hw = df->data;				\
 	return snprintf(buf, PAGE_SIZE, "%u\n", hw->name);		\
 }
@@ -74,7 +74,7 @@ static ssize_t store_##name(struct device *dev,				\
 {									\
 	int ret;							\
 	unsigned int val;						\
-	struct devfreq *df = to_devfreq(dev);				\
+struct devfreq *df = to_devfreq(dev);				\
 	struct cache_hwmon_node *hw = df->data;				\
 	ret = kstrtoint(buf, 10, &val);					\
 	if (ret)							\
@@ -142,7 +142,7 @@ static unsigned long measure_mrps_and_set_irq(struct cache_hwmon_node *node,
 }
 
 static void compute_cache_freq(struct cache_hwmon_node *node,
-		struct mrps_stats *mrps, unsigned long *freq)
+struct mrps_stats *mrps, unsigned long *freq)
 {
 	unsigned long new_mhz;
 	unsigned int busy;
@@ -165,15 +165,15 @@ static void compute_cache_freq(struct cache_hwmon_node *node,
 	node->prev_mhz = new_mhz;
 
 	new_mhz += node->guard_band_mhz;
-	*freq = new_mhz * 1000;
-	trace_cache_hwmon_update(dev_name(node->hw->df->dev.parent), *freq);
+*freq = new_mhz * 1000;
+trace_cache_hwmon_update(dev_name(node->hw->df->dev.parent), *freq);
 }
 
 #define TOO_SOON_US	(1 * USEC_PER_MSEC)
 int update_cache_hwmon(struct cache_hwmon *hwmon)
 {
 	struct cache_hwmon_node *node;
-	struct devfreq *df;
+struct devfreq *df;
 	ktime_t ts;
 	unsigned int us;
 	int ret;
@@ -194,11 +194,11 @@ int update_cache_hwmon(struct cache_hwmon *hwmon)
 	}
 
 	dev_dbg(df->dev.parent, "Got update request\n");
-	devfreq_monitor_stop(df);
+devfreq_monitor_stop(df);
 
 	/*
-	 * Don't recalc cache freq if the interrupt comes right after a
-	 * previous cache freq calculation.  This is done for two reasons:
+* Don't recalc cache freq if the interrupt comes right after a
+* previous cache freq calculation.  This is done for two reasons:
 	 *
 	 * 1. Sampling the cache request during a very short duration can
 	 *    result in a very inaccurate measurement due to very short
@@ -212,28 +212,28 @@ int update_cache_hwmon(struct cache_hwmon *hwmon)
 	us = ktime_to_us(ktime_sub(ts, node->prev_ts));
 	if (us > TOO_SOON_US) {
 		mutex_lock(&df->lock);
-		ret = update_devfreq(df);
+ret = update_devfreq(df);
 		if (ret)
 			dev_err(df->dev.parent,
-				"Unable to update freq on request!\n");
+"Unable to update freq on request!\n");
 		mutex_unlock(&df->lock);
 	}
 
-	devfreq_monitor_start(df);
+devfreq_monitor_start(df);
 
 	mutex_unlock(&monitor_lock);
 	return 0;
 }
 
 static int devfreq_cache_hwmon_get_freq(struct devfreq *df,
-					unsigned long *freq)
+unsigned long *freq)
 {
 	struct mrps_stats stat;
 	struct cache_hwmon_node *node = df->data;
 
 	memset(&stat, 0, sizeof(stat));
 	measure_mrps_and_set_irq(node, &stat);
-	compute_cache_freq(node, &stat, freq);
+compute_cache_freq(node, &stat, freq);
 
 	return 0;
 }
@@ -284,7 +284,7 @@ static int start_monitoring(struct devfreq *df)
 
 	node->prev_ts = ktime_get();
 	node->prev_mhz = 0;
-	mrps.mrps[HIGH] = (df->previous_freq / 1000) - node->guard_band_mhz;
+mrps.mrps[HIGH] = (df->previous_freq / 1000) - node->guard_band_mhz;
 	mrps.mrps[HIGH] /= node->cycles_per_high_req;
 	mrps.mrps[MED] = mrps.mrps[LOW] = 0;
 
@@ -295,7 +295,7 @@ static int start_monitoring(struct devfreq *df)
 	}
 
 	mutex_lock(&monitor_lock);
-	devfreq_monitor_start(df);
+devfreq_monitor_start(df);
 	node->mon_started = true;
 	mutex_unlock(&monitor_lock);
 
@@ -310,7 +310,7 @@ static int start_monitoring(struct devfreq *df)
 sysfs_fail:
 	mutex_lock(&monitor_lock);
 	node->mon_started = false;
-	devfreq_monitor_stop(df);
+devfreq_monitor_stop(df);
 	mutex_unlock(&monitor_lock);
 	hw->stop_hwmon(hw);
 err_start:
@@ -328,7 +328,7 @@ static void stop_monitoring(struct devfreq *df)
 	sysfs_remove_group(&df->dev.kobj, &dev_attr_group);
 	mutex_lock(&monitor_lock);
 	node->mon_started = false;
-	devfreq_monitor_stop(df);
+devfreq_monitor_stop(df);
 	mutex_unlock(&monitor_lock);
 	hw->stop_hwmon(hw);
 	df->data = node->orig_data;
@@ -343,7 +343,7 @@ static int devfreq_cache_hwmon_ev_handler(struct devfreq *df,
 	unsigned int sample_ms;
 
 	switch (event) {
-	case DEVFREQ_GOV_START:
+case DEVFREQ_GOV_START:
 		sample_ms = df->profile->polling_ms;
 		sample_ms = max(MIN_MS, sample_ms);
 		sample_ms = min(MAX_MS, sample_ms);
@@ -356,16 +356,16 @@ static int devfreq_cache_hwmon_ev_handler(struct devfreq *df,
 		dev_dbg(df->dev.parent, "Enabled Cache HW monitor governor\n");
 		break;
 
-	case DEVFREQ_GOV_STOP:
+case DEVFREQ_GOV_STOP:
 		stop_monitoring(df);
 		dev_dbg(df->dev.parent, "Disabled Cache HW monitor governor\n");
 		break;
 
-	case DEVFREQ_GOV_INTERVAL:
+case DEVFREQ_GOV_INTERVAL:
 		sample_ms = *(unsigned int *)data;
 		sample_ms = max(MIN_MS, sample_ms);
 		sample_ms = min(MAX_MS, sample_ms);
-		devfreq_interval_update(df, &sample_ms);
+devfreq_interval_update(df, &sample_ms);
 		break;
 	}
 
@@ -374,8 +374,8 @@ static int devfreq_cache_hwmon_ev_handler(struct devfreq *df,
 
 static struct devfreq_governor devfreq_cache_hwmon = {
 	.name = "cache_hwmon",
-	.get_target_freq = devfreq_cache_hwmon_get_freq,
-	.event_handler = devfreq_cache_hwmon_ev_handler,
+.get_target_freq = devfreq_cache_hwmon_get_freq,
+.event_handler = devfreq_cache_hwmon_ev_handler,
 };
 
 int register_cache_hwmon(struct device *dev, struct cache_hwmon *hwmon)
@@ -402,7 +402,7 @@ int register_cache_hwmon(struct device *dev, struct cache_hwmon *hwmon)
 
 	mutex_lock(&register_lock);
 	if (!use_cnt) {
-		ret = devfreq_add_governor(&devfreq_cache_hwmon);
+ret = devfreq_add_governor(&devfreq_cache_hwmon);
 		if (!ret)
 			use_cnt++;
 	}

@@ -58,11 +58,11 @@ struct idtp9220_device_info {
 	struct pinctrl *idt_pinctrl;
 	struct pinctrl_state *idt_gpio_active;
 	struct pinctrl_state *idt_gpio_suspend;
-	struct power_supply *usb_psy;
-	struct power_supply *dc_psy;
-	struct power_supply *batt_psy;
-	struct power_supply *idtp_psy;
-	struct power_supply *wireless_psy;
+struct power_supply *usb_psy;
+struct power_supply *dc_psy;
+struct power_supply *batt_psy;
+struct power_supply *idtp_psy;
+struct power_supply *wireless_psy;
 	struct mutex read_lock;
 	struct mutex write_lock;
 	struct delayed_work chg_monitor_work;
@@ -91,8 +91,8 @@ struct idtp9220_device_info {
 	int dcin_present;
 	int epp;
 	int vbuck;
-	int power_off_mode;
-	int power_max;
+int power_off_mode;
+int power_max;
 	u8 header;
 	u8 cmd;
 	int is_compatible_hwid;
@@ -100,7 +100,7 @@ struct idtp9220_device_info {
 	int last_vbuck;
 	int is_car_tx;
 	int last_icl;
-	int power_good_flag;
+int power_good_flag;
 
 	/*idt9220 charging info*/
 	int vout;
@@ -135,22 +135,22 @@ module_param_named(signal_range, idt_signal_range, int, 0644);
 
 static int idtp9220_get_property_names(struct idtp9220_device_info *di)
 {
-	di->batt_psy = power_supply_get_by_name("battery");
+di->batt_psy = power_supply_get_by_name("battery");
 	if (!di->batt_psy) {
 		dev_err(di->dev, "[idt] no batt_psy,return\n");
 		return -EINVAL;
 	}
-	di->dc_psy = power_supply_get_by_name("dc");
+di->dc_psy = power_supply_get_by_name("dc");
 	if (!di->dc_psy) {
 		dev_err(di->dev, "[idt] no dc_psy,return\n");
 		return -EINVAL;
 	}
-	di->usb_psy = power_supply_get_by_name("usb");
+di->usb_psy = power_supply_get_by_name("usb");
 	if (!di->usb_psy) {
 		dev_err(di->dev, "[idt] no usb_psy,return\n");
 		return -EINVAL;
 	}
-	di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 	if (!di->wireless_psy) {
 		dev_err(di->dev, "[idt] no wireless_psy,return\n");
 		return -EINVAL;
@@ -263,21 +263,21 @@ void idtp922x_receivePkt(struct idtp9220_device_info *di, u8 *buf)
 void idtp922x_set_adap_vol(struct idtp9220_device_info *di, u16 mv)
 {
 	dev_info(di->dev, "set adapter vol to %d\n", mv);
-	di->bus.write(di, REG_FC_VOLTAGE_L, mv & 0xff);
-	di->bus.write(di, REG_FC_VOLTAGE_H, (mv >> 8) & 0xff);
+di->bus.write(di, REG_FC_VOLTAGE_L, mv & 0xff);
+di->bus.write(di, REG_FC_VOLTAGE_H, (mv >> 8) & 0xff);
 	di->bus.write(di, REG_SSCMND, VSWITCH);
 }
 
 void idtp922x_set_pmi_icl(struct idtp9220_device_info *di, int mA)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int rc;
 
 	rc = idtp9220_get_property_names(di);
 	val.intval = mA;
-	power_supply_set_property(di->dc_psy, POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_set_property(di->dc_psy, POWER_SUPPLY_PROP_CURRENT_MAX,
 				  &val);
 }
 
@@ -431,7 +431,7 @@ static void idtp9220_set_vout(struct idtp9220_device_info *di, int mv)
 		return;
 	val = (mv - 3500) / 100;
 	di->bus.write(di, REG_VOUT_SET, val);
-	dev_info(di->dev, "[idtp9220]: set vout voltage is 0x%x\n", val);
+dev_info(di->dev, "[idtp9220]: set vout voltage is 0x%x\n", val);
 }
 
 static void idtp9220_set_reset(struct idtp9220_device_info *di)
@@ -447,10 +447,10 @@ static int get_cmdline(struct idtp9220_device_info *di)
 {
 	if (strnstr(saved_command_line,
 		    "androidboot.mode=", strlen(saved_command_line))) {
-		di->power_off_mode = 1;
-		dev_info(di->dev, "[idtp9220]: enter power off charging app\n");
+di->power_off_mode = 1;
+dev_info(di->dev, "[idtp9220]: enter power off charging app\n");
 	} else {
-		di->power_off_mode = 0;
+di->power_off_mode = 0;
 		dev_info(di->dev, "[idtp9220]: enter normal boot mode\n");
 	}
 	return 1;
@@ -486,7 +486,7 @@ static int idtp9220_get_freq(struct idtp9220_device_info *di)
 {
 	u8 data_list[2];
 
-	di->bus.read_buf(di, REG_FREQ_ADDR, data_list, 2);
+di->bus.read_buf(di, REG_FREQ_ADDR, data_list, 2);
 	di->f = 64 * HSCLK / (data_list[0] | (data_list[1] << 8)) / 10;
 
 	return di->f;
@@ -506,14 +506,14 @@ static int idtp9220_get_vrect(struct idtp9220_device_info *di)
 
 static int idtp9220_get_power_max(struct idtp9220_device_info *di)
 {
-	int power_max;
+int power_max;
 	u8 val;
 
-	di->bus.read(di, REG_POWER_MAX, &val);
-	power_max = (val / 2) * 1000;
-	dev_info(di->dev, "rx power max is %dmW\n", power_max);
+di->bus.read(di, REG_POWER_MAX, &val);
+power_max = (val / 2) * 1000;
+dev_info(di->dev, "rx power max is %dmW\n", power_max);
 
-	return power_max;
+return power_max;
 }
 
 static void idtp9220_send_device_auth(struct idtp9220_device_info *di)
@@ -652,7 +652,7 @@ static ssize_t chip_freq_show(struct device *dev, struct device_attribute *attr,
 	struct idtp9220_device_info *di = i2c_get_clientdata(client);
 	int f;
 
-	f = idtp9220_get_freq(di);
+f = idtp9220_get_freq(di);
 
 	return sprintf(buf, "Output Current: %dkHz\n", f);
 }
@@ -665,13 +665,13 @@ static void idtp9220_charging_info(struct idtp9220_device_info *di)
 
 	idtp9220_get_vout(di);
 	idtp9220_get_iout(di);
-	idtp9220_get_freq(di);
+idtp9220_get_freq(di);
 	idtp9220_get_vrect(di);
 	vbuck_ret = idtp9220_get_vbuck(di);
 
 	dev_info(
 		di->dev,
-		"%s:Vout:%dmV,Iout:%dmA,Freq:%dKHz,Vrect:%dmV,SS:%d, Vbuck:%d\n",
+"%s:Vout:%dmV,Iout:%dmA,Freq:%dKHz,Vrect:%dmV,SS:%d, Vbuck:%d\n",
 		__func__, di->vout, di->iout, di->f, di->vrect, di->ss,
 		vbuck_ret);
 }
@@ -723,7 +723,7 @@ static int idtp9220_set_present(struct idtp9220_device_info *di, int enable)
 		di->last_icl = 0;
 		di->last_vbuck = 0;
 		di->is_car_tx = 0;
-		di->power_off_mode = 0;
+di->power_off_mode = 0;
 		di->is_epp_qc3 = 0;
 		di->is_vin_limit = 0;
 		di->bpp_vout_rise = 0;
@@ -797,7 +797,7 @@ static struct attribute *sysfs_attrs[] = {
 	&dev_attr_chip_version.attr,
 	&dev_attr_chip_vout.attr,
 	&dev_attr_chip_iout.attr,
-	&dev_attr_chip_freq.attr,
+&dev_attr_chip_freq.attr,
 	&dev_attr_chip_enable.attr,
 	&dev_attr_vout_regulator.attr,
 	NULL,
@@ -975,7 +975,7 @@ static void idtp9220_dc_check_work(struct work_struct *work)
 		schedule_delayed_work(&di->dc_check_work,
 				      msecs_to_jiffies(2500));
 	}
-	power_supply_changed(di->idtp_psy);
+power_supply_changed(di->idtp_psy);
 }
 
 static void idtp9220_fast_operate_work(struct work_struct *work)
@@ -984,7 +984,7 @@ static void idtp9220_fast_operate_work(struct work_struct *work)
 		work, struct idtp9220_device_info, fast_operate_work.work);
 	int ret = -1;
 	int usb_present, typec_mode;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
@@ -992,10 +992,10 @@ static void idtp9220_fast_operate_work(struct work_struct *work)
 	if (ret < 0)
 		return;
 
-	power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_PRESENT, &val);
+power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_PRESENT, &val);
 	usb_present = val.intval;
 
-	power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_TYPEC_MODE,
+power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_TYPEC_MODE,
 				  &val);
 	typec_mode = val.intval;
 
@@ -1004,16 +1004,16 @@ static void idtp9220_fast_operate_work(struct work_struct *work)
 
 	if (gpio_is_valid(di->dt_props.wpc_det_gpio)) {
 		ret = gpio_get_value(di->dt_props.wpc_det_gpio);
-		/* power good irq will not trigger after insert typec audio/charger
+/* power good irq will not trigger after insert typec audio/charger
 		 * connector while wireless charging. WR for this situation.
 		 */
 		if ((!usb_present && ret) ||
 		    (usb_present && ret &&
-		     (typec_mode == POWER_SUPPLY_TYPEC_SINK_AUDIO_ADAPTER ||
-		      typec_mode == POWER_SUPPLY_TYPEC_NONE))) {
+(typec_mode == POWER_SUPPLY_TYPEC_SINK_AUDIO_ADAPTER ||
+typec_mode == POWER_SUPPLY_TYPEC_NONE))) {
 			dev_info(
 				di->dev,
-				"dc out but power_good high, reset by sleep\n");
+"dc out but power_good high, reset by sleep\n");
 			idtp9220_set_enable_mode(di, false);
 			msleep(10);
 			idtp9220_set_enable_mode(di, true);
@@ -1026,10 +1026,10 @@ static void idtp9220_chg_detect_work(struct work_struct *work)
 	struct idtp9220_device_info *di = container_of(
 		work, struct idtp9220_device_info, chg_detect_work.work);
 
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int rc;
@@ -1042,7 +1042,7 @@ static void idtp9220_chg_detect_work(struct work_struct *work)
 
 	/*set idtp9220 into sleep mode when usbin*/
 
-	power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_ONLINE, &val);
+power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_ONLINE, &val);
 	if (val.intval) {
 		dev_info(di->dev, "[idt] usb_online:%d set chip disable\n",
 			 val.intval);
@@ -1051,19 +1051,19 @@ static void idtp9220_chg_detect_work(struct work_struct *work)
 	}
 
 	if (di->dc_psy) {
-		power_supply_get_property(di->dc_psy, POWER_SUPPLY_PROP_ONLINE,
+power_supply_get_property(di->dc_psy, POWER_SUPPLY_PROP_ONLINE,
 					  &val);
 		dev_info(di->dev, "[idt] dc_online %d\n", val.intval);
 		if (val.intval && di->wireless_psy) {
 			idtp9220_int_enable(di);
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
-			di->epp = idtp9220_get_power_profile(di);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+di->epp = idtp9220_get_power_profile(di);
 
 			get_cmdline(di);
-			if (!di->power_off_mode)
+if (!di->power_off_mode)
 				idtp9220_set_reset(di);
 			else
 				schedule_delayed_work(&di->irq_work,
@@ -1113,8 +1113,8 @@ static void idtp9220_epp_connect_load_work(struct work_struct *work)
 		work, struct idtp9220_device_info, epp_connect_load_work.work);
 	int dc_load_curr = 0;
 
-	if (di->power_max <= 10000)
-		dc_load_curr = (di->power_max - 1000) / 5 * 1000;
+if (di->power_max <= 10000)
+dc_load_curr = (di->power_max - 1000) / 5 * 1000;
 	else
 		dc_load_curr = DC_LOAD_CURRENT;
 
@@ -1128,7 +1128,7 @@ static void idtp9220_cmd_check_work(struct work_struct *work)
 
 	dev_info(di->dev, "[idt] %s: \n", __func__);
 	idtp922x_get_tx_vin(di);
-	if (di->power_off_mode) {
+if (di->power_off_mode) {
 		schedule_delayed_work(&di->vout_regulator_work,
 				      msecs_to_jiffies(10));
 	}
@@ -1142,7 +1142,7 @@ static void idtp9220_mophie_tx_work(struct work_struct *work)
 	u8 buf[2] = { 0 };
 	u16 int_val = 0;
 
-	ret = idtp9220_get_power_profile(di);
+ret = idtp9220_get_power_profile(di);
 	if (ret) {
 		ret = di->bus.read_buf(di, REG_TX_TYPE, buf, 2);
 		if (ret < 0)
@@ -1167,24 +1167,24 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 	int icl_curr = 0, vbuck = 0, adapter_vol = 0;
 	int soc = 0, batt_sts = 0, health = 0;
 	int icl_setted = 0;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_HEALTH, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_HEALTH, &val);
 		health = val.intval;
 	}
 
@@ -1241,7 +1241,7 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 		vbuck = VBUCK_DEFAULT_VOL;
 		icl_curr = min(DC_SDP_CURRENT, icl_curr);
 
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			di->status = FULL_MODE;
 		else if (soc < TAPER_SOC - 1)
 			di->status = NORMAL_MODE;
@@ -1252,7 +1252,7 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 		vbuck = VBUCK_DEFAULT_VOL;
 		icl_curr = SCREEN_OFF_FUL_CURRENT;
 
-		if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 			di->status = RECHG_MODE;
 			icl_curr = DC_LOW_CURRENT;
 		}
@@ -1265,14 +1265,14 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 
 		if (soc < TAPER_SOC - 1)
 			di->status = NORMAL_MODE;
-		else if (batt_sts == POWER_SUPPLY_STATUS_FULL)
+else if (batt_sts == POWER_SUPPLY_STATUS_FULL)
 			di->status = FULL_MODE;
 
 		if (di->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		break;
 	default:
@@ -1280,22 +1280,22 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 	}
 
 	switch (health) {
-	case POWER_SUPPLY_HEALTH_GOOD:
+case POWER_SUPPLY_HEALTH_GOOD:
 		break;
-	case POWER_SUPPLY_HEALTH_COOL:
+case POWER_SUPPLY_HEALTH_COOL:
 		break;
-	case POWER_SUPPLY_HEALTH_WARM:
+case POWER_SUPPLY_HEALTH_WARM:
 		adapter_vol = ADAPTER_BPP_LIMIT_VOL;
 		vbuck = VBUCK_DEFAULT_VOL;
 		icl_curr = min(DC_SDP_CURRENT, icl_curr);
 		break;
-	case POWER_SUPPLY_HEALTH_OVERVOLTAGE:
+case POWER_SUPPLY_HEALTH_OVERVOLTAGE:
 		adapter_vol = ADAPTER_BPP_LIMIT_VOL;
 		vbuck = VBUCK_DEFAULT_VOL;
 		icl_curr = min(SCREEN_OFF_FUL_CURRENT, icl_curr);
 		break;
-	case POWER_SUPPLY_HEALTH_COLD:
-	case POWER_SUPPLY_HEALTH_HOT:
+case POWER_SUPPLY_HEALTH_COLD:
+case POWER_SUPPLY_HEALTH_HOT:
 		adapter_vol = ADAPTER_BPP_LIMIT_VOL;
 		vbuck = VBUCK_DEFAULT_VOL;
 		icl_curr = SCREEN_OFF_FUL_CURRENT;
@@ -1347,17 +1347,17 @@ static void idtp9220_qc2_f1_tx_work(struct work_struct *work)
 	int soc = 0, batt_sts = 0;
 	int vout = VOUT_VAL_6500_MV;
 	int dc_icl = DC_QC2_CURRENT;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 	}
 
@@ -1412,7 +1412,7 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 	struct idtp9220_device_info *di = container_of(
 		work, struct idtp9220_device_info, vout_regulator_work.work);
 
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int ret;
@@ -1420,8 +1420,8 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 	int soc = 0;
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 	}
 
@@ -1448,9 +1448,9 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 		ret = idtp9220_get_property_names(di);
 		if (di->wireless_psy) {
 			val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 			msleep(200);
 			if (!di->is_epp_qc3 && !di->is_vin_limit)
 				idtp922x_set_pmi_icl(di, DC_MI_CURRENT);
@@ -1468,7 +1468,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 	int soc = 0, health = 0, batt_sts = 0;
 	int adapter_vol = 0, icl_curr = 0;
 	int cur_now = 0, vol_now = 0, vin_inc = 0;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
@@ -1501,8 +1501,8 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 	case ADAPTER_AUTH_FAILED:
 		if (di->epp) {
 			di->vbuck = VBUCK_QC_VOL;
-			if (di->power_max <= 10000)
-				icl_curr = ((di->power_max - 1000) /
+if (di->power_max <= 10000)
+icl_curr = ((di->power_max - 1000) /
 					    (VBUCK_QC_VOL / 1000)) *
 					   1000;
 			else
@@ -1525,7 +1525,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		icl_curr = DC_SDP_CURRENT;
 		break;
 	case ADAPTER_XIAOMI_QC3:
-	case ADAPTER_ZIMI_CAR_POWER:
+case ADAPTER_ZIMI_CAR_POWER:
 	case ADAPTER_XIAOMI_PD_40W:
 		if (di->epp) {
 			adapter_vol = ADAPTER_EPP_MI_VOL;
@@ -1540,28 +1540,28 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		break;
 	}
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_STATUS, &val);
 	batt_sts = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CAPACITY,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CAPACITY,
 				  &val);
 	soc = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
 				  &val);
 	vol_now = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CURRENT_NOW,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CURRENT_NOW,
 				  &val);
 	cur_now = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_HEALTH, &val);
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_HEALTH, &val);
 	health = val.intval;
 
 	idtp9220_get_iout(di);
 
-	if ((batt_sts == POWER_SUPPLY_STATUS_DISCHARGING) && di->dcin_present &&
-	    di->power_good_flag) {
+if ((batt_sts == POWER_SUPPLY_STATUS_DISCHARGING) && di->dcin_present &&
+di->power_good_flag) {
 		dev_info(di->dev,
 			 "discharge when dc and pwr present, reset chip\n");
 		schedule_delayed_work(&di->fast_operate_work,
@@ -1650,7 +1650,7 @@ static void idtp9220_wpc_det_work(struct work_struct *work)
 {
 	struct idtp9220_device_info *di = container_of(
 		work, struct idtp9220_device_info, wpc_det_work.work);
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int ret = 0;
@@ -1670,18 +1670,18 @@ static void idtp9220_wpc_det_work(struct work_struct *work)
 			/* check dc present to judge device skewing */
 			schedule_delayed_work(&di->dc_check_work,
 					      msecs_to_jiffies(2500));
-			di->power_good_flag = 1;
+di->power_good_flag = 1;
 			val.intval = 1;
 			idtp9220_int_enable(di);
 		} else {
 			cancel_delayed_work(&di->dc_check_work);
-			di->power_good_flag = 0;
+di->power_good_flag = 0;
 			val.intval = 0;
 			di->ss = 2;
 		}
-		power_supply_set_property(
+power_supply_set_property(
 			di->wireless_psy,
-			POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
 	}
 
 	return;
@@ -1738,9 +1738,9 @@ static void idtp9220_irq_work(struct work_struct *work)
 	}
 
 	if (int_val & INT_VOUT_ON) {
-		di->epp = idtp9220_get_power_profile(di);
+di->epp = idtp9220_get_power_profile(di);
 		if (di->epp) {
-			di->power_max = idtp9220_get_power_max(di);
+di->power_max = idtp9220_get_power_max(di);
 			schedule_delayed_work(&di->epp_connect_load_work,
 					      msecs_to_jiffies(0));
 		} else
@@ -1853,7 +1853,7 @@ static void idtp9220_irq_work(struct work_struct *work)
 			if (di->is_car_tx &&
 			    (recive_data[1] == ADAPTER_XIAOMI_QC3))
 
-				di->tx_charger_type = ADAPTER_ZIMI_CAR_POWER;
+di->tx_charger_type = ADAPTER_ZIMI_CAR_POWER;
 			else
 				di->tx_charger_type = recive_data[1];
 
@@ -1866,11 +1866,11 @@ static void idtp9220_irq_work(struct work_struct *work)
 			schedule_delayed_work(&di->chg_monitor_work,
 					      msecs_to_jiffies(1000));
 			if (di->wireless_psy)
-				power_supply_changed(di->wireless_psy);
+power_supply_changed(di->wireless_psy);
 			break;
 		case BC_READ_Vin:
 			tx_vin = recive_data[1] | (recive_data[2] << 8);
-			if (!di->power_off_mode) {
+if (!di->power_off_mode) {
 				if (di->epp)
 					idtp922x_set_adap_vol(
 						di, ADAPTER_EPP_MI_VOL);
@@ -1975,37 +1975,37 @@ static int idtp9220_get_version(struct idtp9220_device_info *di)
 */
 
 static enum power_supply_property idtp9220_props[] = {
-	POWER_SUPPLY_PROP_PIN_ENABLED,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_WIRELESS_VERSION,
-	POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
-	POWER_SUPPLY_PROP_TX_ADAPTER,
+POWER_SUPPLY_PROP_PIN_ENABLED,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_WIRELESS_VERSION,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_TX_ADAPTER,
 };
 
 static int idtp9220_get_prop(struct power_supply *psy,
-			     enum power_supply_property psp,
-			     union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
+struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		val->intval = gpio_get_value(di->dt_props.enable_gpio);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = di->dcin_present;
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		val->intval = di->epp;
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		val->intval = di->ss;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		val->intval = idtp9220_get_vout_regulator(di);
 		break;
-	case POWER_SUPPLY_PROP_TX_ADAPTER:
+case POWER_SUPPLY_PROP_TX_ADAPTER:
 		val->intval = di->tx_charger_type;
 		break;
 	default:
@@ -2015,26 +2015,26 @@ static int idtp9220_get_prop(struct power_supply *psy,
 }
 
 static int idtp9220_set_prop(struct power_supply *psy,
-			     enum power_supply_property psp,
-			     const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
+struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	int data;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		rc = idtp9220_set_enable_mode(di, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = idtp9220_set_present(di, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		di->ss = val->intval;
-		power_supply_changed(di->idtp_psy);
+power_supply_changed(di->idtp_psy);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		data = val->intval / 1000;
 		if (data >= 6000) {
 			idtp9220_set_vout_regulator(di, data);
@@ -2049,15 +2049,15 @@ static int idtp9220_set_prop(struct power_supply *psy,
 }
 
 static int idtp9220_prop_is_writeable(struct power_supply *psy,
-				      enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
-	case POWER_SUPPLY_PROP_PRESENT:
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		return 1;
 	default:
 		rc = 0;
@@ -2069,7 +2069,7 @@ static int idtp9220_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc idtp_psy_desc = {
 	.name = "idt",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = idtp9220_props,
 	.num_properties = ARRAY_SIZE(idtp9220_props),
 	.get_property = idtp9220_get_prop,
@@ -2083,7 +2083,7 @@ static int idtp9220_probe(struct i2c_client *client,
 	int ret = 0;
 	struct idtp9220_device_info *di;
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
-	struct power_supply_config idtp_cfg = {};
+struct power_supply_config idtp_cfg = {};
 
 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE)) {
 		dev_err(&client->dev, "i2c check functionality failed!\n");
@@ -2142,7 +2142,7 @@ static int idtp9220_probe(struct i2c_client *client,
 	}
 	idtp_cfg.drv_data = di;
 	di->idtp_psy =
-		power_supply_register(di->dev, &idtp_psy_desc, &idtp_cfg);
+power_supply_register(di->dev, &idtp_psy_desc, &idtp_cfg);
 
 	INIT_DELAYED_WORK(&di->chg_monitor_work, idtp9220_monitor_work);
 	INIT_DELAYED_WORK(&di->chg_detect_work, idtp9220_chg_detect_work);
@@ -2189,7 +2189,7 @@ static void idtp9220_shutdown(struct i2c_client *client)
 {
 	struct idtp9220_device_info *di = i2c_get_clientdata(client);
 
-	if (di->power_good_flag)
+if (di->power_good_flag)
 		idtp9220_set_reset(di);
 }
 

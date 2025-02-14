@@ -27,7 +27,7 @@ static void GLUE(X_PFX,ack_pending)(struct kvmppc_xive_vcpu *xc)
 	 * ignore the interrupt or we might incorrectly lose an IPB
 	 * bit.
 	 */
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 		__be64 qw1 = __x_readq(__x_tima + TM_QW1_OS);
 		u8 pipr = be64_to_cpu(qw1) & 0xff;
 		if (pipr >= xc->hw_cppr)

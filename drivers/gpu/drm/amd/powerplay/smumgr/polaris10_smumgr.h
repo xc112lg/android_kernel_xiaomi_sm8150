@@ -34,8 +34,8 @@
 
 struct polaris10_pt_defaults {
 	uint8_t   SviLoadLineEn;
-	uint8_t   SviLoadLineVddC;
-	uint8_t   TDC_VDDC_ThrottleReleaseLimitPerc;
+uint8_t   SviLoadLineVddC;
+uint8_t   TDC_VDDC_ThrottleReleaseLimitPerc;
 	uint8_t   TDC_MAWt;
 	uint8_t   TdcWaterfallCtl;
 	uint8_t   DTEAmbientTempBase;
@@ -47,8 +47,8 @@ struct polaris10_pt_defaults {
 };
 
 struct polaris10_range_table {
-	uint32_t trans_lower_frequency; /* in 10khz */
-	uint32_t trans_upper_frequency;
+uint32_t trans_lower_frequency; /* in 10khz */
+uint32_t trans_upper_frequency;
 };
 
 struct polaris10_smumgr {
@@ -56,9 +56,9 @@ struct polaris10_smumgr {
 	uint8_t protected_mode;
 	SMU74_Discrete_DpmTable              smc_state_table;
 	struct SMU74_Discrete_Ulv            ulv_setting;
-	struct SMU74_Discrete_PmFuses  power_tune_table;
+struct SMU74_Discrete_PmFuses  power_tune_table;
 	struct polaris10_range_table                range_table[NUM_SCLK_RANGE];
-	const struct polaris10_pt_defaults       *power_tune_defaults;
+const struct polaris10_pt_defaults       *power_tune_defaults;
 	uint32_t               activity_target[SMU74_MAX_LEVELS_GRAPHICS];
 	uint32_t               bif_sclk_table[SMU74_MAX_LEVELS_LINK];
 };

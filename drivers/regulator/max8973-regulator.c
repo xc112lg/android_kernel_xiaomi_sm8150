@@ -128,16 +128,16 @@ struct max8973_chip {
 };
 
 /*
- * find_voltage_set_register: Find new voltage configuration register (VOUT).
+* find_voltage_set_register: Find new voltage configuration register (VOUT).
  * The finding of the new VOUT register will be based on the LRU mechanism.
- * Each VOUT register will have different voltage configured . This
- * Function will look if any of the VOUT register have requested voltage set
+* Each VOUT register will have different voltage configured . This
+* Function will look if any of the VOUT register have requested voltage set
  * or not.
  *     - If it is already there then it will make that register as most
  *       recently used and return as found so that caller need not to set
  *       the VOUT register but need to set the proper gpios to select this
  *       VOUT register.
- *     - If requested voltage is not found then it will use the least
+*     - If requested voltage is not found then it will use the least
  *       recently mechanism to get new VOUT register for new configuration
  *       and will return not_found so that caller need to set new VOUT
  *       register and then gpios (both).
@@ -198,7 +198,7 @@ static int max8973_dcdc_set_voltage_sel(struct regulator_dev *rdev,
 	 * recently used register for new configuration.
 	 */
 	if (gpio_is_valid(max->dvs_gpio))
-		found = find_voltage_set_register(max, vsel,
+found = find_voltage_set_register(max, vsel,
 					&vout_reg, &gpio_val);
 
 	if (!found) {
@@ -342,12 +342,12 @@ static int max8973_get_current_limit(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops max8973_dcdc_ops = {
-	.get_voltage_sel	= max8973_dcdc_get_voltage_sel,
-	.set_voltage_sel	= max8973_dcdc_set_voltage_sel,
-	.list_voltage		= regulator_list_voltage_linear,
+.get_voltage_sel	= max8973_dcdc_get_voltage_sel,
+.set_voltage_sel	= max8973_dcdc_set_voltage_sel,
+.list_voltage		= regulator_list_voltage_linear,
 	.set_mode		= max8973_dcdc_set_mode,
 	.get_mode		= max8973_dcdc_get_mode,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= max8973_set_ramp_delay,
 };
 
@@ -397,8 +397,8 @@ static int max8973_init_dcdc(struct max8973_chip *max,
 		max->desc.enable_time = 240;
 	}
 
-	if (pdata->control_flags & MAX8973_CONTROL_FREQ_SHIFT_9PER_ENABLE)
-		control1 |= MAX8973_FREQSHIFT_9PER;
+if (pdata->control_flags & MAX8973_CONTROL_FREQ_SHIFT_9PER_ENABLE)
+control1 |= MAX8973_FREQSHIFT_9PER;
 
 	if ((pdata->junction_temp_warning == MAX77621_TJINT_WARNING_TEMP_120) &&
 	    (max->id == MAX77621))
@@ -585,8 +585,8 @@ static struct max8973_regulator_platform_data *max8973_parse_dt(
 		pdata->control_flags  |=
 				MAX8973_CONTROL_OUTPUT_ACTIVE_DISCH_ENABLE;
 
-	if (of_property_read_bool(np, "maxim,enable-frequency-shift"))
-		pdata->control_flags  |= MAX8973_CONTROL_FREQ_SHIFT_9PER_ENABLE;
+if (of_property_read_bool(np, "maxim,enable-frequency-shift"))
+pdata->control_flags  |= MAX8973_CONTROL_FREQ_SHIFT_9PER_ENABLE;
 
 	if (of_property_read_bool(np, "maxim,enable-bias-control"))
 		pdata->control_flags  |= MAX8973_CONTROL_BIAS_ENABLE;
@@ -689,11 +689,11 @@ static int max8973_probe(struct i2c_client *client,
 	max->desc.name = id->name;
 	max->desc.id = 0;
 	max->desc.ops = &max->ops;
-	max->desc.type = REGULATOR_VOLTAGE;
+max->desc.type = REGULATOR_VOLTAGE;
 	max->desc.owner = THIS_MODULE;
 	max->desc.min_uV = MAX8973_MIN_VOLATGE;
 	max->desc.uV_step = MAX8973_VOLATGE_STEP;
-	max->desc.n_voltages = MAX8973_BUCK_N_VOLTAGE;
+max->desc.n_voltages = MAX8973_BUCK_N_VOLTAGE;
 
 	max->dvs_gpio = (pdata->dvs_gpio) ? pdata->dvs_gpio : -EINVAL;
 	max->enable_gpio = (pdata->enable_gpio) ? pdata->enable_gpio : -EINVAL;
@@ -735,8 +735,8 @@ static int max8973_probe(struct i2c_client *client,
 		 * If there is no DVS GPIO, the VOUT register
 		 * address is fixed.
 		 */
-		max->ops.set_voltage_sel = regulator_set_voltage_sel_regmap;
-		max->ops.get_voltage_sel = regulator_get_voltage_sel_regmap;
+max->ops.set_voltage_sel = regulator_set_voltage_sel_regmap;
+max->ops.get_voltage_sel = regulator_get_voltage_sel_regmap;
 		max->desc.vsel_reg = max->curr_vout_reg;
 		max->desc.vsel_mask = MAX8973_VOUT_MASK;
 	}

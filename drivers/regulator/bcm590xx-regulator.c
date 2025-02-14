@@ -148,7 +148,7 @@ static const struct regulator_linear_range dcdc_sdsr1_ranges[] = {
 struct bcm590xx_info {
 	const char *name;
 	const char *vin_name;
-	u8 n_voltages;
+u8 n_voltages;
 	const unsigned int *volt_table;
 	u8 n_linear_ranges;
 	const struct regulator_linear_range *linear_ranges;
@@ -157,14 +157,14 @@ struct bcm590xx_info {
 #define BCM590XX_REG_TABLE(_name, _table) \
 	{ \
 		.name = #_name, \
-		.n_voltages = ARRAY_SIZE(_table), \
+.n_voltages = ARRAY_SIZE(_table), \
 		.volt_table = _table, \
 	}
 
 #define BCM590XX_REG_RANGES(_name, _ranges) \
 	{ \
 		.name = #_name, \
-		.n_voltages = 64, \
+.n_voltages = 64, \
 		.n_linear_ranges = ARRAY_SIZE(_ranges), \
 		.linear_ranges = _ranges, \
 	}
@@ -254,20 +254,20 @@ static const struct regulator_ops bcm590xx_ops_ldo = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_table,
-	.map_voltage		= regulator_map_voltage_iterate,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_table,
+.map_voltage		= regulator_map_voltage_iterate,
 };
 
 static const struct regulator_ops bcm590xx_ops_dcdc = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
 };
 
 static const struct regulator_ops bcm590xx_ops_vbus = {
@@ -401,7 +401,7 @@ static int bcm590xx_probe(struct platform_device *pdev)
 		pmu->desc[i].supply_name = info->vin_name;
 		pmu->desc[i].id = i;
 		pmu->desc[i].volt_table = info->volt_table;
-		pmu->desc[i].n_voltages = info->n_voltages;
+pmu->desc[i].n_voltages = info->n_voltages;
 		pmu->desc[i].linear_ranges = info->linear_ranges;
 		pmu->desc[i].n_linear_ranges = info->n_linear_ranges;
 
@@ -423,7 +423,7 @@ static int bcm590xx_probe(struct platform_device *pdev)
 			pmu->desc[i].enable_mask = BCM590XX_REG_ENABLE;
 		}
 		pmu->desc[i].enable_reg = bcm590xx_get_enable_register(i);
-		pmu->desc[i].type = REGULATOR_VOLTAGE;
+pmu->desc[i].type = REGULATOR_VOLTAGE;
 		pmu->desc[i].owner = THIS_MODULE;
 
 		config.dev = bcm590xx->dev;

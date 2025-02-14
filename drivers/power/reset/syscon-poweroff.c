@@ -1,5 +1,5 @@
 /*
- * Generic Syscon Poweroff Driver
+* Generic Syscon Poweroff Driver
  *
  * Copyright (c) 2015, National Instruments Corp.
  * Author: Moritz Fischer <moritz.fischer@ettus.com>
@@ -33,12 +33,12 @@ static u32 mask;
 
 static void syscon_poweroff(void)
 {
-	/* Issue the poweroff */
+/* Issue the poweroff */
 	regmap_update_bits(map, offset, mask, value);
 
 	mdelay(1000);
 
-	pr_emerg("Unable to poweroff system\n");
+pr_emerg("Unable to poweroff system\n");
 }
 
 static int syscon_poweroff_probe(struct platform_device *pdev)
@@ -73,43 +73,43 @@ static int syscon_poweroff_probe(struct platform_device *pdev)
 		mask = 0xFFFFFFFF;
 	}
 
-	if (pm_power_off) {
-		lookup_symbol_name((ulong)pm_power_off, symname);
+if (pm_power_off) {
+lookup_symbol_name((ulong)pm_power_off, symname);
 		dev_err(&pdev->dev,
-		"pm_power_off already claimed %p %s",
-		pm_power_off, symname);
+"pm_power_off already claimed %p %s",
+pm_power_off, symname);
 		return -EBUSY;
 	}
 
-	pm_power_off = syscon_poweroff;
+pm_power_off = syscon_poweroff;
 
 	return 0;
 }
 
 static int syscon_poweroff_remove(struct platform_device *pdev)
 {
-	if (pm_power_off == syscon_poweroff)
-		pm_power_off = NULL;
+if (pm_power_off == syscon_poweroff)
+pm_power_off = NULL;
 
 	return 0;
 }
 
 static const struct of_device_id syscon_poweroff_of_match[] = {
-	{ .compatible = "syscon-poweroff" },
+{ .compatible = "syscon-poweroff" },
 	{}
 };
 
 static struct platform_driver syscon_poweroff_driver = {
-	.probe = syscon_poweroff_probe,
-	.remove = syscon_poweroff_remove,
+.probe = syscon_poweroff_probe,
+.remove = syscon_poweroff_remove,
 	.driver = {
-		.name = "syscon-poweroff",
-		.of_match_table = syscon_poweroff_of_match,
+.name = "syscon-poweroff",
+.of_match_table = syscon_poweroff_of_match,
 	},
 };
 
 static int __init syscon_poweroff_register(void)
 {
-	return platform_driver_register(&syscon_poweroff_driver);
+return platform_driver_register(&syscon_poweroff_driver);
 }
 device_initcall(syscon_poweroff_register);

@@ -1,5 +1,5 @@
 /*
- * Battery power supply driver for X-Powers AXP20X and AXP22X PMICs
+* Battery power supply driver for X-Powers AXP20X and AXP22X PMICs
  *
  * Copyright 2016 Free Electrons NextThing Co.
  *	Quentin Schulz <quentin.schulz@free-electrons.com>
@@ -55,7 +55,7 @@
 
 struct axp20x_batt_ps {
 	struct regmap *regmap;
-	struct power_supply *batt;
+struct power_supply *batt;
 	struct device *dev;
 	struct iio_channel *batt_chrg_i;
 	struct iio_channel *batt_dischrg_i;
@@ -156,15 +156,15 @@ static int axp20x_get_constant_charge_current(struct axp20x_batt_ps *axp,
 }
 
 static int axp20x_battery_get_prop(struct power_supply *psy,
-				   enum power_supply_property psp,
-				   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
+struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
 	int ret = 0, reg, val1;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_PWR_OP_MODE,
 				  &reg);
 		if (ret)
@@ -173,14 +173,14 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 		val->intval = !!(reg & AXP20X_PWR_OP_BATT_PRESENT);
 		break;
 
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_PWR_INPUT_STATUS,
 				  &reg);
 		if (ret)
 			return ret;
 
 		if (reg & AXP20X_PWR_STATUS_BAT_CHARGING) {
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 			return 0;
 		}
 
@@ -190,7 +190,7 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 			return ret;
 
 		if (val1) {
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 			return 0;
 		}
 
@@ -203,37 +203,37 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 		 * directly the raw percentage without any scaling to 7 bits.
 		 */
 		if ((val1 & AXP209_FG_PERCENT) == 100)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
 
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_PWR_OP_MODE,
 				  &val1);
 		if (ret)
 			return ret;
 
 		if (val1 & AXP20X_PWR_OP_BATT_ACTIVATED) {
-			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+val->intval = POWER_SUPPLY_HEALTH_DEAD;
 			return 0;
 		}
 
-		val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		ret = axp20x_get_constant_charge_current(axp20x_batt,
 							 &val->intval);
 		if (ret)
 			return ret;
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		val->intval = axp20x_batt->max_ccc;
 		break;
 
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_PWR_INPUT_STATUS,
 				  &reg);
 		if (ret)
@@ -248,11 +248,11 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 		if (ret)
 			return ret;
 
-		/* IIO framework gives mA but Power Supply framework gives uA */
+/* IIO framework gives mA but Power Supply framework gives uA */
 		val->intval *= 1000;
 		break;
 
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		/* When no battery is present, return capacity is 100% */
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_PWR_OP_MODE,
 				  &reg);
@@ -279,14 +279,14 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 		val->intval = reg & AXP209_FG_PERCENT;
 		break;
 
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
 		if (axp20x_batt->axp_id == AXP209_ID)
-			return axp20x_battery_get_max_voltage(axp20x_batt,
+return axp20x_battery_get_max_voltage(axp20x_batt,
 							      &val->intval);
-		return axp22x_battery_get_max_voltage(axp20x_batt,
+return axp22x_battery_get_max_voltage(axp20x_batt,
 						      &val->intval);
 
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
 		ret = regmap_read(axp20x_batt->regmap, AXP20X_V_OFF, &reg);
 		if (ret)
 			return ret;
@@ -294,13 +294,13 @@ static int axp20x_battery_get_prop(struct power_supply *psy,
 		val->intval = 2600000 + 100000 * (reg & AXP20X_V_OFF_MASK);
 		break;
 
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		ret = iio_read_channel_processed(axp20x_batt->batt_v,
 						 &val->intval);
 		if (ret)
 			return ret;
 
-		/* IIO framework gives mV but Power Supply framework gives uV */
+/* IIO framework gives mV but Power Supply framework gives uV */
 		val->intval *= 1000;
 		break;
 
@@ -332,8 +332,8 @@ static int axp20x_battery_set_max_voltage(struct axp20x_batt_ps *axp20x_batt,
 
 	default:
 		/*
-		 * AXP20x max voltage can be set to 4.36V and AXP22X max voltage
-		 * can be set to 4.22V and 4.24V, but these voltages are too
+* AXP20x max voltage can be set to 4.36V and AXP22X max voltage
+* can be set to 4.22V and 4.24V, but these voltages are too
 		 * high for Lithium based batteries (AXP PMICs are supposed to
 		 * be used with these kinds of battery).
 		 */
@@ -390,9 +390,9 @@ static int axp20x_set_max_constant_charge_current(struct axp20x_batt_ps *axp,
 	return 0;
 }
 static int axp20x_set_voltage_min_design(struct axp20x_batt_ps *axp_batt,
-					 int min_voltage)
+int min_voltage)
 {
-	int val1 = (min_voltage - 2600000) / 100000;
+int val1 = (min_voltage - 2600000) / 100000;
 
 	if (val1 < 0 || val1 > AXP20X_V_OFF_MASK)
 		return -EINVAL;
@@ -402,22 +402,22 @@ static int axp20x_set_voltage_min_design(struct axp20x_batt_ps *axp_batt,
 }
 
 static int axp20x_battery_set_prop(struct power_supply *psy,
-				   enum power_supply_property psp,
-				   const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
+struct axp20x_batt_ps *axp20x_batt = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		return axp20x_set_voltage_min_design(axp20x_batt, val->intval);
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+return axp20x_set_voltage_min_design(axp20x_batt, val->intval);
 
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		return axp20x_battery_set_max_voltage(axp20x_batt, val->intval);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+return axp20x_battery_set_max_voltage(axp20x_batt, val->intval);
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		return axp20x_set_constant_charge_current(axp20x_batt,
 							  val->intval);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		return axp20x_set_max_constant_charge_current(axp20x_batt,
 							      val->intval);
 
@@ -427,31 +427,31 @@ static int axp20x_battery_set_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property axp20x_battery_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_CAPACITY,
 };
 
 static int axp20x_battery_prop_writeable(struct power_supply *psy,
-					 enum power_supply_property psp)
+enum power_supply_property psp)
 {
-	return psp == POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN ||
-	       psp == POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN ||
-	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT ||
-	       psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
+return psp == POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN ||
+psp == POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN ||
+psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT ||
+psp == POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX;
 }
 
 static const struct power_supply_desc axp20x_batt_ps_desc = {
 	.name = "axp20x-battery",
-	.type = POWER_SUPPLY_TYPE_BATTERY,
+.type = POWER_SUPPLY_TYPE_BATTERY,
 	.properties = axp20x_battery_props,
 	.num_properties = ARRAY_SIZE(axp20x_battery_props),
 	.property_is_writeable = axp20x_battery_prop_writeable,
@@ -461,10 +461,10 @@ static const struct power_supply_desc axp20x_batt_ps_desc = {
 
 static const struct of_device_id axp20x_battery_ps_id[] = {
 	{
-		.compatible = "x-powers,axp209-battery-power-supply",
+.compatible = "x-powers,axp209-battery-power-supply",
 		.data = (void *)AXP209_ID,
 	}, {
-		.compatible = "x-powers,axp221-battery-power-supply",
+.compatible = "x-powers,axp221-battery-power-supply",
 		.data = (void *)AXP221_ID,
 	}, { /* sentinel */ },
 };
@@ -473,8 +473,8 @@ MODULE_DEVICE_TABLE(of, axp20x_battery_ps_id);
 static int axp20x_power_probe(struct platform_device *pdev)
 {
 	struct axp20x_batt_ps *axp20x_batt;
-	struct power_supply_config psy_cfg = {};
-	struct power_supply_battery_info info;
+struct power_supply_config psy_cfg = {};
+struct power_supply_battery_info info;
 
 	if (!of_device_is_available(pdev->dev.of_node))
 		return -ENODEV;
@@ -517,23 +517,23 @@ static int axp20x_power_probe(struct platform_device *pdev)
 
 	axp20x_batt->axp_id = (uintptr_t)of_device_get_match_data(&pdev->dev);
 
-	axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
+axp20x_batt->batt = devm_power_supply_register(&pdev->dev,
 						       &axp20x_batt_ps_desc,
 						       &psy_cfg);
 	if (IS_ERR(axp20x_batt->batt)) {
-		dev_err(&pdev->dev, "failed to register power supply: %ld\n",
+dev_err(&pdev->dev, "failed to register power supply: %ld\n",
 			PTR_ERR(axp20x_batt->batt));
 		return PTR_ERR(axp20x_batt->batt);
 	}
 
-	if (!power_supply_get_battery_info(axp20x_batt->batt, &info)) {
-		int vmin = info.voltage_min_design_uv;
+if (!power_supply_get_battery_info(axp20x_batt->batt, &info)) {
+int vmin = info.voltage_min_design_uv;
 		int ccc = info.constant_charge_current_max_ua;
 
-		if (vmin > 0 && axp20x_set_voltage_min_design(axp20x_batt,
+if (vmin > 0 && axp20x_set_voltage_min_design(axp20x_batt,
 							      vmin))
 			dev_err(&pdev->dev,
-				"couldn't set voltage_min_design\n");
+"couldn't set voltage_min_design\n");
 
 		/* Set max to unverified value to be able to set CCC */
 		axp20x_batt->max_ccc = ccc;
@@ -559,9 +559,9 @@ static int axp20x_power_probe(struct platform_device *pdev)
 }
 
 static struct platform_driver axp20x_batt_driver = {
-	.probe    = axp20x_power_probe,
+.probe    = axp20x_power_probe,
 	.driver   = {
-		.name  = "axp20x-battery-power-supply",
+.name  = "axp20x-battery-power-supply",
 		.of_match_table = axp20x_battery_ps_id,
 	},
 };

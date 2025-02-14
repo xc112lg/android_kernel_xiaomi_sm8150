@@ -140,7 +140,7 @@ int mpc52xx_pm_enter(suspend_state_t state)
 	clk_enables = in_be32(&cdm->clk_enables);
 	out_be32(&cdm->clk_enables, clk_enables & 0x00088000);
 
-	/* disable power management */
+/* disable power management */
 	msr = mfmsr();
 	mtmsr(msr & ~MSR_POW);
 
@@ -160,7 +160,7 @@ int mpc52xx_pm_enter(suspend_state_t state)
 	memcpy(irq_0x500, saved_0x500, mpc52xx_ds_cached_size);
 	flush_icache_range((unsigned long)irq_0x500, irq_0x500_stop);
 
-	/* restore old power mode */
+/* restore old power mode */
 	mtmsr(msr & ~MSR_POW);
 	mtspr(SPRN_HID0, hid0);
 	mtmsr(msr);

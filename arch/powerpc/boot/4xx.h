@@ -1,5 +1,5 @@
 /*
- * PowerPC 4xx related functions
+* PowerPC 4xx related functions
  *
  * Copyright 2007 IBM Corporation.
  * Josh Boyer <jwboyer@linux.vnet.ibm.com>

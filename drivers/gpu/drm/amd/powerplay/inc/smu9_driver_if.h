@@ -118,13 +118,13 @@ typedef enum {
 } DSPCLK_e;
 
 typedef struct {
-  uint16_t Freq; /* in MHz */
-  uint16_t Vid;  /* min voltage in SVI2 VID */
+uint16_t Freq; /* in MHz */
+uint16_t Vid;  /* min voltage in SVI2 VID */
 } DisplayClockTable_t;
 
 typedef struct {
-  /* PowerTune */
-  uint16_t SocketPowerLimit; /* Watts */
+/* PowerTune */
+uint16_t SocketPowerLimit; /* Watts */
   uint16_t TdcLimit;         /* Amps */
   uint16_t EdcLimit;         /* Amps */
   uint16_t TedgeLimit;       /* Celcius */
@@ -163,46 +163,46 @@ typedef struct {
   uint8_t  UlvMp1clkDid;     /* DID for ULV mode. 0 means CLK will not be modified in ULV. */
   uint8_t  UlvGfxclkBypass;  /* 1 to turn off/bypass Gfxclk during ULV, 0 to leave Gfxclk on during ULV */
 
-  /* VDDCR_SOC Voltages */
-  uint8_t      SocVid[NUM_EVV_VOLTAGE_LEVELS];
+/* VDDCR_SOC Voltages */
+uint8_t      SocVid[NUM_EVV_VOLTAGE_LEVELS];
 
-  /* This is the minimum voltage needed to run the SOC. */
-  uint8_t      MinVoltageVid; /* Minimum Voltage ("Vmin") of ASIC */
-  uint8_t      MaxVoltageVid; /* Maximum Voltage allowable */
-  uint8_t      MaxVidStep; /* Max VID step that SMU will request. Multiple steps are taken if voltage change exceeds this value. */
+/* This is the minimum voltage needed to run the SOC. */
+uint8_t      MinVoltageVid; /* Minimum Voltage ("Vmin") of ASIC */
+uint8_t      MaxVoltageVid; /* Maximum Voltage allowable */
+uint8_t      MaxVidStep; /* Max VID step that SMU will request. Multiple steps are taken if voltage change exceeds this value. */
   uint8_t      padding8;
 
   uint8_t      UlvPhaseSheddingPsi0; /* set this to 1 to set PSI0/1 to 1 in ULV mode */
   uint8_t      UlvPhaseSheddingPsi1; /* set this to 1 to set PSI0/1 to 1 in ULV mode */
   uint8_t      padding8_2[2];
 
-  /* SOC Frequencies */
+/* SOC Frequencies */
   PllSetting_t GfxclkLevel        [NUM_GFXCLK_DPM_LEVELS];
 
   uint8_t      SocclkDid          [NUM_SOCCLK_DPM_LEVELS];          /* DID */
-  uint8_t      SocDpmVoltageIndex [NUM_SOCCLK_DPM_LEVELS];
+uint8_t      SocDpmVoltageIndex [NUM_SOCCLK_DPM_LEVELS];
 
   uint8_t      VclkDid            [NUM_UVD_DPM_LEVELS];            /* DID */
   uint8_t      DclkDid            [NUM_UVD_DPM_LEVELS];            /* DID */
-  uint8_t      UvdDpmVoltageIndex [NUM_UVD_DPM_LEVELS];
+uint8_t      UvdDpmVoltageIndex [NUM_UVD_DPM_LEVELS];
 
   uint8_t      EclkDid            [NUM_VCE_DPM_LEVELS];            /* DID */
-  uint8_t      VceDpmVoltageIndex [NUM_VCE_DPM_LEVELS];
+uint8_t      VceDpmVoltageIndex [NUM_VCE_DPM_LEVELS];
 
   uint8_t      Mp0clkDid          [NUM_MP0CLK_DPM_LEVELS];          /* DID */
-  uint8_t      Mp0DpmVoltageIndex [NUM_MP0CLK_DPM_LEVELS];
+uint8_t      Mp0DpmVoltageIndex [NUM_MP0CLK_DPM_LEVELS];
 
   DisplayClockTable_t DisplayClockTable[DSPCLK_COUNT][NUM_DSPCLK_LEVELS];
   QuadraticInt_t      DisplayClock2Gfxclk[DSPCLK_COUNT];
 
-  uint8_t      GfxDpmVoltageMode;
-  uint8_t      SocDpmVoltageMode;
-  uint8_t      UclkDpmVoltageMode;
-  uint8_t      UvdDpmVoltageMode;
+uint8_t      GfxDpmVoltageMode;
+uint8_t      SocDpmVoltageMode;
+uint8_t      UclkDpmVoltageMode;
+uint8_t      UvdDpmVoltageMode;
 
-  uint8_t      VceDpmVoltageMode;
-  uint8_t      Mp0DpmVoltageMode;
-  uint8_t      DisplayDpmVoltageMode;
+uint8_t      VceDpmVoltageMode;
+uint8_t      Mp0DpmVoltageMode;
+uint8_t      DisplayDpmVoltageMode;
   uint8_t      padding8_3;
 
   uint16_t     GfxclkSlewRate;
@@ -219,7 +219,7 @@ typedef struct {
   /* UCLK States */
   uint8_t      MemVid[NUM_UCLK_DPM_LEVELS];    /* VID */
   PllSetting_t UclkLevel[NUM_UCLK_DPM_LEVELS];   /* Full PLL settings */
-  uint8_t      MemSocVoltageIndex[NUM_UCLK_DPM_LEVELS];
+uint8_t      MemSocVoltageIndex[NUM_UCLK_DPM_LEVELS];
   uint8_t      LowestUclkReservedForUlv; /* Set this to 1 if UCLK DPM0 is reserved for ULV-mode only */
   uint8_t      paddingUclk[3];
   uint16_t     NumMemoryChannels;  /* Used for memory bandwidth calculations */
@@ -245,8 +245,8 @@ typedef struct {
   uint16_t     FanGainEdge;
   uint16_t     FanGainHotspot;
   uint16_t     FanGainLiquid;
-  uint16_t     FanGainVrVddc;
-  uint16_t     FanGainVrMvdd;
+uint16_t     FanGainVrVddc;
+uint16_t     FanGainVrMvdd;
   uint16_t     FanGainPlx;
   uint16_t     FanGainHbm;
   uint16_t     FanPwmMin;
@@ -291,7 +291,7 @@ typedef struct {
   QuadraticInt_t  AvfsGbCksOn;  /* Replacement equation */
   QuadraticInt_t  AvfsGbCksOff; /* Replacement equation */
 
-  uint8_t      StaticVoltageOffsetVid[NUM_GFXCLK_DPM_LEVELS]; /* This values are added on to the final voltage calculation */
+uint8_t      StaticVoltageOffsetVid[NUM_GFXCLK_DPM_LEVELS]; /* This values are added on to the final voltage calculation */
 
   /* Ageing Guardband Parameters */
   uint32_t     AConstant[3];
@@ -300,7 +300,7 @@ typedef struct {
   uint16_t     Platform_sigma;
   uint16_t     PSM_Age_CompFactor;
 
-  uint32_t     DpmLevelPowerDelta;
+uint32_t     DpmLevelPowerDelta;
 
   uint8_t      EnableBoostState;
   uint8_t      AConstant_Shift;
@@ -316,8 +316,8 @@ typedef struct {
   GbVdroopTable_t AcgBtcGbVdroopTable;
   QuadraticInt_t  AcgAvfsGb;
 
-  /* ACG Frequency Table, in Mhz */
-  uint32_t     AcgFreqTable[NUM_GFXCLK_DPM_LEVELS];
+/* ACG Frequency Table, in Mhz */
+uint32_t     AcgFreqTable[NUM_GFXCLK_DPM_LEVELS];
 
   /* Padding - ignore */
   uint32_t     MmHubPadding[3]; /* SMU internal use */
@@ -374,8 +374,8 @@ typedef struct {
 typedef struct {
   uint16_t avgPsmCount[30];
   uint16_t minPsmCount[30];
-  float    avgPsmVoltage[30];
-  float    minPsmVoltage[30];
+float    avgPsmVoltage[30];
+float    minPsmVoltage[30];
 
   uint32_t MmHubPadding[7]; /* SMU internal use */
 } AvfsDebugTable_t;
@@ -409,13 +409,13 @@ typedef struct {
   uint32_t AvfsTempMid;
   uint32_t AvfsTempHot;
 
-  uint32_t InversionVoltage; /*  in mV with 2 fractional bits */
+uint32_t InversionVoltage; /*  in mV with 2 fractional bits */
 
   int32_t P2V_m1; /* Q8.24 */
   int32_t P2V_m2; /* Q12.12 */
   int32_t P2V_b;  /* Q32 */
 
-  uint32_t P2VCharzFreq; /* in 10KHz units */
+uint32_t P2VCharzFreq; /* in 10KHz units */
 
   uint32_t EnabledAvfsModules;
 

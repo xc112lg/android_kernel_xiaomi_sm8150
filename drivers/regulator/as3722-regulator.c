@@ -1,5 +1,5 @@
 /*
- * Voltage regulator support for AMS AS3722 PMIC
+* Voltage regulator support for AMS AS3722 PMIC
  *
  * Copyright (C) 2013 ams
  *
@@ -63,7 +63,7 @@ struct as3722_register_mapping {
 	const char *sname;
 	u8 vsel_reg;
 	u8 vsel_mask;
-	int n_voltages;
+int n_voltages;
 	u32 enable_reg;
 	u8 enable_mask;
 	u32 control_reg;
@@ -91,7 +91,7 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 	{
 		.regulator_id = AS3722_REGULATOR_ID_SD0,
 		.name = "as3722-sd0",
-		.vsel_reg = AS3722_SD0_VOLTAGE_REG,
+.vsel_reg = AS3722_SD0_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(0),
@@ -103,7 +103,7 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 	{
 		.regulator_id = AS3722_REGULATOR_ID_SD1,
 		.name = "as3722-sd1",
-		.vsel_reg = AS3722_SD1_VOLTAGE_REG,
+.vsel_reg = AS3722_SD1_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(1),
@@ -116,7 +116,7 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 		.regulator_id = AS3722_REGULATOR_ID_SD2,
 		.name = "as3722-sd2",
 		.sname = "vsup-sd2",
-		.vsel_reg = AS3722_SD2_VOLTAGE_REG,
+.vsel_reg = AS3722_SD2_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(2),
@@ -124,13 +124,13 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 		.sleep_ctrl_mask = AS3722_SD2_EXT_ENABLE_MASK,
 		.control_reg = AS3722_SD23_CONTROL_REG,
 		.mode_mask = AS3722_SD2_MODE_FAST,
-		.n_voltages = AS3722_SD2_VSEL_MAX + 1,
+.n_voltages = AS3722_SD2_VSEL_MAX + 1,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_SD3,
 		.name = "as3722-sd3",
 		.sname = "vsup-sd3",
-		.vsel_reg = AS3722_SD3_VOLTAGE_REG,
+.vsel_reg = AS3722_SD3_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(3),
@@ -138,13 +138,13 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 		.sleep_ctrl_mask = AS3722_SD3_EXT_ENABLE_MASK,
 		.control_reg = AS3722_SD23_CONTROL_REG,
 		.mode_mask = AS3722_SD3_MODE_FAST,
-		.n_voltages = AS3722_SD2_VSEL_MAX + 1,
+.n_voltages = AS3722_SD2_VSEL_MAX + 1,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_SD4,
 		.name = "as3722-sd4",
 		.sname = "vsup-sd4",
-		.vsel_reg = AS3722_SD4_VOLTAGE_REG,
+.vsel_reg = AS3722_SD4_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(4),
@@ -152,13 +152,13 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 		.sleep_ctrl_mask = AS3722_SD4_EXT_ENABLE_MASK,
 		.control_reg = AS3722_SD4_CONTROL_REG,
 		.mode_mask = AS3722_SD4_MODE_FAST,
-		.n_voltages = AS3722_SD2_VSEL_MAX + 1,
+.n_voltages = AS3722_SD2_VSEL_MAX + 1,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_SD5,
 		.name = "as3722-sd5",
 		.sname = "vsup-sd5",
-		.vsel_reg = AS3722_SD5_VOLTAGE_REG,
+.vsel_reg = AS3722_SD5_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(5),
@@ -166,12 +166,12 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 		.sleep_ctrl_mask = AS3722_SD5_EXT_ENABLE_MASK,
 		.control_reg = AS3722_SD5_CONTROL_REG,
 		.mode_mask = AS3722_SD5_MODE_FAST,
-		.n_voltages = AS3722_SD2_VSEL_MAX + 1,
+.n_voltages = AS3722_SD2_VSEL_MAX + 1,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_SD6,
 		.name = "as3722-sd6",
-		.vsel_reg = AS3722_SD6_VOLTAGE_REG,
+.vsel_reg = AS3722_SD6_VOLTAGE_REG,
 		.vsel_mask = AS3722_SD_VSEL_MASK,
 		.enable_reg = AS3722_SD_CONTROL_REG,
 		.enable_mask = AS3722_SDn_CTRL(6),
@@ -184,133 +184,133 @@ static const struct as3722_register_mapping as3722_reg_lookup[] = {
 		.regulator_id = AS3722_REGULATOR_ID_LDO0,
 		.name = "as3722-ldo0",
 		.sname = "vin-ldo0",
-		.vsel_reg = AS3722_LDO0_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO0_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO0_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO0_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL3_REG,
 		.sleep_ctrl_mask = AS3722_LDO0_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO0_NUM_VOLT,
+.n_voltages = AS3722_LDO0_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO1,
 		.name = "as3722-ldo1",
 		.sname = "vin-ldo1-6",
-		.vsel_reg = AS3722_LDO1_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO1_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO1_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL3_REG,
 		.sleep_ctrl_mask = AS3722_LDO1_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO2,
 		.name = "as3722-ldo2",
 		.sname = "vin-ldo2-5-7",
-		.vsel_reg = AS3722_LDO2_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO2_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO2_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL3_REG,
 		.sleep_ctrl_mask = AS3722_LDO2_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO3,
 		.name = "as3722-ldo3",
 		.sname = "vin-ldo3-4",
-		.vsel_reg = AS3722_LDO3_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO3_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO3_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO3_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL3_REG,
 		.sleep_ctrl_mask = AS3722_LDO3_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO3_NUM_VOLT,
+.n_voltages = AS3722_LDO3_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO4,
 		.name = "as3722-ldo4",
 		.sname = "vin-ldo3-4",
-		.vsel_reg = AS3722_LDO4_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO4_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO4_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL4_REG,
 		.sleep_ctrl_mask = AS3722_LDO4_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO5,
 		.name = "as3722-ldo5",
 		.sname = "vin-ldo2-5-7",
-		.vsel_reg = AS3722_LDO5_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO5_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO5_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL4_REG,
 		.sleep_ctrl_mask = AS3722_LDO5_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO6,
 		.name = "as3722-ldo6",
 		.sname = "vin-ldo1-6",
-		.vsel_reg = AS3722_LDO6_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO6_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO6_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL4_REG,
 		.sleep_ctrl_mask = AS3722_LDO6_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO7,
 		.name = "as3722-ldo7",
 		.sname = "vin-ldo2-5-7",
-		.vsel_reg = AS3722_LDO7_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO7_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL0_REG,
 		.enable_mask = AS3722_LDO7_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL4_REG,
 		.sleep_ctrl_mask = AS3722_LDO7_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO9,
 		.name = "as3722-ldo9",
 		.sname = "vin-ldo9-10",
-		.vsel_reg = AS3722_LDO9_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO9_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL1_REG,
 		.enable_mask = AS3722_LDO9_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL5_REG,
 		.sleep_ctrl_mask = AS3722_LDO9_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO10,
 		.name = "as3722-ldo10",
 		.sname = "vin-ldo9-10",
-		.vsel_reg = AS3722_LDO10_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO10_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL1_REG,
 		.enable_mask = AS3722_LDO10_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL5_REG,
 		.sleep_ctrl_mask = AS3722_LDO10_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 	{
 		.regulator_id = AS3722_REGULATOR_ID_LDO11,
 		.name = "as3722-ldo11",
 		.sname = "vin-ldo11",
-		.vsel_reg = AS3722_LDO11_VOLTAGE_REG,
+.vsel_reg = AS3722_LDO11_VOLTAGE_REG,
 		.vsel_mask = AS3722_LDO_VSEL_MASK,
 		.enable_reg = AS3722_LDOCONTROL1_REG,
 		.enable_mask = AS3722_LDO11_CTRL,
 		.sleep_ctrl_reg = AS3722_ENABLE_CTRL5_REG,
 		.sleep_ctrl_mask = AS3722_LDO11_EXT_ENABLE_MASK,
-		.n_voltages = AS3722_LDO_NUM_VOLT,
+.n_voltages = AS3722_LDO_NUM_VOLT,
 	},
 };
 
@@ -376,17 +376,17 @@ static const struct regulator_ops as3722_ldo0_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_current_limit = as3722_ldo_get_current_limit,
 	.set_current_limit = as3722_ldo_set_current_limit,
 };
 
 static const struct regulator_ops as3722_ldo0_extcntrl_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_current_limit = as3722_ldo_get_current_limit,
 	.set_current_limit = as3722_ldo_set_current_limit,
 };
@@ -419,16 +419,16 @@ static const struct regulator_ops as3722_ldo3_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_current_limit = as3722_ldo3_get_current_limit,
 };
 
 static const struct regulator_ops as3722_ldo3_extcntrl_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_current_limit = as3722_ldo3_get_current_limit,
 };
 
@@ -436,10 +436,10 @@ static const struct regulator_ops as3722_ldo6_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
 	.get_current_limit = as3722_ldo_get_current_limit,
 	.set_current_limit = as3722_ldo_set_current_limit,
 	.get_bypass = regulator_get_bypass_regmap,
@@ -447,10 +447,10 @@ static const struct regulator_ops as3722_ldo6_ops = {
 };
 
 static const struct regulator_ops as3722_ldo6_extcntrl_ops = {
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
 	.get_current_limit = as3722_ldo_get_current_limit,
 	.set_current_limit = as3722_ldo_set_current_limit,
 	.get_bypass = regulator_get_bypass_regmap,
@@ -467,19 +467,19 @@ static const struct regulator_ops as3722_ldo_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
 	.get_current_limit = as3722_ldo_get_current_limit,
 	.set_current_limit = as3722_ldo_set_current_limit,
 };
 
 static const struct regulator_ops as3722_ldo_extcntrl_ops = {
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
 	.get_current_limit = as3722_ldo_get_current_limit,
 	.set_current_limit = as3722_ldo_set_current_limit,
 };
@@ -629,7 +629,7 @@ static bool as3722_sd0_is_low_voltage(struct as3722_regulators *as3722_regs)
 			AS3722_FUSE7_REG, err);
 		return false;
 	}
-	if (val & AS3722_FUSE7_SD0_LOW_VOLTAGE)
+if (val & AS3722_FUSE7_SD0_LOW_VOLTAGE)
 		return true;
 	return false;
 }
@@ -645,10 +645,10 @@ static const struct regulator_ops as3722_sd016_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_current_limit = as3722_sd016_get_current_limit,
 	.set_current_limit = as3722_sd016_set_current_limit,
 	.get_mode = as3722_sd_get_mode,
@@ -656,10 +656,10 @@ static const struct regulator_ops as3722_sd016_ops = {
 };
 
 static const struct regulator_ops as3722_sd016_extcntrl_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_current_limit = as3722_sd016_get_current_limit,
 	.set_current_limit = as3722_sd016_set_current_limit,
 	.get_mode = as3722_sd_get_mode,
@@ -670,19 +670,19 @@ static const struct regulator_ops as3722_sd2345_ops = {
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 	.get_mode = as3722_sd_get_mode,
 	.set_mode = as3722_sd_set_mode,
 };
 
 static const struct regulator_ops as3722_sd2345_extcntrl_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 	.get_mode = as3722_sd_get_mode,
 	.set_mode = as3722_sd_set_mode,
 };
@@ -812,9 +812,9 @@ static int as3722_regulator_probe(struct platform_device *pdev)
 		as3722_regs->desc[id].name = as3722_reg_lookup[id].name;
 		as3722_regs->desc[id].supply_name = as3722_reg_lookup[id].sname;
 		as3722_regs->desc[id].id = as3722_reg_lookup[id].regulator_id;
-		as3722_regs->desc[id].n_voltages =
-					as3722_reg_lookup[id].n_voltages;
-		as3722_regs->desc[id].type = REGULATOR_VOLTAGE;
+as3722_regs->desc[id].n_voltages =
+as3722_reg_lookup[id].n_voltages;
+as3722_regs->desc[id].type = REGULATOR_VOLTAGE;
 		as3722_regs->desc[id].owner = THIS_MODULE;
 		as3722_regs->desc[id].enable_reg =
 					as3722_reg_lookup[id].enable_reg;
@@ -861,7 +861,7 @@ static int as3722_regulator_probe(struct platform_device *pdev)
 				ops = &as3722_ldo6_ops;
 			as3722_regs->desc[id].enable_time = 500;
 			as3722_regs->desc[id].bypass_reg =
-						AS3722_LDO6_VOLTAGE_REG;
+AS3722_LDO6_VOLTAGE_REG;
 			as3722_regs->desc[id].bypass_mask =
 						AS3722_LDO_VSEL_MASK;
 			as3722_regs->desc[id].bypass_val_on =
@@ -880,12 +880,12 @@ static int as3722_regulator_probe(struct platform_device *pdev)
 			else
 				ops = &as3722_sd016_ops;
 			if (id == AS3722_REGULATOR_ID_SD0 &&
-			    as3722_sd0_is_low_voltage(as3722_regs)) {
-				as3722_regs->desc[id].n_voltages =
+as3722_sd0_is_low_voltage(as3722_regs)) {
+as3722_regs->desc[id].n_voltages =
 					AS3722_SD0_VSEL_LOW_VOL_MAX + 1;
 				as3722_regs->desc[id].min_uV = 410000;
 			} else {
-				as3722_regs->desc[id].n_voltages =
+as3722_regs->desc[id].n_voltages =
 					AS3722_SD0_VSEL_MAX + 1,
 				as3722_regs->desc[id].min_uV = 610000;
 			}

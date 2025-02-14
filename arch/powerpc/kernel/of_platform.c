@@ -33,7 +33,7 @@
 
 /* The probing of PCI controllers from of_platform is currently
  * 64 bits only, mostly due to gratuitous differences between
- * the 32 and 64 bits PCI code on PowerPC and the 32 bits one
+* the 32 and 64 bits PCI code on PowerPC and the 32 bits one
  * lacking some bits needed here.
  */
 

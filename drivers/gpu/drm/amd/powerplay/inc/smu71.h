@@ -150,7 +150,7 @@ struct SMU7_LocalDpmScoreboard
     uint8_t  TdpClampMode;
     uint8_t  TdcClampMode;
     uint8_t  ThermClampMode;
-    uint8_t  VoltageBusy;
+uint8_t  VoltageBusy;
 
     int8_t   CurrLevel;
     int8_t   TargLevel;
@@ -158,7 +158,7 @@ struct SMU7_LocalDpmScoreboard
     uint8_t  UpHyst;
 
     uint8_t  DownHyst;
-    uint8_t  VoltageDownHyst;
+uint8_t  VoltageDownHyst;
     uint8_t  DpmEnable;
     uint8_t  DpmRunning;
 
@@ -193,7 +193,7 @@ struct SMU7_LocalDpmScoreboard
     uint8_t  AllowLowClkInterruptToHost;
     uint8_t  FpsRunning;
 
-    uint32_t MaxAllowedFrequency;
+uint32_t MaxAllowedFrequency;
 };
 
 typedef struct SMU7_LocalDpmScoreboard SMU7_LocalDpmScoreboard;
@@ -202,8 +202,8 @@ typedef struct SMU7_LocalDpmScoreboard SMU7_LocalDpmScoreboard;
 
 struct SMU7_VoltageScoreboard
 {
-    uint16_t CurrentVoltage;
-    uint16_t HighestVoltage;
+uint16_t CurrentVoltage;
+uint16_t HighestVoltage;
     uint16_t MaxVid;
     uint8_t  HighestVidOffset;
     uint8_t  CurrentVidOffset;
@@ -216,23 +216,23 @@ struct SMU7_VoltageScoreboard
 #endif
     uint8_t  ControllerBusy;
     uint8_t  CurrentVid;
-    uint16_t RequestedVoltage[SMU7_MAX_VOLTAGE_CLIENTS];
+uint16_t RequestedVoltage[SMU7_MAX_VOLTAGE_CLIENTS];
 #if defined (SMU__DGPU_ONLY)
-    uint8_t  RequestedPhases[SMU7_MAX_VOLTAGE_CLIENTS];
+uint8_t  RequestedPhases[SMU7_MAX_VOLTAGE_CLIENTS];
 #endif
-    uint8_t  EnabledRequest[SMU7_MAX_VOLTAGE_CLIENTS];
+uint8_t  EnabledRequest[SMU7_MAX_VOLTAGE_CLIENTS];
     uint8_t  TargetIndex;
     uint8_t  Delay;
     uint8_t  ControllerEnable;
     uint8_t  ControllerRunning;
-    uint16_t CurrentStdVoltageHiSidd;
-    uint16_t CurrentStdVoltageLoSidd;
+uint16_t CurrentStdVoltageHiSidd;
+uint16_t CurrentStdVoltageLoSidd;
 #if defined (SMU__DGPU_ONLY)
-    uint16_t RequestedVddci;
-    uint16_t CurrentVddci;
-    uint16_t HighestVddci;
-    uint8_t  CurrentVddciVid;
-    uint8_t  TargetVddciIndex;
+uint16_t RequestedVddci;
+uint16_t CurrentVddci;
+uint16_t HighestVddci;
+uint8_t  CurrentVddciVid;
+uint8_t  TargetVddciIndex;
 #endif
 };
 
@@ -273,29 +273,29 @@ typedef struct SMU7_PCIeLinkSpeedScoreboard SMU7_PCIeLinkSpeedScoreboard;
 
 struct SMU7_PowerScoreboard
 {
-    uint16_t   MinVoltage;
-    uint16_t   MaxVoltage;
+uint16_t   MinVoltage;
+uint16_t   MaxVoltage;
 
-    uint32_t   AvgGpuPower;
+uint32_t   AvgGpuPower;
 
-    uint16_t   VddcLeakagePower[SID_OPTION_COUNT];
-    uint16_t   VddcSclkConstantPower[SID_OPTION_COUNT];
-    uint16_t   VddcSclkDynamicPower[SID_OPTION_COUNT];
-    uint16_t   VddcNonSclkDynamicPower[SID_OPTION_COUNT];
-    uint16_t   VddcTotalPower[SID_OPTION_COUNT];
-    uint16_t   VddcTotalCurrent[SID_OPTION_COUNT];
-    uint16_t   VddcLoadVoltage[SID_OPTION_COUNT];
-    uint16_t   VddcNoLoadVoltage[SID_OPTION_COUNT];
+uint16_t   VddcLeakagePower[SID_OPTION_COUNT];
+uint16_t   VddcSclkConstantPower[SID_OPTION_COUNT];
+uint16_t   VddcSclkDynamicPower[SID_OPTION_COUNT];
+uint16_t   VddcNonSclkDynamicPower[SID_OPTION_COUNT];
+uint16_t   VddcTotalPower[SID_OPTION_COUNT];
+uint16_t   VddcTotalCurrent[SID_OPTION_COUNT];
+uint16_t   VddcLoadVoltage[SID_OPTION_COUNT];
+uint16_t   VddcNoLoadVoltage[SID_OPTION_COUNT];
 
-    uint16_t   DisplayPhyPower;
-    uint16_t   PciePhyPower;
+uint16_t   DisplayPhyPower;
+uint16_t   PciePhyPower;
 
-    uint16_t   VddciTotalPower;
-    uint16_t   Vddr1TotalPower;
+uint16_t   VddciTotalPower;
+uint16_t   Vddr1TotalPower;
 
-    uint32_t   RocPower;
+uint32_t   RocPower;
 
-    uint32_t   last_power;
+uint32_t   last_power;
     uint32_t   enableWinAvg;
 
     uint32_t   lkg_acc;
@@ -313,7 +313,7 @@ struct SMU7_PowerScoreboard
     uint32_t   WinTime;
 
     uint16_t  GpuPwr_MAWt;
-    uint16_t  FilteredVddcTotalPower;
+uint16_t  FilteredVddcTotalPower;
 
     uint8_t   CalculationRepeats;
     uint8_t   WaterfallUp;
@@ -362,19 +362,19 @@ typedef struct SMU7_ThermalScoreboard SMU7_ThermalScoreboard;
 // All 'soft registers' should be uint32_t.
 struct SMU71_SoftRegisters
 {
-    uint32_t        RefClockFrequency;
+uint32_t        RefClockFrequency;
     uint32_t        PmTimerPeriod;
     uint32_t        FeatureEnables;
 #if defined (SMU__DGPU_ONLY)
     uint32_t        PreVBlankGap;
     uint32_t        VBlankTimeout;
     uint32_t        TrainTimeGap;
-    uint32_t        MvddSwitchTime;
+uint32_t        MvddSwitchTime;
     uint32_t        LongestAcpiTrainTime;
     uint32_t        AcpiDelay;
     uint32_t        G5TrainTime;
     uint32_t        DelayMpllPwron;
-    uint32_t        VoltageChangeTimeout;
+uint32_t        VoltageChangeTimeout;
 #endif
     uint32_t        HandshakeDisables;
 
@@ -436,7 +436,7 @@ struct SMU71_Firmware_Header
 
     uint32_t PmFuseTable;
     uint32_t Globals;
-    uint32_t UvdDpmTable;
+uint32_t UvdDpmTable;
     uint32_t AcpDpmTable;
     uint32_t VceDpmTable;
     uint32_t SamuDpmTable;
@@ -460,7 +460,7 @@ typedef struct SMU7_HystController_Data SMU7_HystController_Data;
 #define SMU71_FIRMWARE_HEADER_LOCATION 0x20000
 
 enum  DisplayConfig {
-    PowerDown = 1,
+PowerDown = 1,
     DP54x4,
     DP54x2,
     DP54x1,

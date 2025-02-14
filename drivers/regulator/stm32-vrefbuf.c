@@ -104,18 +104,18 @@ static const struct regulator_ops stm32_vrefbuf_volt_ops = {
 	.enable		= stm32_vrefbuf_enable,
 	.disable	= stm32_vrefbuf_disable,
 	.is_enabled	= stm32_vrefbuf_is_enabled,
-	.get_voltage_sel = stm32_vrefbuf_get_voltage_sel,
-	.set_voltage_sel = stm32_vrefbuf_set_voltage_sel,
-	.list_voltage	= regulator_list_voltage_table,
+.get_voltage_sel = stm32_vrefbuf_get_voltage_sel,
+.set_voltage_sel = stm32_vrefbuf_set_voltage_sel,
+.list_voltage	= regulator_list_voltage_table,
 };
 
 static const struct regulator_desc stm32_vrefbuf_regu = {
 	.name = "vref",
-	.supply_name = "vdda",
-	.volt_table = stm32_vrefbuf_voltages,
-	.n_voltages = ARRAY_SIZE(stm32_vrefbuf_voltages),
+.supply_name = "vdda",
+.volt_table = stm32_vrefbuf_voltages,
+.n_voltages = ARRAY_SIZE(stm32_vrefbuf_voltages),
 	.ops = &stm32_vrefbuf_volt_ops,
-	.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 	.owner = THIS_MODULE,
 };
 

@@ -111,12 +111,12 @@
 				#size-cells = <1>;
 				compatible = "micron,n25q512ax3", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <10000000>; /* input clock */
+spi-max-frequency = <10000000>; /* input clock */
 			};
 			slic@3 {
 				compatible = "maxim,ds26522";
 				reg = <3>;
-				spi-max-frequency = <2000000>; /* input clock */
+spi-max-frequency = <2000000>; /* input clock */
 			};
 		};
 
@@ -226,8 +226,8 @@
 	qe: qe@ffe140000 {
 		ranges = <0x0 0xf 0xfe140000 0x40000>;
 		reg = <0xf 0xfe140000 0 0x480>;
-		brg-frequency = <0>;
-		bus-frequency = <0>;
+brg-frequency = <0>;
+bus-frequency = <0>;
 
 		si1: si@700 {
 			compatible = "fsl,t1040-qe-si";

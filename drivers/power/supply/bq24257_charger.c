@@ -75,23 +75,23 @@ enum bq24257_fields {
 /* initial field values, converted from uV/uA */
 struct bq24257_init_data {
 	u8 ichg;	/* charge current      */
-	u8 vbat;	/* regulation voltage  */
+u8 vbat;	/* regulation voltage  */
 	u8 iterm;	/* termination current */
 	u8 iilimit;	/* input current limit */
-	u8 vovp;	/* over voltage protection voltage */
-	u8 vindpm;	/* VDMP input threshold voltage */
+u8 vovp;	/* over voltage protection voltage */
+u8 vindpm;	/* VDMP input threshold voltage */
 };
 
 struct bq24257_state {
 	u8 status;
 	u8 fault;
-	bool power_good;
+bool power_good;
 };
 
 struct bq24257_device {
 	struct i2c_client *client;
 	struct device *dev;
-	struct power_supply *charger;
+struct power_supply *charger;
 
 	enum bq2425x_chip chip;
 
@@ -268,7 +268,7 @@ enum bq24257_fault {
 };
 
 static int bq24257_get_input_current_limit(struct bq24257_device *bq,
-					   union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int ret;
 
@@ -292,7 +292,7 @@ static int bq24257_get_input_current_limit(struct bq24257_device *bq,
 }
 
 static int bq24257_set_input_current_limit(struct bq24257_device *bq,
-					const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	/*
 	 * Address the case where the user manually sets an input current limit
@@ -309,10 +309,10 @@ static int bq24257_set_input_current_limit(struct bq24257_device *bq,
 }
 
 static int bq24257_power_supply_get_property(struct power_supply *psy,
-					     enum power_supply_property psp,
-					     union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct bq24257_device *bq = power_supply_get_drvdata(psy);
+struct bq24257_device *bq = power_supply_get_drvdata(psy);
 	struct bq24257_state state;
 
 	mutex_lock(&bq->lock);
@@ -320,79 +320,79 @@ static int bq24257_power_supply_get_property(struct power_supply *psy,
 	mutex_unlock(&bq->lock);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
-		if (!state.power_good)
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+case POWER_SUPPLY_PROP_STATUS:
+if (!state.power_good)
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (state.status == STATUS_READY)
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		else if (state.status == STATUS_CHARGE_IN_PROGRESS)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else if (state.status == STATUS_CHARGE_DONE)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else
-			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 		break;
 
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = BQ24257_MANUFACTURER;
 		break;
 
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = bq2425x_chip_name[bq->chip];
 		break;
 
-	case POWER_SUPPLY_PROP_ONLINE:
-		val->intval = state.power_good;
+case POWER_SUPPLY_PROP_ONLINE:
+val->intval = state.power_good;
 		break;
 
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		switch (state.fault) {
 		case FAULT_NORMAL:
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 			break;
 
 		case FAULT_INPUT_OVP:
 		case FAULT_BAT_OVP:
-			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 			break;
 
 		case FAULT_TS:
 		case FAULT_BAT_TS:
-			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 			break;
 
 		case FAULT_TIMER:
-			val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+val->intval = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 			break;
 
 		default:
-			val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 			break;
 		}
 
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		val->intval = bq24257_ichg_map[bq->init_data.ichg];
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		val->intval = bq24257_ichg_map[BQ24257_ICHG_MAP_SIZE - 1];
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		val->intval = bq24257_vbat_map[bq->init_data.vbat];
 		break;
 
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
 		val->intval = bq24257_vbat_map[BQ24257_VBAT_MAP_SIZE - 1];
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 		val->intval = bq24257_iterm_map[bq->init_data.iterm];
 		break;
 
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		return bq24257_get_input_current_limit(bq, val);
 
 	default:
@@ -403,13 +403,13 @@ static int bq24257_power_supply_get_property(struct power_supply *psy,
 }
 
 static int bq24257_power_supply_set_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct bq24257_device *bq = power_supply_get_drvdata(psy);
+struct bq24257_device *bq = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		return bq24257_set_input_current_limit(bq, val);
 	default:
 		return -EINVAL;
@@ -417,10 +417,10 @@ static int bq24257_power_supply_set_property(struct power_supply *psy,
 }
 
 static int bq24257_power_supply_property_is_writeable(struct power_supply *psy,
-					enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		return true;
 	default:
 		return false;
@@ -445,24 +445,24 @@ static int bq24257_get_chip_state(struct bq24257_device *bq,
 	state->fault = ret;
 
 	if (bq->pg)
-		state->power_good = !gpiod_get_value_cansleep(bq->pg);
+state->power_good = !gpiod_get_value_cansleep(bq->pg);
 	else
 		/*
-		 * If we have a chip without a dedicated power-good GPIO or
+* If we have a chip without a dedicated power-good GPIO or
 		 * some other explicit bit that would provide this information
-		 * assume the power is good if there is no supply related
+* assume the power is good if there is no supply related
 		 * fault - and not good otherwise. There is a possibility for
-		 * other errors to mask that power in fact is not good but this
+* other errors to mask that power in fact is not good but this
 		 * is probably the best we can do here.
 		 */
 		switch (state->fault) {
 		case FAULT_INPUT_OVP:
 		case FAULT_INPUT_UVLO:
 		case FAULT_INPUT_LDO_LOW:
-			state->power_good = false;
+state->power_good = false;
 			break;
 		default:
-			state->power_good = true;
+state->power_good = true;
 		}
 
 	return 0;
@@ -476,7 +476,7 @@ static bool bq24257_state_changed(struct bq24257_device *bq,
 	mutex_lock(&bq->lock);
 	ret = (bq->state.status != new_state->status ||
 	       bq->state.fault != new_state->fault ||
-	       bq->state.power_good != new_state->power_good);
+bq->state.power_good != new_state->power_good);
 	mutex_unlock(&bq->lock);
 
 	return ret;
@@ -563,7 +563,7 @@ static int bq24257_iilimit_autoset(struct bq24257_device *bq)
 
 	/*
 	 * All USB ports should be able to handle 500mA. If not, DPM will lower
-	 * the charging current to accommodate the power source. No need to set
+* the charging current to accommodate the power source. No need to set
 	 * a lower IILIMIT value.
 	 */
 	if (loop_status == LOOP_STATUS_IN_DPM && iilimit == IILIMIT_500)
@@ -619,8 +619,8 @@ static void bq24257_handle_state_change(struct bq24257_device *bq,
 	 * Handle BQ2425x state changes observing whether the D+/D- based input
 	 * current limit autoset functionality is enabled.
 	 */
-	if (!new_state->power_good) {
-		dev_dbg(bq->dev, "Power removed\n");
+if (!new_state->power_good) {
+dev_dbg(bq->dev, "Power removed\n");
 		if (bq->iilimit_autoset_enable) {
 			cancel_delayed_work_sync(&bq->iilimit_setup_work);
 
@@ -630,14 +630,14 @@ static void bq24257_handle_state_change(struct bq24257_device *bq,
 				goto error;
 		}
 		/*
-		 * When power is removed always return to the default input
+* When power is removed always return to the default input
 		 * current limit as configured during probe.
 		 */
 		ret = bq24257_field_write(bq, F_IILIMIT, bq->init_data.iilimit);
 		if (ret < 0)
 			goto error;
-	} else if (!old_state.power_good) {
-		dev_dbg(bq->dev, "Power inserted\n");
+} else if (!old_state.power_good) {
+dev_dbg(bq->dev, "Power inserted\n");
 
 		if (bq->iilimit_autoset_enable)
 			/* configure input current limit */
@@ -669,7 +669,7 @@ static irqreturn_t bq24257_irq_handler_thread(int irq, void *private)
 		return IRQ_HANDLED;
 
 	dev_dbg(bq->dev, "irq(state changed): status/fault/pg = %d/%d/%d\n",
-		state.status, state.fault, state.power_good);
+state.status, state.fault, state.power_good);
 
 	bq24257_handle_state_change(bq, &state);
 
@@ -677,7 +677,7 @@ static irqreturn_t bq24257_irq_handler_thread(int irq, void *private)
 	bq->state = state;
 	mutex_unlock(&bq->lock);
 
-	power_supply_changed(bq->charger);
+power_supply_changed(bq->charger);
 
 	return IRQ_HANDLED;
 }
@@ -707,7 +707,7 @@ static int bq24257_hw_init(struct bq24257_device *bq)
 	if (ret < 0)
 		return ret;
 
-	/* configure the charge currents and voltages */
+/* configure the charge currents and voltages */
 	for (i = 0; i < ARRAY_SIZE(init_data); i++) {
 		ret = bq24257_field_write(bq, init_data[i].field,
 					  init_data[i].value);
@@ -732,7 +732,7 @@ static int bq24257_hw_init(struct bq24257_device *bq)
 					  bq->init_data.iilimit);
 		if (ret < 0)
 			return ret;
-	} else if (!state.power_good)
+} else if (!state.power_good)
 		/* activate D+/D- detection algorithm */
 		ret = bq24257_field_write(bq, F_DPDM_EN, 1);
 	else if (state.fault != FAULT_NO_BAT)
@@ -742,17 +742,17 @@ static int bq24257_hw_init(struct bq24257_device *bq)
 }
 
 static enum power_supply_property bq24257_power_supply_props[] = {
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
 };
 
 static char *bq24257_charger_supplied_to[] = {
@@ -761,20 +761,20 @@ static char *bq24257_charger_supplied_to[] = {
 
 static const struct power_supply_desc bq24257_power_supply_desc = {
 	.name = "bq24257-charger",
-	.type = POWER_SUPPLY_TYPE_USB,
-	.properties = bq24257_power_supply_props,
-	.num_properties = ARRAY_SIZE(bq24257_power_supply_props),
-	.get_property = bq24257_power_supply_get_property,
-	.set_property = bq24257_power_supply_set_property,
-	.property_is_writeable = bq24257_power_supply_property_is_writeable,
+.type = POWER_SUPPLY_TYPE_USB,
+.properties = bq24257_power_supply_props,
+.num_properties = ARRAY_SIZE(bq24257_power_supply_props),
+.get_property = bq24257_power_supply_get_property,
+.set_property = bq24257_power_supply_set_property,
+.property_is_writeable = bq24257_power_supply_property_is_writeable,
 };
 
 static ssize_t bq24257_show_ovp_voltage(struct device *dev,
 					struct device_attribute *attr,
 					char *buf)
 {
-	struct power_supply *psy = dev_get_drvdata(dev);
-	struct bq24257_device *bq = power_supply_get_drvdata(psy);
+struct power_supply *psy = dev_get_drvdata(dev);
+struct bq24257_device *bq = power_supply_get_drvdata(psy);
 
 	return scnprintf(buf, PAGE_SIZE, "%u\n",
 			 bq24257_vovp_map[bq->init_data.vovp]);
@@ -784,8 +784,8 @@ static ssize_t bq24257_show_in_dpm_voltage(struct device *dev,
 					   struct device_attribute *attr,
 					   char *buf)
 {
-	struct power_supply *psy = dev_get_drvdata(dev);
-	struct bq24257_device *bq = power_supply_get_drvdata(psy);
+struct power_supply *psy = dev_get_drvdata(dev);
+struct bq24257_device *bq = power_supply_get_drvdata(psy);
 
 	return scnprintf(buf, PAGE_SIZE, "%u\n",
 			 bq24257_vindpm_map[bq->init_data.vindpm]);
@@ -795,8 +795,8 @@ static ssize_t bq24257_sysfs_show_enable(struct device *dev,
 					 struct device_attribute *attr,
 					 char *buf)
 {
-	struct power_supply *psy = dev_get_drvdata(dev);
-	struct bq24257_device *bq = power_supply_get_drvdata(psy);
+struct power_supply *psy = dev_get_drvdata(dev);
+struct bq24257_device *bq = power_supply_get_drvdata(psy);
 	int ret;
 
 	if (strcmp(attr->attr.name, "high_impedance_enable") == 0)
@@ -817,8 +817,8 @@ static ssize_t bq24257_sysfs_set_enable(struct device *dev,
 					const char *buf,
 					size_t count)
 {
-	struct power_supply *psy = dev_get_drvdata(dev);
-	struct bq24257_device *bq = power_supply_get_drvdata(psy);
+struct power_supply *psy = dev_get_drvdata(dev);
+struct bq24257_device *bq = power_supply_get_drvdata(psy);
 	long val;
 	int ret;
 
@@ -846,8 +846,8 @@ static DEVICE_ATTR(sysoff_enable, S_IWUSR | S_IRUGO,
 		   bq24257_sysfs_show_enable, bq24257_sysfs_set_enable);
 
 static struct attribute *bq24257_charger_attr[] = {
-	&dev_attr_ovp_voltage.attr,
-	&dev_attr_in_dpm_voltage.attr,
+&dev_attr_ovp_voltage.attr,
+&dev_attr_in_dpm_voltage.attr,
 	&dev_attr_high_impedance_enable.attr,
 	&dev_attr_sysoff_enable.attr,
 	NULL,
@@ -859,13 +859,13 @@ static const struct attribute_group bq24257_attr_group = {
 
 static int bq24257_power_supply_init(struct bq24257_device *bq)
 {
-	struct power_supply_config psy_cfg = { .drv_data = bq, };
+struct power_supply_config psy_cfg = { .drv_data = bq, };
 
 	psy_cfg.supplied_to = bq24257_charger_supplied_to;
 	psy_cfg.num_supplicants = ARRAY_SIZE(bq24257_charger_supplied_to);
 
-	bq->charger = devm_power_supply_register(bq->dev,
-						 &bq24257_power_supply_desc,
+bq->charger = devm_power_supply_register(bq->dev,
+&bq24257_power_supply_desc,
 						 &psy_cfg);
 
 	return PTR_ERR_OR_ZERO(bq->charger);
@@ -901,7 +901,7 @@ static int bq24257_fw_probe(struct bq24257_device *bq)
 	bq->init_data.ichg = bq24257_find_idx(property, bq24257_ichg_map,
 					      BQ24257_ICHG_MAP_SIZE);
 
-	ret = device_property_read_u32(bq->dev, "ti,battery-regulation-voltage",
+ret = device_property_read_u32(bq->dev, "ti,battery-regulation-voltage",
 				       &property);
 	if (ret < 0)
 		return ret;
@@ -935,7 +935,7 @@ static int bq24257_fw_probe(struct bq24257_device *bq)
 						 bq24257_iilimit_map,
 						 BQ24257_IILIMIT_MAP_SIZE);
 
-	ret = device_property_read_u32(bq->dev, "ti,ovp-voltage",
+ret = device_property_read_u32(bq->dev, "ti,ovp-voltage",
 				       &property);
 	if (ret < 0)
 		bq->init_data.vovp = VOVP_6500;
@@ -944,7 +944,7 @@ static int bq24257_fw_probe(struct bq24257_device *bq)
 						      bq24257_vovp_map,
 						      BQ24257_VOVP_MAP_SIZE);
 
-	ret = device_property_read_u32(bq->dev, "ti,in-dpm-voltage",
+ret = device_property_read_u32(bq->dev, "ti,in-dpm-voltage",
 				       &property);
 	if (ret < 0)
 		bq->init_data.vindpm = VINDPM_4360;
@@ -1035,7 +1035,7 @@ static int bq24257_probe(struct i2c_client *client,
 				  bq24257_iilimit_setup_work);
 
 	/*
-	 * The BQ24250 doesn't have a dedicated Power Good (PG) pin so let's
+* The BQ24250 doesn't have a dedicated Power Good (PG) pin so let's
 	 * not probe for it and instead use a SW-based approach to determine
 	 * the PG state. We also use a SW-based approach for all other devices
 	 * if the PG pin is either not defined or can't be probed.
@@ -1046,7 +1046,7 @@ static int bq24257_probe(struct i2c_client *client,
 	if (PTR_ERR(bq->pg) == -EPROBE_DEFER)
 		return PTR_ERR(bq->pg);
 	else if (!bq->pg)
-		dev_info(bq->dev, "using SW-based power-good detection\n");
+dev_info(bq->dev, "using SW-based power-good detection\n");
 
 	/* reset all registers to defaults */
 	ret = bq24257_field_write(bq, F_RESET, 1);
@@ -1068,9 +1068,9 @@ static int bq24257_probe(struct i2c_client *client,
 		return ret;
 	}
 
-	ret = bq24257_power_supply_init(bq);
+ret = bq24257_power_supply_init(bq);
 	if (ret < 0) {
-		dev_err(dev, "Failed to register power supply\n");
+dev_err(dev, "Failed to register power supply\n");
 		return ret;
 	}
 
@@ -1144,7 +1144,7 @@ static int bq24257_resume(struct device *dev)
 	}
 
 	/* signal userspace, maybe state changed while suspended */
-	power_supply_changed(bq->charger);
+power_supply_changed(bq->charger);
 
 	return 0;
 }

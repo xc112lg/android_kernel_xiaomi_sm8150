@@ -61,7 +61,7 @@ QDF_STATUS sme_post_pe_message(struct mac_context *mac_ctx,
 			       struct scheduler_msg *pMsg);
 
 /**
- * sme_ps_enable_auto_ps_timer(): Enable power-save auto timer with timeout
+* sme_ps_enable_auto_ps_timer(): Enable power-save auto timer with timeout
  * @mac_handle: Opaque handle to the global MAC context
  * @session_id:    adapter session Id
  * @timeout:       timeout period in ms
@@ -84,7 +84,7 @@ QDF_STATUS sme_ps_close_per_session(mac_handle_t mac_handle,
 				    uint32_t session_id);
 
 /**
- * sme_save_usr_ps_cfg(): saves user power save config
+* sme_save_usr_ps_cfg(): saves user power save config
  * @mac_handle: Opaque handle to the global MAC context
  * @val: set val
  *

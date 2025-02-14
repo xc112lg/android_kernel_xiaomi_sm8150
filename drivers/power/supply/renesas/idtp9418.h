@@ -104,7 +104,7 @@
 #define REG_RX_LOUT_H 0x0045
 #define REG_RX_DIE_TEMP 0x0046
 #define REG_FREQ_ADDR \
-	0x0048 // Operating Frequency, Fop(KHz) = 64 * 6000 /value * 256)
+0x0048 // Operating Frequency, Fop(KHz) = 64 * 6000 /value * 256)
 #define REG_ILIM_SET 0x004A
 #define REG_SIGNAL_STRENGTH 0x004B
 #define REG_WPC_MODE 0x004D

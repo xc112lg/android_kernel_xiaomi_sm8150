@@ -499,14 +499,14 @@ void __init initialize_cache_info(void)
 	DBG(" -> initialize_cache_info()\n");
 
 	/*
-	 * All shipping POWER8 machines have a firmware bug that
+* All shipping POWER8 machines have a firmware bug that
 	 * puts incorrect information in the device-tree. This will
 	 * be (hopefully) fixed for future chips but for now hard
 	 * code the values if we are running on one of these
 	 */
 	pvr = PVR_VER(mfspr(SPRN_PVR));
-	if (pvr == PVR_POWER8 || pvr == PVR_POWER8E ||
-	    pvr == PVR_POWER8NVL) {
+if (pvr == PVR_POWER8 || pvr == PVR_POWER8E ||
+pvr == PVR_POWER8NVL) {
 						/* size    lsize   blk  sets */
 		init_cache_info(&ppc64_caches.l1i, 0x8000,   128,  128, 32);
 		init_cache_info(&ppc64_caches.l1d, 0x10000,  128,  128, 64);
@@ -763,7 +763,7 @@ EXPORT_SYMBOL(ppc_pci_io);
 #ifdef CONFIG_HARDLOCKUP_DETECTOR_PERF
 u64 hw_nmi_get_sample_period(int watchdog_thresh)
 {
-	return ppc_proc_freq * watchdog_thresh;
+return ppc_proc_freq * watchdog_thresh;
 }
 #endif
 
@@ -1025,9 +1025,9 @@ DEFINE_SIMPLE_ATTRIBUTE(fops_uaccess_flush, uaccess_flush_get, uaccess_flush_set
 
 static __init int rfi_flush_debugfs_init(void)
 {
-	debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
-	debugfs_create_file("entry_flush", 0600, powerpc_debugfs_root, NULL, &fops_entry_flush);
-	debugfs_create_file("uaccess_flush", 0600, powerpc_debugfs_root, NULL, &fops_uaccess_flush);
+debugfs_create_file("rfi_flush", 0600, powerpc_debugfs_root, NULL, &fops_rfi_flush);
+debugfs_create_file("entry_flush", 0600, powerpc_debugfs_root, NULL, &fops_entry_flush);
+debugfs_create_file("uaccess_flush", 0600, powerpc_debugfs_root, NULL, &fops_uaccess_flush);
 	return 0;
 }
 device_initcall(rfi_flush_debugfs_init);

@@ -1,5 +1,5 @@
 /*
- * spu aware cpufreq governor for the cell processor
+* spu aware cpufreq governor for the cell processor
  *
  * © Copyright IBM Corporation 2006-2008
  *
@@ -35,7 +35,7 @@
 
 struct spu_gov_info_struct {
 	unsigned long busy_spus;	/* fixed-point */
-	struct cpufreq_policy *policy;
+struct cpufreq_policy *policy;
 	struct delayed_work work;
 	unsigned int poll_int;		/* µs */
 };
@@ -60,15 +60,15 @@ static void spu_gov_work(struct work_struct *work)
 {
 	struct spu_gov_info_struct *info;
 	int delay;
-	unsigned long target_freq;
+unsigned long target_freq;
 
 	info = container_of(work, struct spu_gov_info_struct, work.work);
 
 	/* after cancel_delayed_work_sync we unset info->policy */
 	BUG_ON(info->policy == NULL);
 
-	target_freq = calc_freq(info);
-	__cpufreq_driver_target(info->policy, target_freq, CPUFREQ_RELATION_H);
+target_freq = calc_freq(info);
+__cpufreq_driver_target(info->policy, target_freq, CPUFREQ_RELATION_H);
 
 	delay = usecs_to_jiffies(info->poll_int);
 	schedule_delayed_work_on(info->policy->cpu, &info->work, delay);
@@ -148,7 +148,7 @@ static int __init spu_gov_init(void)
 {
 	int ret;
 
-	ret = cpufreq_register_governor(&spu_governor);
+ret = cpufreq_register_governor(&spu_governor);
 	if (ret)
 		printk(KERN_ERR "registration of governor failed\n");
 	return ret;
@@ -156,7 +156,7 @@ static int __init spu_gov_init(void)
 
 static void __exit spu_gov_exit(void)
 {
-	cpufreq_unregister_governor(&spu_governor);
+cpufreq_unregister_governor(&spu_governor);
 }
 
 

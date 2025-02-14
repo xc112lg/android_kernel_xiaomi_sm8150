@@ -61,7 +61,7 @@ struct da9063_regulator_info {
 	.desc.ops = &da9063_ldo_ops, \
 	.desc.min_uV = (min_mV) * 1000, \
 	.desc.uV_step = (step_mV) * 1000, \
-	.desc.n_voltages = (((max_mV) - (min_mV))/(step_mV) + 1 \
+.desc.n_voltages = (((max_mV) - (min_mV))/(step_mV) + 1 \
 		+ (DA9063_V##regl_name##_BIAS)), \
 	.desc.enable_reg = DA9063_REG_##regl_name##_CONT, \
 	.desc.enable_mask = DA9063_LDO_EN, \
@@ -79,7 +79,7 @@ struct da9063_regulator_info {
 	.desc.ops = &da9063_buck_ops, \
 	.desc.min_uV = (min_mV) * 1000, \
 	.desc.uV_step = (step_mV) * 1000, \
-	.desc.n_voltages = ((max_mV) - (min_mV))/(step_mV) + 1, \
+.desc.n_voltages = ((max_mV) - (min_mV))/(step_mV) + 1, \
 	.current_limits = limits_array, \
 	.n_current_limits = ARRAY_SIZE(limits_array)
 
@@ -360,7 +360,7 @@ static int da9063_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 	const struct da9063_regulator_info *rinfo = regl->info;
 	int ret, sel;
 
-	sel = regulator_map_voltage_linear(rdev, uV, uV);
+sel = regulator_map_voltage_linear(rdev, uV, uV);
 	if (sel < 0)
 		return sel;
 
@@ -431,15 +431,15 @@ static const struct regulator_ops da9063_buck_ops = {
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
 	.set_current_limit	= da9063_set_current_limit,
 	.get_current_limit	= da9063_get_current_limit,
 	.set_mode		= da9063_buck_set_mode,
 	.get_mode		= da9063_buck_get_mode,
 	.get_status		= da9063_buck_get_status,
-	.set_suspend_voltage	= da9063_set_suspend_voltage,
+.set_suspend_voltage	= da9063_set_suspend_voltage,
 	.set_suspend_enable	= da9063_suspend_enable,
 	.set_suspend_disable	= da9063_suspend_disable,
 	.set_suspend_mode	= da9063_buck_set_suspend_mode,
@@ -449,13 +449,13 @@ static const struct regulator_ops da9063_ldo_ops = {
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
 	.set_mode		= da9063_ldo_set_mode,
 	.get_mode		= da9063_ldo_get_mode,
 	.get_status		= da9063_ldo_get_status,
-	.set_suspend_voltage	= da9063_set_suspend_voltage,
+.set_suspend_voltage	= da9063_set_suspend_voltage,
 	.set_suspend_enable	= da9063_suspend_enable,
 	.set_suspend_disable	= da9063_suspend_disable,
 	.set_suspend_mode	= da9063_ldo_set_suspend_mode,
@@ -818,7 +818,7 @@ static int da9063_regulator_probe(struct platform_device *pdev)
 		regl->hw = da9063;
 		regl->info = &model->regulator_info[id];
 		regl->desc = regl->info->desc;
-		regl->desc.type = REGULATOR_VOLTAGE;
+regl->desc.type = REGULATOR_VOLTAGE;
 		regl->desc.owner = THIS_MODULE;
 
 		if (regl->info->mode.reg)

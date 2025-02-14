@@ -1,5 +1,5 @@
 /*
- * helpers.c  --  Voltage/Current Regulator framework helper functions.
+* helpers.c  --  Voltage/Current Regulator framework helper functions.
  *
  * Copyright 2007, 2008 Wolfson Microelectronics PLC.
  * Copyright 2008 SlimLogic Ltd.
@@ -104,13 +104,13 @@ int regulator_disable_regmap(struct regulator_dev *rdev)
 EXPORT_SYMBOL_GPL(regulator_disable_regmap);
 
 /**
- * regulator_get_voltage_sel_regmap - standard get_voltage_sel for regmap users
+* regulator_get_voltage_sel_regmap - standard get_voltage_sel for regmap users
  *
  * @rdev: regulator to operate on
  *
  * Regulators that use regmap for their register I/O can set the
  * vsel_reg and vsel_mask fields in their descriptor and then use this
- * as their get_voltage_vsel operation, saving some code.
+* as their get_voltage_vsel operation, saving some code.
  */
 int regulator_get_voltage_sel_regmap(struct regulator_dev *rdev)
 {
@@ -129,14 +129,14 @@ int regulator_get_voltage_sel_regmap(struct regulator_dev *rdev)
 EXPORT_SYMBOL_GPL(regulator_get_voltage_sel_regmap);
 
 /**
- * regulator_set_voltage_sel_regmap - standard set_voltage_sel for regmap users
+* regulator_set_voltage_sel_regmap - standard set_voltage_sel for regmap users
  *
  * @rdev: regulator to operate on
  * @sel: Selector to set
  *
  * Regulators that use regmap for their register I/O can set the
  * vsel_reg and vsel_mask fields in their descriptor and then use this
- * as their set_voltage_vsel operation, saving some code.
+* as their set_voltage_vsel operation, saving some code.
  */
 int regulator_set_voltage_sel_regmap(struct regulator_dev *rdev, unsigned sel)
 {
@@ -158,16 +158,16 @@ int regulator_set_voltage_sel_regmap(struct regulator_dev *rdev, unsigned sel)
 EXPORT_SYMBOL_GPL(regulator_set_voltage_sel_regmap);
 
 /**
- * regulator_map_voltage_iterate - map_voltage() based on list_voltage()
+* regulator_map_voltage_iterate - map_voltage() based on list_voltage()
  *
  * @rdev: Regulator to operate on
- * @min_uV: Lower bound for voltage
- * @max_uV: Upper bound for voltage
+* @min_uV: Lower bound for voltage
+* @max_uV: Upper bound for voltage
  *
- * Drivers implementing set_voltage_sel() and list_voltage() can use
- * this as their map_voltage() operation.  It will find a suitable
- * voltage by calling list_voltage() until it gets something in bounds
- * for the requested voltages.
+* Drivers implementing set_voltage_sel() and list_voltage() can use
+* this as their map_voltage() operation.  It will find a suitable
+* voltage by calling list_voltage() until it gets something in bounds
+* for the requested voltages.
  */
 int regulator_map_voltage_iterate(struct regulator_dev *rdev,
 				  int min_uV, int max_uV)
@@ -176,11 +176,11 @@ int regulator_map_voltage_iterate(struct regulator_dev *rdev,
 	int selector = 0;
 	int i, ret;
 
-	/* Find the smallest voltage that falls within the specified
+/* Find the smallest voltage that falls within the specified
 	 * range.
 	 */
-	for (i = 0; i < rdev->desc->n_voltages; i++) {
-		ret = rdev->desc->ops->list_voltage(rdev, i);
+for (i = 0; i < rdev->desc->n_voltages; i++) {
+ret = rdev->desc->ops->list_voltage(rdev, i);
 		if (ret < 0)
 			continue;
 
@@ -198,22 +198,22 @@ int regulator_map_voltage_iterate(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_map_voltage_iterate);
 
 /**
- * regulator_map_voltage_ascend - map_voltage() for ascendant voltage list
+* regulator_map_voltage_ascend - map_voltage() for ascendant voltage list
  *
  * @rdev: Regulator to operate on
- * @min_uV: Lower bound for voltage
- * @max_uV: Upper bound for voltage
+* @min_uV: Lower bound for voltage
+* @max_uV: Upper bound for voltage
  *
- * Drivers that have ascendant voltage list can use this as their
- * map_voltage() operation.
+* Drivers that have ascendant voltage list can use this as their
+* map_voltage() operation.
  */
 int regulator_map_voltage_ascend(struct regulator_dev *rdev,
 				 int min_uV, int max_uV)
 {
 	int i, ret;
 
-	for (i = 0; i < rdev->desc->n_voltages; i++) {
-		ret = rdev->desc->ops->list_voltage(rdev, i);
+for (i = 0; i < rdev->desc->n_voltages; i++) {
+ret = rdev->desc->ops->list_voltage(rdev, i);
 		if (ret < 0)
 			continue;
 
@@ -229,22 +229,22 @@ int regulator_map_voltage_ascend(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_map_voltage_ascend);
 
 /**
- * regulator_map_voltage_linear - map_voltage() for simple linear mappings
+* regulator_map_voltage_linear - map_voltage() for simple linear mappings
  *
  * @rdev: Regulator to operate on
- * @min_uV: Lower bound for voltage
- * @max_uV: Upper bound for voltage
+* @min_uV: Lower bound for voltage
+* @max_uV: Upper bound for voltage
  *
  * Drivers providing min_uV and uV_step in their regulator_desc can
- * use this as their map_voltage() operation.
+* use this as their map_voltage() operation.
  */
 int regulator_map_voltage_linear(struct regulator_dev *rdev,
 				 int min_uV, int max_uV)
 {
-	int ret, voltage;
+int ret, voltage;
 
-	/* Allow uV_step to be 0 for fixed voltage */
-	if (rdev->desc->n_voltages == 1 && rdev->desc->uV_step == 0) {
+/* Allow uV_step to be 0 for fixed voltage */
+if (rdev->desc->n_voltages == 1 && rdev->desc->uV_step == 0) {
 		if (min_uV <= rdev->desc->min_uV && rdev->desc->min_uV <= max_uV)
 			return 0;
 		else
@@ -265,9 +265,9 @@ int regulator_map_voltage_linear(struct regulator_dev *rdev,
 
 	ret += rdev->desc->linear_min_sel;
 
-	/* Map back into a voltage to verify we're still in bounds */
-	voltage = rdev->desc->ops->list_voltage(rdev, ret);
-	if (voltage < min_uV || voltage > max_uV)
+/* Map back into a voltage to verify we're still in bounds */
+voltage = rdev->desc->ops->list_voltage(rdev, ret);
+if (voltage < min_uV || voltage > max_uV)
 		return -EINVAL;
 
 	return ret;
@@ -275,21 +275,21 @@ int regulator_map_voltage_linear(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_map_voltage_linear);
 
 /**
- * regulator_map_voltage_linear_range - map_voltage() for multiple linear ranges
+* regulator_map_voltage_linear_range - map_voltage() for multiple linear ranges
  *
  * @rdev: Regulator to operate on
- * @min_uV: Lower bound for voltage
- * @max_uV: Upper bound for voltage
+* @min_uV: Lower bound for voltage
+* @max_uV: Upper bound for voltage
  *
  * Drivers providing linear_ranges in their descriptor can use this as
- * their map_voltage() callback.
+* their map_voltage() callback.
  */
 int regulator_map_voltage_linear_range(struct regulator_dev *rdev,
 				       int min_uV, int max_uV)
 {
 	const struct regulator_linear_range *range;
 	int ret = -EINVAL;
-	int voltage, i;
+int voltage, i;
 
 	if (!rdev->desc->n_linear_ranges) {
 		BUG_ON(!rdev->desc->n_linear_ranges);
@@ -309,7 +309,7 @@ int regulator_map_voltage_linear_range(struct regulator_dev *rdev,
 		if (min_uV <= range->min_uV)
 			min_uV = range->min_uV;
 
-		/* range->uV_step == 0 means fixed voltage range */
+/* range->uV_step == 0 means fixed voltage range */
 		if (range->uV_step == 0) {
 			ret = 0;
 		} else {
@@ -327,9 +327,9 @@ int regulator_map_voltage_linear_range(struct regulator_dev *rdev,
 	if (i == rdev->desc->n_linear_ranges)
 		return -EINVAL;
 
-	/* Map back into a voltage to verify we're still in bounds */
-	voltage = rdev->desc->ops->list_voltage(rdev, ret);
-	if (voltage < min_uV || voltage > max_uV)
+/* Map back into a voltage to verify we're still in bounds */
+voltage = rdev->desc->ops->list_voltage(rdev, ret);
+if (voltage < min_uV || voltage > max_uV)
 		return -EINVAL;
 
 	return ret;
@@ -337,19 +337,19 @@ int regulator_map_voltage_linear_range(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_map_voltage_linear_range);
 
 /**
- * regulator_list_voltage_linear - List voltages with simple calculation
+* regulator_list_voltage_linear - List voltages with simple calculation
  *
  * @rdev: Regulator device
- * @selector: Selector to convert into a voltage
+* @selector: Selector to convert into a voltage
  *
- * Regulators with a simple linear mapping between voltages and
+* Regulators with a simple linear mapping between voltages and
  * selectors can set min_uV and uV_step in the regulator descriptor
- * and then use this function as their list_voltage() operation,
+* and then use this function as their list_voltage() operation,
  */
 int regulator_list_voltage_linear(struct regulator_dev *rdev,
 				  unsigned int selector)
 {
-	if (selector >= rdev->desc->n_voltages)
+if (selector >= rdev->desc->n_voltages)
 		return -EINVAL;
 	if (selector < rdev->desc->linear_min_sel)
 		return 0;
@@ -361,14 +361,14 @@ int regulator_list_voltage_linear(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_list_voltage_linear);
 
 /**
- * regulator_list_voltage_linear_range - List voltages for linear ranges
+* regulator_list_voltage_linear_range - List voltages for linear ranges
  *
  * @rdev: Regulator device
- * @selector: Selector to convert into a voltage
+* @selector: Selector to convert into a voltage
  *
- * Regulators with a series of simple linear mappings between voltages
+* Regulators with a series of simple linear mappings between voltages
  * and selectors can set linear_ranges in the regulator descriptor and
- * then use this function as their list_voltage() operation,
+* then use this function as their list_voltage() operation,
  */
 int regulator_list_voltage_linear_range(struct regulator_dev *rdev,
 					unsigned int selector)
@@ -398,14 +398,14 @@ int regulator_list_voltage_linear_range(struct regulator_dev *rdev,
 EXPORT_SYMBOL_GPL(regulator_list_voltage_linear_range);
 
 /**
- * regulator_list_voltage_table - List voltages with table based mapping
+* regulator_list_voltage_table - List voltages with table based mapping
  *
  * @rdev: Regulator device
- * @selector: Selector to convert into a voltage
+* @selector: Selector to convert into a voltage
  *
- * Regulators with table based mapping between voltages and
+* Regulators with table based mapping between voltages and
  * selectors can set volt_table in the regulator descriptor
- * and then use this function as their list_voltage() operation.
+* and then use this function as their list_voltage() operation.
  */
 int regulator_list_voltage_table(struct regulator_dev *rdev,
 				 unsigned int selector)
@@ -415,7 +415,7 @@ int regulator_list_voltage_table(struct regulator_dev *rdev,
 		return -EINVAL;
 	}
 
-	if (selector >= rdev->desc->n_voltages)
+if (selector >= rdev->desc->n_voltages)
 		return -EINVAL;
 
 	return rdev->desc->volt_table[selector];

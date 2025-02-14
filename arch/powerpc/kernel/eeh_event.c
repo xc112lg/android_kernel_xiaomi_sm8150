@@ -154,7 +154,7 @@ int eeh_send_failure_event(struct eeh_pe *pe)
  * @pe: Event binding to the PE
  * @force: Event will be removed unconditionally
  *
- * On PowerNV platform, we might have subsequent coming events
+* On PowerNV platform, we might have subsequent coming events
  * is part of the former one. For that case, those subsequent
  * coming events are totally duplicated and unnecessary, thus
  * they should be removed.

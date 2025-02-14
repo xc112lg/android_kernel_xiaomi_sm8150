@@ -24,7 +24,7 @@
 
 int psm_get_ui_state(struct pp_eventmgr *eventmgr, enum PP_StateUILabel ui_label, unsigned long *state_id)
 {
-	struct pp_power_state *state;
+struct pp_power_state *state;
 	int table_entries;
 	struct pp_hwmgr *hwmgr = eventmgr->hwmgr;
 	int i;
@@ -37,14 +37,14 @@ int psm_get_ui_state(struct pp_eventmgr *eventmgr, enum PP_StateUILabel ui_label
 			*state_id = state->id;
 			return 0;
 		}
-		state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
+state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
 	}
 	return -1;
 }
 
 int psm_get_state_by_classification(struct pp_eventmgr *eventmgr, enum PP_StateClassificationFlag flag, unsigned long *state_id)
 {
-	struct pp_power_state *state;
+struct pp_power_state *state;
 	int table_entries;
 	struct pp_hwmgr *hwmgr = eventmgr->hwmgr;
 	int i;
@@ -57,14 +57,14 @@ int psm_get_state_by_classification(struct pp_eventmgr *eventmgr, enum PP_StateC
 			*state_id = state->id;
 			return 0;
 		}
-		state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
+state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
 	}
 	return -1;
 }
 
 int psm_set_states(struct pp_eventmgr *eventmgr, unsigned long *state_id)
 {
-	struct pp_power_state *state;
+struct pp_power_state *state;
 	int table_entries;
 	struct pp_hwmgr *hwmgr = eventmgr->hwmgr;
 	int i;
@@ -78,7 +78,7 @@ int psm_set_states(struct pp_eventmgr *eventmgr, unsigned long *state_id)
 			memcpy(hwmgr->request_ps, state, hwmgr->ps_size);
 			return 0;
 		}
-		state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
+state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
 	}
 	return -1;
 }
@@ -86,8 +86,8 @@ int psm_set_states(struct pp_eventmgr *eventmgr, unsigned long *state_id)
 int psm_adjust_power_state_dynamic(struct pp_eventmgr *eventmgr, bool skip)
 {
 
-	struct pp_power_state *pcurrent;
-	struct pp_power_state *requested;
+struct pp_power_state *pcurrent;
+struct pp_power_state *requested;
 	struct pp_hwmgr *hwmgr;
 	bool equal;
 
@@ -107,7 +107,7 @@ int psm_adjust_power_state_dynamic(struct pp_eventmgr *eventmgr, bool skip)
 		equal = false;
 
 	if (!equal || phm_check_smc_update_required_for_display_configuration(hwmgr)) {
-		phm_set_power_state(hwmgr, &pcurrent->hardware, &requested->hardware);
+phm_set_power_state(hwmgr, &pcurrent->hardware, &requested->hardware);
 		memcpy(hwmgr->current_ps, hwmgr->request_ps, hwmgr->ps_size);
 	}
 	return 0;

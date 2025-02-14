@@ -1,5 +1,5 @@
 /*
- *	kirkwood_freq.c: cpufreq driver for the Marvell kirkwood
+*	kirkwood_freq.c: cpufreq driver for the Marvell kirkwood
  *
  *	Copyright (C) 2013 Andrew Lunn <andrew@lunn.ch>
  *
@@ -24,7 +24,7 @@ static struct priv
 {
 	struct clk *cpu_clk;
 	struct clk *ddr_clk;
-	struct clk *powersave_clk;
+struct clk *powersave_clk;
 	struct device *dev;
 	void __iomem *base;
 } priv;
@@ -38,23 +38,23 @@ static struct priv
  * - cpu clk
  * - ddr clk
  *
- * The frequencies are set at runtime before registering this table.
+* The frequencies are set at runtime before registering this table.
  */
 static struct cpufreq_frequency_table kirkwood_freq_table[] = {
-	{0, STATE_CPU_FREQ,	0}, /* CPU uses cpuclk */
-	{0, STATE_DDR_FREQ,	0}, /* CPU uses ddrclk */
-	{0, 0,			CPUFREQ_TABLE_END},
+{0, STATE_CPU_FREQ,	0}, /* CPU uses cpuclk */
+{0, STATE_DDR_FREQ,	0}, /* CPU uses ddrclk */
+{0, 0,			CPUFREQ_TABLE_END},
 };
 
 static unsigned int kirkwood_cpufreq_get_cpu_frequency(unsigned int cpu)
 {
-	return clk_get_rate(priv.powersave_clk) / 1000;
+return clk_get_rate(priv.powersave_clk) / 1000;
 }
 
 static int kirkwood_cpufreq_target(struct cpufreq_policy *policy,
 			    unsigned int index)
 {
-	unsigned int state = kirkwood_freq_table[index].driver_data;
+unsigned int state = kirkwood_freq_table[index].driver_data;
 	unsigned long reg;
 
 	local_irq_disable();
@@ -65,15 +65,15 @@ static int kirkwood_cpufreq_target(struct cpufreq_policy *policy,
 	writel_relaxed(reg, priv.base);
 
 	switch (state) {
-	case STATE_CPU_FREQ:
-		clk_set_parent(priv.powersave_clk, priv.cpu_clk);
+case STATE_CPU_FREQ:
+clk_set_parent(priv.powersave_clk, priv.cpu_clk);
 		break;
-	case STATE_DDR_FREQ:
-		clk_set_parent(priv.powersave_clk, priv.ddr_clk);
+case STATE_DDR_FREQ:
+clk_set_parent(priv.powersave_clk, priv.ddr_clk);
 		break;
 	}
 
-	/* Wait-for-Interrupt, while the hardware changes frequency */
+/* Wait-for-Interrupt, while the hardware changes frequency */
 	cpu_do_idle();
 
 	/* Enable interrupts to the CPU */
@@ -89,17 +89,17 @@ static int kirkwood_cpufreq_target(struct cpufreq_policy *policy,
 /* Module init and exit code */
 static int kirkwood_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
-	return cpufreq_generic_init(policy, kirkwood_freq_table, 5000);
+return cpufreq_generic_init(policy, kirkwood_freq_table, 5000);
 }
 
 static struct cpufreq_driver kirkwood_cpufreq_driver = {
-	.flags	= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.get	= kirkwood_cpufreq_get_cpu_frequency,
-	.verify	= cpufreq_generic_frequency_table_verify,
-	.target_index = kirkwood_cpufreq_target,
-	.init	= kirkwood_cpufreq_cpu_init,
-	.name	= "kirkwood-cpufreq",
-	.attr	= cpufreq_generic_attr,
+.flags	= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
+.get	= kirkwood_cpufreq_get_cpu_frequency,
+.verify	= cpufreq_generic_frequency_table_verify,
+.target_index = kirkwood_cpufreq_target,
+.init	= kirkwood_cpufreq_cpu_init,
+.name	= "kirkwood-cpufreq",
+.attr	= cpufreq_generic_attr,
 };
 
 static int kirkwood_cpufreq_probe(struct platform_device *pdev)
@@ -134,7 +134,7 @@ static int kirkwood_cpufreq_probe(struct platform_device *pdev)
 		goto out_node;
 	}
 
-	kirkwood_freq_table[0].frequency = clk_get_rate(priv.cpu_clk) / 1000;
+kirkwood_freq_table[0].frequency = clk_get_rate(priv.cpu_clk) / 1000;
 
 	priv.ddr_clk = of_clk_get_by_name(np, "ddrclk");
 	if (IS_ERR(priv.ddr_clk)) {
@@ -148,31 +148,31 @@ static int kirkwood_cpufreq_probe(struct platform_device *pdev)
 		dev_err(priv.dev, "Unable to prepare ddrclk\n");
 		goto out_cpu;
 	}
-	kirkwood_freq_table[1].frequency = clk_get_rate(priv.ddr_clk) / 1000;
+kirkwood_freq_table[1].frequency = clk_get_rate(priv.ddr_clk) / 1000;
 
-	priv.powersave_clk = of_clk_get_by_name(np, "powersave");
-	if (IS_ERR(priv.powersave_clk)) {
-		dev_err(priv.dev, "Unable to get powersave\n");
-		err = PTR_ERR(priv.powersave_clk);
+priv.powersave_clk = of_clk_get_by_name(np, "powersave");
+if (IS_ERR(priv.powersave_clk)) {
+dev_err(priv.dev, "Unable to get powersave\n");
+err = PTR_ERR(priv.powersave_clk);
 		goto out_ddr;
 	}
-	err = clk_prepare_enable(priv.powersave_clk);
+err = clk_prepare_enable(priv.powersave_clk);
 	if (err) {
-		dev_err(priv.dev, "Unable to prepare powersave clk\n");
+dev_err(priv.dev, "Unable to prepare powersave clk\n");
 		goto out_ddr;
 	}
 
-	err = cpufreq_register_driver(&kirkwood_cpufreq_driver);
+err = cpufreq_register_driver(&kirkwood_cpufreq_driver);
 	if (err) {
-		dev_err(priv.dev, "Failed to register cpufreq driver\n");
-		goto out_powersave;
+dev_err(priv.dev, "Failed to register cpufreq driver\n");
+goto out_powersave;
 	}
 
 	of_node_put(np);
 	return 0;
 
 out_powersave:
-	clk_disable_unprepare(priv.powersave_clk);
+clk_disable_unprepare(priv.powersave_clk);
 out_ddr:
 	clk_disable_unprepare(priv.ddr_clk);
 out_cpu:
@@ -185,9 +185,9 @@ out_node:
 
 static int kirkwood_cpufreq_remove(struct platform_device *pdev)
 {
-	cpufreq_unregister_driver(&kirkwood_cpufreq_driver);
+cpufreq_unregister_driver(&kirkwood_cpufreq_driver);
 
-	clk_disable_unprepare(priv.powersave_clk);
+clk_disable_unprepare(priv.powersave_clk);
 	clk_disable_unprepare(priv.ddr_clk);
 	clk_disable_unprepare(priv.cpu_clk);
 
@@ -195,10 +195,10 @@ static int kirkwood_cpufreq_remove(struct platform_device *pdev)
 }
 
 static struct platform_driver kirkwood_cpufreq_platform_driver = {
-	.probe = kirkwood_cpufreq_probe,
-	.remove = kirkwood_cpufreq_remove,
+.probe = kirkwood_cpufreq_probe,
+.remove = kirkwood_cpufreq_remove,
 	.driver = {
-		.name = "kirkwood-cpufreq",
+.name = "kirkwood-cpufreq",
 	},
 };
 

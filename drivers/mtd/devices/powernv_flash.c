@@ -50,7 +50,7 @@ enum flash_op {
 static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
 		loff_t offset, size_t len, size_t *retlen, u_char *buf)
 {
-	struct powernv_flash *info = (struct powernv_flash *)mtd->priv;
+struct powernv_flash *info = (struct powernv_flash *)mtd->priv;
 	struct device *dev = &mtd->dev;
 	int token;
 	struct opal_msg msg;
@@ -119,7 +119,7 @@ static int powernv_flash_async_op(struct mtd_info *mtd, enum flash_op op,
 static int powernv_flash_read(struct mtd_info *mtd, loff_t from, size_t len,
 	     size_t *retlen, u_char *buf)
 {
-	return powernv_flash_async_op(mtd, FLASH_OP_READ, from,
+return powernv_flash_async_op(mtd, FLASH_OP_READ, from,
 			len, retlen, buf);
 }
 
@@ -135,7 +135,7 @@ static int powernv_flash_read(struct mtd_info *mtd, loff_t from, size_t len,
 static int powernv_flash_write(struct mtd_info *mtd, loff_t to, size_t len,
 		     size_t *retlen, const u_char *buf)
 {
-	return powernv_flash_async_op(mtd, FLASH_OP_WRITE, to,
+return powernv_flash_async_op(mtd, FLASH_OP_WRITE, to,
 			len, retlen, (u_char *)buf);
 }
 
@@ -151,7 +151,7 @@ static int powernv_flash_erase(struct mtd_info *mtd, struct erase_info *erase)
 	erase->state = MTD_ERASING;
 
 	/* todo: register our own notifier to do a true async implementation */
-	rc =  powernv_flash_async_op(mtd, FLASH_OP_ERASE, erase->addr,
+rc =  powernv_flash_async_op(mtd, FLASH_OP_ERASE, erase->addr,
 			erase->len, NULL, NULL);
 
 	if (rc) {
@@ -165,7 +165,7 @@ static int powernv_flash_erase(struct mtd_info *mtd, struct erase_info *erase)
 }
 
 /**
- * powernv_flash_set_driver_info - Fill the mtd_info structure and docg3
+* powernv_flash_set_driver_info - Fill the mtd_info structure and docg3
  * structure @pdev: The platform device
  * @mtd: The structure to fill
  */
@@ -200,15 +200,15 @@ static int powernv_flash_set_driver_info(struct device *dev,
 	mtd->erasesize = erase_size;
 	mtd->writebufsize = mtd->writesize = 1;
 	mtd->owner = THIS_MODULE;
-	mtd->_erase = powernv_flash_erase;
-	mtd->_read = powernv_flash_read;
-	mtd->_write = powernv_flash_write;
+mtd->_erase = powernv_flash_erase;
+mtd->_read = powernv_flash_read;
+mtd->_write = powernv_flash_write;
 	mtd->dev.parent = dev;
 	return 0;
 }
 
 /**
- * powernv_flash_probe
+* powernv_flash_probe
  * @pdev: platform device
  *
  * Returns 0 on success, -ENOMEM, -ENXIO on error
@@ -216,7 +216,7 @@ static int powernv_flash_set_driver_info(struct device *dev,
 static int powernv_flash_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
-	struct powernv_flash *data;
+struct powernv_flash *data;
 	int ret;
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
@@ -232,7 +232,7 @@ static int powernv_flash_probe(struct platform_device *pdev)
 		goto out;
 	}
 
-	ret = powernv_flash_set_driver_info(dev, &data->mtd);
+ret = powernv_flash_set_driver_info(dev, &data->mtd);
 	if (ret)
 		goto out;
 
@@ -257,7 +257,7 @@ out:
  */
 static int powernv_flash_release(struct platform_device *pdev)
 {
-	struct powernv_flash *data = dev_get_drvdata(&(pdev->dev));
+struct powernv_flash *data = dev_get_drvdata(&(pdev->dev));
 
 	/* All resources should be freed automatically */
 	return mtd_device_unregister(&(data->mtd));
@@ -270,11 +270,11 @@ static const struct of_device_id powernv_flash_match[] = {
 
 static struct platform_driver powernv_flash_driver = {
 	.driver		= {
-		.name		= "powernv_flash",
-		.of_match_table	= powernv_flash_match,
+.name		= "powernv_flash",
+.of_match_table	= powernv_flash_match,
 	},
-	.remove		= powernv_flash_release,
-	.probe		= powernv_flash_probe,
+.remove		= powernv_flash_release,
+.probe		= powernv_flash_probe,
 };
 
 module_platform_driver(powernv_flash_driver);

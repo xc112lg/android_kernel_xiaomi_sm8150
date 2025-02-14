@@ -13,17 +13,17 @@
  * GNU General Public License for more details.
  *
  *
- * File: power.c
+* File: power.c
  *
- * Purpose: Handles 802.11 power management functions
+* Purpose: Handles 802.11 power management functions
  *
  * Author: Lyndon Chen
  *
  * Date: July 17, 2002
  *
  * Functions:
- *      vnt_enable_power_saving - Enable Power Saving Mode
- *      PSvDiasblePowerSaving - Disable Power Saving Mode
+*      vnt_enable_power_saving - Enable Power Saving Mode
+*      PSvDiasblePowerSaving - Disable Power Saving Mode
  *      vnt_next_tbtt_wakeup - Decide if we need to wake up at next Beacon
  *
  * Revision History:
@@ -41,7 +41,7 @@
 /*
  *
  * Routine Description:
- * Enable hw power saving functions
+* Enable hw power saving functions
  *
  * Return Value:
  *    None.
@@ -52,7 +52,7 @@ void vnt_enable_power_saving(struct vnt_private *priv, u16 listen_interval)
 {
 	u16 aid = priv->current_aid | BIT(14) | BIT(15);
 
-	/* set period of power up before TBTT */
+/* set period of power up before TBTT */
 	vnt_mac_write_word(priv, MAC_REG_PWBT, C_PWBT);
 
 	if (priv->op_mode != NL80211_IFTYPE_ADHOC)
@@ -62,7 +62,7 @@ void vnt_enable_power_saving(struct vnt_private *priv, u16 listen_interval)
 	/* Warren:06-18-2004,the sequence must follow
 	 * PSEN->AUTOSLEEP->GO2DOZE
 	 */
-	/* enable power saving hw function */
+/* enable power saving hw function */
 	vnt_mac_reg_bits_on(priv, MAC_REG_PSCTL, PSCTL_PSEN);
 
 	/* Set AutoSleep */
@@ -84,13 +84,13 @@ void vnt_enable_power_saving(struct vnt_private *priv, u16 listen_interval)
 		vnt_mac_reg_bits_on(priv, MAC_REG_PSCTL, PSCTL_ALBCN);
 	}
 
-	dev_dbg(&priv->usb->dev,  "PS:Power Saving Mode Enable...\n");
+dev_dbg(&priv->usb->dev,  "PS:Power Saving Mode Enable...\n");
 }
 
 /*
  *
  * Routine Description:
- * Disable hw power saving functions
+* Disable hw power saving functions
  *
  * Return Value:
  *    None.
@@ -99,7 +99,7 @@ void vnt_enable_power_saving(struct vnt_private *priv, u16 listen_interval)
 
 void vnt_disable_power_saving(struct vnt_private *priv)
 {
-	/* disable power saving hw function */
+/* disable power saving hw function */
 	vnt_control_out(priv, MESSAGE_TYPE_DISABLE_PS, 0,
 			0, 0, NULL);
 

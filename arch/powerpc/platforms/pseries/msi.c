@@ -397,7 +397,7 @@ static int rtas_setup_msi_irqs(struct pci_dev *pdev, int nvec_in, int type)
 		return -EINVAL;
 
 	/*
-	 * Firmware currently refuse any non power of two allocation
+* Firmware currently refuse any non power of two allocation
 	 * so we round up if the quota will allow it.
 	 */
 	if (type == PCI_CAP_ID_MSIX) {

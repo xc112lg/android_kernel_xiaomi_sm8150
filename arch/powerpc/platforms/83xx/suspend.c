@@ -190,7 +190,7 @@ static int mpc83xx_suspend_enter(suspend_state_t state)
 		         in_be32(&pmc_regs->config1) | PMCCR1_PME_EN);
 	}
 
-	/* Put the system into low-power mode and the RAM
+/* Put the system into low-power mode and the RAM
 	 * into self-refresh mode once the core goes to
 	 * sleep.
 	 */
@@ -198,7 +198,7 @@ static int mpc83xx_suspend_enter(suspend_state_t state)
 	out_be32(&pmc_regs->config, PMCCR_SLPEN | PMCCR_DLPEN);
 
 	/* If it has deep sleep (i.e. it's an 831x or compatible),
-	 * disable power to the core upon entering sleep mode.  This will
+* disable power to the core upon entering sleep mode.  This will
 	 * require going through the boot firmware upon a wakeup event.
 	 */
 
@@ -208,14 +208,14 @@ static int mpc83xx_suspend_enter(suspend_state_t state)
 		out_be32(&pmc_regs->mask, PMCER_ALL);
 
 		out_be32(&pmc_regs->config1,
-		         in_be32(&pmc_regs->config1) | PMCCR1_POWER_OFF);
+in_be32(&pmc_regs->config1) | PMCCR1_POWER_OFF);
 
 		enable_kernel_fp();
 
 		mpc83xx_enter_deep_sleep(immrbase);
 
 		out_be32(&pmc_regs->config1,
-		         in_be32(&pmc_regs->config1) & ~PMCCR1_POWER_OFF);
+in_be32(&pmc_regs->config1) & ~PMCCR1_POWER_OFF);
 
 		out_be32(&pmc_regs->mask, PMCER_PMCI);
 
@@ -295,7 +295,7 @@ static void mpc83xx_set_agent(void)
 	out_be32(&pmc_regs->config1, PMCCR1_USE_STATE);
 	out_be32(&pmc_regs->mask, PMCER_PMCI);
 
-	kthread_run(agent_thread_fn, NULL, "PCI power mgt");
+kthread_run(agent_thread_fn, NULL, "PCI power mgt");
 }
 
 static int mpc83xx_is_pci_agent(void)

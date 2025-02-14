@@ -6,7 +6,7 @@
  *
  * Copyright (C) 1999 Cort Dougan <cort@cs.nmt.edu>
  *
- * PowerPC-64 Support added by Dave Engebretsen, Peter Bergner, and
+* PowerPC-64 Support added by Dave Engebretsen, Peter Bergner, and
  * Mike Corrigan {engebret|bergner|mikec}@us.ibm.com
  *
  *      This program is free software; you can redistribute it and/or
@@ -1032,7 +1032,7 @@ static int powerpc_smt_flags(void)
 
 static struct sched_domain_topology_level powerpc_topology[] = {
 #ifdef CONFIG_SCHED_SMT
-	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
+{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
 #endif
 	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
 	{ NULL, },
@@ -1060,9 +1060,9 @@ static const struct cpumask *shared_cache_mask(int cpu)
 
 static struct sched_domain_topology_level power9_topology[] = {
 #ifdef CONFIG_SCHED_SMT
-	{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
+{ cpu_smt_mask, powerpc_smt_flags, SD_INIT_NAME(SMT) },
 #endif
-	{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
+{ shared_cache_mask, powerpc_shared_cache_flags, SD_INIT_NAME(CACHE) },
 	{ cpu_cpu_mask, SD_INIT_NAME(DIE) },
 	{ NULL, },
 };
@@ -1086,10 +1086,10 @@ void __init smp_cpus_done(unsigned int max_cpus)
 	 */
 	if (shared_caches) {
 		pr_info("Using shared cache scheduler topology\n");
-		set_sched_topology(power9_topology);
+set_sched_topology(power9_topology);
 	} else {
 		pr_info("Using standard scheduler topology\n");
-		set_sched_topology(powerpc_topology);
+set_sched_topology(powerpc_topology);
 	}
 }
 

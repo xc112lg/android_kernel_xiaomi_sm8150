@@ -4,7 +4,7 @@
  * Copyright 2016 Naveen N. Rao <naveen.n.rao@linux.vnet.ibm.com>
  *		  IBM Corporation
  *
- * Based on the powerpc classic BPF JIT compiler by Matt Evans
+* Based on the powerpc classic BPF JIT compiler by Matt Evans
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

@@ -47,13 +47,13 @@ static enum speedstep_processor speedstep_processor;
 static u32 pmbase;
 
 /*
- *   There are only two frequency states for each processor. Values
+*   There are only two frequency states for each processor. Values
  * are in kHz for the time being.
  */
 static struct cpufreq_frequency_table speedstep_freqs[] = {
 	{0, SPEEDSTEP_HIGH,	0},
 	{0, SPEEDSTEP_LOW,	0},
-	{0, 0,			CPUFREQ_TABLE_END},
+{0, 0,			CPUFREQ_TABLE_END},
 };
 
 
@@ -86,7 +86,7 @@ static int speedstep_find_register(void)
 
 /**
  * speedstep_set_state - set the SpeedStep state
- * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)
+* @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)
  *
  *   Tries to change the SpeedStep state.  Can be called from
  *   smp_call_function_single.
@@ -136,7 +136,7 @@ static void speedstep_set_state(unsigned int state)
 
 	if (state == (value & 0x1))
 		pr_debug("change to %u MHz succeeded\n",
-			speedstep_get_frequency(speedstep_processor) / 1000);
+speedstep_get_frequency(speedstep_processor) / 1000);
 	else
 		pr_err("change failed - I/O error\n");
 
@@ -177,7 +177,7 @@ static int speedstep_activate(void)
  * speedstep_detect_chipset - detect the Southbridge which contains SpeedStep logic
  *
  *   Detects ICH2-M, ICH3-M and ICH4-M so far. The pci_dev points to
- * the LPC bridge / PM module which contains all power-management
+* the LPC bridge / PM module which contains all power-management
  * functions. Returns the SPEEDSTEP_CHIPSET_-number for the detected
  * chipset, or zero on failure.
  */
@@ -235,7 +235,7 @@ static void get_freq_data(void *_speed)
 {
 	unsigned int *speed = _speed;
 
-	*speed = speedstep_get_frequency(speedstep_processor);
+*speed = speedstep_get_frequency(speedstep_processor);
 }
 
 static unsigned int speedstep_get(unsigned int cpu)
@@ -243,19 +243,19 @@ static unsigned int speedstep_get(unsigned int cpu)
 	unsigned int speed;
 
 	/* You're supposed to ensure CPU is online. */
-	if (smp_call_function_single(cpu, get_freq_data, &speed, 1) != 0)
+if (smp_call_function_single(cpu, get_freq_data, &speed, 1) != 0)
 		BUG();
 
-	pr_debug("detected %u kHz as current frequency\n", speed);
+pr_debug("detected %u kHz as current frequency\n", speed);
 	return speed;
 }
 
 /**
- * speedstep_target - set a new CPUFreq policy
+* speedstep_target - set a new CPUFreq policy
  * @policy: new policy
- * @index: index of target frequency
+* @index: index of target frequency
  *
- * Sets a new CPUFreq policy.
+* Sets a new CPUFreq policy.
  */
 static int speedstep_target(struct cpufreq_policy *policy, unsigned int index)
 {
@@ -271,26 +271,26 @@ static int speedstep_target(struct cpufreq_policy *policy, unsigned int index)
 
 
 struct get_freqs {
-	struct cpufreq_policy *policy;
+struct cpufreq_policy *policy;
 	int ret;
 };
 
 static void get_freqs_on_cpu(void *_get_freqs)
 {
-	struct get_freqs *get_freqs = _get_freqs;
+struct get_freqs *get_freqs = _get_freqs;
 
-	get_freqs->ret =
-		speedstep_get_freqs(speedstep_processor,
-			    &speedstep_freqs[SPEEDSTEP_LOW].frequency,
-			    &speedstep_freqs[SPEEDSTEP_HIGH].frequency,
-			    &get_freqs->policy->cpuinfo.transition_latency,
+get_freqs->ret =
+speedstep_get_freqs(speedstep_processor,
+&speedstep_freqs[SPEEDSTEP_LOW].frequency,
+&speedstep_freqs[SPEEDSTEP_HIGH].frequency,
+&get_freqs->policy->cpuinfo.transition_latency,
 			    &speedstep_set_state);
 }
 
 static int speedstep_cpu_init(struct cpufreq_policy *policy)
 {
 	unsigned int policy_cpu;
-	struct get_freqs gf;
+struct get_freqs gf;
 
 	/* only run on CPU to be set, or on its sibling */
 #ifdef CONFIG_SMP
@@ -298,23 +298,23 @@ static int speedstep_cpu_init(struct cpufreq_policy *policy)
 #endif
 	policy_cpu = cpumask_any_and(policy->cpus, cpu_online_mask);
 
-	/* detect low and high frequency and transition latency */
+/* detect low and high frequency and transition latency */
 	gf.policy = policy;
-	smp_call_function_single(policy_cpu, get_freqs_on_cpu, &gf, 1);
+smp_call_function_single(policy_cpu, get_freqs_on_cpu, &gf, 1);
 	if (gf.ret)
 		return gf.ret;
 
-	return cpufreq_table_validate_and_show(policy, speedstep_freqs);
+return cpufreq_table_validate_and_show(policy, speedstep_freqs);
 }
 
 
 static struct cpufreq_driver speedstep_driver = {
 	.name	= "speedstep-ich",
-	.verify	= cpufreq_generic_frequency_table_verify,
+.verify	= cpufreq_generic_frequency_table_verify,
 	.target_index = speedstep_target,
 	.init	= speedstep_cpu_init,
 	.get	= speedstep_get,
-	.attr	= cpufreq_generic_attr,
+.attr	= cpufreq_generic_attr,
 };
 
 static const struct x86_cpu_id ss_smi_ids[] = {
@@ -329,7 +329,7 @@ MODULE_DEVICE_TABLE(x86cpu, ss_smi_ids);
 #endif
 
 /**
- * speedstep_init - initializes the SpeedStep CPUFreq driver
+* speedstep_init - initializes the SpeedStep CPUFreq driver
  *
  *   Initializes the SpeedStep support. Returns -ENODEV on unsupported
  * devices, -EINVAL on problems during initiatization, and zero on
@@ -364,7 +364,7 @@ static int __init speedstep_init(void)
 	if (speedstep_find_register())
 		return -ENODEV;
 
-	return cpufreq_register_driver(&speedstep_driver);
+return cpufreq_register_driver(&speedstep_driver);
 }
 
 
@@ -376,7 +376,7 @@ static int __init speedstep_init(void)
 static void __exit speedstep_exit(void)
 {
 	pci_dev_put(speedstep_chipset_dev);
-	cpufreq_unregister_driver(&speedstep_driver);
+cpufreq_unregister_driver(&speedstep_driver);
 }
 
 

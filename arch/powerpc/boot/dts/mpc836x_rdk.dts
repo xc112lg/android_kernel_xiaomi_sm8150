@@ -35,7 +35,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8360@0 {
+PowerPC,8360@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
@@ -43,9 +43,9 @@
 			d-cache-size = <32768>;
 			i-cache-size = <32768>;
 			/* filled by u-boot */
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 		};
 	};
 
@@ -64,14 +64,14 @@
 		ranges = <0 0xe0000000 0x200000>;
 		reg = <0xe0000000 0x200>;
 		/* filled by u-boot */
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		wdt@200 {
 			compatible = "mpc83xx_wdt";
 			reg = <0x200 0x100>;
 		};
 
-		pmc: power@b00 {
+pmc: power@b00 {
 			compatible = "fsl,mpc8360-pmc", "fsl,mpc8349-pmc";
 			reg = <0xb00 0x100 0xa00 0x100>;
 			interrupts = <80 0x8>;
@@ -107,7 +107,7 @@
 			interrupts = <9 8>;
 			interrupt-parent = <&ipic>;
 			/* filled by u-boot */
-			clock-frequency = <0>;
+clock-frequency = <0>;
 		};
 
 		serial1: serial@4600 {
@@ -117,7 +117,7 @@
 			interrupts = <10 8>;
 			interrupt-parent = <&ipic>;
 			/* filled by u-boot */
-			clock-frequency = <0>;
+clock-frequency = <0>;
 		};
 
 		dma@82a8 {
@@ -203,9 +203,9 @@
 			ranges = <0 0x100000 0x100000>;
 			reg = <0x100000 0x480>;
 			/* filled by u-boot */
-			clock-frequency = <0>;
-			bus-frequency = <0>;
-			brg-frequency = <0>;
+clock-frequency = <0>;
+bus-frequency = <0>;
+brg-frequency = <0>;
 			fsl,qe-num-riscs = <2>;
 			fsl,qe-num-snums = <28>;
 
@@ -228,7 +228,7 @@
 				reg = <0x440 0x40>;
 				interrupts = <12 13 14 15>;
 				interrupt-parent = <&qeic>;
-				clock-frequency = <166666666>;
+clock-frequency = <166666666>;
 			};
 
 			usb@6c0 {
@@ -244,7 +244,7 @@
 					 &qe_pio_b  9 0 /* USBRP */
 					 &qe_pio_b 11 0 /* USBRN */
 					 &qe_pio_e 20 0 /* SPEED */
-					 &qe_pio_e 21 1 /* POWER */>;
+&qe_pio_e 21 1 /* POWER */>;
 			};
 
 			spi@4c0 {
@@ -462,6 +462,6 @@
 		sleep = <&pmc 0x00010000>;
 		/* filled by u-boot */
 		bus-range = <0 0>;
-		clock-frequency = <0>;
+clock-frequency = <0>;
 	};
 };

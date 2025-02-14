@@ -1,5 +1,5 @@
 /*
- * Performance counter callchain support - powerpc architecture code
+* Performance counter callchain support - powerpc architecture code
  *
  * Copyright © 2009 Paul Mackerras, IBM Corporation.
  *

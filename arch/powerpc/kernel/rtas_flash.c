@@ -6,7 +6,7 @@
  *      as published by the Free Software Foundation; either version
  *      2 of the License, or (at your option) any later version.
  *
- * /proc/powerpc/rtas/firmware_flash interface
+* /proc/powerpc/rtas/firmware_flash interface
  *
  * This file implements a firmware_flash interface to pump a firmware
  * image into the kernel.  At reboot time rtas_restart() will see the
@@ -630,7 +630,7 @@ static void rtas_flash_firmware(int reboot_type)
 	printk(KERN_ALERT "FLASH: performing flash and reboot\n");
 	rtas_progress("Flashing        \n", 0x0);
 	rtas_progress("Please Wait...  ", 0x0);
-	printk(KERN_ALERT "FLASH: this will take several minutes.  Do not power off!\n");
+printk(KERN_ALERT "FLASH: this will take several minutes.  Do not power off!\n");
 	status = rtas_call(update_token, 1, 1, NULL, rtas_block_list);
 	switch (status) {	/* should only get "bad" status */
 	    case 0:
@@ -664,7 +664,7 @@ struct rtas_flash_file {
 
 static const struct rtas_flash_file rtas_flash_files[] = {
 	{
-		.filename	= "powerpc/rtas/" FIRMWARE_FLASH_NAME,
+.filename	= "powerpc/rtas/" FIRMWARE_FLASH_NAME,
 		.rtas_call_name	= "ibm,update-flash-64-and-reboot",
 		.status		= &rtas_update_flash_data.status,
 		.fops.read	= rtas_flash_read_msg,
@@ -673,7 +673,7 @@ static const struct rtas_flash_file rtas_flash_files[] = {
 		.fops.llseek	= default_llseek,
 	},
 	{
-		.filename	= "powerpc/rtas/" FIRMWARE_UPDATE_NAME,
+.filename	= "powerpc/rtas/" FIRMWARE_UPDATE_NAME,
 		.rtas_call_name	= "ibm,update-flash-64-and-reboot",
 		.status		= &rtas_update_flash_data.status,
 		.fops.read	= rtas_flash_read_num,
@@ -682,7 +682,7 @@ static const struct rtas_flash_file rtas_flash_files[] = {
 		.fops.llseek	= default_llseek,
 	},
 	{
-		.filename	= "powerpc/rtas/" VALIDATE_FLASH_NAME,
+.filename	= "powerpc/rtas/" VALIDATE_FLASH_NAME,
 		.rtas_call_name	= "ibm,validate-flash-image",
 		.status		= &rtas_validate_flash_data.status,
 		.fops.read	= validate_flash_read,
@@ -691,7 +691,7 @@ static const struct rtas_flash_file rtas_flash_files[] = {
 		.fops.llseek	= default_llseek,
 	},
 	{
-		.filename	= "powerpc/rtas/" MANAGE_FLASH_NAME,
+.filename	= "powerpc/rtas/" MANAGE_FLASH_NAME,
 		.rtas_call_name	= "ibm,manage-flash-image",
 		.status		= &rtas_manage_flash_data.status,
 		.fops.read	= manage_flash_read,

@@ -217,7 +217,7 @@ static int scom_debug_init(void)
 	struct dentry *root;
 	int i, rc;
 
-	root = debugfs_create_dir("scom", powerpc_debugfs_root);
+root = debugfs_create_dir("scom", powerpc_debugfs_root);
 	if (!root)
 		return -1;
 

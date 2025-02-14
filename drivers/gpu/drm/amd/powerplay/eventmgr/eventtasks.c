@@ -58,20 +58,20 @@ int pem_task_adjust_power_state(struct pp_eventmgr *eventmgr, struct pem_event_d
 		return 0;
 
 	hwmgr = eventmgr->hwmgr;
-	if (event_data->pnew_power_state != NULL)
-		hwmgr->request_ps = event_data->pnew_power_state;
+if (event_data->pnew_power_state != NULL)
+hwmgr->request_ps = event_data->pnew_power_state;
 
-	if (phm_cap_enabled(eventmgr->platform_descriptor->platformCaps, PHM_PlatformCaps_DynamicPatchPowerState))
-		psm_adjust_power_state_dynamic(eventmgr, event_data->skip_state_adjust_rules);
+if (phm_cap_enabled(eventmgr->platform_descriptor->platformCaps, PHM_PlatformCaps_DynamicPatchPowerState))
+psm_adjust_power_state_dynamic(eventmgr, event_data->skip_state_adjust_rules);
 	else
-		psm_adjust_power_state_static(eventmgr, event_data->skip_state_adjust_rules);
+psm_adjust_power_state_static(eventmgr, event_data->skip_state_adjust_rules);
 
 	return 0;
 }
 
 int pem_task_power_down_asic(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	return phm_power_down_asic(eventmgr->hwmgr);
+return phm_power_down_asic(eventmgr->hwmgr);
 }
 
 int pem_task_set_boot_state(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
@@ -140,24 +140,24 @@ int pem_task_disable_dynamic_state_management(struct pp_eventmgr *eventmgr, stru
 
 int pem_task_enable_clock_power_gatings_tasks(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	return phm_enable_clock_power_gatings(eventmgr->hwmgr);
+return phm_enable_clock_power_gatings(eventmgr->hwmgr);
 }
 
 int pem_task_powerdown_uvd_tasks(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	return phm_powerdown_uvd(eventmgr->hwmgr);
+return phm_powerdown_uvd(eventmgr->hwmgr);
 }
 
 int pem_task_powerdown_vce_tasks(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	phm_powergate_uvd(eventmgr->hwmgr, true);
-	phm_powergate_vce(eventmgr->hwmgr, true);
+phm_powergate_uvd(eventmgr->hwmgr, true);
+phm_powergate_vce(eventmgr->hwmgr, true);
 	return 0;
 }
 
 int pem_task_disable_clock_power_gatings_tasks(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	phm_disable_clock_power_gatings(eventmgr->hwmgr);
+phm_disable_clock_power_gatings(eventmgr->hwmgr);
 	return 0;
 }
 
@@ -219,14 +219,14 @@ int pem_task_notify_smc_display_config_after_power_state_adjustment(struct pp_ev
 
 int pem_task_block_adjust_power_state(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	eventmgr->block_adjust_power_state = true;
+eventmgr->block_adjust_power_state = true;
 	/* to do PHM_ResetIPSCounter(pEventMgr->pHwMgr);*/
 	return 0;
 }
 
 int pem_task_unblock_adjust_power_state(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	eventmgr->block_adjust_power_state = false;
+eventmgr->block_adjust_power_state = false;
 	return 0;
 }
 
@@ -256,7 +256,7 @@ int pem_task_reset_display_phys_access(struct pp_eventmgr *eventmgr, struct pem_
 
 int pem_task_set_cpu_power_state(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	return phm_set_cpu_power_state(eventmgr->hwmgr);
+return phm_set_cpu_power_state(eventmgr->hwmgr);
 }
 
 /*powersaving*/
@@ -372,8 +372,8 @@ int pem_task_get_2D_performance_state_id(struct pp_eventmgr *eventmgr, struct pe
 {
 	int result;
 
-	if (eventmgr->features[PP_Feature_PowerPlay].supported &&
-		!(eventmgr->features[PP_Feature_PowerPlay].enabled))
+if (eventmgr->features[PP_Feature_PowerPlay].supported &&
+!(eventmgr->features[PP_Feature_PowerPlay].enabled))
 			result = psm_get_state_by_classification(eventmgr,
 					PP_StateClassificationFlag_Boot,
 					&(event_data->requested_state_id));
@@ -395,7 +395,7 @@ int pem_task_get_2D_performance_state_id(struct pp_eventmgr *eventmgr, struct pe
 
 int pem_task_create_user_performance_state(struct pp_eventmgr *eventmgr, struct pem_event_data *event_data)
 {
-	struct pp_power_state *state;
+struct pp_power_state *state;
 	int table_entries;
 	struct pp_hwmgr *hwmgr = eventmgr->hwmgr;
 	int i;
@@ -406,10 +406,10 @@ int pem_task_create_user_performance_state(struct pp_eventmgr *eventmgr, struct 
 restart_search:
 	for (i = 0; i < table_entries; i++) {
 		if (state->classification.ui_label & event_data->requested_ui_label) {
-			event_data->pnew_power_state = state;
+event_data->pnew_power_state = state;
 			return 0;
 		}
-		state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
+state = (struct pp_power_state *)((unsigned long)state + hwmgr->ps_size);
 	}
 
 	switch (event_data->requested_ui_label) {

@@ -154,7 +154,7 @@ static int pmic8xxx_chk_sync_read(struct pmic8xxx_kp *kp)
 	}
 
 	/* 2 * 32KHz clocks */
-	udelay((2 * DIV_ROUND_UP(USEC_PER_SEC, KEYP_CLOCK_FREQ)) + 1);
+udelay((2 * DIV_ROUND_UP(USEC_PER_SEC, KEYP_CLOCK_FREQ)) + 1);
 
 	return rc;
 }
@@ -208,7 +208,7 @@ static int pmic8xxx_kp_read_matrix(struct pmic8xxx_kp *kp, u16 *new_state,
 	}
 
 	/* 4 * 32KHz clocks */
-	udelay((4 * DIV_ROUND_UP(USEC_PER_SEC, KEYP_CLOCK_FREQ)) + 1);
+udelay((4 * DIV_ROUND_UP(USEC_PER_SEC, KEYP_CLOCK_FREQ)) + 1);
 
 	rc = regmap_read(kp->regmap, KEYP_SCAN, &scan_val);
 	if (rc < 0) {
@@ -410,7 +410,7 @@ static int pmic8xxx_kpd_init(struct pmic8xxx_kp *kp,
 		scan_delay_ms = MIN_SCAN_DELAY;
 
 	if (scan_delay_ms > MAX_SCAN_DELAY || scan_delay_ms < MIN_SCAN_DELAY ||
-	    !is_power_of_2(scan_delay_ms)) {
+!is_power_of_2(scan_delay_ms)) {
 		dev_err(&pdev->dev, "invalid keypad scan time supplied\n");
 		return -EINVAL;
 	}
@@ -443,7 +443,7 @@ static int pmic8xxx_kpd_init(struct pmic8xxx_kp *kp,
 	scan_val |= (bits << KEYP_SCAN_PAUSE_SHIFT);
 
 	/* Row hold time is a multiple of 32KHz cycles. */
-	cycles = (row_hold_ns * KEYP_CLOCK_FREQ) / NSEC_PER_SEC;
+cycles = (row_hold_ns * KEYP_CLOCK_FREQ) / NSEC_PER_SEC;
 
 	scan_val |= (cycles << KEYP_SCAN_ROW_HOLD_SHIFT);
 

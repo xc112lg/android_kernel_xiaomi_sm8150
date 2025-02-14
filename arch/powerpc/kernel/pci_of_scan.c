@@ -1,7 +1,7 @@
 /*
  * Helper routines to scan the device tree for PCI devices and busses
  *
- * Migrated out of PowerPC architecture pci_64.c file by Grant Likely
+* Migrated out of PowerPC architecture pci_64.c file by Grant Likely
  * <grant.likely@secretlab.ca> so that these routines are available for
  * 32 bit also.
  *
@@ -170,7 +170,7 @@ struct pci_dev *of_create_pci_dev(struct device_node *node,
 	pr_debug("    class: 0x%x\n", dev->class);
 	pr_debug("    revision: 0x%x\n", dev->revision);
 
-	dev->current_state = PCI_UNKNOWN;	/* unknown power state */
+dev->current_state = PCI_UNKNOWN;	/* unknown power state */
 	dev->error_state = pci_channel_io_normal;
 	dev->dma_mask = 0xffffffff;
 

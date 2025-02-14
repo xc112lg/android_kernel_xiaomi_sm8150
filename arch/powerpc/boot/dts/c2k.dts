@@ -32,11 +32,11 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			compatible = "PowerPC,7447";
+compatible = "PowerPC,7447";
 			reg = <0>;
-			clock-frequency = <996000000>;	/* 996 MHz */
-			bus-frequency = <166666667>;	/* 166.6666 MHz */
-			timebase-frequency = <41666667>;	/* 166.6666/4 MHz */
+clock-frequency = <996000000>;	/* 996 MHz */
+bus-frequency = <166666667>;	/* 166.6666 MHz */
+timebase-frequency = <41666667>;	/* 166.6666/4 MHz */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <32768>;
@@ -54,7 +54,7 @@
 		#size-cells = <1>;
 		model = "mv64460";
 		compatible = "marvell,mv64360";
-		clock-frequency = <166666667>;		/* 166.66... MHz */
+clock-frequency = <166666667>;		/* 166.66... MHz */
 		reg = <0xd8000000 0x00010000>;
 		virtual-reg = <0xd8000000>;
 		ranges = <0xd4000000 0xd4000000 0x01000000	/* PCI 0 I/O Space */
@@ -145,7 +145,7 @@
 			compatible = "marvell,mv64360-brg";
 			reg = <0xb200 0x8>;
 			clock-src = <8>;
-			clock-frequency = <133333333>;
+clock-frequency = <133333333>;
 			current-speed = <115200>;
 		};
 
@@ -153,7 +153,7 @@
 			compatible = "marvell,mv64360-brg";
 			reg = <0xb208 0x8>;
 			clock-src = <8>;
-			clock-frequency = <133333333>;
+clock-frequency = <133333333>;
 			current-speed = <115200>;
 		};
 
@@ -239,7 +239,7 @@
 			ranges = <0x01000000 0x0 0x00000000 0xd4000000 0x0 0x01000000
 				  0x02000000 0x0 0x80000000 0x80000000 0x0 0x08000000>;
 			bus-range = <0 255>;
-			clock-frequency = <66000000>;
+clock-frequency = <66000000>;
 			interrupt-pci-iack = <0x0c34>;
 			interrupt-parent = <&PIC>;
 			interrupt-map-mask = <0x0000 0x0 0x0 0x7>;
@@ -260,7 +260,7 @@
 			ranges = <0x01000000 0x0 0x00000000 0xd0000000 0x0 0x01000000
 				  0x02000000 0x0 0x80000000 0xa0000000 0x0 0x08000000>;
 			bus-range = <0 255>;
-			clock-frequency = <66000000>;
+clock-frequency = <66000000>;
 			interrupt-pci-iack = <0x0cb4>;
 			interrupt-parent = <&PIC>;
 			interrupt-map-mask = <0xf800 0x00 0x00 0x7>;

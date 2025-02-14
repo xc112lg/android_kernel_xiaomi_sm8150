@@ -1,5 +1,5 @@
 /*
- *  PowerPC version derived from arch/arm/mm/consistent.c
+*  PowerPC version derived from arch/arm/mm/consistent.c
  *    Copyright (C) 2001 Dan Malek (dmalek@jlc.net)
  *
  *  Copyright (C) 2000 Russell King
@@ -7,7 +7,7 @@
  * Consistent memory allocators.  Used for DMA devices that want to
  * share uncached memory with the processor core.  The function return
  * is the virtual address and 'dma_handle' is the physical address.
- * Mostly stolen from the ARM port, with some changes for PowerPC.
+* Mostly stolen from the ARM port, with some changes for PowerPC.
  *						-- Dan
  *
  * Reorganized to get rid of the arch-specific consistent_* functions

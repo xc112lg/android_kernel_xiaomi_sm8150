@@ -15,7 +15,7 @@
 #define _UAPI_ASM_POWERPC_TYPES_H
 
 /*
- * This is here because we used to use l64 for 64bit powerpc
+* This is here because we used to use l64 for 64bit powerpc
  * and we don't want to impact user mode with our change to ll64
  * in the kernel.
  *

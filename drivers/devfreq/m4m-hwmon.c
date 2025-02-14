@@ -241,7 +241,7 @@ static unsigned long m4m_meas_mrps_and_set_irq(struct cache_hwmon *hw,
 {
 	struct m4m_hwmon *m = to_mon(hw);
 	unsigned long count, cyc_count;
-	unsigned long f = hw->df->previous_freq;
+unsigned long f = hw->df->previous_freq;
 	unsigned int sample_ms = hw->df->profile->polling_ms;
 	int i;
 	u32 limit;

@@ -237,17 +237,17 @@ int cpr3_read_fuse_param(void __iomem *fuse_base_addr,
 }
 
 /**
- * cpr3_convert_open_loop_voltage_fuse() - converts an open loop voltage fuse
- *		value into an absolute voltage with units of microvolts
- * @ref_volt:		Reference voltage in microvolts
+* cpr3_convert_open_loop_voltage_fuse() - converts an open loop voltage fuse
+*		value into an absolute voltage with units of microvolts
+* @ref_volt:		Reference voltage in microvolts
  * @step_volt:		The step size in microvolts of the fuse LSB
- * @fuse:		Open loop voltage fuse value
+* @fuse:		Open loop voltage fuse value
  * @fuse_len:		The bit length of the fuse value
  *
  * The MSB of the fuse parameter corresponds to a sign bit.  If it is set, then
  * the lower bits correspond to the number of steps to go down from the
- * reference voltage.  If it is not set, then the lower bits correspond to the
- * number of steps to go up from the reference voltage.
+* reference voltage.  If it is not set, then the lower bits correspond to the
+* number of steps to go up from the reference voltage.
  */
 int cpr3_convert_open_loop_voltage_fuse(int ref_volt, int step_volt, u32 fuse,
 					int fuse_len)
@@ -524,14 +524,14 @@ int cpr3_parse_corner_band_array_property(struct cpr3_regulator *vreg,
  *
  * This function reads, validates, and utilizes the following device tree
  * properties: qcom,cpr-fuse-corners, qcom,cpr-fuse-combos, qcom,cpr-speed-bins,
- * qcom,cpr-speed-bin-corners, qcom,cpr-corners, qcom,cpr-voltage-ceiling,
- * qcom,cpr-voltage-floor, qcom,corner-frequencies,
+* qcom,cpr-speed-bin-corners, qcom,cpr-corners, qcom,cpr-voltage-ceiling,
+* qcom,cpr-voltage-floor, qcom,corner-frequencies,
  * and qcom,cpr-corner-fmax-map.
  *
  * It initializes these CPR3 regulator elements: corner, corner_count,
  * fuse_combos_supported, fuse_corner_map, and speed_bins_supported.  It
  * initializes these elements for each corner: ceiling_volt, floor_volt,
- * proc_freq, and cpr_fuse_corner.
+* proc_freq, and cpr_fuse_corner.
  *
  * It requires that the following CPR3 regulator elements be initialized before
  * being called: fuse_corner_count, fuse_combo, and speed_bin_fuse.
@@ -681,8 +681,8 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 
 	/*
 	 * For CPRh compliant controllers two additional corners are
-	 * allocated to correspond to the APM crossover voltage and the MEM ACC
-	 * crossover voltage.
+* allocated to correspond to the APM crossover voltage and the MEM ACC
+* crossover voltage.
 	 */
 	vreg->corner = devm_kcalloc(ctrl->dev, ctrl->ctrl_type ==
 				    CPR_CTRL_TYPE_CPRH ?
@@ -693,7 +693,7 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 	if (!vreg->corner || !temp)
 		return -ENOMEM;
 
-	rc = cpr3_parse_corner_array_property(vreg, "qcom,cpr-voltage-ceiling",
+rc = cpr3_parse_corner_array_property(vreg, "qcom,cpr-voltage-ceiling",
 			1, temp);
 	if (rc)
 		goto free_temp;
@@ -703,7 +703,7 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 		vreg->corner[i].abs_ceiling_volt = vreg->corner[i].ceiling_volt;
 	}
 
-	rc = cpr3_parse_corner_array_property(vreg, "qcom,cpr-voltage-floor",
+rc = cpr3_parse_corner_array_property(vreg, "qcom,cpr-voltage-floor",
 			1, temp);
 	if (rc)
 		goto free_temp;
@@ -723,30 +723,30 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 		}
 	}
 
-	/* Load optional system-supply voltages */
-	if (of_find_property(vreg->of_node, "qcom,system-voltage", NULL)) {
+/* Load optional system-supply voltages */
+if (of_find_property(vreg->of_node, "qcom,system-voltage", NULL)) {
 		rc = cpr3_parse_corner_array_property(vreg,
-			"qcom,system-voltage", 1, temp);
+"qcom,system-voltage", 1, temp);
 		if (rc)
 			goto free_temp;
 		for (i = 0; i < vreg->corner_count; i++)
 			vreg->corner[i].system_volt = temp[i];
 	}
 
-	rc = cpr3_parse_corner_array_property(vreg, "qcom,corner-frequencies",
+rc = cpr3_parse_corner_array_property(vreg, "qcom,corner-frequencies",
 			1, temp);
 	if (rc)
 		goto free_temp;
 	for (i = 0; i < vreg->corner_count; i++)
-		vreg->corner[i].proc_freq = temp[i];
+vreg->corner[i].proc_freq = temp[i];
 
-	/* Validate frequencies */
+/* Validate frequencies */
 	for (i = 1; i < vreg->corner_count; i++) {
-		if (vreg->corner[i].proc_freq
-		    < vreg->corner[i - 1].proc_freq) {
-			cpr3_err(vreg, "invalid frequency: freq[%d]=%u < freq[%d]=%u\n",
-				i, vreg->corner[i].proc_freq, i - 1,
-				vreg->corner[i - 1].proc_freq);
+if (vreg->corner[i].proc_freq
+< vreg->corner[i - 1].proc_freq) {
+cpr3_err(vreg, "invalid frequency: freq[%d]=%u < freq[%d]=%u\n",
+i, vreg->corner[i].proc_freq, i - 1,
+vreg->corner[i - 1].proc_freq);
 			rc = -EINVAL;
 			goto free_temp;
 		}
@@ -801,9 +801,9 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 	}
 
 	if (of_find_property(vreg->of_node,
-				"qcom,allow-aging-voltage-adjustment", NULL)) {
+"qcom,allow-aging-voltage-adjustment", NULL)) {
 		rc = cpr3_parse_array_property(vreg,
-			"qcom,allow-aging-voltage-adjustment",
+"qcom,allow-aging-voltage-adjustment",
 			1, &aging_allowed);
 		if (rc)
 			goto free_temp;
@@ -812,9 +812,9 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 	}
 
 	if (of_find_property(vreg->of_node,
-		       "qcom,allow-aging-open-loop-voltage-adjustment", NULL)) {
+"qcom,allow-aging-open-loop-voltage-adjustment", NULL)) {
 		rc = cpr3_parse_array_property(vreg,
-			"qcom,allow-aging-open-loop-voltage-adjustment",
+"qcom,allow-aging-open-loop-voltage-adjustment",
 			1, &aging_allowed);
 		if (rc)
 			goto free_temp;
@@ -824,13 +824,13 @@ int cpr3_parse_common_corner_data(struct cpr3_regulator *vreg)
 
 	if (vreg->aging_allowed) {
 		if (ctrl->aging_ref_volt <= 0) {
-			cpr3_err(ctrl, "qcom,cpr-aging-ref-voltage must be specified\n");
+cpr3_err(ctrl, "qcom,cpr-aging-ref-voltage must be specified\n");
 			rc = -EINVAL;
 			goto free_temp;
 		}
 
 		rc = cpr3_parse_array_property(vreg,
-			"qcom,cpr-aging-max-voltage-adjustment",
+"qcom,cpr-aging-max-voltage-adjustment",
 			1, &vreg->aging_max_adjust_volt);
 		if (rc)
 			goto free_temp;
@@ -1134,15 +1134,15 @@ int cpr3_parse_common_ctrl_data(struct cpr3_controller *ctrl)
 	if (rc)
 		return rc;
 
-	rc = of_property_read_u32(ctrl->dev->of_node, "qcom,voltage-step",
+rc = of_property_read_u32(ctrl->dev->of_node, "qcom,voltage-step",
 				&ctrl->step_volt);
 	if (rc) {
-		cpr3_err(ctrl, "error reading property qcom,voltage-step, rc=%d\n",
+cpr3_err(ctrl, "error reading property qcom,voltage-step, rc=%d\n",
 			rc);
 		return rc;
 	}
 	if (ctrl->step_volt <= 0) {
-		cpr3_err(ctrl, "qcom,voltage-step=%d is invalid\n",
+cpr3_err(ctrl, "qcom,voltage-step=%d is invalid\n",
 			ctrl->step_volt);
 		return -EINVAL;
 	}
@@ -1165,9 +1165,9 @@ int cpr3_parse_common_ctrl_data(struct cpr3_controller *ctrl)
 	if (rc)
 		return rc;
 
-	/* Aging reference voltage is optional */
+/* Aging reference voltage is optional */
 	ctrl->aging_ref_volt = 0;
-	of_property_read_u32(ctrl->dev->of_node, "qcom,cpr-aging-ref-voltage",
+of_property_read_u32(ctrl->dev->of_node, "qcom,cpr-aging-ref-voltage",
 			&ctrl->aging_ref_volt);
 
 	/* Aging possible bitmask is optional */
@@ -1203,20 +1203,20 @@ int cpr3_parse_common_ctrl_data(struct cpr3_controller *ctrl)
 	if (rc)
 		return rc;
 
-	if (of_find_property(ctrl->dev->of_node, "vdd-supply", NULL)) {
-		ctrl->vdd_regulator = devm_regulator_get(ctrl->dev, "vdd");
-		if (IS_ERR(ctrl->vdd_regulator)) {
-			rc = PTR_ERR(ctrl->vdd_regulator);
+if (of_find_property(ctrl->dev->of_node, "vdd-supply", NULL)) {
+ctrl->vdd_regulator = devm_regulator_get(ctrl->dev, "vdd");
+if (IS_ERR(ctrl->vdd_regulator)) {
+rc = PTR_ERR(ctrl->vdd_regulator);
 			if (rc != -EPROBE_DEFER)
-				cpr3_err(ctrl, "unable to request vdd regulator, rc=%d\n",
+cpr3_err(ctrl, "unable to request vdd regulator, rc=%d\n",
 					 rc);
 			return rc;
 		}
 	} else if (ctrl->ctrl_type == CPR_CTRL_TYPE_CPRH) {
-		/* vdd-supply is optional for CPRh controllers. */
-		ctrl->vdd_regulator = NULL;
+/* vdd-supply is optional for CPRh controllers. */
+ctrl->vdd_regulator = NULL;
 	} else {
-		cpr3_err(ctrl, "vdd supply is not defined\n");
+cpr3_err(ctrl, "vdd supply is not defined\n");
 		return -ENODEV;
 	}
 
@@ -1264,13 +1264,13 @@ int cpr3_parse_common_ctrl_data(struct cpr3_controller *ctrl)
 }
 
 /**
- * cpr3_limit_open_loop_voltages() - modify the open-loop voltage of each corner
+* cpr3_limit_open_loop_voltages() - modify the open-loop voltage of each corner
  *				so that it fits within the floor to ceiling
- *				voltage range of the corner
+*				voltage range of the corner
  * @vreg:		Pointer to the CPR3 regulator
  *
- * This function clips the open-loop voltage for each corner so that it is
- * limited to the floor to ceiling range.  It also rounds each open-loop voltage
+* This function clips the open-loop voltage for each corner so that it is
+* limited to the floor to ceiling range.  It also rounds each open-loop voltage
  * so that it corresponds to a set point available to the underlying regulator.
  *
  * Return: 0 on success, errno on failure
@@ -1279,7 +1279,7 @@ int cpr3_limit_open_loop_voltages(struct cpr3_regulator *vreg)
 {
 	int i, volt;
 
-	cpr3_debug(vreg, "open-loop voltages after trimming and rounding:\n");
+cpr3_debug(vreg, "open-loop voltages after trimming and rounding:\n");
 	for (i = 0; i < vreg->corner_count; i++) {
 		volt = CPR3_ROUND(vreg->corner[i].open_loop_volt,
 					vreg->thread->ctrl->step_volt);
@@ -1295,12 +1295,12 @@ int cpr3_limit_open_loop_voltages(struct cpr3_regulator *vreg)
 }
 
 /**
- * cpr3_open_loop_voltage_as_ceiling() - configures the ceiling voltage for each
- *		corner to equal the open-loop voltage if the relevant device
+* cpr3_open_loop_voltage_as_ceiling() - configures the ceiling voltage for each
+*		corner to equal the open-loop voltage if the relevant device
  *		tree property is found for the CPR3 regulator
  * @vreg:		Pointer to the CPR3 regulator
  *
- * This function assumes that the the open-loop voltage for each corner has
+* This function assumes that the the open-loop voltage for each corner has
  * already been rounded to the nearest allowed set point and that it falls
  * within the floor to ceiling range.
  *
@@ -1311,7 +1311,7 @@ void cpr3_open_loop_voltage_as_ceiling(struct cpr3_regulator *vreg)
 	int i;
 
 	if (!of_property_read_bool(vreg->of_node,
-				"qcom,cpr-scaled-open-loop-voltage-as-ceiling"))
+"qcom,cpr-scaled-open-loop-voltage-as-ceiling"))
 		return;
 
 	for (i = 0; i < vreg->corner_count; i++)
@@ -1320,13 +1320,13 @@ void cpr3_open_loop_voltage_as_ceiling(struct cpr3_regulator *vreg)
 }
 
 /**
- * cpr3_limit_floor_voltages() - raise the floor voltage of each corner so that
- *		the optional maximum floor to ceiling voltage range specified in
+* cpr3_limit_floor_voltages() - raise the floor voltage of each corner so that
+*		the optional maximum floor to ceiling voltage range specified in
  *		device tree is satisfied
  * @vreg:		Pointer to the CPR3 regulator
  *
- * This function also ensures that the open-loop voltage for each corner falls
- * within the final floor to ceiling voltage range and that floor voltages
+* This function also ensures that the open-loop voltage for each corner falls
+* within the final floor to ceiling voltage range and that floor voltages
  * increase monotonically.
  *
  * Return: 0 on success, errno on failure
@@ -1369,11 +1369,11 @@ free_floor_adjust:
 	kfree(floor_range);
 
 enforce_monotonicity:
-	/* Ensure that floor voltages increase monotonically. */
+/* Ensure that floor voltages increase monotonically. */
 	for (i = 1; i < vreg->corner_count; i++) {
 		if (vreg->corner[i].floor_volt
 		    < vreg->corner[i - 1].floor_volt) {
-			cpr3_debug(vreg, "corner %d floor voltage=%d uV < corner %d voltage=%d uV; overriding: corner %d voltage=%d\n",
+cpr3_debug(vreg, "corner %d floor voltage=%d uV < corner %d voltage=%d uV; overriding: corner %d voltage=%d\n",
 				i, vreg->corner[i].floor_volt,
 				i - 1, vreg->corner[i - 1].floor_volt,
 				i, vreg->corner[i - 1].floor_volt);
@@ -1423,13 +1423,13 @@ void cpr3_print_quots(struct cpr3_regulator *vreg)
 }
 
 /**
- * cpr3_adjust_fused_open_loop_voltages() - adjust the fused open-loop voltages
+* cpr3_adjust_fused_open_loop_voltages() - adjust the fused open-loop voltages
  *		for each fuse corner according to device tree values
  * @vreg:		Pointer to the CPR3 regulator
- * @fuse_volt:		Pointer to an array of the fused open-loop voltage
+* @fuse_volt:		Pointer to an array of the fused open-loop voltage
  *			values
  *
- * Voltage values in fuse_volt are modified in place.
+* Voltage values in fuse_volt are modified in place.
  *
  * Return: 0 on success, errno on failure
  */
@@ -1440,7 +1440,7 @@ int cpr3_adjust_fused_open_loop_voltages(struct cpr3_regulator *vreg,
 	int *volt_adjust;
 
 	if (!of_find_property(vreg->of_node,
-			"qcom,cpr-open-loop-voltage-fuse-adjustment", NULL)) {
+"qcom,cpr-open-loop-voltage-fuse-adjustment", NULL)) {
 		/* No adjustment required. */
 		return 0;
 	}
@@ -1451,10 +1451,10 @@ int cpr3_adjust_fused_open_loop_voltages(struct cpr3_regulator *vreg,
 		return -ENOMEM;
 
 	rc = cpr3_parse_array_property(vreg,
-		"qcom,cpr-open-loop-voltage-fuse-adjustment",
+"qcom,cpr-open-loop-voltage-fuse-adjustment",
 		vreg->fuse_corner_count, volt_adjust);
 	if (rc) {
-		cpr3_err(vreg, "could not load open-loop fused voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "could not load open-loop fused voltage adjustments, rc=%d\n",
 			rc);
 		goto done;
 	}
@@ -1463,7 +1463,7 @@ int cpr3_adjust_fused_open_loop_voltages(struct cpr3_regulator *vreg,
 		if (volt_adjust[i]) {
 			prev_volt = fuse_volt[i];
 			fuse_volt[i] += volt_adjust[i];
-			cpr3_debug(vreg, "adjusted fuse corner %d open-loop voltage: %d --> %d uV\n",
+cpr3_debug(vreg, "adjusted fuse corner %d open-loop voltage: %d --> %d uV\n",
 				i, prev_volt, fuse_volt[i]);
 		}
 	}
@@ -1474,7 +1474,7 @@ done:
 }
 
 /**
- * cpr3_adjust_open_loop_voltages() - adjust the open-loop voltages for each
+* cpr3_adjust_open_loop_voltages() - adjust the open-loop voltages for each
  *		corner according to device tree values
  * @vreg:		Pointer to the CPR3 regulator
  *
@@ -1486,7 +1486,7 @@ int cpr3_adjust_open_loop_voltages(struct cpr3_regulator *vreg)
 	int *volt_adjust, *volt_diff;
 
 	if (!of_find_property(vreg->of_node,
-			"qcom,cpr-open-loop-voltage-adjustment", NULL)) {
+"qcom,cpr-open-loop-voltage-adjustment", NULL)) {
 		/* No adjustment required. */
 		return 0;
 	}
@@ -1500,9 +1500,9 @@ int cpr3_adjust_open_loop_voltages(struct cpr3_regulator *vreg)
 	}
 
 	rc = cpr3_parse_corner_array_property(vreg,
-		"qcom,cpr-open-loop-voltage-adjustment", 1, volt_adjust);
+"qcom,cpr-open-loop-voltage-adjustment", 1, volt_adjust);
 	if (rc) {
-		cpr3_err(vreg, "could not load open-loop voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "could not load open-loop voltage adjustments, rc=%d\n",
 			rc);
 		goto done;
 	}
@@ -1511,30 +1511,30 @@ int cpr3_adjust_open_loop_voltages(struct cpr3_regulator *vreg)
 		if (volt_adjust[i]) {
 			prev_volt = vreg->corner[i].open_loop_volt;
 			vreg->corner[i].open_loop_volt += volt_adjust[i];
-			cpr3_debug(vreg, "adjusted corner %d open-loop voltage: %d --> %d uV\n",
+cpr3_debug(vreg, "adjusted corner %d open-loop voltage: %d --> %d uV\n",
 				i, prev_volt, vreg->corner[i].open_loop_volt);
 		}
 	}
 
 	if (of_find_property(vreg->of_node,
-			"qcom,cpr-open-loop-voltage-min-diff", NULL)) {
+"qcom,cpr-open-loop-voltage-min-diff", NULL)) {
 		rc = cpr3_parse_corner_array_property(vreg,
-			"qcom,cpr-open-loop-voltage-min-diff", 1, volt_diff);
+"qcom,cpr-open-loop-voltage-min-diff", 1, volt_diff);
 		if (rc) {
-			cpr3_err(vreg, "could not load minimum open-loop voltage differences, rc=%d\n",
+cpr3_err(vreg, "could not load minimum open-loop voltage differences, rc=%d\n",
 				rc);
 			goto done;
 		}
 	}
 
 	/*
-	 * Ensure that open-loop voltages increase monotonically with respect
+* Ensure that open-loop voltages increase monotonically with respect
 	 * to configurable minimum allowed differences.
 	 */
 	for (i = 1; i < vreg->corner_count; i++) {
 		min_volt = vreg->corner[i - 1].open_loop_volt + volt_diff[i];
 		if (vreg->corner[i].open_loop_volt < min_volt) {
-			cpr3_debug(vreg, "adjusted corner %d open-loop voltage=%d uV < corner %d voltage=%d uV + min diff=%d uV; overriding: corner %d voltage=%d\n",
+cpr3_debug(vreg, "adjusted corner %d open-loop voltage=%d uV < corner %d voltage=%d uV + min diff=%d uV; overriding: corner %d voltage=%d\n",
 				i, vreg->corner[i].open_loop_volt,
 				i - 1, vreg->corner[i - 1].open_loop_volt,
 				volt_diff[i], i, min_volt);
@@ -1550,10 +1550,10 @@ done:
 
 /**
  * cpr3_quot_adjustment() - returns the quotient adjustment value resulting from
- *		the specified voltage adjustment and RO scaling factor
+*		the specified voltage adjustment and RO scaling factor
  * @ro_scale:		The CPR ring oscillator (RO) scaling factor with units
  *			of QUOT/V
- * @volt_adjust:	The amount to adjust the voltage by in units of
+* @volt_adjust:	The amount to adjust the voltage by in units of
  *			microvolts.  This value may be positive or negative.
  */
 int cpr3_quot_adjustment(int ro_scale, int volt_adjust)
@@ -1582,7 +1582,7 @@ int cpr3_quot_adjustment(int ro_scale, int volt_adjust)
 }
 
 /**
- * cpr3_voltage_adjustment() - returns the voltage adjustment value resulting
+* cpr3_voltage_adjustment() - returns the voltage adjustment value resulting
  *		from the specified quotient adjustment and RO scaling factor
  * @ro_scale:		The CPR ring oscillator (RO) scaling factor with units
  *			of QUOT/V
@@ -1618,15 +1618,15 @@ int cpr3_voltage_adjustment(int ro_scale, int quot_adjust)
 }
 
 /**
- * cpr3_parse_closed_loop_voltage_adjustments() - load per-fuse-corner and
+* cpr3_parse_closed_loop_voltage_adjustments() - load per-fuse-corner and
  *		per-corner closed-loop adjustment values from device tree
  * @vreg:		Pointer to the CPR3 regulator
  * @ro_sel:		Array of ring oscillator values selected for each
  *			fuse corner
  * @volt_adjust:	Pointer to array which will be filled with the
- *			per-corner closed-loop adjustment voltages
+*			per-corner closed-loop adjustment voltages
  * @volt_adjust_fuse:	Pointer to array which will be filled with the
- *			per-fuse-corner closed-loop adjustment voltages
+*			per-fuse-corner closed-loop adjustment voltages
  * @ro_scale:		Pointer to array which will be filled with the
  *			per-fuse-corner RO scaling factor values with units of
  *			QUOT/V
@@ -1641,15 +1641,15 @@ int cpr3_parse_closed_loop_voltage_adjustments(
 	u32 *ro_all_scale;
 
 	if (!of_find_property(vreg->of_node,
-			"qcom,cpr-closed-loop-voltage-adjustment", NULL)
+"qcom,cpr-closed-loop-voltage-adjustment", NULL)
 	    && !of_find_property(vreg->of_node,
-			"qcom,cpr-closed-loop-voltage-fuse-adjustment", NULL)
+"qcom,cpr-closed-loop-voltage-fuse-adjustment", NULL)
 	    && !vreg->aging_allowed) {
 		/* No adjustment required. */
 		return 0;
 	} else if (!of_find_property(vreg->of_node,
 			"qcom,cpr-ro-scaling-factor", NULL)) {
-		cpr3_err(vreg, "qcom,cpr-ro-scaling-factor is required for closed-loop voltage adjustment, but is missing\n");
+cpr3_err(vreg, "qcom,cpr-ro-scaling-factor is required for closed-loop voltage adjustment, but is missing\n");
 		return -EINVAL;
 	}
 
@@ -1675,24 +1675,24 @@ int cpr3_parse_closed_loop_voltage_adjustments(
 		 sizeof(*ro_all_scale) * CPR3_RO_COUNT);
 
 	if (of_find_property(vreg->of_node,
-			"qcom,cpr-closed-loop-voltage-fuse-adjustment", NULL)) {
+"qcom,cpr-closed-loop-voltage-fuse-adjustment", NULL)) {
 		rc = cpr3_parse_array_property(vreg,
-			"qcom,cpr-closed-loop-voltage-fuse-adjustment",
+"qcom,cpr-closed-loop-voltage-fuse-adjustment",
 			vreg->fuse_corner_count, volt_adjust_fuse);
 		if (rc) {
-			cpr3_err(vreg, "could not load closed-loop fused voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "could not load closed-loop fused voltage adjustments, rc=%d\n",
 				rc);
 			goto done;
 		}
 	}
 
 	if (of_find_property(vreg->of_node,
-			"qcom,cpr-closed-loop-voltage-adjustment", NULL)) {
+"qcom,cpr-closed-loop-voltage-adjustment", NULL)) {
 		rc = cpr3_parse_corner_array_property(vreg,
-			"qcom,cpr-closed-loop-voltage-adjustment",
+"qcom,cpr-closed-loop-voltage-adjustment",
 			1, volt_adjust);
 		if (rc) {
-			cpr3_err(vreg, "could not load closed-loop voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "could not load closed-loop voltage adjustments, rc=%d\n",
 				rc);
 			goto done;
 		}
@@ -1707,7 +1707,7 @@ done:
  * cpr3_apm_init() - initialize APM data for a CPR3 controller
  * @ctrl:		Pointer to the CPR3 controller
  *
- * This function loads memory array power mux (APM) data from device tree
+* This function loads memory array power mux (APM) data from device tree
  * if it is present and requests a handle to the appropriate APM controller
  * device.
  *
@@ -1731,10 +1731,10 @@ int cpr3_apm_init(struct cpr3_controller *ctrl)
 		return rc;
 	}
 
-	rc = of_property_read_u32(node, "qcom,apm-threshold-voltage",
+rc = of_property_read_u32(node, "qcom,apm-threshold-voltage",
 				&ctrl->apm_threshold_volt);
 	if (rc) {
-		cpr3_err(ctrl, "error reading qcom,apm-threshold-voltage, rc=%d\n",
+cpr3_err(ctrl, "error reading qcom,apm-threshold-voltage, rc=%d\n",
 			rc);
 		return rc;
 	}
@@ -1742,7 +1742,7 @@ int cpr3_apm_init(struct cpr3_controller *ctrl)
 		= CPR3_ROUND(ctrl->apm_threshold_volt, ctrl->step_volt);
 
 	/* No error check since this is an optional property. */
-	of_property_read_u32(node, "qcom,apm-hysteresis-voltage",
+of_property_read_u32(node, "qcom,apm-hysteresis-voltage",
 				&ctrl->apm_adj_volt);
 	ctrl->apm_adj_volt = CPR3_ROUND(ctrl->apm_adj_volt, ctrl->step_volt);
 
@@ -1774,7 +1774,7 @@ int cpr3_mem_acc_init(struct cpr3_regulator *vreg)
 	if (!temp)
 		return -ENOMEM;
 
-	rc = cpr3_parse_corner_array_property(vreg, "qcom,mem-acc-voltage",
+rc = cpr3_parse_corner_array_property(vreg, "qcom,mem-acc-voltage",
 					      1, temp);
 	if (rc) {
 		cpr3_err(ctrl, "could not load mem-acc corners, rc=%d\n", rc);
@@ -1788,8 +1788,8 @@ int cpr3_mem_acc_init(struct cpr3_regulator *vreg)
 }
 
 /**
- * cpr4_load_core_and_temp_adj() - parse amount of voltage adjustment for
- *		per-online-core and per-temperature voltage adjustment for a
+* cpr4_load_core_and_temp_adj() - parse amount of voltage adjustment for
+*		per-online-core and per-temperature voltage adjustment for a
  *		given corner or corner band from device tree.
  * @vreg:	Pointer to the CPR3 regulator
  * @num:	Corner number or corner band number
@@ -1833,8 +1833,8 @@ static int cpr4_load_core_and_temp_adj(struct cpr3_regulator *vreg,
 		return -ENOMEM;
 
 	snprintf(str, sizeof(str), use_corner_band ?
-		 "qcom,cpr-corner-band%d-temp-core-voltage-adjustment" :
-		 "qcom,cpr-corner%d-temp-core-voltage-adjustment",
+"qcom,cpr-corner-band%d-temp-core-voltage-adjustment" :
+"qcom,cpr-corner%d-temp-core-voltage-adjustment",
 		 num + CPR3_CORNER_OFFSET);
 
 	rc = cpr3_parse_array_property(vreg, str, sdelta_size,
@@ -1868,8 +1868,8 @@ static int cpr4_load_core_and_temp_adj(struct cpr3_regulator *vreg,
 }
 
 /**
- * cpr4_parse_core_count_temp_voltage_adj() - parse configuration data for
- *		per-online-core and per-temperature voltage adjustment for
+* cpr4_parse_core_count_temp_voltage_adj() - parse configuration data for
+*		per-online-core and per-temperature voltage adjustment for
  *		a CPR3 regulator from device tree.
  * @vreg:	Pointer to the CPR3 regulator
  * @use_corner_band:	Boolean indicating if the CPR3 regulator supports
@@ -1927,7 +1927,7 @@ int cpr4_parse_core_count_temp_voltage_adj(
 		return 0;
 	} else if (!vreg->allow_core_count_adj) {
 		/*
-		 * Only per-temperature voltage adjusments are allowed.
+* Only per-temperature voltage adjusments are allowed.
 		 * Keep max core count value as 1 to allocate SDELTA.
 		 */
 		vreg->max_core_count = 1;
@@ -2019,16 +2019,16 @@ done:
 }
 
 /**
- * cprh_adjust_voltages_for_apm() - adjust per-corner floor and ceiling voltages
- *		so that they do not overlap the APM threshold voltage.
+* cprh_adjust_voltages_for_apm() - adjust per-corner floor and ceiling voltages
+*		so that they do not overlap the APM threshold voltage.
  * @vreg:		Pointer to the CPR3 regulator
  *
- * The memory array power mux (APM) must be configured for a specific supply
- * based upon where the VDD voltage lies with respect to the APM threshold
- * voltage.  When using CPR hardware closed-loop, the voltage may vary anywhere
- * between the floor and ceiling voltage without software notification.
+* The memory array power mux (APM) must be configured for a specific supply
+* based upon where the VDD voltage lies with respect to the APM threshold
+* voltage.  When using CPR hardware closed-loop, the voltage may vary anywhere
+* between the floor and ceiling voltage without software notification.
  * Therefore, it is required that the floor to ceiling range for every corner
- * not intersect the APM threshold voltage.  This function adjusts the floor to
+* not intersect the APM threshold voltage.  This function adjusts the floor to
  * ceiling range for each corner which violates this requirement.
  *
  * The following algorithm is applied:
@@ -2036,11 +2036,11 @@ done:
  *		if open_loop >= threshold, then floor = threshold - adj
  *		else ceiling = threshold - step
  * where:
- *	adj = APM hysteresis voltage established to minimize the number of
- *	      corners with artificially increased floor voltages
- *	step = voltage in microvolts of a single step of the VDD supply
+*	adj = APM hysteresis voltage established to minimize the number of
+*	      corners with artificially increased floor voltages
+*	step = voltage in microvolts of a single step of the VDD supply
  *
- * The open-loop voltage is also bounded by the new floor or ceiling value as
+* The open-loop voltage is also bounded by the new floor or ceiling value as
  * needed.
  *
  * Return: none
@@ -2086,7 +2086,7 @@ void cprh_adjust_voltages_for_apm(struct cpr3_regulator *vreg)
 		if (corner->floor_volt != prev_floor
 		    || corner->ceiling_volt != prev_ceiling
 		    || corner->open_loop_volt != prev_open_loop)
-			cpr3_debug(vreg, "APM threshold=%d, APM adj=%d changed corner %d voltages; prev: floor=%d, ceiling=%d, open-loop=%d; new: floor=%d, ceiling=%d, open-loop=%d\n",
+cpr3_debug(vreg, "APM threshold=%d, APM adj=%d changed corner %d voltages; prev: floor=%d, ceiling=%d, open-loop=%d; new: floor=%d, ceiling=%d, open-loop=%d\n",
 				threshold, adj, i, prev_floor, prev_ceiling,
 				prev_open_loop, corner->floor_volt,
 				corner->ceiling_volt, corner->open_loop_volt);
@@ -2094,9 +2094,9 @@ void cprh_adjust_voltages_for_apm(struct cpr3_regulator *vreg)
 }
 
 /**
- * cprh_adjust_voltages_for_mem_acc() - adjust per-corner floor and ceiling
- *		voltages so that they do not intersect the MEM ACC threshold
- *		voltage
+* cprh_adjust_voltages_for_mem_acc() - adjust per-corner floor and ceiling
+*		voltages so that they do not intersect the MEM ACC threshold
+*		voltage
  * @vreg:		Pointer to the CPR3 regulator
  *
  * The following algorithm is applied:
@@ -2104,9 +2104,9 @@ void cprh_adjust_voltages_for_apm(struct cpr3_regulator *vreg)
  *		if open_loop >= threshold, then floor = threshold
  *		else ceiling = threshold - step
  * where:
- *	step = voltage in microvolts of a single step of the VDD supply
+*	step = voltage in microvolts of a single step of the VDD supply
  *
- * The open-loop voltage is also bounded by the new floor or ceiling value as
+* The open-loop voltage is also bounded by the new floor or ceiling value as
  * needed.
  *
  * Return: none
@@ -2149,7 +2149,7 @@ void cprh_adjust_voltages_for_mem_acc(struct cpr3_regulator *vreg)
 		if (corner->floor_volt != prev_floor
 		    || corner->ceiling_volt != prev_ceiling
 		    || corner->open_loop_volt != prev_open_loop)
-			cpr3_debug(vreg, "MEM ACC threshold=%d changed corner %d voltages; prev: floor=%d, ceiling=%d, open-loop=%d; new: floor=%d, ceiling=%d, open-loop=%d\n",
+cpr3_debug(vreg, "MEM ACC threshold=%d changed corner %d voltages; prev: floor=%d, ceiling=%d, open-loop=%d; new: floor=%d, ceiling=%d, open-loop=%d\n",
 				threshold, i, prev_floor, prev_ceiling,
 				prev_open_loop, corner->floor_volt,
 				corner->ceiling_volt, corner->open_loop_volt);
@@ -2157,14 +2157,14 @@ void cprh_adjust_voltages_for_mem_acc(struct cpr3_regulator *vreg)
 }
 
 /**
- * cpr3_apply_closed_loop_offset_voltages() - modify the closed-loop voltage
+* cpr3_apply_closed_loop_offset_voltages() - modify the closed-loop voltage
  *		adjustments by the amounts that are needed for this
  *		fuse combo
  * @vreg:		Pointer to the CPR3 regulator
- * @volt_adjust:	Array of closed-loop voltage adjustment values of length
+* @volt_adjust:	Array of closed-loop voltage adjustment values of length
  *			vreg->corner_count which is further adjusted based upon
- *			offset voltage fuse values.
- * @fuse_volt_adjust:	Fused closed-loop voltage adjustment values of length
+*			offset voltage fuse values.
+* @fuse_volt_adjust:	Fused closed-loop voltage adjustment values of length
  *			vreg->fuse_corner_count.
  *
  * Return: 0 on success, errno on failure
@@ -2176,7 +2176,7 @@ static int cpr3_apply_closed_loop_offset_voltages(struct cpr3_regulator *vreg,
 	int rc = 0, i;
 
 	if (!of_find_property(vreg->of_node,
-		"qcom,cpr-fused-closed-loop-voltage-adjustment-map", NULL)) {
+"qcom,cpr-fused-closed-loop-voltage-adjustment-map", NULL)) {
 		/* No closed-loop offset required. */
 		return 0;
 	}
@@ -2187,7 +2187,7 @@ static int cpr3_apply_closed_loop_offset_voltages(struct cpr3_regulator *vreg,
 		return -ENOMEM;
 
 	rc = cpr3_parse_corner_array_property(vreg,
-		"qcom,cpr-fused-closed-loop-voltage-adjustment-map",
+"qcom,cpr-fused-closed-loop-voltage-adjustment-map",
 		1, corner_map);
 	if (rc)
 		goto done;
@@ -2275,7 +2275,7 @@ static void cpr3_enforce_dec_quotient_monotonicity(struct cpr3_regulator *vreg)
  *		corner of the regulator according to input adjustment and
  *		scaling arrays
  * @vreg:		Pointer to the CPR3 regulator
- * @volt_adjust:	Pointer to an array of closed-loop voltage adjustments
+* @volt_adjust:	Pointer to an array of closed-loop voltage adjustments
  *			with units of microvolts.  The array must have
  *			vreg->corner_count number of elements.
  * @ro_scale:		Pointer to a flattened 2D array of RO scaling factors.
@@ -2284,7 +2284,7 @@ static void cpr3_enforce_dec_quotient_monotonicity(struct cpr3_regulator *vreg)
  * @label:		Null terminated string providing a label for the type
  *			of adjustment.
  *
- * Return: true if any corners received a positive voltage adjustment (> 0),
+* Return: true if any corners received a positive voltage adjustment (> 0),
  *	   else false
  */
 static bool _cpr3_adjust_target_quotients(struct cpr3_regulator *vreg,
@@ -2322,7 +2322,7 @@ static bool _cpr3_adjust_target_quotients(struct cpr3_regulator *vreg,
  * cpr3_adjust_target_quotients() - adjust the target quotients for each
  *			corner according to device tree values and fuse values
  * @vreg:		Pointer to the CPR3 regulator
- * @fuse_volt_adjust:	Fused closed-loop voltage adjustment values of length
+* @fuse_volt_adjust:	Fused closed-loop voltage adjustment values of length
  *			vreg->fuse_corner_count. This parameter could be null
  *			pointer when no fused adjustments are needed.
  *
@@ -2336,16 +2336,16 @@ int cpr3_adjust_target_quotients(struct cpr3_regulator *vreg,
 	bool explicit_adjustment, fused_adjustment, is_increasing;
 
 	explicit_adjustment = of_find_property(vreg->of_node,
-		"qcom,cpr-closed-loop-voltage-adjustment", NULL);
+"qcom,cpr-closed-loop-voltage-adjustment", NULL);
 	fused_adjustment = of_find_property(vreg->of_node,
-		"qcom,cpr-fused-closed-loop-voltage-adjustment-map", NULL);
+"qcom,cpr-fused-closed-loop-voltage-adjustment-map", NULL);
 
 	if (!explicit_adjustment && !fused_adjustment && !vreg->aging_allowed) {
 		/* No adjustment required. */
 		return 0;
 	} else if (!of_find_property(vreg->of_node,
 			"qcom,cpr-ro-scaling-factor", NULL)) {
-		cpr3_err(vreg, "qcom,cpr-ro-scaling-factor is required for closed-loop voltage adjustment, but is missing\n");
+cpr3_err(vreg, "qcom,cpr-ro-scaling-factor is required for closed-loop voltage adjustment, but is missing\n");
 		return -EINVAL;
 	}
 
@@ -2372,10 +2372,10 @@ int cpr3_adjust_target_quotients(struct cpr3_regulator *vreg,
 
 	if (explicit_adjustment) {
 		rc = cpr3_parse_corner_array_property(vreg,
-			"qcom,cpr-closed-loop-voltage-adjustment",
+"qcom,cpr-closed-loop-voltage-adjustment",
 			1, volt_adjust);
 		if (rc) {
-			cpr3_err(vreg, "could not load closed-loop voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "could not load closed-loop voltage adjustments, rc=%d\n",
 				rc);
 			goto done;
 		}
@@ -2389,10 +2389,10 @@ int cpr3_adjust_target_quotients(struct cpr3_regulator *vreg,
 		memset(volt_adjust, 0,
 			sizeof(*volt_adjust) * vreg->corner_count);
 
-		rc = cpr3_apply_closed_loop_offset_voltages(vreg, volt_adjust,
+rc = cpr3_apply_closed_loop_offset_voltages(vreg, volt_adjust,
 				fuse_volt_adjust);
 		if (rc) {
-			cpr3_err(vreg, "could not apply fused closed-loop voltage reductions, rc=%d\n",
+cpr3_err(vreg, "could not apply fused closed-loop voltage reductions, rc=%d\n",
 				rc);
 			goto done;
 		}

@@ -1,5 +1,5 @@
 /*
- * Toggles a GPIO pin to power down a device
+* Toggles a GPIO pin to power down a device
  *
  * Jamie Lentin <jm@lentin.co.uk>
  * Andrew Lunn <andrew@lunn.ch>
@@ -21,7 +21,7 @@
 
 /*
  * Hold configuration here, cannot be more than one instance of the driver
- * since pm_power_off itself is global.
+* since pm_power_off itself is global.
  */
 static struct gpio_desc *reset_gpio;
 
@@ -50,10 +50,10 @@ static int gpio_poweroff_probe(struct platform_device *pdev)
 	bool input = false;
 	enum gpiod_flags flags;
 
-	/* If a pm_power_off function has already been added, leave it alone */
-	if (pm_power_off != NULL) {
+/* If a pm_power_off function has already been added, leave it alone */
+if (pm_power_off != NULL) {
 		dev_err(&pdev->dev,
-			"%s: pm_power_off function already registered",
+"%s: pm_power_off function already registered",
 		       __func__);
 		return -EBUSY;
 	}
@@ -68,30 +68,30 @@ static int gpio_poweroff_probe(struct platform_device *pdev)
 	if (IS_ERR(reset_gpio))
 		return PTR_ERR(reset_gpio);
 
-	pm_power_off = &gpio_poweroff_do_poweroff;
+pm_power_off = &gpio_poweroff_do_poweroff;
 	return 0;
 }
 
 static int gpio_poweroff_remove(struct platform_device *pdev)
 {
-	if (pm_power_off == &gpio_poweroff_do_poweroff)
-		pm_power_off = NULL;
+if (pm_power_off == &gpio_poweroff_do_poweroff)
+pm_power_off = NULL;
 
 	return 0;
 }
 
 static const struct of_device_id of_gpio_poweroff_match[] = {
-	{ .compatible = "gpio-poweroff", },
+{ .compatible = "gpio-poweroff", },
 	{},
 };
 MODULE_DEVICE_TABLE(of, of_gpio_poweroff_match);
 
 static struct platform_driver gpio_poweroff_driver = {
-	.probe = gpio_poweroff_probe,
-	.remove = gpio_poweroff_remove,
+.probe = gpio_poweroff_probe,
+.remove = gpio_poweroff_remove,
 	.driver = {
-		.name = "poweroff-gpio",
-		.of_match_table = of_gpio_poweroff_match,
+.name = "poweroff-gpio",
+.of_match_table = of_gpio_poweroff_match,
 	},
 };
 

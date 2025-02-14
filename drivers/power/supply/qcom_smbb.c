@@ -124,9 +124,9 @@ struct smbb_charger {
 
 	unsigned int attr[_ATTR_CNT];
 
-	struct power_supply *usb_psy;
-	struct power_supply *dc_psy;
-	struct power_supply *bat_psy;
+struct power_supply *usb_psy;
+struct power_supply *dc_psy;
+struct power_supply *bat_psy;
 	struct regmap *regmap;
 
 	struct regulator_desc otg_rdesc;
@@ -216,7 +216,7 @@ static const struct smbb_charger_attr {
 		.hw_fn = smbb_imax_fn,
 	},
 	[ATTR_BAT_VSAFE] = {
-		.name = "qcom,fast-charge-safe-voltage",
+.name = "qcom,fast-charge-safe-voltage",
 		.reg = SMBB_CHG_VSAFE,
 		.max = 5000000,
 		.min = 3240000,
@@ -224,7 +224,7 @@ static const struct smbb_charger_attr {
 		.fail_ok = 1,
 	},
 	[ATTR_BAT_VMAX] = {
-		.name = "qcom,fast-charge-high-threshold-voltage",
+.name = "qcom,fast-charge-high-threshold-voltage",
 		.reg = SMBB_CHG_VMAX,
 		.safe_reg = SMBB_CHG_VSAFE,
 		.max = 5000000,
@@ -232,21 +232,21 @@ static const struct smbb_charger_attr {
 		.hw_fn = smbb_vmax_fn,
 	},
 	[ATTR_BAT_VMIN] = {
-		.name = "qcom,fast-charge-low-threshold-voltage",
+.name = "qcom,fast-charge-low-threshold-voltage",
 		.reg = SMBB_CHG_VBAT_WEAK,
 		.max = 3600000,
 		.min = 2100000,
 		.hw_fn = smbb_vbat_weak_fn,
 	},
 	[ATTR_CHG_VDET] = {
-		.name = "qcom,auto-recharge-threshold-voltage",
+.name = "qcom,auto-recharge-threshold-voltage",
 		.reg = SMBB_CHG_VBAT_DET,
 		.max = 5000000,
 		.min = 3240000,
 		.hw_fn = smbb_vbat_det_fn,
 	},
 	[ATTR_VIN_MIN] = {
-		.name = "qcom,minimum-input-voltage",
+.name = "qcom,minimum-input-voltage",
 		.reg = SMBB_CHG_VIN_MIN,
 		.max = 9600000,
 		.min = 4200000,
@@ -386,7 +386,7 @@ static irqreturn_t smbb_usb_valid_handler(int irq, void *_data)
 	smbb_set_line_flag(chg, irq, STATUS_USBIN_VALID);
 	extcon_set_state_sync(chg->edev, EXTCON_USB,
 				chg->status & STATUS_USBIN_VALID);
-	power_supply_changed(chg->usb_psy);
+power_supply_changed(chg->usb_psy);
 
 	return IRQ_HANDLED;
 }
@@ -397,7 +397,7 @@ static irqreturn_t smbb_dc_valid_handler(int irq, void *_data)
 
 	smbb_set_line_flag(chg, irq, STATUS_DCIN_VALID);
 	if (!chg->dc_disabled)
-		power_supply_changed(chg->dc_psy);
+power_supply_changed(chg->dc_psy);
 
 	return IRQ_HANDLED;
 }
@@ -422,7 +422,7 @@ static irqreturn_t smbb_bat_temp_handler(int irq, void *_data)
 	}
 	mutex_unlock(&chg->statlock);
 
-	power_supply_changed(chg->bat_psy);
+power_supply_changed(chg->bat_psy);
 	return IRQ_HANDLED;
 }
 
@@ -431,7 +431,7 @@ static irqreturn_t smbb_bat_present_handler(int irq, void *_data)
 	struct smbb_charger *chg = _data;
 
 	smbb_set_line_flag(chg, irq, STATUS_BAT_PRESENT);
-	power_supply_changed(chg->bat_psy);
+power_supply_changed(chg->bat_psy);
 
 	return IRQ_HANDLED;
 }
@@ -441,7 +441,7 @@ static irqreturn_t smbb_chg_done_handler(int irq, void *_data)
 	struct smbb_charger *chg = _data;
 
 	smbb_set_line_flag(chg, irq, STATUS_CHG_DONE);
-	power_supply_changed(chg->bat_psy);
+power_supply_changed(chg->bat_psy);
 
 	return IRQ_HANDLED;
 }
@@ -451,10 +451,10 @@ static irqreturn_t smbb_chg_gone_handler(int irq, void *_data)
 	struct smbb_charger *chg = _data;
 
 	smbb_set_line_flag(chg, irq, STATUS_CHG_GONE);
-	power_supply_changed(chg->bat_psy);
-	power_supply_changed(chg->usb_psy);
+power_supply_changed(chg->bat_psy);
+power_supply_changed(chg->usb_psy);
 	if (!chg->dc_disabled)
-		power_supply_changed(chg->dc_psy);
+power_supply_changed(chg->dc_psy);
 
 	return IRQ_HANDLED;
 }
@@ -464,7 +464,7 @@ static irqreturn_t smbb_chg_fast_handler(int irq, void *_data)
 	struct smbb_charger *chg = _data;
 
 	smbb_set_line_flag(chg, irq, STATUS_CHG_FAST);
-	power_supply_changed(chg->bat_psy);
+power_supply_changed(chg->bat_psy);
 
 	return IRQ_HANDLED;
 }
@@ -474,7 +474,7 @@ static irqreturn_t smbb_chg_trkl_handler(int irq, void *_data)
 	struct smbb_charger *chg = _data;
 
 	smbb_set_line_flag(chg, irq, STATUS_CHG_TRKL);
-	power_supply_changed(chg->bat_psy);
+power_supply_changed(chg->bat_psy);
 
 	return IRQ_HANDLED;
 }
@@ -494,23 +494,23 @@ static const struct smbb_irq {
 };
 
 static int smbb_usbin_get_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smbb_charger *chg = power_supply_get_drvdata(psy);
+struct smbb_charger *chg = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		mutex_lock(&chg->statlock);
 		val->intval = !(chg->status & STATUS_CHG_GONE) &&
 				(chg->status & STATUS_USBIN_VALID);
 		mutex_unlock(&chg->statlock);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		val->intval = chg->attr[ATTR_USBIN_IMAX];
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
 		val->intval = 2500000;
 		break;
 	default:
@@ -522,14 +522,14 @@ static int smbb_usbin_get_property(struct power_supply *psy,
 }
 
 static int smbb_usbin_set_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smbb_charger *chg = power_supply_get_drvdata(psy);
+struct smbb_charger *chg = power_supply_get_drvdata(psy);
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		rc = smbb_charger_attr_write(chg, ATTR_USBIN_IMAX,
 				val->intval);
 		break;
@@ -542,23 +542,23 @@ static int smbb_usbin_set_property(struct power_supply *psy,
 }
 
 static int smbb_dcin_get_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smbb_charger *chg = power_supply_get_drvdata(psy);
+struct smbb_charger *chg = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		mutex_lock(&chg->statlock);
 		val->intval = !(chg->status & STATUS_CHG_GONE) &&
 				(chg->status & STATUS_DCIN_VALID);
 		mutex_unlock(&chg->statlock);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		val->intval = chg->attr[ATTR_DCIN_IMAX];
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX:
 		val->intval = 2500000;
 		break;
 	default:
@@ -570,14 +570,14 @@ static int smbb_dcin_get_property(struct power_supply *psy,
 }
 
 static int smbb_dcin_set_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smbb_charger *chg = power_supply_get_drvdata(psy);
+struct smbb_charger *chg = power_supply_get_drvdata(psy);
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		rc = smbb_charger_attr_write(chg, ATTR_DCIN_IMAX,
 				val->intval);
 		break;
@@ -590,16 +590,16 @@ static int smbb_dcin_set_property(struct power_supply *psy,
 }
 
 static int smbb_charger_writable_property(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
-	return psp == POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT;
+return psp == POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT;
 }
 
 static int smbb_battery_get_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smbb_charger *chg = power_supply_get_drvdata(psy);
+struct smbb_charger *chg = power_supply_get_drvdata(psy);
 	unsigned long status;
 	int rc = 0;
 
@@ -608,53 +608,53 @@ static int smbb_battery_get_property(struct power_supply *psy,
 	mutex_unlock(&chg->statlock);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (status & STATUS_CHG_GONE)
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (!(status & (STATUS_DCIN_VALID | STATUS_USBIN_VALID)))
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (status & STATUS_CHG_DONE)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else if (!(status & STATUS_BAT_OK))
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (status & (STATUS_CHG_FAST | STATUS_CHG_TRKL))
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else /* everything is ok for charging, but we are not... */
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		if (status & STATUS_BAT_OK)
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 		else if (status & STATUS_BAT_HOT)
-			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 		else
-			val->intval = POWER_SUPPLY_HEALTH_COLD;
+val->intval = POWER_SUPPLY_HEALTH_COLD;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		if (status & STATUS_CHG_FAST)
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
 		else if (status & STATUS_CHG_TRKL)
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 		else
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = !!(status & STATUS_BAT_PRESENT);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		val->intval = chg->attr[ATTR_BAT_IMAX];
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		val->intval = chg->attr[ATTR_BAT_VMAX];
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		/* this charger is a single-cell lithium-ion battery charger
 		* only.  If you hook up some other technology, there will be
 		* fireworks.
 		*/
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
 		val->intval = 3000000; /* single-cell li-ion low end */
 		break;
 	default:
@@ -666,17 +666,17 @@ static int smbb_battery_get_property(struct power_supply *psy,
 }
 
 static int smbb_battery_set_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smbb_charger *chg = power_supply_get_drvdata(psy);
+struct smbb_charger *chg = power_supply_get_drvdata(psy);
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smbb_charger_attr_write(chg, ATTR_BAT_IMAX, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		rc = smbb_charger_attr_write(chg, ATTR_BAT_VMAX, val->intval);
 		break;
 	default:
@@ -688,11 +688,11 @@ static int smbb_battery_set_property(struct power_supply *psy,
 }
 
 static int smbb_battery_writable_property(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		return 1;
 	default:
 		return 0;
@@ -700,20 +700,20 @@ static int smbb_battery_writable_property(struct power_supply *psy,
 }
 
 static enum power_supply_property smbb_charger_properties[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
+POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT_MAX,
 };
 
 static enum power_supply_property smbb_battery_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_TECHNOLOGY,
 };
 
 static const struct reg_off_mask_default {
@@ -765,7 +765,7 @@ static char *smbb_bif[] = { "smbb-bif" };
 
 static const struct power_supply_desc bat_psy_desc = {
 	.name = "smbb-bif",
-	.type = POWER_SUPPLY_TYPE_BATTERY,
+.type = POWER_SUPPLY_TYPE_BATTERY,
 	.properties = smbb_battery_properties,
 	.num_properties = ARRAY_SIZE(smbb_battery_properties),
 	.get_property = smbb_battery_get_property,
@@ -775,7 +775,7 @@ static const struct power_supply_desc bat_psy_desc = {
 
 static const struct power_supply_desc usb_psy_desc = {
 	.name = "smbb-usbin",
-	.type = POWER_SUPPLY_TYPE_USB,
+.type = POWER_SUPPLY_TYPE_USB,
 	.properties = smbb_charger_properties,
 	.num_properties = ARRAY_SIZE(smbb_charger_properties),
 	.get_property = smbb_usbin_get_property,
@@ -785,7 +785,7 @@ static const struct power_supply_desc usb_psy_desc = {
 
 static const struct power_supply_desc dc_psy_desc = {
 	.name = "smbb-dcin",
-	.type = POWER_SUPPLY_TYPE_MAINS,
+.type = POWER_SUPPLY_TYPE_MAINS,
 	.properties = smbb_charger_properties,
 	.num_properties = ARRAY_SIZE(smbb_charger_properties),
 	.get_property = smbb_dcin_get_property,
@@ -838,9 +838,9 @@ static const struct regulator_ops smbb_chg_otg_ops = {
 
 static int smbb_charger_probe(struct platform_device *pdev)
 {
-	struct power_supply_config bat_cfg = {};
-	struct power_supply_config usb_cfg = {};
-	struct power_supply_config dc_cfg = {};
+struct power_supply_config bat_cfg = {};
+struct power_supply_config usb_cfg = {};
+struct power_supply_config dc_cfg = {};
 	struct smbb_charger *chg;
 	struct regulator_config config = { };
 	int rc, i;
@@ -889,7 +889,7 @@ static int smbb_charger_probe(struct platform_device *pdev)
 
 	bat_cfg.drv_data = chg;
 	bat_cfg.of_node = pdev->dev.of_node;
-	chg->bat_psy = devm_power_supply_register(&pdev->dev,
+chg->bat_psy = devm_power_supply_register(&pdev->dev,
 						  &bat_psy_desc,
 						  &bat_cfg);
 	if (IS_ERR(chg->bat_psy)) {
@@ -900,11 +900,11 @@ static int smbb_charger_probe(struct platform_device *pdev)
 	usb_cfg.drv_data = chg;
 	usb_cfg.supplied_to = smbb_bif;
 	usb_cfg.num_supplicants = ARRAY_SIZE(smbb_bif);
-	chg->usb_psy = devm_power_supply_register(&pdev->dev,
+chg->usb_psy = devm_power_supply_register(&pdev->dev,
 						  &usb_psy_desc,
 						  &usb_cfg);
 	if (IS_ERR(chg->usb_psy)) {
-		dev_err(&pdev->dev, "failed to register USB power supply\n");
+dev_err(&pdev->dev, "failed to register USB power supply\n");
 		return PTR_ERR(chg->usb_psy);
 	}
 
@@ -924,11 +924,11 @@ static int smbb_charger_probe(struct platform_device *pdev)
 		dc_cfg.drv_data = chg;
 		dc_cfg.supplied_to = smbb_bif;
 		dc_cfg.num_supplicants = ARRAY_SIZE(smbb_bif);
-		chg->dc_psy = devm_power_supply_register(&pdev->dev,
+chg->dc_psy = devm_power_supply_register(&pdev->dev,
 							 &dc_psy_desc,
 							 &dc_cfg);
 		if (IS_ERR(chg->dc_psy)) {
-			dev_err(&pdev->dev, "failed to register DC power supply\n");
+dev_err(&pdev->dev, "failed to register DC power supply\n");
 			return PTR_ERR(chg->dc_psy);
 		}
 	}
@@ -956,14 +956,14 @@ static int smbb_charger_probe(struct platform_device *pdev)
 	}
 
 	/*
-	 * otg regulator is used to control VBUS voltage direction
+* otg regulator is used to control VBUS voltage direction
 	 * when USB switches between host and gadget mode
 	 */
 	chg->otg_rdesc.id = -1;
 	chg->otg_rdesc.name = "otg-vbus";
 	chg->otg_rdesc.ops = &smbb_chg_otg_ops;
 	chg->otg_rdesc.owner = THIS_MODULE;
-	chg->otg_rdesc.type = REGULATOR_VOLTAGE;
+chg->otg_rdesc.type = REGULATOR_VOLTAGE;
 	chg->otg_rdesc.supply_name = "usb-otg-in";
 	chg->otg_rdesc.of_match = "otg-vbus";
 

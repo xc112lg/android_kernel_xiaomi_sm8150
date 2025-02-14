@@ -18,7 +18,7 @@ static void __iomem *power_reg;
 
 static irqreturn_t power_handler(int irq, void *dev_id)
 {
-	orderly_poweroff(true);
+orderly_poweroff(true);
 
 	/* FIXME: Check registers for status... */
 	return IRQ_HANDLED;
@@ -39,15 +39,15 @@ static int power_probe(struct platform_device *op)
 	struct resource *res = &op->resource[0];
 	unsigned int irq = op->archdata.irqs[0];
 
-	power_reg = of_ioremap(res, 0, 0x4, "power");
+power_reg = of_ioremap(res, 0, 0x4, "power");
 
 	printk(KERN_INFO "%s: Control reg at %llx\n",
 	       op->dev.of_node->name, res->start);
 
 	if (has_button_interrupt(irq, op->dev.of_node)) {
 		if (request_irq(irq,
-				power_handler, 0, "power", NULL) < 0)
-			printk(KERN_ERR "power: Cannot setup IRQ handler.\n");
+power_handler, 0, "power", NULL) < 0)
+printk(KERN_ERR "power: Cannot setup IRQ handler.\n");
 	}
 
 	return 0;
@@ -55,16 +55,16 @@ static int power_probe(struct platform_device *op)
 
 static const struct of_device_id power_match[] = {
 	{
-		.name = "power",
+.name = "power",
 	},
 	{},
 };
 
 static struct platform_driver power_driver = {
-	.probe		= power_probe,
+.probe		= power_probe,
 	.driver = {
-		.name = "power",
-		.of_match_table = power_match,
+.name = "power",
+.of_match_table = power_match,
 	},
 };
 

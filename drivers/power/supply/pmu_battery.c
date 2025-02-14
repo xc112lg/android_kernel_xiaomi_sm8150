@@ -17,8 +17,8 @@
 #include <linux/slab.h>
 
 static struct pmu_battery_dev {
-	struct power_supply *bat;
-	struct power_supply_desc bat_desc;
+struct power_supply *bat;
+struct power_supply_desc bat_desc;
 	struct pmu_battery_info *pbi;
 	char name[16];
 	int propval;
@@ -27,16 +27,16 @@ static struct pmu_battery_dev {
 #define to_pmu_battery_dev(x) power_supply_get_drvdata(x)
 
 /*********************************************************************
- *		Power
+*		Power
  *********************************************************************/
 
 static int pmu_get_ac_prop(struct power_supply *psy,
-			   enum power_supply_property psp,
-			   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
-		val->intval = (!!(pmu_power_flags & PMU_PWR_AC_PRESENT)) ||
+case POWER_SUPPLY_PROP_ONLINE:
+val->intval = (!!(pmu_power_flags & PMU_PWR_AC_PRESENT)) ||
 			      (pmu_battery_count == 0);
 		break;
 	default:
@@ -47,12 +47,12 @@ static int pmu_get_ac_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property pmu_ac_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static const struct power_supply_desc pmu_ac_desc = {
 	.name = "pmu-ac",
-	.type = POWER_SUPPLY_TYPE_MAINS,
+.type = POWER_SUPPLY_TYPE_MAINS,
 	.properties = pmu_ac_props,
 	.num_properties = ARRAY_SIZE(pmu_ac_props),
 	.get_property = pmu_get_ac_prop,
@@ -83,40 +83,40 @@ static char *pmu_bat_get_model_name(struct pmu_battery_info *pbi)
 }
 
 static int pmu_bat_get_property(struct power_supply *psy,
-				enum power_supply_property psp,
-				union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct pmu_battery_dev *pbat = to_pmu_battery_dev(psy);
 	struct pmu_battery_info *pbi = pbat->pbi;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (pbi->flags & PMU_BATT_CHARGING)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
-		else if (pmu_power_flags & PMU_PWR_AC_PRESENT)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
+else if (pmu_power_flags & PMU_PWR_AC_PRESENT)
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = !!(pbi->flags & PMU_BATT_PRESENT);
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = pmu_bat_get_model_name(pbi);
 		break;
-	case POWER_SUPPLY_PROP_ENERGY_AVG:
+case POWER_SUPPLY_PROP_ENERGY_AVG:
 		val->intval = pbi->charge     * 1000; /* mWh -> µWh */
 		break;
-	case POWER_SUPPLY_PROP_ENERGY_FULL:
+case POWER_SUPPLY_PROP_ENERGY_FULL:
 		val->intval = pbi->max_charge * 1000; /* mWh -> µWh */
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		val->intval = pbi->amperage   * 1000; /* mA -> µA */
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
-		val->intval = pbi->voltage    * 1000; /* mV -> µV */
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+val->intval = pbi->voltage    * 1000; /* mV -> µV */
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
+case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
 		val->intval = pbi->time_remaining;
 		break;
 	default:
@@ -127,14 +127,14 @@ static int pmu_bat_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property pmu_bat_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_ENERGY_AVG,
-	POWER_SUPPLY_PROP_ENERGY_FULL,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_ENERGY_AVG,
+POWER_SUPPLY_PROP_ENERGY_FULL,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
 };
 
 /*********************************************************************
@@ -155,14 +155,14 @@ static int __init pmu_bat_init(void)
 		goto pdev_register_failed;
 	}
 
-	pmu_ac = power_supply_register(&bat_pdev->dev, &pmu_ac_desc, NULL);
+pmu_ac = power_supply_register(&bat_pdev->dev, &pmu_ac_desc, NULL);
 	if (IS_ERR(pmu_ac)) {
 		ret = PTR_ERR(pmu_ac);
 		goto ac_register_failed;
 	}
 
 	for (i = 0; i < pmu_battery_count; i++) {
-		struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 		struct pmu_battery_dev *pbat = kzalloc(sizeof(*pbat),
 						       GFP_KERNEL);
 		if (!pbat)
@@ -176,7 +176,7 @@ static int __init pmu_bat_init(void)
 		pbat->pbi = &pmu_batteries[i];
 		psy_cfg.drv_data = pbat;
 
-		pbat->bat = power_supply_register(&bat_pdev->dev,
+pbat->bat = power_supply_register(&bat_pdev->dev,
 						  &pbat->bat_desc,
 						  &psy_cfg);
 		if (IS_ERR(pbat->bat)) {
@@ -193,10 +193,10 @@ battery_register_failed:
 	while (i--) {
 		if (!pbats[i])
 			continue;
-		power_supply_unregister(pbats[i]->bat);
+power_supply_unregister(pbats[i]->bat);
 		kfree(pbats[i]);
 	}
-	power_supply_unregister(pmu_ac);
+power_supply_unregister(pmu_ac);
 ac_register_failed:
 	platform_device_unregister(bat_pdev);
 pdev_register_failed:
@@ -211,10 +211,10 @@ static void __exit pmu_bat_exit(void)
 	for (i = 0; i < PMU_MAX_BATTERIES; i++) {
 		if (!pbats[i])
 			continue;
-		power_supply_unregister(pbats[i]->bat);
+power_supply_unregister(pbats[i]->bat);
 		kfree(pbats[i]);
 	}
-	power_supply_unregister(pmu_ac);
+power_supply_unregister(pmu_ac);
 	platform_device_unregister(bat_pdev);
 }
 

@@ -21,14 +21,14 @@
 
 struct wm831x_backup {
 	struct wm831x *wm831x;
-	struct power_supply *backup;
-	struct power_supply_desc backup_desc;
+struct power_supply *backup;
+struct power_supply_desc backup_desc;
 	char name[20];
 };
 
 static int wm831x_backup_read_voltage(struct wm831x *wm831x,
 				     enum wm831x_auxadc src,
-				     union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int ret;
 
@@ -61,7 +61,7 @@ static void wm831x_config_backup(struct wm831x *wm831x)
 
 	if (pdata->charger_enable)
 		reg |= WM831X_BKUP_CHG_ENA | WM831X_BKUP_BATT_DET_ENA;
-	if (pdata->no_constant_voltage)
+if (pdata->no_constant_voltage)
 		reg |= WM831X_BKUP_CHG_MODE;
 
 	switch (pdata->vlim) {
@@ -71,7 +71,7 @@ static void wm831x_config_backup(struct wm831x *wm831x)
 		reg |= WM831X_BKUP_CHG_VLIM;
 		break;
 	default:
-		dev_err(wm831x->dev, "Invalid backup voltage limit %dmV\n",
+dev_err(wm831x->dev, "Invalid backup voltage limit %dmV\n",
 			pdata->vlim);
 	}
 
@@ -113,8 +113,8 @@ static void wm831x_config_backup(struct wm831x *wm831x)
 }
 
 static int wm831x_backup_get_prop(struct power_supply *psy,
-				  enum power_supply_property psp,
-				  union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct wm831x_backup *devdata = dev_get_drvdata(psy->dev.parent);
 	struct wm831x *wm831x = devdata->wm831x;
@@ -125,19 +125,19 @@ static int wm831x_backup_get_prop(struct power_supply *psy,
 		return ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (ret & WM831X_BKUP_CHG_STS)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
 
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		ret = wm831x_backup_read_voltage(wm831x, WM831X_AUX_BKUP_BATT,
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+ret = wm831x_backup_read_voltage(wm831x, WM831X_AUX_BKUP_BATT,
 						val);
 		break;
 
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		if (ret & WM831X_BKUP_CHG_STS)
 			val->intval = 1;
 		else
@@ -153,9 +153,9 @@ static int wm831x_backup_get_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property wm831x_backup_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_PRESENT,
 };
 
 /*********************************************************************
@@ -190,11 +190,11 @@ static int wm831x_backup_probe(struct platform_device *pdev)
 			 "wm831x-backup");
 
 	devdata->backup_desc.name = devdata->name;
-	devdata->backup_desc.type = POWER_SUPPLY_TYPE_BATTERY;
+devdata->backup_desc.type = POWER_SUPPLY_TYPE_BATTERY;
 	devdata->backup_desc.properties = wm831x_backup_props;
 	devdata->backup_desc.num_properties = ARRAY_SIZE(wm831x_backup_props);
 	devdata->backup_desc.get_property = wm831x_backup_get_prop;
-	devdata->backup = power_supply_register(&pdev->dev,
+devdata->backup = power_supply_register(&pdev->dev,
 						&devdata->backup_desc, NULL);
 
 	return PTR_ERR_OR_ZERO(devdata->backup);
@@ -204,7 +204,7 @@ static int wm831x_backup_remove(struct platform_device *pdev)
 {
 	struct wm831x_backup *devdata = platform_get_drvdata(pdev);
 
-	power_supply_unregister(devdata->backup);
+power_supply_unregister(devdata->backup);
 
 	return 0;
 }

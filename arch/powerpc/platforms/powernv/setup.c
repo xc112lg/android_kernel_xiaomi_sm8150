@@ -1,5 +1,5 @@
 /*
- * PowerNV setup code.
+* PowerNV setup code.
  *
  * Copyright 2011 IBM Corp.
  *
@@ -125,10 +125,10 @@ static void pnv_setup_rfi_flush(void)
 	}
 
 	/*
-	 * If we are non-Power9 bare metal, we don't need to flush on kernel
+* If we are non-Power9 bare metal, we don't need to flush on kernel
 	 * entry or after user access: they fix a P9 specific vulnerability.
 	 */
-	if (!pvr_version_is(PVR_POWER9)) {
+if (!pvr_version_is(PVR_POWER9)) {
 		security_ftr_clear(SEC_FTR_L1D_FLUSH_ENTRY);
 		security_ftr_clear(SEC_FTR_L1D_FLUSH_UACCESS);
 	}
@@ -167,7 +167,7 @@ static void __init pnv_setup_arch(void)
 		opal_nvram_init();
 
 	/* Enable NAP mode */
-	powersave_nap = 1;
+powersave_nap = 1;
 
 	/* XXX PMCS */
 
@@ -207,7 +207,7 @@ static void pnv_show_cpuinfo(struct seq_file *m)
 	root = of_find_node_by_path("/");
 	if (root)
 		model = of_get_property(root, "model", NULL);
-	seq_printf(m, "machine\t\t: PowerNV %s\n", model);
+seq_printf(m, "machine\t\t: PowerNV %s\n", model);
 	if (firmware_has_feature(FW_FEATURE_OPAL))
 		seq_printf(m, "firmware\t: OPAL\n");
 	else
@@ -264,7 +264,7 @@ static void __noreturn pnv_power_off(void)
 	pnv_prepare_going_down();
 
 	while (rc == OPAL_BUSY || rc == OPAL_BUSY_EVENT) {
-		rc = opal_cec_power_down(0);
+rc = opal_cec_power_down(0);
 		if (rc == OPAL_BUSY_EVENT)
 			opal_poll_events(NULL);
 		else
@@ -276,7 +276,7 @@ static void __noreturn pnv_power_off(void)
 
 static void __noreturn pnv_halt(void)
 {
-	pnv_power_off();
+pnv_power_off();
 }
 
 static void pnv_progress(char *s, unsigned short hex)
@@ -403,7 +403,7 @@ static void __init pnv_setup_machdep_opal(void)
 {
 	ppc_md.get_boot_time = opal_get_boot_time;
 	ppc_md.restart = pnv_restart;
-	pm_power_off = pnv_power_off;
+pm_power_off = pnv_power_off;
 	ppc_md.halt = pnv_halt;
 	ppc_md.machine_check_exception = opal_machine_check;
 	ppc_md.mce_check_early_recovery = opal_mce_check_early_recovery;
@@ -413,13 +413,13 @@ static void __init pnv_setup_machdep_opal(void)
 
 static int __init pnv_probe(void)
 {
-	if (!of_machine_is_compatible("ibm,powernv"))
+if (!of_machine_is_compatible("ibm,powernv"))
 		return 0;
 
 	if (firmware_has_feature(FW_FEATURE_OPAL))
 		pnv_setup_machdep_opal();
 
-	pr_debug("PowerNV detected !\n");
+pr_debug("PowerNV detected !\n");
 
 	pnv_init();
 
@@ -427,34 +427,34 @@ static int __init pnv_probe(void)
 }
 
 /*
- * Returns the cpu frequency for 'cpu' in Hz. This is used by
+* Returns the cpu frequency for 'cpu' in Hz. This is used by
  * /proc/cpuinfo
  */
 static unsigned long pnv_get_proc_freq(unsigned int cpu)
 {
-	unsigned long ret_freq;
+unsigned long ret_freq;
 
-	ret_freq = cpufreq_get(cpu) * 1000ul;
+ret_freq = cpufreq_get(cpu) * 1000ul;
 
 	/*
-	 * If the backend cpufreq driver does not exist,
+* If the backend cpufreq driver does not exist,
          * then fallback to old way of reporting the clockrate.
 	 */
-	if (!ret_freq)
-		ret_freq = ppc_proc_freq;
-	return ret_freq;
+if (!ret_freq)
+ret_freq = ppc_proc_freq;
+return ret_freq;
 }
 
 define_machine(powernv) {
-	.name			= "PowerNV",
+.name			= "PowerNV",
 	.probe			= pnv_probe,
 	.setup_arch		= pnv_setup_arch,
 	.init_IRQ		= pnv_init_IRQ,
 	.show_cpuinfo		= pnv_show_cpuinfo,
-	.get_proc_freq          = pnv_get_proc_freq,
+.get_proc_freq          = pnv_get_proc_freq,
 	.progress		= pnv_progress,
 	.machine_shutdown	= pnv_shutdown,
-	.power_save             = NULL,
+.power_save             = NULL,
 	.calibrate_decr		= generic_calibrate_decr,
 #ifdef CONFIG_KEXEC_CORE
 	.kexec_cpu_down		= pnv_kexec_cpu_down,

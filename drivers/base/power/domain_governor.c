@@ -1,5 +1,5 @@
 /*
- * drivers/base/power/domain_governor.c - Governors for device PM domains.
+* drivers/base/power/domain_governor.c - Governors for device PM domains.
  *
  * Copyright (C) 2011 Rafael J. Wysocki <rjw@sisk.pl>, Renesas Electronics Corp.
  *
@@ -16,7 +16,7 @@ static int dev_update_qos_constraint(struct device *dev, void *data)
 	s64 *constraint_ns_p = data;
 	s32 constraint_ns = -1;
 
-	if (dev->power.subsys_data && dev->power.subsys_data->domain_data)
+if (dev->power.subsys_data && dev->power.subsys_data->domain_data)
 		constraint_ns = dev_gpd_data(dev)->td.effective_constraint_ns;
 
 	if (constraint_ns < 0) {
@@ -48,12 +48,12 @@ static bool default_suspend_ok(struct device *dev)
 
 	dev_dbg(dev, "%s()\n", __func__);
 
-	spin_lock_irqsave(&dev->power.lock, flags);
+spin_lock_irqsave(&dev->power.lock, flags);
 
 	if (!td->constraint_changed) {
 		bool ret = td->cached_suspend_ok;
 
-		spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 		return ret;
 	}
 	td->constraint_changed = false;
@@ -61,7 +61,7 @@ static bool default_suspend_ok(struct device *dev)
 	td->effective_constraint_ns = -1;
 	constraint_ns = __dev_pm_qos_read_value(dev);
 
-	spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 
 	if (constraint_ns < 0)
 		return false;
@@ -72,7 +72,7 @@ static bool default_suspend_ok(struct device *dev)
 	 * they all have been suspended at this point and their
 	 * effective_constraint_ns fields won't be modified in parallel with us.
 	 */
-	if (!dev->power.ignore_children)
+if (!dev->power.ignore_children)
 		device_for_each_child(dev, &constraint_ns,
 				      dev_update_qos_constraint);
 
@@ -101,15 +101,15 @@ static bool __default_power_down_ok(struct dev_pm_domain *pd,
 	s64 min_off_time_ns;
 	s64 off_on_time_ns;
 
-	off_on_time_ns = genpd->states[state].power_off_latency_ns +
-		genpd->states[state].power_on_latency_ns;
+off_on_time_ns = genpd->states[state].power_off_latency_ns +
+genpd->states[state].power_on_latency_ns;
 
 
 	min_off_time_ns = -1;
 	/*
 	 * Check if subdomains can be off for enough time.
 	 *
-	 * All subdomains have been powered off already at this point.
+* All subdomains have been powered off already at this point.
 	 */
 	list_for_each_entry(link, &genpd->master_links, master_node) {
 		struct generic_pm_domain *sd = link->slave;
@@ -177,12 +177,12 @@ static bool __default_power_down_ok(struct dev_pm_domain *pd,
 	 * theoretical time this domain can spend in the "off" state.
 	 */
 	genpd->max_off_time_ns = min_off_time_ns -
-		genpd->states[state].power_on_latency_ns;
+genpd->states[state].power_on_latency_ns;
 	return true;
 }
 
 /**
- * default_power_down_ok - Default generic PM domain power off governor routine.
+* default_power_down_ok - Default generic PM domain power off governor routine.
  * @pd: PM domain to check.
  *
  * This routine must be executed under the PM domain's lock.
@@ -193,11 +193,11 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 	struct gpd_link *link;
 
 	if (!genpd->max_off_time_changed)
-		return genpd->cached_power_down_ok;
+return genpd->cached_power_down_ok;
 
 	/*
 	 * We have to invalidate the cached results for the masters, so
-	 * use the observation that default_power_down_ok() is not
+* use the observation that default_power_down_ok() is not
 	 * going to be called for any master until this instance
 	 * returns.
 	 */
@@ -206,19 +206,19 @@ static bool default_power_down_ok(struct dev_pm_domain *pd)
 
 	genpd->max_off_time_ns = -1;
 	genpd->max_off_time_changed = false;
-	genpd->cached_power_down_ok = true;
+genpd->cached_power_down_ok = true;
 	genpd->state_idx = genpd->state_count - 1;
 
-	/* Find a state to power down to, starting from the deepest. */
-	while (!__default_power_down_ok(pd, genpd->state_idx)) {
+/* Find a state to power down to, starting from the deepest. */
+while (!__default_power_down_ok(pd, genpd->state_idx)) {
 		if (genpd->state_idx == 0) {
-			genpd->cached_power_down_ok = false;
+genpd->cached_power_down_ok = false;
 			break;
 		}
 		genpd->state_idx--;
 	}
 
-	return genpd->cached_power_down_ok;
+return genpd->cached_power_down_ok;
 }
 
 static bool always_on_power_down_ok(struct dev_pm_domain *domain)
@@ -228,13 +228,13 @@ static bool always_on_power_down_ok(struct dev_pm_domain *domain)
 
 struct dev_power_governor simple_qos_governor = {
 	.suspend_ok = default_suspend_ok,
-	.power_down_ok = default_power_down_ok,
+.power_down_ok = default_power_down_ok,
 };
 
 /**
  * pm_genpd_gov_always_on - A governor implementing an always-on policy
  */
 struct dev_power_governor pm_domain_always_on_gov = {
-	.power_down_ok = always_on_power_down_ok,
+.power_down_ok = always_on_power_down_ok,
 	.suspend_ok = default_suspend_ok,
 };

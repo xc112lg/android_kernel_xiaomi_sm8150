@@ -1,6 +1,6 @@
 /*
  * The file intends to implement the platform dependent EEH operations on
- * powernv platform. Actually, the powernv was created in order to fully
+* powernv platform. Actually, the powernv was created in order to fully
  * hypervisor support.
  *
  * Copyright Benjamin Herrenschmidt & Gavin Shan, IBM Corporation 2013.
@@ -192,7 +192,7 @@ PNV_EEH_DBGFS_ENTRY(inbB, 0xE10);
 /**
  * pnv_eeh_post_init - EEH platform dependent post initialization
  *
- * EEH platform dependent post initialization on powernv. When
+* EEH platform dependent post initialization on powernv. When
  * the function is called, the EEH PEs and devices should have
  * been built. If the I/O cache staff has been built, EEH is
  * ready to supply service.
@@ -1729,7 +1729,7 @@ static int pnv_eeh_restore_config(struct pci_dn *pdn)
 }
 
 static struct eeh_ops pnv_eeh_ops = {
-	.name                   = "powernv",
+.name                   = "powernv",
 	.init                   = pnv_eeh_init,
 	.post_init              = pnv_eeh_post_init,
 	.probe			= pnv_eeh_probe,
@@ -1782,9 +1782,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, pnv_pci_fixup_vf_mps);
 #endif /* CONFIG_PCI_IOV */
 
 /**
- * eeh_powernv_init - Register platform dependent EEH operations
+* eeh_powernv_init - Register platform dependent EEH operations
  *
- * EEH initialization on powernv platform. This function should be
+* EEH initialization on powernv platform. This function should be
  * called before any EEH related functions.
  */
 static int __init eeh_powernv_init(void)
@@ -1793,9 +1793,9 @@ static int __init eeh_powernv_init(void)
 
 	ret = eeh_ops_register(&pnv_eeh_ops);
 	if (!ret)
-		pr_info("EEH: PowerNV platform initialized\n");
+pr_info("EEH: PowerNV platform initialized\n");
 	else
-		pr_info("EEH: Failed to initialize PowerNV platform (%d)\n", ret);
+pr_info("EEH: Failed to initialize PowerNV platform (%d)\n", ret);
 
 	return ret;
 }

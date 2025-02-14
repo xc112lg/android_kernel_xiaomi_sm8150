@@ -25,12 +25,12 @@ static void platform_fixups(void)
 {
 	void *soc, *reg;
 	int div;
-	u32 sysfreq;
+u32 sysfreq;
 
 
 	dt_fixup_memory(bd.bi_memstart, bd.bi_memsize);
 	dt_fixup_mac_addresses(bd.bi_enetaddr);
-	dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
+dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
 
 	/* Unfortunately, the specific model number is encoded in the
 	 * soc node name in existing dts files -- once that is fixed,
@@ -42,14 +42,14 @@ static void platform_fixups(void)
 	if (!soc)
 		soc = find_node_by_compatible(NULL, "fsl,mpc5200b-immr");
 	if (soc) {
-		setprop(soc, "bus-frequency", &bd.bi_ipbfreq,
-			sizeof(bd.bi_ipbfreq));
+setprop(soc, "bus-frequency", &bd.bi_ipbfreq,
+sizeof(bd.bi_ipbfreq));
 
 		if (!dt_xlate_reg(soc, 0, (void*)&reg, NULL))
 			return;
 		div = in_8(reg + 0x204) & 0x0020 ? 8 : 4;
-		sysfreq = bd.bi_busfreq * div;
-		setprop(soc, "system-frequency", &sysfreq, sizeof(sysfreq));
+sysfreq = bd.bi_busfreq * div;
+setprop(soc, "system-frequency", &sysfreq, sizeof(sysfreq));
 	}
 }
 

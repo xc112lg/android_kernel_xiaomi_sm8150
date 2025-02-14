@@ -1,5 +1,5 @@
 /*
- * Machine check exception handling CPU-side for power7 and power8
+* Machine check exception handling CPU-side for power7 and power8
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -108,7 +108,7 @@ static void flush_tlb_300(unsigned int num_sets, unsigned int action)
 }
 
 /*
- * Generic routines to flush TLB on POWER processors. These routines
+* Generic routines to flush TLB on POWER processors. These routines
  * are used as flush_tlb hook in the cpu_spec.
  *
  * action => TLB_INVAL_SCOPE_GLOBAL:  Invalidate all TLBs.
@@ -116,12 +116,12 @@ static void flush_tlb_300(unsigned int num_sets, unsigned int action)
  */
 void __flush_tlb_power7(unsigned int action)
 {
-	flush_tlb_206(POWER7_TLB_SETS, action);
+flush_tlb_206(POWER7_TLB_SETS, action);
 }
 
 void __flush_tlb_power8(unsigned int action)
 {
-	flush_tlb_206(POWER8_TLB_SETS, action);
+flush_tlb_206(POWER8_TLB_SETS, action);
 }
 
 void __flush_tlb_power9(unsigned int action)
@@ -129,9 +129,9 @@ void __flush_tlb_power9(unsigned int action)
 	unsigned int num_sets;
 
 	if (radix_enabled())
-		num_sets = POWER9_TLB_SETS_RADIX;
+num_sets = POWER9_TLB_SETS_RADIX;
 	else
-		num_sets = POWER9_TLB_SETS_HASH;
+num_sets = POWER9_TLB_SETS_HASH;
 
 	flush_tlb_300(num_sets, action);
 }
@@ -625,7 +625,7 @@ long __machine_check_early_realmode_p8(struct pt_regs *regs)
 long __machine_check_early_realmode_p9(struct pt_regs *regs)
 {
 	/*
-	 * On POWER9 DD2.1 and below, it's possible to get a machine check
+* On POWER9 DD2.1 and below, it's possible to get a machine check
 	 * caused by a paste instruction where only DSISR bit 25 is set. This
 	 * will result in the MCE handler seeing an unknown event and the kernel
 	 * crashing. An MCE that occurs like this is spurious, so we don't need

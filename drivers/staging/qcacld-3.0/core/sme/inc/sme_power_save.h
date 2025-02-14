@@ -34,23 +34,23 @@
 #define AUTO_PS_DEFER_TIMEOUT_MS 1500
 
 /**
- * enum ps_state - State of the power save
- * @FULL_POWER_MODE: for Full power mode
- * @LEGACY_POWER_SAVE_MODE: For Legacy Power Save mode
- * @UAPSD_MODE: for UAPSD power save
+* enum ps_state - State of the power save
+* @FULL_POWER_MODE: for Full power mode
+* @LEGACY_POWER_SAVE_MODE: For Legacy Power Save mode
+* @UAPSD_MODE: for UAPSD power save
  */
 
 enum ps_state {
-	FULL_POWER_MODE,
-	LEGACY_POWER_SAVE_MODE,
+FULL_POWER_MODE,
+LEGACY_POWER_SAVE_MODE,
 	UAPSD_MODE
 };
 
 /**
- * struct ps_params - maintain power save state and USAPD params
+* struct ps_params - maintain power save state and USAPD params
  * @mac_ctx: mac_ctx
  * @session_id: Session Id.
- * @ps_state : State of the power save
+* @ps_state : State of the power save
  * @uapsd_per_ac_trigger_enable_mask: dynamic UPASD mask setting
  *		derived from AddTS Rsp and DelTS frame.
  *		If a particular AC bit is set, it means AC is trigger  enabled.
@@ -65,7 +65,7 @@ enum ps_state {
  *		derived from SME_JOIN_REQ and SME_REASSOC_REQ.
  *		If a particular AC bit is set, it means the AC is both
  *		trigger enabled and delivery enabled.
- * @auto_ps_enable_timer: Upon expiration of this timer	Power Save Offload
+* @auto_ps_enable_timer: Upon expiration of this timer	Power Save Offload
  *		module will try to enable sta mode ps
  */
 
@@ -82,19 +82,19 @@ struct ps_params {
 };
 
 /**
- * struct ps_global_info - global struct for Power save information
- * @ps_params: maintain power save state and USAPD params
- * @remain_in_power_active_till_dhcp: remain in Power active till DHCP completes
+* struct ps_global_info - global struct for Power save information
+* @ps_params: maintain power save state and USAPD params
+* @remain_in_power_active_till_dhcp: remain in Power active till DHCP completes
  */
 struct ps_global_info {
 	struct ps_params ps_params[WLAN_MAX_VDEVS];
-	bool remain_in_power_active_till_dhcp;
+bool remain_in_power_active_till_dhcp;
 };
 
 /**
- * enum sme_ps_cmd: power save message to send WMA
- * @SME_PS_ENABLE: For power save enable.
- * @SME_PS_DISABLE: for Power save disable.
+* enum sme_ps_cmd: power save message to send WMA
+* @SME_PS_ENABLE: For power save enable.
+* @SME_PS_DISABLE: for Power save disable.
  * @SME_PS_UAPSD_ENABLE; for UAPSD enable.
  * @SME_PS_UAPSD_DISABLE: for UAPSD disable.
  * @SME_PS_WOWL_ENTER: for WOWL Enter.

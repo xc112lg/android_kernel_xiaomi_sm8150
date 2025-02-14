@@ -30,7 +30,7 @@ static const char *max77693_charger_manufacturer	= "Maxim Integrated";
 struct max77693_charger {
 	struct device		*dev;
 	struct max77693_dev	*max77693;
-	struct power_supply	*charger;
+struct power_supply	*charger;
 
 	u32 constant_volt;
 	u32 min_system_volt;
@@ -54,27 +54,27 @@ static int max77693_get_charger_state(struct regmap *regmap, int *val)
 	switch (data) {
 	case MAX77693_CHARGING_PREQUALIFICATION:
 	case MAX77693_CHARGING_FAST_CONST_CURRENT:
-	case MAX77693_CHARGING_FAST_CONST_VOLTAGE:
+case MAX77693_CHARGING_FAST_CONST_VOLTAGE:
 	case MAX77693_CHARGING_TOP_OFF:
 	/* In high temp the charging current is reduced, but still charging */
 	case MAX77693_CHARGING_HIGH_TEMP:
-		*val = POWER_SUPPLY_STATUS_CHARGING;
+*val = POWER_SUPPLY_STATUS_CHARGING;
 		break;
 	case MAX77693_CHARGING_DONE:
-		*val = POWER_SUPPLY_STATUS_FULL;
+*val = POWER_SUPPLY_STATUS_FULL;
 		break;
 	case MAX77693_CHARGING_TIMER_EXPIRED:
 	case MAX77693_CHARGING_THERMISTOR_SUSPEND:
-		*val = POWER_SUPPLY_STATUS_NOT_CHARGING;
+*val = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
 	case MAX77693_CHARGING_OFF:
 	case MAX77693_CHARGING_OVER_TEMP:
 	case MAX77693_CHARGING_WATCHDOG_EXPIRED:
-		*val = POWER_SUPPLY_STATUS_DISCHARGING;
+*val = POWER_SUPPLY_STATUS_DISCHARGING;
 		break;
 	case MAX77693_CHARGING_RESERVED:
 	default:
-		*val = POWER_SUPPLY_STATUS_UNKNOWN;
+*val = POWER_SUPPLY_STATUS_UNKNOWN;
 	}
 
 	return 0;
@@ -99,13 +99,13 @@ static int max77693_get_charge_type(struct regmap *regmap, int *val)
 	 * 100 and 250 mA. It is higher than prequalification current.
 	 */
 	case MAX77693_CHARGING_TOP_OFF:
-		*val = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+*val = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 		break;
 	case MAX77693_CHARGING_FAST_CONST_CURRENT:
-	case MAX77693_CHARGING_FAST_CONST_VOLTAGE:
+case MAX77693_CHARGING_FAST_CONST_VOLTAGE:
 	/* In high temp the charging current is reduced, but still charging */
 	case MAX77693_CHARGING_HIGH_TEMP:
-		*val = POWER_SUPPLY_CHARGE_TYPE_FAST;
+*val = POWER_SUPPLY_CHARGE_TYPE_FAST;
 		break;
 	case MAX77693_CHARGING_DONE:
 	case MAX77693_CHARGING_TIMER_EXPIRED:
@@ -113,11 +113,11 @@ static int max77693_get_charge_type(struct regmap *regmap, int *val)
 	case MAX77693_CHARGING_OFF:
 	case MAX77693_CHARGING_OVER_TEMP:
 	case MAX77693_CHARGING_WATCHDOG_EXPIRED:
-		*val = POWER_SUPPLY_CHARGE_TYPE_NONE;
+*val = POWER_SUPPLY_CHARGE_TYPE_NONE;
 		break;
 	case MAX77693_CHARGING_RESERVED:
 	default:
-		*val = POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
+*val = POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
 	}
 
 	return 0;
@@ -125,12 +125,12 @@ static int max77693_get_charge_type(struct regmap *regmap, int *val)
 
 /*
  * Supported health statuses:
- *  - POWER_SUPPLY_HEALTH_DEAD
- *  - POWER_SUPPLY_HEALTH_GOOD
- *  - POWER_SUPPLY_HEALTH_OVERVOLTAGE
- *  - POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE
- *  - POWER_SUPPLY_HEALTH_UNKNOWN
- *  - POWER_SUPPLY_HEALTH_UNSPEC_FAILURE
+*  - POWER_SUPPLY_HEALTH_DEAD
+*  - POWER_SUPPLY_HEALTH_GOOD
+*  - POWER_SUPPLY_HEALTH_OVERVOLTAGE
+*  - POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE
+*  - POWER_SUPPLY_HEALTH_UNKNOWN
+*  - POWER_SUPPLY_HEALTH_UNSPEC_FAILURE
  */
 static int max77693_get_battery_health(struct regmap *regmap, int *val)
 {
@@ -146,29 +146,29 @@ static int max77693_get_battery_health(struct regmap *regmap, int *val)
 
 	switch (data) {
 	case MAX77693_BATTERY_NOBAT:
-		*val = POWER_SUPPLY_HEALTH_DEAD;
+*val = POWER_SUPPLY_HEALTH_DEAD;
 		break;
 	case MAX77693_BATTERY_PREQUALIFICATION:
 	case MAX77693_BATTERY_GOOD:
-	case MAX77693_BATTERY_LOWVOLTAGE:
-		*val = POWER_SUPPLY_HEALTH_GOOD;
+case MAX77693_BATTERY_LOWVOLTAGE:
+*val = POWER_SUPPLY_HEALTH_GOOD;
 		break;
 	case MAX77693_BATTERY_TIMER_EXPIRED:
 		/*
 		 * Took longer to charge than expected, charging suspended.
 		 * Damaged battery?
 		 */
-		*val = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+*val = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 		break;
-	case MAX77693_BATTERY_OVERVOLTAGE:
-		*val = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+case MAX77693_BATTERY_OVERVOLTAGE:
+*val = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 		break;
 	case MAX77693_BATTERY_OVERCURRENT:
-		*val = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+*val = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		break;
 	case MAX77693_BATTERY_RESERVED:
 	default:
-		*val = POWER_SUPPLY_HEALTH_UNKNOWN;
+*val = POWER_SUPPLY_HEALTH_UNKNOWN;
 		break;
 	}
 
@@ -208,43 +208,43 @@ static int max77693_get_online(struct regmap *regmap, int *val)
 }
 
 static enum power_supply_property max77693_charger_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
 };
 
 static int max77693_charger_get_property(struct power_supply *psy,
-			    enum power_supply_property psp,
-			    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct max77693_charger *chg = power_supply_get_drvdata(psy);
+struct max77693_charger *chg = power_supply_get_drvdata(psy);
 	struct regmap *regmap = chg->max77693->regmap;
 	int ret = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = max77693_get_charger_state(regmap, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		ret = max77693_get_charge_type(regmap, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		ret = max77693_get_battery_health(regmap, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		ret = max77693_get_present(regmap, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = max77693_get_online(regmap, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = max77693_charger_model;
 		break;
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = max77693_charger_manufacturer;
 		break;
 	default:
@@ -256,7 +256,7 @@ static int max77693_charger_get_property(struct power_supply *psy,
 
 static const struct power_supply_desc max77693_charger_desc = {
 	.name		= MAX77693_CHARGER_NAME,
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.properties	= max77693_charger_props,
 	.num_properties	= ARRAY_SIZE(max77693_charger_props),
 	.get_property	= max77693_charger_get_property,
@@ -467,13 +467,13 @@ static int max77693_set_constant_volt(struct max77693_charger *chg,
 	else if (uvolt >= 4350000 && uvolt <= 4400000)
 		data = 0x1d + (uvolt - 4350000) / 25000;
 	else {
-		dev_err(chg->dev, "Wrong value for charging constant voltage\n");
+dev_err(chg->dev, "Wrong value for charging constant voltage\n");
 		return -EINVAL;
 	}
 
 	data <<= CHG_CNFG_04_CHGCVPRM_SHIFT;
 
-	dev_dbg(chg->dev, "Charging constant voltage: %u (0x%x)\n", uvolt,
+dev_dbg(chg->dev, "Charging constant voltage: %u (0x%x)\n", uvolt,
 			data);
 
 	return regmap_update_bits(chg->max77693->regmap,
@@ -487,7 +487,7 @@ static int max77693_set_min_system_volt(struct max77693_charger *chg,
 	unsigned int data;
 
 	if (uvolt < 3000000 || uvolt > 3700000) {
-		dev_err(chg->dev, "Wrong value for minimum system regulation voltage\n");
+dev_err(chg->dev, "Wrong value for minimum system regulation voltage\n");
 		return -EINVAL;
 	}
 
@@ -495,7 +495,7 @@ static int max77693_set_min_system_volt(struct max77693_charger *chg,
 
 	data <<= CHG_CNFG_04_MINVSYS_SHIFT;
 
-	dev_dbg(chg->dev, "Minimum system regulation voltage: %u (0x%x)\n",
+dev_dbg(chg->dev, "Minimum system regulation voltage: %u (0x%x)\n",
 			uvolt, data);
 
 	return regmap_update_bits(chg->max77693->regmap,
@@ -568,13 +568,13 @@ static int max77693_set_charge_input_threshold_volt(struct max77693_charger *chg
 	case 4900000:
 		data = (uvolt - 4700000) / 100000;
 	default:
-		dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
+dev_err(chg->dev, "Wrong value for charge input voltage regulation threshold\n");
 		return -EINVAL;
 	}
 
 	data <<= CHG_CNFG_12_VCHGINREG_SHIFT;
 
-	dev_dbg(chg->dev, "Charge input voltage regulation threshold: %u (0x%x)\n",
+dev_dbg(chg->dev, "Charge input voltage regulation threshold: %u (0x%x)\n",
 			uvolt, data);
 
 	return regmap_update_bits(chg->max77693->regmap,
@@ -677,7 +677,7 @@ static int max77693_dt_init(struct device *dev, struct max77693_charger *chg)
 static int max77693_charger_probe(struct platform_device *pdev)
 {
 	struct max77693_charger *chg;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct max77693_dev *max77693 = dev_get_drvdata(pdev->dev.parent);
 	int ret;
 
@@ -718,11 +718,11 @@ static int max77693_charger_probe(struct platform_device *pdev)
 		goto err;
 	}
 
-	chg->charger = power_supply_register(&pdev->dev,
+chg->charger = power_supply_register(&pdev->dev,
 						&max77693_charger_desc,
 						&psy_cfg);
 	if (IS_ERR(chg->charger)) {
-		dev_err(&pdev->dev, "failed: power supply register\n");
+dev_err(&pdev->dev, "failed: power supply register\n");
 		ret = PTR_ERR(chg->charger);
 		goto err;
 	}
@@ -745,7 +745,7 @@ static int max77693_charger_remove(struct platform_device *pdev)
 	device_remove_file(&pdev->dev, &dev_attr_top_off_threshold_current);
 	device_remove_file(&pdev->dev, &dev_attr_fast_charge_timer);
 
-	power_supply_unregister(chg->charger);
+power_supply_unregister(chg->charger);
 
 	return 0;
 }

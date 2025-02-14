@@ -41,16 +41,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8323@0 {
+PowerPC,8323@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;	// 32 bytes
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <16384>;		// L1, 16K
 			i-cache-size = <16384>;		// L1, 16K
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 		};
 	};
 
@@ -71,7 +71,7 @@
 		compatible = "simple-bus";
 		ranges = <0x0 0xe0000000 0x00100000>;
 		reg = <0xe0000000 0x00000200>;
-		bus-frequency = <132000000>;
+bus-frequency = <132000000>;
 
 		wdt@200 {
 			device_type = "watchdog";
@@ -79,7 +79,7 @@
 			reg = <0x200 0x100>;
 		};
 
-		pmc: power@b00 {
+pmc: power@b00 {
 			compatible = "fsl,mpc8323-pmc", "fsl,mpc8349-pmc";
 			reg = <0xb00 0x100 0xa00 0x100>;
 			interrupts = <80 0x8>;
@@ -107,7 +107,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <9 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -117,7 +117,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <10 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -255,8 +255,8 @@
 		compatible = "fsl,qe";
 		ranges = <0x0 0xe0100000 0x00100000>;
 		reg = <0xe0100000 0x480>;
-		brg-frequency = <0>;
-		bus-frequency = <198000000>;
+brg-frequency = <0>;
+bus-frequency = <198000000>;
 		fsl,qe-num-riscs = <1>;
 		fsl,qe-num-snums = <28>;
 
@@ -426,7 +426,7 @@
 		ranges = <0x02000000 0x0 0x90000000 0x90000000 0x0 0x10000000
 			  0x42000000 0x0 0x80000000 0x80000000 0x0 0x10000000
 			  0x01000000 0x0 0x00000000 0xd0000000 0x0 0x00100000>;
-		clock-frequency = <0>;
+clock-frequency = <0>;
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
 		#address-cells = <3>;

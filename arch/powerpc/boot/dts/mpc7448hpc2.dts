@@ -32,16 +32,16 @@
 		#address-cells = <1>;
 		#size-cells =<0>;
 				
-		PowerPC,7448@0 {
+PowerPC,7448@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;	// 32 bytes
 			i-cache-line-size = <32>;	// 32 bytes
 			d-cache-size = <0x8000>;		// L1, 32K bytes
 			i-cache-size = <0x8000>;		// L1, 32K bytes
-			timebase-frequency = <0>;	// 33 MHz, from uboot
-			clock-frequency = <0>;		// From U-Boot
-			bus-frequency = <0>;		// From U-Boot
+timebase-frequency = <0>;	// 33 MHz, from uboot
+clock-frequency = <0>;		// From U-Boot
+bus-frequency = <0>;		// From U-Boot
 		};
 	};
 
@@ -57,7 +57,7 @@
 		device_type = "tsi-bridge";
 		ranges = <0x0 0xc0000000 0x10000>;
 		reg = <0xc0000000 0x10000>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		i2c@7000 {
 			interrupt-parent = <&mpic>;
@@ -118,7 +118,7 @@
 			device_type = "serial";
 			compatible = "ns16550";
 			reg = <0x7808 0x200>;
-			clock-frequency = <1064000000>;
+clock-frequency = <1064000000>;
 			interrupts = <12 0>;
 			interrupt-parent = <&mpic>;
 		};
@@ -127,7 +127,7 @@
 			device_type = "serial";
 			compatible = "ns16550";
 			reg = <0x7c08 0x200>;
-			clock-frequency = <1064000000>;
+clock-frequency = <1064000000>;
 			interrupts = <13 0>;
 			interrupt-parent = <&mpic>;
 		};
@@ -150,7 +150,7 @@
 			bus-range = <0 0>;
 			ranges = <0x2000000 0x0 0xe0000000 0xe0000000 0x0 0x1a000000	
 				  0x1000000 0x0 0x0 0xfa000000 0x0 0x10000>;
-			clock-frequency = <133333332>;
+clock-frequency = <133333332>;
 			interrupt-parent = <&mpic>;
 			interrupts = <23 2>;
 			interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
@@ -182,7 +182,7 @@
 				>;
 
 			RT0: router@1180 {
-				clock-frequency = <0>;
+clock-frequency = <0>;
 				interrupt-controller;
 				device_type = "pic-router";
 				#address-cells = <0>;

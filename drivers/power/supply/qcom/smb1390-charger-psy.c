@@ -189,12 +189,12 @@ struct smb1390 {
 	struct votable		*usb_icl_votable;
 	struct votable		*fcc_main_votable;
 
-	/* power supplies */
-	struct power_supply	*cps_psy;
-	struct power_supply	*usb_psy;
-	struct power_supply	*batt_psy;
-	struct power_supply	*dc_psy;
-	struct power_supply	*cp_master_psy;
+/* power supplies */
+struct power_supply	*cps_psy;
+struct power_supply	*usb_psy;
+struct power_supply	*batt_psy;
+struct power_supply	*dc_psy;
+struct power_supply	*cp_master_psy;
 
 	int			irqs[NUM_IRQS];
 	bool			status_change_running;
@@ -304,7 +304,7 @@ static int smb1390_masked_write(struct smb1390 *chip, int reg, int mask,
 static bool is_psy_voter_available(struct smb1390 *chip)
 {
 	if (!chip->batt_psy) {
-		chip->batt_psy = power_supply_get_by_name("battery");
+chip->batt_psy = power_supply_get_by_name("battery");
 		if (!chip->batt_psy) {
 			smb1390_dbg(chip, PR_EXT_DEPENDENCY, "Couldn't find battery psy\n");
 			return false;
@@ -312,7 +312,7 @@ static bool is_psy_voter_available(struct smb1390 *chip)
 	}
 
 	if (!chip->usb_psy) {
-		chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 		if (!chip->usb_psy) {
 			smb1390_dbg(chip, PR_EXT_DEPENDENCY, "Couldn't find usb psy\n");
 			return false;
@@ -320,7 +320,7 @@ static bool is_psy_voter_available(struct smb1390 *chip)
 	}
 
 	if (!chip->dc_psy) {
-		chip->dc_psy = power_supply_get_by_name("dc");
+chip->dc_psy = power_supply_get_by_name("dc");
 		if (!chip->dc_psy) {
 			smb1390_dbg(chip, PR_EXT_DEPENDENCY, "Couldn't find dc psy\n");
 			return false;
@@ -389,16 +389,16 @@ static int smb1390_isns_mode_control(struct smb1390 *chip, enum isns_mode mode)
 static bool smb1390_is_adapter_cc_mode(struct smb1390 *chip)
 {
 	int rc;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (!chip->usb_psy) {
-		chip->usb_psy = power_supply_get_by_name("usb");
+chip->usb_psy = power_supply_get_by_name("usb");
 		if (!chip->usb_psy)
 			return false;
 	}
 
-	rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_ADAPTER_CC_MODE,
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_ADAPTER_CC_MODE,
 				&pval);
 	if (rc < 0) {
 		pr_err("Couldn't get PPS CC mode status rc=%d\n", rc);
@@ -411,7 +411,7 @@ static bool smb1390_is_adapter_cc_mode(struct smb1390 *chip)
 static bool is_cps_available(struct smb1390 *chip)
 {
 	if (!chip->cps_psy)
-		chip->cps_psy = power_supply_get_by_name("cp_slave");
+chip->cps_psy = power_supply_get_by_name("cp_slave");
 	else
 		return true;
 
@@ -512,7 +512,7 @@ static irqreturn_t default_irq_handler(int irq, void *data)
 	}
 
 	if (chip->cp_master_psy)
-		power_supply_changed(chip->cp_master_psy);
+power_supply_changed(chip->cp_master_psy);
 
 	return IRQ_HANDLED;
 }
@@ -561,7 +561,7 @@ static const struct smb_irq smb_irqs[] = {
 };
 
 static int smb1390_get_die_temp(struct smb1390 *chip,
-			union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int die_temp_deciC = 0;
 	int rc = 0;
@@ -600,7 +600,7 @@ static int smb1390_get_isns(int temp)
 }
 
 static int smb1390_get_isns_master(struct smb1390 *chip,
-			union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int temp = 0;
 	int rc;
@@ -631,8 +631,8 @@ static int smb1390_get_isns_master(struct smb1390 *chip,
 	mutex_lock(&chip->die_chan_lock);
 	if (is_cps_available(chip)) {
 		val->intval = ISNS_MODE_STANDBY;
-		rc = power_supply_set_property(chip->cps_psy,
-				POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
+rc = power_supply_set_property(chip->cps_psy,
+POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
 		if (rc < 0) {
 			pr_err("Couldn't change slave charging state rc=%d\n",
 				rc);
@@ -659,8 +659,8 @@ static int smb1390_get_isns_master(struct smb1390 *chip,
 
 	if (is_cps_available(chip)) {
 		val->intval = ISNS_MODE_OFF;
-		rc = power_supply_set_property(chip->cps_psy,
-				POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
+rc = power_supply_set_property(chip->cps_psy,
+POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
 		if (rc < 0)
 			pr_err("Couldn't change slave charging state rc=%d\n",
 				rc);
@@ -676,7 +676,7 @@ unlock:
 }
 
 static int smb1390_get_isns_slave(struct smb1390 *chip,
-			union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int temp = 0;
 	int rc;
@@ -713,8 +713,8 @@ static int smb1390_get_isns_slave(struct smb1390 *chip,
 		goto unlock;
 
 	val->intval = ISNS_MODE_ACTIVE;
-	rc = power_supply_set_property(chip->cps_psy,
-			POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
+rc = power_supply_set_property(chip->cps_psy,
+POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
 	if (rc < 0) {
 		pr_err("Couldn't change slave charging state rc=%d\n",
 			rc);
@@ -729,8 +729,8 @@ static int smb1390_get_isns_slave(struct smb1390 *chip,
 	}
 
 	val->intval = ISNS_MODE_OFF;
-	rc = power_supply_set_property(chip->cps_psy,
-			POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
+rc = power_supply_set_property(chip->cps_psy,
+POWER_SUPPLY_PROP_CURRENT_CAPABILITY, val);
 	if (rc < 0)
 		pr_err("Couldn't change slave charging state rc=%d\n",
 			rc);
@@ -750,7 +750,7 @@ unlock:
 }
 
 static int smb1390_get_cp_ilim(struct smb1390 *chip,
-			       union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0, status;
 
@@ -776,13 +776,13 @@ static int smb1390_get_cp_ilim(struct smb1390 *chip,
 static int smb1390_is_batt_soc_valid(struct smb1390 *chip)
 {
 	int rc;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	if (!chip->batt_psy)
 		goto out;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_CAPACITY, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't get CAPACITY rc=%d\n", rc);
 		goto out;
@@ -883,7 +883,7 @@ static int smb1390_disable_vote_cb(struct votable *votable, void *data,
 
 	/* charging may have been disabled by ILIM; send uevent */
 	if (chip->cp_master_psy && (disable != chip->disabled))
-		power_supply_changed(chip->cp_master_psy);
+power_supply_changed(chip->cp_master_psy);
 
 	chip->disabled = disable;
 	return rc;
@@ -936,7 +936,7 @@ static int smb1390_ilim_vote_cb(struct votable *votable, void *data,
 			      int ilim_uA, const char *client)
 {
 	struct smb1390 *chip = data;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc = 0;
 	bool slave_enabled = false;
 
@@ -971,8 +971,8 @@ static int smb1390_ilim_vote_cb(struct votable *votable, void *data,
 			ilim_uA /= 2;
 			pval.intval = DIV_ROUND_CLOSEST(ilim_uA - 500000,
 					100000);
-			rc = power_supply_set_property(chip->cps_psy,
-					POWER_SUPPLY_PROP_INPUT_CURRENT_MAX,
+rc = power_supply_set_property(chip->cps_psy,
+POWER_SUPPLY_PROP_INPUT_CURRENT_MAX,
 					&pval);
 			if (rc < 0)
 				pr_err("Couldn't change slave ilim  rc=%d\n",
@@ -1013,7 +1013,7 @@ static int smb1390_notifier_cb(struct notifier_block *nb,
 			       unsigned long event, void *data)
 {
 	struct smb1390 *chip = container_of(nb, struct smb1390, nb);
-	struct power_supply *psy = data;
+struct power_supply *psy = data;
 	int rc;
 	unsigned long flags;
 
@@ -1056,13 +1056,13 @@ static int smb1390_notifier_cb(struct notifier_block *nb,
 static void smb1390_configure_ilim(struct smb1390 *chip, int mode)
 {
 	int rc;
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 
 	/* PPS adapter reply on the current advertised by the adapter */
-	if ((chip->pl_output_mode == POWER_SUPPLY_PL_OUTPUT_VPH)
-			&& (mode == POWER_SUPPLY_CP_PPS)) {
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_PD_CURRENT_MAX, &pval);
+if ((chip->pl_output_mode == POWER_SUPPLY_PL_OUTPUT_VPH)
+&& (mode == POWER_SUPPLY_CP_PPS)) {
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_PD_CURRENT_MAX, &pval);
 		if (rc < 0)
 			pr_err("Couldn't get PD CURRENT MAX rc=%d\n", rc);
 		else
@@ -1071,13 +1071,13 @@ static void smb1390_configure_ilim(struct smb1390 *chip, int mode)
 	}
 
 	/* QC3.0/Wireless adapter rely on the settled AICL for USBMID_USBMID */
-	if ((chip->pl_input_mode == POWER_SUPPLY_PL_USBMID_USBMID)
-			&& (mode == POWER_SUPPLY_CP_HVDCP3)) {
+if ((chip->pl_input_mode == POWER_SUPPLY_PL_USBMID_USBMID)
+&& (mode == POWER_SUPPLY_CP_HVDCP3)) {
 		if (!chip->fcc_main_votable)
 			chip->fcc_main_votable = find_votable("FCC_MAIN");
 
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_INPUT_CURRENT_SETTLED, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get usb aicl rc=%d\n", rc);
 		} else {
@@ -1096,7 +1096,7 @@ static void smb1390_status_change_work(struct work_struct *work)
 {
 	struct smb1390 *chip = container_of(work, struct smb1390,
 					    status_change_work);
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc;
 
 	if (!is_psy_voter_available(chip))
@@ -1110,25 +1110,25 @@ static void smb1390_status_change_work(struct work_struct *work)
 	if (smb1390_is_batt_soc_valid(chip))
 		vote(chip->disable_votable, SOC_LEVEL_VOTER, false, 0);
 
-	rc = power_supply_get_property(chip->usb_psy,
-			POWER_SUPPLY_PROP_SMB_EN_MODE, &pval);
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_SMB_EN_MODE, &pval);
 	if (rc < 0) {
 		pr_err("Couldn't get usb present rc=%d\n", rc);
 		goto out;
 	}
 
-	if (pval.intval == POWER_SUPPLY_CHARGER_SEC_CP) {
-		rc = power_supply_get_property(chip->usb_psy,
-				POWER_SUPPLY_PROP_SMB_EN_REASON, &pval);
+if (pval.intval == POWER_SUPPLY_CHARGER_SEC_CP) {
+rc = power_supply_get_property(chip->usb_psy,
+POWER_SUPPLY_PROP_SMB_EN_REASON, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get cp reason rc=%d\n", rc);
 			goto out;
 		}
 
 		/*
-		 * Slave SMB1390 is not required for the power-rating of QC3
+* Slave SMB1390 is not required for the power-rating of QC3
 		 */
-		if (pval.intval != POWER_SUPPLY_CP_HVDCP3)
+if (pval.intval != POWER_SUPPLY_CP_HVDCP3)
 			vote(chip->slave_disable_votable, SRC_VOTER, false, 0);
 
 		/* Check for SOC threshold only once before enabling CP */
@@ -1140,10 +1140,10 @@ static void smb1390_status_change_work(struct work_struct *work)
 			chip->batt_soc_validated = true;
 		}
 
-		if (pval.intval == POWER_SUPPLY_CP_WIRELESS) {
+if (pval.intval == POWER_SUPPLY_CP_WIRELESS) {
 			vote(chip->ilim_votable, ICL_VOTER, false, 0);
-			rc = power_supply_get_property(chip->dc_psy,
-					POWER_SUPPLY_PROP_CURRENT_MAX, &pval);
+rc = power_supply_get_property(chip->dc_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX, &pval);
 			if (rc < 0)
 				pr_err("Couldn't get dc icl rc=%d\n", rc);
 			else
@@ -1155,8 +1155,8 @@ static void smb1390_status_change_work(struct work_struct *work)
 		}
 
 		/*
-		 * Remove SMB1390 Taper condition disable vote if float voltage
-		 * increased in comparison to voltage at which it entered taper.
+* Remove SMB1390 Taper condition disable vote if float voltage
+* increased in comparison to voltage at which it entered taper.
 		 */
 		if (chip->taper_entry_fv <
 				get_effective_result(chip->fv_votable))
@@ -1170,12 +1170,12 @@ static void smb1390_status_change_work(struct work_struct *work)
 		if (get_effective_result(chip->disable_votable))
 			goto out;
 
-		rc = power_supply_get_property(chip->batt_psy,
-				POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get charge type rc=%d\n", rc);
 		} else if (pval.intval ==
-				POWER_SUPPLY_CHARGE_TYPE_TAPER) {
+POWER_SUPPLY_CHARGE_TYPE_TAPER) {
 			/*
 			 * mutual exclusion is already guaranteed by
 			 * chip->status_change_running
@@ -1239,7 +1239,7 @@ static int smb1390_validate_slave_chg_taper(struct smb1390 *chip, int fcc_uA)
 static void smb1390_taper_work(struct work_struct *work)
 {
 	struct smb1390 *chip = container_of(work, struct smb1390, taper_work);
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc, fcc_uA, delta_fcc_uA, main_fcc_ua = 0, fcc_cp_ua;
 
 	if (!is_psy_voter_available(chip))
@@ -1256,8 +1256,8 @@ static void smb1390_taper_work(struct work_struct *work)
 
 	chip->taper_entry_fv = get_effective_result(chip->fv_votable);
 	while (true) {
-		rc = power_supply_get_property(chip->batt_psy,
-					POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_TYPE, &pval);
 		if (rc < 0) {
 			pr_err("Couldn't get charge type rc=%d\n", rc);
 			goto out;
@@ -1265,14 +1265,14 @@ static void smb1390_taper_work(struct work_struct *work)
 
 		if (get_effective_result(chip->fv_votable) >
 						chip->taper_entry_fv) {
-			smb1390_dbg(chip, PR_INFO, "Float voltage increased. Exiting taper\n");
+smb1390_dbg(chip, PR_INFO, "Float voltage increased. Exiting taper\n");
 			goto out;
 		} else {
 			chip->taper_entry_fv =
 					get_effective_result(chip->fv_votable);
 		}
 
-		if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER) {
+if (pval.intval == POWER_SUPPLY_CHARGE_TYPE_TAPER) {
 			delta_fcc_uA =
 				(smb1390_is_adapter_cc_mode(chip) ?
 							CC_MODE_TAPER_DELTA_UA :
@@ -1296,7 +1296,7 @@ static void smb1390_taper_work(struct work_struct *work)
 			 * where fcc_main is a portion of full-fcc.
 			 */
 			fcc_cp_ua = fcc_uA;
-			if (chip->pl_output_mode == POWER_SUPPLY_PL_OUTPUT_VBAT)
+if (chip->pl_output_mode == POWER_SUPPLY_PL_OUTPUT_VBAT)
 				fcc_cp_ua = fcc_uA - main_fcc_ua;
 
 			smb1390_dbg(chip, PR_INFO,
@@ -1331,53 +1331,53 @@ out:
 }
 
 static enum power_supply_property smb1390_charge_pump_props[] = {
-	POWER_SUPPLY_PROP_CP_STATUS1,
-	POWER_SUPPLY_PROP_CP_STATUS2,
-	POWER_SUPPLY_PROP_CP_ENABLE,
-	POWER_SUPPLY_PROP_CP_SWITCHER_EN,
-	POWER_SUPPLY_PROP_CP_DIE_TEMP,
-	POWER_SUPPLY_PROP_CP_ISNS,
-	POWER_SUPPLY_PROP_CP_ISNS_SLAVE,
-	POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER,
-	POWER_SUPPLY_PROP_CP_IRQ_STATUS,
-	POWER_SUPPLY_PROP_CP_ILIM,
-	POWER_SUPPLY_PROP_CHIP_VERSION,
-	POWER_SUPPLY_PROP_PARALLEL_OUTPUT_MODE,
-	POWER_SUPPLY_PROP_MIN_ICL,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_PARALLEL_MODE,
+POWER_SUPPLY_PROP_CP_STATUS1,
+POWER_SUPPLY_PROP_CP_STATUS2,
+POWER_SUPPLY_PROP_CP_ENABLE,
+POWER_SUPPLY_PROP_CP_SWITCHER_EN,
+POWER_SUPPLY_PROP_CP_DIE_TEMP,
+POWER_SUPPLY_PROP_CP_ISNS,
+POWER_SUPPLY_PROP_CP_ISNS_SLAVE,
+POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER,
+POWER_SUPPLY_PROP_CP_IRQ_STATUS,
+POWER_SUPPLY_PROP_CP_ILIM,
+POWER_SUPPLY_PROP_CHIP_VERSION,
+POWER_SUPPLY_PROP_PARALLEL_OUTPUT_MODE,
+POWER_SUPPLY_PROP_MIN_ICL,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_PARALLEL_MODE,
 };
 
 static int smb1390_get_prop_suspended(struct smb1390 *chip,
-				enum power_supply_property prop,
-				union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CP_STATUS1:
+case POWER_SUPPLY_PROP_CP_STATUS1:
 		val->intval = chip->cp_status1;
 		break;
-	case POWER_SUPPLY_PROP_CP_STATUS2:
+case POWER_SUPPLY_PROP_CP_STATUS2:
 		val->intval = chip->cp_status2;
 		break;
-	case POWER_SUPPLY_PROP_CP_ENABLE:
+case POWER_SUPPLY_PROP_CP_ENABLE:
 		val->intval = chip->cp_enable;
 		break;
-	case POWER_SUPPLY_PROP_CP_SWITCHER_EN:
+case POWER_SUPPLY_PROP_CP_SWITCHER_EN:
 		val->intval = chip->switcher_enabled;
 		break;
-	case POWER_SUPPLY_PROP_CP_DIE_TEMP:
+case POWER_SUPPLY_PROP_CP_DIE_TEMP:
 		val->intval = chip->die_temp;
 		break;
-	case POWER_SUPPLY_PROP_CP_ISNS:
+case POWER_SUPPLY_PROP_CP_ISNS:
 		val->intval = chip->cp_isns_master;
 		break;
-	case POWER_SUPPLY_PROP_CP_ISNS_SLAVE:
+case POWER_SUPPLY_PROP_CP_ISNS_SLAVE:
 		val->intval = chip->cp_isns_slave;
 		break;
-	case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
+case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
 		val->intval = chip->irq_status;
 		break;
-	case POWER_SUPPLY_PROP_CP_ILIM:
+case POWER_SUPPLY_PROP_CP_ILIM:
 		val->intval = chip->cp_ilim;
 		break;
 	default:
@@ -1388,10 +1388,10 @@ static int smb1390_get_prop_suspended(struct smb1390 *chip,
 }
 
 static int smb1390_get_prop(struct power_supply *psy,
-			enum power_supply_property prop,
-			union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb1390 *chip = power_supply_get_drvdata(psy);
+struct smb1390 *chip = power_supply_get_drvdata(psy);
 	int rc = 0, status;
 	bool enable;
 
@@ -1407,30 +1407,30 @@ static int smb1390_get_prop(struct power_supply *psy,
 	}
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CP_STATUS1:
+case POWER_SUPPLY_PROP_CP_STATUS1:
 		rc = smb1390_read(chip, CORE_STATUS1_REG, &status);
 		if (!rc)
 			chip->cp_status1 = val->intval = status;
 		break;
-	case POWER_SUPPLY_PROP_CP_STATUS2:
+case POWER_SUPPLY_PROP_CP_STATUS2:
 		rc = smb1390_read(chip, CORE_STATUS2_REG, &status);
 		if (!rc)
 			chip->cp_status2 = val->intval = status;
 		break;
-	case POWER_SUPPLY_PROP_CP_ENABLE:
+case POWER_SUPPLY_PROP_CP_ENABLE:
 		rc = smb1390_get_cp_en_status(chip, SMB_PIN_EN,
 					      &enable);
 		if (!rc)
 			chip->cp_enable = val->intval = enable &&
 			!get_effective_result(chip->disable_votable);
 		break;
-	case POWER_SUPPLY_PROP_CP_SWITCHER_EN:
+case POWER_SUPPLY_PROP_CP_SWITCHER_EN:
 		rc = smb1390_get_cp_en_status(chip, SWITCHER_EN,
 					      &enable);
 		if (!rc)
 			val->intval = enable;
 		break;
-	case POWER_SUPPLY_PROP_CP_DIE_TEMP:
+case POWER_SUPPLY_PROP_CP_DIE_TEMP:
 		/*
 		 * Add a filter to the die temp value read:
 		 * If temp > THERMAL_SUSPEND_DECIDEGC then
@@ -1450,20 +1450,20 @@ static int smb1390_get_prop(struct power_supply *psy,
 				val->intval = chip->die_temp;
 		}
 		break;
-	case POWER_SUPPLY_PROP_CP_ISNS:
+case POWER_SUPPLY_PROP_CP_ISNS:
 		rc = smb1390_get_isns_master(chip, val);
 		if (!rc)
 			chip->cp_isns_master = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CP_ISNS_SLAVE:
+case POWER_SUPPLY_PROP_CP_ISNS_SLAVE:
 		rc = smb1390_get_isns_slave(chip, val);
 		if (!rc)
 			chip->cp_isns_slave = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER:
+case POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
+case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
 		/*
 		 * irq_status variable stores provious IRQs that have been
 		 * handled by kernel, but not addressed by user space daemon.
@@ -1473,29 +1473,29 @@ static int smb1390_get_prop(struct power_supply *psy,
 		if (!rc)
 			val->intval |= status;
 		break;
-	case POWER_SUPPLY_PROP_CP_ILIM:
+case POWER_SUPPLY_PROP_CP_ILIM:
 		rc = smb1390_get_cp_ilim(chip, val);
 		if (!rc)
 			chip->cp_ilim = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CHIP_VERSION:
+case POWER_SUPPLY_PROP_CHIP_VERSION:
 		val->intval = chip->pmic_rev_id->rev4;
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_OUTPUT_MODE:
+case POWER_SUPPLY_PROP_PARALLEL_OUTPUT_MODE:
 		val->intval = chip->pl_output_mode;
 		break;
-	case POWER_SUPPLY_PROP_MIN_ICL:
+case POWER_SUPPLY_PROP_MIN_ICL:
 		val->intval = chip->min_ilim_ua;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = (chip->pmic_rev_id->rev4 > 2) ? "SMB1390_V3" :
 								"SMB1390_V2";
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_MODE:
+case POWER_SUPPLY_PROP_PARALLEL_MODE:
 		val->intval = chip->pl_input_mode;
 		break;
 	default:
-		smb1390_dbg(chip, PR_MISC, "charge pump power supply get prop %d not supported\n",
+smb1390_dbg(chip, PR_MISC, "charge pump power supply get prop %d not supported\n",
 			prop);
 		rc = -EINVAL;
 	}
@@ -1504,30 +1504,30 @@ static int smb1390_get_prop(struct power_supply *psy,
 }
 
 static int smb1390_set_prop(struct power_supply *psy,
-			enum power_supply_property prop,
-			const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct smb1390 *chip = power_supply_get_drvdata(psy);
+struct smb1390 *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CP_ENABLE:
+case POWER_SUPPLY_PROP_CP_ENABLE:
 		vote(chip->disable_votable, USER_VOTER, !val->intval, 0);
 		break;
-	case POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER:
+case POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER:
 		if (val->intval)
 			cp_toggle_switcher(chip);
 		break;
-	case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
+case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
 		chip->irq_status = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CP_ILIM:
+case POWER_SUPPLY_PROP_CP_ILIM:
 		if (chip->ilim_votable)
 			vote_override(chip->ilim_votable, CC_MODE_VOTER,
 					(val->intval > 0), val->intval);
 		break;
 	default:
-		smb1390_dbg(chip, PR_MISC, "charge pump power supply set prop %d not supported\n",
+smb1390_dbg(chip, PR_MISC, "charge pump power supply set prop %d not supported\n",
 			prop);
 		return -EINVAL;
 	}
@@ -1536,15 +1536,15 @@ static int smb1390_set_prop(struct power_supply *psy,
 }
 
 static int smb1390_prop_is_writeable(struct power_supply *psy,
-				enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CP_ENABLE:
-	case POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER:
-	case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_MAX:
-	case POWER_SUPPLY_PROP_CURRENT_CAPABILITY:
-	case POWER_SUPPLY_PROP_CP_ILIM:
+case POWER_SUPPLY_PROP_CP_ENABLE:
+case POWER_SUPPLY_PROP_CP_TOGGLE_SWITCHER:
+case POWER_SUPPLY_PROP_CP_IRQ_STATUS:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_CAPABILITY:
+case POWER_SUPPLY_PROP_CP_ILIM:
 		return 1;
 	default:
 		break;
@@ -1555,7 +1555,7 @@ static int smb1390_prop_is_writeable(struct power_supply *psy,
 
 static struct power_supply_desc charge_pump_psy_desc = {
 	.name			= "charge_pump_master",
-	.type			= POWER_SUPPLY_TYPE_CHARGE_PUMP,
+.type			= POWER_SUPPLY_TYPE_CHARGE_PUMP,
 	.properties		= smb1390_charge_pump_props,
 	.num_properties		= ARRAY_SIZE(smb1390_charge_pump_props),
 	.get_property		= smb1390_get_prop,
@@ -1565,16 +1565,16 @@ static struct power_supply_desc charge_pump_psy_desc = {
 
 static int smb1390_init_charge_pump_psy(struct smb1390 *chip)
 {
-	struct power_supply_config charge_pump_cfg = {};
+struct power_supply_config charge_pump_cfg = {};
 
 	charge_pump_cfg.drv_data = chip;
 	charge_pump_cfg.of_node = chip->dev->of_node;
 
-	chip->cp_master_psy = devm_power_supply_register(chip->dev,
+chip->cp_master_psy = devm_power_supply_register(chip->dev,
 							&charge_pump_psy_desc,
 							&charge_pump_cfg);
 	if (IS_ERR(chip->cp_master_psy)) {
-		pr_err("Couldn't register charge pump power supply\n");
+pr_err("Couldn't register charge pump power supply\n");
 		return PTR_ERR(chip->cp_master_psy);
 	}
 
@@ -1616,12 +1616,12 @@ static int smb1390_parse_dt(struct smb1390 *chip)
 			&chip->max_cutoff_soc);
 
 	/* Default parallel output configuration is VPH connection */
-	chip->pl_output_mode = POWER_SUPPLY_PL_OUTPUT_VPH;
+chip->pl_output_mode = POWER_SUPPLY_PL_OUTPUT_VPH;
 	of_property_read_u32(chip->dev->of_node, "qcom,parallel-output-mode",
 			&chip->pl_output_mode);
 
 	/* Default parallel input configuration is USBMID connection */
-	chip->pl_input_mode = POWER_SUPPLY_PL_USBMID_USBMID;
+chip->pl_input_mode = POWER_SUPPLY_PL_USBMID_USBMID;
 	of_property_read_u32(chip->dev->of_node, "qcom,parallel-input-mode",
 			&chip->pl_input_mode);
 
@@ -1678,7 +1678,7 @@ static int smb1390_create_votables(struct smb1390 *chip)
 	 * update ilim vote to reflect FCC / 2 value, this is only applicable
 	 * when SMB1390 is directly connected to VBAT.
 	 */
-	if ((chip->pl_output_mode != POWER_SUPPLY_PL_OUTPUT_VPH)
+if ((chip->pl_output_mode != POWER_SUPPLY_PL_OUTPUT_VPH)
 			&& chip->fcc_votable)
 		vote(chip->ilim_votable, FCC_VOTER, true,
 			get_effective_result(chip->fcc_votable) / 2);
@@ -1743,7 +1743,7 @@ static int smb1390_init_hw(struct smb1390 *chip)
 	 * If the slave charger has registered, configure Master SMB1390 for
 	 * triple-chg config, else configure for dual. Later, if the slave
 	 * charger registers, re-configure for triple chg config from the
-	 * power-supply notifier.
+* power-supply notifier.
 	 */
 	if (!chip->smb_init_done) {
 		if (is_cps_available(chip))
@@ -1917,7 +1917,7 @@ static int smb1390_master_probe(struct smb1390 *chip)
 	smb1390_dbg(chip, PR_INFO, "Detected revid=0x%02x\n",
 			 chip->pmic_rev_id->rev4);
 	if (chip->pmic_rev_id->rev4 <= 0x02 && chip->pl_output_mode !=
-			POWER_SUPPLY_PL_OUTPUT_VPH) {
+POWER_SUPPLY_PL_OUTPUT_VPH) {
 		pr_err("Incompatible SMB1390 HW detected, Disabling the charge pump\n");
 		if (chip->disable_votable)
 			vote(chip->disable_votable, HW_DISABLE_VOTER,
@@ -1931,7 +1931,7 @@ static int smb1390_master_probe(struct smb1390 *chip)
 	}
 
 	chip->nb.notifier_call = smb1390_notifier_cb;
-	rc = power_supply_reg_notifier(&chip->nb);
+rc = power_supply_reg_notifier(&chip->nb);
 	if (rc < 0) {
 		pr_err("Couldn't register psy notifier rc=%d\n", rc);
 		goto out_votables;
@@ -1947,7 +1947,7 @@ static int smb1390_master_probe(struct smb1390 *chip)
 	return 0;
 
 out_notifier:
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 out_votables:
 	smb1390_destroy_votables(chip);
 out_work:
@@ -1958,24 +1958,24 @@ out_work:
 }
 
 static enum power_supply_property smb1390_cp_slave_props[] = {
-	POWER_SUPPLY_PROP_INPUT_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CURRENT_CAPABILITY,
+POWER_SUPPLY_PROP_INPUT_CURRENT_MAX,
+POWER_SUPPLY_PROP_CURRENT_CAPABILITY,
 };
 
 static int smb1390_slave_prop_is_writeable(struct power_supply *psy,
-				enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	return 0;
 }
 
 static int smb1390_cp_slave_get_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct smb1390 *chip = power_supply_get_drvdata(psy);
+struct smb1390 *chip = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_MAX:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_MAX:
 		val->intval = 0;
 		if (!chip->ilim_votable)
 			chip->ilim_votable = find_votable("CP_ILIM");
@@ -1983,11 +1983,11 @@ static int smb1390_cp_slave_get_prop(struct power_supply *psy,
 			val->intval =
 				get_effective_result_locked(chip->ilim_votable);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_CAPABILITY:
+case POWER_SUPPLY_PROP_CURRENT_CAPABILITY:
 		val->intval = (int)chip->current_capability;
 		break;
 	default:
-		smb1390_dbg(chip, PR_MISC, "SMB 1390 slave power supply get prop %d not supported\n",
+smb1390_dbg(chip, PR_MISC, "SMB 1390 slave power supply get prop %d not supported\n",
 			psp);
 		return -EINVAL;
 	}
@@ -1996,22 +1996,22 @@ static int smb1390_cp_slave_get_prop(struct power_supply *psy,
 }
 
 static int smb1390_cp_slave_set_prop(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct smb1390 *chip = power_supply_get_drvdata(psy);
+struct smb1390 *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_MAX:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_MAX:
 		rc = smb1390_set_ilim(chip, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_CAPABILITY:
+case POWER_SUPPLY_PROP_CURRENT_CAPABILITY:
 		chip->current_capability = (enum isns_mode)val->intval;
 		rc = smb1390_isns_mode_control(chip, val->intval);
 		break;
 	default:
-		smb1390_dbg(chip, PR_MISC, "SMB 1390 slave power supply set prop %d not supported\n",
+smb1390_dbg(chip, PR_MISC, "SMB 1390 slave power supply set prop %d not supported\n",
 			psp);
 		return -EINVAL;
 	}
@@ -2021,7 +2021,7 @@ static int smb1390_cp_slave_set_prop(struct power_supply *psy,
 
 static const struct power_supply_desc cps_psy_desc = {
 	.name = "cp_slave",
-	.type = POWER_SUPPLY_TYPE_PARALLEL,
+.type = POWER_SUPPLY_TYPE_PARALLEL,
 	.properties = smb1390_cp_slave_props,
 	.num_properties = ARRAY_SIZE(smb1390_cp_slave_props),
 	.get_property = smb1390_cp_slave_get_prop,
@@ -2031,15 +2031,15 @@ static const struct power_supply_desc cps_psy_desc = {
 
 static int smb1390_init_cps_psy(struct smb1390 *chip)
 {
-	struct power_supply_config cps_cfg = {};
+struct power_supply_config cps_cfg = {};
 
 	cps_cfg.drv_data = chip;
 	cps_cfg.of_node = chip->dev->of_node;
-	chip->cps_psy = devm_power_supply_register(chip->dev,
+chip->cps_psy = devm_power_supply_register(chip->dev,
 						  &cps_psy_desc,
 						  &cps_cfg);
 	if (IS_ERR(chip->cps_psy)) {
-		pr_err("Couldn't register CP slave power supply\n");
+pr_err("Couldn't register CP slave power supply\n");
 		return PTR_ERR(chip->cps_psy);
 	}
 
@@ -2136,7 +2136,7 @@ static int smb1390_remove(struct platform_device *pdev)
 		return 0;
 	}
 
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 
 	/* explicitly disable charging */
 	vote(chip->disable_votable, USER_VOTER, true, 0);
@@ -2155,7 +2155,7 @@ static void smb1390_shutdown(struct platform_device *pdev)
 	struct smb1390 *chip = platform_get_drvdata(pdev);
 	int rc;
 
-	power_supply_unreg_notifier(&chip->nb);
+power_supply_unreg_notifier(&chip->nb);
 	/* Disable SMB1390 */
 	smb1390_dbg(chip, PR_MISC, "Disabling SMB1390\n");
 	rc = smb1390_masked_write(chip, CORE_CONTROL1_REG,

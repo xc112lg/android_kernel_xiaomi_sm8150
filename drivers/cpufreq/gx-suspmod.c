@@ -16,13 +16,13 @@
  *
  *	(see Geode(tm) CS5530 manual (rev.4.1) page.56)
  *
- *	CPU frequency control on NatSemi Geode GX1/GXLV processor and CS55x0
+*	CPU frequency control on NatSemi Geode GX1/GXLV processor and CS55x0
  *	are based on Suspend Modulation.
  *
  *	Suspend Modulation works by asserting and de-asserting the SUSP# pin
  *	to CPU(GX1/GXLV) for configurable durations. When asserting SUSP#
  *	the CPU enters an idle state. GX1 stops its core clock when SUSP# is
- *	asserted then power consumption is reduced.
+*	asserted then power consumption is reduced.
  *
  *	Suspend Modulation's OFF/ON duration are configurable
  *	with 'Suspend Modulation OFF Count Register'
@@ -31,7 +31,7 @@
  *	32us intervals which the SUSP# pin is asserted(ON)/de-asserted(OFF)
  *	to the processor.
  *
- *	These counters define a ratio which is the effective frequency
+*	These counters define a ratio which is the effective frequency
  *	of operation of the system.
  *
  *			       OFF Count
@@ -43,9 +43,9 @@
  *	From these limits, we can get register values
  *
  *	off_duration + on_duration <= MAX_DURATION
- *	on_duration = off_duration * (stock_freq - freq) / freq
+*	on_duration = off_duration * (stock_freq - freq) / freq
  *
- *      off_duration  =  (freq * DURATION) / stock_freq
+*      off_duration  =  (freq * DURATION) / stock_freq
  *      on_duration = DURATION - off_duration
  *
  *
@@ -132,13 +132,13 @@ module_param(pci_busclk, int, 0444);
  * (32us * MAX_DURATION). If no parameter is given, this defaults
  * to 255.
  * Note that this leads to a maximum of 8 ms(!) where the CPU clock
- * is suspended -- processing power is just 0.39% of what it used to be,
+* is suspended -- processing power is just 0.39% of what it used to be,
  * though. 781.25 kHz(!) for a 200 MHz processor -- wow. */
 static int max_duration = 255;
 module_param(max_duration, int, 0444);
 
 /* For the default policy, we want at least some processing power
- * - let's say 5%. (min = maxfreq / POLICY_MIN_DIV)
+* - let's say 5%. (min = maxfreq / POLICY_MIN_DIV)
  */
 #define POLICY_MIN_DIV 20
 
@@ -200,15 +200,15 @@ static struct pci_dev * __init gx_detect_chipset(void)
 /**
  * gx_get_cpuspeed:
  *
- * Finds out at which efficient frequency the Cyrix MediaGX/NatSemi
+* Finds out at which efficient frequency the Cyrix MediaGX/NatSemi
  * Geode CPU runs.
  */
 static unsigned int gx_get_cpuspeed(unsigned int cpu)
 {
 	if ((gx_params->pci_suscfg & SUSMOD) == 0)
-		return stock_freq;
+return stock_freq;
 
-	return (stock_freq * gx_params->off_duration)
+return (stock_freq * gx_params->off_duration)
 		/ (gx_params->on_duration + gx_params->off_duration);
 }
 
@@ -223,26 +223,26 @@ static unsigned int gx_validate_speed(unsigned int khz, u8 *on_duration,
 {
 	unsigned int i;
 	u8 tmp_on, tmp_off;
-	int old_tmp_freq = stock_freq;
-	int tmp_freq;
+int old_tmp_freq = stock_freq;
+int tmp_freq;
 
 	*off_duration = 1;
 	*on_duration = 0;
 
 	for (i = max_duration; i > 0; i--) {
-		tmp_off = ((khz * i) / stock_freq) & 0xff;
+tmp_off = ((khz * i) / stock_freq) & 0xff;
 		tmp_on = i - tmp_off;
-		tmp_freq = (stock_freq * tmp_off) / i;
+tmp_freq = (stock_freq * tmp_off) / i;
 		/* if this relation is closer to khz, use this. If it's equal,
 		 * prefer it, too - lower latency */
-		if (abs(tmp_freq - khz) <= abs(old_tmp_freq - khz)) {
+if (abs(tmp_freq - khz) <= abs(old_tmp_freq - khz)) {
 			*on_duration = tmp_on;
 			*off_duration = tmp_off;
-			old_tmp_freq = tmp_freq;
+old_tmp_freq = tmp_freq;
 		}
 	}
 
-	return old_tmp_freq;
+return old_tmp_freq;
 }
 
 
@@ -256,19 +256,19 @@ static void gx_set_cpuspeed(struct cpufreq_policy *policy, unsigned int khz)
 	u8 suscfg, pmer1;
 	unsigned int new_khz;
 	unsigned long flags;
-	struct cpufreq_freqs freqs;
+struct cpufreq_freqs freqs;
 
-	freqs.old = gx_get_cpuspeed(0);
+freqs.old = gx_get_cpuspeed(0);
 
 	new_khz = gx_validate_speed(khz, &gx_params->on_duration,
 			&gx_params->off_duration);
 
-	freqs.new = new_khz;
+freqs.new = new_khz;
 
-	cpufreq_freq_transition_begin(policy, &freqs);
+cpufreq_freq_transition_begin(policy, &freqs);
 	local_irq_save(flags);
 
-	if (new_khz != stock_freq) {
+if (new_khz != stock_freq) {
 		/* if new khz == 100% of CPU speed, it is special case */
 		switch (gx_params->cs55x0->device) {
 		case PCI_DEVICE_ID_CYRIX_5530_LEGACY:
@@ -314,11 +314,11 @@ static void gx_set_cpuspeed(struct cpufreq_policy *policy, unsigned int khz)
 
 	gx_params->pci_suscfg = suscfg;
 
-	cpufreq_freq_transition_end(policy, &freqs, 0);
+cpufreq_freq_transition_end(policy, &freqs, 0);
 
 	pr_debug("suspend modulation w/ duration of ON:%d us, OFF:%d us\n",
 		gx_params->on_duration * 32, gx_params->off_duration * 32);
-	pr_debug("suspend modulation w/ clock speed: %d kHz.\n", freqs.new);
+pr_debug("suspend modulation w/ clock speed: %d kHz.\n", freqs.new);
 }
 
 /****************************************************************
@@ -326,129 +326,129 @@ static void gx_set_cpuspeed(struct cpufreq_policy *policy, unsigned int khz)
  ****************************************************************/
 
 /*
- *	cpufreq_gx_verify: test if frequency range is valid
+*	cpufreq_gx_verify: test if frequency range is valid
  *
- *	This function checks if a given frequency range in kHz is valid
+*	This function checks if a given frequency range in kHz is valid
  *      for the hardware supported by the driver.
  */
 
 static int cpufreq_gx_verify(struct cpufreq_policy *policy)
 {
-	unsigned int tmp_freq = 0;
+unsigned int tmp_freq = 0;
 	u8 tmp1, tmp2;
 
-	if (!stock_freq || !policy)
+if (!stock_freq || !policy)
 		return -EINVAL;
 
 	policy->cpu = 0;
-	cpufreq_verify_within_limits(policy, (stock_freq / max_duration),
-			stock_freq);
+cpufreq_verify_within_limits(policy, (stock_freq / max_duration),
+stock_freq);
 
-	/* it needs to be assured that at least one supported frequency is
+/* it needs to be assured that at least one supported frequency is
 	 * within policy->min and policy->max. If it is not, policy->max
-	 * needs to be increased until one frequency is supported.
+* needs to be increased until one frequency is supported.
 	 * policy->min may not be decreased, though. This way we guarantee a
 	 * specific processing capacity.
 	 */
-	tmp_freq = gx_validate_speed(policy->min, &tmp1, &tmp2);
-	if (tmp_freq < policy->min)
-		tmp_freq += stock_freq / max_duration;
-	policy->min = tmp_freq;
+tmp_freq = gx_validate_speed(policy->min, &tmp1, &tmp2);
+if (tmp_freq < policy->min)
+tmp_freq += stock_freq / max_duration;
+policy->min = tmp_freq;
 	if (policy->min > policy->max)
-		policy->max = tmp_freq;
-	tmp_freq = gx_validate_speed(policy->max, &tmp1, &tmp2);
-	if (tmp_freq > policy->max)
-		tmp_freq -= stock_freq / max_duration;
-	policy->max = tmp_freq;
+policy->max = tmp_freq;
+tmp_freq = gx_validate_speed(policy->max, &tmp1, &tmp2);
+if (tmp_freq > policy->max)
+tmp_freq -= stock_freq / max_duration;
+policy->max = tmp_freq;
 	if (policy->max < policy->min)
 		policy->max = policy->min;
-	cpufreq_verify_within_limits(policy, (stock_freq / max_duration),
-			stock_freq);
+cpufreq_verify_within_limits(policy, (stock_freq / max_duration),
+stock_freq);
 
 	return 0;
 }
 
 /*
- *      cpufreq_gx_target:
+*      cpufreq_gx_target:
  *
  */
 static int cpufreq_gx_target(struct cpufreq_policy *policy,
-			     unsigned int target_freq,
+unsigned int target_freq,
 			     unsigned int relation)
 {
 	u8 tmp1, tmp2;
-	unsigned int tmp_freq;
+unsigned int tmp_freq;
 
-	if (!stock_freq || !policy)
+if (!stock_freq || !policy)
 		return -EINVAL;
 
 	policy->cpu = 0;
 
-	tmp_freq = gx_validate_speed(target_freq, &tmp1, &tmp2);
-	while (tmp_freq < policy->min) {
-		tmp_freq += stock_freq / max_duration;
-		tmp_freq = gx_validate_speed(tmp_freq, &tmp1, &tmp2);
+tmp_freq = gx_validate_speed(target_freq, &tmp1, &tmp2);
+while (tmp_freq < policy->min) {
+tmp_freq += stock_freq / max_duration;
+tmp_freq = gx_validate_speed(tmp_freq, &tmp1, &tmp2);
 	}
-	while (tmp_freq > policy->max) {
-		tmp_freq -= stock_freq / max_duration;
-		tmp_freq = gx_validate_speed(tmp_freq, &tmp1, &tmp2);
+while (tmp_freq > policy->max) {
+tmp_freq -= stock_freq / max_duration;
+tmp_freq = gx_validate_speed(tmp_freq, &tmp1, &tmp2);
 	}
 
-	gx_set_cpuspeed(policy, tmp_freq);
+gx_set_cpuspeed(policy, tmp_freq);
 
 	return 0;
 }
 
 static int cpufreq_gx_cpu_init(struct cpufreq_policy *policy)
 {
-	unsigned int maxfreq;
+unsigned int maxfreq;
 
 	if (!policy || policy->cpu != 0)
 		return -ENODEV;
 
-	/* determine maximum frequency */
+/* determine maximum frequency */
 	if (pci_busclk)
-		maxfreq = pci_busclk * gx_freq_mult[getCx86(CX86_DIR1) & 0x0f];
+maxfreq = pci_busclk * gx_freq_mult[getCx86(CX86_DIR1) & 0x0f];
 	else if (cpu_khz)
-		maxfreq = cpu_khz;
+maxfreq = cpu_khz;
 	else
-		maxfreq = 30000 * gx_freq_mult[getCx86(CX86_DIR1) & 0x0f];
+maxfreq = 30000 * gx_freq_mult[getCx86(CX86_DIR1) & 0x0f];
 
-	stock_freq = maxfreq;
+stock_freq = maxfreq;
 
-	pr_debug("cpu max frequency is %d.\n", maxfreq);
+pr_debug("cpu max frequency is %d.\n", maxfreq);
 
-	/* setup basic struct for cpufreq API */
+/* setup basic struct for cpufreq API */
 	policy->cpu = 0;
 
 	if (max_duration < POLICY_MIN_DIV)
-		policy->min = maxfreq / max_duration;
+policy->min = maxfreq / max_duration;
 	else
-		policy->min = maxfreq / POLICY_MIN_DIV;
-	policy->max = maxfreq;
-	policy->cpuinfo.min_freq = maxfreq / max_duration;
-	policy->cpuinfo.max_freq = maxfreq;
+policy->min = maxfreq / POLICY_MIN_DIV;
+policy->max = maxfreq;
+policy->cpuinfo.min_freq = maxfreq / max_duration;
+policy->cpuinfo.max_freq = maxfreq;
 
 	return 0;
 }
 
 /*
- * cpufreq_gx_init:
- *   MediaGX/Geode GX initialize cpufreq driver
+* cpufreq_gx_init:
+*   MediaGX/Geode GX initialize cpufreq driver
  */
 static struct cpufreq_driver gx_suspmod_driver = {
-	.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
+.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
 	.get		= gx_get_cpuspeed,
-	.verify		= cpufreq_gx_verify,
-	.target		= cpufreq_gx_target,
-	.init		= cpufreq_gx_cpu_init,
+.verify		= cpufreq_gx_verify,
+.target		= cpufreq_gx_target,
+.init		= cpufreq_gx_cpu_init,
 	.name		= "gx-suspmod",
 };
 
 static int __init cpufreq_gx_init(void)
 {
 	int ret;
-	struct gxfreq_params *params;
+struct gxfreq_params *params;
 	struct pci_dev *gx_pci;
 
 	/* Test if we have the right hardware */
@@ -477,7 +477,7 @@ static int __init cpufreq_gx_init(void)
 	pci_read_config_byte(params->cs55x0, PCI_MODOFF,
 			&(params->off_duration));
 
-	ret = cpufreq_register_driver(&gx_suspmod_driver);
+ret = cpufreq_register_driver(&gx_suspmod_driver);
 	if (ret) {
 		kfree(params);
 		return ret;                   /* register error! */
@@ -488,7 +488,7 @@ static int __init cpufreq_gx_init(void)
 
 static void __exit cpufreq_gx_exit(void)
 {
-	cpufreq_unregister_driver(&gx_suspmod_driver);
+cpufreq_unregister_driver(&gx_suspmod_driver);
 	pci_dev_put(gx_params->cs55x0);
 	kfree(gx_params);
 }

@@ -86,7 +86,7 @@ extern bool isa_io_special;
  *
  * Low level MMIO accessors
  *
- * This provides the non-bus specific accessors to MMIO. Those are PowerPC
+* This provides the non-bus specific accessors to MMIO. Those are PowerPC
  * specific and thus shouldn't be used in generic code. The accessors
  * provided here are:
  *
@@ -259,7 +259,7 @@ extern void _memcpy_toio(volatile void __iomem *dest, const void *src,
  *
  * Those are globally defined linux accessors for devices on PCI or ISA
  * busses. They follow the Linux defined semantics. The current implementation
- * for PowerPC is as close as possible to the x86 version of these, and thus
+* for PowerPC is as close as possible to the x86 version of these, and thus
  * provides fairly heavy weight barriers for the non-raw versions
  *
  * In addition, they support a hook mechanism when CONFIG_PPC_INDIRECT_MMIO
@@ -431,7 +431,7 @@ static inline u64 __raw_rm_readq(volatile void __iomem *paddr)
  *
  * On 32 bits, PIO operations have a recovery mechanism in case they trigger
  * machine checks (which they occasionally do when probing non existing
- * IO ports on some platforms, like PowerMac and 8xx).
+* IO ports on some platforms, like PowerMac and 8xx).
  * I always found it to be of dubious reliability and I am tempted to get
  * rid of it one of these days. So if you think it's important to keep it,
  * please voice up asap. We never had it for 64 bits and I do not intend

@@ -2,7 +2,7 @@
  * Platform information definitions.
  *
  * Copied from arch/ppc/syslib/cpm2_pic.c with minor subsequent updates
- * to make in work in arch/powerpc/. Original (c) belongs to Dan Malek.
+* to make in work in arch/powerpc/. Original (c) belongs to Dan Malek.
  *
  * Author:  Vitaly Bordug <vbordug@ru.mvista.com>
  *
@@ -123,7 +123,7 @@ static void cpm2_end_irq(struct irq_data *d)
 	out_be32(&cpm2_intctl->ic_simrh + word, ppc_cached_irq_mask[word]);
 
 	/*
-	 * Work around large numbers of spurious IRQs on PowerPC 82xx
+* Work around large numbers of spurious IRQs on PowerPC 82xx
 	 * systems.
 	 */
 	mb();

@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL Firmware Update Interface
+* PowerNV OPAL Firmware Update Interface
  *
  * Copyright 2013 IBM Corp.
  *
@@ -329,7 +329,7 @@ void opal_flash_term_callback(void)
 	pr_alert("FLASH: Flashing new firmware\n");
 	pr_alert("FLASH: Image is %u bytes\n", image_data.size);
 	pr_alert("FLASH: Performing flash and reboot/shutdown\n");
-	pr_alert("FLASH: This will take several minutes. Do not power off!\n");
+pr_alert("FLASH: This will take several minutes. Do not power off!\n");
 
 	/* Small delay to help getting the above message out */
 	msleep(500);

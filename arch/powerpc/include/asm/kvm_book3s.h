@@ -99,7 +99,7 @@ struct kvmppc_vcore {
 	ulong lpcr;
 	u32 arch_compat;
 	ulong pcr;
-	ulong dpdes;		/* doorbell state (POWER8) */
+ulong dpdes;		/* doorbell state (POWER8) */
 	ulong vtb;		/* virtual timebase */
 	ulong conferring_threads;
 	unsigned int halt_poll_ns;

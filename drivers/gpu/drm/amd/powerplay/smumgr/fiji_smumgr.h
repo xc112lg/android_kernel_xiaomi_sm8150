@@ -32,8 +32,8 @@ struct fiji_smumgr {
 	struct smu7_smumgr                   smu7_data;
 	struct SMU73_Discrete_DpmTable       smc_state_table;
 	struct SMU73_Discrete_Ulv            ulv_setting;
-	struct SMU73_Discrete_PmFuses  power_tune_table;
-	const struct fiji_pt_defaults  *power_tune_defaults;
+struct SMU73_Discrete_PmFuses  power_tune_table;
+const struct fiji_pt_defaults  *power_tune_defaults;
 	uint32_t        activity_target[SMU73_MAX_LEVELS_GRAPHICS];
 
 };

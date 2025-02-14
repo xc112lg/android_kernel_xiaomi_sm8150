@@ -2,7 +2,7 @@
  * Copyright (C) 2008 Freescale Semiconductor, Inc. All rights reserved.
  * Dave Liu <daveliu@freescale.com>
  * copy from idle_6xx.S and modify for e500 based processor,
- * implement the power_save function in idle.
+* implement the power_save function in idle.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -45,8 +45,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_CAN_DOZE)
 
 BEGIN_FTR_SECTION
 	/* Now check if user enabled NAP mode */
-	lis	r4,powersave_nap@ha
-	lwz	r4,powersave_nap@l(r4)
+lis	r4,powersave_nap@ha
+lwz	r4,powersave_nap@l(r4)
 	cmpwi	0,r4,0
 	beq	1f
 	stwu	r1,-16(r1)

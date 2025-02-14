@@ -15,7 +15,7 @@
 #include "cpufreq-dt.h"
 
 /*
- * Machines for which the cpufreq device is *always* created, mostly used for
+* Machines for which the cpufreq device is *always* created, mostly used for
  * platforms using "operating-points" (V1) property.
  */
 static const struct of_device_id whitelist[] __initconst = {
@@ -102,7 +102,7 @@ static const struct of_device_id whitelist[] __initconst = {
 };
 
 /*
- * Machines for which the cpufreq device is *not* created, mostly used for
+* Machines for which the cpufreq device is *not* created, mostly used for
  * platforms using "operating-points-v2" property.
  */
 static const struct of_device_id blacklist[] __initconst = {
@@ -168,8 +168,8 @@ static int __init cpufreq_dt_platdev_init(void)
 
 create_pdev:
 	of_node_put(np);
-	return PTR_ERR_OR_ZERO(platform_device_register_data(NULL, "cpufreq-dt",
+return PTR_ERR_OR_ZERO(platform_device_register_data(NULL, "cpufreq-dt",
 			       -1, data,
-			       sizeof(struct cpufreq_dt_platform_data)));
+sizeof(struct cpufreq_dt_platform_data)));
 }
 device_initcall(cpufreq_dt_platdev_init);

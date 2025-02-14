@@ -304,7 +304,7 @@ static void pseries_lpar_idle(void)
 {
 	/*
 	 * Default handler to go into low thread priority and possibly
-	 * low power mode by ceding processor to hypervisor
+* low power mode by ceding processor to hypervisor
 	 */
 
 	if (!prep_irq_for_idle())
@@ -519,7 +519,7 @@ void pseries_setup_rfi_flush(void)
 	 * so it can set/clear again any features that might have changed after
 	 * migration, and in case the hypercall fails and it is not even called.
 	 */
-	powerpc_security_features = SEC_FTR_DEFAULT;
+powerpc_security_features = SEC_FTR_DEFAULT;
 
 	rc = plpar_get_cpu_characteristics(&result);
 	if (rc == H_SUCCESS)
@@ -586,11 +586,11 @@ static void __init pSeries_setup_arch(void)
 
 	if (firmware_has_feature(FW_FEATURE_LPAR)) {
 		vpa_init(boot_cpuid);
-		ppc_md.power_save = pseries_lpar_idle;
+ppc_md.power_save = pseries_lpar_idle;
 		ppc_md.enable_pmcs = pseries_lpar_enable_pmcs;
 	} else {
 		/* No special idle routine */
-		ppc_md.enable_pmcs = power4_enable_pmcs;
+ppc_md.enable_pmcs = power4_enable_pmcs;
 	}
 
 	ppc_md.pcibios_root_bridge_prepare = pseries_root_bridge_prepare;
@@ -643,9 +643,9 @@ void pSeries_coalesce_init(void)
 	struct hvcall_mpp_x_data mpp_x_data;
 
 	if (firmware_has_feature(FW_FEATURE_CMO) && !h_get_mpp_x(&mpp_x_data))
-		powerpc_firmware_features |= FW_FEATURE_XCMO;
+powerpc_firmware_features |= FW_FEATURE_XCMO;
 	else
-		powerpc_firmware_features &= ~FW_FEATURE_XCMO;
+powerpc_firmware_features &= ~FW_FEATURE_XCMO;
 }
 
 /**
@@ -706,7 +706,7 @@ static void pSeries_cmo_feature_init(void)
 		ptr++;
 	}
 
-	/* Page size is returned as the power of 2 of the page size,
+/* Page size is returned as the power of 2 of the page size,
 	 * convert to the page size in bytes before returning
 	 */
 	CMO_PageSize = 1 << page_order;
@@ -716,7 +716,7 @@ static void pSeries_cmo_feature_init(void)
 		pr_info("CMO enabled\n");
 		pr_debug("CMO enabled, PrPSP=%d, SecPSP=%d\n", CMO_PrPSP,
 		         CMO_SecPSP);
-		powerpc_firmware_features |= FW_FEATURE_CMO;
+powerpc_firmware_features |= FW_FEATURE_CMO;
 		pSeries_coalesce_init();
 	} else
 		pr_debug("CMO not enabled, PrPSP=%d, SecPSP=%d\n", CMO_PrPSP,
@@ -751,29 +751,29 @@ static void __init pseries_init(void)
 }
 
 /**
- * pseries_power_off - tell firmware about how to power off the system.
+* pseries_power_off - tell firmware about how to power off the system.
  *
- * This function calls either the power-off rtas token in normal cases
- * or the ibm,power-off-ups token (if present & requested) in case of
- * a power failure. If power-off token is used, power on will only be
- * possible with power button press. If ibm,power-off-ups token is used
- * it will allow auto poweron after power is restored.
+* This function calls either the power-off rtas token in normal cases
+* or the ibm,power-off-ups token (if present & requested) in case of
+* a power failure. If power-off token is used, power on will only be
+* possible with power button press. If ibm,power-off-ups token is used
+* it will allow auto poweron after power is restored.
  */
 static void pseries_power_off(void)
 {
 	int rc;
-	int rtas_poweroff_ups_token = rtas_token("ibm,power-off-ups");
+int rtas_poweroff_ups_token = rtas_token("ibm,power-off-ups");
 
 	if (rtas_flash_term_hook)
-		rtas_flash_term_hook(SYS_POWER_OFF);
+rtas_flash_term_hook(SYS_POWER_OFF);
 
-	if (rtas_poweron_auto == 0 ||
-		rtas_poweroff_ups_token == RTAS_UNKNOWN_SERVICE) {
-		rc = rtas_call(rtas_token("power-off"), 2, 1, NULL, -1, -1);
-		printk(KERN_INFO "RTAS power-off returned %d\n", rc);
+if (rtas_poweron_auto == 0 ||
+rtas_poweroff_ups_token == RTAS_UNKNOWN_SERVICE) {
+rc = rtas_call(rtas_token("power-off"), 2, 1, NULL, -1, -1);
+printk(KERN_INFO "RTAS power-off returned %d\n", rc);
 	} else {
-		rc = rtas_call(rtas_poweroff_ups_token, 0, 1, NULL);
-		printk(KERN_INFO "RTAS ibm,power-off-ups returned %d\n", rc);
+rc = rtas_call(rtas_poweroff_ups_token, 0, 1, NULL);
+printk(KERN_INFO "RTAS ibm,power-off-ups returned %d\n", rc);
 	}
 	for (;;);
 }
@@ -794,10 +794,10 @@ static int __init pSeries_probe(void)
 	    of_machine_is_compatible("IBM,CBEA"))
 		return 0;
 
-	pm_power_off = pseries_power_off;
+pm_power_off = pseries_power_off;
 
 	pr_debug("Machine is%s LPAR !\n",
-	         (powerpc_firmware_features & FW_FEATURE_LPAR) ? "" : " not");
+(powerpc_firmware_features & FW_FEATURE_LPAR) ? "" : " not");
 
 	pseries_init();
 

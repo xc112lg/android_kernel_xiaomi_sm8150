@@ -34,7 +34,7 @@ static const struct of_device_id child_match[] = {
 static void gpio_halt_wfn(struct work_struct *work)
 {
 	/* Likely wont return */
-	orderly_poweroff(true);
+orderly_poweroff(true);
 }
 static DECLARE_WORK(gpio_halt_wq, gpio_halt_wfn);
 
@@ -62,10 +62,10 @@ static void __noreturn gpio_halt_cb(void)
 }
 
 /* This IRQ means someone pressed the power button and it is waiting for us
- * to handle the shutdown/poweroff. */
+* to handle the shutdown/poweroff. */
 static irqreturn_t gpio_halt_irq(int irq, void *__data)
 {
-	printk(KERN_INFO "gpio-halt: shutdown due to power button IRQ.\n");
+printk(KERN_INFO "gpio-halt: shutdown due to power button IRQ.\n");
 	schedule_work(&gpio_halt_wq);
 
         return IRQ_HANDLED;
@@ -108,7 +108,7 @@ static int gpio_halt_probe(struct platform_device *pdev)
 
 	gpio_direction_output(gpio, !trigger);
 
-	/* Now get the IRQ which tells us when the power button is hit */
+/* Now get the IRQ which tells us when the power button is hit */
 	irq = irq_of_parse_and_map(halt_node, 0);
 	err = request_irq(irq, gpio_halt_irq, IRQF_TRIGGER_RISING |
 			  IRQF_TRIGGER_FALLING, "gpio-halt", halt_node);
@@ -122,7 +122,7 @@ static int gpio_halt_probe(struct platform_device *pdev)
 
 	/* Register our halt function */
 	ppc_md.halt = gpio_halt_cb;
-	pm_power_off = gpio_halt_cb;
+pm_power_off = gpio_halt_cb;
 
 	printk(KERN_INFO "gpio-halt: registered GPIO %d (%d trigger, %d"
 	       " irq).\n", gpio, trigger, irq);
@@ -139,7 +139,7 @@ static int gpio_halt_remove(struct platform_device *pdev)
 		free_irq(irq, halt_node);
 
 		ppc_md.halt = NULL;
-		pm_power_off = NULL;
+pm_power_off = NULL;
 
 		gpio_free(gpio);
 

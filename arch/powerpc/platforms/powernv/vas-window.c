@@ -275,10 +275,10 @@ static void init_xlate_regs(struct vas_window *window, bool user_win)
 	val = 0ULL;
 	/*
 	 * NOTE: From Section 5.7.8.1 Segment Lookaside Buffer of the
-	 *	 Power ISA, v3.0B, Page size encoding is 0 = 4KB, 5 = 64KB.
+*	 Power ISA, v3.0B, Page size encoding is 0 = 4KB, 5 = 64KB.
 	 *
 	 * NOTE: From Section 1.3.1, Address Translation Context of the
-	 *	 Nest MMU Workbook, LPCR_SC should be 0 for Power9.
+*	 Nest MMU Workbook, LPCR_SC should be 0 for Power9.
 	 */
 	val = SET_FIELD(VAS_XLATE_LPCR_PAGE_SIZE, val, 5);
 	val = SET_FIELD(VAS_XLATE_LPCR_ISL, val, lpcr & LPCR_ISL);
@@ -362,7 +362,7 @@ int init_winctx_regs(struct vas_window *window, struct vas_winctx *winctx)
 	val = SET_FIELD(VAS_FAULT_TX_WIN, val, 0);
 	write_hvwc_reg(window, VREG(FAULT_TX_WIN), val);
 
-	/* In PowerNV, interrupts go to HV. */
+/* In PowerNV, interrupts go to HV. */
 	write_hvwc_reg(window, VREG(OSU_INTR_SRC_RA), 0ULL);
 
 	val = 0ULL;
@@ -661,7 +661,7 @@ static void init_winctx_for_rxwin(struct vas_window *rxwin,
 	 * We first zero (memset()) all fields and only set non-zero fields.
 	 * Following fields are 0/false but maybe deserve a comment:
 	 *
-	 *	->notify_os_intr_reg	In powerNV, send intrs to HV
+*	->notify_os_intr_reg	In powerNV, send intrs to HV
 	 *	->notify_disable	False for NX windows
 	 *	->intr_disable		False for Fault Windows
 	 *	->xtra_write		False for NX windows
@@ -871,7 +871,7 @@ static void init_winctx_for_txwin(struct vas_window *txwin,
 	 * We first zero all fields and only set non-zero ones. Following
 	 * are some fields set to 0/false for the stated reason:
 	 *
-	 *	->notify_os_intr_reg	In powernv, send intrs to HV
+*	->notify_os_intr_reg	In powernv, send intrs to HV
 	 *	->rsvd_txbuf_count	Not supported yet.
 	 *	->notify_disable	False for NX windows
 	 *	->xtra_write		False for NX windows

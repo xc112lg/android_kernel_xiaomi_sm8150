@@ -4,7 +4,7 @@
  * Paul Mackerras	August 1996.
  * Copyright (C) 1996-2005 Paul Mackerras.
  * 
- *  Adapted for 64bit PowerPC by Dave Engebretsen and Peter Bergner.
+*  Adapted for 64bit PowerPC by Dave Engebretsen and Peter Bergner.
  *    {engebret|bergner}@us.ibm.com 
  *
  *      This program is free software; you can redistribute it and/or
@@ -446,7 +446,7 @@ static void __init __attribute__((noreturn)) prom_panic(const char *reason)
 	prom_print(reason);
 	/* Do not call exit because it clears the screen on pmac
 	 * it also causes some sort of double-fault on early pmacs */
-	if (of_platform == PLATFORM_POWERMAC)
+if (of_platform == PLATFORM_POWERMAC)
 		asm("trap\n");
 
 	/* ToDo: should put up an SRC here on pSeries */
@@ -751,31 +751,31 @@ struct ibm_arch_vec {
 struct ibm_arch_vec __cacheline_aligned ibm_architecture_vec = {
 	.pvrs = {
 		{
-			.mask = cpu_to_be32(0xfffe0000), /* POWER5/POWER5+ */
+.mask = cpu_to_be32(0xfffe0000), /* POWER5/POWER5+ */
 			.val  = cpu_to_be32(0x003a0000),
 		},
 		{
-			.mask = cpu_to_be32(0xffff0000), /* POWER6 */
+.mask = cpu_to_be32(0xffff0000), /* POWER6 */
 			.val  = cpu_to_be32(0x003e0000),
 		},
 		{
-			.mask = cpu_to_be32(0xffff0000), /* POWER7 */
+.mask = cpu_to_be32(0xffff0000), /* POWER7 */
 			.val  = cpu_to_be32(0x003f0000),
 		},
 		{
-			.mask = cpu_to_be32(0xffff0000), /* POWER8E */
+.mask = cpu_to_be32(0xffff0000), /* POWER8E */
 			.val  = cpu_to_be32(0x004b0000),
 		},
 		{
-			.mask = cpu_to_be32(0xffff0000), /* POWER8NVL */
+.mask = cpu_to_be32(0xffff0000), /* POWER8NVL */
 			.val  = cpu_to_be32(0x004c0000),
 		},
 		{
-			.mask = cpu_to_be32(0xffff0000), /* POWER8 */
+.mask = cpu_to_be32(0xffff0000), /* POWER8 */
 			.val  = cpu_to_be32(0x004d0000),
 		},
 		{
-			.mask = cpu_to_be32(0xffff0000), /* POWER9 */
+.mask = cpu_to_be32(0xffff0000), /* POWER9 */
 			.val  = cpu_to_be32(0x004e0000),
 		},
 		{
@@ -894,7 +894,7 @@ static struct fake_elf {
 		u32	namesz;
 		u32	descsz;
 		u32	type;
-		char	name[8];	/* "PowerPC" */
+char	name[8];	/* "PowerPC" */
 		struct chrpdesc {
 			u32	real_mode;
 			u32	real_base;
@@ -943,10 +943,10 @@ static struct fake_elf {
 		}
 	},
 	.chrpnote = {
-		.namesz = sizeof("PowerPC"),
+.namesz = sizeof("PowerPC"),
 		.descsz = sizeof(struct chrpdesc),
 		.type = 0x1275,
-		.name = "PowerPC",
+.name = "PowerPC",
 		.chrpdesc = {
 			.real_mode = ~0U,	/* ~0 means "don't care" */
 			.real_base = ~0U,
@@ -1811,12 +1811,12 @@ static void __init prom_initialize_tce_table(void)
 		 * By doing this, we avoid the pitfalls of trying to DMA to
 		 * MMIO space and the DMA alias hole.
 		 *
-		 * On POWER4, firmware sets the TCE region by assuming
+* On POWER4, firmware sets the TCE region by assuming
 		 * each TCE table is 8MB. Using this memory for anything
 		 * else will impact performance, so we always allocate 8MB.
 		 * Anton
 		 */
-		if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p))
+if (pvr_version_is(PVR_POWER4) || pvr_version_is(PVR_POWER4p))
 			minsize = 8UL << 20;
 		else
 			minsize = 4UL << 20;
@@ -2016,7 +2016,7 @@ static void __init prom_init_client_services(unsigned long pp)
 
 #ifdef CONFIG_PPC32
 /*
- * For really old powermacs, we need to map things we claim.
+* For really old powermacs, we need to map things we claim.
  * For that, we need the ihandle of the mmu.
  * Also, on the longtrail, we need to work around other bugs.
  */
@@ -2093,7 +2093,7 @@ static int __init prom_find_machine_type(void)
 	int x;
 #endif
 
-	/* Look for a PowerMac or a Cell */
+/* Look for a PowerMac or a Cell */
 	len = prom_getprop(prom.root, "compatible",
 			   compat, sizeof(compat)-1);
 	if (len > 0) {
@@ -2103,9 +2103,9 @@ static int __init prom_find_machine_type(void)
 			int sl = strlen(p);
 			if (sl == 0)
 				break;
-			if (strstr(p, "Power Macintosh") ||
+if (strstr(p, "Power Macintosh") ||
 			    strstr(p, "MacRISC"))
-				return PLATFORM_POWERMAC;
+return PLATFORM_POWERMAC;
 #ifdef CONFIG_PPC64
 			/* We must make sure we don't detect the IBM Cell
 			 * blades as pSeries due to some firmware issues,
@@ -2858,8 +2858,8 @@ static void __init fixup_device_tree_efika(void)
 	rv = prom_getprop(node, "CODEGEN,description", prop, sizeof(prop));
 	if (rv != PROM_ERROR && (strstr(prop, "CHRP")))
 		prom_setprop(node, "/", "CODEGEN,description",
-			     "Efika 5200B PowerPC System",
-			     sizeof("Efika 5200B PowerPC System"));
+"Efika 5200B PowerPC System",
+sizeof("Efika 5200B PowerPC System"));
 
 	/* Fixup bestcomm interrupts property */
 	node = call_prom("finddevice", 1, 1, ADDR("/builtin/bestcomm"));
@@ -3153,7 +3153,7 @@ unsigned long __init prom_init(unsigned long r3, unsigned long r4,
 	/*
 	 * Copy the CPU hold code
 	 */
-	if (of_platform != PLATFORM_POWERMAC)
+if (of_platform != PLATFORM_POWERMAC)
 		copy_and_flush(0, kbase, 0x100, 0);
 
 	/*
@@ -3182,10 +3182,10 @@ unsigned long __init prom_init(unsigned long r3, unsigned long r4,
 #endif
 
 	/*
-	 * On non-powermacs, try to instantiate RTAS. PowerMacs don't
+* On non-powermacs, try to instantiate RTAS. PowerMacs don't
 	 * have a usable RTAS implementation.
 	 */
-	if (of_platform != PLATFORM_POWERMAC &&
+if (of_platform != PLATFORM_POWERMAC &&
 	    of_platform != PLATFORM_OPAL)
 		prom_instantiate_rtas();
 
@@ -3200,13 +3200,13 @@ unsigned long __init prom_init(unsigned long r3, unsigned long r4,
 #endif
 
 	/*
-	 * On non-powermacs, put all CPUs in spin-loops.
+* On non-powermacs, put all CPUs in spin-loops.
 	 *
-	 * PowerMacs use a different mechanism to spin CPUs
+* PowerMacs use a different mechanism to spin CPUs
 	 *
 	 * (This must be done after instanciating RTAS)
 	 */
-	if (of_platform != PLATFORM_POWERMAC &&
+if (of_platform != PLATFORM_POWERMAC &&
 	    of_platform != PLATFORM_OPAL)
 		prom_hold_cpus();
 
@@ -3250,11 +3250,11 @@ unsigned long __init prom_init(unsigned long r3, unsigned long r4,
 
 	/*
 	 * in case stdin is USB and still active on IBM machines...
-	 * Unfortunately quiesce crashes on some powermacs if we have
-	 * closed stdin already (in particular the powerbook 101). It
+* Unfortunately quiesce crashes on some powermacs if we have
+* closed stdin already (in particular the powerbook 101). It
 	 * appears that the OPAL version of OFW doesn't like it either.
 	 */
-	if (of_platform != PLATFORM_POWERMAC &&
+if (of_platform != PLATFORM_POWERMAC &&
 	    of_platform != PLATFORM_OPAL)
 		prom_close_stdin();
 

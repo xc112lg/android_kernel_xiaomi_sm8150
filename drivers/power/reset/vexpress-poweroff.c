@@ -39,7 +39,7 @@ static atomic_t vexpress_restart_nb_refcnt = ATOMIC_INIT(0);
 
 static void vexpress_power_off(void)
 {
-	vexpress_reset_do(vexpress_power_off_device, "power off");
+vexpress_reset_do(vexpress_power_off_device, "power off");
 }
 
 static struct device *vexpress_restart_device;
@@ -130,8 +130,8 @@ static int vexpress_reset_probe(struct platform_device *pdev)
 
 	switch ((enum vexpress_reset_func)match->data) {
 	case FUNC_SHUTDOWN:
-		vexpress_power_off_device = &pdev->dev;
-		pm_power_off = vexpress_power_off;
+vexpress_power_off_device = &pdev->dev;
+pm_power_off = vexpress_power_off;
 		break;
 	case FUNC_RESET:
 		if (!vexpress_restart_device)

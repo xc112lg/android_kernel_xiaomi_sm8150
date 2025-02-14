@@ -73,7 +73,7 @@ void platform_init(unsigned long r3, unsigned long r4, unsigned long r5,
 					     "cpu", sizeof("cpu"));
 	if (!node)
 		fatal("Cannot find cpu node\n");
-	timebase = fdt_getprop(_dtb_start, node, "timebase-frequency", &size);
+timebase = fdt_getprop(_dtb_start, node, "timebase-frequency", &size);
 	if (timebase && (size == 4))
 		timebase_period_ns = 1000000000 / *timebase;
 

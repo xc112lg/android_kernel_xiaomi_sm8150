@@ -270,7 +270,7 @@ static uint8_t cz_translate_firmware_enum_to_arg(struct pp_smumgr *smumgr,
 	case CZ_SCRATCH_ENTRY_UCODE_ID_DMCU_IRAM:
 		ret = UCODE_ID_DMCU_IRAM;
 		break;
-	case CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING:
+case CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING:
 		ret = TASK_ARG_INIT_MM_PWR_LOG;
 		break;
 	case CZ_SCRATCH_ENTRY_DATA_ID_SDMA_HALT:
@@ -481,10 +481,10 @@ static int cz_smu_construct_toc_for_power_profiling(
 {
 	struct cz_smumgr *cz_smu = (struct cz_smumgr *)smumgr->backend;
 
-	cz_smu->toc_entry_power_profiling_index = cz_smu->toc_entry_used_count;
+cz_smu->toc_entry_power_profiling_index = cz_smu->toc_entry_used_count;
 
 	cz_smu_populate_single_scratch_task(smumgr,
-				CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING,
+CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING,
 				TASK_TYPE_INITIALIZE, true);
 	return 0;
 }
@@ -537,9 +537,9 @@ static int cz_smu_construct_toc(struct pp_smumgr *smumgr)
 	cz_smu->toc_entry_used_count = 0;
 	cz_smu_initialize_toc_empty_job_list(smumgr);
 	cz_smu_construct_toc_for_rlc_aram_save(smumgr);
-	cz_smu_construct_toc_for_vddgfx_enter(smumgr);
-	cz_smu_construct_toc_for_vddgfx_exit(smumgr);
-	cz_smu_construct_toc_for_power_profiling(smumgr);
+cz_smu_construct_toc_for_vddgfx_enter(smumgr);
+cz_smu_construct_toc_for_vddgfx_exit(smumgr);
+cz_smu_construct_toc_for_power_profiling(smumgr);
 	cz_smu_construct_toc_for_bootup(smumgr);
 	cz_smu_construct_toc_for_clock_table(smumgr);
 
@@ -700,7 +700,7 @@ static int cz_request_smu_load_fw(struct pp_smumgr *smumgr)
 					PPSMC_MSG_ExecuteJob,
 					cz_smu->toc_entry_aram);
 	cz_send_msg_to_smc_with_parameter(smumgr, PPSMC_MSG_ExecuteJob,
-				cz_smu->toc_entry_power_profiling_index);
+cz_smu->toc_entry_power_profiling_index);
 
 	return cz_send_msg_to_smc_with_parameter(smumgr,
 					PPSMC_MSG_ExecuteJob,
@@ -754,7 +754,7 @@ static int cz_smu_init(struct pp_smumgr *smumgr)
 		ALIGN(UCODE_ID_RLC_SCRATCH_SIZE_BYTE, 32) +
 		ALIGN(UCODE_ID_RLC_SRM_ARAM_SIZE_BYTE, 32) +
 		ALIGN(UCODE_ID_RLC_SRM_DRAM_SIZE_BYTE, 32) +
-		ALIGN(sizeof(struct SMU8_MultimediaPowerLogData), 32) +
+ALIGN(sizeof(struct SMU8_MultimediaPowerLogData), 32) +
 		ALIGN(sizeof(struct SMU8_Fusion_ClkTable), 32);
 
 	ret = smu_allocate_memory(smumgr->device,
@@ -807,8 +807,8 @@ static int cz_smu_init(struct pp_smumgr *smumgr)
 	}
 
 	if (0 != cz_smu_populate_single_scratch_entry(smumgr,
-		CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING,
-		sizeof(struct SMU8_MultimediaPowerLogData),
+CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING,
+sizeof(struct SMU8_MultimediaPowerLogData),
 		&cz_smu->scratch_buffer[cz_smu->scratch_buffer_length++])) {
 		pr_err("Error when Populate Firmware Entry.\n");
 		return -1;

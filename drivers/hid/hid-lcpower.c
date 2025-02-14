@@ -1,5 +1,5 @@
 /*
- *  HID driver for LC Power Model RC1000MCE
+*  HID driver for LC Power Model RC1000MCE
  *
  *  Copyright (c) 2011 Chris Schlund 
  *  based on hid-topseed module
@@ -44,7 +44,7 @@ static int ts_input_mapping(struct hid_device *hdev, struct hid_input *hi,
 }
 
 static const struct hid_device_id ts_devices[] = {
-	{ HID_USB_DEVICE( USB_VENDOR_ID_LCPOWER, USB_DEVICE_ID_LCPOWER_LC1000) },
+{ HID_USB_DEVICE( USB_VENDOR_ID_LCPOWER, USB_DEVICE_ID_LCPOWER_LC1000) },
 	{ }
 };
 MODULE_DEVICE_TABLE(hid, ts_devices);

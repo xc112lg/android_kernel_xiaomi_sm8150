@@ -28,8 +28,8 @@
 
 struct rx51_device_info {
 	struct device *dev;
-	struct power_supply *bat;
-	struct power_supply_desc bat_desc;
+struct power_supply *bat;
+struct power_supply_desc bat_desc;
 	struct iio_channel *channel_temp;
 	struct iio_channel *channel_bsi;
 	struct iio_channel *channel_vbat;
@@ -48,19 +48,19 @@ static int rx51_battery_read_adc(struct iio_channel *channel)
 }
 
 /*
- * Read ADCIN channel 12 (voltage) and convert RAW value to micro voltage
+* Read ADCIN channel 12 (voltage) and convert RAW value to micro voltage
  * This conversion formula was extracted from maemo program bsi-read
  */
 static int rx51_battery_read_voltage(struct rx51_device_info *di)
 {
-	int voltage = rx51_battery_read_adc(di->channel_vbat);
+int voltage = rx51_battery_read_adc(di->channel_vbat);
 
-	if (voltage < 0) {
-		dev_err(di->dev, "Could not read ADC: %d\n", voltage);
-		return voltage;
+if (voltage < 0) {
+dev_err(di->dev, "Could not read ADC: %d\n", voltage);
+return voltage;
 	}
 
-	return 1000 * (10000 * voltage / 1705);
+return 1000 * (10000 * voltage / 1705);
 }
 
 /*
@@ -155,31 +155,31 @@ static int rx51_battery_read_capacity(struct rx51_device_info *di)
 }
 
 /*
- * Return power_supply property
+* Return power_supply property
  */
 static int rx51_battery_get_property(struct power_supply *psy,
-					enum power_supply_property psp,
-					union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct rx51_device_info *di = power_supply_get_drvdata(psy);
+struct rx51_device_info *di = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
+case POWER_SUPPLY_PROP_TECHNOLOGY:
+val->intval = POWER_SUPPLY_TECHNOLOGY_LION;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
 		val->intval = 4200000;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
-		val->intval = rx51_battery_read_voltage(di) ? 1 : 0;
+case POWER_SUPPLY_PROP_PRESENT:
+val->intval = rx51_battery_read_voltage(di) ? 1 : 0;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		val->intval = rx51_battery_read_voltage(di);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+val->intval = rx51_battery_read_voltage(di);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		val->intval = rx51_battery_read_temperature(di);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		val->intval = rx51_battery_read_capacity(di);
 		break;
 	default:
@@ -193,17 +193,17 @@ static int rx51_battery_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property rx51_battery_props[] = {
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
 };
 
 static int rx51_battery_probe(struct platform_device *pdev)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct rx51_device_info *di;
 	int ret;
 
@@ -215,7 +215,7 @@ static int rx51_battery_probe(struct platform_device *pdev)
 
 	di->dev = &pdev->dev;
 	di->bat_desc.name = "rx51-battery";
-	di->bat_desc.type = POWER_SUPPLY_TYPE_BATTERY;
+di->bat_desc.type = POWER_SUPPLY_TYPE_BATTERY;
 	di->bat_desc.properties = rx51_battery_props;
 	di->bat_desc.num_properties = ARRAY_SIZE(rx51_battery_props);
 	di->bat_desc.get_property = rx51_battery_get_property;
@@ -240,7 +240,7 @@ static int rx51_battery_probe(struct platform_device *pdev)
 		goto error_channel_bsi;
 	}
 
-	di->bat = power_supply_register(di->dev, &di->bat_desc, &psy_cfg);
+di->bat = power_supply_register(di->dev, &di->bat_desc, &psy_cfg);
 	if (IS_ERR(di->bat)) {
 		ret = PTR_ERR(di->bat);
 		goto error_channel_vbat;
@@ -263,7 +263,7 @@ static int rx51_battery_remove(struct platform_device *pdev)
 {
 	struct rx51_device_info *di = platform_get_drvdata(pdev);
 
-	power_supply_unregister(di->bat);
+power_supply_unregister(di->bat);
 
 	iio_channel_release(di->channel_vbat);
 	iio_channel_release(di->channel_bsi);

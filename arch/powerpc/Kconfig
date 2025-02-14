@@ -92,8 +92,8 @@ config PPC_WATCHDOG
 	depends on HAVE_HARDLOCKUP_DETECTOR_ARCH
 	default y
 	help
-	  This is a placeholder when the powerpc hardlockup detector
-	  watchdog is selected (arch/powerpc/kernel/watchdog.c). It is
+This is a placeholder when the powerpc hardlockup detector
+watchdog is selected (arch/powerpc/kernel/watchdog.c). It is
 	  seleted via the generic lockup detector menu which is why we
 	  have no standalone config option for it here.
 
@@ -189,7 +189,7 @@ config PPC
 	select HAVE_DYNAMIC_FTRACE
 	select HAVE_DYNAMIC_FTRACE_WITH_REGS	if MPROFILE_KERNEL
 	select HAVE_EBPF_JIT			if PPC64
-	select HAVE_EFFICIENT_UNALIGNED_ACCESS	if !(CPU_LITTLE_ENDIAN && POWER7_CPU)
+select HAVE_EFFICIENT_UNALIGNED_ACCESS	if !(CPU_LITTLE_ENDIAN && POWER7_CPU)
 	select HAVE_FTRACE_MCOUNT_RECORD
 	select HAVE_FUNCTION_GRAPH_TRACER
 	select HAVE_FUNCTION_TRACER
@@ -405,9 +405,9 @@ config MATH_EMULATION
 	bool "Math emulation"
 	depends on 4xx || PPC_8xx || PPC_MPC832x || BOOKE
 	---help---
-	  Some PowerPC chips designed for embedded applications do not have
+Some PowerPC chips designed for embedded applications do not have
 	  a floating-point unit and therefore do not implement the
-	  floating-point instructions in the PowerPC instruction set.  If you
+floating-point instructions in the PowerPC instruction set.  If you
 	  say Y here, the kernel will include code to emulate a floating-point
 	  unit, which will allow programs that use floating-point
 	  instructions to run.
@@ -437,13 +437,13 @@ config MATH_EMULATION_HW_UNIMPLEMENTED
 endchoice
 
 config PPC_TRANSACTIONAL_MEM
-       bool "Transactional Memory support for POWERPC"
+bool "Transactional Memory support for POWERPC"
        depends on PPC_BOOK3S_64
        depends on SMP
        select ALTIVEC
        select VSX
        ---help---
-         Support user-mode Transactional Memory on POWERPC.
+Support user-mode Transactional Memory on POWERPC.
 
 config LD_HEAD_STUB_CATCH
 	bool "Reserve 256 bytes to cope with linker stubs in HEAD text" if EXPERT
@@ -489,7 +489,7 @@ config SWIOTLB
 config HOTPLUG_CPU
 	bool "Support for enabling/disabling CPUs"
 	depends on SMP && (PPC_PSERIES || \
-	PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
+PPC_PMAC || PPC_POWERNV || FSL_SOC_BOOKE)
 	---help---
 	  Say Y here to be able to disable and re-enable individual
 	  CPUs at runtime on SMP machines.
@@ -512,7 +512,7 @@ config ARCH_ENABLE_MEMORY_HOTREMOVE
 config PPC64_SUPPORTS_MEMORY_FAILURE
 	bool "Add support for memory hwpoison"
 	depends on PPC_BOOK3S_64
-	default "y" if PPC_POWERNV
+default "y" if PPC_POWERNV
 	select ARCH_SUPPORTS_MEMORY_FAILURE
 
 config KEXEC
@@ -610,7 +610,7 @@ config IRQ_ALL_CPUS
 	  This option gives the kernel permission to distribute IRQs across
 	  multiple CPUs.  Saying N here will route all IRQs to the first
 	  CPU.  Generally saying Y is safe, although some problems have been
-	  reported with SMP Power Macintoshes with this option enabled.
+reported with SMP Power Macintoshes with this option enabled.
 
 config NUMA
 	bool "NUMA support"
@@ -764,8 +764,8 @@ config FORCE_MAX_ZONEORDER
 	default "11"
 	help
 	  The kernel memory allocator divides physically contiguous memory
-	  blocks into "zones", where each zone is a power of two number of
-	  pages.  This option selects the largest power of two that the kernel
+blocks into "zones", where each zone is a power of two number of
+pages.  This option selects the largest power of two that the kernel
 	  keeps in the memory allocator.  If you need to allocate very large
 	  blocks of physically contiguous memory, then you may need to
 	  increase this value.
@@ -793,13 +793,13 @@ config SCHED_SMT
 	depends on PPC64 && SMP
 	help
 	  SMT scheduler support improves the CPU scheduler's decision making
-	  when dealing with POWER5 cpus at a cost of slightly increased
+when dealing with POWER5 cpus at a cost of slightly increased
 	  overhead in some places. If unsure say N here.
 
 config PPC_DENORMALISATION
-	bool "PowerPC denormalisation exception handling"
+bool "PowerPC denormalisation exception handling"
 	depends on PPC_BOOK3S_64
-	default "y" if PPC_POWERNV
+default "y" if PPC_POWERNV
 	---help---
 	  Add support for handling denormalisation of single precision
 	  values.  Useful for bare metal only.  If unsure say Y here.
@@ -920,7 +920,7 @@ config FSL_PMC
 	default y
 	depends on SUSPEND && (PPC_85xx || PPC_86xx)
 	help
-	  Freescale MPC85xx/MPC86xx power management controller support
+Freescale MPC85xx/MPC86xx power management controller support
 	  (suspend/resume). For MPC83xx see platforms/83xx/suspend.c
 
 config PPC4xx_CPM
@@ -928,7 +928,7 @@ config PPC4xx_CPM
 	default y
 	depends on SUSPEND && (44x || 40x)
 	help
-	  PPC4xx Clock Power Management (CPM) support (suspend/resume).
+PPC4xx Clock Power Management (CPM) support (suspend/resume).
 	  It also enables support for two different idle states (idle-wait
 	  and idle-doze).
 

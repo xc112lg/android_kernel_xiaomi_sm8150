@@ -1,5 +1,5 @@
 /*
- * max8997_charger.c - Power supply consumer driver for the Maxim 8997/8966
+* max8997_charger.c - Power supply consumer driver for the Maxim 8997/8966
  *
  *  Copyright (C) 2011 Samsung Electronics
  *  MyungJoo Ham <myungjoo.ham@samsung.com>
@@ -30,36 +30,36 @@
 struct charger_data {
 	struct device *dev;
 	struct max8997_dev *iodev;
-	struct power_supply *battery;
+struct power_supply *battery;
 };
 
 static enum power_supply_property max8997_battery_props[] = {
-	POWER_SUPPLY_PROP_STATUS, /* "FULL" or "NOT FULL" only. */
-	POWER_SUPPLY_PROP_PRESENT, /* the presence of battery */
-	POWER_SUPPLY_PROP_ONLINE, /* charger is active or not */
+POWER_SUPPLY_PROP_STATUS, /* "FULL" or "NOT FULL" only. */
+POWER_SUPPLY_PROP_PRESENT, /* the presence of battery */
+POWER_SUPPLY_PROP_ONLINE, /* charger is active or not */
 };
 
 /* Note that the charger control is done by a current regulator "CHARGER" */
 static int max8997_battery_get_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct charger_data *charger = power_supply_get_drvdata(psy);
+struct charger_data *charger = power_supply_get_drvdata(psy);
 	struct i2c_client *i2c = charger->iodev->i2c;
 	int ret;
 	u8 reg;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = 0;
 		ret = max8997_read_reg(i2c, MAX8997_REG_STATUS4, &reg);
 		if (ret)
 			return ret;
 		if ((reg & (1 << 0)) == 0x1)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = 0;
 		ret = max8997_read_reg(i2c, MAX8997_REG_STATUS4, &reg);
 		if (ret)
@@ -68,7 +68,7 @@ static int max8997_battery_get_property(struct power_supply *psy,
 			val->intval = 1;
 
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = 0;
 		ret = max8997_read_reg(i2c, MAX8997_REG_STATUS4, &reg);
 		if (ret)
@@ -87,7 +87,7 @@ static int max8997_battery_get_property(struct power_supply *psy,
 
 static const struct power_supply_desc max8997_battery_desc = {
 	.name		= "max8997_pmic",
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.get_property	= max8997_battery_get_property,
 	.properties	= max8997_battery_props,
 	.num_properties	= ARRAY_SIZE(max8997_battery_props),
@@ -99,7 +99,7 @@ static int max8997_battery_probe(struct platform_device *pdev)
 	struct charger_data *charger;
 	struct max8997_dev *iodev = dev_get_drvdata(pdev->dev.parent);
 	struct max8997_platform_data *pdata = dev_get_platdata(iodev->dev);
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 
 	if (!pdata)
 		return -EINVAL;
@@ -159,11 +159,11 @@ static int max8997_battery_probe(struct platform_device *pdev)
 
 	psy_cfg.drv_data = charger;
 
-	charger->battery = devm_power_supply_register(&pdev->dev,
+charger->battery = devm_power_supply_register(&pdev->dev,
 						 &max8997_battery_desc,
 						 &psy_cfg);
 	if (IS_ERR(charger->battery)) {
-		dev_err(&pdev->dev, "failed: power supply register\n");
+dev_err(&pdev->dev, "failed: power supply register\n");
 		return PTR_ERR(charger->battery);
 	}
 

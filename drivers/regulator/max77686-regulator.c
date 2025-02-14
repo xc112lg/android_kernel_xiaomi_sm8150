@@ -55,7 +55,7 @@
 #define MAX77686_GPIO_CONTROL		0x0
 /*
  * Values used for configuring LDOs and bucks.
- * Forcing low power mode: LDO1, 3-5, 9, 13, 17-26
+* Forcing low power mode: LDO1, 3-5, 9, 13, 17-26
  */
 #define MAX77686_LDO_LOWPOWER		0x1
 /*
@@ -112,7 +112,7 @@ static unsigned int max77686_get_opmode_shift(int id)
 
 /*
  * When regulator is configured for GPIO control then it
- * replaces "normal" mode. Any change from low power mode to normal
+* replaces "normal" mode. Any change from low power mode to normal
  * should actually change to GPIO control.
  * Map normal mode to proper value for such regulators.
  */
@@ -163,7 +163,7 @@ static int max77686_set_suspend_mode(struct regulator_dev *rdev,
 
 	switch (mode) {
 	case REGULATOR_MODE_IDLE:			/* ON in LP Mode */
-		val = MAX77686_LDO_LOWPOWER_PWRREQ;
+val = MAX77686_LDO_LOWPOWER_PWRREQ;
 		break;
 	case REGULATOR_MODE_NORMAL:			/* ON in Normal Mode */
 		val = max77686_map_normal_mode(max77686, id);
@@ -197,7 +197,7 @@ static int max77686_ldo_set_suspend_mode(struct regulator_dev *rdev,
 		val = MAX77686_OFF_PWRREQ;
 		break;
 	case REGULATOR_MODE_IDLE:			/* ON in LP Mode */
-		val = MAX77686_LDO_LOWPOWER_PWRREQ;
+val = MAX77686_LDO_LOWPOWER_PWRREQ;
 		break;
 	case REGULATOR_MODE_NORMAL:			/* ON in Normal Mode */
 		val = max77686_map_normal_mode(max77686, id);
@@ -290,51 +290,51 @@ static int max77686_of_parse_cb(struct device_node *np,
 }
 
 static const struct regulator_ops max77686_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77686_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_suspend_mode	= max77686_set_suspend_mode,
 };
 
 static const struct regulator_ops max77686_ldo_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77686_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_suspend_mode	= max77686_ldo_set_suspend_mode,
 	.set_suspend_disable	= max77686_set_suspend_disable,
 };
 
 static const struct regulator_ops max77686_buck1_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77686_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_suspend_disable	= max77686_set_suspend_disable,
 };
 
 static const struct regulator_ops max77686_buck_dvs_ops = {
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= max77686_enable,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= max77686_set_ramp_delay,
 	.set_suspend_disable	= max77686_set_suspend_disable,
 };
@@ -342,16 +342,16 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_ldo(num)		{				\
 	.name		= "LDO"#num,					\
 	.of_match	= of_match_ptr("LDO"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.of_parse_cb	= max77686_of_parse_cb,				\
 	.id		= MAX77686_LDO##num,				\
 	.ops		= &max77686_ops,				\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_LDO_MINUV,				\
 	.uV_step	= MAX77686_LDO_UVSTEP,				\
 	.ramp_delay	= MAX77686_RAMP_DELAY,				\
-	.n_voltages	= MAX77686_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
 	.vsel_mask	= MAX77686_VSEL_MASK,				\
 	.enable_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
@@ -361,15 +361,15 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_lpm_ldo(num)	{				\
 	.name		= "LDO"#num,					\
 	.of_match	= of_match_ptr("LDO"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.id		= MAX77686_LDO##num,				\
 	.ops		= &max77686_ldo_ops,				\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_LDO_MINUV,				\
 	.uV_step	= MAX77686_LDO_UVSTEP,				\
 	.ramp_delay	= MAX77686_RAMP_DELAY,				\
-	.n_voltages	= MAX77686_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
 	.vsel_mask	= MAX77686_VSEL_MASK,				\
 	.enable_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
@@ -379,15 +379,15 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_ldo_low(num)		{			\
 	.name		= "LDO"#num,					\
 	.of_match	= of_match_ptr("LDO"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.id		= MAX77686_LDO##num,				\
 	.ops		= &max77686_ldo_ops,				\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_LDO_LOW_MINUV,			\
 	.uV_step	= MAX77686_LDO_LOW_UVSTEP,			\
 	.ramp_delay	= MAX77686_RAMP_DELAY,				\
-	.n_voltages	= MAX77686_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
 	.vsel_mask	= MAX77686_VSEL_MASK,				\
 	.enable_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
@@ -397,15 +397,15 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_ldo1_low(num)		{			\
 	.name		= "LDO"#num,					\
 	.of_match	= of_match_ptr("LDO"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.id		= MAX77686_LDO##num,				\
 	.ops		= &max77686_ops,				\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_LDO_LOW_MINUV,			\
 	.uV_step	= MAX77686_LDO_LOW_UVSTEP,			\
 	.ramp_delay	= MAX77686_RAMP_DELAY,				\
-	.n_voltages	= MAX77686_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
 	.vsel_mask	= MAX77686_VSEL_MASK,				\
 	.enable_reg	= MAX77686_REG_LDO1CTRL1 + num - 1,		\
@@ -415,17 +415,17 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_buck(num)		{			\
 	.name		= "BUCK"#num,					\
 	.of_match	= of_match_ptr("BUCK"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.of_parse_cb	= max77686_of_parse_cb,				\
 	.id		= MAX77686_BUCK##num,				\
 	.ops		= &max77686_ops,				\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_BUCK_MINUV,				\
 	.uV_step	= MAX77686_BUCK_UVSTEP,				\
 	.ramp_delay	= MAX77686_RAMP_DELAY,				\
 	.enable_time	= MAX77686_BUCK_ENABLE_TIME,			\
-	.n_voltages	= MAX77686_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_BUCK5OUT + (num - 5) * 2,	\
 	.vsel_mask	= MAX77686_VSEL_MASK,				\
 	.enable_reg	= MAX77686_REG_BUCK5CTRL + (num - 5) * 2,	\
@@ -434,16 +434,16 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_buck1(num)		{			\
 	.name		= "BUCK"#num,					\
 	.of_match	= of_match_ptr("BUCK"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.id		= MAX77686_BUCK##num,				\
 	.ops		= &max77686_buck1_ops,				\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_BUCK_MINUV,				\
 	.uV_step	= MAX77686_BUCK_UVSTEP,				\
 	.ramp_delay	= MAX77686_RAMP_DELAY,				\
 	.enable_time	= MAX77686_BUCK_ENABLE_TIME,			\
-	.n_voltages	= MAX77686_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_BUCK1OUT,			\
 	.vsel_mask	= MAX77686_VSEL_MASK,				\
 	.enable_reg	= MAX77686_REG_BUCK1CTRL,			\
@@ -452,16 +452,16 @@ static const struct regulator_ops max77686_buck_dvs_ops = {
 #define regulator_desc_buck_dvs(num)		{			\
 	.name		= "BUCK"#num,					\
 	.of_match	= of_match_ptr("BUCK"#num),			\
-	.regulators_node	= of_match_ptr("voltage-regulators"),	\
+.regulators_node	= of_match_ptr("voltage-regulators"),	\
 	.id		= MAX77686_BUCK##num,				\
 	.ops		= &max77686_buck_dvs_ops,			\
-	.type		= REGULATOR_VOLTAGE,				\
+.type		= REGULATOR_VOLTAGE,				\
 	.owner		= THIS_MODULE,					\
 	.min_uV		= MAX77686_DVS_MINUV,				\
 	.uV_step	= MAX77686_DVS_UVSTEP,				\
 	.ramp_delay	= MAX77686_DVS_RAMP_DELAY,			\
 	.enable_time	= MAX77686_DVS_ENABLE_TIME,			\
-	.n_voltages	= MAX77686_DVS_VSEL_MASK + 1,			\
+.n_voltages	= MAX77686_DVS_VSEL_MASK + 1,			\
 	.vsel_reg	= MAX77686_REG_BUCK2DVS1 + (num - 2) * 10,	\
 	.vsel_mask	= MAX77686_DVS_VSEL_MASK,			\
 	.enable_reg	= MAX77686_REG_BUCK2CTRL1 + (num - 2) * 10,	\

@@ -69,7 +69,7 @@ struct paca_struct {
 	struct lppaca *lppaca_ptr;	/* Pointer to LpPaca for PLIC */
 #endif /* CONFIG_PPC_BOOK3S */
 	/*
-	 * MAGIC: the spinlock functions in arch/powerpc/lib/locks.c 
+* MAGIC: the spinlock functions in arch/powerpc/lib/locks.c
 	 * load lock_token and paca_index with a single lwz
 	 * instruction.  They must travel together and be properly
 	 * aligned.
@@ -163,7 +163,7 @@ struct paca_struct {
 	u8 irq_happened;		/* irq happened while soft-disabled */
 	u8 io_sync;			/* writel() needs spin_unlock sync */
 	u8 irq_work_pending;		/* IRQ_WORK interrupt while soft-disable */
-	u8 nap_state_lost;		/* NV GPR values lost in power7_idle */
+u8 nap_state_lost;		/* NV GPR values lost in power7_idle */
 	u64 sprg_vdso;			/* Saved user-visible sprg */
 #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
 	u64 tm_scratch;                 /* TM scratch area for reclaim */

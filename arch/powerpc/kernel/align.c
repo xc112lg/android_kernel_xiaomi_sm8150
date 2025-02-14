@@ -2,11 +2,11 @@
  *
  * Copyright (c) 1996 Paul Mackerras <paulus@cs.anu.edu.au>
  * Copyright (c) 1998-1999 TiVo, Inc.
- *   PowerPC 403GCX modifications.
+*   PowerPC 403GCX modifications.
  * Copyright (c) 1999 Grant Erickson <grant@lcse.umn.edu>
- *   PowerPC 403GCX/405GP modifications.
+*   PowerPC 403GCX/405GP modifications.
  * Copyright (c) 2001-2002 PPC64 team, IBM Corp
- *   64-bit and Power4 support
+*   64-bit and Power4 support
  * Copyright (c) 2005 Benjamin Herrenschmidt, IBM Corp
  *                    <benh@kernel.crashing.org>
  *   Merge ppc32 and ppc64 implementations

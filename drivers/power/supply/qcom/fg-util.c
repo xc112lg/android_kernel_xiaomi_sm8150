@@ -34,8 +34,8 @@ int fg_decode_voltage_24b(struct fg_sram_param *sp,
 {
 	int msb, lsb, val;
 
-	msb = value & VOLTAGE_24BIT_MSB_MASK;
-	lsb = value & VOLTAGE_24BIT_LSB_MASK;
+msb = value & VOLTAGE_24BIT_MSB_MASK;
+lsb = value & VOLTAGE_24BIT_LSB_MASK;
 	val = (msb >> 4) | lsb;
 	sp[id].value = div_s64((s64)val * sp[id].denmtr, sp[id].numrtr);
 	pr_debug("id: %d raw value: %x decoded value: %x\n", id, value,
@@ -47,7 +47,7 @@ int fg_decode_voltage_24b(struct fg_sram_param *sp,
 int fg_decode_voltage_15b(struct fg_sram_param *sp,
 				enum fg_sram_param_id id, int value)
 {
-	value &= VOLTAGE_15BIT_MASK;
+value &= VOLTAGE_15BIT_MASK;
 	sp[id].value = div_u64((u64)value * sp[id].denmtr, sp[id].numrtr);
 	pr_debug("id: %d raw value: %x decoded value: %x\n", id, value,
 		sp[id].value);
@@ -329,7 +329,7 @@ bool usb_psy_initialized(struct fg_dev *fg)
 	if (fg->usb_psy)
 		return true;
 
-	fg->usb_psy = power_supply_get_by_name("usb");
+fg->usb_psy = power_supply_get_by_name("usb");
 	if (!fg->usb_psy)
 		return false;
 
@@ -338,14 +338,14 @@ bool usb_psy_initialized(struct fg_dev *fg)
 
 static bool is_usb_present(struct fg_dev *fg)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc;
 
 	if (!usb_psy_initialized(fg))
 		return false;
 
-	rc = power_supply_get_property(fg->usb_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(fg->usb_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 	if (rc < 0)
 		return false;
 
@@ -357,7 +357,7 @@ bool dc_psy_initialized(struct fg_dev *fg)
 	if (fg->dc_psy)
 		return true;
 
-	fg->dc_psy = power_supply_get_by_name("dc");
+fg->dc_psy = power_supply_get_by_name("dc");
 	if (!fg->dc_psy)
 		return false;
 
@@ -366,14 +366,14 @@ bool dc_psy_initialized(struct fg_dev *fg)
 
 static bool is_dc_present(struct fg_dev *fg)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc;
 
 	if (!dc_psy_initialized(fg))
 		return false;
 
-	rc = power_supply_get_property(fg->dc_psy,
-			POWER_SUPPLY_PROP_PRESENT, &pval);
+rc = power_supply_get_property(fg->dc_psy,
+POWER_SUPPLY_PROP_PRESENT, &pval);
 	if (rc < 0)
 		return false;
 
@@ -387,7 +387,7 @@ bool is_input_present(struct fg_dev *fg)
 
 void fg_notify_charger(struct fg_dev *fg)
 {
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 	int rc;
 
 	if (!fg->batt_psy)
@@ -398,10 +398,10 @@ void fg_notify_charger(struct fg_dev *fg)
 
 	if (fg->bp.float_volt_uv > 0) {
 		prop.intval = fg->bp.float_volt_uv;
-		rc = power_supply_set_property(fg->batt_psy,
-				POWER_SUPPLY_PROP_VOLTAGE_MAX, &prop);
+rc = power_supply_set_property(fg->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_MAX, &prop);
 		if (rc < 0) {
-			pr_err("Error in setting voltage_max property on batt_psy, rc=%d\n",
+pr_err("Error in setting voltage_max property on batt_psy, rc=%d\n",
 				rc);
 			return;
 		}
@@ -410,8 +410,8 @@ void fg_notify_charger(struct fg_dev *fg)
 #ifndef CONFIG_MACH_XIAOMI_SM8150
 	if (fg->bp.fastchg_curr_ma > 0) {
 		prop.intval = fg->bp.fastchg_curr_ma * 1000;
-		rc = power_supply_set_property(fg->batt_psy,
-				POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+rc = power_supply_set_property(fg->batt_psy,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
 				&prop);
 		if (rc < 0) {
 			pr_err("Error in setting constant_charge_current_max property on batt_psy, rc=%d\n",
@@ -427,7 +427,7 @@ bool batt_psy_initialized(struct fg_dev *fg)
 	if (fg->batt_psy)
 		return true;
 
-	fg->batt_psy = power_supply_get_by_name("battery");
+fg->batt_psy = power_supply_get_by_name("battery");
 	if (!fg->batt_psy)
 		return false;
 
@@ -439,14 +439,14 @@ bool batt_psy_initialized(struct fg_dev *fg)
 
 bool is_qnovo_en(struct fg_dev *fg)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc;
 
 	if (!batt_psy_initialized(fg))
 		return false;
 
-	rc = power_supply_get_property(fg->batt_psy,
-			POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE, &pval);
+rc = power_supply_get_property(fg->batt_psy,
+POWER_SUPPLY_PROP_CHARGE_QNOVO_ENABLE, &pval);
 	if (rc < 0)
 		return false;
 
@@ -458,7 +458,7 @@ bool pc_port_psy_initialized(struct fg_dev *fg)
 	if (fg->pc_port_psy)
 		return true;
 
-	fg->pc_port_psy = power_supply_get_by_name("pc_port");
+fg->pc_port_psy = power_supply_get_by_name("pc_port");
 	if (!fg->pc_port_psy)
 		return false;
 
@@ -468,7 +468,7 @@ bool pc_port_psy_initialized(struct fg_dev *fg)
 bool is_parallel_charger_available(struct fg_dev *fg)
 {
 	if (!fg->parallel_psy)
-		fg->parallel_psy = power_supply_get_by_name("parallel");
+fg->parallel_psy = power_supply_get_by_name("parallel");
 
 	if (!fg->parallel_psy)
 		return false;
@@ -825,14 +825,14 @@ int fg_dump_regs(struct fg_dev *fg)
 
 int fg_restart(struct fg_dev *fg, int wait_time_ms)
 {
-	union power_supply_propval pval = {0, };
+union power_supply_propval pval = {0, };
 	int rc;
 	bool tried_again = false;
 
 	if (!fg->fg_psy)
 		return -ENODEV;
 
-	rc = power_supply_get_property(fg->fg_psy, POWER_SUPPLY_PROP_CAPACITY,
+rc = power_supply_get_property(fg->fg_psy, POWER_SUPPLY_PROP_CAPACITY,
 					&pval);
 	if (rc < 0) {
 		pr_err("Error in getting capacity, rc=%d\n", rc);
@@ -903,7 +903,7 @@ int fg_get_msoc_raw(struct fg_dev *fg, int *val)
 		return -EINVAL;
 	}
 
-	fg_dbg(fg, FG_POWER_SUPPLY, "raw: 0x%02x\n", cap[0]);
+fg_dbg(fg, FG_POWER_SUPPLY, "raw: 0x%02x\n", cap[0]);
 	*val = cap[0];
 	return 0;
 }
@@ -1076,7 +1076,7 @@ int fg_get_battery_voltage(struct fg_dev *fg, int *val)
 		temp = buf[1] << 8 | buf[0];
 
 	pr_debug("buf: %x %x temp: %x\n", buf[0], buf[1], temp);
-	*val = div_u64((u64)temp * BATT_VOLTAGE_NUMR, BATT_VOLTAGE_DENR);
+*val = div_u64((u64)temp * BATT_VOLTAGE_NUMR, BATT_VOLTAGE_DENR);
 	return 0;
 }
 
@@ -1086,7 +1086,7 @@ int fg_set_constant_chg_voltage(struct fg_dev *fg, int volt_uv)
 	int rc;
 
 	if (volt_uv <= 0 || volt_uv > 15590000) {
-		pr_err("Invalid voltage %d\n", volt_uv);
+pr_err("Invalid voltage %d\n", volt_uv);
 		return -EINVAL;
 	}
 

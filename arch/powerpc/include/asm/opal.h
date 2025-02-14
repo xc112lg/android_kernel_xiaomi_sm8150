@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL definitions.
+* PowerNV OPAL definitions.
  *
  * Copyright 2011 IBM Corp.
  *

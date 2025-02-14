@@ -1,5 +1,5 @@
 /*
- * include/asm-sh/cpu-sh4/freq.h
+* include/asm-sh/cpu-sh4/freq.h
  *
  * Copyright (C) 2002, 2003 Paul Mundt
  *

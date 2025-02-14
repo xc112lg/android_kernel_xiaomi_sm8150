@@ -20,14 +20,14 @@
 #define __WLAN_HDD_TX_POWER_H
 
 /**
- * DOC: wlan_hdd_tx_power_h
+* DOC: wlan_hdd_tx_power_h
  *
- * WLAN Host Device Driver TX power setting API specification
+* WLAN Host Device Driver TX power setting API specification
  */
 
 #ifdef FEATURE_TX_POWER
 /**
- * wlan_hdd_cfg80211_txpower_scale () - txpower scaling
+* wlan_hdd_cfg80211_txpower_scale () - txpower scaling
  * @wiphy: Pointer to wireless phy
  * @wdev: Pointer to wireless device
  * @data: Pointer to data
@@ -41,7 +41,7 @@ int wlan_hdd_cfg80211_txpower_scale(struct wiphy *wiphy,
 				    int data_len);
 
 /**
- * wlan_hdd_cfg80211_txpower_scale_decr_db () - txpower scaling
+* wlan_hdd_cfg80211_txpower_scale_decr_db () - txpower scaling
  * @wiphy: Pointer to wireless phy
  * @wdev: Pointer to wireless device
  * @data: Pointer to data
@@ -57,20 +57,20 @@ int wlan_hdd_cfg80211_txpower_scale_decr_db(struct wiphy *wiphy,
 #define FEATURE_TX_POWER_VENDOR_COMMANDS				\
 {									\
 	.info.vendor_id = QCA_NL80211_VENDOR_ID,			\
-	.info.subcmd = QCA_NL80211_VENDOR_SUBCMD_SET_TXPOWER_SCALE,	\
+.info.subcmd = QCA_NL80211_VENDOR_SUBCMD_SET_TXPOWER_SCALE,	\
 	.flags = WIPHY_VENDOR_CMD_NEED_WDEV |				\
 			 WIPHY_VENDOR_CMD_NEED_NETDEV |			\
 			 WIPHY_VENDOR_CMD_NEED_RUNNING,			\
-	.doit = wlan_hdd_cfg80211_txpower_scale				\
+.doit = wlan_hdd_cfg80211_txpower_scale				\
 },									\
 {									\
 	.info.vendor_id = QCA_NL80211_VENDOR_ID,			\
 	.info.subcmd =							\
-		QCA_NL80211_VENDOR_SUBCMD_SET_TXPOWER_SCALE_DECR_DB,	\
+QCA_NL80211_VENDOR_SUBCMD_SET_TXPOWER_SCALE_DECR_DB,	\
 	.flags = WIPHY_VENDOR_CMD_NEED_WDEV |				\
 			 WIPHY_VENDOR_CMD_NEED_NETDEV |			\
 			 WIPHY_VENDOR_CMD_NEED_RUNNING,			\
-	.doit = wlan_hdd_cfg80211_txpower_scale_decr_db			\
+.doit = wlan_hdd_cfg80211_txpower_scale_decr_db			\
 },
 #else /* FEATURE_TX_POWER */
 #define FEATURE_TX_POWER_VENDOR_COMMANDS

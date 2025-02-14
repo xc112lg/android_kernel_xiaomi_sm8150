@@ -20,8 +20,8 @@ struct nvbios_power_budget {
 };
 
 int nvbios_power_budget_header(struct nvkm_bios *,
-                               struct nvbios_power_budget *);
+struct nvbios_power_budget *);
 int nvbios_power_budget_entry(struct nvkm_bios *, struct nvbios_power_budget *,
-                              u8 idx, struct nvbios_power_budget_entry *);
+u8 idx, struct nvbios_power_budget_entry *);
 
 #endif

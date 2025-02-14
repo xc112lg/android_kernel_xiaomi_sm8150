@@ -38,7 +38,7 @@ static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
 {
 	unsigned long page_shift;
 
-	if (!cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (!cpu_has_feature(CPU_FTR_POWER9_DD1))
 		return entry;
 
 	page_shift = huge_page_shift(hstate_vma(vma));

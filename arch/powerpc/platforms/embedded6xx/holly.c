@@ -236,13 +236,13 @@ void __noreturn holly_restart(char *cmd)
 void holly_power_off(void)
 {
 	local_irq_disable();
-	/* No way to shut power off with software */
+/* No way to shut power off with software */
 	for (;;) ;
 }
 
 void holly_halt(void)
 {
-	holly_power_off();
+holly_power_off();
 }
 
 /*

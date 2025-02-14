@@ -1,5 +1,5 @@
 /*
- * max8952.c - Voltage and current regulation for the Maxim 8952
+* max8952.c - Voltage and current regulation for the Maxim 8952
  *
  * Copyright (C) 2010 Samsung Electronics
  * MyungJoo Ham <myungjoo.ham@samsung.com>
@@ -114,17 +114,17 @@ static int max8952_set_voltage_sel(struct regulator_dev *rdev,
 }
 
 static const struct regulator_ops max8952_ops = {
-	.list_voltage		= max8952_list_voltage,
-	.get_voltage_sel	= max8952_get_voltage_sel,
-	.set_voltage_sel	= max8952_set_voltage_sel,
+.list_voltage		= max8952_list_voltage,
+.get_voltage_sel	= max8952_get_voltage_sel,
+.set_voltage_sel	= max8952_set_voltage_sel,
 };
 
 static const struct regulator_desc regulator = {
 	.name		= "MAX8952_VOUT",
 	.id		= 0,
-	.n_voltages	= MAX8952_NUM_DVS_MODE,
+.n_voltages	= MAX8952_NUM_DVS_MODE,
 	.ops		= &max8952_ops,
-	.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 	.owner		= THIS_MODULE,
 };
 
@@ -162,14 +162,14 @@ static struct max8952_platform_data *max8952_parse_dt(struct device *dev)
 
 	for (i = 0; i < ARRAY_SIZE(pd->dvs_mode); ++i) {
 		if (pd->dvs_mode[i] < 770000 || pd->dvs_mode[i] > 1400000) {
-			dev_err(dev, "DVS voltage %d out of range\n", i);
+dev_err(dev, "DVS voltage %d out of range\n", i);
 			return NULL;
 		}
 		pd->dvs_mode[i] = (pd->dvs_mode[i] - 770000) / 10000;
 	}
 
-	if (of_property_read_u32(np, "max8952,sync-freq", &pd->sync_freq))
-		dev_warn(dev, "max8952,sync-freq property not specified, defaulting to 26MHz\n");
+if (of_property_read_u32(np, "max8952,sync-freq", &pd->sync_freq))
+dev_warn(dev, "max8952,sync-freq property not specified, defaulting to 26MHz\n");
 
 	if (of_property_read_u32(np, "max8952,ramp-speed", &pd->ramp_speed))
 		dev_warn(dev, "max8952,ramp-speed property not specified, defaulting to 32mV/us\n");
@@ -303,7 +303,7 @@ static int max8952_pmic_probe(struct i2c_client *client,
 
 	max8952_write_reg(max8952, MAX8952_REG_SYNC,
 			(max8952_read_reg(max8952, MAX8952_REG_SYNC) & 0x3F) |
-			((pdata->sync_freq & 0x3) << 6));
+((pdata->sync_freq & 0x3) << 6));
 	max8952_write_reg(max8952, MAX8952_REG_RAMP,
 			(max8952_read_reg(max8952, MAX8952_REG_RAMP) & 0x1F) |
 			((pdata->ramp_speed & 0x7) << 5));

@@ -30,16 +30,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8560@0 {
+PowerPC,8560@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <0x8000>;		/* L1, 32K */
 			i-cache-size = <0x8000>;		/* L1, 32K */
-			timebase-frequency = <0>;		/* From U-boot */
-			bus-frequency = <0>;			/* From U-boot */
-			clock-frequency = <0>;			/* From U-boot */
+timebase-frequency = <0>;		/* From U-boot */
+bus-frequency = <0>;			/* From U-boot */
+clock-frequency = <0>;			/* From U-boot */
 			next-level-cache = <&L2>;
 		};
 	};
@@ -54,7 +54,7 @@
 		#size-cells = <1>;
 		device_type = "soc";
 		ranges = <0x00000000 0xfdf00000 0x00100000>;
-		bus-frequency = <0>;				/* Fixed by bootwrapper */
+bus-frequency = <0>;				/* Fixed by bootwrapper */
 
 		ecm-law@0 {
 			compatible = "fsl,ecm-law";
@@ -234,7 +234,7 @@
 					     "fsl,cpm2-brg",
 					     "fsl,cpm-brg";
 				reg = <0x919f0 0x10 0x915f0 0x10>;
-				clock-frequency = <165000000>;	/* 166MHz */
+clock-frequency = <165000000>;	/* 166MHz */
 			};
 
 			CPMPIC: pic@90c00 {

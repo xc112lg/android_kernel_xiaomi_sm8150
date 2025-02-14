@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/boot/dts/gamecube.dts
+* arch/powerpc/boot/dts/gamecube.dts
  *
  * Nintendo GameCube platform device tree source
  * Copyright (C) 2007-2009 The GameCube Linux Team
@@ -33,12 +33,12 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,gekko@0 {
+PowerPC,gekko@0 {
 			device_type = "cpu";
 			reg = <0>;
-			clock-frequency = <486000000>; /* 486MHz */
-			bus-frequency = <162000000>; /* 162MHz core-to-bus 3x */
-			timebase-frequency = <40500000>; /* 162MHz / 4 */
+clock-frequency = <486000000>; /* 486MHz */
+bus-frequency = <162000000>; /* 162MHz core-to-bus 3x */
+timebase-frequency = <40500000>; /* 162MHz / 4 */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <32768>;

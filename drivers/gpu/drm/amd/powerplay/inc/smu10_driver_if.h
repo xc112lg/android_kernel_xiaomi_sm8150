@@ -42,7 +42,7 @@ typedef enum {
 } DSPCLK_e;
 
 typedef struct {
-	uint16_t Freq;
+uint16_t Freq;
 	uint16_t Vid;
 } DisplayClockTable_t;
 
@@ -84,8 +84,8 @@ typedef struct {
 	uint8_t             ActiveHystLimit;
 	uint8_t             IdleHystLimit;
 	uint8_t             FPS;
-	uint8_t             MinActiveFreqType;
-	FloatInIntFormat_t  MinActiveFreq;
+uint8_t             MinActiveFreqType;
+FloatInIntFormat_t  MinActiveFreq;
 	FloatInIntFormat_t  PD_Data_limit;
 	FloatInIntFormat_t  PD_Data_time_constant;
 	FloatInIntFormat_t  PD_Data_error_coeff;
@@ -102,7 +102,7 @@ typedef struct {
 #define NUM_MEMCLK_DPM_LEVELS  4
 
 typedef struct {
-	uint32_t  Freq; /* In MHz */
+uint32_t  Freq; /* In MHz */
 	uint32_t  Vol;  /* Millivolts with 2 fractional bits */
 } DpmClock_t;
 

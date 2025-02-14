@@ -32,7 +32,7 @@ struct hv_get_perf_counter_info_params {
 /*
  * counter info version => fw version/reference (spec version)
  *
- * 8 => power8 (1.07)
+* 8 => power8 (1.07)
  * [7 is skipped by spec 1.07]
  * 6 => TLBIE (1.07)
  * 5 => v7r7m0.phyp (1.05)

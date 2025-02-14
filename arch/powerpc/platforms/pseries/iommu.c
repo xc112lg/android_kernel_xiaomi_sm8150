@@ -629,7 +629,7 @@ static void pci_dma_bus_setup_pSeries(struct pci_bus *bus)
 	pr_debug("Children: %d\n", children);
 
 	/* Calculate amount of DMA window per slot. Each window must be
-	 * a power of two (due to pci_alloc_consistent requirements).
+* a power of two (due to pci_alloc_consistent requirements).
 	 *
 	 * Keep 256MB aside for PHBs with ISA.
 	 */
@@ -1404,7 +1404,7 @@ static int __init disable_multitce(char *str)
 	    firmware_has_feature(FW_FEATURE_LPAR) &&
 	    firmware_has_feature(FW_FEATURE_MULTITCE)) {
 		printk(KERN_INFO "Disabling MULTITCE firmware feature\n");
-		powerpc_firmware_features &= ~FW_FEATURE_MULTITCE;
+powerpc_firmware_features &= ~FW_FEATURE_MULTITCE;
 	}
 	return 1;
 }

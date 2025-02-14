@@ -13,7 +13,7 @@
  * of this data using this driver.  A dump exists if the device-tree
  * /chosen/ibm,scan-log-data property exists.
  *
- * This driver exports /proc/powerpc/scan-log-dump which can be read.
+* This driver exports /proc/powerpc/scan-log-dump which can be read.
  * The driver supports only sequential reads.
  *
  * The driver looks at a write to the driver for the single word "reset".
@@ -179,7 +179,7 @@ static int __init scanlog_init(void)
 	if (!scanlog_buffer)
 		goto err;
 
-	ent = proc_create("powerpc/rtas/scan-log-dump", S_IRUSR, NULL,
+ent = proc_create("powerpc/rtas/scan-log-dump", S_IRUSR, NULL,
 			  &scanlog_fops);
 	if (!ent)
 		goto err;
@@ -191,7 +191,7 @@ err:
 
 static void __exit scanlog_cleanup(void)
 {
-	remove_proc_entry("powerpc/rtas/scan-log-dump", NULL);
+remove_proc_entry("powerpc/rtas/scan-log-dump", NULL);
 	kfree(scanlog_buffer);
 }
 

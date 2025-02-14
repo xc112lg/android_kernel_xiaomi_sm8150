@@ -7,7 +7,7 @@
  *
  * 2006 (c) MontaVista Software, Inc.
  * Vitaly Bordug <vbordug@ru.mvista.com>
- * 	Merged to arch/powerpc from arch/ppc/syslib/cpm2_common.c
+* 	Merged to arch/powerpc from arch/ppc/syslib/cpm2_common.c
  *
  * This file is licensed under the terms of the GNU General Public License
  * version 2. This program is licensed "as is" without any warranty of any

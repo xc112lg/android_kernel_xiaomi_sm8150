@@ -11,7 +11,7 @@
  */
 
 &rpm_bus {
-	/* VDD_APC supply */
+/* VDD_APC supply */
 	rpm-regulator-smpa1 {
 		compatible = "qcom,rpm-smd-regulator-resource";
 		qcom,resource-name = "rwmx";
@@ -28,7 +28,7 @@
 		};
 	};
 
-	/* VDD_CX */
+/* VDD_CX */
 	rpm-regulator-smpa3 {
 		compatible = "qcom,rpm-smd-regulator-resource";
 		qcom,resource-name = "rwcx";
@@ -45,7 +45,7 @@
 		};
 	};
 
-	/* VDD_MX */
+/* VDD_MX */
 	rpm-regulator-smpa5 {
 		compatible = "qcom,rpm-smd-regulator-resource";
 		qcom,resource-name = "rwmx";
@@ -213,7 +213,7 @@
 		};
 	};
 
-	/* VDD_WCSS_CX */
+/* VDD_WCSS_CX */
 	rpm-regulator-ldoa8 {
 		compatible = "qcom,rpm-smd-regulator-resource";
 		qcom,resource-name = "ldoa";

@@ -87,8 +87,8 @@ struct pm800_regulators {
  * ereg - the string for the enable register.
  * ebit - the bit number in the enable register.
  * amax - the current
- * Buck has 2 kinds of voltage steps. It is easy to find voltage by ranges,
- * not the constant voltage table.
+* Buck has 2 kinds of voltage steps. It is easy to find voltage by ranges,
+* not the constant voltage table.
  * n_volt - Number of available selectors
  */
 #define PM800_BUCK(match, vreg, ereg, ebit, amax, volt_ranges, n_volt)	\
@@ -98,10 +98,10 @@ struct pm800_regulators {
 		.of_match		= of_match_ptr(#match),		\
 		.regulators_node	= of_match_ptr("regulators"),	\
 		.ops			= &pm800_volt_range_ops,	\
-		.type			= REGULATOR_VOLTAGE,		\
+.type			= REGULATOR_VOLTAGE,		\
 		.id			= PM800_ID_##vreg,		\
 		.owner			= THIS_MODULE,			\
-		.n_voltages		= n_volt,			\
+.n_voltages		= n_volt,			\
 		.linear_ranges		= volt_ranges,			\
 		.n_linear_ranges	= ARRAY_SIZE(volt_ranges),	\
 		.vsel_reg		= PM800_##vreg,			\
@@ -117,7 +117,7 @@ struct pm800_regulators {
  * ereg -  the string for the enable register.
  * ebit - the bit number in the enable register.
  * amax - the current
- * volt_table - the LDO voltage table
+* volt_table - the LDO voltage table
  * For all the LDOes, there are too many ranges. Using volt_table will be
  * simpler and faster.
  */
@@ -128,10 +128,10 @@ struct pm800_regulators {
 		.of_match		= of_match_ptr(#match),		\
 		.regulators_node	= of_match_ptr("regulators"),	\
 		.ops			= &pm800_volt_table_ops,	\
-		.type			= REGULATOR_VOLTAGE,		\
+.type			= REGULATOR_VOLTAGE,		\
 		.id			= PM800_ID_##vreg,		\
 		.owner			= THIS_MODULE,			\
-		.n_voltages		= ARRAY_SIZE(ldo_volt_table),	\
+.n_voltages		= ARRAY_SIZE(ldo_volt_table),	\
 		.vsel_reg		= PM800_##vreg##_VOUT,		\
 		.vsel_mask		= 0xf,				\
 		.enable_reg		= PM800_##ereg,			\
@@ -181,10 +181,10 @@ static int pm800_get_current_limit(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops pm800_volt_range_ops = {
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
@@ -192,10 +192,10 @@ static const struct regulator_ops pm800_volt_range_ops = {
 };
 
 static const struct regulator_ops pm800_volt_table_ops = {
-	.list_voltage		= regulator_list_voltage_table,
-	.map_voltage		= regulator_map_voltage_iterate,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_table,
+.map_voltage		= regulator_map_voltage_iterate,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
@@ -257,7 +257,7 @@ static int pm800_regulator_probe(struct platform_device *pdev)
 	if (!pm800_data)
 		return -ENOMEM;
 
-	pm800_data->map = chip->subchip->regmap_power;
+pm800_data->map = chip->subchip->regmap_power;
 	pm800_data->chip = chip;
 
 	platform_set_drvdata(pdev, pm800_data);

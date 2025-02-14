@@ -42,9 +42,9 @@ struct memlat_node {
 	struct list_head list;
 	void *orig_data;
 	struct memlat_hwmon *hw;
-	struct devfreq_governor *gov;
+struct devfreq_governor *gov;
 	struct attribute_group *attr_grp;
-	unsigned long resume_freq;
+unsigned long resume_freq;
 };
 
 static LIST_HEAD(memlat_list);
@@ -58,7 +58,7 @@ static DEFINE_MUTEX(state_lock);
 static ssize_t show_##name(struct device *dev,				\
 			struct device_attribute *attr, char *buf)	\
 {									\
-	struct devfreq *df = to_devfreq(dev);				\
+struct devfreq *df = to_devfreq(dev);				\
 	struct memlat_node *hw = df->data;				\
 	return snprintf(buf, PAGE_SIZE, "%u\n", hw->name);		\
 }
@@ -68,7 +68,7 @@ static ssize_t store_##name(struct device *dev,				\
 			struct device_attribute *attr, const char *buf,	\
 			size_t count)					\
 {									\
-	struct devfreq *df = to_devfreq(dev);				\
+struct devfreq *df = to_devfreq(dev);				\
 	struct memlat_node *hw = df->data;				\
 	int ret;							\
 	unsigned int val;						\
@@ -89,16 +89,16 @@ static DEVICE_ATTR(__attr, 0644, show_##__attr, store_##__attr)
 static ssize_t show_map(struct device *dev, struct device_attribute *attr,
 			char *buf)
 {
-	struct devfreq *df = to_devfreq(dev);
+struct devfreq *df = to_devfreq(dev);
 	struct memlat_node *n = df->data;
-	struct core_dev_map *map = n->hw->freq_map;
+struct core_dev_map *map = n->hw->freq_map;
 	unsigned int cnt = 0;
 
-	cnt += snprintf(buf, PAGE_SIZE, "Core freq (MHz)\tDevice BW\n");
+cnt += snprintf(buf, PAGE_SIZE, "Core freq (MHz)\tDevice BW\n");
 
 	while (map->core_mhz && cnt < PAGE_SIZE) {
 		cnt += snprintf(buf + cnt, PAGE_SIZE - cnt, "%15u\t%9u\n",
-				map->core_mhz, map->target_freq);
+map->core_mhz, map->target_freq);
 		map++;
 	}
 	if (cnt < PAGE_SIZE)
@@ -113,8 +113,8 @@ static unsigned long core_to_dev_freq(struct memlat_node *node,
 		unsigned long coref)
 {
 	struct memlat_hwmon *hw = node->hw;
-	struct core_dev_map *map = hw->freq_map;
-	unsigned long freq = 0;
+struct core_dev_map *map = hw->freq_map;
+unsigned long freq = 0;
 
 	if (!map)
 		goto out;
@@ -123,11 +123,11 @@ static unsigned long core_to_dev_freq(struct memlat_node *node,
 		map++;
 	if (!map->core_mhz)
 		map--;
-	freq = map->target_freq;
+freq = map->target_freq;
 
 out:
-	pr_debug("freq: %lu -> dev: %lu\n", coref, freq);
-	return freq;
+pr_debug("freq: %lu -> dev: %lu\n", coref, freq);
+return freq;
 }
 
 static struct memlat_node *find_memlat_node(struct devfreq *df)
@@ -160,7 +160,7 @@ static int start_monitor(struct devfreq *df)
 		return ret;
 	}
 
-	devfreq_monitor_start(df);
+devfreq_monitor_start(df);
 
 	node->mon_started = true;
 
@@ -174,7 +174,7 @@ static void stop_monitor(struct devfreq *df)
 
 	node->mon_started = false;
 
-	devfreq_monitor_stop(df);
+devfreq_monitor_stop(df);
 	hw->stop_hwmon(hw);
 }
 
@@ -218,16 +218,16 @@ err_start:
 static int gov_suspend(struct devfreq *df)
 {
 	struct memlat_node *node = df->data;
-	unsigned long prev_freq = df->previous_freq;
+unsigned long prev_freq = df->previous_freq;
 
 	node->mon_started = false;
-	devfreq_monitor_suspend(df);
+devfreq_monitor_suspend(df);
 
 	mutex_lock(&df->lock);
-	update_devfreq(df);
+update_devfreq(df);
 	mutex_unlock(&df->lock);
 
-	node->resume_freq = max(prev_freq, 1UL);
+node->resume_freq = max(prev_freq, 1UL);
 
 	return 0;
 }
@@ -237,12 +237,12 @@ static int gov_resume(struct devfreq *df)
 	struct memlat_node *node = df->data;
 
 	mutex_lock(&df->lock);
-	update_devfreq(df);
+update_devfreq(df);
 	mutex_unlock(&df->lock);
 
-	node->resume_freq = 0;
+node->resume_freq = 0;
 
-	devfreq_monitor_resume(df);
+devfreq_monitor_resume(df);
 	node->mon_started = true;
 
 	return 0;
@@ -261,23 +261,23 @@ static void gov_stop(struct devfreq *df)
 }
 
 static int devfreq_memlat_get_freq(struct devfreq *df,
-					unsigned long *freq)
+unsigned long *freq)
 {
 	int i, lat_dev = 0;
 	struct memlat_node *node = df->data;
 	struct memlat_hwmon *hw = node->hw;
-	unsigned long max_freq = 0;
+unsigned long max_freq = 0;
 	unsigned int ratio;
 
 	/*
-	 * node->resume_freq is set to 0 at the end of resume (after the update)
-	 * and is set to df->prev_freq at the end of suspend (after the update).
-	 * This function will be called as part of the update_devfreq call in
+* node->resume_freq is set to 0 at the end of resume (after the update)
+* and is set to df->prev_freq at the end of suspend (after the update).
+* This function will be called as part of the update_devfreq call in
 	 * both scenarios. As a result, this block will cause a 0 vote during
-	 * suspend and a vote for df->prev_freq during resume.
+* suspend and a vote for df->prev_freq during resume.
 	 */
 	if (!node->mon_started) {
-		*freq = node->resume_freq;
+*freq = node->resume_freq;
 		return 0;
 	}
 
@@ -289,43 +289,43 @@ static int devfreq_memlat_get_freq(struct devfreq *df,
 		if (hw->core_stats[i].mem_count)
 			ratio /= hw->core_stats[i].mem_count;
 
-		if (!hw->core_stats[i].freq)
+if (!hw->core_stats[i].freq)
 			continue;
 
 		trace_memlat_dev_meas(dev_name(df->dev.parent),
 					hw->core_stats[i].id,
 					hw->core_stats[i].inst_count,
 					hw->core_stats[i].mem_count,
-					hw->core_stats[i].freq,
+hw->core_stats[i].freq,
 					hw->core_stats[i].stall_pct, ratio);
 
 		if (!hw->core_stats[i].inst_count
-		    || !hw->core_stats[i].freq)
+|| !hw->core_stats[i].freq)
 			continue;
 
 		if (ratio <= node->ratio_ceil
 		    && hw->core_stats[i].stall_pct >= node->stall_floor
-		    && hw->core_stats[i].freq > max_freq) {
+&& hw->core_stats[i].freq > max_freq) {
 			lat_dev = i;
-			max_freq = hw->core_stats[i].freq;
+max_freq = hw->core_stats[i].freq;
 		}
 	}
 
-	if (max_freq)
-		max_freq = core_to_dev_freq(node, max_freq);
+if (max_freq)
+max_freq = core_to_dev_freq(node, max_freq);
 
-	if (max_freq || !node->already_zero) {
+if (max_freq || !node->already_zero) {
 		trace_memlat_dev_update(dev_name(df->dev.parent),
 					hw->core_stats[lat_dev].id,
 					hw->core_stats[lat_dev].inst_count,
 					hw->core_stats[lat_dev].mem_count,
-					hw->core_stats[lat_dev].freq,
-					max_freq);
+hw->core_stats[lat_dev].freq,
+max_freq);
 	}
 
-	node->already_zero = !max_freq;
+node->already_zero = !max_freq;
 
-	*freq = max_freq;
+*freq = max_freq;
 	return 0;
 }
 
@@ -335,12 +335,12 @@ gov_attr(stall_floor, 0U, 100U);
 static struct attribute *memlat_dev_attr[] = {
 	&dev_attr_ratio_ceil.attr,
 	&dev_attr_stall_floor.attr,
-	&dev_attr_freq_map.attr,
+&dev_attr_freq_map.attr,
 	NULL,
 };
 
 static struct attribute *compute_dev_attr[] = {
-	&dev_attr_freq_map.attr,
+&dev_attr_freq_map.attr,
 	NULL,
 };
 
@@ -363,7 +363,7 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 	unsigned int sample_ms;
 
 	switch (event) {
-	case DEVFREQ_GOV_START:
+case DEVFREQ_GOV_START:
 		sample_ms = df->profile->polling_ms;
 		sample_ms = max(MIN_MS, sample_ms);
 		sample_ms = min(MAX_MS, sample_ms);
@@ -377,13 +377,13 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 			"Enabled Memory Latency governor\n");
 		break;
 
-	case DEVFREQ_GOV_STOP:
+case DEVFREQ_GOV_STOP:
 		gov_stop(df);
 		dev_dbg(df->dev.parent,
 			"Disabled Memory Latency governor\n");
 		break;
 
-	case DEVFREQ_GOV_SUSPEND:
+case DEVFREQ_GOV_SUSPEND:
 		ret = gov_suspend(df);
 		if (ret) {
 			dev_err(df->dev.parent,
@@ -395,7 +395,7 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 		dev_dbg(df->dev.parent, "Suspended memlat governor\n");
 		break;
 
-	case DEVFREQ_GOV_RESUME:
+case DEVFREQ_GOV_RESUME:
 		ret = gov_resume(df);
 		if (ret) {
 			dev_err(df->dev.parent,
@@ -407,11 +407,11 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 		dev_dbg(df->dev.parent, "Resumed memlat governor\n");
 		break;
 
-	case DEVFREQ_GOV_INTERVAL:
+case DEVFREQ_GOV_INTERVAL:
 		sample_ms = *(unsigned int *)data;
 		sample_ms = max(MIN_MS, sample_ms);
 		sample_ms = min(MAX_MS, sample_ms);
-		devfreq_interval_update(df, &sample_ms);
+devfreq_interval_update(df, &sample_ms);
 		break;
 	}
 
@@ -420,14 +420,14 @@ static int devfreq_memlat_ev_handler(struct devfreq *df,
 
 static struct devfreq_governor devfreq_gov_memlat = {
 	.name = "mem_latency",
-	.get_target_freq = devfreq_memlat_get_freq,
-	.event_handler = devfreq_memlat_ev_handler,
+.get_target_freq = devfreq_memlat_get_freq,
+.event_handler = devfreq_memlat_ev_handler,
 };
 
 static struct devfreq_governor devfreq_gov_compute = {
 	.name = "compute",
-	.get_target_freq = devfreq_memlat_get_freq,
-	.event_handler = devfreq_memlat_ev_handler,
+.get_target_freq = devfreq_memlat_get_freq,
+.event_handler = devfreq_memlat_ev_handler,
 };
 
 #define NUM_COLS	2
@@ -467,9 +467,9 @@ static struct core_dev_map *init_core_dev_map(struct device *dev,
 				&data);
 		if (ret)
 			return NULL;
-		tbl[i].target_freq = data;
+tbl[i].target_freq = data;
 		pr_debug("Entry%d CPU:%u, Dev:%u\n", i, tbl[i].core_mhz,
-				tbl[i].target_freq);
+tbl[i].target_freq);
 	}
 	tbl[i].core_mhz = 0;
 
@@ -494,14 +494,14 @@ static struct memlat_node *register_common(struct device *dev,
 
 	if (hw->get_child_of_node) {
 		of_child = hw->get_child_of_node(dev);
-		hw->freq_map = init_core_dev_map(dev, of_child,
+hw->freq_map = init_core_dev_map(dev, of_child,
 					"qcom,core-dev-table");
 	} else {
-		hw->freq_map = init_core_dev_map(dev, NULL,
+hw->freq_map = init_core_dev_map(dev, NULL,
 					"qcom,core-dev-table");
 	}
-	if (!hw->freq_map) {
-		dev_err(dev, "Couldn't find the core-dev freq table!\n");
+if (!hw->freq_map) {
+dev_err(dev, "Couldn't find the core-dev freq table!\n");
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -524,11 +524,11 @@ int register_compute(struct device *dev, struct memlat_hwmon *hw)
 	}
 
 	mutex_lock(&state_lock);
-	node->gov = &devfreq_gov_compute;
+node->gov = &devfreq_gov_compute;
 	node->attr_grp = &compute_dev_attr_group;
 
 	if (!compute_use_cnt)
-		ret = devfreq_add_governor(&devfreq_gov_compute);
+ret = devfreq_add_governor(&devfreq_gov_compute);
 	if (!ret)
 		compute_use_cnt++;
 	mutex_unlock(&state_lock);
@@ -554,11 +554,11 @@ int register_memlat(struct device *dev, struct memlat_hwmon *hw)
 	}
 
 	mutex_lock(&state_lock);
-	node->gov = &devfreq_gov_memlat;
+node->gov = &devfreq_gov_memlat;
 	node->attr_grp = &memlat_dev_attr_group;
 
 	if (!memlat_use_cnt)
-		ret = devfreq_add_governor(&devfreq_gov_memlat);
+ret = devfreq_add_governor(&devfreq_gov_memlat);
 	if (!ret)
 		memlat_use_cnt++;
 	mutex_unlock(&state_lock);

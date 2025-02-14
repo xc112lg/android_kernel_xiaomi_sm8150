@@ -37,17 +37,17 @@ static void of_get_regulation_constraints(struct device_node *np,
 
 	constraints->name = of_get_property(np, "regulator-name", NULL);
 
-	if (!of_property_read_u32(np, "regulator-min-microvolt", &pval))
+if (!of_property_read_u32(np, "regulator-min-microvolt", &pval))
 		constraints->min_uV = pval;
 
-	if (!of_property_read_u32(np, "regulator-max-microvolt", &pval))
+if (!of_property_read_u32(np, "regulator-max-microvolt", &pval))
 		constraints->max_uV = pval;
 
-	/* Voltage change possible? */
+/* Voltage change possible? */
 	if (constraints->min_uV != constraints->max_uV)
-		constraints->valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
+constraints->valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
 
-	/* Do we have a voltage range, if so try to apply it? */
+/* Do we have a voltage range, if so try to apply it? */
 	if (constraints->min_uV && constraints->max_uV)
 		constraints->apply_uV = true;
 

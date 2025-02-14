@@ -1,5 +1,5 @@
 /*
- * Idle daemon for PowerPC.  Idle daemon will handle any action
+* Idle daemon for PowerPC.  Idle daemon will handle any action
  * that needs to be taken when the system becomes idle.
  *
  * Originally written by Cort Dougan (cort@cs.nmt.edu).
@@ -39,8 +39,8 @@ EXPORT_SYMBOL(cpuidle_disable);
 
 static int __init powersave_off(char *arg)
 {
-	ppc_md.power_save = NULL;
-	cpuidle_disable = IDLE_POWERSAVE_OFF;
+ppc_md.power_save = NULL;
+cpuidle_disable = IDLE_POWERSAVE_OFF;
 	return 1;
 }
 __setup("powersave=off", powersave_off);
@@ -57,10 +57,10 @@ void arch_cpu_idle(void)
 {
 	ppc64_runlatch_off();
 
-	if (ppc_md.power_save) {
-		ppc_md.power_save();
+if (ppc_md.power_save) {
+ppc_md.power_save();
 		/*
-		 * Some power_save functions return with
+* Some power_save functions return with
 		 * interrupts enabled, some don't.
 		 */
 		if (irqs_disabled())
@@ -69,7 +69,7 @@ void arch_cpu_idle(void)
 		local_irq_enable();
 		/*
 		 * Go into low thread priority and possibly
-		 * low power mode.
+* low power mode.
 		 */
 		HMT_low();
 		HMT_very_low();
@@ -83,12 +83,12 @@ int powersave_nap;
 
 #ifdef CONFIG_SYSCTL
 /*
- * Register the sysctl to set/clear powersave_nap.
+* Register the sysctl to set/clear powersave_nap.
  */
 static struct ctl_table powersave_nap_ctl_table[] = {
 	{
-		.procname	= "powersave-nap",
-		.data		= &powersave_nap,
+.procname	= "powersave-nap",
+.data		= &powersave_nap,
 		.maxlen		= sizeof(int),
 		.mode		= 0644,
 		.proc_handler	= proc_dointvec,
@@ -99,7 +99,7 @@ static struct ctl_table powersave_nap_sysctl_root[] = {
 	{
 		.procname	= "kernel",
 		.mode		= 0555,
-		.child		= powersave_nap_ctl_table,
+.child		= powersave_nap_ctl_table,
 	},
 	{}
 };
@@ -107,7 +107,7 @@ static struct ctl_table powersave_nap_sysctl_root[] = {
 static int __init
 register_powersave_nap_sysctl(void)
 {
-	register_sysctl_table(powersave_nap_sysctl_root);
+register_sysctl_table(powersave_nap_sysctl_root);
 
 	return 0;
 }

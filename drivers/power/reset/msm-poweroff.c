@@ -315,9 +315,9 @@ static void msm_restart_prepare(const char *cmd)
 
 	/* Hard reset the PMIC unless memory contents must be maintained. */
 	if (force_warm_reboot || need_warm_reset)
-		qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
+qpnp_pon_system_pwr_off(PON_POWER_OFF_WARM_RESET);
 	else
-		qpnp_pon_system_pwr_off(PON_POWER_OFF_HARD_RESET);
+qpnp_pon_system_pwr_off(PON_POWER_OFF_HARD_RESET);
 
 	if (cmd != NULL) {
 		if (!strncmp(cmd, "bootloader", 10)) {
@@ -369,7 +369,7 @@ static void msm_restart_prepare(const char *cmd)
 }
 
 /*
- * Deassert PS_HOLD to signal the PMIC that we are ready to power down or reset.
+* Deassert PS_HOLD to signal the PMIC that we are ready to power down or reset.
  * Do this by calling into the secure environment, if available, or by directly
  * writing to a hardware register.
  *
@@ -417,17 +417,17 @@ static void do_msm_restart(enum reboot_mode reboot_mode, const char *cmd)
 
 static void do_msm_poweroff(void)
 {
-	pr_notice("Powering off the SoC\n");
+pr_notice("Powering off the SoC\n");
 
 	set_dload_mode(0);
 	scm_disable_sdi();
-	qpnp_pon_system_pwr_off(PON_POWER_OFF_SHUTDOWN);
+qpnp_pon_system_pwr_off(PON_POWER_OFF_SHUTDOWN);
 
 	halt_spmi_pmic_arbiter();
 	deassert_ps_hold();
 
 	msleep(10000);
-	pr_err("Powering off has failed\n");
+pr_err("Powering off has failed\n");
 }
 
 #ifdef CONFIG_QCOM_DLOAD_MODE
@@ -579,7 +579,7 @@ static void msm_poweroff_syscore_resume(void)
 }
 
 static struct syscore_ops msm_poweroff_syscore_ops = {
-	.resume = msm_poweroff_syscore_resume,
+.resume = msm_poweroff_syscore_resume,
 };
 #endif
 
@@ -635,7 +635,7 @@ static int msm_restart_probe(struct platform_device *pdev)
 	}
 
 #ifdef CONFIG_HIBERNATION
-	register_syscore_ops(&msm_poweroff_syscore_ops);
+register_syscore_ops(&msm_poweroff_syscore_ops);
 #endif
 #endif
 	np = of_find_compatible_node(NULL, NULL,
@@ -689,7 +689,7 @@ skip_sysfs_create:
 	if (mem)
 		tcsr_boot_misc_detect = mem->start;
 
-	pm_power_off = do_msm_poweroff;
+pm_power_off = do_msm_poweroff;
 	arm_pm_restart = do_msm_restart;
 
 	if (scm_is_call_available(SCM_SVC_PWR, SCM_IO_DISABLE_PMIC_ARBITER) > 0)

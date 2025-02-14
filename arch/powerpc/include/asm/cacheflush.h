@@ -15,7 +15,7 @@
 
 /*
  * No cache flushing is required when address mappings are changed,
- * because the caches on PowerPCs are physically addressed.
+* because the caches on PowerPCs are physically addressed.
  */
 #define flush_cache_all()			do { } while (0)
 #define flush_cache_mm(mm)			do { } while (0)

@@ -96,15 +96,15 @@ struct fan53555_device_info {
 	/* IC Type and Rev */
 	int chip_id;
 	int chip_rev;
-	/* Voltage setting register */
+/* Voltage setting register */
 	unsigned int vol_reg;
 	unsigned int sleep_reg;
-	/* Voltage range and step(linear) */
+/* Voltage range and step(linear) */
 	unsigned int vsel_min;
 	unsigned int vsel_step;
-	/* Voltage slew rate limiting */
+/* Voltage slew rate limiting */
 	unsigned int slew_rate;
-	/* Sleep voltage cache */
+/* Sleep voltage cache */
 	unsigned int sleep_vol_cache;
 	unsigned int peek_poke_address;
 	/* Disable suspend */
@@ -122,7 +122,7 @@ static int fan53555_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 		return 0;
 	if (di->sleep_vol_cache == uV)
 		return 0;
-	ret = regulator_map_voltage_linear(rdev, uV, uV);
+ret = regulator_map_voltage_linear(rdev, uV, uV);
 	if (ret < 0)
 		return ret;
 
@@ -131,8 +131,8 @@ static int fan53555_set_suspend_voltage(struct regulator_dev *rdev, int uV)
 	ret = regmap_update_bits(di->regmap, di->sleep_reg, vsel_mask, ret);
 	if (ret < 0)
 		return ret;
-	/* Cache the sleep voltage setting.
-	 * Might not be the real voltage which is rounded */
+/* Cache the sleep voltage setting.
+* Might not be the real voltage which is rounded */
 	di->sleep_vol_cache = uV;
 
 	return 0;
@@ -244,12 +244,12 @@ static int fan53555_set_ramp(struct regulator_dev *rdev, int ramp)
 }
 
 static const struct regulator_ops fan53555_regulator_ops = {
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
-	.map_voltage = regulator_map_voltage_linear,
-	.list_voltage = regulator_list_voltage_linear,
-	.set_suspend_voltage = fan53555_set_suspend_voltage,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.map_voltage = regulator_map_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
+.set_suspend_voltage = fan53555_set_suspend_voltage,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -262,7 +262,7 @@ static const struct regulator_ops fan53555_regulator_ops = {
 
 static int fan53555_voltages_setup_fairchild(struct fan53555_device_info *di)
 {
-	/* Init voltage range and step */
+/* Init voltage range and step */
 	switch (di->chip_id) {
 	case FAN53555_CHIP_ID_00:
 		switch (di->chip_rev) {
@@ -303,7 +303,7 @@ static int fan53555_voltages_setup_fairchild(struct fan53555_device_info *di)
 
 static int fan53555_voltages_setup_silergy(struct fan53555_device_info *di)
 {
-	/* Init voltage range and step */
+/* Init voltage range and step */
 	switch (di->chip_id) {
 	case SILERGY_SYR82X:
 		di->vsel_min = 712500;
@@ -320,7 +320,7 @@ static int fan53555_voltages_setup_silergy(struct fan53555_device_info *di)
 
 static int hl7503_voltages_setup_halo(struct fan53555_device_info *di)
 {
-	/* Init voltage range and step */
+/* Init voltage range and step */
 	switch (di->chip_id) {
 	case FAN53555_CHIP_ID_08:
 		di->vsel_min = 600000;
@@ -345,7 +345,7 @@ static int fan53555_device_setup(struct fan53555_device_info *di,
 {
 	int ret = 0;
 
-	/* Setup voltage control register */
+/* Setup voltage control register */
 	switch (pdata->sleep_vsel_id) {
 	case FAN53555_VSEL_ID_0:
 		di->sleep_reg = FAN53555_VSEL0;
@@ -362,16 +362,16 @@ static int fan53555_device_setup(struct fan53555_device_info *di,
 
 	switch (di->vendor) {
 	case FAN53555_VENDOR_FAIRCHILD:
-		ret = fan53555_voltages_setup_fairchild(di);
+ret = fan53555_voltages_setup_fairchild(di);
 		break;
 	case FAN53555_VENDOR_SILERGY:
-		ret = fan53555_voltages_setup_silergy(di);
+ret = fan53555_voltages_setup_silergy(di);
 		break;
 	case HALO_HL7509:
-		ret = fan53555_voltages_setup_fairchild(di);
+ret = fan53555_voltages_setup_fairchild(di);
 		break;
 	case HALO_HL7503:
-		ret = hl7503_voltages_setup_halo(di);
+ret = hl7503_voltages_setup_halo(di);
 		break;
 	default:
 		dev_err(di->dev, "vendor %d not supported!\n", di->vendor);
@@ -389,7 +389,7 @@ static int fan53555_regulator_register(struct fan53555_device_info *di,
 	rdesc->name = "fan53555-reg";
 	rdesc->supply_name = "vin";
 	rdesc->ops = &fan53555_regulator_ops;
-	rdesc->type = REGULATOR_VOLTAGE;
+rdesc->type = REGULATOR_VOLTAGE;
 	rdesc->enable_reg = di->vol_reg;
 	rdesc->enable_mask = VSEL_BUCK_EN;
 	rdesc->min_uV = di->vsel_min;
@@ -398,10 +398,10 @@ static int fan53555_regulator_register(struct fan53555_device_info *di,
 	rdesc->owner = THIS_MODULE;
 
 	if (di->vendor == HALO_HL7503) {
-		rdesc->n_voltages = HL7503_NVOLTAGES;
+rdesc->n_voltages = HL7503_NVOLTAGES;
 		rdesc->vsel_mask = HL7503_VSEL_NSEL_MASK;
 	} else {
-		rdesc->n_voltages = FAN53555_NVOLTAGES;
+rdesc->n_voltages = FAN53555_NVOLTAGES;
 		rdesc->vsel_mask = VSEL_NSEL_MASK;
 	}
 
@@ -475,7 +475,7 @@ static int fan53555_parse_dt(struct fan53555_device_info *di,
 		return -ENODEV;
 	}
 
-	ret = of_property_read_u32(np, "fcs,suspend-voltage-selector",
+ret = of_property_read_u32(np, "fcs,suspend-voltage-selector",
 				   &tmp);
 	if (!ret)
 		pdata->sleep_vsel_id = tmp;

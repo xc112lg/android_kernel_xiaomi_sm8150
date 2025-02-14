@@ -123,7 +123,7 @@ enum prof_load_status {
 enum fg_debug_flag {
 	FG_IRQ			= BIT(0), /* Show interrupts */
 	FG_STATUS		= BIT(1), /* Show FG status changes */
-	FG_POWER_SUPPLY		= BIT(2), /* Show POWER_SUPPLY */
+FG_POWER_SUPPLY		= BIT(2), /* Show POWER_SUPPLY */
 	FG_SRAM_WRITE		= BIT(3), /* Show SRAM writes */
 	FG_SRAM_READ		= BIT(4), /* Show SRAM reads */
 	FG_BUS_WRITE		= BIT(5), /* Show REGMAP writes */
@@ -198,7 +198,7 @@ enum fg_sram_param_id {
 	FG_SRAM_BATT_SOC = 0,
 	FG_SRAM_FULL_SOC,
 	FG_SRAM_MONOTONIC_SOC,
-	FG_SRAM_VOLTAGE_PRED,
+FG_SRAM_VOLTAGE_PRED,
 	FG_SRAM_OCV,
 	FG_SRAM_VBAT_FLT,
 	FG_SRAM_VBAT_TAU,
@@ -486,17 +486,17 @@ struct fg_dev {
 	struct pmic_revid_data	*pmic_rev_id;
 	struct regmap		*regmap;
 	struct dentry		*dfs_root;
-	struct power_supply	*fg_psy;
-	struct power_supply	*batt_psy;
-	struct power_supply	*usb_psy;
-	struct power_supply	*dc_psy;
-	struct power_supply	*parallel_psy;
-	struct power_supply	*pc_port_psy;
+struct power_supply	*fg_psy;
+struct power_supply	*batt_psy;
+struct power_supply	*usb_psy;
+struct power_supply	*dc_psy;
+struct power_supply	*parallel_psy;
+struct power_supply	*pc_port_psy;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	struct power_supply *max_verify_psy;
+struct power_supply *max_verify_psy;
 #endif
 #ifdef CONFIG_MACH_XIAOMI_NABU
-	struct power_supply *max_verify_slave_psy;
+struct power_supply *max_verify_slave_psy;
 #endif
 	struct fg_irq_info	*irqs;
 	struct votable		*awake_votable;

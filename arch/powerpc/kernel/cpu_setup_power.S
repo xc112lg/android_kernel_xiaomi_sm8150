@@ -32,7 +32,7 @@ _GLOBAL(__setup_cpu_power7)
 	mfspr	r3,SPRN_LPCR
 	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
 	bl	__init_LPCR_ISA206
-	bl	__init_tlb_power7
+bl	__init_tlb_power7
 	mtlr	r11
 	blr
 
@@ -47,7 +47,7 @@ _GLOBAL(__restore_cpu_power7)
 	mfspr	r3,SPRN_LPCR
 	li	r4,(LPCR_LPES1 >> LPCR_LPES_SH)
 	bl	__init_LPCR_ISA206
-	bl	__init_tlb_power7
+bl	__init_tlb_power7
 	mtlr	r11
 	blr
 
@@ -67,7 +67,7 @@ _GLOBAL(__setup_cpu_power8)
 	li	r4,0 /* LPES = 0 */
 	bl	__init_LPCR_ISA206
 	bl	__init_HFSCR
-	bl	__init_tlb_power8
+bl	__init_tlb_power8
 	bl	__init_PMU_HV
 	bl	__init_PMU_HV_ISA207
 	mtlr	r11
@@ -90,7 +90,7 @@ _GLOBAL(__restore_cpu_power8)
 	li	r4,0 /* LPES = 0 */
 	bl	__init_LPCR_ISA206
 	bl	__init_HFSCR
-	bl	__init_tlb_power8
+bl	__init_tlb_power8
 	bl	__init_PMU_HV
 	bl	__init_PMU_HV_ISA207
 	mtlr	r11
@@ -116,7 +116,7 @@ _GLOBAL(__setup_cpu_power9)
 	li	r4,0 /* LPES = 0 */
 	bl	__init_LPCR_ISA300
 	bl	__init_HFSCR
-	bl	__init_tlb_power9
+bl	__init_tlb_power9
 	bl	__init_PMU_HV
 	mtlr	r11
 	blr
@@ -142,7 +142,7 @@ _GLOBAL(__restore_cpu_power9)
 	li	r4,0 /* LPES = 0 */
 	bl	__init_LPCR_ISA300
 	bl	__init_HFSCR
-	bl	__init_tlb_power9
+bl	__init_tlb_power9
 	bl	__init_PMU_HV
 	mtlr	r11
 	blr
@@ -174,7 +174,7 @@ __init_LPCR_ISA206:
 	li	r5,0x10
 	rldimi	r3,r5, LPCR_VRMASD_SH, 64-LPCR_VRMASD_SH-5
 
-	/* POWER9 has no VRMASD */
+/* POWER9 has no VRMASD */
 __init_LPCR_ISA300:
 	rldimi	r3,r4, LPCR_LPES_SH, 64-LPCR_LPES_SH-2
 	ori	r3,r3,(LPCR_PECE0|LPCR_PECE1|LPCR_PECE2)
@@ -205,7 +205,7 @@ __init_HFSCR:
  * (invalidate by congruence class). P7 has 128 CCs., P8 has 512.
  */
 __init_tlb_power7:
-	li	r6,POWER7_TLB_SETS
+li	r6,POWER7_TLB_SETS
 	mtctr	r6
 	li	r7,0xc00	/* IS field = 0b11 */
 	ptesync
@@ -216,7 +216,7 @@ __init_tlb_power7:
 1:	blr
 
 __init_tlb_power8:
-	li	r6,POWER8_TLB_SETS
+li	r6,POWER8_TLB_SETS
 	mtctr	r6
 	li	r7,0xc00	/* IS field = 0b11 */
 	ptesync
@@ -231,7 +231,7 @@ __init_tlb_power8:
  * and one for partition scope to clear process and partition table entries.
  */
 __init_tlb_power9:
-	li	r6,POWER9_TLB_SETS_HASH - 1
+li	r6,POWER9_TLB_SETS_HASH - 1
 	mtctr	r6
 	li	r7,0xc00	/* IS field = 0b11 */
 	li	r8,0

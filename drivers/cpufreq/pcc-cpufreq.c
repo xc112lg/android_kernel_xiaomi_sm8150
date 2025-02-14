@@ -1,5 +1,5 @@
 /*
- *  pcc-cpufreq.c - Processor Clocking Control firmware cpufreq interface
+*  pcc-cpufreq.c - Processor Clocking Control firmware cpufreq interface
  *
  *  Copyright (C) 2009 Red Hat, Matthew Garrett <mjg@redhat.com>
  *  Copyright (C) 2009 Hewlett-Packard Development Company, L.P.
@@ -85,8 +85,8 @@ struct pcc_header {
 	u32 minimum_time;
 	u32 maximum_time;
 	u32 nominal;
-	u32 throttled_frequency;
-	u32 minimum_frequency;
+u32 throttled_frequency;
+u32 minimum_frequency;
 };
 
 static void __iomem *pcch_virt_addr;
@@ -111,7 +111,7 @@ static struct pcc_cpu __percpu *pcc_cpu_info;
 
 static int pcc_cpufreq_verify(struct cpufreq_policy *policy)
 {
-	cpufreq_verify_within_cpu_limits(policy);
+cpufreq_verify_within_cpu_limits(policy);
 	return 0;
 }
 
@@ -140,21 +140,21 @@ static inline void pcc_clear_mapping(void)
 static unsigned int pcc_get_freq(unsigned int cpu)
 {
 	struct pcc_cpu *pcc_cpu_data;
-	unsigned int curr_freq;
-	unsigned int freq_limit;
+unsigned int curr_freq;
+unsigned int freq_limit;
 	u16 status;
 	u32 input_buffer;
 	u32 output_buffer;
 
 	spin_lock(&pcc_lock);
 
-	pr_debug("get: get_freq for CPU %d\n", cpu);
+pr_debug("get: get_freq for CPU %d\n", cpu);
 	pcc_cpu_data = per_cpu_ptr(pcc_cpu_info, cpu);
 
 	input_buffer = 0x1;
 	iowrite32(input_buffer,
 			(pcch_virt_addr + pcc_cpu_data->input_offset));
-	iowrite16(CMD_GET_FREQ, &pcch_hdr->command);
+iowrite16(CMD_GET_FREQ, &pcch_hdr->command);
 
 	pcc_cmd();
 
@@ -171,22 +171,22 @@ static unsigned int pcc_get_freq(unsigned int cpu)
 		goto cmd_incomplete;
 	}
 	iowrite16(0, &pcch_hdr->status);
-	curr_freq = (((ioread32(&pcch_hdr->nominal) * (output_buffer & 0xff))
+curr_freq = (((ioread32(&pcch_hdr->nominal) * (output_buffer & 0xff))
 			/ 100) * 1000);
 
 	pr_debug("get: SUCCESS: (virtual) output_offset for cpu %d is "
 		"0x%p, contains a value of: 0x%x. Speed is: %d MHz\n",
 		cpu, (pcch_virt_addr + pcc_cpu_data->output_offset),
-		output_buffer, curr_freq);
+output_buffer, curr_freq);
 
-	freq_limit = (output_buffer >> 8) & 0xff;
-	if (freq_limit != 0xff) {
-		pr_debug("get: frequency for cpu %d is being temporarily"
-			" capped at %d\n", cpu, curr_freq);
+freq_limit = (output_buffer >> 8) & 0xff;
+if (freq_limit != 0xff) {
+pr_debug("get: frequency for cpu %d is being temporarily"
+" capped at %d\n", cpu, curr_freq);
 	}
 
 	spin_unlock(&pcc_lock);
-	return curr_freq;
+return curr_freq;
 
 cmd_incomplete:
 	iowrite16(0, &pcch_hdr->status);
@@ -195,11 +195,11 @@ cmd_incomplete:
 }
 
 static int pcc_cpufreq_target(struct cpufreq_policy *policy,
-			      unsigned int target_freq,
+unsigned int target_freq,
 			      unsigned int relation)
 {
 	struct pcc_cpu *pcc_cpu_data;
-	struct cpufreq_freqs freqs;
+struct cpufreq_freqs freqs;
 	u16 status;
 	u32 input_buffer;
 	int cpu;
@@ -207,21 +207,21 @@ static int pcc_cpufreq_target(struct cpufreq_policy *policy,
 	cpu = policy->cpu;
 	pcc_cpu_data = per_cpu_ptr(pcc_cpu_info, cpu);
 
-	pr_debug("target: CPU %d should go to target freq: %d "
+pr_debug("target: CPU %d should go to target freq: %d "
 		"(virtual) input_offset is 0x%p\n",
-		cpu, target_freq,
+cpu, target_freq,
 		(pcch_virt_addr + pcc_cpu_data->input_offset));
 
-	freqs.old = policy->cur;
-	freqs.new = target_freq;
-	cpufreq_freq_transition_begin(policy, &freqs);
+freqs.old = policy->cur;
+freqs.new = target_freq;
+cpufreq_freq_transition_begin(policy, &freqs);
 	spin_lock(&pcc_lock);
 
-	input_buffer = 0x1 | (((target_freq * 100)
+input_buffer = 0x1 | (((target_freq * 100)
 			       / (ioread32(&pcch_hdr->nominal) * 1000)) << 8);
 	iowrite32(input_buffer,
 			(pcch_virt_addr + pcc_cpu_data->input_offset));
-	iowrite16(CMD_SET_FREQ, &pcch_hdr->command);
+iowrite16(CMD_SET_FREQ, &pcch_hdr->command);
 
 	pcc_cmd();
 
@@ -231,7 +231,7 @@ static int pcc_cpufreq_target(struct cpufreq_policy *policy,
 	status = ioread16(&pcch_hdr->status);
 	iowrite16(0, &pcch_hdr->status);
 
-	cpufreq_freq_transition_end(policy, &freqs, status != CMD_COMPLETE);
+cpufreq_freq_transition_end(policy, &freqs, status != CMD_COMPLETE);
 	spin_unlock(&pcc_lock);
 
 	if (status != CMD_COMPLETE) {
@@ -403,7 +403,7 @@ static int __init pcc_cpufreq_probe(void)
 
 	status = acpi_get_handle(handle, "_OSC", &osc_handle);
 	if (ACPI_SUCCESS(status)) {
-		ret = pcc_cpufreq_do_osc(&osc_handle);
+ret = pcc_cpufreq_do_osc(&osc_handle);
 		if (ret)
 			pr_debug("probe: _OSC evaluation did not succeed\n");
 		/* Firmware's use of _OSC is optional */
@@ -467,14 +467,14 @@ static int __init pcc_cpufreq_probe(void)
 
 	pr_debug("probe: min time between commands: %d us,"
 		" max time between commands: %d us,"
-		" nominal CPU frequency: %d MHz,"
-		" minimum CPU frequency: %d MHz,"
-		" minimum CPU frequency without throttling: %d MHz\n",
+" nominal CPU frequency: %d MHz,"
+" minimum CPU frequency: %d MHz,"
+" minimum CPU frequency without throttling: %d MHz\n",
 		ioread32(&pcch_hdr->minimum_time),
 		ioread32(&pcch_hdr->maximum_time),
 		ioread32(&pcch_hdr->nominal),
-		ioread32(&pcch_hdr->throttled_frequency),
-		ioread32(&pcch_hdr->minimum_frequency));
+ioread32(&pcch_hdr->throttled_frequency),
+ioread32(&pcch_hdr->minimum_frequency));
 
 	member = &out_obj->package.elements[1];
 	if (member->type != ACPI_TYPE_BUFFER) {
@@ -521,9 +521,9 @@ static int __init pcc_cpufreq_probe(void)
 		goto pcch_free;
 	}
 
-	printk(KERN_DEBUG "pcc-cpufreq: (v%s) driver loaded with frequency"
+printk(KERN_DEBUG "pcc-cpufreq: (v%s) driver loaded with frequency"
 	       " limits: %d MHz, %d MHz\n", PCC_VERSION,
-	       ioread32(&pcch_hdr->minimum_frequency),
+ioread32(&pcch_hdr->minimum_frequency),
 	       ioread32(&pcch_hdr->nominal));
 	kfree(output.pointer);
 	return ret;
@@ -550,10 +550,10 @@ static int pcc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		goto out;
 	}
 
-	policy->max = policy->cpuinfo.max_freq =
+policy->max = policy->cpuinfo.max_freq =
 		ioread32(&pcch_hdr->nominal) * 1000;
-	policy->min = policy->cpuinfo.min_freq =
-		ioread32(&pcch_hdr->minimum_frequency) * 1000;
+policy->min = policy->cpuinfo.min_freq =
+ioread32(&pcch_hdr->minimum_frequency) * 1000;
 
 	pr_debug("init: policy->max is %d, policy->min is %d\n",
 		policy->max, policy->min);
@@ -567,40 +567,40 @@ static int pcc_cpufreq_cpu_exit(struct cpufreq_policy *policy)
 }
 
 static struct cpufreq_driver pcc_cpufreq_driver = {
-	.flags = CPUFREQ_CONST_LOOPS,
-	.get = pcc_get_freq,
-	.verify = pcc_cpufreq_verify,
-	.target = pcc_cpufreq_target,
-	.init = pcc_cpufreq_cpu_init,
-	.exit = pcc_cpufreq_cpu_exit,
-	.name = "pcc-cpufreq",
+.flags = CPUFREQ_CONST_LOOPS,
+.get = pcc_get_freq,
+.verify = pcc_cpufreq_verify,
+.target = pcc_cpufreq_target,
+.init = pcc_cpufreq_cpu_init,
+.exit = pcc_cpufreq_cpu_exit,
+.name = "pcc-cpufreq",
 };
 
 static int __init pcc_cpufreq_init(void)
 {
 	int ret;
 
-	/* Skip initialization if another cpufreq driver is there. */
-	if (cpufreq_get_current_driver())
+/* Skip initialization if another cpufreq driver is there. */
+if (cpufreq_get_current_driver())
 		return 0;
 
 	if (acpi_disabled)
 		return 0;
 
-	ret = pcc_cpufreq_probe();
+ret = pcc_cpufreq_probe();
 	if (ret) {
-		pr_debug("pcc_cpufreq_init: PCCH evaluation failed\n");
+pr_debug("pcc_cpufreq_init: PCCH evaluation failed\n");
 		return ret;
 	}
 
-	ret = cpufreq_register_driver(&pcc_cpufreq_driver);
+ret = cpufreq_register_driver(&pcc_cpufreq_driver);
 
 	return ret;
 }
 
 static void __exit pcc_cpufreq_exit(void)
 {
-	cpufreq_unregister_driver(&pcc_cpufreq_driver);
+cpufreq_unregister_driver(&pcc_cpufreq_driver);
 
 	pcc_clear_mapping();
 

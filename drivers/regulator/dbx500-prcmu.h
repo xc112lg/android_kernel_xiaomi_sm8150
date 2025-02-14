@@ -19,8 +19,8 @@
  * @desc: regulator description
  * @rdev: regulator device pointer
  * @is_enabled: status of the regulator
- * @epod_id: id for EPOD (power domain)
- * @is_ramret: RAM retention switch for EPOD (power domain)
+* @epod_id: id for EPOD (power domain)
+* @is_ramret: RAM retention switch for EPOD (power domain)
  *
  */
 struct dbx500_regulator_info {
@@ -30,7 +30,7 @@ struct dbx500_regulator_info {
 	bool is_enabled;
 	u16 epod_id;
 	bool is_ramret;
-	bool exclude_from_power_state;
+bool exclude_from_power_state;
 };
 
 void power_state_active_enable(void);

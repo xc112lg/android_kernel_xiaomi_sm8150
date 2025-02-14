@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/embedded6xx/gamecube.c
+* arch/powerpc/platforms/embedded6xx/gamecube.c
  *
  * Nintendo GameCube board-specific support
  * Copyright (C) 2004-2009 The GameCube Linux Team
@@ -31,7 +31,7 @@
 
 static void __noreturn gamecube_spin(void)
 {
-	/* spin until power button pressed */
+/* spin until power button pressed */
 	for (;;)
 		cpu_relax();
 }
@@ -59,7 +59,7 @@ static int __init gamecube_probe(void)
 	if (!of_machine_is_compatible("nintendo,gamecube"))
 		return 0;
 
-	pm_power_off = gamecube_power_off;
+pm_power_off = gamecube_power_off;
 
 	ug_udbg_init();
 

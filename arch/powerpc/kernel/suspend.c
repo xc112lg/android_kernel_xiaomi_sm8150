@@ -1,5 +1,5 @@
 /*
- * Suspend support specific for power.
+* Suspend support specific for power.
  *
  * Distribute under GPLv2
  *

@@ -1,5 +1,5 @@
 /*
- * OMAP2/3/4 powerdomain control
+* OMAP2/3/4 powerdomain control
  *
  * Copyright (C) 2007-2008, 2010 Texas Instruments, Inc.
  * Copyright (C) 2007-2011 Nokia Corporation
@@ -43,29 +43,29 @@
 
 
 /*
- * Powerdomain flags (struct powerdomain.flags)
+* Powerdomain flags (struct powerdomain.flags)
  *
- * PWRDM_HAS_HDWR_SAR - powerdomain has hardware save-and-restore support
+* PWRDM_HAS_HDWR_SAR - powerdomain has hardware save-and-restore support
  *
  * PWRDM_HAS_MPU_QUIRK - MPU pwr domain has MEM bank 0 bits in MEM
  * bank 1 position. This is true for OMAP3430
  *
- * PWRDM_HAS_LOWPOWERSTATECHANGE - can transition from a sleep state
- * to a lower sleep state without waking up the powerdomain
+* PWRDM_HAS_LOWPOWERSTATECHANGE - can transition from a sleep state
+* to a lower sleep state without waking up the powerdomain
  */
 #define PWRDM_HAS_HDWR_SAR		BIT(0)
 #define PWRDM_HAS_MPU_QUIRK		BIT(1)
 #define PWRDM_HAS_LOWPOWERSTATECHANGE	BIT(2)
 
 /*
- * Number of memory banks that are power-controllable.	On OMAP4430, the
+* Number of memory banks that are power-controllable.	On OMAP4430, the
  * maximum is 5.
  */
 #define PWRDM_MAX_MEM_BANKS	5
 
 /*
- * Maximum number of clockdomains that can be associated with a powerdomain.
- * PER powerdomain on AM33XX is the worst case
+* Maximum number of clockdomains that can be associated with a powerdomain.
+* PER powerdomain on AM33XX is the worst case
  */
 #define PWRDM_MAX_CLKDMS	11
 
@@ -77,20 +77,20 @@ struct powerdomain;
 struct voltagedomain;
 
 /**
- * struct powerdomain - OMAP powerdomain
- * @name: Powerdomain name
- * @voltdm: voltagedomain containing this powerdomain
+* struct powerdomain - OMAP powerdomain
+* @name: Powerdomain name
+* @voltdm: voltagedomain containing this powerdomain
  * @prcm_offs: the address offset from CM_BASE/PRM_BASE
  * @prcm_partition: (OMAP4 only) the PRCM partition ID containing @prcm_offs
- * @pwrsts: Possible powerdomain power states
- * @pwrsts_logic_ret: Possible logic power states when pwrdm in RETENTION
- * @flags: Powerdomain flags
- * @banks: Number of software-controllable memory banks in this powerdomain
+* @pwrsts: Possible powerdomain power states
+* @pwrsts_logic_ret: Possible logic power states when pwrdm in RETENTION
+* @flags: Powerdomain flags
+* @banks: Number of software-controllable memory banks in this powerdomain
  * @pwrsts_mem_ret: Possible memory bank pwrstates when pwrdm in RETENTION
  * @pwrsts_mem_on: Possible memory bank pwrstates when pwrdm in ON
- * @pwrdm_clkdms: Clockdomains in this powerdomain
- * @node: list_head linking all powerdomains
- * @voltdm_node: list_head linking all powerdomains in a voltagedomain
+* @pwrdm_clkdms: Clockdomains in this powerdomain
+* @node: list_head linking all powerdomains
+* @voltdm_node: list_head linking all powerdomains in a voltagedomain
  * @pwrstctrl_offs: (AM33XX only) XXX_PWRSTCTRL reg offset from prcm_offs
  * @pwrstst_offs: (AM33XX only) XXX_PWRSTST reg offset from prcm_offs
  * @logicretstate_mask: (AM33XX only) mask for logic retention bitfield
@@ -104,7 +104,7 @@ struct voltagedomain;
  * @state_counter:
  * @timer:
  * @state_timer:
- * @_lock: spinlock used to serialize powerdomain and some clockdomain ops
+* @_lock: spinlock used to serialize powerdomain and some clockdomain ops
  * @_lock_flags: stored flags when @_lock is taken
  *
  * @prcm_partition possible values are defined in mach-omap2/prcm44xx.h.
@@ -113,7 +113,7 @@ struct powerdomain {
 	const char *name;
 	union {
 		const char *name;
-		struct voltagedomain *ptr;
+struct voltagedomain *ptr;
 	} voltdm;
 	const s16 prcm_offs;
 	const u8 pwrsts;
@@ -148,10 +148,10 @@ struct powerdomain {
 
 /**
  * struct pwrdm_ops - Arch specific function implementations
- * @pwrdm_set_next_pwrst: Set the target power state for a pd
- * @pwrdm_read_next_pwrst: Read the target power state set for a pd
- * @pwrdm_read_pwrst: Read the current power state of a pd
- * @pwrdm_read_prev_pwrst: Read the prev power state entered by the pd
+* @pwrdm_set_next_pwrst: Set the target power state for a pd
+* @pwrdm_read_next_pwrst: Read the target power state set for a pd
+* @pwrdm_read_pwrst: Read the current power state of a pd
+* @pwrdm_read_prev_pwrst: Read the prev power state entered by the pd
  * @pwrdm_set_logic_retst: Set the logic state in RET for a pd
  * @pwrdm_set_mem_onst: Set the Memory state in ON for a pd
  * @pwrdm_set_mem_retst: Set the Memory state in RET for a pd
@@ -161,7 +161,7 @@ struct powerdomain {
  * @pwrdm_read_mem_pwrst: Read the current memory state of a pd
  * @pwrdm_read_prev_mem_pwrst: Read the previous memory state entered by a pd
  * @pwrdm_read_mem_retst: Read the memory state in RET for a pd
- * @pwrdm_clear_all_prev_pwrst: Clear all previous power states logged for a pd
+* @pwrdm_clear_all_prev_pwrst: Clear all previous power states logged for a pd
  * @pwrdm_enable_hdwr_sar: Enable Hardware Save-Restore feature for the pd
  * @pwrdm_disable_hdwr_sar: Disable Hardware Save-Restore feature for a pd
  * @pwrdm_set_lowpwrstchange: Enable pd transitions from a shallow to deep sleep
@@ -169,34 +169,34 @@ struct powerdomain {
  * @pwrdm_has_voltdm: Check if a voltdm association is needed
  *
  * Regarding @pwrdm_set_lowpwrstchange: On the OMAP2 and 3-family
- * chips, a powerdomain's power state is not allowed to directly
- * transition from one low-power state (e.g., CSWR) to another
- * low-power state (e.g., OFF) without first waking up the
- * powerdomain.  This wastes energy.  So OMAP4 chips support the
- * ability to transition a powerdomain power state directly from one
- * low-power state to another.  The function pointed to by
+* chips, a powerdomain's power state is not allowed to directly
+* transition from one low-power state (e.g., CSWR) to another
+* low-power state (e.g., OFF) without first waking up the
+* powerdomain.  This wastes energy.  So OMAP4 chips support the
+* ability to transition a powerdomain power state directly from one
+* low-power state to another.  The function pointed to by
  * @pwrdm_set_lowpwrstchange is intended to configure the OMAP4
- * hardware powerdomain state machine to enable this feature.
+* hardware powerdomain state machine to enable this feature.
  */
 struct pwrdm_ops {
-	int	(*pwrdm_set_next_pwrst)(struct powerdomain *pwrdm, u8 pwrst);
-	int	(*pwrdm_read_next_pwrst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_read_pwrst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_read_prev_pwrst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_set_logic_retst)(struct powerdomain *pwrdm, u8 pwrst);
-	int	(*pwrdm_set_mem_onst)(struct powerdomain *pwrdm, u8 bank, u8 pwrst);
-	int	(*pwrdm_set_mem_retst)(struct powerdomain *pwrdm, u8 bank, u8 pwrst);
-	int	(*pwrdm_read_logic_pwrst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_read_prev_logic_pwrst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_read_logic_retst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_read_mem_pwrst)(struct powerdomain *pwrdm, u8 bank);
-	int	(*pwrdm_read_prev_mem_pwrst)(struct powerdomain *pwrdm, u8 bank);
-	int	(*pwrdm_read_mem_retst)(struct powerdomain *pwrdm, u8 bank);
-	int	(*pwrdm_clear_all_prev_pwrst)(struct powerdomain *pwrdm);
-	int	(*pwrdm_enable_hdwr_sar)(struct powerdomain *pwrdm);
-	int	(*pwrdm_disable_hdwr_sar)(struct powerdomain *pwrdm);
-	int	(*pwrdm_set_lowpwrstchange)(struct powerdomain *pwrdm);
-	int	(*pwrdm_wait_transition)(struct powerdomain *pwrdm);
+int	(*pwrdm_set_next_pwrst)(struct powerdomain *pwrdm, u8 pwrst);
+int	(*pwrdm_read_next_pwrst)(struct powerdomain *pwrdm);
+int	(*pwrdm_read_pwrst)(struct powerdomain *pwrdm);
+int	(*pwrdm_read_prev_pwrst)(struct powerdomain *pwrdm);
+int	(*pwrdm_set_logic_retst)(struct powerdomain *pwrdm, u8 pwrst);
+int	(*pwrdm_set_mem_onst)(struct powerdomain *pwrdm, u8 bank, u8 pwrst);
+int	(*pwrdm_set_mem_retst)(struct powerdomain *pwrdm, u8 bank, u8 pwrst);
+int	(*pwrdm_read_logic_pwrst)(struct powerdomain *pwrdm);
+int	(*pwrdm_read_prev_logic_pwrst)(struct powerdomain *pwrdm);
+int	(*pwrdm_read_logic_retst)(struct powerdomain *pwrdm);
+int	(*pwrdm_read_mem_pwrst)(struct powerdomain *pwrdm, u8 bank);
+int	(*pwrdm_read_prev_mem_pwrst)(struct powerdomain *pwrdm, u8 bank);
+int	(*pwrdm_read_mem_retst)(struct powerdomain *pwrdm, u8 bank);
+int	(*pwrdm_clear_all_prev_pwrst)(struct powerdomain *pwrdm);
+int	(*pwrdm_enable_hdwr_sar)(struct powerdomain *pwrdm);
+int	(*pwrdm_disable_hdwr_sar)(struct powerdomain *pwrdm);
+int	(*pwrdm_set_lowpwrstchange)(struct powerdomain *pwrdm);
+int	(*pwrdm_wait_transition)(struct powerdomain *pwrdm);
 	int	(*pwrdm_has_voltdm)(void);
 };
 

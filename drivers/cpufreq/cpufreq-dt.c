@@ -36,7 +36,7 @@ struct private_data {
 };
 
 static struct freq_attr *cpufreq_dt_attr[] = {
-	&cpufreq_freq_attr_scaling_available_freqs,
+&cpufreq_freq_attr_scaling_available_freqs,
 	NULL,   /* Extra space for boost-attr if required */
 	NULL,
 };
@@ -44,14 +44,14 @@ static struct freq_attr *cpufreq_dt_attr[] = {
 static int set_target(struct cpufreq_policy *policy, unsigned int index)
 {
 	struct private_data *priv = policy->driver_data;
-	unsigned long freq = policy->freq_table[index].frequency;
+unsigned long freq = policy->freq_table[index].frequency;
 	int ret;
 
-	ret = dev_pm_opp_set_rate(priv->cpu_dev, freq * 1000);
+ret = dev_pm_opp_set_rate(priv->cpu_dev, freq * 1000);
 
 	if (!ret) {
-		arch_set_freq_scale(policy->related_cpus, freq,
-				    policy->cpuinfo.max_freq);
+arch_set_freq_scale(policy->related_cpus, freq,
+policy->cpuinfo.max_freq);
 	}
 
 	return ret;
@@ -152,7 +152,7 @@ static int resources_available(void)
 
 static int cpufreq_init(struct cpufreq_policy *policy)
 {
-	struct cpufreq_frequency_table *freq_table;
+struct cpufreq_frequency_table *freq_table;
 	struct opp_table *opp_table = NULL;
 	struct private_data *priv;
 	struct device *cpu_dev;
@@ -251,9 +251,9 @@ static int cpufreq_init(struct cpufreq_policy *policy)
 				__func__, ret);
 	}
 
-	ret = dev_pm_opp_init_cpufreq_table(cpu_dev, &freq_table);
+ret = dev_pm_opp_init_cpufreq_table(cpu_dev, &freq_table);
 	if (ret) {
-		dev_err(cpu_dev, "failed to init cpufreq table: %d\n", ret);
+dev_err(cpu_dev, "failed to init cpufreq table: %d\n", ret);
 		goto out_free_opp;
 	}
 
@@ -261,27 +261,27 @@ static int cpufreq_init(struct cpufreq_policy *policy)
 	policy->driver_data = priv;
 	policy->clk = cpu_clk;
 
-	policy->suspend_freq = dev_pm_opp_get_suspend_opp_freq(cpu_dev) / 1000;
+policy->suspend_freq = dev_pm_opp_get_suspend_opp_freq(cpu_dev) / 1000;
 
-	ret = cpufreq_table_validate_and_show(policy, freq_table);
+ret = cpufreq_table_validate_and_show(policy, freq_table);
 	if (ret) {
-		dev_err(cpu_dev, "%s: invalid frequency table: %d\n", __func__,
+dev_err(cpu_dev, "%s: invalid frequency table: %d\n", __func__,
 			ret);
-		goto out_free_cpufreq_table;
+goto out_free_cpufreq_table;
 	}
 
 	/* Support turbo/boost mode */
-	if (policy_has_boost_freq(policy)) {
+if (policy_has_boost_freq(policy)) {
 		/* This gets disabled by core on driver unregister */
-		ret = cpufreq_enable_boost_support();
+ret = cpufreq_enable_boost_support();
 		if (ret)
-			goto out_free_cpufreq_table;
-		cpufreq_dt_attr[1] = &cpufreq_freq_attr_scaling_boost_freqs;
+goto out_free_cpufreq_table;
+cpufreq_dt_attr[1] = &cpufreq_freq_attr_scaling_boost_freqs;
 	}
 
 	transition_latency = dev_pm_opp_get_max_transition_latency(cpu_dev);
 	if (!transition_latency)
-		transition_latency = CPUFREQ_ETERNAL;
+transition_latency = CPUFREQ_ETERNAL;
 
 	policy->cpuinfo.transition_latency = transition_latency;
 	policy->dvfs_possible_from_any_cpu = true;
@@ -289,7 +289,7 @@ static int cpufreq_init(struct cpufreq_policy *policy)
 	return 0;
 
 out_free_cpufreq_table:
-	dev_pm_opp_free_cpufreq_table(cpu_dev, &freq_table);
+dev_pm_opp_free_cpufreq_table(cpu_dev, &freq_table);
 out_free_opp:
 	if (priv->have_static_opps)
 		dev_pm_opp_of_cpumask_remove_table(policy->cpus);
@@ -307,8 +307,8 @@ static int cpufreq_exit(struct cpufreq_policy *policy)
 {
 	struct private_data *priv = policy->driver_data;
 
-	cpufreq_cooling_unregister(priv->cdev);
-	dev_pm_opp_free_cpufreq_table(priv->cpu_dev, &policy->freq_table);
+cpufreq_cooling_unregister(priv->cdev);
+dev_pm_opp_free_cpufreq_table(priv->cpu_dev, &policy->freq_table);
 	if (priv->have_static_opps)
 		dev_pm_opp_of_cpumask_remove_table(policy->related_cpus);
 	if (priv->reg_name)
@@ -333,16 +333,16 @@ static void cpufreq_ready(struct cpufreq_policy *policy)
 	 * thermal DT code takes care of matching them.
 	 */
 	if (of_find_property(np, "#cooling-cells", NULL)) {
-		u32 power_coefficient = 0;
+u32 power_coefficient = 0;
 
-		of_property_read_u32(np, "dynamic-power-coefficient",
-				     &power_coefficient);
+of_property_read_u32(np, "dynamic-power-coefficient",
+&power_coefficient);
 
-		priv->cdev = of_cpufreq_power_cooling_register(np,
-				policy, power_coefficient, NULL);
+priv->cdev = of_cpufreq_power_cooling_register(np,
+policy, power_coefficient, NULL);
 		if (IS_ERR(priv->cdev)) {
 			dev_err(priv->cpu_dev,
-				"running cpufreq without cooling device: %ld\n",
+"running cpufreq without cooling device: %ld\n",
 				PTR_ERR(priv->cdev));
 
 			priv->cdev = NULL;
@@ -353,25 +353,25 @@ static void cpufreq_ready(struct cpufreq_policy *policy)
 }
 
 static struct cpufreq_driver dt_cpufreq_driver = {
-	.flags = CPUFREQ_STICKY | CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.verify = cpufreq_generic_frequency_table_verify,
+.flags = CPUFREQ_STICKY | CPUFREQ_NEED_INITIAL_FREQ_CHECK,
+.verify = cpufreq_generic_frequency_table_verify,
 	.target_index = set_target,
-	.get = cpufreq_generic_get,
-	.init = cpufreq_init,
-	.exit = cpufreq_exit,
-	.ready = cpufreq_ready,
-	.name = "cpufreq-dt",
-	.attr = cpufreq_dt_attr,
-	.suspend = cpufreq_generic_suspend,
+.get = cpufreq_generic_get,
+.init = cpufreq_init,
+.exit = cpufreq_exit,
+.ready = cpufreq_ready,
+.name = "cpufreq-dt",
+.attr = cpufreq_dt_attr,
+.suspend = cpufreq_generic_suspend,
 };
 
 static int dt_cpufreq_probe(struct platform_device *pdev)
 {
-	struct cpufreq_dt_platform_data *data = dev_get_platdata(&pdev->dev);
+struct cpufreq_dt_platform_data *data = dev_get_platdata(&pdev->dev);
 	int ret;
 
 	/*
-	 * All per-cluster (CPUs sharing clock/voltages) initialization is done
+* All per-cluster (CPUs sharing clock/voltages) initialization is done
 	 * from ->init(). In probe(), we just need to make sure that clk and
 	 * regulators are available. Else defer probe and retry.
 	 *
@@ -382,9 +382,9 @@ static int dt_cpufreq_probe(struct platform_device *pdev)
 		return ret;
 
 	if (data && data->have_governor_per_policy)
-		dt_cpufreq_driver.flags |= CPUFREQ_HAVE_GOVERNOR_PER_POLICY;
+dt_cpufreq_driver.flags |= CPUFREQ_HAVE_GOVERNOR_PER_POLICY;
 
-	ret = cpufreq_register_driver(&dt_cpufreq_driver);
+ret = cpufreq_register_driver(&dt_cpufreq_driver);
 	if (ret)
 		dev_err(&pdev->dev, "failed register driver: %d\n", ret);
 
@@ -393,16 +393,16 @@ static int dt_cpufreq_probe(struct platform_device *pdev)
 
 static int dt_cpufreq_remove(struct platform_device *pdev)
 {
-	cpufreq_unregister_driver(&dt_cpufreq_driver);
+cpufreq_unregister_driver(&dt_cpufreq_driver);
 	return 0;
 }
 
 static struct platform_driver dt_cpufreq_platdrv = {
 	.driver = {
-		.name	= "cpufreq-dt",
+.name	= "cpufreq-dt",
 	},
-	.probe		= dt_cpufreq_probe,
-	.remove		= dt_cpufreq_remove,
+.probe		= dt_cpufreq_probe,
+.remove		= dt_cpufreq_remove,
 };
 module_platform_driver(dt_cpufreq_platdrv);
 

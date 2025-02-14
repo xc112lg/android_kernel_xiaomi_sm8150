@@ -349,7 +349,7 @@ static void setup_pci_atmu(struct pci_controller *hose)
 
 	/* PCIe can overmap inbound & outbound since RX & TX are separated */
 	if (early_find_capability(hose, 0, 0, PCI_CAP_ID_EXP)) {
-		/* Size window to exact size if power-of-two or one size up */
+/* Size window to exact size if power-of-two or one size up */
 		if ((1ull << mem_log) != mem) {
 			mem_log++;
 			if ((1ull << mem_log) > mem)
@@ -378,7 +378,7 @@ static void setup_pci_atmu(struct pci_controller *hose)
 		if (sz != mem) {
 			mem_log = ilog2(mem);
 
-			/* Size window up if we dont fit in exact power-of-2 */
+/* Size window up if we dont fit in exact power-of-2 */
 			if ((1ull << mem_log) != mem)
 				mem_log++;
 

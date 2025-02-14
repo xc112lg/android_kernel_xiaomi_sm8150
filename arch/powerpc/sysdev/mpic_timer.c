@@ -71,7 +71,7 @@ struct timer_group_priv {
 	struct timer_regs __iomem	*regs;
 	struct mpic_timer		timer[TIMERS_PER_GROUP];
 	struct list_head		node;
-	unsigned int			timerfreq;
+unsigned int			timerfreq;
 	unsigned int			idle;
 	unsigned int			flags;
 	spinlock_t			lock;
@@ -94,14 +94,14 @@ static void convert_ticks_to_time(struct timer_group_priv *priv,
 {
 	u64 tmp_sec;
 
-	time->tv_sec = (__kernel_time_t)div_u64(ticks, priv->timerfreq);
-	tmp_sec = (u64)time->tv_sec * (u64)priv->timerfreq;
+time->tv_sec = (__kernel_time_t)div_u64(ticks, priv->timerfreq);
+tmp_sec = (u64)time->tv_sec * (u64)priv->timerfreq;
 
 	time->tv_usec = 0;
 
 	if (tmp_sec <= ticks)
 		time->tv_usec = (__kernel_suseconds_t)
-			div_u64((ticks - tmp_sec) * 1000000, priv->timerfreq);
+div_u64((ticks - tmp_sec) * 1000000, priv->timerfreq);
 
 	return;
 }
@@ -117,21 +117,21 @@ static int convert_time_to_ticks(struct timer_group_priv *priv,
 	u64 tmp_ms;
 	u64 tmp_us;
 
-	max_value = div_u64(ULLONG_MAX, priv->timerfreq);
+max_value = div_u64(ULLONG_MAX, priv->timerfreq);
 
 	if (time->tv_sec > max_value ||
 			(time->tv_sec == max_value && time->tv_usec > 0))
 		return -EINVAL;
 
-	tmp_sec = (u64)time->tv_sec * (u64)priv->timerfreq;
+tmp_sec = (u64)time->tv_sec * (u64)priv->timerfreq;
 	tmp += tmp_sec;
 
 	tmp_ms = time->tv_usec / 1000;
-	tmp_ms = div_u64((u64)tmp_ms * (u64)priv->timerfreq, 1000);
+tmp_ms = div_u64((u64)tmp_ms * (u64)priv->timerfreq, 1000);
 	tmp += tmp_ms;
 
 	tmp_us = time->tv_usec % 1000;
-	tmp_us = div_u64((u64)tmp_us * (u64)priv->timerfreq, 1000000);
+tmp_us = div_u64((u64)tmp_us * (u64)priv->timerfreq, 1000000);
 	tmp += tmp_us;
 
 	*ticks = tmp;
@@ -433,18 +433,18 @@ static int timer_group_get_freq(struct device_node *np,
 
 		dn = of_find_compatible_node(NULL, NULL, "fsl,mpic");
 		if (dn) {
-			of_property_read_u32(dn, "clock-frequency",
-					&priv->timerfreq);
+of_property_read_u32(dn, "clock-frequency",
+&priv->timerfreq);
 			of_node_put(dn);
 		}
 	}
 
-	if (priv->timerfreq <= 0)
+if (priv->timerfreq <= 0)
 		return -EINVAL;
 
 	if (priv->flags & FSL_GLOBAL_TIMER) {
 		div = (1 << (MPIC_TIMER_TCR_CLKDIV >> 8)) * 8;
-		priv->timerfreq /= div;
+priv->timerfreq /= div;
 	}
 
 	return 0;
@@ -527,9 +527,9 @@ static void timer_group_init(struct device_node *np)
 		}
 	}
 
-	ret = timer_group_get_freq(np, priv);
+ret = timer_group_get_freq(np, priv);
 	if (ret < 0) {
-		pr_err("%pOF: cannot get timer frequency.\n", np);
+pr_err("%pOF: cannot get timer frequency.\n", np);
 		goto out;
 	}
 

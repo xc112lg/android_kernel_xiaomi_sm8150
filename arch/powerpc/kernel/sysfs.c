@@ -31,14 +31,14 @@ static DEFINE_PER_CPU(struct cpu, cpu_devices);
 #ifdef CONFIG_PPC64
 
 /*
- * Snooze delay has not been hooked up since 3fa8cad82b94 ("powerpc/pseries/cpuidle:
+* Snooze delay has not been hooked up since 3fa8cad82b94 ("powerpc/pseries/cpuidle:
  * smt-snooze-delay cleanup.") and has been broken even longer. As was foretold in
  * 2014:
  *
  *  "ppc64_util currently utilises it. Once we fix ppc64_util, propose to clean
  *  up the kernel code."
  *
- * powerpc-utils stopped using it as of 1.3.8. At some point in the future this
+* powerpc-utils stopped using it as of 1.3.8. At some point in the future this
  * code should be removed.
  */
 
@@ -357,7 +357,7 @@ static DEVICE_ATTR(altivec_idle, 0600, show_altivec_idle, store_altivec_idle);
 
 /*
  * Set wait time interface:(Nanosecond)
- * Example: Base on TBfreq is 41MHZ.
+* Example: Base on TBfreq is 41MHZ.
  * 1~48(ns): TB[63]
  * 49~97(ns): TB[62]
  * 98~195(ns): TB[61]
@@ -1023,7 +1023,7 @@ static int __init topology_init(void)
 			device_create_file(&c->dev, &dev_attr_physical_id);
 		}
 	}
-	r = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "powerpc/topology:online",
+r = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "powerpc/topology:online",
 			      register_cpu_online, unregister_cpu_online);
 	WARN_ON(r < 0);
 #ifdef CONFIG_PPC64

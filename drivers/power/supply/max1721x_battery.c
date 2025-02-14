@@ -57,8 +57,8 @@
 
 struct max17211_device_info {
 	char name[PSY_MAX_NAME_LEN];
-	struct power_supply *bat;
-	struct power_supply_desc bat_desc;
+struct power_supply *bat;
+struct power_supply_desc bat_desc;
 	struct device *w1_dev;
 	struct regmap *regmap;
 	/* battery design format */
@@ -105,7 +105,7 @@ static inline int max172xx_temperature_to_ps(unsigned int reg)
 /*
  * Calculating current registers resolution:
  *
- * RSense stored in 10^-5 Ohm, so mesaurment voltage must be
+* RSense stored in 10^-5 Ohm, so mesaurment voltage must be
  * in 10^-11 Volts for get current in uA.
  * 16 bit current reg fullscale +/-51.2mV is 102400 uV.
  * So: 102400 / 65535 * 10^5 = 156252
@@ -121,21 +121,21 @@ static inline int max172xx_current_to_voltage(unsigned int reg)
 static inline struct max17211_device_info *
 to_device_info(struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static int max1721x_battery_get_property(struct power_supply *psy,
-	enum power_supply_property psp,
-	union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct max17211_device_info *info = to_device_info(psy);
 	unsigned int reg = 0;
 	int ret = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		/*
-		 * POWER_SUPPLY_PROP_PRESENT will always readable via
+* POWER_SUPPLY_PROP_PRESENT will always readable via
 		 * sysfs interface. Value return 0 if battery not
 		 * present or unaccesable via W1.
 		 */
@@ -143,58 +143,58 @@ static int max1721x_battery_get_property(struct power_supply *psy,
 			regmap_read(info->regmap, MAX172XX_REG_STATUS,
 			&reg) ? 0 : !(reg & MAX172XX_BAT_PRESENT);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = regmap_read(info->regmap, MAX172XX_REG_REPSOC, &reg);
 		val->intval = max172xx_percent_to_ps(reg);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		ret = regmap_read(info->regmap, MAX172XX_REG_BATT, &reg);
-		val->intval = max172xx_voltage_to_ps(reg);
+val->intval = max172xx_voltage_to_ps(reg);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		ret = regmap_read(info->regmap, MAX172XX_REG_DESIGNCAP, &reg);
 		val->intval = max172xx_capacity_to_ps(reg);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_AVG:
+case POWER_SUPPLY_PROP_CHARGE_AVG:
 		ret = regmap_read(info->regmap, MAX172XX_REG_REPCAP, &reg);
 		val->intval = max172xx_capacity_to_ps(reg);
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
+case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
 		ret = regmap_read(info->regmap, MAX172XX_REG_TTE, &reg);
 		val->intval = max172xx_time_to_ps(reg);
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_FULL_AVG:
+case POWER_SUPPLY_PROP_TIME_TO_FULL_AVG:
 		ret = regmap_read(info->regmap, MAX172XX_REG_TTF, &reg);
 		val->intval = max172xx_time_to_ps(reg);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		ret = regmap_read(info->regmap, MAX172XX_REG_TEMP, &reg);
 		val->intval = max172xx_temperature_to_ps(reg);
 		break;
 	/* We need signed current, so must cast info->rsense to signed type */
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = regmap_read(info->regmap, MAX172XX_REG_CURRENT, &reg);
 		val->intval =
-			max172xx_current_to_voltage(reg) / (int)info->rsense;
+max172xx_current_to_voltage(reg) / (int)info->rsense;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		ret = regmap_read(info->regmap, MAX172XX_REG_AVGCURRENT, &reg);
 		val->intval =
-			max172xx_current_to_voltage(reg) / (int)info->rsense;
+max172xx_current_to_voltage(reg) / (int)info->rsense;
 		break;
 	/*
 	 * Strings already received and inited by probe.
 	 * We do dummy read for check battery still available.
 	 */
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		ret = regmap_read(info->regmap, MAX1721X_REG_DEV_STR, &reg);
 		val->strval = info->DeviceName;
 		break;
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		ret = regmap_read(info->regmap, MAX1721X_REG_MFG_STR, &reg);
 		val->strval = info->ManufacturerName;
 		break;
-	case POWER_SUPPLY_PROP_SERIAL_NUMBER:
+case POWER_SUPPLY_PROP_SERIAL_NUMBER:
 		ret = regmap_read(info->regmap, MAX1721X_REG_SER_HEX, &reg);
 		val->strval = info->SerialNumber;
 		break;
@@ -207,20 +207,20 @@ static int max1721x_battery_get_property(struct power_supply *psy,
 
 static enum power_supply_property max1721x_battery_props[] = {
 	/* int */
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_AVG,
-	POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
-	POWER_SUPPLY_PROP_TIME_TO_FULL_AVG,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_AVG,
+POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
+POWER_SUPPLY_PROP_TIME_TO_FULL_AVG,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CURRENT_AVG,
 	/* strings */
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_SERIAL_NUMBER,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_SERIAL_NUMBER,
 };
 
 static int get_string(struct max17211_device_info *info,
@@ -322,7 +322,7 @@ static const struct regmap_config max1721x_regmap_w1_config = {
 
 static int devm_w1_max1721x_add_device(struct w1_slave *sl)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct max17211_device_info *info;
 
 	info = devm_kzalloc(&sl->dev, sizeof(*info), GFP_KERNEL);
@@ -333,7 +333,7 @@ static int devm_w1_max1721x_add_device(struct w1_slave *sl)
 	info->w1_dev = &sl->dev;
 
 	/*
-	 * power_supply class battery name translated from W1 slave device
+* power_supply class battery name translated from W1 slave device
 	 * unical ID (look like 26-0123456789AB) to "max1721x-0123456789AB\0"
 	 * so, 26 (device family) correcpondent to max1721x devices.
 	 * Device name still unical for any numbers connected devices.
@@ -347,7 +347,7 @@ static int devm_w1_max1721x_add_device(struct w1_slave *sl)
 	 * name and translation to thermal_zone must be disabled.
 	 */
 	info->bat_desc.no_thermal = true;
-	info->bat_desc.type = POWER_SUPPLY_TYPE_BATTERY;
+info->bat_desc.type = POWER_SUPPLY_TYPE_BATTERY;
 	info->bat_desc.properties = max1721x_battery_props;
 	info->bat_desc.num_properties = ARRAY_SIZE(max1721x_battery_props);
 	info->bat_desc.get_property = max1721x_battery_get_property;
@@ -421,7 +421,7 @@ static int devm_w1_max1721x_add_device(struct w1_slave *sl)
 		return -ENODEV;
 	}
 
-	info->bat = devm_power_supply_register(&sl->dev, &info->bat_desc,
+info->bat = devm_power_supply_register(&sl->dev, &info->bat_desc,
 						&psy_cfg);
 	if (IS_ERR(info->bat)) {
 		dev_err(info->w1_dev, "failed to register battery\n");

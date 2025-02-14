@@ -100,32 +100,32 @@ static const struct voltage_map_desc topoff_current_map_desc = {
 };
 
 static const struct voltage_map_desc *reg_voltage_map[] = {
-	[MAX8997_LDO1] = &ldo_voltage_map_desc,
-	[MAX8997_LDO2] = &ldo_voltage_map_desc,
-	[MAX8997_LDO3] = &ldo_voltage_map_desc,
-	[MAX8997_LDO4] = &ldo_voltage_map_desc,
-	[MAX8997_LDO5] = &ldo_voltage_map_desc,
-	[MAX8997_LDO6] = &ldo_voltage_map_desc,
-	[MAX8997_LDO7] = &ldo_voltage_map_desc,
-	[MAX8997_LDO8] = &ldo_voltage_map_desc,
-	[MAX8997_LDO9] = &ldo_voltage_map_desc,
-	[MAX8997_LDO10] = &ldo_voltage_map_desc,
-	[MAX8997_LDO11] = &ldo_voltage_map_desc,
-	[MAX8997_LDO12] = &ldo_voltage_map_desc,
-	[MAX8997_LDO13] = &ldo_voltage_map_desc,
-	[MAX8997_LDO14] = &ldo_voltage_map_desc,
-	[MAX8997_LDO15] = &ldo_voltage_map_desc,
-	[MAX8997_LDO16] = &ldo_voltage_map_desc,
-	[MAX8997_LDO17] = &ldo_voltage_map_desc,
-	[MAX8997_LDO18] = &ldo_voltage_map_desc,
-	[MAX8997_LDO21] = &ldo_voltage_map_desc,
-	[MAX8997_BUCK1] = &buck1245_voltage_map_desc,
-	[MAX8997_BUCK2] = &buck1245_voltage_map_desc,
-	[MAX8997_BUCK3] = &buck37_voltage_map_desc,
-	[MAX8997_BUCK4] = &buck1245_voltage_map_desc,
-	[MAX8997_BUCK5] = &buck1245_voltage_map_desc,
+[MAX8997_LDO1] = &ldo_voltage_map_desc,
+[MAX8997_LDO2] = &ldo_voltage_map_desc,
+[MAX8997_LDO3] = &ldo_voltage_map_desc,
+[MAX8997_LDO4] = &ldo_voltage_map_desc,
+[MAX8997_LDO5] = &ldo_voltage_map_desc,
+[MAX8997_LDO6] = &ldo_voltage_map_desc,
+[MAX8997_LDO7] = &ldo_voltage_map_desc,
+[MAX8997_LDO8] = &ldo_voltage_map_desc,
+[MAX8997_LDO9] = &ldo_voltage_map_desc,
+[MAX8997_LDO10] = &ldo_voltage_map_desc,
+[MAX8997_LDO11] = &ldo_voltage_map_desc,
+[MAX8997_LDO12] = &ldo_voltage_map_desc,
+[MAX8997_LDO13] = &ldo_voltage_map_desc,
+[MAX8997_LDO14] = &ldo_voltage_map_desc,
+[MAX8997_LDO15] = &ldo_voltage_map_desc,
+[MAX8997_LDO16] = &ldo_voltage_map_desc,
+[MAX8997_LDO17] = &ldo_voltage_map_desc,
+[MAX8997_LDO18] = &ldo_voltage_map_desc,
+[MAX8997_LDO21] = &ldo_voltage_map_desc,
+[MAX8997_BUCK1] = &buck1245_voltage_map_desc,
+[MAX8997_BUCK2] = &buck1245_voltage_map_desc,
+[MAX8997_BUCK3] = &buck37_voltage_map_desc,
+[MAX8997_BUCK4] = &buck1245_voltage_map_desc,
+[MAX8997_BUCK5] = &buck1245_voltage_map_desc,
 	[MAX8997_BUCK6] = NULL,
-	[MAX8997_BUCK7] = &buck37_voltage_map_desc,
+[MAX8997_BUCK7] = &buck37_voltage_map_desc,
 	[MAX8997_EN32KHZ_AP] = NULL,
 	[MAX8997_EN32KHZ_CP] = NULL,
 	[MAX8997_ENVICHG] = NULL,
@@ -161,15 +161,15 @@ err:
 static int max8997_list_voltage(struct regulator_dev *rdev,
 		unsigned int selector)
 {
-	const struct voltage_map_desc *desc;
+const struct voltage_map_desc *desc;
 	int rid = rdev_get_id(rdev);
 	int val;
 
-	if (rid >= ARRAY_SIZE(reg_voltage_map) ||
+if (rid >= ARRAY_SIZE(reg_voltage_map) ||
 			rid < 0)
 		return -EINVAL;
 
-	desc = reg_voltage_map[rid];
+desc = reg_voltage_map[rid];
 	if (desc == NULL)
 		return -EINVAL;
 
@@ -371,7 +371,7 @@ static int max8997_get_voltage_sel(struct regulator_dev *rdev)
 	int reg, shift, mask, ret;
 	u8 val;
 
-	ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
+ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
 	if (ret)
 		return ret;
 
@@ -386,7 +386,7 @@ static int max8997_get_voltage_sel(struct regulator_dev *rdev)
 }
 
 static inline int max8997_get_voltage_proper_val(
-		const struct voltage_map_desc *desc,
+const struct voltage_map_desc *desc,
 		int min_vol, int max_vol)
 {
 	int i;
@@ -421,7 +421,7 @@ static int max8997_set_voltage_charger_cv(struct regulator_dev *rdev,
 	if (rid != MAX8997_CHARGER_CV)
 		return -EINVAL;
 
-	ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
+ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
 	if (ret)
 		return ret;
 
@@ -465,7 +465,7 @@ static int max8997_set_voltage_ldobuck(struct regulator_dev *rdev,
 {
 	struct max8997_data *max8997 = rdev_get_drvdata(rdev);
 	struct i2c_client *i2c = max8997->iodev->i2c;
-	const struct voltage_map_desc *desc;
+const struct voltage_map_desc *desc;
 	int rid = rdev_get_id(rdev);
 	int i, reg, shift, mask, ret;
 
@@ -486,13 +486,13 @@ static int max8997_set_voltage_ldobuck(struct regulator_dev *rdev,
 		return -EINVAL;
 	}
 
-	desc = reg_voltage_map[rid];
+desc = reg_voltage_map[rid];
 
-	i = max8997_get_voltage_proper_val(desc, min_uV, max_uV);
+i = max8997_get_voltage_proper_val(desc, min_uV, max_uV);
 	if (i < 0)
 		return i;
 
-	ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
+ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
 	if (ret)
 		return ret;
 
@@ -508,9 +508,9 @@ static int max8997_set_voltage_buck_time_sel(struct regulator_dev *rdev,
 {
 	struct max8997_data *max8997 = rdev_get_drvdata(rdev);
 	int rid = rdev_get_id(rdev);
-	const struct voltage_map_desc *desc = reg_voltage_map[rid];
+const struct voltage_map_desc *desc = reg_voltage_map[rid];
 
-	/* Delay is required only if the voltage is increasing */
+/* Delay is required only if the voltage is increasing */
 	if (old_selector >= new_selector)
 		return 0;
 
@@ -543,11 +543,11 @@ static int max8997_set_voltage_buck_time_sel(struct regulator_dev *rdev,
 }
 
 /*
- * Assess the damage on the voltage setting of BUCK1,2,5 by the change.
+* Assess the damage on the voltage setting of BUCK1,2,5 by the change.
  *
- * When GPIO-DVS mode is used for multiple bucks, changing the voltage value
+* When GPIO-DVS mode is used for multiple bucks, changing the voltage value
  * of one of the bucks may affect that of another buck, which is the side
- * effect of the change (set_voltage). This function examines the GPIO-DVS
+* effect of the change (set_voltage). This function examines the GPIO-DVS
  * configurations and checks whether such side-effect exists.
  */
 static int max8997_assess_side_effect(struct regulator_dev *rdev,
@@ -625,14 +625,14 @@ static int max8997_assess_side_effect(struct regulator_dev *rdev,
 
 /*
  * For Buck 1 ~ 5 and 7. If it is not controlled by GPIO, this calls
- * max8997_set_voltage_ldobuck to do the job.
+* max8997_set_voltage_ldobuck to do the job.
  */
 static int max8997_set_voltage_buck(struct regulator_dev *rdev,
 		int min_uV, int max_uV, unsigned *selector)
 {
 	struct max8997_data *max8997 = rdev_get_drvdata(rdev);
 	int rid = rdev_get_id(rdev);
-	const struct voltage_map_desc *desc;
+const struct voltage_map_desc *desc;
 	int new_val, new_idx, damage, tmp_val, tmp_idx, tmp_dmg;
 	bool gpio_dvs_mode = false;
 
@@ -655,11 +655,11 @@ static int max8997_set_voltage_buck(struct regulator_dev *rdev,
 	}
 
 	if (!gpio_dvs_mode)
-		return max8997_set_voltage_ldobuck(rdev, min_uV, max_uV,
+return max8997_set_voltage_ldobuck(rdev, min_uV, max_uV,
 						selector);
 
-	desc = reg_voltage_map[rid];
-	new_val = max8997_get_voltage_proper_val(desc, min_uV, max_uV);
+desc = reg_voltage_map[rid];
+new_val = max8997_get_voltage_proper_val(desc, min_uV, max_uV);
 	if (new_val < 0)
 		return new_val;
 
@@ -713,7 +713,7 @@ static int max8997_set_voltage_safeout_sel(struct regulator_dev *rdev,
 	if (rid != MAX8997_ESAFEOUT1 && rid != MAX8997_ESAFEOUT2)
 		return -EINVAL;
 
-	ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
+ret = max8997_get_voltage_register(rdev, &reg, &shift, &mask);
 	if (ret)
 		return ret;
 
@@ -736,40 +736,40 @@ static int max8997_reg_disable_suspend(struct regulator_dev *rdev)
 	if (rid == MAX8997_LDO1 ||
 			rid == MAX8997_LDO10 ||
 			rid == MAX8997_LDO21) {
-		dev_dbg(&rdev->dev, "Conditional Power-Off for %s\n",
+dev_dbg(&rdev->dev, "Conditional Power-Off for %s\n",
 				rdev->desc->name);
 		return max8997_update_reg(i2c, reg, 0x40, mask);
 	}
 
-	dev_dbg(&rdev->dev, "Full Power-Off for %s (%xh -> %xh)\n",
+dev_dbg(&rdev->dev, "Full Power-Off for %s (%xh -> %xh)\n",
 			rdev->desc->name, max8997->saved_states[rid] & mask,
 			(~pattern) & mask);
 	return max8997_update_reg(i2c, reg, ~pattern, mask);
 }
 
 static struct regulator_ops max8997_ldo_ops = {
-	.list_voltage		= max8997_list_voltage,
+.list_voltage		= max8997_list_voltage,
 	.is_enabled		= max8997_reg_is_enabled,
 	.enable			= max8997_reg_enable,
 	.disable		= max8997_reg_disable,
-	.get_voltage_sel	= max8997_get_voltage_sel,
-	.set_voltage		= max8997_set_voltage_ldobuck,
+.get_voltage_sel	= max8997_get_voltage_sel,
+.set_voltage		= max8997_set_voltage_ldobuck,
 	.set_suspend_disable	= max8997_reg_disable_suspend,
 };
 
 static struct regulator_ops max8997_buck_ops = {
-	.list_voltage		= max8997_list_voltage,
+.list_voltage		= max8997_list_voltage,
 	.is_enabled		= max8997_reg_is_enabled,
 	.enable			= max8997_reg_enable,
 	.disable		= max8997_reg_disable,
-	.get_voltage_sel	= max8997_get_voltage_sel,
-	.set_voltage		= max8997_set_voltage_buck,
-	.set_voltage_time_sel	= max8997_set_voltage_buck_time_sel,
+.get_voltage_sel	= max8997_get_voltage_sel,
+.set_voltage		= max8997_set_voltage_buck,
+.set_voltage_time_sel	= max8997_set_voltage_buck_time_sel,
 	.set_suspend_disable	= max8997_reg_disable_suspend,
 };
 
 static struct regulator_ops max8997_fixedvolt_ops = {
-	.list_voltage		= max8997_list_voltage,
+.list_voltage		= max8997_list_voltage,
 	.is_enabled		= max8997_reg_is_enabled,
 	.enable			= max8997_reg_enable,
 	.disable		= max8997_reg_disable,
@@ -777,19 +777,19 @@ static struct regulator_ops max8997_fixedvolt_ops = {
 };
 
 static struct regulator_ops max8997_safeout_ops = {
-	.list_voltage		= regulator_list_voltage_table,
+.list_voltage		= regulator_list_voltage_table,
 	.is_enabled		= max8997_reg_is_enabled,
 	.enable			= max8997_reg_enable,
 	.disable		= max8997_reg_disable,
-	.get_voltage_sel	= max8997_get_voltage_sel,
-	.set_voltage_sel	= max8997_set_voltage_safeout_sel,
+.get_voltage_sel	= max8997_get_voltage_sel,
+.set_voltage_sel	= max8997_set_voltage_safeout_sel,
 	.set_suspend_disable	= max8997_reg_disable_suspend,
 };
 
 static struct regulator_ops max8997_fixedstate_ops = {
-	.list_voltage		= max8997_list_voltage_charger_cv,
-	.get_voltage_sel	= max8997_get_voltage_sel,
-	.set_voltage		= max8997_set_voltage_charger_cv,
+.list_voltage		= max8997_list_voltage_charger_cv,
+.get_voltage_sel	= max8997_get_voltage_sel,
+.set_voltage		= max8997_set_voltage_charger_cv,
 };
 
 static int max8997_set_current_limit(struct regulator_dev *rdev,
@@ -801,8 +801,8 @@ static int max8997_set_current_limit(struct regulator_dev *rdev,
 	if (rid != MAX8997_CHARGER && rid != MAX8997_CHARGER_TOPOFF)
 		return -EINVAL;
 
-	/* Reuse max8997_set_voltage_ldobuck to set current_limit. */
-	return max8997_set_voltage_ldobuck(rdev, min_uA, max_uA, &dummy);
+/* Reuse max8997_set_voltage_ldobuck to set current_limit. */
+return max8997_set_voltage_ldobuck(rdev, min_uA, max_uA, &dummy);
 }
 
 static int max8997_get_current_limit(struct regulator_dev *rdev)
@@ -812,12 +812,12 @@ static int max8997_get_current_limit(struct regulator_dev *rdev)
 	if (rid != MAX8997_CHARGER && rid != MAX8997_CHARGER_TOPOFF)
 		return -EINVAL;
 
-	sel = max8997_get_voltage_sel(rdev);
+sel = max8997_get_voltage_sel(rdev);
 	if (sel < 0)
 		return sel;
 
-	/* Reuse max8997_list_voltage to get current_limit. */
-	return max8997_list_voltage(rdev, sel);
+/* Reuse max8997_list_voltage to get current_limit. */
+return max8997_list_voltage(rdev, sel);
 }
 
 static struct regulator_ops max8997_charger_ops = {
@@ -837,7 +837,7 @@ static struct regulator_ops max8997_charger_fixedstate_ops = {
 	.name		= #_name,		\
 	.id		= MAX8997_##_name,	\
 	.ops		= &_ops,		\
-	.type		= REGULATOR_VOLTAGE,	\
+.type		= REGULATOR_VOLTAGE,	\
 	.owner		= THIS_MODULE,		\
 }
 
@@ -850,38 +850,38 @@ static struct regulator_ops max8997_charger_fixedstate_ops = {
 }
 
 static struct regulator_desc regulators[] = {
-	MAX8997_VOLTAGE_REGULATOR(LDO1, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO2, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO3, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO4, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO5, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO6, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO7, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO8, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO9, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO10, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO11, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO12, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO13, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO14, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO15, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO16, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO17, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO18, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(LDO21, max8997_ldo_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK1, max8997_buck_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK2, max8997_buck_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK3, max8997_buck_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK4, max8997_buck_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK5, max8997_buck_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK6, max8997_fixedvolt_ops),
-	MAX8997_VOLTAGE_REGULATOR(BUCK7, max8997_buck_ops),
-	MAX8997_VOLTAGE_REGULATOR(EN32KHZ_AP, max8997_fixedvolt_ops),
-	MAX8997_VOLTAGE_REGULATOR(EN32KHZ_CP, max8997_fixedvolt_ops),
-	MAX8997_VOLTAGE_REGULATOR(ENVICHG, max8997_fixedvolt_ops),
-	MAX8997_VOLTAGE_REGULATOR(ESAFEOUT1, max8997_safeout_ops),
-	MAX8997_VOLTAGE_REGULATOR(ESAFEOUT2, max8997_safeout_ops),
-	MAX8997_VOLTAGE_REGULATOR(CHARGER_CV, max8997_fixedstate_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO1, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO2, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO3, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO4, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO5, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO6, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO7, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO8, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO9, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO10, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO11, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO12, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO13, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO14, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO15, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO16, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO17, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO18, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(LDO21, max8997_ldo_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK1, max8997_buck_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK2, max8997_buck_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK3, max8997_buck_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK4, max8997_buck_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK5, max8997_buck_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK6, max8997_fixedvolt_ops),
+MAX8997_VOLTAGE_REGULATOR(BUCK7, max8997_buck_ops),
+MAX8997_VOLTAGE_REGULATOR(EN32KHZ_AP, max8997_fixedvolt_ops),
+MAX8997_VOLTAGE_REGULATOR(EN32KHZ_CP, max8997_fixedvolt_ops),
+MAX8997_VOLTAGE_REGULATOR(ENVICHG, max8997_fixedvolt_ops),
+MAX8997_VOLTAGE_REGULATOR(ESAFEOUT1, max8997_safeout_ops),
+MAX8997_VOLTAGE_REGULATOR(ESAFEOUT2, max8997_safeout_ops),
+MAX8997_VOLTAGE_REGULATOR(CHARGER_CV, max8997_fixedstate_ops),
 	MAX8997_CURRENT_REGULATOR(CHARGER, max8997_charger_ops),
 	MAX8997_CURRENT_REGULATOR(CHARGER_TOPOFF,
 				  max8997_charger_fixedstate_ops),
@@ -912,7 +912,7 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 	struct max8997_dev *iodev = dev_get_drvdata(pdev->dev.parent);
 	struct device_node *pmic_np, *regulators_np, *reg_np;
 	struct max8997_regulator_data *rdata;
-	unsigned int i, dvs_voltage_nr = 1, ret;
+unsigned int i, dvs_voltage_nr = 1, ret;
 
 	pmic_np = iodev->dev->of_node;
 	if (!pmic_np) {
@@ -987,27 +987,27 @@ static int max8997_pmic_dt_parse_pdata(struct platform_device *pdev,
 			"max8997,pmic-ignore-gpiodvs-side-effect", NULL))
 			pdata->ignore_gpiodvs_side_effect = true;
 
-		dvs_voltage_nr = 8;
+dvs_voltage_nr = 8;
 	}
 
 	if (of_property_read_u32_array(pmic_np,
-				"max8997,pmic-buck1-dvs-voltage",
-				pdata->buck1_voltage, dvs_voltage_nr)) {
-		dev_err(&pdev->dev, "buck1 voltages not specified\n");
+"max8997,pmic-buck1-dvs-voltage",
+pdata->buck1_voltage, dvs_voltage_nr)) {
+dev_err(&pdev->dev, "buck1 voltages not specified\n");
 		return -EINVAL;
 	}
 
 	if (of_property_read_u32_array(pmic_np,
-				"max8997,pmic-buck2-dvs-voltage",
-				pdata->buck2_voltage, dvs_voltage_nr)) {
-		dev_err(&pdev->dev, "buck2 voltages not specified\n");
+"max8997,pmic-buck2-dvs-voltage",
+pdata->buck2_voltage, dvs_voltage_nr)) {
+dev_err(&pdev->dev, "buck2 voltages not specified\n");
 		return -EINVAL;
 	}
 
 	if (of_property_read_u32_array(pmic_np,
-				"max8997,pmic-buck5-dvs-voltage",
-				pdata->buck5_voltage, dvs_voltage_nr)) {
-		dev_err(&pdev->dev, "buck5 voltages not specified\n");
+"max8997,pmic-buck5-dvs-voltage",
+pdata->buck5_voltage, dvs_voltage_nr)) {
+dev_err(&pdev->dev, "buck5 voltages not specified\n");
 		return -EINVAL;
 	}
 
@@ -1066,29 +1066,29 @@ static int max8997_pmic_probe(struct platform_device *pdev)
 
 	for (i = 0; i < nr_dvs; i++) {
 		max8997->buck1_vol[i] = ret =
-			max8997_get_voltage_proper_val(
-					&buck1245_voltage_map_desc,
-					pdata->buck1_voltage[i],
-					pdata->buck1_voltage[i] +
-					buck1245_voltage_map_desc.step);
+max8997_get_voltage_proper_val(
+&buck1245_voltage_map_desc,
+pdata->buck1_voltage[i],
+pdata->buck1_voltage[i] +
+buck1245_voltage_map_desc.step);
 		if (ret < 0)
 			return ret;
 
 		max8997->buck2_vol[i] = ret =
-			max8997_get_voltage_proper_val(
-					&buck1245_voltage_map_desc,
-					pdata->buck2_voltage[i],
-					pdata->buck2_voltage[i] +
-					buck1245_voltage_map_desc.step);
+max8997_get_voltage_proper_val(
+&buck1245_voltage_map_desc,
+pdata->buck2_voltage[i],
+pdata->buck2_voltage[i] +
+buck1245_voltage_map_desc.step);
 		if (ret < 0)
 			return ret;
 
 		max8997->buck5_vol[i] = ret =
-			max8997_get_voltage_proper_val(
-					&buck1245_voltage_map_desc,
-					pdata->buck5_voltage[i],
-					pdata->buck5_voltage[i] +
-					buck1245_voltage_map_desc.step);
+max8997_get_voltage_proper_val(
+&buck1245_voltage_map_desc,
+pdata->buck5_voltage[i],
+pdata->buck5_voltage[i] +
+buck1245_voltage_map_desc.step);
 		if (ret < 0)
 			return ret;
 
@@ -1100,7 +1100,7 @@ static int max8997_pmic_probe(struct platform_device *pdev)
 			max_buck5 = max8997->buck5_vol[i];
 	}
 
-	/* For the safety, set max voltage before setting up */
+/* For the safety, set max voltage before setting up */
 	for (i = 0; i < 8; i++) {
 		max8997_update_reg(i2c, MAX8997_REG_BUCK1DVS1 + i,
 				max_buck1, 0x3f);
@@ -1176,18 +1176,18 @@ static int max8997_pmic_probe(struct platform_device *pdev)
 	max8997_write_reg(i2c, MAX8997_REG_BUCKRAMP, (0xf << 4) | 0x9);
 
 	for (i = 0; i < pdata->num_regulators; i++) {
-		const struct voltage_map_desc *desc;
+const struct voltage_map_desc *desc;
 		int id = pdata->regulators[i].id;
 
-		desc = reg_voltage_map[id];
+desc = reg_voltage_map[id];
 		if (desc) {
-			regulators[id].n_voltages =
+regulators[id].n_voltages =
 				(desc->max - desc->min) / desc->step + 1;
 		} else if (id == MAX8997_ESAFEOUT1 || id == MAX8997_ESAFEOUT2) {
 			regulators[id].volt_table = safeoutvolt;
-			regulators[id].n_voltages = ARRAY_SIZE(safeoutvolt);
+regulators[id].n_voltages = ARRAY_SIZE(safeoutvolt);
 		} else if (id == MAX8997_CHARGER_CV) {
-			regulators[id].n_voltages = 16;
+regulators[id].n_voltages = 16;
 		}
 
 		config.dev = max8997->dev;

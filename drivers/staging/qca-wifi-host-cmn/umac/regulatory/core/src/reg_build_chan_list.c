@@ -41,10 +41,10 @@
 #define CHAN_144_CENT_FREQ 5720
 
 /**
- * reg_fill_channel_info() - Populate TX power, antenna gain, channel state,
+* reg_fill_channel_info() - Populate TX power, antenna gain, channel state,
  * channel flags, min and max bandwidth to master channel list.
  * @chan_enum: Channel enum.
- * @reg_rule: Pointer to regulatory rule which has tx power and antenna gain.
+* @reg_rule: Pointer to regulatory rule which has tx power and antenna gain.
  * @master_list: Pointer to master channel list.
  * @min_bw: minimum bandwidth to be used for given channel.
  */
@@ -55,7 +55,7 @@ static void reg_fill_channel_info(enum channel_enum chan_enum,
 {
 	master_list[chan_enum].chan_flags &= ~REGULATORY_CHAN_DISABLED;
 
-	master_list[chan_enum].tx_power = reg_rule->reg_power;
+master_list[chan_enum].tx_power = reg_rule->reg_power;
 	master_list[chan_enum].ant_gain = reg_rule->ant_gain;
 	master_list[chan_enum].state = CHANNEL_STATE_ENABLE;
 
@@ -84,7 +84,7 @@ static void reg_fill_channel_info(enum channel_enum chan_enum,
 /**
  * reg_populate_band_channels() - For all the valid regdb channels in the master
  * channel list, find the regulatory rules and call reg_fill_channel_info() to
- * populate master channel list with txpower, antennagain, BW info, etc.
+* populate master channel list with txpower, antennagain, BW info, etc.
  * @start_chan: Start channel enum.
  * @end_chan: End channel enum.
  * @rule_start_ptr: Pointer to regulatory rules.
@@ -120,11 +120,11 @@ static void reg_populate_band_channels(enum channel_enum start_chan,
 			for (rule_num = 0, cur_rule_ptr = rule_start_ptr;
 			     rule_num < num_reg_rules;
 			     cur_rule_ptr++, rule_num++) {
-				if ((cur_rule_ptr->start_freq <=
-				     mas_chan_list[chan_enum].center_freq -
+if ((cur_rule_ptr->start_freq <=
+mas_chan_list[chan_enum].center_freq -
 				     bw / 2) &&
-				    (cur_rule_ptr->end_freq >=
-				     mas_chan_list[chan_enum].center_freq +
+(cur_rule_ptr->end_freq >=
+mas_chan_list[chan_enum].center_freq +
 				     bw / 2) && (min_bw <= bw)) {
 					found_rule_ptr = cur_rule_ptr;
 					break;
@@ -183,8 +183,8 @@ static void reg_do_auto_bw_correction(uint32_t num_reg_rules,
 	uint16_t new_bw;
 
 	for (count = 0; count < num_reg_rules - 1; count++) {
-		if (reg_rule_ptr[count].end_freq ==
-		    reg_rule_ptr[count + 1].start_freq) {
+if (reg_rule_ptr[count].end_freq ==
+reg_rule_ptr[count + 1].start_freq) {
 			new_bw = QDF_MIN(max_bw, reg_rule_ptr[count].max_bw +
 					 reg_rule_ptr[count + 1].max_bw);
 			reg_rule_ptr[count].max_bw = new_bw;
@@ -314,10 +314,10 @@ static void reg_modify_chan_list_for_band(struct regulatory_channel *chan_list,
 }
 
 /**
- * reg_modify_chan_list_for_fcc_channel() - Set maximum FCC txpower for channel
+* reg_modify_chan_list_for_fcc_channel() - Set maximum FCC txpower for channel
  * 12 and 13 if set_fcc_channel flag is set to true.
  * @chan_list: Pointer to regulatory channel list.
- * @set_fcc_channel: If this flag is set to true, then set the max FCC txpower
+* @set_fcc_channel: If this flag is set to true, then set the max FCC txpower
  * for channel 12 and 13.
  */
 static void reg_modify_chan_list_for_fcc_channel(
@@ -329,11 +329,11 @@ static void reg_modify_chan_list_for_fcc_channel(
 		return;
 
 	for (chan_enum = 0; chan_enum < NUM_CHANNELS; chan_enum++) {
-		if (chan_list[chan_enum].center_freq == CHAN_12_CENT_FREQ)
-			chan_list[chan_enum].tx_power = MAX_PWR_FCC_CHAN_12;
+if (chan_list[chan_enum].center_freq == CHAN_12_CENT_FREQ)
+chan_list[chan_enum].tx_power = MAX_PWR_FCC_CHAN_12;
 
-		if (chan_list[chan_enum].center_freq == CHAN_13_CENT_FREQ)
-			chan_list[chan_enum].tx_power = MAX_PWR_FCC_CHAN_13;
+if (chan_list[chan_enum].center_freq == CHAN_13_CENT_FREQ)
+chan_list[chan_enum].tx_power = MAX_PWR_FCC_CHAN_13;
 	}
 }
 
@@ -352,7 +352,7 @@ static void reg_modify_chan_list_for_chan_144(
 		return;
 
 	for (chan_enum = 0; chan_enum < NUM_CHANNELS; chan_enum++) {
-		if (chan_list[chan_enum].center_freq == CHAN_144_CENT_FREQ) {
+if (chan_list[chan_enum].center_freq == CHAN_144_CENT_FREQ) {
 			chan_list[chan_enum].chan_flags |=
 				REGULATORY_CHAN_DISABLED;
 			chan_list[chan_enum].state = CHANNEL_STATE_DISABLE;
@@ -382,29 +382,29 @@ static void reg_modify_chan_list_for_nol_list(
 /**
  * reg_find_low_limit_chan_enum() - Find low limit 2G and 5G channel enums.
  * @chan_list: Pointer to regulatory channel list.
- * @low_freq: low limit frequency.
+* @low_freq: low limit frequency.
  * @low_limit: pointer to output low limit enum.
  *
  * Return: None
  */
 static void reg_find_low_limit_chan_enum(
-		struct regulatory_channel *chan_list, qdf_freq_t low_freq,
+struct regulatory_channel *chan_list, qdf_freq_t low_freq,
 		uint32_t *low_limit)
 {
 	enum channel_enum chan_enum;
 	uint16_t min_bw;
 	uint16_t max_bw;
-	qdf_freq_t center_freq;
+qdf_freq_t center_freq;
 
 	for (chan_enum = 0; chan_enum < NUM_CHANNELS; chan_enum++) {
 		min_bw = chan_list[chan_enum].min_bw;
 		max_bw = chan_list[chan_enum].max_bw;
-		center_freq = chan_list[chan_enum].center_freq;
+center_freq = chan_list[chan_enum].center_freq;
 
-		if ((center_freq - min_bw / 2) >= low_freq) {
-			if ((center_freq - max_bw / 2) < low_freq) {
+if ((center_freq - min_bw / 2) >= low_freq) {
+if ((center_freq - max_bw / 2) < low_freq) {
 				if (max_bw <= 20)
-					max_bw = ((center_freq - low_freq) * 2);
+max_bw = ((center_freq - low_freq) * 2);
 				if (max_bw < min_bw)
 					max_bw = min_bw;
 				chan_list[chan_enum].max_bw = max_bw;
@@ -418,30 +418,30 @@ static void reg_find_low_limit_chan_enum(
 /**
  * reg_find_high_limit_chan_enum() - Find high limit 2G and 5G channel enums.
  * @chan_list: Pointer to regulatory channel list.
- * @high_freq: high limit frequency.
+* @high_freq: high limit frequency.
  * @high_limit: pointer to output high limit enum.
  *
  * Return: None
  */
 static void reg_find_high_limit_chan_enum(
-		struct regulatory_channel *chan_list, qdf_freq_t high_freq,
+struct regulatory_channel *chan_list, qdf_freq_t high_freq,
 		uint32_t *high_limit)
 {
 	enum channel_enum chan_enum;
 	uint16_t min_bw;
 	uint16_t max_bw;
-	qdf_freq_t center_freq;
+qdf_freq_t center_freq;
 
 	for (chan_enum = NUM_CHANNELS - 1; chan_enum >= 0; chan_enum--) {
 		min_bw = chan_list[chan_enum].min_bw;
 		max_bw = chan_list[chan_enum].max_bw;
-		center_freq = chan_list[chan_enum].center_freq;
+center_freq = chan_list[chan_enum].center_freq;
 
-		if (center_freq + min_bw / 2 <= high_freq) {
-			if ((center_freq + max_bw / 2) > high_freq) {
+if (center_freq + min_bw / 2 <= high_freq) {
+if ((center_freq + max_bw / 2) > high_freq) {
 				if (max_bw <= 20)
-					max_bw = ((high_freq -
-						   center_freq) * 2);
+max_bw = ((high_freq -
+center_freq) * 2);
 				if (max_bw < min_bw)
 					max_bw = min_bw;
 				chan_list[chan_enum].max_bw = max_bw;
@@ -487,22 +487,22 @@ reg_modify_chan_list_for_japan(struct wlan_objmgr_pdev *pdev)
 }
 #endif
 /**
- * reg_modify_chan_list_for_freq_range() - Modify channel list for the given low
- * and high frequency range.
+* reg_modify_chan_list_for_freq_range() - Modify channel list for the given low
+* and high frequency range.
  * @chan_list: Pointer to regulatory channel list.
- * @low_freq_2g: Low frequency 2G.
- * @high_freq_2g: High frequency 2G.
- * @low_freq_5g: Low frequency 5G.
- * @high_freq_5g: High frequency 5G.
+* @low_freq_2g: Low frequency 2G.
+* @high_freq_2g: High frequency 2G.
+* @low_freq_5g: Low frequency 5G.
+* @high_freq_5g: High frequency 5G.
  *
  * Return: None
  */
 static void
 reg_modify_chan_list_for_freq_range(struct regulatory_channel *chan_list,
-				    qdf_freq_t low_freq_2g,
-				    qdf_freq_t high_freq_2g,
-				    qdf_freq_t low_freq_5g,
-				    qdf_freq_t high_freq_5g)
+qdf_freq_t low_freq_2g,
+qdf_freq_t high_freq_2g,
+qdf_freq_t low_freq_5g,
+qdf_freq_t high_freq_5g)
 {
 	uint32_t low_limit_2g = NUM_CHANNELS;
 	uint32_t high_limit_2g = NUM_CHANNELS;
@@ -511,10 +511,10 @@ reg_modify_chan_list_for_freq_range(struct regulatory_channel *chan_list,
 	enum channel_enum chan_enum;
 	bool chan_in_range;
 
-	reg_find_low_limit_chan_enum(chan_list, low_freq_2g, &low_limit_2g);
-	reg_find_low_limit_chan_enum(chan_list, low_freq_5g, &low_limit_5g);
-	reg_find_high_limit_chan_enum(chan_list, high_freq_2g, &high_limit_2g);
-	reg_find_high_limit_chan_enum(chan_list, high_freq_5g, &high_limit_5g);
+reg_find_low_limit_chan_enum(chan_list, low_freq_2g, &low_limit_2g);
+reg_find_low_limit_chan_enum(chan_list, low_freq_5g, &low_limit_5g);
+reg_find_high_limit_chan_enum(chan_list, high_freq_2g, &high_limit_2g);
+reg_find_high_limit_chan_enum(chan_list, high_freq_5g, &high_limit_5g);
 
 	for (chan_enum = 0; chan_enum < NUM_CHANNELS; chan_enum++) {
 		chan_in_range = false;
@@ -777,7 +777,7 @@ void reg_compute_pdev_current_chan_list(struct wlan_regulatory_pdev_priv_obj
 	qdf_mem_copy(pdev_priv_obj->cur_chan_list, pdev_priv_obj->mas_chan_list,
 		     NUM_CHANNELS * sizeof(struct regulatory_channel));
 
-	reg_modify_chan_list_for_freq_range(pdev_priv_obj->cur_chan_list,
+reg_modify_chan_list_for_freq_range(pdev_priv_obj->cur_chan_list,
 					    pdev_priv_obj->range_2g_low,
 					    pdev_priv_obj->range_2g_high,
 					    pdev_priv_obj->range_5g_low,
@@ -896,7 +896,7 @@ void reg_propagate_mas_chan_list_to_pdev(struct wlan_objmgr_psoc *psoc,
 /**
  * reg_populate_6g_band_channels() - For all the valid 6GHz regdb channels
  * in the master channel list, find the regulatory rules and call
- * reg_fill_channel_info() to populate master channel list with txpower,
+* reg_fill_channel_info() to populate master channel list with txpower,
  * antennagain, BW info, etc.
  * @reg_rule_5g: Pointer to regulatory rule.
  * @num_5g_reg_rules: Number of regulatory rules.
@@ -1077,8 +1077,8 @@ QDF_STATUS reg_process_master_chan_list(
 	     chan_enum++) {
 		mas_chan_list[chan_enum].chan_num =
 			channel_map[chan_enum].chan_num;
-		mas_chan_list[chan_enum].center_freq =
-			channel_map[chan_enum].center_freq;
+mas_chan_list[chan_enum].center_freq =
+channel_map[chan_enum].center_freq;
 		mas_chan_list[chan_enum].chan_flags =
 			REGULATORY_CHAN_DISABLED;
 		mas_chan_list[chan_enum].state =

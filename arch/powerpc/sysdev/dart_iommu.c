@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/sysdev/dart_iommu.c
+* arch/powerpc/sysdev/dart_iommu.c
  *
  * Copyright (C) 2004 Olof Johansson <olof@lixom.net>, IBM Corporation
  * Copyright (C) 2005 Benjamin Herrenschmidt <benh@kernel.crashing.org>,

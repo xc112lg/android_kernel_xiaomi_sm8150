@@ -173,7 +173,7 @@ int icp_hv_init(void)
 	np = of_find_compatible_node(NULL, NULL, "ibm,ppc-xicp");
 	if (!np)
 		np = of_find_node_by_type(NULL,
-				    "PowerPC-External-Interrupt-Presentation");
+"PowerPC-External-Interrupt-Presentation");
 	if (!np)
 		return -ENODEV;
 

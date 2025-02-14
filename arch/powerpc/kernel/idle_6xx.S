@@ -1,11 +1,11 @@
 /*
- *  This file contains the power_save function for 6xx & 7xxx CPUs
+*  This file contains the power_save function for 6xx & 7xxx CPUs
  *  rewritten in assembler
  *
  *  Warning ! This code assumes that if your machine has a 750fx
  *  it will have PLL 1 set to low speed mode (used during NAP/DOZE).
  *  if this is not the case some additional changes will have to
- *  be done to check a runtime var (a bit like powersave-nap)
+*  be done to check a runtime var (a bit like powersave-nap)
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -53,7 +53,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_DUAL_PLL_750FX)
 	blr
 
 /*
- * Here is the power_save_6xx function. This could eventually be
+* Here is the power_save_6xx function. This could eventually be
  * split into several functions & changing the function pointer
  * depending on the various features.
  */
@@ -74,8 +74,8 @@ BEGIN_FTR_SECTION
 	andi.	r0,r4,CPU_FTR_CAN_NAP
 	beq	1f
 	/* Now check if user or arch enabled NAP mode */
-	lis	r4,powersave_nap@ha
-	lwz	r4,powersave_nap@l(r4)
+lis	r4,powersave_nap@ha
+lwz	r4,powersave_nap@l(r4)
 	cmpwi	0,r4,0
 	beq	1f
 	lis	r3,HID0_NAP@h
@@ -109,8 +109,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_NAP_DISABLE_L2_PR)
 2:
 BEGIN_FTR_SECTION
 	/* Go to low speed mode on some 750FX */
-	lis	r4,powersave_lowspeed@ha
-	lwz	r4,powersave_lowspeed@l(r4)
+lis	r4,powersave_lowspeed@ha
+lwz	r4,powersave_lowspeed@l(r4)
 	cmpwi	0,r4,0
 	beq	1f
 	mfspr	r4,SPRN_HID1

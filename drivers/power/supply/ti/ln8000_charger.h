@@ -255,7 +255,7 @@ enum ln8000_adc_hibernate_delay_desc {
  */
 struct ln8000_platform_data {
 	struct gpio_desc
-		*irq_gpio; /* GPIO pin for (generic/power-on) interrupt  */
+*irq_gpio; /* GPIO pin for (generic/power-on) interrupt  */
 
 	/* feature configuration */
 	unsigned int bat_ovp_th; /* battery ovp threshold (mV) */
@@ -265,11 +265,11 @@ struct ln8000_platform_data {
 	unsigned int bus_ocp_th; /* IIN ocp threshold (mA) */
 	unsigned int bus_ocp_alarm_th; /* IIN ocp alarm threshold */
 	unsigned int
-		ntc_alarm_cfg; /* input/battery NTC voltage threshold code: 0~1023 */
+ntc_alarm_cfg; /* input/battery NTC voltage threshold code: 0~1023 */
 
 	/* protection enable/disable */
-	bool vbat_ovp_disable; /* disable battery voltage OVP */
-	bool vbat_reg_disable; /* disable battery voltage (float) regulation */
+bool vbat_ovp_disable; /* disable battery voltage OVP */
+bool vbat_reg_disable; /* disable battery voltage (float) regulation */
 	bool iin_ocp_disable; /* disable input current OCP */
 	bool iin_reg_disable; /* disable input current regulation */
 	bool tbus_mon_disable; /* disable BUS temperature monitor (prot/alarm) */
@@ -283,14 +283,14 @@ struct ln8000_info {
 	struct device *dev;
 	struct i2c_client *client;
 	struct ln8000_platform_data *pdata;
-	struct power_supply *psy_chg;
+struct power_supply *psy_chg;
 
 	struct mutex data_lock;
 	struct mutex i2c_lock;
 	struct mutex irq_lock;
 	struct regmap *regmap;
-	struct power_supply_config psy_cfg;
-	struct power_supply_desc psy_desc;
+struct power_supply_config psy_cfg;
+struct power_supply_desc psy_desc;
 
 	unsigned int op_mode; /* target operation mode */
 	unsigned int pwr_status; /* current device status */
@@ -310,7 +310,7 @@ struct ln8000_info {
 	bool iin_oc; /* iin OC fault */
 	bool vac_unplug; /* vac unplugged */
 	bool iin_rc; /* iin reverse current detected */
-	bool volt_qual; /* all voltages are qualified */
+bool volt_qual; /* all voltages are qualified */
 	bool usb_present; /* usb plugged (present) */
 	bool chg_en; /* charging enavbled */
 	bool rcp_en; /* reverse current protection enabled */
@@ -322,8 +322,8 @@ struct ln8000_info {
 	int tbat_uV; /* BAT temperature (NTC, uV) */
 	int tbus_uV; /* BUS temperature (NTC, uV) */
 	int tdie_dC; /* die temperature (deci-Celsius) */
-	int vbat_uV; /* battery voltage (uV) */
-	int vbus_uV; /* input voltage (uV) */
+int vbat_uV; /* battery voltage (uV) */
+int vbus_uV; /* input voltage (uV) */
 	int iin_uA; /* input current (uV) */
 
 	/* VAC_OV control for QC3 */
@@ -332,8 +332,8 @@ struct ln8000_info {
 
 #ifdef LN8000_ROLE_MASTER
 	bool ibat_term; /* battery current below termination threshold */
-	bool vbat_rechg; /* battery voltage below recharge threshold */
-	bool vbat_min; /* battery voltage above min. threshold */
+bool vbat_rechg; /* battery voltage below recharge threshold */
+bool vbat_min; /* battery voltage above min. threshold */
 #endif
 
 	/* debugfs */

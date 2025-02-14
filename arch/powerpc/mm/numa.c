@@ -238,7 +238,7 @@ static int associativity_to_nid(const __be32 *associativity)
 	if (of_read_number(associativity, 1) >= min_common_depth)
 		nid = of_read_number(&associativity[min_common_depth], 1);
 
-	/* POWER4 LPAR uses 0xffff as invalid node */
+/* POWER4 LPAR uses 0xffff as invalid node */
 	if (nid == 0xffff || nid >= MAX_NUMNODES)
 		nid = -1;
 
@@ -956,7 +956,7 @@ void __init initmem_init(void)
 	 * _nocalls() + manual invocation is used because cpuhp is not yet
 	 * initialized for the boot CPU.
 	 */
-	cpuhp_setup_state_nocalls(CPUHP_POWER_NUMA_PREPARE, "powerpc/numa:prepare",
+cpuhp_setup_state_nocalls(CPUHP_POWER_NUMA_PREPARE, "powerpc/numa:prepare",
 				  ppc_numa_cpu_prepare, ppc_numa_cpu_dead);
 	for_each_present_cpu(cpu)
 		numa_setup_cpu(cpu);
@@ -1664,7 +1664,7 @@ static int topology_update_init(void)
 {
 	start_topology_update();
 
-	if (!proc_create("powerpc/topology_updates", 0644, NULL, &topology_ops))
+if (!proc_create("powerpc/topology_updates", 0644, NULL, &topology_ops))
 		return -ENOMEM;
 
 	return 0;

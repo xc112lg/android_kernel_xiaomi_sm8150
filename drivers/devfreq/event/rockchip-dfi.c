@@ -63,11 +63,11 @@ struct dmc_usage {
 /*
  * The dfi controller can monitor DDR load. It has an upper and lower threshold
  * for the operating points. Whenever the usage leaves these bounds an event is
- * generated to indicate the DDR frequency should be changed.
+* generated to indicate the DDR frequency should be changed.
  */
 struct rockchip_dfi {
-	struct devfreq_event_dev *edev;
-	struct devfreq_event_desc *desc;
+struct devfreq_event_dev *edev;
+struct devfreq_event_desc *desc;
 	struct dmc_usage ch_usage[RK3399_DMC_NUM_CH];
 	struct device *dev;
 	void __iomem *regs;
@@ -77,7 +77,7 @@ struct rockchip_dfi {
 
 static void rockchip_dfi_start_hardware_counter(struct devfreq_event_dev *edev)
 {
-	struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
+struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
 	void __iomem *dfi_regs = info->regs;
 	u32 val;
 	u32 ddr_type;
@@ -101,7 +101,7 @@ static void rockchip_dfi_start_hardware_counter(struct devfreq_event_dev *edev)
 
 static void rockchip_dfi_stop_hardware_counter(struct devfreq_event_dev *edev)
 {
-	struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
+struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
 	void __iomem *dfi_regs = info->regs;
 
 	writel_relaxed(SOFTWARE_DIS, dfi_regs + DDRMON_CTRL);
@@ -109,7 +109,7 @@ static void rockchip_dfi_stop_hardware_counter(struct devfreq_event_dev *edev)
 
 static int rockchip_dfi_get_busier_ch(struct devfreq_event_dev *edev)
 {
-	struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
+struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
 	u32 tmp, max = 0;
 	u32 i, busier_ch = 0;
 	void __iomem *dfi_regs = info->regs;
@@ -135,7 +135,7 @@ static int rockchip_dfi_get_busier_ch(struct devfreq_event_dev *edev)
 
 static int rockchip_dfi_disable(struct devfreq_event_dev *edev)
 {
-	struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
+struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
 
 	rockchip_dfi_stop_hardware_counter(edev);
 	clk_disable_unprepare(info->clk);
@@ -145,7 +145,7 @@ static int rockchip_dfi_disable(struct devfreq_event_dev *edev)
 
 static int rockchip_dfi_enable(struct devfreq_event_dev *edev)
 {
-	struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
+struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
 	int ret;
 
 	ret = clk_prepare_enable(info->clk);
@@ -164,9 +164,9 @@ static int rockchip_dfi_set_event(struct devfreq_event_dev *edev)
 }
 
 static int rockchip_dfi_get_event(struct devfreq_event_dev *edev,
-				  struct devfreq_event_data *edata)
+struct devfreq_event_data *edata)
 {
-	struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
+struct rockchip_dfi *info = devfreq_event_get_drvdata(edev);
 	int busier_ch;
 
 	busier_ch = rockchip_dfi_get_busier_ch(edev);
@@ -195,7 +195,7 @@ static int rockchip_dfi_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct rockchip_dfi *data;
 	struct resource *res;
-	struct devfreq_event_desc *desc;
+struct devfreq_event_desc *desc;
 	struct device_node *np = pdev->dev.of_node, *node;
 
 	data = devm_kzalloc(dev, sizeof(struct rockchip_dfi), GFP_KERNEL);
@@ -231,10 +231,10 @@ static int rockchip_dfi_probe(struct platform_device *pdev)
 	desc->name = np->name;
 	data->desc = desc;
 
-	data->edev = devm_devfreq_event_add_edev(&pdev->dev, desc);
+data->edev = devm_devfreq_event_add_edev(&pdev->dev, desc);
 	if (IS_ERR(data->edev)) {
 		dev_err(&pdev->dev,
-			"failed to add devfreq-event device\n");
+"failed to add devfreq-event device\n");
 		return PTR_ERR(data->edev);
 	}
 

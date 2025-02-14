@@ -34,14 +34,14 @@ extern struct list_head opp_tables;
  * Internal data structure organization with the OPP layer library is as
  * follows:
  * opp_tables (root)
- *	|- device 1 (represents voltage domain 1)
- *	|	|- opp 1 (availability, freq, voltage)
+*	|- device 1 (represents voltage domain 1)
+*	|	|- opp 1 (availability, freq, voltage)
  *	|	|- opp 2 ..
  *	...	...
  *	|	`- opp n ..
- *	|- device 2 (represents the next voltage domain)
+*	|- device 2 (represents the next voltage domain)
  *	...
- *	`- device m (represents mth voltage domain)
+*	`- device m (represents mth voltage domain)
  * device 1, 2.. are represented by opp_table structure while each opp
  * is represented by the opp structure.
  */
@@ -58,10 +58,10 @@ extern struct list_head opp_tables;
  * @dynamic:	not-created from static DT entries.
  * @turbo:	true if turbo (boost) OPP
  * @suspend:	true if suspend OPP
- * @rate:	Frequency in hertz
- * @supplies:	Power supplies voltage/current values
+* @rate:	Frequency in hertz
+* @supplies:	Power supplies voltage/current values
  * @clock_latency_ns: Latency (in nanoseconds) of switching to this OPP's
- *		frequency from any other OPP's frequency.
+*		frequency from any other OPP's frequency.
  * @opp_table:	points back to the opp_table struct this opp belongs to
  * @np:		OPP's device node.
  * @dentry:	debugfs dentry pointer (per opp)
@@ -134,13 +134,13 @@ enum opp_table_access {
  * @prop_name: A name to postfix to many DT properties, while parsing them.
  * @clk: Device's clock handle
  * @regulators: Supply regulators
- * @regulator_count: Number of power supply regulators
+* @regulator_count: Number of power supply regulators
  * @set_opp: Platform specific set_opp callback
  * @set_opp_data: Data to be passed to set_opp callback
  * @dentry:	debugfs dentry pointer of the real device directory (not links).
  * @dentry_name: Name of the real dentry.
  *
- * @voltage_tolerance_v1: In percentage, for v1 bindings only.
+* @voltage_tolerance_v1: In percentage, for v1 bindings only.
  *
  * This is an internal data structure maintaining the link to opps attached to
  * a device. This structure is not meant to be shared to users as it is
@@ -159,7 +159,7 @@ struct opp_table {
 	unsigned long clock_latency_ns_max;
 
 	/* For backward compatibility with v1 bindings */
-	unsigned int voltage_tolerance_v1;
+unsigned int voltage_tolerance_v1;
 
 	enum opp_table_access shared_opp;
 	struct dev_pm_opp *suspend_opp;

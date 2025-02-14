@@ -1,5 +1,5 @@
 /*
- * max1586.c  --  Voltage and current regulation for the Maxim 1586
+* max1586.c  --  Voltage and current regulation for the Maxim 1586
  *
  * Copyright (C) 2008 Robert Jarzmik
  *
@@ -42,7 +42,7 @@
 struct max1586_data {
 	struct i2c_client *client;
 
-	/* min/max V3 voltage */
+/* min/max V3 voltage */
 	unsigned int min_uV;
 	unsigned int max_uV;
 
@@ -51,18 +51,18 @@ struct max1586_data {
 };
 
 /*
- * V6 voltage
+* V6 voltage
  * On I2C bus, sending a "x" byte to the max1586 means :
  *   set V6 to either 0V, 1.8V, 2.5V, 3V depending on (x & 0x3)
- * As regulator framework doesn't accept voltages to be 0V, we use 1uV.
+* As regulator framework doesn't accept voltages to be 0V, we use 1uV.
  */
 static const unsigned int v6_voltages_uv[] = { 1, 1800000, 2500000, 3000000 };
 
 /*
- * V3 voltage
+* V3 voltage
  * On I2C bus, sending a "x" byte to the max1586 means :
  *   set V3 to 0.700V + (x & 0x1f) * 0.025V
- * This voltage can be increased by external resistors
+* This voltage can be increased by external resistors
  * R24 and R25=100kOhm as described in the data sheet.
  * The gain is approximately: 1 + R24/R25 + R24/185.5kOhm
  */
@@ -81,8 +81,8 @@ static int max1586_v3_set_voltage_sel(struct regulator_dev *rdev,
 	int ret;
 	u8 v3_prog;
 
-	dev_dbg(&client->dev, "changing voltage v3 to %dmv\n",
-		regulator_list_voltage_linear(rdev, selector) / 1000);
+dev_dbg(&client->dev, "changing voltage v3 to %dmv\n",
+regulator_list_voltage_linear(rdev, selector) / 1000);
 
 	v3_prog = I2C_V3_SELECT | (u8) selector;
 	ret = i2c_smbus_write_byte(client, v3_prog);
@@ -109,7 +109,7 @@ static int max1586_v6_set_voltage_sel(struct regulator_dev *rdev,
 	u8 v6_prog;
 	int ret;
 
-	dev_dbg(&client->dev, "changing voltage v6 to %dmv\n",
+dev_dbg(&client->dev, "changing voltage v6 to %dmv\n",
 		rdev->desc->volt_table[selector] / 1000);
 
 	v6_prog = I2C_V6_SELECT | (u8) selector;
@@ -123,20 +123,20 @@ static int max1586_v6_set_voltage_sel(struct regulator_dev *rdev,
 }
 
 /*
- * The Maxim 1586 controls V3 and V6 voltages, but offers no way of reading back
+* The Maxim 1586 controls V3 and V6 voltages, but offers no way of reading back
  * the set up value.
  */
 static const struct regulator_ops max1586_v3_ops = {
-	.get_voltage_sel = max1586_v3_get_voltage_sel,
-	.set_voltage_sel = max1586_v3_set_voltage_sel,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = max1586_v3_get_voltage_sel,
+.set_voltage_sel = max1586_v3_set_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 };
 
 static const struct regulator_ops max1586_v6_ops = {
-	.get_voltage_sel = max1586_v6_get_voltage_sel,
-	.set_voltage_sel = max1586_v6_set_voltage_sel,
-	.list_voltage = regulator_list_voltage_table,
+.get_voltage_sel = max1586_v6_get_voltage_sel,
+.set_voltage_sel = max1586_v6_set_voltage_sel,
+.list_voltage = regulator_list_voltage_table,
 };
 
 static struct regulator_desc max1586_reg[] = {
@@ -144,17 +144,17 @@ static struct regulator_desc max1586_reg[] = {
 		.name = "Output_V3",
 		.id = MAX1586_V3,
 		.ops = &max1586_v3_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX1586_V3_MAX_VSEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX1586_V3_MAX_VSEL + 1,
 		.owner = THIS_MODULE,
 	},
 	{
 		.name = "Output_V6",
 		.id = MAX1586_V6,
 		.ops = &max1586_v6_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX1586_V6_MAX_VSEL + 1,
-		.volt_table = v6_voltages_uv,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX1586_V6_MAX_VSEL + 1,
+.volt_table = v6_voltages_uv,
 		.owner = THIS_MODULE,
 	},
 };
@@ -254,7 +254,7 @@ static int max1586_pmic_probe(struct i2c_client *client,
 	max1586->min_uV = MAX1586_V3_MIN_UV / 1000 * pdata->v3_gain / 1000;
 	max1586->max_uV = MAX1586_V3_MAX_UV / 1000 * pdata->v3_gain / 1000;
 
-	/* Set curr_sel to default voltage on power-up */
+/* Set curr_sel to default voltage on power-up */
 	max1586->v3_curr_sel = 24; /* 1.3V */
 	max1586->v6_curr_sel = 0;
 

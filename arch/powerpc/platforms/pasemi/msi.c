@@ -1,7 +1,7 @@
 /*
  * Copyright 2007, Olof Johansson, PA Semi
  *
- * Based on arch/powerpc/sysdev/mpic_u3msi.c:
+* Based on arch/powerpc/sysdev/mpic_u3msi.c:
  *
  * Copyright 2006, Segher Boessenkool, IBM Corporation.
  * Copyright 2006-2007, Michael Ellerman, IBM Corporation.

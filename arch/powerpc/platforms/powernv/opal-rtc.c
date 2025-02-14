@@ -1,5 +1,5 @@
 /*
- * PowerNV Real Time Clock.
+* PowerNV Real Time Clock.
  *
  * Copyright 2011 IBM Corp.
  *

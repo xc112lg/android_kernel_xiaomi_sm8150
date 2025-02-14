@@ -29,10 +29,10 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			model = "PowerPC,476";
+model = "PowerPC,476";
 			reg = <0>;
-			clock-frequency = <1600000000>; // 1.6 GHz
-			timebase-frequency = <100000000>; // 100Mhz
+clock-frequency = <1600000000>; // 1.6 GHz
+timebase-frequency = <100000000>; // 100Mhz
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <32768>;
@@ -43,10 +43,10 @@
 		};
 		cpu@1 {
 			device_type = "cpu";
-			model = "PowerPC,476";
+model = "PowerPC,476";
 			reg = <1>;
-			clock-frequency = <1600000000>; // 1.6 GHz
-			timebase-frequency = <100000000>; // 100Mhz
+clock-frequency = <1600000000>; // 1.6 GHz
+timebase-frequency = <100000000>; // 100Mhz
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <32768>;
@@ -79,7 +79,7 @@
 		#address-cells = <2>;
 		#size-cells = <2>;
 		ranges;
-		clock-frequency = <200000000>; // 200Mhz
+clock-frequency = <200000000>; // 200Mhz
 
 		POB0: opb {
 			compatible = "ibm,opb-4xx", "ibm,opb";
@@ -90,14 +90,14 @@
 			 */
 			ranges = <0x00000000 0x00000200 0x00000000 0x80000000
 				  0x80000000 0x00000200 0x80000000 0x80000000>;
-			clock-frequency = <100000000>;
+clock-frequency = <100000000>;
 
 			UART0: serial@10000000 {
 				device_type = "serial";
 				compatible = "ns16750", "ns16550";
 				reg = <0x10000000 0x00000008>;
 				virtual-reg = <0xe1000000>;
-				clock-frequency = <1851851>; // PCIe refclk/MCGC0_CTL[UART]
+clock-frequency = <1851851>; // PCIe refclk/MCGC0_CTL[UART]
 				current-speed = <115200>;
 				interrupt-parent = <&MPIC>;
 				interrupts = <34 2>;

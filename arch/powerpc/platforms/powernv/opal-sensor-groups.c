@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL Sensor-groups interface
+* PowerNV OPAL Sensor-groups interface
  *
  * Copyright 2017 IBM Corp.
  *

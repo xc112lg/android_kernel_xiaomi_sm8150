@@ -1,5 +1,5 @@
 /*
- * Support PCI/PCIe on PowerNV platforms
+* Support PCI/PCIe on PowerNV platforms
  *
  * Copyright 2011 Benjamin Herrenschmidt, IBM Corp.
  *
@@ -98,7 +98,7 @@ static int __init iommu_setup(char *str)
 	while (*str) {
 		if (!strncmp(str, "nobypass", 8)) {
 			pnv_iommu_bypass_disabled = true;
-			pr_info("PowerNV: IOMMU bypass window disabled.\n");
+pr_info("PowerNV: IOMMU bypass window disabled.\n");
 			break;
 		}
 		str += strcspn(str, ",");
@@ -1768,7 +1768,7 @@ static bool pnv_pci_ioda_pe_single_vendor(struct pnv_ioda_pe *pe)
  * by 64-bit DMAs.  This should only be used by devices that want more than
  * 4GB, and only on PEs that have no 32-bit devices.
  *
- * Currently this will only work on PHB3 (POWER8).
+* Currently this will only work on PHB3 (POWER8).
  */
 static int pnv_pci_ioda_dma_64bit_bypass(struct pnv_ioda_pe *pe)
 {
@@ -1779,7 +1779,7 @@ static int pnv_pci_ioda_dma_64bit_bypass(struct pnv_ioda_pe *pe)
 	s64 rc;
 
 	/*
-	 * Window size needs to be a power of two, but needs to account for
+* Window size needs to be a power of two, but needs to account for
 	 * shifting memory by the 4GB offset required to skip 32bit space.
 	 */
 	window_size = roundup_pow_of_two(memory_hotplug_max() + (1ULL << 32));
@@ -2481,7 +2481,7 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
 
 	/*
 	 * crashkernel= specifies the kdump kernel's maximum memory at
-	 * some offset and there is no guaranteed the result is a power
+* some offset and there is no guaranteed the result is a power
 	 * of 2, which will cause errors later.
 	 */
 	const u64 max_memory = __rounddown_pow_of_two(memory_hotplug_max());
@@ -2496,7 +2496,7 @@ static long pnv_pci_ioda2_setup_default_config(struct pnv_ioda_pe *pe)
 	rc = pnv_pci_ioda2_create_table(&pe->table_group, 0,
 			IOMMU_PAGE_SHIFT_4K,
 			window_size,
-			POWERNV_IOMMU_DEFAULT_LEVELS, &tbl);
+POWERNV_IOMMU_DEFAULT_LEVELS, &tbl);
 	if (rc) {
 		pe_err(pe, "Failed to create 32-bit TCE table, err %ld",
 				rc);
@@ -2564,9 +2564,9 @@ static unsigned long pnv_pci_ioda2_get_table_size(__u32 page_shift,
 	unsigned long tce_table_size = max(0x1000UL, 1UL << table_shift);
 	unsigned long direct_table_size;
 
-	if (!levels || (levels > POWERNV_IOMMU_MAX_LEVELS) ||
+if (!levels || (levels > POWERNV_IOMMU_MAX_LEVELS) ||
 			(window_size > memory_hotplug_max()) ||
-			!is_power_of_2(window_size))
+!is_power_of_2(window_size))
 		return 0;
 
 	/* Calculate a direct table size from window_size and levels */
@@ -2787,10 +2787,10 @@ static long pnv_pci_ioda2_table_alloc_pages(int nid, __u64 bus_offset,
 	unsigned table_shift = max_t(unsigned, entries_shift + 3, PAGE_SHIFT);
 	const unsigned long tce_table_size = 1UL << table_shift;
 
-	if (!levels || (levels > POWERNV_IOMMU_MAX_LEVELS))
+if (!levels || (levels > POWERNV_IOMMU_MAX_LEVELS))
 		return -EINVAL;
 
-	if ((window_size > memory_hotplug_max()) || !is_power_of_2(window_size))
+if ((window_size > memory_hotplug_max()) || !is_power_of_2(window_size))
 		return -EINVAL;
 
 	/* Adjust direct table size from window_size and levels */
@@ -2892,7 +2892,7 @@ static void pnv_pci_ioda2_setup_dma_pe(struct pnv_phb *phb,
 	pe->table_group.tce32_size = phb->ioda.m32_pci_base;
 	pe->table_group.max_dynamic_windows_supported =
 			IOMMU_TABLE_GROUP_MAX_TABLES;
-	pe->table_group.max_levels = POWERNV_IOMMU_MAX_LEVELS;
+pe->table_group.max_levels = POWERNV_IOMMU_MAX_LEVELS;
 	pe->table_group.pgsizes = SZ_4K | SZ_64K | SZ_16M;
 #ifdef CONFIG_IOMMU_API
 	pe->table_group.ops = &pnv_pci_ioda2_ops;
@@ -3095,7 +3095,7 @@ static void pnv_pci_ioda_fixup_iov_resources(struct pci_dev *pdev)
 
 		/*
 		 * If bigger than quarter of M64 segment size, just round up
-		 * power of two.
+* power of two.
 		 *
 		 * Generally, one M64 BAR maps one IOV BAR. To avoid conflict
 		 * with other devices, IOV BAR size is expanded to be
@@ -3285,7 +3285,7 @@ static void pnv_pci_ioda_create_dbgfs(void)
 		phb->initialized = 1;
 
 		sprintf(name, "PCI%04x", hose->global_number);
-		phb->dbgfs = debugfs_create_dir(name, powerpc_debugfs_root);
+phb->dbgfs = debugfs_create_dir(name, powerpc_debugfs_root);
 		if (!phb->dbgfs) {
 			pr_warning("%s: Error on creating debugfs on PHB#%x\n",
 				__func__, hose->global_number);
@@ -3515,12 +3515,12 @@ static resource_size_t pnv_pci_iov_resource_alignment(struct pci_dev *pdev,
 	resource_size_t align;
 
 	/*
-	 * On PowerNV platform, IOV BAR is mapped by M64 BAR to enable the
+* On PowerNV platform, IOV BAR is mapped by M64 BAR to enable the
 	 * SR-IOV. While from hardware perspective, the range mapped by M64
 	 * BAR should be size aligned.
 	 *
 	 * When IOV BAR is mapped with M64 BAR in Single PE mode, the extra
-	 * powernv-specific hardware restriction is gone. But if just use the
+* powernv-specific hardware restriction is gone. But if just use the
 	 * VF BAR size as the alignment, PF BAR / VF BAR may be allocated with
 	 * in one segment of M64 #15, which introduces the PE conflict between
 	 * PF and VF. Based on this, the minimum alignment of an IOV BAR is
@@ -3884,11 +3884,11 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
 	/* Detect specific models for error handling */
 	if (of_device_is_compatible(np, "ibm,p7ioc-pciex"))
 		phb->model = PNV_PHB_MODEL_P7IOC;
-	else if (of_device_is_compatible(np, "ibm,power8-pciex"))
+else if (of_device_is_compatible(np, "ibm,power8-pciex"))
 		phb->model = PNV_PHB_MODEL_PHB3;
-	else if (of_device_is_compatible(np, "ibm,power8-npu-pciex"))
+else if (of_device_is_compatible(np, "ibm,power8-npu-pciex"))
 		phb->model = PNV_PHB_MODEL_NPU;
-	else if (of_device_is_compatible(np, "ibm,power9-npu-pciex"))
+else if (of_device_is_compatible(np, "ibm,power9-npu-pciex"))
 		phb->model = PNV_PHB_MODEL_NPU2;
 	else
 		phb->model = PNV_PHB_MODEL_UNKNOWN;

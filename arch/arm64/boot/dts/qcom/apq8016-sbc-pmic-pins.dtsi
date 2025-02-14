@@ -16,7 +16,7 @@
 		pinconf {
 			pins = "gpio4";
 			function = PMIC_GPIO_FUNC_NORMAL;
-			power-source = <PM8916_GPIO_VPH>;
+power-source = <PM8916_GPIO_VPH>;
 			input-disable;
 			output-high;
 		};
@@ -41,7 +41,7 @@
 			pins = "mpp4";
 			function = "digital";
 			output-low;
-			power-source = <PM8916_MPP_L5>;	// 1.8V
+power-source = <PM8916_MPP_L5>;	// 1.8V
 		};
 	};
 

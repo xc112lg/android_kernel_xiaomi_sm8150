@@ -29,22 +29,22 @@ static const unsigned int stw481x_vmmc_voltages[] = {
 };
 
 static struct regulator_ops stw481x_vmmc_ops = {
-	.list_voltage = regulator_list_voltage_table,
+.list_voltage = regulator_list_voltage_table,
 	.enable      = regulator_enable_regmap,
 	.disable     = regulator_disable_regmap,
 	.is_enabled  = regulator_is_enabled_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 };
 
 static struct regulator_desc vmmc_regulator = {
 	.name = "VMMC",
 	.id   = 0,
 	.ops  = &stw481x_vmmc_ops,
-	.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 	.owner = THIS_MODULE,
-	.n_voltages = ARRAY_SIZE(stw481x_vmmc_voltages),
-	.volt_table = stw481x_vmmc_voltages,
+.n_voltages = ARRAY_SIZE(stw481x_vmmc_voltages),
+.volt_table = stw481x_vmmc_voltages,
 	.enable_time = 200, /* FIXME: look this up */
 	.enable_reg = STW_CONF1,
 	.enable_mask = STW_CONF1_PDN_VMMC | STW_CONF1_MMC_LS_STATUS,

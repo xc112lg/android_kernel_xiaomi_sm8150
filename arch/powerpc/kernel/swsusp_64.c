@@ -1,5 +1,5 @@
 /*
- * PowerPC 64-bit swsusp implementation
+* PowerPC 64-bit swsusp implementation
  *
  * Copyright 2006 Johannes Berg <johannes@sipsolutions.net>
  *

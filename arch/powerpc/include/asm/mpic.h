@@ -182,7 +182,7 @@ enum {
 	MPIC_IDX_GREG_IPI_VECTOR_PRI_0,
 	MPIC_IDX_GREG_IPI_STRIDE,
 	MPIC_IDX_GREG_SPURIOUS,
-	MPIC_IDX_GREG_TIMER_FREQ,
+MPIC_IDX_GREG_TIMER_FREQ,
 
 	MPIC_IDX_TIMER_BASE,
 	MPIC_IDX_TIMER_STRIDE,
@@ -409,7 +409,7 @@ static inline u32 fsl_mpic_primary_get_version(void)
  * @phys_addr:	physial base address of the MPIC
  * @flags:	flags, see constants above
  * @isu_size:	number of interrupts in an ISU. Use 0 to use a
- *              standard ISU-less setup (aka powermac)
+*              standard ISU-less setup (aka powermac)
  * @irq_offset: first irq number to assign to this mpic
  * @irq_count:  number of irqs to use with this mpic IRQ sources. Pass 0
  *	        to match the number of sources

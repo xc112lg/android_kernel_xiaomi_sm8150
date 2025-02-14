@@ -1,15 +1,15 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *  Rewritten by Cort Dougan (cort@cs.nmt.edu) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@cs.nmt.edu>
- *  Adapted for Power Macintosh by Paul Mackerras.
+*  Adapted for Power Macintosh by Paul Mackerras.
  *  Low-level exception handlers and MMU support
  *  rewritten by Paul Mackerras.
  *    Copyright (C) 1996 Paul Mackerras.
  *
  *  This file contains low-level assembler routines for managing
- *  the PowerPC MMU hash table.  (PPC 8xx processors don't use a
+*  the PowerPC MMU hash table.  (PPC 8xx processors don't use a
  *  hash table, so this file is not used on them.)
  *
  *  This program is free software; you can redistribute it and/or

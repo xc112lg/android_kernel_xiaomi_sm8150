@@ -61,7 +61,7 @@ module_param_named(debug_mask, debug_mask, int, 0600);
 enum bq_fg_reg_idx {
 	BQ_FG_REG_CTRL = 0,
 	BQ_FG_REG_TEMP, /* Battery Temperature */
-	BQ_FG_REG_VOLT, /* Battery Voltage */
+BQ_FG_REG_VOLT, /* Battery Voltage */
 	BQ_FG_REG_CN, /* Current Now */
 	BQ_FG_REG_AI, /* Average Current */
 	BQ_FG_REG_BATT_STATUS, /* BatteryStatus */
@@ -72,7 +72,7 @@ enum bq_fg_reg_idx {
 	BQ_FG_REG_CC, /* Cycle Count */
 	BQ_FG_REG_SOC, /* Relative State of Charge */
 	BQ_FG_REG_SOH, /* State of Health */
-	BQ_FG_REG_CHG_VOL, /* Charging Voltage*/
+BQ_FG_REG_CHG_VOL, /* Charging Voltage*/
 	BQ_FG_REG_CHG_CUR, /* Charging Current*/
 	BQ_FG_REG_DC, /* Design Capacity */
 	BQ_FG_REG_ALT_MAC, /* AltManufactureAccess*/
@@ -96,7 +96,7 @@ static u8 bq27z561_regs[NUM_REGS] = {
 	0x2A, /* CycleCount */
 	0x2C, /* State of Charge */
 	0x2E, /* State of Health */
-	0x30, /* Charging Voltage*/
+0x30, /* Charging Voltage*/
 	0x32, /* Charging Current*/
 	0x3C, /* Design Capacity */
 	0x3E, /* AltManufacturerAccess*/
@@ -190,10 +190,10 @@ struct bq_fg_chip {
 	int fake_volt;
 
 	struct delayed_work monitor_work;
-	struct power_supply *fg_psy;
-	struct power_supply *usb_psy;
-	struct power_supply *batt_psy;
-	struct power_supply_desc fg_psy_d;
+struct power_supply *fg_psy;
+struct power_supply *usb_psy;
+struct power_supply *batt_psy;
+struct power_supply_desc fg_psy_d;
 	struct timeval suspend_time;
 
 	u8 digest[BATTERY_DIGEST_LEN];
@@ -868,7 +868,7 @@ static int fg_read_volt(struct bq_fg_chip *bq)
 
 	ret = fg_read_word(bq, bq->regs[BQ_FG_REG_VOLT], &volt);
 	if (ret < 0) {
-		bq_dbg(PR_OEM, "could not read voltage, ret = %d\n", ret);
+bq_dbg(PR_OEM, "could not read voltage, ret = %d\n", ret);
 		return 3700;
 	}
 
@@ -1066,25 +1066,25 @@ static int fg_get_batt_status(struct bq_fg_chip *bq)
 	fg_read_status(bq);
 
 	if (bq->batt_fc)
-		return POWER_SUPPLY_STATUS_FULL;
+return POWER_SUPPLY_STATUS_FULL;
 	else if (bq->batt_dsg)
-		return POWER_SUPPLY_STATUS_DISCHARGING;
+return POWER_SUPPLY_STATUS_DISCHARGING;
 	else if (bq->batt_curr > 0)
-		return POWER_SUPPLY_STATUS_CHARGING;
+return POWER_SUPPLY_STATUS_CHARGING;
 	else
-		return POWER_SUPPLY_STATUS_NOT_CHARGING;
+return POWER_SUPPLY_STATUS_NOT_CHARGING;
 }
 
 static int fg_get_batt_capacity_level(struct bq_fg_chip *bq)
 {
 	if (bq->batt_fc)
-		return POWER_SUPPLY_CAPACITY_LEVEL_FULL;
+return POWER_SUPPLY_CAPACITY_LEVEL_FULL;
 	else if (bq->batt_rca)
-		return POWER_SUPPLY_CAPACITY_LEVEL_LOW;
+return POWER_SUPPLY_CAPACITY_LEVEL_LOW;
 	else if (bq->batt_fd)
-		return POWER_SUPPLY_CAPACITY_LEVEL_CRITICAL;
+return POWER_SUPPLY_CAPACITY_LEVEL_CRITICAL;
 	else
-		return POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
+return POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
 }
 
 static int fg_get_soc_decimal_rate(struct bq_fg_chip *bq)
@@ -1123,7 +1123,7 @@ static int fg_get_soc_decimal(struct bq_fg_chip *bq)
 
 static int fg_get_cold_thermal_level(struct bq_fg_chip *bq)
 {
-	union power_supply_propval pval = {
+union power_supply_propval pval = {
 		0,
 	};
 	int curr, i, rc, temp, volt, status;
@@ -1135,13 +1135,13 @@ static int fg_get_cold_thermal_level(struct bq_fg_chip *bq)
 		return 0;
 
 	if (!bq->batt_psy) {
-		bq->batt_psy = power_supply_get_by_name("battery");
+bq->batt_psy = power_supply_get_by_name("battery");
 		if (!bq->batt_psy) {
 			return 0;
 		}
 	}
 
-	rc = power_supply_get_property(bq->batt_psy, POWER_SUPPLY_PROP_STATUS,
+rc = power_supply_get_property(bq->batt_psy, POWER_SUPPLY_PROP_STATUS,
 				       &pval);
 	if (rc < 0) {
 		bq_dbg(PR_OEM, "failed get batt staus\n");
@@ -1149,7 +1149,7 @@ static int fg_get_cold_thermal_level(struct bq_fg_chip *bq)
 	}
 	status = pval.intval;
 
-	rc = power_supply_get_property(bq->batt_psy, POWER_SUPPLY_PROP_TEMP,
+rc = power_supply_get_property(bq->batt_psy, POWER_SUPPLY_PROP_TEMP,
 				       &pval);
 	if (rc < 0) {
 		bq_dbg(PR_OEM, "failed get batt temp\n");
@@ -1157,15 +1157,15 @@ static int fg_get_cold_thermal_level(struct bq_fg_chip *bq)
 	}
 	temp = pval.intval;
 
-	rc = power_supply_get_property(bq->batt_psy,
-				       POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
+rc = power_supply_get_property(bq->batt_psy,
+POWER_SUPPLY_PROP_VOLTAGE_NOW, &pval);
 	if (rc < 0) {
 		bq_dbg(PR_OEM, "failed get batt temp\n");
 		return -EINVAL;
 	}
 	volt = pval.intval;
 
-	if (status == POWER_SUPPLY_STATUS_CHARGING || temp > 100 ||
+if (status == POWER_SUPPLY_STATUS_CHARGING || temp > 100 ||
 	    volt > 3500000)
 		return 0;
 
@@ -1189,45 +1189,45 @@ static int fg_get_cold_thermal_level(struct bq_fg_chip *bq)
 }
 
 static enum power_supply_property fg_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-	POWER_SUPPLY_PROP_SOC_DECIMAL,
-	POWER_SUPPLY_PROP_SOC_DECIMAL_RATE,
-	POWER_SUPPLY_PROP_COLD_THERMAL_LEVEL,
-	POWER_SUPPLY_PROP_TEMP,
-	/*POWER_SUPPLY_PROP_HEALTH,*/ /*implement it in battery power_supply*/
-	POWER_SUPPLY_PROP_CHARGE_FULL,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CYCLE_COUNT,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_RESISTANCE_ID,
-	POWER_SUPPLY_PROP_UPDATE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_AUTHENTIC,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_RESISTANCE,
-	POWER_SUPPLY_PROP_FASTCHARGE_MODE,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_TERMINATION_CURRENT,
-	POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT,
-	POWER_SUPPLY_PROP_RECHARGE_VBAT,
-	POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+POWER_SUPPLY_PROP_SOC_DECIMAL,
+POWER_SUPPLY_PROP_SOC_DECIMAL_RATE,
+POWER_SUPPLY_PROP_COLD_THERMAL_LEVEL,
+POWER_SUPPLY_PROP_TEMP,
+/*POWER_SUPPLY_PROP_HEALTH,*/ /*implement it in battery power_supply*/
+POWER_SUPPLY_PROP_CHARGE_FULL,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CYCLE_COUNT,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_RESISTANCE_ID,
+POWER_SUPPLY_PROP_UPDATE_NOW,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_AUTHENTIC,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_RESISTANCE,
+POWER_SUPPLY_PROP_FASTCHARGE_MODE,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_TERMINATION_CURRENT,
+POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT,
+POWER_SUPPLY_PROP_RECHARGE_VBAT,
+POWER_SUPPLY_PROP_MODEL_NAME,
 };
 
 static int fg_get_property(struct power_supply *psy,
-			   enum power_supply_property psp,
-			   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct bq_fg_chip *bq = power_supply_get_drvdata(psy);
+struct bq_fg_chip *bq = power_supply_get_drvdata(psy);
 	int ret;
 	u16 flags;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		if (bq->old_hw) {
 			val->strval = "unknown";
 			break;
@@ -1238,7 +1238,7 @@ static int fg_get_property(struct power_supply *psy,
 		else
 			val->strval = "bq27z561";
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		if (bq->fake_volt != -EINVAL) {
 			val->intval = bq->fake_volt;
 			break;
@@ -1253,10 +1253,10 @@ static int fg_get_property(struct power_supply *psy,
 		val->intval = bq->batt_volt * 1000;
 
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = 1;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		if (bq->old_hw) {
 			val->intval = -500;
 			break;
@@ -1265,7 +1265,7 @@ static int fg_get_property(struct power_supply *psy,
 		val->intval = bq->batt_curr * 1000;
 		break;
 
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		if (bq->old_hw) {
 			val->intval = 50;
 			break;
@@ -1273,19 +1273,19 @@ static int fg_get_property(struct power_supply *psy,
 		val->intval = fg_read_system_soc(bq);
 		bq->batt_soc = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
 		val->intval = fg_get_batt_capacity_level(bq);
 		break;
-	case POWER_SUPPLY_PROP_SOC_DECIMAL:
+case POWER_SUPPLY_PROP_SOC_DECIMAL:
 		val->intval = fg_get_soc_decimal(bq);
 		break;
-	case POWER_SUPPLY_PROP_SOC_DECIMAL_RATE:
+case POWER_SUPPLY_PROP_SOC_DECIMAL_RATE:
 		val->intval = fg_get_soc_decimal_rate(bq);
 		break;
-	case POWER_SUPPLY_PROP_COLD_THERMAL_LEVEL:
+case POWER_SUPPLY_PROP_COLD_THERMAL_LEVEL:
 		val->intval = fg_get_cold_thermal_level(bq);
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		if (bq->fake_temp != -EINVAL) {
 			val->intval = bq->fake_temp;
 			break;
@@ -1296,7 +1296,7 @@ static int fg_get_property(struct power_supply *psy,
 		}
 		val->intval = bq->batt_temp;
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
+case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
 		if (bq->old_hw) {
 			val->intval = bq->batt_tte;
 			break;
@@ -1308,7 +1308,7 @@ static int fg_get_property(struct power_supply *psy,
 		val->intval = bq->batt_tte;
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		if (bq->old_hw) {
 			val->intval = 4050000;
 			break;
@@ -1319,11 +1319,11 @@ static int fg_get_property(struct power_supply *psy,
 		val->intval = bq->batt_fcc * 1000;
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		val->intval = bq->batt_dc;
 		break;
 
-	case POWER_SUPPLY_PROP_CYCLE_COUNT:
+case POWER_SUPPLY_PROP_CYCLE_COUNT:
 		if (bq->old_hw) {
 			val->intval = 1;
 			break;
@@ -1334,19 +1334,19 @@ static int fg_get_property(struct power_supply *psy,
 		val->intval = bq->batt_cyclecnt;
 		break;
 
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LIPO;
+case POWER_SUPPLY_PROP_TECHNOLOGY:
+val->intval = POWER_SUPPLY_TECHNOLOGY_LIPO;
 		break;
-	case POWER_SUPPLY_PROP_RESISTANCE:
+case POWER_SUPPLY_PROP_RESISTANCE:
 		val->intval = bq->batt_resistance;
 		break;
-	case POWER_SUPPLY_PROP_RESISTANCE_ID:
+case POWER_SUPPLY_PROP_RESISTANCE_ID:
 		val->intval = 100000;
 		break;
-	case POWER_SUPPLY_PROP_UPDATE_NOW:
+case POWER_SUPPLY_PROP_UPDATE_NOW:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		if (bq->old_hw) {
 			val->intval = 8000000;
 			break;
@@ -1358,44 +1358,44 @@ static int fg_get_property(struct power_supply *psy,
 		}
 		val->intval *= 1000;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		if (bq->old_hw) {
 			val->intval = 4450000;
 			break;
 		}
-		val->intval = fg_read_charging_voltage(bq);
+val->intval = fg_read_charging_voltage(bq);
 		val->intval *= 1000;
 		break;
-	case POWER_SUPPLY_PROP_AUTHENTIC:
+case POWER_SUPPLY_PROP_AUTHENTIC:
 		val->intval = bq->verify_digest_success;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		if (bq->constant_charge_current_max != 0)
 			val->intval = bq->constant_charge_current_max;
 		else
 			val->intval = fg_read_charging_current(bq);
 		break;
-	case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
+case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
 		if (bq->old_hw) {
 			val->intval = 0;
 			break;
 		}
 		val->intval = bq->fast_mode;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		if (bq->old_hw) {
 			val->intval = 4050000;
 			break;
 		}
 		ret = fg_get_charge_counter(bq, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TERMINATION_CURRENT:
+case POWER_SUPPLY_PROP_TERMINATION_CURRENT:
 		val->intval = manu_info[TERMINATION].data;
 		break;
-	case POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT:
+case POWER_SUPPLY_PROP_FFC_TERMINATION_CURRENT:
 		val->intval = manu_info[FFC_TERMINATION].data;
 		break;
-	case POWER_SUPPLY_PROP_RECHARGE_VBAT:
+case POWER_SUPPLY_PROP_RECHARGE_VBAT:
 		if (bq->batt_recharge_vol > 0)
 			val->intval = bq->batt_recharge_vol;
 		else
@@ -1408,31 +1408,31 @@ static int fg_get_property(struct power_supply *psy,
 }
 
 static int fg_set_property(struct power_supply *psy,
-			   enum power_supply_property prop,
-			   const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct bq_fg_chip *bq = power_supply_get_drvdata(psy);
+struct bq_fg_chip *bq = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		bq->fake_temp = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		bq->fake_soc = val->intval;
-		power_supply_changed(bq->fg_psy);
+power_supply_changed(bq->fg_psy);
 		break;
-	case POWER_SUPPLY_PROP_UPDATE_NOW:
+case POWER_SUPPLY_PROP_UPDATE_NOW:
 		break;
-	case POWER_SUPPLY_PROP_AUTHENTIC:
+case POWER_SUPPLY_PROP_AUTHENTIC:
 		bq->verify_digest_success = !!val->intval;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		bq->constant_charge_current_max = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
+case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
 		fg_set_fastcharge_mode(bq, !!val->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		bq->fake_volt = val->intval;
 		break;
 	default:
@@ -1443,18 +1443,18 @@ static int fg_set_property(struct power_supply *psy,
 }
 
 static int fg_prop_is_writeable(struct power_supply *psy,
-				enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	int ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_TEMP:
-	case POWER_SUPPLY_PROP_CAPACITY:
-	case POWER_SUPPLY_PROP_UPDATE_NOW:
-	case POWER_SUPPLY_PROP_AUTHENTIC:
-	case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_UPDATE_NOW:
+case POWER_SUPPLY_PROP_AUTHENTIC:
+case POWER_SUPPLY_PROP_FASTCHARGE_MODE:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		ret = 1;
 		break;
 	default:
@@ -1466,10 +1466,10 @@ static int fg_prop_is_writeable(struct power_supply *psy,
 
 static int fg_psy_register(struct bq_fg_chip *bq)
 {
-	struct power_supply_config fg_psy_cfg = {};
+struct power_supply_config fg_psy_cfg = {};
 
 	bq->fg_psy_d.name = "bms";
-	bq->fg_psy_d.type = POWER_SUPPLY_TYPE_BMS;
+bq->fg_psy_d.type = POWER_SUPPLY_TYPE_BMS;
 	bq->fg_psy_d.properties = fg_props;
 	bq->fg_psy_d.num_properties = ARRAY_SIZE(fg_props);
 	bq->fg_psy_d.get_property = fg_get_property;
@@ -1479,7 +1479,7 @@ static int fg_psy_register(struct bq_fg_chip *bq)
 	fg_psy_cfg.drv_data = bq;
 	fg_psy_cfg.num_supplicants = 0;
 	bq->fg_psy =
-		devm_power_supply_register(bq->dev, &bq->fg_psy_d, &fg_psy_cfg);
+devm_power_supply_register(bq->dev, &bq->fg_psy_d, &fg_psy_cfg);
 	if (IS_ERR(bq->fg_psy)) {
 		bq_dbg(PR_OEM, "Failed to register fg_psy");
 		return PTR_ERR(bq->fg_psy);
@@ -1490,7 +1490,7 @@ static int fg_psy_register(struct bq_fg_chip *bq)
 
 static void fg_psy_unregister(struct bq_fg_chip *bq)
 {
-	power_supply_unregister(bq->fg_psy);
+power_supply_unregister(bq->fg_psy);
 }
 
 static const u8 fg_dump_regs[] = {
@@ -1823,7 +1823,7 @@ static void fg_update_status(struct bq_fg_chip *bq)
 	if ((last_soc != bq->batt_soc) || (last_temp != bq->batt_temp) ||
 	    (last_st != bq->batt_st)) {
 		if (bq->fg_psy)
-			power_supply_changed(bq->fg_psy);
+power_supply_changed(bq->fg_psy);
 	}
 
 	last_soc = bq->batt_soc;
@@ -1913,10 +1913,10 @@ static int bq_parse_dt(struct bq_fg_chip *bq)
 		return ret;
 	}
 
-	ret = of_property_read_u32(node, "bq,recharge-voltage",
+ret = of_property_read_u32(node, "bq,recharge-voltage",
 				   &bq->batt_recharge_vol);
 	if (ret < 0) {
-		bq_dbg(PR_OEM, "failed to get bq,recharge-voltage\n");
+bq_dbg(PR_OEM, "failed to get bq,recharge-voltage\n");
 		bq->batt_recharge_vol = -EINVAL;
 		return ret;
 	}

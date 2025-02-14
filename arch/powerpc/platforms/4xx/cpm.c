@@ -1,14 +1,14 @@
 /*
- * PowerPC 4xx Clock and Power Management
+* PowerPC 4xx Clock and Power Management
  *
  * Copyright (C) 2010, Applied Micro Circuits Corporation
  * Victor Gallardo (vgallardo@apm.com)
  *
- * Based on arch/powerpc/platforms/44x/idle.c:
+* Based on arch/powerpc/platforms/44x/idle.c:
  * Jerone Young <jyoung5@us.ibm.com>
  * Copyright 2008 IBM Corp.
  *
- * Based on arch/powerpc/sysdev/fsl_pmc.c:
+* Based on arch/powerpc/sysdev/fsl_pmc.c:
  * Anton Vorontsov <avorontsov@ru.mvista.com>
  * Copyright 2009  MontaVista Software, Inc.
  *
@@ -50,7 +50,7 @@
 struct cpm {
 	dcr_host_t	dcr_host;
 	unsigned int	dcr_offset[3];
-	unsigned int	powersave_off;
+unsigned int	powersave_off;
 	unsigned int	unused;
 	unsigned int	idle_doze;
 	unsigned int	standby;
@@ -263,9 +263,9 @@ static int __init cpm_init(void)
 	int dcr_base, dcr_len;
 	int ret = 0;
 
-	if (!cpm.powersave_off) {
+if (!cpm.powersave_off) {
 		cpm_idle_config(CPM_IDLE_WAIT);
-		ppc_md.power_save = &cpm_idle;
+ppc_md.power_save = &cpm_idle;
 	}
 
 	np = of_find_compatible_node(NULL, NULL, "ibm,cpm");
@@ -325,7 +325,7 @@ static int __init cpm_init(void)
 
 	/* Now let's export interfaces */
 
-	if (!cpm.powersave_off && cpm.idle_doze)
+if (!cpm.powersave_off && cpm.idle_doze)
 		cpm_idle_config_sysfs();
 
 	if (cpm.standby || cpm.suspend)
@@ -340,7 +340,7 @@ late_initcall(cpm_init);
 
 static int __init cpm_powersave_off(char *arg)
 {
-	cpm.powersave_off = 1;
+cpm.powersave_off = 1;
 	return 1;
 }
 __setup("powersave=off", cpm_powersave_off);

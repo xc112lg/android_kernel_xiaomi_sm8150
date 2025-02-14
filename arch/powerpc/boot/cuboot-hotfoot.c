@@ -30,12 +30,12 @@ static void hotfoot_fixups(void)
 
 	dt_fixup_memory(bd.bi_memstart, bd.bi_memsize); 
 
-	dt_fixup_cpu_clocks(bd.bi_procfreq, bd.bi_procfreq, 0);
-	dt_fixup_clock("/plb", bd.bi_plb_busfreq);
-	dt_fixup_clock("/plb/opb", bd.bi_opbfreq);
-	dt_fixup_clock("/plb/ebc", bd.bi_pci_busfreq);
-	dt_fixup_clock("/plb/opb/serial@ef600300", bd.bi_procfreq / uart); 
-	dt_fixup_clock("/plb/opb/serial@ef600400", bd.bi_procfreq / uart); 
+dt_fixup_cpu_clocks(bd.bi_procfreq, bd.bi_procfreq, 0);
+dt_fixup_clock("/plb", bd.bi_plb_busfreq);
+dt_fixup_clock("/plb/opb", bd.bi_opbfreq);
+dt_fixup_clock("/plb/ebc", bd.bi_pci_busfreq);
+dt_fixup_clock("/plb/opb/serial@ef600300", bd.bi_procfreq / uart);
+dt_fixup_clock("/plb/opb/serial@ef600400", bd.bi_procfreq / uart);
 	
 	dt_fixup_mac_address_by_alias("ethernet0", bd.bi_enetaddr);
 	dt_fixup_mac_address_by_alias("ethernet1", bd.bi_enet1addr);

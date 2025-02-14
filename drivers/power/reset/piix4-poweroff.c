@@ -34,7 +34,7 @@ static void piix4_poweroff(void)
 	int spec_devid;
 	u16 sts;
 
-	/* Ensure the power button status is clear */
+/* Ensure the power button status is clear */
 	while (1) {
 		sts = inw(io_offset + PIIX4_FUNC3IO_PMSTS);
 		if (!(sts & PIIX4_FUNC3IO_PMSTS_PWRBTN_STS))
@@ -58,9 +58,9 @@ static void piix4_poweroff(void)
 	pci_bus_write_config_dword(pm_dev->bus, spec_devid, 0,
 				   PIIX4_SUSPEND_MAGIC);
 
-	/* Give the system some time to power down, then error */
+/* Give the system some time to power down, then error */
 	mdelay(1000);
-	pr_emerg("Unable to poweroff system\n");
+pr_emerg("Unable to poweroff system\n");
 }
 
 static int piix4_poweroff_probe(struct pci_dev *dev,
@@ -82,15 +82,15 @@ static int piix4_poweroff_probe(struct pci_dev *dev,
 
 	pm_dev = dev;
 	io_offset = pci_resource_start(dev, piix4_pm_io_region);
-	pm_power_off = piix4_poweroff;
+pm_power_off = piix4_poweroff;
 
 	return 0;
 }
 
 static void piix4_poweroff_remove(struct pci_dev *dev)
 {
-	if (pm_power_off == piix4_poweroff)
-		pm_power_off = NULL;
+if (pm_power_off == piix4_poweroff)
+pm_power_off = NULL;
 
 	pci_release_region(dev, piix4_pm_io_region);
 	pm_dev = NULL;
@@ -102,10 +102,10 @@ static const struct pci_device_id piix4_poweroff_ids[] = {
 };
 
 static struct pci_driver piix4_poweroff_driver = {
-	.name		= "piix4-poweroff",
-	.id_table	= piix4_poweroff_ids,
-	.probe		= piix4_poweroff_probe,
-	.remove		= piix4_poweroff_remove,
+.name		= "piix4-poweroff",
+.id_table	= piix4_poweroff_ids,
+.probe		= piix4_poweroff_probe,
+.remove		= piix4_poweroff_remove,
 };
 
 module_pci_driver(piix4_poweroff_driver);

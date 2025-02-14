@@ -40,13 +40,13 @@ static unsigned int smi_sig;
 static enum speedstep_processor speedstep_processor;
 
 /*
- * There are only two frequency states for each processor. Values
+* There are only two frequency states for each processor. Values
  * are in kHz for the time being.
  */
 static struct cpufreq_frequency_table speedstep_freqs[] = {
 	{0, SPEEDSTEP_HIGH,	0},
 	{0, SPEEDSTEP_LOW,	0},
-	{0, 0,			CPUFREQ_TABLE_END},
+{0, 0,			CPUFREQ_TABLE_END},
 };
 
 #define GET_SPEEDSTEP_OWNER 0
@@ -91,9 +91,9 @@ static int speedstep_smi_ownership(void)
 }
 
 /**
- * speedstep_smi_get_freqs - get SpeedStep preferred & current freq.
- * @low: the low frequency value is placed here
- * @high: the high frequency value is placed here
+* speedstep_smi_get_freqs - get SpeedStep preferred & current freq.
+* @low: the low frequency value is placed here
+* @high: the high frequency value is placed here
  *
  * Only available on later SpeedStep-enabled systems, returns false results or
  * even hangs [cf. bugme.osdl.org # 1422] on earlier systems. Empirical testing
@@ -103,16 +103,16 @@ static int speedstep_smi_get_freqs(unsigned int *low, unsigned int *high)
 {
 	u32 command, result = 0, edi, high_mhz, low_mhz, dummy;
 	u32 state = 0;
-	u32 function = GET_SPEEDSTEP_FREQS;
+u32 function = GET_SPEEDSTEP_FREQS;
 
 	if (!(ist_info.event & 0xFFFF)) {
-		pr_debug("bug #1422 -- can't read freqs from BIOS\n");
+pr_debug("bug #1422 -- can't read freqs from BIOS\n");
 		return -ENODEV;
 	}
 
 	command = (smi_sig & 0xffffff00) | (smi_cmd & 0xff);
 
-	pr_debug("trying to determine frequencies with command %x at port %x\n",
+pr_debug("trying to determine frequencies with command %x at port %x\n",
 			command, smi_port);
 
 	__asm__ __volatile__(
@@ -129,7 +129,7 @@ static int speedstep_smi_get_freqs(unsigned int *low, unsigned int *high)
 		  "d" (smi_port), "S" (0), "D" (0)
 	);
 
-	pr_debug("result %x, low_freq %u, high_freq %u\n",
+pr_debug("result %x, low_freq %u, high_freq %u\n",
 			result, low_mhz, high_mhz);
 
 	/* abort if results are obviously incorrect... */
@@ -144,7 +144,7 @@ static int speedstep_smi_get_freqs(unsigned int *low, unsigned int *high)
 
 /**
  * speedstep_set_state - set the SpeedStep state
- * @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)
+* @state: new processor frequency state (SPEEDSTEP_LOW or SPEEDSTEP_HIGH)
  *
  */
 static void speedstep_set_state(unsigned int state)
@@ -163,7 +163,7 @@ static void speedstep_set_state(unsigned int state)
 
 	command = (smi_sig & 0xffffff00) | (smi_cmd & 0xff);
 
-	pr_debug("trying to set frequency to state %u "
+pr_debug("trying to set frequency to state %u "
 		"with command %x at port %x\n",
 		state, command, smi_port);
 
@@ -203,7 +203,7 @@ static void speedstep_set_state(unsigned int state)
 	if (new_state == state)
 		pr_debug("change to %u MHz succeeded after %u tries "
 			"with result %u\n",
-			(speedstep_freqs[new_state].frequency / 1000),
+(speedstep_freqs[new_state].frequency / 1000),
 			retry, result);
 	else
 		pr_err("change to state %u failed with new_state %u and result %u\n",
@@ -214,11 +214,11 @@ static void speedstep_set_state(unsigned int state)
 
 
 /**
- * speedstep_target - set a new CPUFreq policy
+* speedstep_target - set a new CPUFreq policy
  * @policy: new policy
- * @index: index of new freq
+* @index: index of new freq
  *
- * Sets a new CPUFreq policy/freq.
+* Sets a new CPUFreq policy/freq.
  */
 static int speedstep_target(struct cpufreq_policy *policy, unsigned int index)
 {
@@ -243,17 +243,17 @@ static int speedstep_cpu_init(struct cpufreq_policy *policy)
 		return -EINVAL;
 	}
 
-	/* detect low and high frequency */
-	low = &speedstep_freqs[SPEEDSTEP_LOW].frequency;
-	high = &speedstep_freqs[SPEEDSTEP_HIGH].frequency;
+/* detect low and high frequency */
+low = &speedstep_freqs[SPEEDSTEP_LOW].frequency;
+high = &speedstep_freqs[SPEEDSTEP_HIGH].frequency;
 
-	result = speedstep_smi_get_freqs(low, high);
+result = speedstep_smi_get_freqs(low, high);
 	if (result) {
 		/* fall back to speedstep_lib.c dection mechanism:
 		 * try both states out */
-		pr_debug("could not detect low and high frequencies "
+pr_debug("could not detect low and high frequencies "
 				"by SMI call.\n");
-		result = speedstep_get_freqs(speedstep_processor,
+result = speedstep_get_freqs(speedstep_processor,
 				low, high,
 				NULL,
 				&speedstep_set_state);
@@ -266,14 +266,14 @@ static int speedstep_cpu_init(struct cpufreq_policy *policy)
 			pr_debug("workaround worked.\n");
 	}
 
-	return cpufreq_table_validate_and_show(policy, speedstep_freqs);
+return cpufreq_table_validate_and_show(policy, speedstep_freqs);
 }
 
 static unsigned int speedstep_get(unsigned int cpu)
 {
 	if (cpu)
 		return -ENODEV;
-	return speedstep_get_frequency(speedstep_processor);
+return speedstep_get_frequency(speedstep_processor);
 }
 
 
@@ -289,13 +289,13 @@ static int speedstep_resume(struct cpufreq_policy *policy)
 
 static struct cpufreq_driver speedstep_driver = {
 	.name		= "speedstep-smi",
-	.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
-	.verify		= cpufreq_generic_frequency_table_verify,
+.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
+.verify		= cpufreq_generic_frequency_table_verify,
 	.target_index	= speedstep_target,
 	.init		= speedstep_cpu_init,
 	.get		= speedstep_get,
 	.resume		= speedstep_resume,
-	.attr		= cpufreq_generic_attr,
+.attr		= cpufreq_generic_attr,
 };
 
 static const struct x86_cpu_id ss_smi_ids[] = {
@@ -310,7 +310,7 @@ MODULE_DEVICE_TABLE(x86cpu, ss_smi_ids);
 #endif
 
 /**
- * speedstep_init - initializes the SpeedStep CPUFreq driver
+* speedstep_init - initializes the SpeedStep CPUFreq driver
  *
  *   Initializes the SpeedStep support. Returns -ENODEV on unsupported
  * BIOS, -EINVAL on problems during initiatization, and zero on
@@ -364,7 +364,7 @@ static int __init speedstep_init(void)
 	else if (smi_cmd == 0)
 		smi_cmd = (ist_info.command >> 16) & 0xff;
 
-	return cpufreq_register_driver(&speedstep_driver);
+return cpufreq_register_driver(&speedstep_driver);
 }
 
 
@@ -375,7 +375,7 @@ static int __init speedstep_init(void)
  */
 static void __exit speedstep_exit(void)
 {
-	cpufreq_unregister_driver(&speedstep_driver);
+cpufreq_unregister_driver(&speedstep_driver);
 }
 
 module_param_hw(smi_port, int, ioport, 0444);

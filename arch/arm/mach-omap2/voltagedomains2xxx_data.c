@@ -1,5 +1,5 @@
 /*
- * OMAP3 voltage domain data
+* OMAP3 voltage domain data
  *
  * Copyright (C) 2011 Texas Instruments, Inc.
  *
@@ -28,5 +28,5 @@ static struct voltagedomain *voltagedomains_omap2[] __initdata = {
 
 void __init omap2xxx_voltagedomains_init(void)
 {
-	voltdm_init(voltagedomains_omap2);
+voltdm_init(voltagedomains_omap2);
 }

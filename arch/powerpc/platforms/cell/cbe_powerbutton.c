@@ -1,5 +1,5 @@
 /*
- * driver for powerbutton on IBM cell blades
+* driver for powerbutton on IBM cell blades
  *
  * (C) Copyright IBM Corp. 2005-2008
  *
@@ -31,17 +31,17 @@ static struct platform_device *button_pdev;
 
 static void cbe_powerbutton_handle_pmi(pmi_message_t pmi_msg)
 {
-	BUG_ON(pmi_msg.type != PMI_TYPE_POWER_BUTTON);
+BUG_ON(pmi_msg.type != PMI_TYPE_POWER_BUTTON);
 
-	input_report_key(button_dev, KEY_POWER, 1);
+input_report_key(button_dev, KEY_POWER, 1);
 	input_sync(button_dev);
-	input_report_key(button_dev, KEY_POWER, 0);
+input_report_key(button_dev, KEY_POWER, 0);
 	input_sync(button_dev);
 }
 
 static struct pmi_handler cbe_pmi_handler = {
-	.type			= PMI_TYPE_POWER_BUTTON,
-	.handle_pmi_message	= cbe_powerbutton_handle_pmi,
+.type			= PMI_TYPE_POWER_BUTTON,
+.handle_pmi_message	= cbe_powerbutton_handle_pmi,
 };
 
 static int __init cbe_powerbutton_init(void)
@@ -63,17 +63,17 @@ static int __init cbe_powerbutton_init(void)
 	}
 
 	set_bit(EV_KEY, dev->evbit);
-	set_bit(KEY_POWER, dev->keybit);
+set_bit(KEY_POWER, dev->keybit);
 
-	dev->name = "Power Button";
+dev->name = "Power Button";
 	dev->id.bustype = BUS_HOST;
 
-	/* this makes the button look like an acpi power button
+/* this makes the button look like an acpi power button
 	 * no clue whether anyone relies on that though */
 	dev->id.product = 0x02;
 	dev->phys = "LNXPWRBN/button/input0";
 
-	button_pdev = platform_device_register_simple("power_button", 0, NULL, 0);
+button_pdev = platform_device_register_simple("power_button", 0, NULL, 0);
 	if (IS_ERR(button_pdev)) {
 		ret = PTR_ERR(button_pdev);
 		goto out_free_input;

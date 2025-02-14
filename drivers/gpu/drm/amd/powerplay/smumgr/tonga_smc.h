@@ -34,8 +34,8 @@
 
 struct tonga_pt_defaults {
 	uint8_t   svi_load_line_en;
-	uint8_t   svi_load_line_vddC;
-	uint8_t   tdc_vddc_throttle_release_limit_perc;
+uint8_t   svi_load_line_vddC;
+uint8_t   tdc_vddc_throttle_release_limit_perc;
 	uint8_t   tdc_mawt;
 	uint8_t   tdc_waterfall_ctl;
 	uint8_t   dte_ambient_temp_base;

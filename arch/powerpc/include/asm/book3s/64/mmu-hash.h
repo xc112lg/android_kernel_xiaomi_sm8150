@@ -1,7 +1,7 @@
 #ifndef _ASM_POWERPC_BOOK3S_64_MMU_HASH_H_
 #define _ASM_POWERPC_BOOK3S_64_MMU_HASH_H_
 /*
- * PowerPC64 memory management structures
+* PowerPC64 memory management structures
  *
  * Dave Engebretsen & Mike Corrigan <{engebret|mikejc}@us.ibm.com>
  *   PPC64 rework.
@@ -163,7 +163,7 @@ struct mmu_hash_ops {
 	/*
 	 * Special for kexec.
 	 * To be called in real mode with interrupts disabled. No locks are
-	 * taken as such, concurrent access on pre POWER5 hardware could result
+* taken as such, concurrent access on pre POWER5 hardware could result
 	 * in a deadlock.
 	 * The linear mapping is destroyed as well.
 	 */

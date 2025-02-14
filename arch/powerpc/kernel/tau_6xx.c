@@ -5,7 +5,7 @@
  * Written by Troy Benjegerdes <hozer@drgw.net>
  *
  * TODO:
- * dynamic power management to limit peak CPU temp (using ICTC)
+* dynamic power management to limit peak CPU temp (using ICTC)
  * calibration???
  *
  * Silly, crazy ideas: use cpu load (from scheduler) and ICTC to extend battery
@@ -155,7 +155,7 @@ static void tau_timeout(void * info)
 	set_thresholds(cpu);
 
 	/* Restart thermal sensor comparisons and interrupts.
-	 * The "PowerPC 740 and PowerPC 750 Microprocessor Datasheet"
+* The "PowerPC 740 and PowerPC 750 Microprocessor Datasheet"
 	 * recommends that "the maximum value be set in THRM3 under all
 	 * conditions."
 	 */

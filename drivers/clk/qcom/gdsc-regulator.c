@@ -184,12 +184,12 @@ static int gdsc_is_enabled(struct regulator_dev *rdev)
 		 * it might be disabled between this point and reading the GDSC
 		 * registers.
 		 */
-		if (regulator_set_voltage(sc->parent_regulator,
+if (regulator_set_voltage(sc->parent_regulator,
 					RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX))
 			return false;
 
 		if (regulator_enable(sc->parent_regulator)) {
-			regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 			return false;
 		}
 	}
@@ -221,7 +221,7 @@ static int gdsc_is_enabled(struct regulator_dev *rdev)
 end:
 	if (sc->parent_regulator) {
 		regulator_disable(sc->parent_regulator);
-		regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 	}
 
 	return is_enabled;
@@ -266,7 +266,7 @@ static int gdsc_enable(struct regulator_dev *rdev)
 		return 0;
 
 	if (sc->parent_regulator) {
-		ret = regulator_set_voltage(sc->parent_regulator,
+ret = regulator_set_voltage(sc->parent_regulator,
 				RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX);
 		if (ret)
 			return ret;
@@ -410,14 +410,14 @@ static int gdsc_enable(struct regulator_dev *rdev)
 	}
 
 	/*
-	 * If clocks to this power domain were already on, they will take an
+* If clocks to this power domain were already on, they will take an
 	 * additional 4 clock cycles to re-enable after the rail is enabled.
 	 * Delay to account for this. A delay is also needed to ensure clocks
-	 * are not enabled within 400ns of enabling power to the memories.
+* are not enabled within 400ns of enabling power to the memories.
 	 */
 	udelay(1);
 
-	/* Delay to account for staggered memory powerup. */
+/* Delay to account for staggered memory powerup. */
 	udelay(1);
 
 	if (sc->force_root_en)
@@ -433,7 +433,7 @@ end:
 	sc->skip_disable_before_enable = false;
 
 	if (ret && sc->parent_regulator)
-		regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 
 	return ret;
 }
@@ -456,7 +456,7 @@ static int gdsc_disable(struct regulator_dev *rdev)
 			clk_set_flags(sc->clocks[i], CLKFLAG_NORETAIN_PERIPH);
 	}
 
-	/* Delay to account for staggered memory powerdown. */
+/* Delay to account for staggered memory powerdown. */
 	udelay(1);
 
 	if (sc->skip_disable && !sc->bypass_skip_disable) {
@@ -515,7 +515,7 @@ static int gdsc_disable(struct regulator_dev *rdev)
 	}
 
 	if (sc->parent_regulator)
-		regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 
 	sc->is_gdsc_enabled = false;
 
@@ -535,14 +535,14 @@ static unsigned int gdsc_get_mode(struct regulator_dev *rdev)
 	}
 
 	if (sc->parent_regulator) {
-		ret = regulator_set_voltage(sc->parent_regulator,
+ret = regulator_set_voltage(sc->parent_regulator,
 					RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX);
 		if (ret)
 			return ret;
 
 		ret = regulator_enable(sc->parent_regulator);
 		if (ret) {
-			regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 			return ret;
 		}
 	}
@@ -554,7 +554,7 @@ static unsigned int gdsc_get_mode(struct regulator_dev *rdev)
 				ret);
 			if (sc->parent_regulator) {
 				regulator_disable(sc->parent_regulator);
-				regulator_set_voltage(sc->parent_regulator, 0,
+regulator_set_voltage(sc->parent_regulator, 0,
 							INT_MAX);
 			}
 			return ret;
@@ -568,7 +568,7 @@ static unsigned int gdsc_get_mode(struct regulator_dev *rdev)
 
 	if (sc->parent_regulator) {
 		regulator_disable(sc->parent_regulator);
-		regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 	}
 
 	if (regval & HW_CONTROL_MASK)
@@ -600,14 +600,14 @@ static int gdsc_set_mode(struct regulator_dev *rdev, unsigned int mode)
 	}
 
 	if (sc->parent_regulator) {
-		ret = regulator_set_voltage(sc->parent_regulator,
+ret = regulator_set_voltage(sc->parent_regulator,
 				RPMH_REGULATOR_LEVEL_LOW_SVS, INT_MAX);
 		if (ret)
 			return ret;
 
 		ret = regulator_enable(sc->parent_regulator);
 		if (ret) {
-			regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 			return ret;
 		}
 	}
@@ -619,7 +619,7 @@ static int gdsc_set_mode(struct regulator_dev *rdev, unsigned int mode)
 				ret);
 			if (sc->parent_regulator) {
 				regulator_disable(sc->parent_regulator);
-				regulator_set_voltage(sc->parent_regulator, 0,
+regulator_set_voltage(sc->parent_regulator, 0,
 							INT_MAX);
 			}
 			return ret;
@@ -635,11 +635,11 @@ static int gdsc_set_mode(struct regulator_dev *rdev, unsigned int mode)
 		regmap_write(sc->regmap, REG_OFFSET, regval);
 		/*
 		 * There may be a race with internal HW trigger signal,
-		 * that will result in GDSC going through a power down and
+* that will result in GDSC going through a power down and
 		 * up cycle.  In case HW trigger signal is controlled by
 		 * firmware that also poll same status bits as we do, FW
 		 * might read an 'on' status before the GDSC can finish
-		 * power cycle.  We wait 1us before returning to ensure
+* power cycle.  We wait 1us before returning to ensure
 		 * FW can't immediately poll the status bit.
 		 */
 		gdsc_mb(sc);
@@ -651,7 +651,7 @@ static int gdsc_set_mode(struct regulator_dev *rdev, unsigned int mode)
 		regmap_write(sc->regmap, REG_OFFSET, regval);
 		/*
 		 * There may be a race with internal HW trigger signal,
-		 * that will result in GDSC going through a power down and
+* that will result in GDSC going through a power down and
 		 * up cycle. Account for this case by waiting 1us before
 		 * proceeding.
 		 */
@@ -668,7 +668,7 @@ static int gdsc_set_mode(struct regulator_dev *rdev, unsigned int mode)
 
 	if (sc->parent_regulator) {
 		regulator_disable(sc->parent_regulator);
-		regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
+regulator_set_voltage(sc->parent_regulator, 0, INT_MAX);
 	}
 
 	return ret;
@@ -785,14 +785,14 @@ static int gdsc_probe(struct platform_device *pdev)
 	sc->force_root_en = of_property_read_bool(pdev->dev.of_node,
 						"qcom,force-enable-root-clk");
 
-	if (of_find_property(pdev->dev.of_node, "vdd_parent-supply", NULL)) {
+if (of_find_property(pdev->dev.of_node, "vdd_parent-supply", NULL)) {
 		sc->parent_regulator = devm_regulator_get(&pdev->dev,
-							"vdd_parent");
+"vdd_parent");
 		if (IS_ERR(sc->parent_regulator)) {
 			ret = PTR_ERR(sc->parent_regulator);
 			if (ret != -EPROBE_DEFER)
 				dev_err(&pdev->dev,
-				"Unable to get vdd_parent regulator, err: %d\n",
+"Unable to get vdd_parent regulator, err: %d\n",
 					ret);
 			return ret;
 		}
@@ -875,7 +875,7 @@ static int gdsc_probe(struct platform_device *pdev)
 
 	sc->rdesc.id = atomic_inc_return(&gdsc_count);
 	sc->rdesc.ops = &gdsc_ops;
-	sc->rdesc.type = REGULATOR_VOLTAGE;
+sc->rdesc.type = REGULATOR_VOLTAGE;
 	sc->rdesc.owner = THIS_MODULE;
 	platform_set_drvdata(pdev, sc);
 

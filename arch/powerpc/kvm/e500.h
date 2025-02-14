@@ -7,8 +7,8 @@
  *         Varun Sethi <varun.sethi@freescale.com>
  *
  * Description:
- * This file is based on arch/powerpc/kvm/44x_tlb.h and
- * arch/powerpc/include/asm/kvm_44x.h by Hollis Blanchard <hollisb@us.ibm.com>,
+* This file is based on arch/powerpc/kvm/44x_tlb.h and
+* arch/powerpc/include/asm/kvm_44x.h by Hollis Blanchard <hollisb@us.ibm.com>,
  * Copyright IBM Corp. 2007-2008
  *
  * This program is free software; you can redistribute it and/or modify

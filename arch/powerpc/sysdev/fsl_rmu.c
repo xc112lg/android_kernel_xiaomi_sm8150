@@ -690,8 +690,8 @@ fsl_add_outb_message(struct rio_mport *mport, struct rio_dev *rdev, int mbox,
 	/* Enable EOMI interrupt and priority */
 	desc->dattr = 0x28000000 | ((mport->index) << 20);
 
-	/* Set transfer size aligned to next power of 2 (in double words) */
-	desc->dwcnt = is_power_of_2(len) ? len : 1 << get_bitmask_order(len);
+/* Set transfer size aligned to next power of 2 (in double words) */
+desc->dwcnt = is_power_of_2(len) ? len : 1 << get_bitmask_order(len);
 
 	/* Set snooping and source buffer address */
 	desc->saddr = 0x00000004
@@ -728,7 +728,7 @@ fsl_open_outb_mbox(struct rio_mport *mport, void *dev_id, int mbox, int entries)
 	struct fsl_rmu *rmu = GET_RMM_HANDLE(mport);
 
 	if ((entries < RIO_MIN_TX_RING_SIZE) ||
-		(entries > RIO_MAX_TX_RING_SIZE) || (!is_power_of_2(entries))) {
+(entries > RIO_MAX_TX_RING_SIZE) || (!is_power_of_2(entries))) {
 		rc = -EINVAL;
 		goto out;
 	}
@@ -861,7 +861,7 @@ fsl_open_inb_mbox(struct rio_mport *mport, void *dev_id, int mbox, int entries)
 	struct fsl_rmu *rmu = GET_RMM_HANDLE(mport);
 
 	if ((entries < RIO_MIN_RX_RING_SIZE) ||
-		(entries > RIO_MAX_RX_RING_SIZE) || (!is_power_of_2(entries))) {
+(entries > RIO_MAX_RX_RING_SIZE) || (!is_power_of_2(entries))) {
 		rc = -EINVAL;
 		goto out;
 	}

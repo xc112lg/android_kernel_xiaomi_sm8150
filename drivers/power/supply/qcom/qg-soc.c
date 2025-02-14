@@ -66,10 +66,10 @@ static int qg_process_fvss_soc(struct qpnp_qg *chip, int sys_soc)
 	if (!chip->dt.fvss_enable)
 		goto exit_soc_scale;
 
-	if (chip->charge_status == POWER_SUPPLY_STATUS_CHARGING)
+if (chip->charge_status == POWER_SUPPLY_STATUS_CHARGING)
 		goto exit_soc_scale;
 
-	rc = qg_get_battery_voltage(chip, &vbat_uv);
+rc = qg_get_battery_voltage(chip, &vbat_uv);
 	if (rc < 0)
 		goto exit_soc_scale;
 
@@ -90,7 +90,7 @@ static int qg_process_fvss_soc(struct qpnp_qg *chip, int sys_soc)
 		chip->soc_fvss_entry = sys_soc;
 		chip->fvss_active = true;
 	} else if (chip->last_fifo_v_uv > chip->vbat_fvss_entry) {
-		/* VBAT has gone beyond the entry voltage */
+/* VBAT has gone beyond the entry voltage */
 		chip->vbat_fvss_entry = chip->last_fifo_v_uv;
 		chip->soc_fvss_entry = sys_soc;
 	}
@@ -137,7 +137,7 @@ static int qg_process_tcss_soc(struct qpnp_qg *chip, int sys_soc)
 	int rc, ibatt_diff = 0, ibat_inc_hyst = 0;
 	int qg_iterm_ua = (-1 * chip->dt.iterm_ma * 1000);
 	int soc_ibat, wt_ibat, wt_sys;
-	union power_supply_propval prop = {0, };
+union power_supply_propval prop = {0, };
 
 	if (!chip->dt.tcss_enable)
 		goto exit_soc_scale;
@@ -148,10 +148,10 @@ static int qg_process_tcss_soc(struct qpnp_qg *chip, int sys_soc)
 	if (chip->sys_soc >= QG_MAX_SOC && chip->soc_tcss >= QG_MAX_SOC)
 		goto exit_soc_scale;
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_HEALTH, &prop);
-	if (!rc && (prop.intval == POWER_SUPPLY_HEALTH_COOL ||
-			prop.intval == POWER_SUPPLY_HEALTH_WARM))
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_HEALTH, &prop);
+if (!rc && (prop.intval == POWER_SUPPLY_HEALTH_COOL ||
+prop.intval == POWER_SUPPLY_HEALTH_WARM))
 		goto exit_soc_scale;
 
 	if (chip->last_fifo_i_ua >= 0)
@@ -167,8 +167,8 @@ static int qg_process_tcss_soc(struct qpnp_qg *chip, int sys_soc)
 		chip->tcss_active = true;
 	}
 
-	rc = power_supply_get_property(chip->batt_psy,
-			POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED, &prop);
+rc = power_supply_get_property(chip->batt_psy,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED, &prop);
 	if (!rc && prop.intval) {
 		qg_dbg(chip, QG_DEBUG_SOC,
 			"Input limited sys_soc=%d soc_tcss=%d\n",
@@ -383,8 +383,8 @@ static bool is_scaling_required(struct qpnp_qg *chip)
 		return false;
 
 	if (chip->catch_up_soc > chip->msoc && input_present &&
-			(chip->charge_status != POWER_SUPPLY_STATUS_CHARGING &&
-			chip->charge_status != POWER_SUPPLY_STATUS_FULL))
+(chip->charge_status != POWER_SUPPLY_STATUS_CHARGING &&
+chip->charge_status != POWER_SUPPLY_STATUS_FULL))
 		/* USB is present, but not charging */
 		return false;
 
@@ -513,7 +513,7 @@ static void scale_soc_work(struct work_struct *work)
 			chip->next_wakeup_ms / 1000);
 
 done_psy:
-	power_supply_changed(chip->qg_psy);
+power_supply_changed(chip->qg_psy);
 done:
 	pm_relax(chip->dev);
 	mutex_unlock(&chip->soc_lock);
@@ -575,7 +575,7 @@ int qg_scale_soc(struct qpnp_qg *chip, bool force_soc)
 			chip->next_wakeup_ms / 1000);
 
 done_psy:
-	power_supply_changed(chip->qg_psy);
+power_supply_changed(chip->qg_psy);
 done:
 	mutex_unlock(&chip->soc_lock);
 	return rc;

@@ -42,13 +42,13 @@ struct twlreg_info {
 	/* chip specific features */
 	unsigned long		features;
 
-	/* data passed from board for external get/set voltage */
+/* data passed from board for external get/set voltage */
 	void			*data;
 };
 
 
 /* LDO control registers ... offset is from the base of its register bank.
- * The first three registers of all power resource banks help hardware to
+* The first three registers of all power resource banks help hardware to
  * manage the various resource groups.
  */
 /* Common offset in TWL4030/6030 */
@@ -255,8 +255,8 @@ static int twl6030coresmps_get_voltage(struct regulator_dev *rdev)
 }
 
 static struct regulator_ops twl6030coresmps_ops = {
-	.set_voltage	= twl6030coresmps_set_voltage,
-	.get_voltage	= twl6030coresmps_get_voltage,
+.set_voltage	= twl6030coresmps_set_voltage,
+.get_voltage	= twl6030coresmps_get_voltage,
 };
 
 static int twl6030ldo_list_voltage(struct regulator_dev *rdev, unsigned sel)
@@ -268,7 +268,7 @@ static int twl6030ldo_list_voltage(struct regulator_dev *rdev, unsigned sel)
 		return 0;
 	case 1 ... 24:
 		/* Linear mapping from 00000001 to 00011000:
-		 * Absolute voltage value = 1.0 V + 0.1 V × (sel – 00000001)
+* Absolute voltage value = 1.0 V + 0.1 V × (sel – 00000001)
 		 */
 		return (info->min_mV + 100 * (sel - 1)) * 1000;
 	case 25 ... 30:
@@ -285,23 +285,23 @@ twl6030ldo_set_voltage_sel(struct regulator_dev *rdev, unsigned selector)
 {
 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
 
-	return twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE,
+return twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE,
 			    selector);
 }
 
 static int twl6030ldo_get_voltage_sel(struct regulator_dev *rdev)
 {
 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
-	int vsel = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE);
+int vsel = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE);
 
 	return vsel;
 }
 
 static struct regulator_ops twl6030ldo_ops = {
-	.list_voltage	= twl6030ldo_list_voltage,
+.list_voltage	= twl6030ldo_list_voltage,
 
-	.set_voltage_sel = twl6030ldo_set_voltage_sel,
-	.get_voltage_sel = twl6030ldo_get_voltage_sel,
+.set_voltage_sel = twl6030ldo_set_voltage_sel,
+.get_voltage_sel = twl6030ldo_get_voltage_sel,
 
 	.enable		= twl6030reg_enable,
 	.disable	= twl6030reg_disable,
@@ -313,7 +313,7 @@ static struct regulator_ops twl6030ldo_ops = {
 };
 
 static struct regulator_ops twl6030fixed_ops = {
-	.list_voltage	= regulator_list_voltage_linear,
+.list_voltage	= regulator_list_voltage_linear,
 
 	.enable		= twl6030reg_enable,
 	.disable	= twl6030reg_disable,
@@ -332,87 +332,87 @@ static int twl6030smps_list_voltage(struct regulator_dev *rdev, unsigned index)
 {
 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
 
-	int voltage = 0;
+int voltage = 0;
 
 	switch (info->flags) {
 	case SMPS_OFFSET_EN:
-		voltage = 100000;
+voltage = 100000;
 		/* fall through */
 	case 0:
 		switch (index) {
 		case 0:
-			voltage = 0;
+voltage = 0;
 			break;
 		case 58:
-			voltage = 1350 * 1000;
+voltage = 1350 * 1000;
 			break;
 		case 59:
-			voltage = 1500 * 1000;
+voltage = 1500 * 1000;
 			break;
 		case 60:
-			voltage = 1800 * 1000;
+voltage = 1800 * 1000;
 			break;
 		case 61:
-			voltage = 1900 * 1000;
+voltage = 1900 * 1000;
 			break;
 		case 62:
-			voltage = 2100 * 1000;
+voltage = 2100 * 1000;
 			break;
 		default:
-			voltage += (600000 + (12500 * (index - 1)));
+voltage += (600000 + (12500 * (index - 1)));
 		}
 		break;
 	case SMPS_EXTENDED_EN:
 		switch (index) {
 		case 0:
-			voltage = 0;
+voltage = 0;
 			break;
 		case 58:
-			voltage = 2084 * 1000;
+voltage = 2084 * 1000;
 			break;
 		case 59:
-			voltage = 2315 * 1000;
+voltage = 2315 * 1000;
 			break;
 		case 60:
-			voltage = 2778 * 1000;
+voltage = 2778 * 1000;
 			break;
 		case 61:
-			voltage = 2932 * 1000;
+voltage = 2932 * 1000;
 			break;
 		case 62:
-			voltage = 3241 * 1000;
+voltage = 3241 * 1000;
 			break;
 		default:
-			voltage = (1852000 + (38600 * (index - 1)));
+voltage = (1852000 + (38600 * (index - 1)));
 		}
 		break;
 	case SMPS_OFFSET_EN | SMPS_EXTENDED_EN:
 		switch (index) {
 		case 0:
-			voltage = 0;
+voltage = 0;
 			break;
 		case 58:
-			voltage = 4167 * 1000;
+voltage = 4167 * 1000;
 			break;
 		case 59:
-			voltage = 2315 * 1000;
+voltage = 2315 * 1000;
 			break;
 		case 60:
-			voltage = 2778 * 1000;
+voltage = 2778 * 1000;
 			break;
 		case 61:
-			voltage = 2932 * 1000;
+voltage = 2932 * 1000;
 			break;
 		case 62:
-			voltage = 3241 * 1000;
+voltage = 3241 * 1000;
 			break;
 		default:
-			voltage = (2161000 + (38600 * (index - 1)));
+voltage = (2161000 + (38600 * (index - 1)));
 		}
 		break;
 	}
 
-	return voltage;
+return voltage;
 }
 
 static int twl6030smps_map_voltage(struct regulator_dev *rdev, int min_uV,
@@ -492,7 +492,7 @@ static int twl6030smps_set_voltage_sel(struct regulator_dev *rdev,
 {
 	struct twlreg_info *info = rdev_get_drvdata(rdev);
 
-	return twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE_SMPS,
+return twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE_SMPS,
 			    selector);
 }
 
@@ -500,15 +500,15 @@ static int twl6030smps_get_voltage_sel(struct regulator_dev *rdev)
 {
 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
 
-	return twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE_SMPS);
+return twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE_SMPS);
 }
 
 static struct regulator_ops twlsmps_ops = {
-	.list_voltage		= twl6030smps_list_voltage,
-	.map_voltage		= twl6030smps_map_voltage,
+.list_voltage		= twl6030smps_list_voltage,
+.map_voltage		= twl6030smps_map_voltage,
 
-	.set_voltage_sel	= twl6030smps_set_voltage_sel,
-	.get_voltage_sel	= twl6030smps_get_voltage_sel,
+.set_voltage_sel	= twl6030smps_set_voltage_sel,
+.get_voltage_sel	= twl6030smps_get_voltage_sel,
 
 	.enable			= twl6030reg_enable,
 	.disable		= twl6030reg_disable,
@@ -527,7 +527,7 @@ static const struct twlreg_info TWL6030_INFO_##label = { \
 		.name = #label, \
 		.id = TWL6030_REG_##label, \
 		.ops = &twl6030coresmps_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		}, \
 	}
@@ -539,9 +539,9 @@ static const struct twlreg_info TWL6030_INFO_##label = { \
 	.desc = { \
 		.name = #label, \
 		.id = TWL6030_REG_##label, \
-		.n_voltages = 32, \
+.n_voltages = 32, \
 		.ops = &twl6030ldo_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		}, \
 	}
@@ -553,9 +553,9 @@ static const struct twlreg_info TWL6032_INFO_##label = { \
 	.desc = { \
 		.name = #label, \
 		.id = TWL6032_REG_##label, \
-		.n_voltages = 32, \
+.n_voltages = 32, \
 		.ops = &twl6030ldo_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		}, \
 	}
@@ -568,9 +568,9 @@ static const struct twlreg_info TWLFIXED_INFO_##label = { \
 	.desc = { \
 		.name = #label, \
 		.id = TWL6030##_REG_##label, \
-		.n_voltages = 1, \
+.n_voltages = 1, \
 		.ops = &twl6030fixed_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		.min_uV = mVolts * 1000, \
 		.enable_time = turnon_delay, \
@@ -585,9 +585,9 @@ static const struct twlreg_info TWLSMPS_INFO_##label = { \
 	.desc = { \
 		.name = #label, \
 		.id = TWL6032_REG_##label, \
-		.n_voltages = 63, \
+.n_voltages = 63, \
 		.ops = &twlsmps_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		}, \
 	}
@@ -655,9 +655,9 @@ static u8 twl_get_smps_mult(void)
 #define TWLSMPS_OF_MATCH(comp, label) TWL_OF_MATCH(comp, TWLSMPS, label)
 
 static const struct of_device_id twl_of_match[] = {
-	TWL6030_OF_MATCH("ti,twl6030-vdd1", VDD1),
-	TWL6030_OF_MATCH("ti,twl6030-vdd2", VDD2),
-	TWL6030_OF_MATCH("ti,twl6030-vdd3", VDD3),
+TWL6030_OF_MATCH("ti,twl6030-vdd1", VDD1),
+TWL6030_OF_MATCH("ti,twl6030-vdd2", VDD2),
+TWL6030_OF_MATCH("ti,twl6030-vdd3", VDD3),
 	TWL6030_OF_MATCH("ti,twl6030-vaux1", VAUX1_6030),
 	TWL6030_OF_MATCH("ti,twl6030-vaux2", VAUX2_6030),
 	TWL6030_OF_MATCH("ti,twl6030-vaux3", VAUX3_6030),
@@ -720,7 +720,7 @@ static int twlreg_probe(struct platform_device *pdev)
 	 */
 	c = &initdata->constraints;
 	c->valid_modes_mask &= REGULATOR_MODE_NORMAL | REGULATOR_MODE_STANDBY;
-	c->valid_ops_mask &= REGULATOR_CHANGE_VOLTAGE
+c->valid_ops_mask &= REGULATOR_CHANGE_VOLTAGE
 				| REGULATOR_CHANGE_MODE
 				| REGULATOR_CHANGE_STATUS;
 
@@ -762,7 +762,7 @@ static int twlreg_probe(struct platform_device *pdev)
 	 * as REGULATOR_OVER_CURRENT notifications?) configured via:
 	 *  - SC_CONFIG
 	 *  - SC_DETECT1 (vintana2, vmmc1/2, vaux1/2/3/4)
-	 *  - SC_DETECT2 (vusb, vdac, vio, vdd1/2, vpll2)
+*  - SC_DETECT2 (vusb, vdac, vio, vdd1/2, vpll2)
 	 *  - IT_CONFIG
 	 */
 

@@ -192,9 +192,9 @@ static u32 i2c_powermac_func(struct i2c_adapter * adapter)
 
 /* For now, we only handle smbus */
 static const struct i2c_algorithm i2c_powermac_algorithm = {
-	.smbus_xfer	= i2c_powermac_smbus_xfer,
-	.master_xfer	= i2c_powermac_master_xfer,
-	.functionality	= i2c_powermac_func,
+.smbus_xfer	= i2c_powermac_smbus_xfer,
+.master_xfer	= i2c_powermac_master_xfer,
+.functionality	= i2c_powermac_func,
 };
 
 static const struct i2c_adapter_quirks i2c_powermac_quirks = {
@@ -251,7 +251,7 @@ static void i2c_powermac_create_one(struct i2c_adapter *adap,
 	newdev = i2c_new_device(adap, &info);
 	if (!newdev)
 		dev_err(&adap->dev,
-			"i2c-powermac: Failure to register missing %s\n",
+"i2c-powermac: Failure to register missing %s\n",
 			type);
 }
 
@@ -271,13 +271,13 @@ static void i2c_powermac_add_missing(struct i2c_adapter *adap,
 				    ONYX_REG_CONTROL, I2C_SMBUS_BYTE_DATA,
 				    &data);
 		if (rc >= 0)
-			i2c_powermac_create_one(adap, "MAC,pcm3052", 0x46);
+i2c_powermac_create_one(adap, "MAC,pcm3052", 0x46);
 
 		rc = i2c_smbus_xfer(adap, 0x47, 0, I2C_SMBUS_READ,
 				    ONYX_REG_CONTROL, I2C_SMBUS_BYTE_DATA,
 				    &data);
 		if (rc >= 0)
-			i2c_powermac_create_one(adap, "MAC,pcm3052", 0x47);
+i2c_powermac_create_one(adap, "MAC,pcm3052", 0x47);
 	}
 }
 
@@ -288,7 +288,7 @@ static bool i2c_powermac_get_type(struct i2c_adapter *adap,
 	char tmp[16];
 
 	/* Note: we to _NOT_ want the standard
-	 * i2c drivers to match with any of our powermac stuff
+* i2c drivers to match with any of our powermac stuff
 	 * unless they have been specifically modified to handle
 	 * it on a case by case basis. For example, for thermal
 	 * control, things like lm75 etc... shall match with their
@@ -315,7 +315,7 @@ static bool i2c_powermac_get_type(struct i2c_adapter *adap,
 		}
 	}
 
-	dev_err(&adap->dev, "i2c-powermac: modalias failure on %pOF\n", node);
+dev_err(&adap->dev, "i2c-powermac: modalias failure on %pOF\n", node);
 	return false;
 }
 
@@ -339,7 +339,7 @@ static void i2c_powermac_register_devices(struct i2c_adapter *adap,
 		u32 addr;
 
 		/* Get address & channel */
-		addr = i2c_powermac_get_addr(adap, bus, node);
+addr = i2c_powermac_get_addr(adap, bus, node);
 		if (addr == 0xffffffff)
 			continue;
 
@@ -347,7 +347,7 @@ static void i2c_powermac_register_devices(struct i2c_adapter *adap,
 		if (!pmac_i2c_match_adapter(node, adap))
 			continue;
 
-		dev_dbg(&adap->dev, "i2c-powermac: register %pOF\n", node);
+dev_dbg(&adap->dev, "i2c-powermac: register %pOF\n", node);
 
 		/*
 		 * Keep track of some device existence to handle
@@ -357,7 +357,7 @@ static void i2c_powermac_register_devices(struct i2c_adapter *adap,
 			found_onyx = true;
 
 		/* Make up a modalias */
-		if (!i2c_powermac_get_type(adap, node, addr,
+if (!i2c_powermac_get_type(adap, node, addr,
 					   info.type, sizeof(info.type))) {
 			continue;
 		}
@@ -369,7 +369,7 @@ static void i2c_powermac_register_devices(struct i2c_adapter *adap,
 
 		newdev = i2c_new_device(adap, &info);
 		if (!newdev) {
-			dev_err(&adap->dev, "i2c-powermac: Failure to register"
+dev_err(&adap->dev, "i2c-powermac: Failure to register"
 				" %pOF\n", node);
 			of_node_put(node);
 			/* We do not dispose of the interrupt mapping on
@@ -382,7 +382,7 @@ static void i2c_powermac_register_devices(struct i2c_adapter *adap,
 	}
 
 	/* Additional workarounds */
-	i2c_powermac_add_missing(adap, bus, found_onyx);
+i2c_powermac_add_missing(adap, bus, found_onyx);
 }
 
 static int i2c_powermac_probe(struct platform_device *dev)
@@ -426,8 +426,8 @@ static int i2c_powermac_probe(struct platform_device *dev)
 	of_node_put(parent);
 
 	platform_set_drvdata(dev, adapter);
-	adapter->algo = &i2c_powermac_algorithm;
-	adapter->quirks = &i2c_powermac_quirks;
+adapter->algo = &i2c_powermac_algorithm;
+adapter->quirks = &i2c_powermac_quirks;
 	i2c_set_adapdata(adapter, bus);
 	adapter->dev.parent = &dev->dev;
 
@@ -435,26 +435,26 @@ static int i2c_powermac_probe(struct platform_device *dev)
 	adapter->dev.of_node = NULL;
 	rc = i2c_add_adapter(adapter);
 	if (rc) {
-		printk(KERN_ERR "i2c-powermac: Adapter %s registration "
+printk(KERN_ERR "i2c-powermac: Adapter %s registration "
 		       "failed\n", adapter->name);
 		memset(adapter, 0, sizeof(*adapter));
 		return rc;
 	}
 
-	printk(KERN_INFO "PowerMac i2c bus %s registered\n", adapter->name);
+printk(KERN_INFO "PowerMac i2c bus %s registered\n", adapter->name);
 
 	/* Use custom child registration due to Apple device-tree funkyness */
 	adapter->dev.of_node = dev->dev.of_node;
-	i2c_powermac_register_devices(adapter, bus);
+i2c_powermac_register_devices(adapter, bus);
 
 	return 0;
 }
 
 static struct platform_driver i2c_powermac_driver = {
-	.probe = i2c_powermac_probe,
-	.remove = i2c_powermac_remove,
+.probe = i2c_powermac_probe,
+.remove = i2c_powermac_remove,
 	.driver = {
-		.name = "i2c-powermac",
+.name = "i2c-powermac",
 		.bus = &platform_bus_type,
 	},
 };

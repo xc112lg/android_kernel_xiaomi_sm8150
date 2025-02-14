@@ -193,7 +193,7 @@ static int pseries_smp_prepare_cpu(int cpu)
 
 static void smp_pseries_cause_ipi(int cpu)
 {
-	/* POWER9 should not use this handler */
+/* POWER9 should not use this handler */
 	if (doorbell_try_core_ipi(cpu))
 		return;
 

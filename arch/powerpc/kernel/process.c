@@ -5,7 +5,7 @@
  *  Updated and modified by Cort Dougan (cort@cs.nmt.edu) and
  *  Paul Mackerras (paulus@cs.anu.edu.au)
  *
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
  *  This program is free software; you can redistribute it and/or
@@ -1226,7 +1226,7 @@ struct task_struct *__switch_to(struct task_struct *prev,
 		 * mappings. We don't have a VAS driver that allocates those
 		 * yet, so no cpabort is required.
 		 */
-		if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 			/*
 			 * DD1 allows paste into normal system memory, so we
 			 * do an unpaired copy here to clear the buffer and

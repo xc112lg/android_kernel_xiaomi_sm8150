@@ -99,7 +99,7 @@ struct ab8500_btemp {
 	struct ab8500_gpadc *gpadc;
 	struct ab8500_fg *fg;
 	struct abx500_bm_data *bm;
-	struct power_supply *btemp_psy;
+struct power_supply *btemp_psy;
 	struct ab8500_btemp_events events;
 	struct ab8500_btemp_ranges btemp_ranges;
 	struct workqueue_struct *btemp_wq;
@@ -109,10 +109,10 @@ struct ab8500_btemp {
 
 /* BTEMP power supply properties */
 static enum power_supply_property ab8500_btemp_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_TEMP,
 };
 
 static LIST_HEAD(ab8500_btemp_list);
@@ -128,13 +128,13 @@ struct ab8500_btemp *ab8500_btemp_get(void)
 EXPORT_SYMBOL(ab8500_btemp_get);
 
 /**
- * ab8500_btemp_batctrl_volt_to_res() - convert batctrl voltage to resistance
+* ab8500_btemp_batctrl_volt_to_res() - convert batctrl voltage to resistance
  * @di:		pointer to the ab8500_btemp structure
- * @v_batctrl:	measured batctrl voltage
+* @v_batctrl:	measured batctrl voltage
  * @inst_curr:	measured instant current
  *
  * This function returns the battery resistance that is
- * derived from the BATCTRL voltage.
+* derived from the BATCTRL voltage.
  * Returns value in Ohms.
  */
 static int ab8500_btemp_batctrl_volt_to_res(struct ab8500_btemp *di,
@@ -170,10 +170,10 @@ static int ab8500_btemp_batctrl_volt_to_res(struct ab8500_btemp *di,
 }
 
 /**
- * ab8500_btemp_read_batctrl_voltage() - measure batctrl voltage
+* ab8500_btemp_read_batctrl_voltage() - measure batctrl voltage
  * @di:		pointer to the ab8500_btemp structure
  *
- * This function returns the voltage on BATCTRL. Returns value in mV.
+* This function returns the voltage on BATCTRL. Returns value in mV.
  */
 static int ab8500_btemp_read_batctrl_voltage(struct ab8500_btemp *di)
 {
@@ -428,7 +428,7 @@ static int ab8500_btemp_get_batctrl_res(struct ab8500_btemp *di)
 	i = 0;
 
 	do {
-		batctrl += ab8500_btemp_read_batctrl_voltage(di);
+batctrl += ab8500_btemp_read_batctrl_voltage(di);
 		i++;
 		msleep(20);
 	} while (!ab8500_fg_inst_curr_done(di->fg));
@@ -647,14 +647,14 @@ static void ab8500_btemp_periodic_work(struct work_struct *work)
 		if ((di->bat_temp != di->prev_bat_temp) || !di->initialized) {
 			di->initialized = true;
 			di->bat_temp = bat_temp;
-			power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 		}
 	} else if (bat_temp < di->prev_bat_temp) {
 		di->bat_temp--;
-		power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 	} else if (bat_temp > di->prev_bat_temp) {
 		di->bat_temp++;
-		power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 	}
 	di->prev_bat_temp = bat_temp;
 
@@ -682,7 +682,7 @@ static irqreturn_t ab8500_btemp_batctrlindb_handler(int irq, void *_di)
 	dev_err(di->dev, "Battery removal detected!\n");
 
 	di->events.batt_rem = true;
-	power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 
 	return IRQ_HANDLED;
 }
@@ -708,7 +708,7 @@ static irqreturn_t ab8500_btemp_templow_handler(int irq, void *_di)
 		di->events.btemp_high = false;
 		di->events.btemp_medhigh = false;
 		di->events.btemp_lowmed = false;
-		power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 	}
 
 	return IRQ_HANDLED;
@@ -731,7 +731,7 @@ static irqreturn_t ab8500_btemp_temphigh_handler(int irq, void *_di)
 	di->events.btemp_medhigh = false;
 	di->events.btemp_lowmed = false;
 	di->events.btemp_low = false;
-	power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 
 	return IRQ_HANDLED;
 }
@@ -753,7 +753,7 @@ static irqreturn_t ab8500_btemp_lowmed_handler(int irq, void *_di)
 	di->events.btemp_medhigh = false;
 	di->events.btemp_high = false;
 	di->events.btemp_low = false;
-	power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 
 	return IRQ_HANDLED;
 }
@@ -775,7 +775,7 @@ static irqreturn_t ab8500_btemp_medhigh_handler(int irq, void *_di)
 	di->events.btemp_lowmed = false;
 	di->events.btemp_high = false;
 	di->events.btemp_low = false;
-	power_supply_changed(di->btemp_psy);
+power_supply_changed(di->btemp_psy);
 
 	return IRQ_HANDLED;
 }
@@ -861,9 +861,9 @@ EXPORT_SYMBOL(ab8500_btemp_get_batctrl_temp);
 
 /**
  * ab8500_btemp_get_property() - get the btemp properties
- * @psy:        pointer to the power_supply structure
- * @psp:        pointer to the power_supply_property structure
- * @val:        pointer to the power_supply_propval union
+* @psy:        pointer to the power_supply structure
+* @psp:        pointer to the power_supply_property structure
+* @val:        pointer to the power_supply_propval union
  *
  * This function gets called when an application tries to get the btemp
  * properties by reading the sysfs files.
@@ -874,23 +874,23 @@ EXPORT_SYMBOL(ab8500_btemp_get_batctrl_temp);
  * Returns error code in case of failure else 0(on success)
  */
 static int ab8500_btemp_get_property(struct power_supply *psy,
-	enum power_supply_property psp,
-	union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct ab8500_btemp *di = power_supply_get_drvdata(psy);
+struct ab8500_btemp *di = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_ONLINE:
 		if (di->events.batt_rem)
 			val->intval = 0;
 		else
 			val->intval = 1;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = di->bm->bat_type[di->bm->batt_id].name;
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		val->intval = ab8500_btemp_get_temp(di);
 		break;
 	default:
@@ -901,15 +901,15 @@ static int ab8500_btemp_get_property(struct power_supply *psy,
 
 static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
 {
-	struct power_supply *psy;
-	struct power_supply *ext = dev_get_drvdata(dev);
+struct power_supply *psy;
+struct power_supply *ext = dev_get_drvdata(dev);
 	const char **supplicants = (const char **)ext->supplied_to;
 	struct ab8500_btemp *di;
-	union power_supply_propval ret;
+union power_supply_propval ret;
 	int j;
 
-	psy = (struct power_supply *)data;
-	di = power_supply_get_drvdata(psy);
+psy = (struct power_supply *)data;
+di = power_supply_get_drvdata(psy);
 
 	/*
 	 * For all psy where the name of your driver
@@ -921,16 +921,16 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
 
 	/* Go through all properties for the psy */
 	for (j = 0; j < ext->desc->num_properties; j++) {
-		enum power_supply_property prop;
+enum power_supply_property prop;
 		prop = ext->desc->properties[j];
 
-		if (power_supply_get_property(ext, prop, &ret))
+if (power_supply_get_property(ext, prop, &ret))
 			continue;
 
 		switch (prop) {
-		case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 			switch (ext->desc->type) {
-			case POWER_SUPPLY_TYPE_MAINS:
+case POWER_SUPPLY_TYPE_MAINS:
 				/* AC disconnected */
 				if (!ret.intval && di->events.ac_conn) {
 					di->events.ac_conn = false;
@@ -942,7 +942,7 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
 						ab8500_btemp_periodic(di, true);
 				}
 				break;
-			case POWER_SUPPLY_TYPE_USB:
+case POWER_SUPPLY_TYPE_USB:
 				/* USB disconnected */
 				if (!ret.intval && di->events.usb_conn) {
 					di->events.usb_conn = false;
@@ -966,17 +966,17 @@ static int ab8500_btemp_get_ext_psy_data(struct device *dev, void *data)
 }
 
 /**
- * ab8500_btemp_external_power_changed() - callback for power supply changes
- * @psy:       pointer to the structure power_supply
+* ab8500_btemp_external_power_changed() - callback for power supply changes
+* @psy:       pointer to the structure power_supply
  *
- * This function is pointing to the function pointer external_power_changed
- * of the structure power_supply.
- * This function gets executed when there is a change in the external power
+* This function is pointing to the function pointer external_power_changed
+* of the structure power_supply.
+* This function gets executed when there is a change in the external power
  * supply to the btemp.
  */
 static void ab8500_btemp_external_power_changed(struct power_supply *psy)
 {
-	class_for_each_device(power_supply_class, NULL, psy,
+class_for_each_device(power_supply_class, NULL, psy,
 			      ab8500_btemp_get_ext_psy_data);
 }
 
@@ -1028,7 +1028,7 @@ static int ab8500_btemp_remove(struct platform_device *pdev)
 	destroy_workqueue(di->btemp_wq);
 
 	flush_scheduled_work();
-	power_supply_unregister(di->btemp_psy);
+power_supply_unregister(di->btemp_psy);
 
 	return 0;
 }
@@ -1040,18 +1040,18 @@ static char *supply_interface[] = {
 
 static const struct power_supply_desc ab8500_btemp_desc = {
 	.name			= "ab8500_btemp",
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= ab8500_btemp_props,
 	.num_properties		= ARRAY_SIZE(ab8500_btemp_props),
 	.get_property		= ab8500_btemp_get_property,
-	.external_power_changed	= ab8500_btemp_external_power_changed,
+.external_power_changed	= ab8500_btemp_external_power_changed,
 };
 
 static int ab8500_btemp_probe(struct platform_device *pdev)
 {
 	struct device_node *np = pdev->dev.of_node;
 	struct abx500_bm_data *plat = pdev->dev.platform_data;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct ab8500_btemp *di;
 	int irq, i, ret = 0;
 	u8 val;
@@ -1125,8 +1125,8 @@ static int ab8500_btemp_probe(struct platform_device *pdev)
 		break;
 	}
 
-	/* Register BTEMP power supply class */
-	di->btemp_psy = power_supply_register(di->dev, &ab8500_btemp_desc,
+/* Register BTEMP power supply class */
+di->btemp_psy = power_supply_register(di->dev, &ab8500_btemp_desc,
 					      &psy_cfg);
 	if (IS_ERR(di->btemp_psy)) {
 		dev_err(di->dev, "failed to register BTEMP psy\n");
@@ -1159,7 +1159,7 @@ static int ab8500_btemp_probe(struct platform_device *pdev)
 	return ret;
 
 free_irq:
-	power_supply_unregister(di->btemp_psy);
+power_supply_unregister(di->btemp_psy);
 
 	/* We also have to free all successfully registered irqs */
 	for (i = i - 1; i >= 0; i--) {

@@ -65,8 +65,8 @@ void _of_init_opp_table(struct opp_table *opp_table, struct device *dev)
 
 		if (!of_property_read_u32(np, "clock-latency", &val))
 			opp_table->clock_latency_ns_max = val;
-		of_property_read_u32(np, "voltage-tolerance",
-				     &opp_table->voltage_tolerance_v1);
+of_property_read_u32(np, "voltage-tolerance",
+&opp_table->voltage_tolerance_v1);
 		of_node_put(np);
 	}
 }
@@ -279,9 +279,9 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_of_get_opp_desc_node);
  *
  * Return:
  * 0		On success OR
- *		Duplicate OPPs (both freq and volt are same) and opp->available
- * -EEXIST	Freq are same and volt are different OR
- *		Duplicate OPPs (both freq and volt are same) and !opp->available
+*		Duplicate OPPs (both freq and volt are same) and opp->available
+* -EEXIST	Freq are same and volt are different OR
+*		Duplicate OPPs (both freq and volt are same) and !opp->available
  * -ENOMEM	Memory allocation failure
  * -EINVAL	Failed parsing the OPP node
  */
@@ -358,7 +358,7 @@ static int _opp_add_static_v2(struct opp_table *opp_table, struct device *dev,
 
 	/*
 	 * Notify the changes in the availability of the operable
-	 * frequency/voltage list.
+* frequency/voltage list.
 	 */
 	blocking_notifier_call_chain(&opp_table->head, OPP_EVENT_ADD, new_opp);
 	return 0;
@@ -436,8 +436,8 @@ static int _of_add_opp_table_v1(struct device *dev)
 		return -ENODATA;
 
 	/*
-	 * Each OPP is a set of tuples consisting of frequency and
-	 * voltage like <freq-kHz vol-uV>.
+* Each OPP is a set of tuples consisting of frequency and
+* voltage like <freq-kHz vol-uV>.
 	 */
 	nr = prop->length / sizeof(u32);
 	if (nr % 2) {
@@ -451,13 +451,13 @@ static int _of_add_opp_table_v1(struct device *dev)
 
 	val = prop->value;
 	while (nr) {
-		unsigned long freq = be32_to_cpup(val++) * 1000;
+unsigned long freq = be32_to_cpup(val++) * 1000;
 		unsigned long volt = be32_to_cpup(val++);
 
-		ret = _opp_add_v1(opp_table, dev, freq, volt, false);
+ret = _opp_add_v1(opp_table, dev, freq, volt, false);
 		if (ret) {
 			dev_err(dev, "%s: Failed to add OPP %ld (%d)\n",
-				__func__, freq, ret);
+__func__, freq, ret);
 			_dev_pm_opp_remove_table(opp_table, dev, false);
 			break;
 		}
@@ -476,9 +476,9 @@ static int _of_add_opp_table_v1(struct device *dev)
  *
  * Return:
  * 0		On success OR
- *		Duplicate OPPs (both freq and volt are same) and opp->available
- * -EEXIST	Freq are same and volt are different OR
- *		Duplicate OPPs (both freq and volt are same) and !opp->available
+*		Duplicate OPPs (both freq and volt are same) and opp->available
+* -EEXIST	Freq are same and volt are different OR
+*		Duplicate OPPs (both freq and volt are same) and !opp->available
  * -ENOMEM	Memory allocation failure
  * -ENODEV	when 'operating-points' property is not found or is invalid data
  *		in device node.

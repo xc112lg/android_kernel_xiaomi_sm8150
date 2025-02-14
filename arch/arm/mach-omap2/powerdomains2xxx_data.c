@@ -1,5 +1,5 @@
 /*
- * OMAP2XXX powerdomain definitions
+* OMAP2XXX powerdomain definitions
  *
  * Copyright (C) 2007-2008, 2011 Texas Instruments, Inc.
  * Copyright (C) 2007-2011 Nokia Corporation
@@ -77,7 +77,7 @@ static struct powerdomain core_24xx_pwrdm = {
 
 
 /*
- * 2430-specific powerdomains
+* 2430-specific powerdomains
  */
 
 /* XXX 2430 KILLDOMAINWKUP bit?  No current users apparently */
@@ -121,7 +121,7 @@ void __init omap242x_powerdomains_init(void)
 		return;
 
 	pwrdm_register_platform_funcs(&omap2_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_omap24xx);
+pwrdm_register_pwrdms(powerdomains_omap24xx);
 	pwrdm_complete_init();
 }
 
@@ -131,7 +131,7 @@ void __init omap243x_powerdomains_init(void)
 		return;
 
 	pwrdm_register_platform_funcs(&omap2_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_omap24xx);
-	pwrdm_register_pwrdms(powerdomains_omap2430);
+pwrdm_register_pwrdms(powerdomains_omap24xx);
+pwrdm_register_pwrdms(powerdomains_omap2430);
 	pwrdm_complete_init();
 }

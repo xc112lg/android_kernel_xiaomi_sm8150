@@ -10,18 +10,18 @@
 			pins = "gpio12";
 			function = "normal";
 			output-low;
-			power-source = <0>;
+power-source = <0>;
 		};
 	};
 
-	power_good {
-		/*Get the DC Power Good signal*/
-		power_good_default: power_good_default {
+power_good {
+/*Get the DC Power Good signal*/
+power_good_default: power_good_default {
 			pins = "gpio7";
 			function = "normal";
 			qcom,drive-strength = <2>; /* 2 MA */
 			bias-disable;         /* NO pull */
-			power-source = <1>;
+power-source = <1>;
 			input-enable;
 		};
 	};

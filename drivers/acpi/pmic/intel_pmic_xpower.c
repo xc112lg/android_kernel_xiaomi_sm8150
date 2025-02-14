@@ -1,5 +1,5 @@
 /*
- * intel_pmic_xpower.c - XPower AXP288 PMIC operation region driver
+* intel_pmic_xpower.c - XPower AXP288 PMIC operation region driver
  *
  * Copyright (C) 2014 Intel Corporation. All rights reserved.
  *
@@ -139,27 +139,27 @@ static struct pmic_table power_table[] = {
 static struct pmic_table thermal_table[] = {
 	{
 		.address = 0x00,
-		.reg = XPOWER_GPADC_LOW
+.reg = XPOWER_GPADC_LOW
 	},
 	{
 		.address = 0x0c,
-		.reg = XPOWER_GPADC_LOW
+.reg = XPOWER_GPADC_LOW
 	},
 	{
 		.address = 0x18,
-		.reg = XPOWER_GPADC_LOW
+.reg = XPOWER_GPADC_LOW
 	},
 	{
 		.address = 0x24,
-		.reg = XPOWER_GPADC_LOW
+.reg = XPOWER_GPADC_LOW
 	},
 	{
 		.address = 0x30,
-		.reg = XPOWER_GPADC_LOW
+.reg = XPOWER_GPADC_LOW
 	},
 	{
 		.address = 0x3c,
-		.reg = XPOWER_GPADC_LOW
+.reg = XPOWER_GPADC_LOW
 	},
 };
 
@@ -172,7 +172,7 @@ static int intel_xpower_pmic_get_power(struct regmap *regmap, int reg,
 		return -EIO;
 
 	/* GPIO1 LDO regulator needs special handling */
-	if (reg == XPOWER_GPI1_CTRL)
+if (reg == XPOWER_GPI1_CTRL)
 		*value = ((data & GPI1_LDO_MASK) == GPI1_LDO_ON);
 	else
 		*value = (data & BIT(bit)) ? 1 : 0;
@@ -186,7 +186,7 @@ static int intel_xpower_pmic_update_power(struct regmap *regmap, int reg,
 	int data;
 
 	/* GPIO1 LDO regulator needs special handling */
-	if (reg == XPOWER_GPI1_CTRL)
+if (reg == XPOWER_GPI1_CTRL)
 		return regmap_update_bits(regmap, reg, GPI1_LDO_MASK,
 					  on ? GPI1_LDO_ON : GPI1_LDO_OFF);
 
@@ -205,7 +205,7 @@ static int intel_xpower_pmic_update_power(struct regmap *regmap, int reg,
 }
 
 /**
- * intel_xpower_pmic_get_raw_temp(): Get raw temperature reading from the PMIC
+* intel_xpower_pmic_get_raw_temp(): Get raw temperature reading from the PMIC
  *
  * @regmap: regmap of the PMIC device
  * @reg: register to get the reading
@@ -257,11 +257,11 @@ static int intel_xpower_pmic_get_raw_temp(struct regmap *regmap, int reg)
 }
 
 static struct intel_pmic_opregion_data intel_xpower_pmic_opregion_data = {
-	.get_power = intel_xpower_pmic_get_power,
-	.update_power = intel_xpower_pmic_update_power,
-	.get_raw_temp = intel_xpower_pmic_get_raw_temp,
-	.power_table = power_table,
-	.power_table_count = ARRAY_SIZE(power_table),
+.get_power = intel_xpower_pmic_get_power,
+.update_power = intel_xpower_pmic_update_power,
+.get_raw_temp = intel_xpower_pmic_get_raw_temp,
+.power_table = power_table,
+.power_table_count = ARRAY_SIZE(power_table),
 	.thermal_table = thermal_table,
 	.thermal_table_count = ARRAY_SIZE(thermal_table),
 };
@@ -281,24 +281,24 @@ static int intel_xpower_pmic_opregion_probe(struct platform_device *pdev)
 	int result;
 
 	status = acpi_install_address_space_handler(ACPI_HANDLE(parent),
-			ACPI_ADR_SPACE_GPIO, intel_xpower_pmic_gpio_handler,
+ACPI_ADR_SPACE_GPIO, intel_xpower_pmic_gpio_handler,
 			NULL, NULL);
 	if (ACPI_FAILURE(status))
 		return -ENODEV;
 
 	result = intel_pmic_install_opregion_handler(&pdev->dev,
 					ACPI_HANDLE(parent), axp20x->regmap,
-					&intel_xpower_pmic_opregion_data);
+&intel_xpower_pmic_opregion_data);
 	if (result)
 		acpi_remove_address_space_handler(ACPI_HANDLE(parent),
 						  ACPI_ADR_SPACE_GPIO,
-						  intel_xpower_pmic_gpio_handler);
+intel_xpower_pmic_gpio_handler);
 
 	return result;
 }
 
 static struct platform_driver intel_xpower_pmic_opregion_driver = {
-	.probe = intel_xpower_pmic_opregion_probe,
+.probe = intel_xpower_pmic_opregion_probe,
 	.driver = {
 		.name = "axp288_pmic_acpi",
 	},
@@ -306,6 +306,6 @@ static struct platform_driver intel_xpower_pmic_opregion_driver = {
 
 static int __init intel_xpower_pmic_opregion_driver_init(void)
 {
-	return platform_driver_register(&intel_xpower_pmic_opregion_driver);
+return platform_driver_register(&intel_xpower_pmic_opregion_driver);
 }
 device_initcall(intel_xpower_pmic_opregion_driver_init);

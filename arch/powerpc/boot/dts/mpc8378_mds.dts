@@ -31,16 +31,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8378@0 {
+PowerPC,8378@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <32768>;
 			i-cache-size = <32768>;
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 		};
 	};
 
@@ -122,7 +122,7 @@
 		compatible = "simple-bus";
 		ranges = <0x0 0xe0000000 0x00100000>;
 		reg = <0xe0000000 0x00000200>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		wdt@200 {
 			compatible = "mpc83xx_wdt";
@@ -161,7 +161,7 @@
 				interrupt-parent = <&ipic>;
 				sdhci,wp-inverted;
 				/* Filled in by U-Boot */
-				clock-frequency = <0>;
+clock-frequency = <0>;
 			};
 		};
 
@@ -315,7 +315,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <9 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -325,7 +325,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <10 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -357,7 +357,7 @@
 			reg = <0x700 0x100>;
 		};
 
-		pmc: power@b00 {
+pmc: power@b00 {
 			compatible = "fsl,mpc8378-pmc", "fsl,mpc8349-pmc";
 			reg = <0xb00 0x100 0xa00 0x100>;
 			interrupts = <80 0x8>;
@@ -416,7 +416,7 @@
 		ranges = <0x02000000 0x0 0x90000000 0x90000000 0x0 0x10000000
 		          0x42000000 0x0 0x80000000 0x80000000 0x0 0x10000000
 		          0x01000000 0x0 0x00000000 0xe0300000 0x0 0x00100000>;
-		clock-frequency = <0>;
+clock-frequency = <0>;
 		sleep = <&pmc 0x00010000>;
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
@@ -443,7 +443,7 @@
 				 0 0 0 3 &ipic 1 8
 				 0 0 0 4 &ipic 1 8>;
 		sleep = <&pmc 0x00300000>;
-		clock-frequency = <0>;
+clock-frequency = <0>;
 
 		pcie@0 {
 			#address-cells = <3>;
@@ -475,7 +475,7 @@
 				 0 0 0 3 &ipic 2 8
 				 0 0 0 4 &ipic 2 8>;
 		sleep = <&pmc 0x000c0000>;
-		clock-frequency = <0>;
+clock-frequency = <0>;
 
 		pcie@0 {
 			#address-cells = <3>;

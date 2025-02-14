@@ -185,7 +185,7 @@ static int __init corenet_generic_probe(void)
 
 			ppc_md.get_irq = ehv_pic_get_irq;
 			ppc_md.restart = fsl_hv_restart;
-			pm_power_off = fsl_hv_halt;
+pm_power_off = fsl_hv_halt;
 			ppc_md.halt = fsl_hv_halt;
 #ifdef CONFIG_SMP
 			/*
@@ -226,9 +226,9 @@ define_machine(corenet_generic) {
 	.calibrate_decr		= generic_calibrate_decr,
 	.progress		= udbg_progress,
 #ifdef CONFIG_PPC64
-	.power_save		= book3e_idle,
+.power_save		= book3e_idle,
 #else
-	.power_save		= e500_idle,
+.power_save		= e500_idle,
 #endif
 };
 

@@ -125,7 +125,7 @@ struct rtas_suspend_me_data {
 #define RTAS_TYPE_INFO			0xE2
 #define RTAS_TYPE_DEALLOC		0xE3
 #define RTAS_TYPE_DUMP			0xE4
-/* I don't add PowerMGM events right now, this is a different topic */ 
+/* I don't add PowerMGM events right now, this is a different topic */
 #define RTAS_TYPE_PMGM_POWER_SW_ON	0x60
 #define RTAS_TYPE_PMGM_POWER_SW_OFF	0x61
 #define RTAS_TYPE_PMGM_LID_OPEN		0x62
@@ -225,7 +225,7 @@ struct rtas_ext_event_log_v6 {
 	/* Byte 2 */
 	uint8_t byte2;
 	/* XXXXXXXX
-	 * X		1: Set to 1 (indicating log is in PowerPC format)
+* X		1: Set to 1 (indicating log is in PowerPC format)
 	 *  XXX		3: Reserved
 	 *     XXXX	4: Log format used for bytes 12-2047
 	 */

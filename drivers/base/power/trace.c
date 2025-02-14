@@ -1,5 +1,5 @@
 /*
- * drivers/base/power/trace.c
+* drivers/base/power/trace.c
  *
  * Copyright (C) 2006 Linus Torvalds
  *

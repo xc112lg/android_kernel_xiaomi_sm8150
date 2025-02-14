@@ -6,7 +6,7 @@
 #include <linux/regulator/fixed.h>
 
 struct fixed_regulator_data {
-	struct fixed_voltage_config cfg;
+struct fixed_voltage_config cfg;
 	struct regulator_init_data init_data;
 	struct platform_device pdev;
 };
@@ -25,7 +25,7 @@ static void regulator_fixed_release(struct device *dev)
  * @name: name to be used for the regulator
  * @supplies: consumers for this regulator
  * @num_supplies: number of consumers
- * @uv: voltage in microvolts
+* @uv: voltage in microvolts
  */
 struct platform_device *regulator_register_always_on(int id, const char *name,
 	struct regulator_consumer_supply *supplies, int num_supplies, int uv)
@@ -51,7 +51,7 @@ struct platform_device *regulator_register_always_on(int id, const char *name,
 	data->init_data.consumer_supplies = supplies;
 	data->init_data.num_consumer_supplies = num_supplies;
 
-	data->pdev.name = "reg-fixed-voltage";
+data->pdev.name = "reg-fixed-voltage";
 	data->pdev.id = id;
 	data->pdev.dev.platform_data = &data->cfg;
 	data->pdev.dev.release = regulator_fixed_release;

@@ -48,7 +48,7 @@ static int virtex_ns16550_console_init(void *devp)
 		spd = 9600;
 
 	/* should there be a default clock rate?*/
-	n = getprop(devp, "clock-frequency", (void *)&clk, sizeof(clk));
+n = getprop(devp, "clock-frequency", (void *)&clk, sizeof(clk));
 	if (n != sizeof(clk))
 		return -1;
 

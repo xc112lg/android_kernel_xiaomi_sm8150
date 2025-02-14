@@ -87,7 +87,7 @@ struct smu7_power_state {
 	uint16_t                  performance_level_count;
 	bool                      dc_compatible;
 	uint32_t                  sclk_threshold;
-	struct smu7_performance_level  performance_levels[SMU7_MAX_HARDWARE_POWERLEVELS];
+struct smu7_performance_level  performance_levels[SMU7_MAX_HARDWARE_POWERLEVELS];
 };
 
 struct smu7_dpm_level {
@@ -109,9 +109,9 @@ struct smu7_dpm_table {
 	struct smu7_single_dpm_table  sclk_table;
 	struct smu7_single_dpm_table  mclk_table;
 	struct smu7_single_dpm_table  pcie_speed_table;
-	struct smu7_single_dpm_table  vddc_table;
-	struct smu7_single_dpm_table  vddci_table;
-	struct smu7_single_dpm_table  mvdd_table;
+struct smu7_single_dpm_table  vddc_table;
+struct smu7_single_dpm_table  vddci_table;
+struct smu7_single_dpm_table  mvdd_table;
 };
 
 struct smu7_clock_registers {
@@ -144,14 +144,14 @@ struct smu7_voltage_smio_registers {
 struct smu7_leakage_voltage {
 	uint16_t  count;
 	uint16_t  leakage_id[SMU7_MAX_LEAKAGE_COUNT];
-	uint16_t  actual_voltage[SMU7_MAX_LEAKAGE_COUNT];
+uint16_t  actual_voltage[SMU7_MAX_LEAKAGE_COUNT];
 };
 
 struct smu7_vbios_boot_state {
-	uint16_t    mvdd_bootup_value;
-	uint16_t    vddc_bootup_value;
-	uint16_t    vddci_bootup_value;
-	uint16_t    vddgfx_bootup_value;
+uint16_t    mvdd_bootup_value;
+uint16_t    vddc_bootup_value;
+uint16_t    vddci_bootup_value;
+uint16_t    vddgfx_bootup_value;
 	uint32_t    sclk_bootup_value;
 	uint32_t    mclk_bootup_value;
 	uint16_t    pcie_gen_bootup_value;
@@ -192,32 +192,32 @@ struct smu7_hwmgr {
 	uint32_t						voting_rights_clients7;
 	uint32_t						static_screen_threshold_unit;
 	uint32_t						static_screen_threshold;
-	uint32_t						voltage_control;
-	uint32_t						vdd_gfx_control;
-	uint32_t						vddc_vddgfx_delta;
+uint32_t						voltage_control;
+uint32_t						vdd_gfx_control;
+uint32_t						vddc_vddgfx_delta;
 	uint32_t						active_auto_throttle_sources;
 
 	struct smu7_clock_registers            clock_registers;
 
 	bool                           is_memory_gddr5;
-	uint16_t                       acpi_vddc;
+uint16_t                       acpi_vddc;
 	bool                           pspp_notify_required;
 	uint16_t                       force_pcie_gen;
 	uint16_t                       acpi_pcie_gen;
 	uint32_t                       pcie_gen_cap;
 	uint32_t                       pcie_lane_cap;
 	uint32_t                       pcie_spc_cap;
-	struct smu7_leakage_voltage          vddc_leakage;
-	struct smu7_leakage_voltage          vddci_leakage;
-	struct smu7_leakage_voltage          vddcgfx_leakage;
+struct smu7_leakage_voltage          vddc_leakage;
+struct smu7_leakage_voltage          vddci_leakage;
+struct smu7_leakage_voltage          vddcgfx_leakage;
 
-	uint32_t                             mvdd_control;
-	uint32_t                             vddc_mask_low;
-	uint32_t                             mvdd_mask_low;
-	uint16_t                            max_vddc_in_pptable;
-	uint16_t                            min_vddc_in_pptable;
-	uint16_t                            max_vddci_in_pptable;
-	uint16_t                            min_vddci_in_pptable;
+uint32_t                             mvdd_control;
+uint32_t                             vddc_mask_low;
+uint32_t                             mvdd_mask_low;
+uint16_t                            max_vddc_in_pptable;
+uint16_t                            min_vddc_in_pptable;
+uint16_t                            max_vddci_in_pptable;
+uint16_t                            min_vddci_in_pptable;
 	bool                                is_uvd_enabled;
 	struct smu7_vbios_boot_state        vbios_boot_state;
 
@@ -225,29 +225,29 @@ struct smu7_hwmgr {
 	bool                           battery_state;
 	bool                           is_tlu_enabled;
 	bool                           disable_handshake;
-	bool                           smc_voltage_control_enabled;
+bool                           smc_voltage_control_enabled;
 	bool                           vbi_time_out_support;
 
 	uint32_t                       soft_regs_start;
 	/* ---- Stuff originally coming from Evergreen ---- */
-	uint32_t                             vddci_control;
-	struct pp_atomctrl_voltage_table     vddc_voltage_table;
-	struct pp_atomctrl_voltage_table     vddci_voltage_table;
-	struct pp_atomctrl_voltage_table     mvdd_voltage_table;
-	struct pp_atomctrl_voltage_table     vddgfx_voltage_table;
+uint32_t                             vddci_control;
+struct pp_atomctrl_voltage_table     vddc_voltage_table;
+struct pp_atomctrl_voltage_table     vddci_voltage_table;
+struct pp_atomctrl_voltage_table     mvdd_voltage_table;
+struct pp_atomctrl_voltage_table     vddgfx_voltage_table;
 
 	uint32_t                             mgcg_cgtt_local2;
 	uint32_t                             mgcg_cgtt_local3;
 	uint32_t                             gpio_debug;
 	uint32_t                             mc_micro_code_feature;
 	uint32_t                             highest_mclk;
-	uint16_t                             acpi_vddci;
-	uint8_t                              mvdd_high_index;
-	uint8_t                              mvdd_low_index;
+uint16_t                             acpi_vddci;
+uint8_t                              mvdd_high_index;
+uint8_t                              mvdd_low_index;
 	bool                                 dll_default_on;
 	bool                                 performance_request_registered;
 
-	/* ---- Low Power Features ---- */
+/* ---- Low Power Features ---- */
 	bool                           ulv_supported;
 
 	/* ---- CAC Stuff ---- */
@@ -257,18 +257,18 @@ struct smu7_hwmgr {
 	bool                           cac_enabled;
 
 	/* ---- DPM2 Parameters ---- */
-	uint32_t                       power_containment_features;
+uint32_t                       power_containment_features;
 	bool                           enable_dte_feature;
 	bool                           enable_tdc_limit_feature;
 	bool                           enable_pkg_pwr_tracking_feature;
-	bool                           disable_uvd_power_tune_feature;
+bool                           disable_uvd_power_tune_feature;
 
 
 	uint32_t                       dte_tj_offset;
 	uint32_t                       fast_watermark_threshold;
 
 	/* ---- Phase Shedding ---- */
-	uint8_t                           vddc_phase_shed_control;
+uint8_t                           vddc_phase_shed_control;
 
 	/* ---- DI/DT ---- */
 	struct smu7_display_timing        display_timing;
@@ -283,23 +283,23 @@ struct smu7_hwmgr {
 	uint32_t                                  min_engine_clocks;
 	struct smu7_pcie_perf_range          pcie_gen_performance;
 	struct smu7_pcie_perf_range          pcie_lane_performance;
-	struct smu7_pcie_perf_range          pcie_gen_power_saving;
-	struct smu7_pcie_perf_range          pcie_lane_power_saving;
+struct smu7_pcie_perf_range          pcie_gen_power_saving;
+struct smu7_pcie_perf_range          pcie_lane_power_saving;
 	bool                                      use_pcie_performance_levels;
-	bool                                      use_pcie_power_saving_levels;
+bool                                      use_pcie_power_saving_levels;
 	uint32_t                                  mclk_activity_target;
 	uint32_t                                  mclk_dpm0_activity_target;
 	uint32_t                                  low_sclk_interrupt_threshold;
 	uint32_t                                  last_mclk_dpm_enable_mask;
 	bool                                      uvd_enabled;
 
-	/* ---- Power Gating States ---- */
-	bool                           uvd_power_gated;
-	bool                           vce_power_gated;
-	bool                           samu_power_gated;
+/* ---- Power Gating States ---- */
+bool                           uvd_power_gated;
+bool                           vce_power_gated;
+bool                           samu_power_gated;
 	bool                           need_long_memory_training;
 
-	/* Application power optimization parameters */
+/* Application power optimization parameters */
 	bool                               update_up_hyst;
 	bool                               update_down_hyst;
 	uint32_t                           down_hyst;
@@ -308,7 +308,7 @@ struct smu7_hwmgr {
 	bool apply_optimized_settings;
 
 	uint32_t                              avfs_vdroop_override_setting;
-	bool                                  apply_avfs_cks_off_voltage;
+bool                                  apply_avfs_cks_off_voltage;
 	uint32_t                              frame_time_x2;
 	uint16_t                              mem_latency_high;
 	uint16_t                              mem_latency_low;

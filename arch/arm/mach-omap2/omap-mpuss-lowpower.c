@@ -1,5 +1,5 @@
 /*
- * OMAP MPUSS low power code
+* OMAP MPUSS low power code
  *
  * Copyright (C) 2011 Texas Instruments, Inc.
  *	Santosh Shilimkar <santosh.shilimkar@ti.com>
@@ -7,17 +7,17 @@
  * OMAP4430 MPUSS mainly consists of dual Cortex-A9 with per-CPU
  * Local timer and Watchdog, GIC, SCU, PL310 L2 cache controller,
  * CPU0 and CPU1 LPRM modules.
- * CPU0, CPU1 and MPUSS each have there own power domain and
- * hence multiple low power combinations of MPUSS are possible.
+* CPU0, CPU1 and MPUSS each have there own power domain and
+* hence multiple low power combinations of MPUSS are possible.
  *
  * The CPU0 and CPU1 can't support Closed switch Retention (CSWR)
  * because the mode is not supported by hw constraints of dormant
  * mode. While waking up from the dormant mode, a reset  signal
  * to the Cortex-A9 processor must be asserted by the external
- * power controller.
+* power controller.
  *
  * With architectural inputs and hardware recommendations, only
- * below modes are supported from power gain vs latency point of view.
+* below modes are supported from power gain vs latency point of view.
  *
  *	CPU0		CPU1		MPUSS
  *	----------------------------------------------
@@ -29,7 +29,7 @@
  *	----------------------------------------------
  *
  * Note: CPU0 is the master core and it is the last CPU to go down
- * and first to wake-up when MPUSS low power states are excercised
+* and first to wake-up when MPUSS low power states are excercised
  *
  *
  * This program is free software; you can redistribute it and/or modify
@@ -69,7 +69,7 @@ static u32 old_cpu1_ns_pa_addr;
 #if defined(CONFIG_PM) && defined(CONFIG_SMP)
 
 struct omap4_cpu_pm_info {
-	struct powerdomain *pwrdm;
+struct powerdomain *pwrdm;
 	void __iomem *scu_sar_addr;
 	void __iomem *wkup_sar_addr;
 	void __iomem *l2x0_sar_addr;
@@ -82,7 +82,7 @@ struct omap4_cpu_pm_info {
  * @scu_prepare:	CPU Snoop Control program function pointer
  * @hotplug_restart:	CPU restart function pointer
  *
- * Structure holds functions pointer for CPU low power operations like
+* Structure holds functions pointer for CPU low power operations like
  * suspend, resume and scu programming.
  */
 struct cpu_pm_ops {
@@ -128,7 +128,7 @@ static inline void set_cpu_wakeup_addr(unsigned int cpu_id, u32 addr)
 }
 
 /*
- * Store the SCU power status value to scratchpad memory
+* Store the SCU power status value to scratchpad memory
  */
 static void scu_pwrst_prepare(unsigned int cpu_id, unsigned int cpu_state)
 {
@@ -136,14 +136,14 @@ static void scu_pwrst_prepare(unsigned int cpu_id, unsigned int cpu_state)
 	u32 scu_pwr_st;
 
 	switch (cpu_state) {
-	case PWRDM_POWER_RET:
+case PWRDM_POWER_RET:
 		scu_pwr_st = SCU_PM_DORMANT;
 		break;
-	case PWRDM_POWER_OFF:
-		scu_pwr_st = SCU_PM_POWEROFF;
+case PWRDM_POWER_OFF:
+scu_pwr_st = SCU_PM_POWEROFF;
 		break;
-	case PWRDM_POWER_ON:
-	case PWRDM_POWER_INACTIVE:
+case PWRDM_POWER_ON:
+case PWRDM_POWER_INACTIVE:
 	default:
 		scu_pwr_st = SCU_PM_NORMAL;
 		break;
@@ -182,7 +182,7 @@ static inline void cpu_clear_prev_logic_pwrst(unsigned int cpu_id)
 }
 
 /*
- * Store the CPU cluster state for L2X0 low power operations.
+* Store the CPU cluster state for L2X0 low power operations.
  */
 static void l2x0_pwrst_prepare(unsigned int cpu_id, unsigned int save_state)
 {
@@ -214,11 +214,11 @@ static void __init save_l2x0_context(void)
 #endif
 
 /**
- * omap4_enter_lowpower: OMAP4 MPUSS Low Power Entry Function
- * The purpose of this function is to manage low power programming
+* omap4_enter_lowpower: OMAP4 MPUSS Low Power Entry Function
+* The purpose of this function is to manage low power programming
  * of OMAP4 MPUSS subsystem
  * @cpu : CPU ID
- * @power_state: Low power state.
+* @power_state: Low power state.
  *
  * MPUSS states for the context save:
  * save_state =
@@ -230,22 +230,22 @@ static void __init save_l2x0_context(void)
 int omap4_enter_lowpower(unsigned int cpu, unsigned int power_state)
 {
 	struct omap4_cpu_pm_info *pm_info = &per_cpu(omap4_pm_info, cpu);
-	unsigned int save_state = 0, cpu_logic_state = PWRDM_POWER_RET;
+unsigned int save_state = 0, cpu_logic_state = PWRDM_POWER_RET;
 	unsigned int wakeup_cpu;
 
 	if (omap_rev() == OMAP4430_REV_ES1_0)
 		return -ENXIO;
 
-	switch (power_state) {
-	case PWRDM_POWER_ON:
-	case PWRDM_POWER_INACTIVE:
+switch (power_state) {
+case PWRDM_POWER_ON:
+case PWRDM_POWER_INACTIVE:
 		save_state = 0;
 		break;
-	case PWRDM_POWER_OFF:
-		cpu_logic_state = PWRDM_POWER_OFF;
+case PWRDM_POWER_OFF:
+cpu_logic_state = PWRDM_POWER_OFF;
 		save_state = 1;
 		break;
-	case PWRDM_POWER_RET:
+case PWRDM_POWER_RET:
 		if (IS_PM44XX_ERRATUM(PM_OMAP4_CPU_OSWR_DISABLE))
 			save_state = 0;
 		break;
@@ -267,19 +267,19 @@ int omap4_enter_lowpower(unsigned int cpu, unsigned int power_state)
 	 * In MPUSS OSWR or device OFF, interrupt controller  contest is lost.
 	 */
 	mpuss_clear_prev_logic_pwrst();
-	if ((pwrdm_read_next_pwrst(mpuss_pd) == PWRDM_POWER_RET) &&
-		(pwrdm_read_logic_retst(mpuss_pd) == PWRDM_POWER_OFF))
+if ((pwrdm_read_next_pwrst(mpuss_pd) == PWRDM_POWER_RET) &&
+(pwrdm_read_logic_retst(mpuss_pd) == PWRDM_POWER_OFF))
 		save_state = 2;
 
 	cpu_clear_prev_logic_pwrst(cpu);
-	pwrdm_set_next_pwrst(pm_info->pwrdm, power_state);
+pwrdm_set_next_pwrst(pm_info->pwrdm, power_state);
 	pwrdm_set_logic_retst(pm_info->pwrdm, cpu_logic_state);
 	set_cpu_wakeup_addr(cpu, __pa_symbol(omap_pm_ops.resume));
-	omap_pm_ops.scu_prepare(cpu, power_state);
+omap_pm_ops.scu_prepare(cpu, power_state);
 	l2x0_pwrst_prepare(cpu, save_state);
 
 	/*
-	 * Call low level function  with targeted low power state.
+* Call low level function  with targeted low power state.
 	 */
 	if (save_state)
 		cpu_suspend(save_state, omap_pm_ops.finish_suspend);
@@ -290,14 +290,14 @@ int omap4_enter_lowpower(unsigned int cpu, unsigned int power_state)
 		gic_dist_enable();
 
 	/*
-	 * Restore the CPUx power state to ON otherwise CPUx
-	 * power domain can transitions to programmed low power
+* Restore the CPUx power state to ON otherwise CPUx
+* power domain can transitions to programmed low power
 	 * state while doing WFI outside the low powe code. On
 	 * secure devices, CPUx does WFI which can result in
 	 * domain transition
 	 */
 	wakeup_cpu = smp_processor_id();
-	pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
+pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
 
 	pwrdm_post_transition(NULL);
 
@@ -307,7 +307,7 @@ int omap4_enter_lowpower(unsigned int cpu, unsigned int power_state)
 /**
  * omap4_hotplug_cpu: OMAP4 CPU hotplug entry
  * @cpu : CPU ID
- * @power_state: CPU low power state.
+* @power_state: CPU low power state.
  */
 int omap4_hotplug_cpu(unsigned int cpu, unsigned int power_state)
 {
@@ -317,26 +317,26 @@ int omap4_hotplug_cpu(unsigned int cpu, unsigned int power_state)
 	if (omap_rev() == OMAP4430_REV_ES1_0)
 		return -ENXIO;
 
-	/* Use the achievable power state for the domain */
-	power_state = pwrdm_get_valid_lp_state(pm_info->pwrdm,
-					       false, power_state);
+/* Use the achievable power state for the domain */
+power_state = pwrdm_get_valid_lp_state(pm_info->pwrdm,
+false, power_state);
 
-	if (power_state == PWRDM_POWER_OFF)
+if (power_state == PWRDM_POWER_OFF)
 		cpu_state = 1;
 
 	pwrdm_clear_all_prev_pwrst(pm_info->pwrdm);
-	pwrdm_set_next_pwrst(pm_info->pwrdm, power_state);
+pwrdm_set_next_pwrst(pm_info->pwrdm, power_state);
 	set_cpu_wakeup_addr(cpu, __pa_symbol(omap_pm_ops.hotplug_restart));
-	omap_pm_ops.scu_prepare(cpu, power_state);
+omap_pm_ops.scu_prepare(cpu, power_state);
 
 	/*
-	 * CPU never retuns back if targeted power state is OFF mode.
+* CPU never retuns back if targeted power state is OFF mode.
 	 * CPU ONLINE follows normal CPU ONLINE ptah via
 	 * omap4_secondary_startup().
 	 */
 	omap_pm_ops.finish_suspend(cpu_state);
 
-	pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
+pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
 	return 0;
 }
 
@@ -364,7 +364,7 @@ int __init omap4_mpuss_init(void)
 	struct omap4_cpu_pm_info *pm_info;
 
 	if (omap_rev() == OMAP4430_REV_ES1_0) {
-		WARN(1, "Power Management not supported on OMAP4430 ES1.0\n");
+WARN(1, "Power Management not supported on OMAP4430 ES1.0\n");
 		return -ENODEV;
 	}
 
@@ -386,12 +386,12 @@ int __init omap4_mpuss_init(void)
 		return -ENODEV;
 	}
 
-	/* Clear CPU previous power domain state */
+/* Clear CPU previous power domain state */
 	pwrdm_clear_all_prev_pwrst(pm_info->pwrdm);
 	cpu_clear_prev_logic_pwrst(0);
 
-	/* Initialise CPU0 power domain state to ON */
-	pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
+/* Initialise CPU0 power domain state to ON */
+pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
 
 	pm_info = &per_cpu(omap4_pm_info, 0x1);
 	if (sar_base) {
@@ -411,16 +411,16 @@ int __init omap4_mpuss_init(void)
 		return -ENODEV;
 	}
 
-	/* Clear CPU previous power domain state */
+/* Clear CPU previous power domain state */
 	pwrdm_clear_all_prev_pwrst(pm_info->pwrdm);
 	cpu_clear_prev_logic_pwrst(1);
 
-	/* Initialise CPU1 power domain state to ON */
-	pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
+/* Initialise CPU1 power domain state to ON */
+pwrdm_set_next_pwrst(pm_info->pwrdm, PWRDM_POWER_ON);
 
 	mpuss_pd = pwrdm_lookup("mpu_pwrdm");
 	if (!mpuss_pd) {
-		pr_err("Failed to lookup MPUSS power domain\n");
+pr_err("Failed to lookup MPUSS power domain\n");
 		return -ENODEV;
 	}
 	pwrdm_clear_all_prev_pwrst(mpuss_pd);

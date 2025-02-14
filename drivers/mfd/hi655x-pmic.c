@@ -73,7 +73,7 @@ static struct resource pwrkey_resources[] = {
 
 static const struct mfd_cell hi655x_pmic_devs[] = {
 	{
-		.name		= "hi65xx-powerkey",
+.name		= "hi65xx-powerkey",
 		.num_resources	= ARRAY_SIZE(pwrkey_resources),
 		.resources	= &pwrkey_resources[0],
 	},

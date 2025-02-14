@@ -1,5 +1,5 @@
 /*
- *  This file contains the power_save function for 970-family CPUs.
+*  This file contains the power_save function for 970-family CPUs.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -25,8 +25,8 @@ BEGIN_FTR_SECTION
 	blr
 END_FTR_SECTION_IFCLR(CPU_FTR_CAN_NAP)
 	/* Now check if user or arch enabled NAP mode */
-	LOAD_REG_ADDRBASE(r3,powersave_nap)
-	lwz	r4,ADDROFF(powersave_nap)(r3)
+LOAD_REG_ADDRBASE(r3,powersave_nap)
+lwz	r4,ADDROFF(powersave_nap)(r3)
 	cmpwi	0,r4,0
 	beqlr
 

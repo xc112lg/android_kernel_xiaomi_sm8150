@@ -113,7 +113,7 @@ static struct vdso_patch_def vdso_patches[] = {
 	},
 	{
 		CPU_FTR_USE_TB, 0,
-		"__kernel_get_tbfreq", NULL
+"__kernel_get_tbfreq", NULL
 	},
 	{
 		CPU_FTR_USE_TB, 0,
@@ -567,7 +567,7 @@ static __init int vdso_fixup_features(struct lib32_elfinfo *v32,
 
 	start = find_section64(v64->hdr, "__fw_ftr_fixup", &size);
 	if (start)
-		do_feature_fixups(powerpc_firmware_features,
+do_feature_fixups(powerpc_firmware_features,
 				  start, start + size);
 
 	start = find_section64(v64->hdr, "__lwsync_fixup", &size);
@@ -590,7 +590,7 @@ static __init int vdso_fixup_features(struct lib32_elfinfo *v32,
 #ifdef CONFIG_PPC64
 	start = find_section32(v32->hdr, "__fw_ftr_fixup", &size);
 	if (start)
-		do_feature_fixups(powerpc_firmware_features,
+do_feature_fixups(powerpc_firmware_features,
 				  start, start + size);
 #endif /* CONFIG_PPC64 */
 

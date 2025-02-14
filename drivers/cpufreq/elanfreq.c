@@ -1,5 +1,5 @@
 /*
- *	elanfreq:	cpufreq driver for the AMD ELAN family
+*	elanfreq:	cpufreq driver for the AMD ELAN family
  *
  *	(c) Copyright 2002 Robert Schwebel <r.schwebel@pengutronix.de>
  *
@@ -37,13 +37,13 @@
 static int max_freq;
 
 struct s_elan_multiplier {
-	int clock;		/* frequency in kHz                         */
+int clock;		/* frequency in kHz                         */
 	int val40h;		/* PMU Force Mode register                  */
 	int val80h;		/* CPU Clock Speed Register                 */
 };
 
 /*
- * It is important that the frequencies
+* It is important that the frequencies
  * are listed in ascending order here!
  */
 static struct s_elan_multiplier elan_multiplier[] = {
@@ -66,15 +66,15 @@ static struct cpufreq_frequency_table elanfreq_table[] = {
 	{0, 5,	33000},
 	{0, 6,	66000},
 	{0, 7,	99000},
-	{0, 0,	CPUFREQ_TABLE_END},
+{0, 0,	CPUFREQ_TABLE_END},
 };
 
 
 /**
- *	elanfreq_get_cpu_frequency: determine current cpu speed
+*	elanfreq_get_cpu_frequency: determine current cpu speed
  *
- *	Finds out at which frequency the CPU of the Elan SOC runs
- *	at the moment. Frequencies from 1 to 33 MHz are generated
+*	Finds out at which frequency the CPU of the Elan SOC runs
+*	at the moment. Frequencies from 1 to 33 MHz are generated
  *	the normal way, 66 and 99 MHz are called "Hyperspeed Mode"
  *	and have the rest of the chip running with 33 MHz.
  */
@@ -118,8 +118,8 @@ static int elanfreq_target(struct cpufreq_policy *policy,
 	 */
 
 	/*
-	 * 0x40 is the Power Management Unit's Force Mode Register.
-	 * Bit 6 enables Hyperspeed Mode (66/100 MHz core frequency)
+* 0x40 is the Power Management Unit's Force Mode Register.
+* Bit 6 enables Hyperspeed Mode (66/100 MHz core frequency)
 	 */
 
 	local_irq_disable();
@@ -149,42 +149,42 @@ static int elanfreq_target(struct cpufreq_policy *policy,
 static int elanfreq_cpu_init(struct cpufreq_policy *policy)
 {
 	struct cpuinfo_x86 *c = &cpu_data(0);
-	struct cpufreq_frequency_table *pos;
+struct cpufreq_frequency_table *pos;
 
 	/* capability check */
 	if ((c->x86_vendor != X86_VENDOR_AMD) ||
 	    (c->x86 != 4) || (c->x86_model != 10))
 		return -ENODEV;
 
-	/* max freq */
-	if (!max_freq)
-		max_freq = elanfreq_get_cpu_frequency(0);
+/* max freq */
+if (!max_freq)
+max_freq = elanfreq_get_cpu_frequency(0);
 
 	/* table init */
-	cpufreq_for_each_entry(pos, elanfreq_table)
-		if (pos->frequency > max_freq)
-			pos->frequency = CPUFREQ_ENTRY_INVALID;
+cpufreq_for_each_entry(pos, elanfreq_table)
+if (pos->frequency > max_freq)
+pos->frequency = CPUFREQ_ENTRY_INVALID;
 
-	return cpufreq_table_validate_and_show(policy, elanfreq_table);
+return cpufreq_table_validate_and_show(policy, elanfreq_table);
 }
 
 
 #ifndef MODULE
 /**
- * elanfreq_setup - elanfreq command line parameter parsing
+* elanfreq_setup - elanfreq command line parameter parsing
  *
- * elanfreq command line parameter.  Use:
- *  elanfreq=66000
- * to set the maximum CPU frequency to 66 MHz. Note that in
+* elanfreq command line parameter.  Use:
+*  elanfreq=66000
+* to set the maximum CPU frequency to 66 MHz. Note that in
  * case you do not give this boot parameter, the maximum
- * frequency will fall back to _current_ CPU frequency which
+* frequency will fall back to _current_ CPU frequency which
  * might be lower. If you build this as a module, use the
- * max_freq module parameter instead.
+* max_freq module parameter instead.
  */
 static int __init elanfreq_setup(char *str)
 {
-	max_freq = simple_strtoul(str, &str, 0);
-	pr_warn("You're using the deprecated elanfreq command line option. Use elanfreq.max_freq instead, please!\n");
+max_freq = simple_strtoul(str, &str, 0);
+pr_warn("You're using the deprecated elanfreq command line option. Use elanfreq.max_freq instead, please!\n");
 	return 1;
 }
 __setup("elanfreq=", elanfreq_setup);
@@ -192,13 +192,13 @@ __setup("elanfreq=", elanfreq_setup);
 
 
 static struct cpufreq_driver elanfreq_driver = {
-	.get		= elanfreq_get_cpu_frequency,
-	.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= elanfreq_target,
-	.init		= elanfreq_cpu_init,
-	.name		= "elanfreq",
-	.attr		= cpufreq_generic_attr,
+.get		= elanfreq_get_cpu_frequency,
+.flags		= CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= elanfreq_target,
+.init		= elanfreq_cpu_init,
+.name		= "elanfreq",
+.attr		= cpufreq_generic_attr,
 };
 
 static const struct x86_cpu_id elan_id[] = {
@@ -211,13 +211,13 @@ static int __init elanfreq_init(void)
 {
 	if (!x86_match_cpu(elan_id))
 		return -ENODEV;
-	return cpufreq_register_driver(&elanfreq_driver);
+return cpufreq_register_driver(&elanfreq_driver);
 }
 
 
 static void __exit elanfreq_exit(void)
 {
-	cpufreq_unregister_driver(&elanfreq_driver);
+cpufreq_unregister_driver(&elanfreq_driver);
 }
 
 

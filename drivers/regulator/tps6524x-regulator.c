@@ -125,11 +125,11 @@ struct field {
 
 struct supply_info {
 	const char	*name;
-	int		n_voltages;
-	const unsigned int *voltages;
+int		n_voltages;
+const unsigned int *voltages;
 	int		n_ilimsels;
 	const unsigned int *ilimsels;
-	struct field	enable, voltage, ilimsel;
+struct field	enable, voltage, ilimsel;
 };
 
 struct tps6524x {
@@ -375,67 +375,67 @@ static const unsigned int fixed_400000_ilimsel[] = {
 static const struct supply_info supply_info[N_REGULATORS] = {
 	{
 		.name		= "DCDC1",
-		.n_voltages	= ARRAY_SIZE(dcdc1_voltages),
-		.voltages	= dcdc1_voltages,
+.n_voltages	= ARRAY_SIZE(dcdc1_voltages),
+.voltages	= dcdc1_voltages,
 		.n_ilimsels	= ARRAY_SIZE(fixed_2400000_ilimsel),
 		.ilimsels	= fixed_2400000_ilimsel,
 		.enable		= __MK_FIELD(REG_DCDC_EN, DCDCDCDC_EN_MASK,
 					     DCDCDCDC1_EN_SHIFT),
-		.voltage	= __MK_FIELD(REG_DCDC_SET, DCDC_VDCDC_MASK,
+.voltage	= __MK_FIELD(REG_DCDC_SET, DCDC_VDCDC_MASK,
 					     DCDC_VDCDC1_SHIFT),
 	},
 	{
 		.name		= "DCDC2",
-		.n_voltages	= ARRAY_SIZE(dcdc2_voltages),
-		.voltages	= dcdc2_voltages,
+.n_voltages	= ARRAY_SIZE(dcdc2_voltages),
+.voltages	= dcdc2_voltages,
 		.n_ilimsels	= ARRAY_SIZE(fixed_1200000_ilimsel),
 		.ilimsels	= fixed_1200000_ilimsel,
 		.enable		= __MK_FIELD(REG_DCDC_EN, DCDCDCDC_EN_MASK,
 					     DCDCDCDC2_EN_SHIFT),
-		.voltage	= __MK_FIELD(REG_DCDC_SET, DCDC_VDCDC_MASK,
+.voltage	= __MK_FIELD(REG_DCDC_SET, DCDC_VDCDC_MASK,
 					     DCDC_VDCDC2_SHIFT),
 	},
 	{
 		.name		= "DCDC3",
-		.n_voltages	= ARRAY_SIZE(dcdc3_voltages),
-		.voltages	= dcdc3_voltages,
+.n_voltages	= ARRAY_SIZE(dcdc3_voltages),
+.voltages	= dcdc3_voltages,
 		.n_ilimsels	= ARRAY_SIZE(fixed_1200000_ilimsel),
 		.ilimsels	= fixed_1200000_ilimsel,
 		.enable		= __MK_FIELD(REG_DCDC_EN, DCDCDCDC_EN_MASK,
 					DCDCDCDC3_EN_SHIFT),
-		.voltage	= __MK_FIELD(REG_DCDC_SET, DCDC_VDCDC_MASK,
+.voltage	= __MK_FIELD(REG_DCDC_SET, DCDC_VDCDC_MASK,
 					     DCDC_VDCDC3_SHIFT),
 	},
 	{
 		.name		= "LDO1",
-		.n_voltages	= ARRAY_SIZE(ldo1_voltages),
-		.voltages	= ldo1_voltages,
+.n_voltages	= ARRAY_SIZE(ldo1_voltages),
+.voltages	= ldo1_voltages,
 		.n_ilimsels	= ARRAY_SIZE(ldo_ilimsel),
 		.ilimsels	= ldo_ilimsel,
 		.enable		= __MK_FIELD(REG_BLOCK_EN, BLOCK_MASK,
 					     BLOCK_LDO1_SHIFT),
-		.voltage	= __MK_FIELD(REG_LDO_SET, LDO_VSEL_MASK,
+.voltage	= __MK_FIELD(REG_LDO_SET, LDO_VSEL_MASK,
 					     LDO1_VSEL_SHIFT),
 		.ilimsel	= __MK_FIELD(REG_LDO_SET, LDO_ILIM_MASK,
 					     LDO1_ILIM_SHIFT),
 	},
 	{
 		.name		= "LDO2",
-		.n_voltages	= ARRAY_SIZE(ldo2_voltages),
-		.voltages	= ldo2_voltages,
+.n_voltages	= ARRAY_SIZE(ldo2_voltages),
+.voltages	= ldo2_voltages,
 		.n_ilimsels	= ARRAY_SIZE(ldo_ilimsel),
 		.ilimsels	= ldo_ilimsel,
 		.enable		= __MK_FIELD(REG_BLOCK_EN, BLOCK_MASK,
 					     BLOCK_LDO2_SHIFT),
-		.voltage	= __MK_FIELD(REG_LDO_SET, LDO_VSEL_MASK,
+.voltage	= __MK_FIELD(REG_LDO_SET, LDO_VSEL_MASK,
 					     LDO2_VSEL_SHIFT),
 		.ilimsel	= __MK_FIELD(REG_LDO_SET, LDO_ILIM_MASK,
 					     LDO2_ILIM_SHIFT),
 	},
 	{
 		.name		= "USB",
-		.n_voltages	= ARRAY_SIZE(fixed_5000000_voltage),
-		.voltages	= fixed_5000000_voltage,
+.n_voltages	= ARRAY_SIZE(fixed_5000000_voltage),
+.voltages	= fixed_5000000_voltage,
 		.n_ilimsels	= ARRAY_SIZE(usb_ilimsel),
 		.ilimsels	= usb_ilimsel,
 		.enable		= __MK_FIELD(REG_BLOCK_EN, BLOCK_MASK,
@@ -445,8 +445,8 @@ static const struct supply_info supply_info[N_REGULATORS] = {
 	},
 	{
 		.name		= "LCD",
-		.n_voltages	= ARRAY_SIZE(fixed_5000000_voltage),
-		.voltages	= fixed_5000000_voltage,
+.n_voltages	= ARRAY_SIZE(fixed_5000000_voltage),
+.voltages	= fixed_5000000_voltage,
 		.n_ilimsels	= ARRAY_SIZE(fixed_400000_ilimsel),
 		.ilimsels	= fixed_400000_ilimsel,
 		.enable		= __MK_FIELD(REG_BLOCK_EN, BLOCK_MASK,
@@ -462,10 +462,10 @@ static int set_voltage_sel(struct regulator_dev *rdev, unsigned selector)
 	hw	= rdev_get_drvdata(rdev);
 	info	= &supply_info[rdev_get_id(rdev)];
 
-	if (rdev->desc->n_voltages == 1)
+if (rdev->desc->n_voltages == 1)
 		return -EINVAL;
 
-	return write_field(hw, &info->voltage, selector);
+return write_field(hw, &info->voltage, selector);
 }
 
 static int get_voltage_sel(struct regulator_dev *rdev)
@@ -477,13 +477,13 @@ static int get_voltage_sel(struct regulator_dev *rdev)
 	hw	= rdev_get_drvdata(rdev);
 	info	= &supply_info[rdev_get_id(rdev)];
 
-	if (rdev->desc->n_voltages == 1)
+if (rdev->desc->n_voltages == 1)
 		return 0;
 
-	ret = read_field(hw, &info->voltage);
+ret = read_field(hw, &info->voltage);
 	if (ret < 0)
 		return ret;
-	if (WARN_ON(ret >= info->n_voltages))
+if (WARN_ON(ret >= info->n_voltages))
 		return -EIO;
 
 	return ret;
@@ -569,10 +569,10 @@ static struct regulator_ops regulator_ops = {
 	.is_enabled		= is_supply_enabled,
 	.enable			= enable_supply,
 	.disable		= disable_supply,
-	.get_voltage_sel	= get_voltage_sel,
-	.set_voltage_sel	= set_voltage_sel,
-	.list_voltage		= regulator_list_voltage_table,
-	.map_voltage		= regulator_map_voltage_ascend,
+.get_voltage_sel	= get_voltage_sel,
+.set_voltage_sel	= set_voltage_sel,
+.list_voltage		= regulator_list_voltage_table,
+.map_voltage		= regulator_map_voltage_ascend,
 	.set_current_limit	= set_current_limit,
 	.get_current_limit	= get_current_limit,
 };
@@ -606,10 +606,10 @@ static int pmic_probe(struct spi_device *spi)
 	for (i = 0; i < N_REGULATORS; i++, info++, init_data++) {
 		hw->desc[i].name	= info->name;
 		hw->desc[i].id		= i;
-		hw->desc[i].n_voltages	= info->n_voltages;
-		hw->desc[i].volt_table	= info->voltages;
+hw->desc[i].n_voltages	= info->n_voltages;
+hw->desc[i].volt_table	= info->voltages;
 		hw->desc[i].ops		= &regulator_ops;
-		hw->desc[i].type	= REGULATOR_VOLTAGE;
+hw->desc[i].type	= REGULATOR_VOLTAGE;
 		hw->desc[i].owner	= THIS_MODULE;
 
 		config.dev = dev;

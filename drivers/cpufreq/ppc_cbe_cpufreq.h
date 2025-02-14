@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
- * ppc_cbe_cpufreq.h
+* ppc_cbe_cpufreq.h
  *
- * This file contains the definitions used by the cbe_cpufreq driver.
+* This file contains the definitions used by the cbe_cpufreq driver.
  *
  * (C) Copyright IBM Deutschland Entwicklung GmbH 2005-2007
  *

@@ -1,5 +1,5 @@
 /*
- *  Input Power Event -> APM Bridge
+*  Input Power Event -> APM Bridge
  *
  *  Copyright (c) 2007 Richard Purdie
  *
@@ -41,7 +41,7 @@ static void apmpower_event(struct input_handle *handle, unsigned int type,
 
 	switch (type) {
 	case EV_PWR:
-		system_power_event(code);
+system_power_event(code);
 		break;
 
 	default:
@@ -62,11 +62,11 @@ static int apmpower_connect(struct input_handler *handler,
 
 	handle->dev = dev;
 	handle->handler = handler;
-	handle->name = "apm-power";
+handle->name = "apm-power";
 
 	error = input_register_handle(handle);
 	if (error) {
-		pr_err("Failed to register input power handler, error %d\n",
+pr_err("Failed to register input power handler, error %d\n",
 		       error);
 		kfree(handle);
 		return error;
@@ -74,7 +74,7 @@ static int apmpower_connect(struct input_handler *handler,
 
 	error = input_open_device(handle);
 	if (error) {
-		pr_err("Failed to open input power device, error %d\n", error);
+pr_err("Failed to open input power device, error %d\n", error);
 		input_unregister_handle(handle);
 		kfree(handle);
 		return error;
@@ -101,21 +101,21 @@ static const struct input_device_id apmpower_ids[] = {
 MODULE_DEVICE_TABLE(input, apmpower_ids);
 
 static struct input_handler apmpower_handler = {
-	.event =	apmpower_event,
-	.connect =	apmpower_connect,
-	.disconnect =	apmpower_disconnect,
-	.name =		"apm-power",
-	.id_table =	apmpower_ids,
+.event =	apmpower_event,
+.connect =	apmpower_connect,
+.disconnect =	apmpower_disconnect,
+.name =		"apm-power",
+.id_table =	apmpower_ids,
 };
 
 static int __init apmpower_init(void)
 {
-	return input_register_handler(&apmpower_handler);
+return input_register_handler(&apmpower_handler);
 }
 
 static void __exit apmpower_exit(void)
 {
-	input_unregister_handler(&apmpower_handler);
+input_unregister_handler(&apmpower_handler);
 }
 
 module_init(apmpower_init);

@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/math-emu/math_efp.c
+* arch/powerpc/math-emu/math_efp.c
  *
  * Copyright (C) 2006-2008, 2010 Freescale Semiconductor, Inc.
  *
@@ -7,7 +7,7 @@
  *         Yu Liu,	<yu.liu@freescale.com>
  *
  * Derived from arch/alpha/math-emu/math.c
- *              arch/powerpc/math-emu/math.c
+*              arch/powerpc/math-emu/math.c
  *
  * Description:
  * This file is the exception handler to make E500 SPE instructions

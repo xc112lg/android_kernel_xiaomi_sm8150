@@ -246,8 +246,8 @@ static int rv_verify_smc_interface(struct pp_smumgr *smumgr)
 static int rv_smc_enable_sdma(struct pp_smumgr *smumgr)
 {
 	PP_ASSERT_WITH_CODE(!rv_send_msg_to_smc(smumgr,
-			PPSMC_MSG_PowerUpSdma),
-			"Attempt to power up sdma Failed!",
+PPSMC_MSG_PowerUpSdma),
+"Attempt to power up sdma Failed!",
 			return -EINVAL);
 
 	return 0;
@@ -256,8 +256,8 @@ static int rv_smc_enable_sdma(struct pp_smumgr *smumgr)
 static int rv_smc_disable_sdma(struct pp_smumgr *smumgr)
 {
 	PP_ASSERT_WITH_CODE(!rv_send_msg_to_smc(smumgr,
-			PPSMC_MSG_PowerDownSdma),
-			"Attempt to power down sdma Failed!",
+PPSMC_MSG_PowerDownSdma),
+"Attempt to power down sdma Failed!",
 			return -EINVAL);
 
 	return 0;
@@ -267,8 +267,8 @@ static int rv_smc_disable_sdma(struct pp_smumgr *smumgr)
 static int rv_smc_enable_vcn(struct pp_smumgr *smumgr)
 {
 	PP_ASSERT_WITH_CODE(!rv_send_msg_to_smc_with_parameter(smumgr,
-			PPSMC_MSG_PowerUpVcn, 0),
-			"Attempt to power up vcn Failed!",
+PPSMC_MSG_PowerUpVcn, 0),
+"Attempt to power up vcn Failed!",
 			return -EINVAL);
 
 	return 0;
@@ -277,8 +277,8 @@ static int rv_smc_enable_vcn(struct pp_smumgr *smumgr)
 static int rv_smc_disable_vcn(struct pp_smumgr *smumgr)
 {
 	PP_ASSERT_WITH_CODE(!rv_send_msg_to_smc_with_parameter(smumgr,
-			PPSMC_MSG_PowerDownVcn, 0),
-			"Attempt to power down vcn Failed!",
+PPSMC_MSG_PowerDownVcn, 0),
+"Attempt to power down vcn Failed!",
 			return -EINVAL);
 
 	return 0;

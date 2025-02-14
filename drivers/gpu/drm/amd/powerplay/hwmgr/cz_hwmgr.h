@@ -55,13 +55,13 @@ struct cz_dpm_entry {
 struct cz_sys_info {
 	uint32_t bootup_uma_clock;
 	uint32_t bootup_engine_clock;
-	uint32_t dentist_vco_freq;
+uint32_t dentist_vco_freq;
 	uint32_t nb_dpm_enable;
 	uint32_t nbp_memory_clock[CZ_NUM_NBPMEMORYCLOCK];
 	uint32_t nbp_n_clock[CZ_NUM_NBPSTATES];
-	uint16_t nbp_voltage_index[CZ_NUM_NBPSTATES];
+uint16_t nbp_voltage_index[CZ_NUM_NBPSTATES];
 	uint32_t display_clock[MAX_DISPLAY_CLOCK_LEVEL];
-	uint16_t bootup_nb_voltage_index;
+uint16_t bootup_nb_voltage_index;
 	uint8_t htc_tmp_lmt;
 	uint8_t htc_hyst_lmt;
 	uint32_t system_config;
@@ -102,14 +102,14 @@ struct cz_display_phy_info {
 
 struct cz_power_level {
 	uint32_t engineClock;
-	uint8_t vddcIndex;
+uint8_t vddcIndex;
 	uint8_t dsDividerIndex;
 	uint8_t ssDividerIndex;
 	uint8_t allowGnbSlow;
 	uint8_t forceNBPstate;
 	uint8_t display_wm;
 	uint8_t vce_wm;
-	uint8_t numSIMDToPowerDown;
+uint8_t numSIMDToPowerDown;
 	uint8_t hysteresis_up;
 	uint8_t rsv[3];
 };
@@ -160,7 +160,7 @@ struct cz_power_state {
 	uint8_t dpm_x_nb_ps_low;
 	uint8_t dpm_x_nb_ps_high;
 	enum cz_pstate_previous_action action;
-	struct cz_power_level levels[CZ_MAX_HARDWARE_POWERLEVELS];
+struct cz_power_level levels[CZ_MAX_HARDWARE_POWERLEVELS];
 	struct pp_disable_nb_ps_flags disable_nb_ps_flag;
 };
 
@@ -185,10 +185,10 @@ struct cc6_settings {
 };
 
 struct cz_hwmgr {
-	uint32_t activity_target[CZ_MAX_HARDWARE_POWERLEVELS];
+uint32_t activity_target[CZ_MAX_HARDWARE_POWERLEVELS];
 	uint32_t dpm_interval;
 
-	uint32_t voltage_drop_threshold;
+uint32_t voltage_drop_threshold;
 
 	uint32_t voting_rights_clients;
 
@@ -196,7 +196,7 @@ struct cz_hwmgr {
 
 	uint32_t static_screen_threshold;
 
-	uint32_t gfx_power_gating_threshold;
+uint32_t gfx_power_gating_threshold;
 
 	uint32_t activity_hysteresis;
 	uint32_t bootup_sclk_divider;
@@ -207,17 +207,17 @@ struct cz_hwmgr {
 
 	struct cz_sys_info sys_info;
 
-	struct cz_power_level boot_power_level;
-	struct cz_power_state *cz_current_ps;
-	struct cz_power_state *cz_requested_ps;
+struct cz_power_level boot_power_level;
+struct cz_power_state *cz_current_ps;
+struct cz_power_state *cz_requested_ps;
 
 	uint32_t mgcg_cgtt_local0;
 	uint32_t mgcg_cgtt_local1;
 
 	uint32_t tdr_clock; /* in 10khz unit */
 
-	uint32_t ddi_power_gating_disabled;
-	uint32_t disable_gfx_power_gating_in_uvd;
+uint32_t ddi_power_gating_disabled;
+uint32_t disable_gfx_power_gating_in_uvd;
 	uint32_t disable_nb_ps3_in_battery;
 
 	uint32_t lock_nb_ps_in_uvd_play_back;
@@ -230,10 +230,10 @@ struct cz_hwmgr {
 	bool disp_clk_bypass;
 	bool disp_clk_bypass_pending;
 	uint32_t bapm_enabled;
-	uint32_t clock_slow_down_freq;
+uint32_t clock_slow_down_freq;
 	uint32_t skip_clock_slow_down;
 	uint32_t enable_nb_ps_policy;
-	uint32_t voltage_drop_in_dce_power_gating;
+uint32_t voltage_drop_in_dce_power_gating;
 	uint32_t uvd_dpm_interval;
 	uint32_t override_dynamic_mgpg;
 	uint32_t lclk_deep_enabled;
@@ -244,19 +244,19 @@ struct cz_hwmgr {
 	bool battery_state;
 	uint32_t lowest_valid;
 	uint32_t highest_valid;
-	uint32_t high_voltage_threshold;
+uint32_t high_voltage_threshold;
 	uint32_t is_nb_dpm_enabled;
 	struct cc6_settings cc6_settings;
-	uint32_t is_voltage_island_enabled;
+uint32_t is_voltage_island_enabled;
 
 	bool pgacpinit;
 
 	uint8_t disp_config;
 
-	/* PowerTune */
-	uint32_t power_containment_features;
+/* PowerTune */
+uint32_t power_containment_features;
 	bool cac_enabled;
-	bool disable_uvd_power_tune_feature;
+bool disable_uvd_power_tune_feature;
 	bool enable_ba_pm_feature;
 	bool enable_tdc_limit_feature;
 
@@ -289,7 +289,7 @@ struct cz_hwmgr {
 
 	uint8_t graphics_interval;
 	uint8_t graphics_therm_throttle_enable;
-	uint8_t graphics_voltage_change_enable;
+uint8_t graphics_voltage_change_enable;
 
 	uint8_t graphics_clk_slow_enable;
 	uint8_t graphics_clk_slow_divider;
@@ -303,11 +303,11 @@ struct cz_hwmgr {
 	uint32_t dram_log_phy_addr_l;
 	uint32_t dram_log_buff_size;
 
-	bool uvd_power_gated;
-	bool vce_power_gated;
-	bool samu_power_gated;
-	bool acp_power_gated;
-	bool acp_power_up_no_dsp;
+bool uvd_power_gated;
+bool vce_power_gated;
+bool samu_power_gated;
+bool acp_power_gated;
+bool acp_power_up_no_dsp;
 	uint32_t active_process_mask;
 
 	uint32_t max_sclk_level;

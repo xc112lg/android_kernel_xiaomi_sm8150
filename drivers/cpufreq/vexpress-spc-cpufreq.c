@@ -1,7 +1,7 @@
 /*
- * Versatile Express SPC CPUFreq Interface driver
+* Versatile Express SPC CPUFreq Interface driver
  *
- * It provides necessary ops to arm_big_little cpufreq driver.
+* It provides necessary ops to arm_big_little cpufreq driver.
  *
  * Copyright (C) 2013 ARM Ltd.
  * Sudeep KarkadaNagesha <sudeep.karkadanagesha@arm.com>
@@ -50,21 +50,21 @@ static struct cpufreq_arm_bL_ops ve_spc_cpufreq_ops = {
 
 static int ve_spc_cpufreq_probe(struct platform_device *pdev)
 {
-	return bL_cpufreq_register(&ve_spc_cpufreq_ops);
+return bL_cpufreq_register(&ve_spc_cpufreq_ops);
 }
 
 static int ve_spc_cpufreq_remove(struct platform_device *pdev)
 {
-	bL_cpufreq_unregister(&ve_spc_cpufreq_ops);
+bL_cpufreq_unregister(&ve_spc_cpufreq_ops);
 	return 0;
 }
 
 static struct platform_driver ve_spc_cpufreq_platdrv = {
 	.driver = {
-		.name	= "vexpress-spc-cpufreq",
+.name	= "vexpress-spc-cpufreq",
 	},
-	.probe		= ve_spc_cpufreq_probe,
-	.remove		= ve_spc_cpufreq_remove,
+.probe		= ve_spc_cpufreq_probe,
+.remove		= ve_spc_cpufreq_remove,
 };
 module_platform_driver(ve_spc_cpufreq_platdrv);
 

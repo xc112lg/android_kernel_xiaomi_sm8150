@@ -37,9 +37,9 @@ struct aat2870_regulator {
 	u8 enable_shift;
 	u8 enable_mask;
 
-	u8 voltage_addr;
-	u8 voltage_shift;
-	u8 voltage_mask;
+u8 voltage_addr;
+u8 voltage_shift;
+u8 voltage_mask;
 };
 
 static int aat2870_ldo_set_voltage_sel(struct regulator_dev *rdev,
@@ -48,8 +48,8 @@ static int aat2870_ldo_set_voltage_sel(struct regulator_dev *rdev,
 	struct aat2870_regulator *ri = rdev_get_drvdata(rdev);
 	struct aat2870_data *aat2870 = ri->aat2870;
 
-	return aat2870->update(aat2870, ri->voltage_addr, ri->voltage_mask,
-			       selector << ri->voltage_shift);
+return aat2870->update(aat2870, ri->voltage_addr, ri->voltage_mask,
+selector << ri->voltage_shift);
 }
 
 static int aat2870_ldo_get_voltage_sel(struct regulator_dev *rdev)
@@ -59,11 +59,11 @@ static int aat2870_ldo_get_voltage_sel(struct regulator_dev *rdev)
 	u8 val;
 	int ret;
 
-	ret = aat2870->read(aat2870, ri->voltage_addr, &val);
+ret = aat2870->read(aat2870, ri->voltage_addr, &val);
 	if (ret)
 		return ret;
 
-	return (val & ri->voltage_mask) >> ri->voltage_shift;
+return (val & ri->voltage_mask) >> ri->voltage_shift;
 }
 
 static int aat2870_ldo_enable(struct regulator_dev *rdev)
@@ -98,10 +98,10 @@ static int aat2870_ldo_is_enabled(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops aat2870_ldo_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.set_voltage_sel = aat2870_ldo_set_voltage_sel,
-	.get_voltage_sel = aat2870_ldo_get_voltage_sel,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.set_voltage_sel = aat2870_ldo_set_voltage_sel,
+.get_voltage_sel = aat2870_ldo_get_voltage_sel,
 	.enable = aat2870_ldo_enable,
 	.disable = aat2870_ldo_disable,
 	.is_enabled = aat2870_ldo_is_enabled,
@@ -119,10 +119,10 @@ static const unsigned int aat2870_ldo_voltages[] = {
 		.desc = {				\
 			.name = #ids,			\
 			.id = AAT2870_ID_##ids,		\
-			.n_voltages = ARRAY_SIZE(aat2870_ldo_voltages),	\
-			.volt_table = aat2870_ldo_voltages, \
+.n_voltages = ARRAY_SIZE(aat2870_ldo_voltages),	\
+.volt_table = aat2870_ldo_voltages, \
 			.ops = &aat2870_ldo_ops,	\
-			.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 			.owner = THIS_MODULE,		\
 		},					\
 	}
@@ -152,10 +152,10 @@ static struct aat2870_regulator *aat2870_get_regulator(int id)
 	ri->enable_shift = id - AAT2870_ID_LDOA;
 	ri->enable_mask = 0x1 << ri->enable_shift;
 
-	ri->voltage_addr = (id - AAT2870_ID_LDOA) / 2 ?
+ri->voltage_addr = (id - AAT2870_ID_LDOA) / 2 ?
 			   AAT2870_LDO_CD : AAT2870_LDO_AB;
-	ri->voltage_shift = (id - AAT2870_ID_LDOA) % 2 ? 0 : 4;
-	ri->voltage_mask = 0xF << ri->voltage_shift;
+ri->voltage_shift = (id - AAT2870_ID_LDOA) % 2 ? 0 : 4;
+ri->voltage_mask = 0xF << ri->voltage_shift;
 
 	return ri;
 }

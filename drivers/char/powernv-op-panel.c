@@ -22,7 +22,7 @@
 
 /*
  * This driver creates a character device (/dev/op_panel) which exposes the
- * operator panel (character LCD display) on IBM Power Systems machines
+* operator panel (character LCD display) on IBM Power Systems machines
  * with FSPs.
  * A character buffer written to the device will be displayed on the
  * operator panel.
@@ -208,7 +208,7 @@ static const struct of_device_id oppanel_match[] = {
 
 static struct platform_driver oppanel_driver = {
 	.driver	= {
-		.name		= "powernv-op-panel",
+.name		= "powernv-op-panel",
 		.of_match_table	= oppanel_match,
 	},
 	.probe	= oppanel_probe,

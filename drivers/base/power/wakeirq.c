@@ -38,18 +38,18 @@ static int dev_pm_attach_wake_irq(struct device *dev, int irq,
 	if (!dev || !wirq)
 		return -EINVAL;
 
-	spin_lock_irqsave(&dev->power.lock, flags);
-	if (dev_WARN_ONCE(dev, dev->power.wakeirq,
+spin_lock_irqsave(&dev->power.lock, flags);
+if (dev_WARN_ONCE(dev, dev->power.wakeirq,
 			  "wake irq already initialized\n")) {
-		spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 		return -EEXIST;
 	}
 
 	err = device_wakeup_attach_irq(dev, wirq);
 	if (!err)
-		dev->power.wakeirq = wirq;
+dev->power.wakeirq = wirq;
 
-	spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 	return err;
 }
 
@@ -99,16 +99,16 @@ EXPORT_SYMBOL_GPL(dev_pm_set_wake_irq);
  */
 void dev_pm_clear_wake_irq(struct device *dev)
 {
-	struct wake_irq *wirq = dev->power.wakeirq;
+struct wake_irq *wirq = dev->power.wakeirq;
 	unsigned long flags;
 
 	if (!wirq)
 		return;
 
-	spin_lock_irqsave(&dev->power.lock, flags);
+spin_lock_irqsave(&dev->power.lock, flags);
 	device_wakeup_detach_irq(dev);
-	dev->power.wakeirq = NULL;
-	spin_unlock_irqrestore(&dev->power.lock, flags);
+dev->power.wakeirq = NULL;
+spin_unlock_irqrestore(&dev->power.lock, flags);
 
 	if (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED) {
 		free_irq(wirq->irq, wirq);
@@ -177,7 +177,7 @@ static int __dev_pm_set_dedicated_wake_irq(struct device *dev, int irq, unsigned
 	irq_set_status_flags(irq, IRQ_DISABLE_UNLAZY);
 
 	/*
-	 * Consumer device may need to power up and restore state
+* Consumer device may need to power up and restore state
 	 * so we use a threaded irq.
 	 */
 	err = request_threaded_irq(irq, NULL, handle_threaded_wake_irq,
@@ -265,7 +265,7 @@ EXPORT_SYMBOL_GPL(dev_pm_set_dedicated_wake_irq_reverse);
  */
 void dev_pm_enable_wake_irq(struct device *dev)
 {
-	struct wake_irq *wirq = dev->power.wakeirq;
+struct wake_irq *wirq = dev->power.wakeirq;
 
 	if (wirq && (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED))
 		enable_irq(wirq->irq);
@@ -282,7 +282,7 @@ EXPORT_SYMBOL_GPL(dev_pm_enable_wake_irq);
  */
 void dev_pm_disable_wake_irq(struct device *dev)
 {
-	struct wake_irq *wirq = dev->power.wakeirq;
+struct wake_irq *wirq = dev->power.wakeirq;
 
 	if (wirq && (wirq->status & WAKE_IRQ_DEDICATED_ALLOCATED))
 		disable_irq_nosync(wirq->irq);
@@ -301,12 +301,12 @@ EXPORT_SYMBOL_GPL(dev_pm_disable_wake_irq);
  * starts disabled with IRQ_NOAUTOEN set.
  *
  * Should be only called from rpm_suspend() and rpm_resume() path.
- * Caller must hold &dev->power.lock to change wirq->status
+* Caller must hold &dev->power.lock to change wirq->status
  */
 void dev_pm_enable_wake_irq_check(struct device *dev,
 				  bool can_change_status)
 {
-	struct wake_irq *wirq = dev->power.wakeirq;
+struct wake_irq *wirq = dev->power.wakeirq;
 
 	if (!wirq || !((wirq->status & WAKE_IRQ_DEDICATED_MASK)))
 		return;
@@ -337,7 +337,7 @@ enable:
  */
 void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable)
 {
-	struct wake_irq *wirq = dev->power.wakeirq;
+struct wake_irq *wirq = dev->power.wakeirq;
 
 	if (!wirq || !((wirq->status & WAKE_IRQ_DEDICATED_MASK)))
 		return;
@@ -363,7 +363,7 @@ void dev_pm_disable_wake_irq_check(struct device *dev, bool cond_disable)
  */
 void dev_pm_enable_wake_irq_complete(struct device *dev)
 {
-	struct wake_irq *wirq = dev->power.wakeirq;
+struct wake_irq *wirq = dev->power.wakeirq;
 
 	if (!wirq || !(wirq->status & WAKE_IRQ_DEDICATED_MASK))
 		return;

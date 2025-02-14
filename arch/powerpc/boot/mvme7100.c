@@ -29,17 +29,17 @@ BSS_STACK(16384);
 static void mvme7100_fixups(void)
 {
 	void *devp;
-	unsigned long busfreq = bd.bi_busfreq * 1000000;
+unsigned long busfreq = bd.bi_busfreq * 1000000;
 
-	dt_fixup_cpu_clocks(bd.bi_intfreq * 1000000, busfreq / 4, busfreq);
+dt_fixup_cpu_clocks(bd.bi_intfreq * 1000000, busfreq / 4, busfreq);
 
 	devp = finddevice("/soc@f1000000");
 	if (devp)
-		setprop(devp, "bus-frequency", &busfreq, sizeof(busfreq));
+setprop(devp, "bus-frequency", &busfreq, sizeof(busfreq));
 
 	devp = finddevice("/soc/serial@4500");
 	if (devp)
-		setprop(devp, "clock-frequency", &busfreq, sizeof(busfreq));
+setprop(devp, "clock-frequency", &busfreq, sizeof(busfreq));
 
 	dt_fixup_memory(bd.bi_memstart, bd.bi_memsize);
 

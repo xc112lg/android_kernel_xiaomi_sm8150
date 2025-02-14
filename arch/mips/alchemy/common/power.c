@@ -1,6 +1,6 @@
 /*
  * BRIEF MODULE DESCRIPTION
- *	Au1xx0 Power Management routines.
+*	Au1xx0 Power Management routines.
  *
  * Copyright 2001, 2008 MontaVista Software Inc.
  * Author: MontaVista Software, Inc. <source@mvista.com>
@@ -54,8 +54,8 @@ static unsigned int sleep_static_memctlr[4][3];
 static void save_core_regs(void)
 {
 	/* Clocks and PLLs. */
-	sleep_sys_clocks[0] = alchemy_rdsys(AU1000_SYS_FREQCTRL0);
-	sleep_sys_clocks[1] = alchemy_rdsys(AU1000_SYS_FREQCTRL1);
+sleep_sys_clocks[0] = alchemy_rdsys(AU1000_SYS_FREQCTRL0);
+sleep_sys_clocks[1] = alchemy_rdsys(AU1000_SYS_FREQCTRL1);
 	sleep_sys_clocks[2] = alchemy_rdsys(AU1000_SYS_CLKSRC);
 	sleep_sys_clocks[3] = alchemy_rdsys(AU1000_SYS_CPUPLL);
 	sleep_sys_clocks[4] = alchemy_rdsys(AU1000_SYS_AUXPLL);
@@ -85,8 +85,8 @@ static void restore_core_regs(void)
 	 * one of those Au1000 with a write-only PLL, where we dont
 	 * have a valid value)
 	 */
-	alchemy_wrsys(sleep_sys_clocks[0], AU1000_SYS_FREQCTRL0);
-	alchemy_wrsys(sleep_sys_clocks[1], AU1000_SYS_FREQCTRL1);
+alchemy_wrsys(sleep_sys_clocks[0], AU1000_SYS_FREQCTRL0);
+alchemy_wrsys(sleep_sys_clocks[1], AU1000_SYS_FREQCTRL1);
 	alchemy_wrsys(sleep_sys_clocks[2], AU1000_SYS_CLKSRC);
 	alchemy_wrsys(sleep_sys_clocks[4], AU1000_SYS_AUXPLL);
 	if (!au1xxx_cpu_has_pll_wo())

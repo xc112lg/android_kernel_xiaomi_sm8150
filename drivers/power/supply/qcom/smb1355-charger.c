@@ -174,8 +174,8 @@
 #define TR_SCPATH_ICL_1X_GAIN_MASK		GENMASK(5, 0)
 
 #define IS_USBIN(mode)				\
-	((mode == POWER_SUPPLY_PL_USBIN_USBIN) \
-	 || (mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
+((mode == POWER_SUPPLY_PL_USBIN_USBIN) \
+|| (mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
 
 #define PARALLEL_ENABLE_VOTER			"PARALLEL_ENABLE_VOTER"
 
@@ -202,7 +202,7 @@ static struct smb_params v1_params = {
 		.step_u	= 25000,
 	},
 	.ov		= {
-		.name	= "battery over voltage",
+.name	= "battery over voltage",
 		.reg	= CHGR_BATTOV_CFG_REG,
 		.min_u	= 2450000,
 		.max_u	= 5000000,
@@ -245,7 +245,7 @@ struct smb1355 {
 	struct mutex		write_lock;
 	struct mutex		suspend_lock;
 
-	struct power_supply	*parallel_psy;
+struct power_supply	*parallel_psy;
 	struct pmic_revid_data	*pmic_rev_id;
 	int			d_health;
 	int			c_health;
@@ -454,7 +454,7 @@ static void die_temp_work(struct work_struct *work)
 }
 
 static int smb1355_get_prop_input_current_limited(struct smb1355 *chip,
-					union power_supply_propval *pval)
+union power_supply_propval *pval)
 {
 	int rc;
 	u8 stat = 0;
@@ -473,7 +473,7 @@ static irqreturn_t smb1355_handle_chg_state_change(int irq, void *data)
 	struct smb1355 *chip = data;
 
 	if (chip->parallel_psy)
-		power_supply_changed(chip->parallel_psy);
+power_supply_changed(chip->parallel_psy);
 
 	return IRQ_HANDLED;
 }
@@ -496,7 +496,7 @@ static irqreturn_t smb1355_handle_temperature_change(int irq, void *data)
 	struct smb1355 *chip = data;
 
 	if (chip->parallel_psy)
-		power_supply_changed(chip->parallel_psy);
+power_supply_changed(chip->parallel_psy);
 
 	return IRQ_HANDLED;
 }
@@ -528,15 +528,15 @@ static int smb1355_parse_dt(struct smb1355 *chip)
 	rc = of_property_read_u32(node,
 		"qcom,parallel-mode", &chip->dt.pl_mode);
 	if (rc < 0)
-		chip->dt.pl_mode = POWER_SUPPLY_PL_USBMID_USBMID;
+chip->dt.pl_mode = POWER_SUPPLY_PL_USBMID_USBMID;
 
 	/*
 	 * If stacked-batfet property is not present default
 	 * configuration is NON-STACKED-BATFET.
 	 */
-	chip->dt.pl_batfet_mode = POWER_SUPPLY_PL_NON_STACKED_BATFET;
+chip->dt.pl_batfet_mode = POWER_SUPPLY_PL_NON_STACKED_BATFET;
 	if (of_property_read_bool(node, "qcom,stacked-batfet"))
-		chip->dt.pl_batfet_mode = POWER_SUPPLY_PL_STACKED_BATFET;
+chip->dt.pl_batfet_mode = POWER_SUPPLY_PL_STACKED_BATFET;
 
 	chip->dt.hw_die_temp_mitigation = of_property_read_bool(node,
 					"qcom,hw-die-temp-mitigation");
@@ -555,29 +555,29 @@ static int smb1355_parse_dt(struct smb1355 *chip)
  *****************************/
 
 static enum power_supply_property smb1355_parallel_props[] = {
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	POWER_SUPPLY_PROP_PIN_ENABLED,
-	POWER_SUPPLY_PROP_INPUT_SUSPEND,
-	POWER_SUPPLY_PROP_CHARGER_TEMP,
-	POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_PARALLEL_MODE,
-	POWER_SUPPLY_PROP_CONNECTOR_HEALTH,
-	POWER_SUPPLY_PROP_PARALLEL_BATFET_MODE,
-	POWER_SUPPLY_PROP_PARALLEL_FCC_MAX,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
-	POWER_SUPPLY_PROP_MIN_ICL,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_SET_SHIP_MODE,
-	POWER_SUPPLY_PROP_DIE_HEALTH,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_PIN_ENABLED,
+POWER_SUPPLY_PROP_INPUT_SUSPEND,
+POWER_SUPPLY_PROP_CHARGER_TEMP,
+POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_PARALLEL_MODE,
+POWER_SUPPLY_PROP_CONNECTOR_HEALTH,
+POWER_SUPPLY_PROP_PARALLEL_BATFET_MODE,
+POWER_SUPPLY_PROP_PARALLEL_FCC_MAX,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
+POWER_SUPPLY_PROP_MIN_ICL,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_SET_SHIP_MODE,
+POWER_SUPPLY_PROP_DIE_HEALTH,
 };
 
 static int smb1355_get_prop_batt_charge_type(struct smb1355 *chip,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc;
 	u8 stat;
@@ -590,11 +590,11 @@ static int smb1355_get_prop_batt_charge_type(struct smb1355 *chip,
 
 	if (stat & ENABLE_CHARGING_BIT) {
 		if (stat & BATT_GT_PRE_TO_FAST_BIT)
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
 		else
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 	} else {
-		val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
 	}
 
 	return rc;
@@ -611,23 +611,23 @@ static int smb1355_get_prop_health(struct smb1355 *chip, int type)
 	rc = smb1355_read(chip, TEMP_COMP_STATUS_REG, &temp);
 	if (rc < 0) {
 		pr_err("Couldn't read comp stat reg rc = %d\n", rc);
-		return POWER_SUPPLY_HEALTH_UNKNOWN;
+return POWER_SUPPLY_HEALTH_UNKNOWN;
 	}
 
 	if (temp & (TEMP_RST_HOT_BIT << shift))
-		return POWER_SUPPLY_HEALTH_OVERHEAT;
+return POWER_SUPPLY_HEALTH_OVERHEAT;
 
 	if (temp & (TEMP_UB_HOT_BIT << shift))
-		return POWER_SUPPLY_HEALTH_HOT;
+return POWER_SUPPLY_HEALTH_HOT;
 
 	if (temp & (TEMP_LB_HOT_BIT << shift))
-		return POWER_SUPPLY_HEALTH_WARM;
+return POWER_SUPPLY_HEALTH_WARM;
 
-	return POWER_SUPPLY_HEALTH_COOL;
+return POWER_SUPPLY_HEALTH_COOL;
 }
 
 static int smb1355_get_prop_voltage_max(struct smb1355 *chip,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 
@@ -647,7 +647,7 @@ done:
 }
 
 static int smb1355_get_prop_constant_charge_current_max(struct smb1355 *chip,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 
@@ -667,7 +667,7 @@ done:
 }
 
 static int smb1355_get_prop_health_value(struct smb1355 *chip,
-				union power_supply_propval *val, int type)
+union power_supply_propval *val, int type)
 {
 	mutex_lock(&chip->suspend_lock);
 	if (chip->suspended) {
@@ -688,7 +688,7 @@ static int smb1355_get_prop_health_value(struct smb1355 *chip,
 }
 
 static int smb1355_get_prop_online(struct smb1355 *chip,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 	u8 stat;
@@ -711,7 +711,7 @@ done:
 }
 
 static int smb1355_get_prop_pin_enabled(struct smb1355 *chip,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 	u8 stat;
@@ -734,7 +734,7 @@ done:
 }
 
 static int smb1355_get_prop_charge_type(struct smb1355 *chip,
-					union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int rc = 0;
 
@@ -761,27 +761,27 @@ done:
 #define MIN_PARALLEL_ICL_UA		250000
 #define SUSPEND_CURRENT_UA		2000
 static int smb1355_parallel_get_prop(struct power_supply *psy,
-				     enum power_supply_property prop,
-				     union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb1355 *chip = power_supply_get_drvdata(psy);
+struct smb1355 *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		rc = smb1355_get_prop_charge_type(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_ONLINE:
 		rc = smb1355_get_prop_online(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		rc = smb1355_get_prop_pin_enabled(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP:
+case POWER_SUPPLY_PROP_CHARGER_TEMP:
 		val->intval = chip->die_temp_deciDegC;
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
+case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
 		/*
 		 * In case of h/w controlled die_temp mitigation,
 		 * die_temp/die_temp_max can not be reported as this
@@ -794,41 +794,41 @@ static int smb1355_parallel_get_prop(struct power_supply *psy,
 		else
 			val->intval = chip->c_charger_temp_max;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		val->intval = chip->disabled;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
-		rc = smb1355_get_prop_voltage_max(chip, val);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+rc = smb1355_get_prop_voltage_max(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		rc = smb1355_get_prop_constant_charge_current_max(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = chip->name;
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_MODE:
+case POWER_SUPPLY_PROP_PARALLEL_MODE:
 		val->intval = chip->dt.pl_mode;
 		break;
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
 		if (chip->c_health == -EINVAL)
 			rc = smb1355_get_prop_health_value(chip, val,
 							CONNECTOR_TEMP);
 		else
 			val->intval = chip->c_health;
 		break;
-	case POWER_SUPPLY_PROP_DIE_HEALTH:
+case POWER_SUPPLY_PROP_DIE_HEALTH:
 		rc = smb1355_get_prop_health_value(chip, val, DIE_TEMP);
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_BATFET_MODE:
+case POWER_SUPPLY_PROP_PARALLEL_BATFET_MODE:
 		val->intval = chip->dt.pl_batfet_mode;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
 		if (IS_USBIN(chip->dt.pl_mode))
 			rc = smb1355_get_prop_input_current_limited(chip, val);
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		if (IS_USBIN(chip->dt.pl_mode)) {
 			/* Report cached ICL until its configured correctly */
 			if (chip->suspended_usb_icl)
@@ -840,13 +840,13 @@ static int smb1355_parallel_get_prop(struct power_supply *psy,
 			val->intval = 0;
 		}
 		break;
-	case POWER_SUPPLY_PROP_MIN_ICL:
+case POWER_SUPPLY_PROP_MIN_ICL:
 		val->intval = MIN_PARALLEL_ICL_UA;
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_FCC_MAX:
+case POWER_SUPPLY_PROP_PARALLEL_FCC_MAX:
 		val->intval = chip->max_fcc;
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as device is active */
 		val->intval = 0;
 		break;
@@ -972,45 +972,45 @@ static int smb1355_clk_request(struct smb1355 *chip, bool enable)
 }
 
 static int smb1355_parallel_set_prop(struct power_supply *psy,
-				     enum power_supply_property prop,
-				     const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct smb1355 *chip = power_supply_get_drvdata(psy);
+struct smb1355 *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	mutex_lock(&chip->suspend_lock);
 	if (chip->suspended) {
-		pr_debug("parallel power supply set prop %d\n", prop);
+pr_debug("parallel power supply set prop %d\n", prop);
 		goto done;
 	}
 	switch (prop) {
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smb1355_set_parallel_charging(chip, (bool)val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		rc = smb1355_set_current_max(chip, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		rc = smb1355_set_charge_param(chip, &chip->param.ov,
 						val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		rc = smb1355_set_charge_param(chip, &chip->param.fcc,
 						val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
 		chip->c_health = val->intval;
-		power_supply_changed(chip->parallel_psy);
+power_supply_changed(chip->parallel_psy);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
+case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
 		chip->c_charger_temp_max = val->intval;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		if (!val->intval)
 			break;
 		rc = smb1355_clk_request(chip, false);
 		break;
 	default:
-		pr_debug("parallel power supply set prop %d not supported\n",
+pr_debug("parallel power supply set prop %d not supported\n",
 			prop);
 		rc = -EINVAL;
 	}
@@ -1020,10 +1020,10 @@ done:
 }
 
 static int smb1355_parallel_prop_is_writeable(struct power_supply *psy,
-					      enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
 		return 1;
 	default:
 		break;
@@ -1034,7 +1034,7 @@ static int smb1355_parallel_prop_is_writeable(struct power_supply *psy,
 
 static struct power_supply_desc parallel_psy_desc = {
 	.name			= "parallel",
-	.type			= POWER_SUPPLY_TYPE_PARALLEL,
+.type			= POWER_SUPPLY_TYPE_PARALLEL,
 	.properties		= smb1355_parallel_props,
 	.num_properties		= ARRAY_SIZE(smb1355_parallel_props),
 	.get_property		= smb1355_parallel_get_prop,
@@ -1044,7 +1044,7 @@ static struct power_supply_desc parallel_psy_desc = {
 
 static int smb1355_init_parallel_psy(struct smb1355 *chip)
 {
-	struct power_supply_config parallel_cfg = {};
+struct power_supply_config parallel_cfg = {};
 
 	parallel_cfg.drv_data = chip;
 	parallel_cfg.of_node = chip->dev->of_node;
@@ -1052,11 +1052,11 @@ static int smb1355_init_parallel_psy(struct smb1355 *chip)
 	/* change to smb1355's property list */
 	parallel_psy_desc.properties = smb1355_parallel_props;
 	parallel_psy_desc.num_properties = ARRAY_SIZE(smb1355_parallel_props);
-	chip->parallel_psy = devm_power_supply_register(chip->dev,
+chip->parallel_psy = devm_power_supply_register(chip->dev,
 						   &parallel_psy_desc,
 						   &parallel_cfg);
 	if (IS_ERR(chip->parallel_psy)) {
-		pr_err("Couldn't register parallel power supply\n");
+pr_err("Couldn't register parallel power supply\n");
 		return PTR_ERR(chip->parallel_psy);
 	}
 
@@ -1248,7 +1248,7 @@ static int smb1355_init_hw(struct smb1355 *chip)
 	}
 
 	/* HICCUP setting, unlimited retry with 250ms interval */
-	rc = smb1355_masked_write(chip, POWER_MODE_HICCUP_CFG,
+rc = smb1355_masked_write(chip, POWER_MODE_HICCUP_CFG,
 			HICCUP_TIMEOUT_CFG_MASK | MAX_HICCUP_DUETO_BATDIS_MASK,
 			0);
 	if (rc < 0) {
@@ -1356,9 +1356,9 @@ static int smb1355_init_hw(struct smb1355 *chip)
 
 	/* USBIN-USBIN configuration */
 	if (IS_USBIN(chip->dt.pl_mode)) {
-		/* set swicther clock frequency to 700kHz */
+/* set swicther clock frequency to 700kHz */
 		rc = smb1355_masked_write(chip, MISC_CUST_SDCDC_CLK_CFG_REG,
-				SWITCHER_CLK_FREQ_MASK, 0x03);
+SWITCHER_CLK_FREQ_MASK, 0x03);
 		if (rc < 0) {
 			pr_err("Couldn't set MISC_CUST_SDCDC_CLK_CFG rc=%d\n",
 				rc);
@@ -1626,7 +1626,7 @@ static int smb1355_probe(struct platform_device *pdev)
 	pr_info("%s probed successfully pl_mode=%s batfet_mode=%s\n",
 		chip->name,
 		IS_USBIN(chip->dt.pl_mode) ? "USBIN-USBIN" : "USBMID-USBMID",
-		(chip->dt.pl_batfet_mode == POWER_SUPPLY_PL_STACKED_BATFET)
+(chip->dt.pl_batfet_mode == POWER_SUPPLY_PL_STACKED_BATFET)
 			? "STACKED_BATFET" : "NON-STACKED_BATFET");
 	return rc;
 

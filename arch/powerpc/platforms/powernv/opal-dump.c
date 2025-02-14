@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL Dump Interface
+* PowerNV OPAL Dump Interface
  *
  * Copyright 2013,2014 IBM Corp.
  *

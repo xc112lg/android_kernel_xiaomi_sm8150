@@ -78,7 +78,7 @@ void kprobe_ftrace_handler(unsigned long nip, unsigned long parent_nip,
 		unsigned long orig_nip = regs->nip;
 
 		/*
-		 * On powerpc, NIP is *before* this instruction for the
+* On powerpc, NIP is *before* this instruction for the
 		 * pre handler
 		 */
 		regs->nip -= MCOUNT_INSN_SIZE;

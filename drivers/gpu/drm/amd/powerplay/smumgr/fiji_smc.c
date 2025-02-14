@@ -52,13 +52,13 @@
 #define MC_CG_ARB_FREQ_F1           0x0b
 
 /* [2.5%,~2.5%] Clock stretched is multiple of 2.5% vs
- * not and [Fmin, Fmax, LDO_REFSEL, USE_FOR_LOW_FREQ]
+* not and [Fmin, Fmax, LDO_REFSEL, USE_FOR_LOW_FREQ]
  */
 static const uint16_t fiji_clock_stretcher_lookup_table[2][4] = {
 				{600, 1050, 3, 0}, {600, 1050, 6, 1} };
 
 /* [FF, SS] type, [] 4 voltage ranges, and
- * [Floor Freq, Boundary Freq, VID min , VID max]
+* [Floor Freq, Boundary Freq, VID min , VID max]
  */
 static const uint32_t fiji_clock_stretcher_ddt_table[2][4][4] = {
 	{ {265, 529, 120, 128}, {325, 650, 96, 119}, {430, 860, 32, 95}, {0, 0, 0, 31} },
@@ -71,7 +71,7 @@ static const uint8_t fiji_clock_stretch_amount_conversion[2][6] = {
 				{0, 1, 3, 2, 4, 5}, {0, 2, 4, 5, 6, 5} };
 
 static const struct fiji_pt_defaults fiji_power_tune_data_set_array[POWERTUNE_DEFAULT_SET_MAX] = {
-		/*sviLoadLIneEn,  SviLoadLineVddC, TDC_VDDC_ThrottleReleaseLimitPerc */
+/*sviLoadLIneEn,  SviLoadLineVddC, TDC_VDDC_ThrottleReleaseLimitPerc */
 		{1,               0xF,             0xFD,
 		/* TDC_MAWt, TdcWaterfallCtl, DTEAmbientTempBase */
 		0x19,        5,               45}
@@ -82,66 +82,66 @@ static const struct fiji_pt_defaults fiji_power_tune_data_set_array[POWERTUNE_DE
  *  This is the unit expected by SMC firmware
  */
 static int fiji_get_dependency_volt_by_clk(struct pp_hwmgr *hwmgr,
-		struct phm_ppt_v1_clock_voltage_dependency_table *dep_table,
-		uint32_t clock, uint32_t *voltage, uint32_t *mvdd)
+struct phm_ppt_v1_clock_voltage_dependency_table *dep_table,
+uint32_t clock, uint32_t *voltage, uint32_t *mvdd)
 {
 	uint32_t i;
-	uint16_t vddci;
+uint16_t vddci;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-	*voltage = *mvdd = 0;
+*voltage = *mvdd = 0;
 
 
-	/* clock - voltage dependency table is empty table */
+/* clock - voltage dependency table is empty table */
 	if (dep_table->count == 0)
 		return -EINVAL;
 
 	for (i = 0; i < dep_table->count; i++) {
 		/* find first sclk bigger than request */
 		if (dep_table->entries[i].clk >= clock) {
-			*voltage |= (dep_table->entries[i].vddc *
-					VOLTAGE_SCALE) << VDDC_SHIFT;
-			if (SMU7_VOLTAGE_CONTROL_NONE == data->vddci_control)
-				*voltage |= (data->vbios_boot_state.vddci_bootup_value *
-						VOLTAGE_SCALE) << VDDCI_SHIFT;
-			else if (dep_table->entries[i].vddci)
-				*voltage |= (dep_table->entries[i].vddci *
-						VOLTAGE_SCALE) << VDDCI_SHIFT;
+*voltage |= (dep_table->entries[i].vddc *
+VOLTAGE_SCALE) << VDDC_SHIFT;
+if (SMU7_VOLTAGE_CONTROL_NONE == data->vddci_control)
+*voltage |= (data->vbios_boot_state.vddci_bootup_value *
+VOLTAGE_SCALE) << VDDCI_SHIFT;
+else if (dep_table->entries[i].vddci)
+*voltage |= (dep_table->entries[i].vddci *
+VOLTAGE_SCALE) << VDDCI_SHIFT;
 			else {
-				vddci = phm_find_closest_vddci(&(data->vddci_voltage_table),
-						(dep_table->entries[i].vddc -
-								VDDC_VDDCI_DELTA));
-				*voltage |= (vddci * VOLTAGE_SCALE) << VDDCI_SHIFT;
+vddci = phm_find_closest_vddci(&(data->vddci_voltage_table),
+(dep_table->entries[i].vddc -
+VDDC_VDDCI_DELTA));
+*voltage |= (vddci * VOLTAGE_SCALE) << VDDCI_SHIFT;
 			}
 
-			if (SMU7_VOLTAGE_CONTROL_NONE == data->mvdd_control)
-				*mvdd = data->vbios_boot_state.mvdd_bootup_value *
-					VOLTAGE_SCALE;
-			else if (dep_table->entries[i].mvdd)
-				*mvdd = (uint32_t) dep_table->entries[i].mvdd *
-					VOLTAGE_SCALE;
+if (SMU7_VOLTAGE_CONTROL_NONE == data->mvdd_control)
+*mvdd = data->vbios_boot_state.mvdd_bootup_value *
+VOLTAGE_SCALE;
+else if (dep_table->entries[i].mvdd)
+*mvdd = (uint32_t) dep_table->entries[i].mvdd *
+VOLTAGE_SCALE;
 
-			*voltage |= 1 << PHASES_SHIFT;
+*voltage |= 1 << PHASES_SHIFT;
 			return 0;
 		}
 	}
 
 	/* sclk is bigger than max sclk in the dependence table */
-	*voltage |= (dep_table->entries[i - 1].vddc * VOLTAGE_SCALE) << VDDC_SHIFT;
+*voltage |= (dep_table->entries[i - 1].vddc * VOLTAGE_SCALE) << VDDC_SHIFT;
 
-	if (SMU7_VOLTAGE_CONTROL_NONE == data->vddci_control)
-		*voltage |= (data->vbios_boot_state.vddci_bootup_value *
-				VOLTAGE_SCALE) << VDDCI_SHIFT;
-	else if (dep_table->entries[i-1].vddci) {
-		vddci = phm_find_closest_vddci(&(data->vddci_voltage_table),
-				(dep_table->entries[i].vddc -
-						VDDC_VDDCI_DELTA));
-		*voltage |= (vddci * VOLTAGE_SCALE) << VDDCI_SHIFT;
+if (SMU7_VOLTAGE_CONTROL_NONE == data->vddci_control)
+*voltage |= (data->vbios_boot_state.vddci_bootup_value *
+VOLTAGE_SCALE) << VDDCI_SHIFT;
+else if (dep_table->entries[i-1].vddci) {
+vddci = phm_find_closest_vddci(&(data->vddci_voltage_table),
+(dep_table->entries[i].vddc -
+VDDC_VDDCI_DELTA));
+*voltage |= (vddci * VOLTAGE_SCALE) << VDDCI_SHIFT;
 	}
 
-	if (SMU7_VOLTAGE_CONTROL_NONE == data->mvdd_control)
-		*mvdd = data->vbios_boot_state.mvdd_bootup_value * VOLTAGE_SCALE;
-	else if (dep_table->entries[i].mvdd)
-		*mvdd = (uint32_t) dep_table->entries[i - 1].mvdd * VOLTAGE_SCALE;
+if (SMU7_VOLTAGE_CONTROL_NONE == data->mvdd_control)
+*mvdd = data->vbios_boot_state.mvdd_bootup_value * VOLTAGE_SCALE;
+else if (dep_table->entries[i].mvdd)
+*mvdd = (uint32_t) dep_table->entries[i - 1].mvdd * VOLTAGE_SCALE;
 
 	return 0;
 }
@@ -203,13 +203,13 @@ static void fiji_initialize_power_tune_defaults(struct pp_hwmgr *hwmgr)
 			(struct  phm_ppt_v1_information *)(hwmgr->pptable);
 
 	if (table_info &&
-			table_info->cac_dtp_table->usPowerTuneDataSetID <= POWERTUNE_DEFAULT_SET_MAX &&
-			table_info->cac_dtp_table->usPowerTuneDataSetID)
-		smu_data->power_tune_defaults =
-				&fiji_power_tune_data_set_array
-				[table_info->cac_dtp_table->usPowerTuneDataSetID - 1];
+table_info->cac_dtp_table->usPowerTuneDataSetID <= POWERTUNE_DEFAULT_SET_MAX &&
+table_info->cac_dtp_table->usPowerTuneDataSetID)
+smu_data->power_tune_defaults =
+&fiji_power_tune_data_set_array
+[table_info->cac_dtp_table->usPowerTuneDataSetID - 1];
 	else
-		smu_data->power_tune_defaults = &fiji_power_tune_data_set_array[0];
+smu_data->power_tune_defaults = &fiji_power_tune_data_set_array[0];
 
 }
 
@@ -217,7 +217,7 @@ static int fiji_populate_bapm_parameters_in_dpm_table(struct pp_hwmgr *hwmgr)
 {
 
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
-	const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
 
 	SMU73_Discrete_DpmTable  *dpm_table = &(smu_data->smc_state_table);
 
@@ -254,10 +254,10 @@ static int fiji_populate_bapm_parameters_in_dpm_table(struct pp_hwmgr *hwmgr)
 			cac_dtp_table->usTemperatureLimitLiquid1 * 256);
 	dpm_table->TemperatureLimitLiquid2 = PP_HOST_TO_SMC_US(
 			cac_dtp_table->usTemperatureLimitLiquid2 * 256);
-	dpm_table->TemperatureLimitVrVddc = PP_HOST_TO_SMC_US(
-			cac_dtp_table->usTemperatureLimitVrVddc * 256);
-	dpm_table->TemperatureLimitVrMvdd = PP_HOST_TO_SMC_US(
-			cac_dtp_table->usTemperatureLimitVrMvdd * 256);
+dpm_table->TemperatureLimitVrVddc = PP_HOST_TO_SMC_US(
+cac_dtp_table->usTemperatureLimitVrVddc * 256);
+dpm_table->TemperatureLimitVrMvdd = PP_HOST_TO_SMC_US(
+cac_dtp_table->usTemperatureLimitVrMvdd * 256);
 	dpm_table->TemperatureLimitPlx = PP_HOST_TO_SMC_US(
 			cac_dtp_table->usTemperatureLimitPlx * 256);
 
@@ -267,10 +267,10 @@ static int fiji_populate_bapm_parameters_in_dpm_table(struct pp_hwmgr *hwmgr)
 			scale_fan_gain_settings(fan_table->usFanGainHotspot));
 	dpm_table->FanGainLiquid = PP_HOST_TO_SMC_US(
 			scale_fan_gain_settings(fan_table->usFanGainLiquid));
-	dpm_table->FanGainVrVddc = PP_HOST_TO_SMC_US(
-			scale_fan_gain_settings(fan_table->usFanGainVrVddc));
-	dpm_table->FanGainVrMvdd = PP_HOST_TO_SMC_US(
-			scale_fan_gain_settings(fan_table->usFanGainVrMvdd));
+dpm_table->FanGainVrVddc = PP_HOST_TO_SMC_US(
+scale_fan_gain_settings(fan_table->usFanGainVrVddc));
+dpm_table->FanGainVrMvdd = PP_HOST_TO_SMC_US(
+scale_fan_gain_settings(fan_table->usFanGainVrMvdd));
 	dpm_table->FanGainPlx = PP_HOST_TO_SMC_US(
 			scale_fan_gain_settings(fan_table->usFanGainPlx));
 	dpm_table->FanGainHbm = PP_HOST_TO_SMC_US(
@@ -300,12 +300,12 @@ static int fiji_populate_bapm_parameters_in_dpm_table(struct pp_hwmgr *hwmgr)
 static int fiji_populate_svi_load_line(struct pp_hwmgr *hwmgr)
 {
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
-	const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
 
-	smu_data->power_tune_table.SviLoadLineEn = defaults->SviLoadLineEn;
-	smu_data->power_tune_table.SviLoadLineVddC = defaults->SviLoadLineVddC;
-	smu_data->power_tune_table.SviLoadLineTrimVddC = 3;
-	smu_data->power_tune_table.SviLoadLineOffsetVddC = 0;
+smu_data->power_tune_table.SviLoadLineEn = defaults->SviLoadLineEn;
+smu_data->power_tune_table.SviLoadLineVddC = defaults->SviLoadLineVddC;
+smu_data->power_tune_table.SviLoadLineTrimVddC = 3;
+smu_data->power_tune_table.SviLoadLineOffsetVddC = 0;
 
 	return 0;
 }
@@ -317,17 +317,17 @@ static int fiji_populate_tdc_limit(struct pp_hwmgr *hwmgr)
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
 
 	/* TDC number of fraction bits are changed from 8 to 7
 	 * for Fiji as requested by SMC team
 	 */
 	tdc_limit = (uint16_t)(table_info->cac_dtp_table->usTDC * 128);
-	smu_data->power_tune_table.TDC_VDDC_PkgLimit =
+smu_data->power_tune_table.TDC_VDDC_PkgLimit =
 			CONVERT_FROM_HOST_TO_SMC_US(tdc_limit);
-	smu_data->power_tune_table.TDC_VDDC_ThrottleReleaseLimitPerc =
-			defaults->TDC_VDDC_ThrottleReleaseLimitPerc;
-	smu_data->power_tune_table.TDC_MAWt = defaults->TDC_MAWt;
+smu_data->power_tune_table.TDC_VDDC_ThrottleReleaseLimitPerc =
+defaults->TDC_VDDC_ThrottleReleaseLimitPerc;
+smu_data->power_tune_table.TDC_MAWt = defaults->TDC_MAWt;
 
 	return 0;
 }
@@ -335,7 +335,7 @@ static int fiji_populate_tdc_limit(struct pp_hwmgr *hwmgr)
 static int fiji_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
 {
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
-	const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
+const struct fiji_pt_defaults *defaults = smu_data->power_tune_defaults;
 	uint32_t temp;
 
 	if (smu7_read_smc_sram_dword(hwmgr->smumgr,
@@ -346,12 +346,12 @@ static int fiji_populate_dw8(struct pp_hwmgr *hwmgr, uint32_t fuse_table_offset)
 				"Attempt to read PmFuses.DW6 (SviLoadLineEn) from SMC Failed!",
 				return -EINVAL);
 	else {
-		smu_data->power_tune_table.TdcWaterfallCtl = defaults->TdcWaterfallCtl;
-		smu_data->power_tune_table.LPMLTemperatureMin =
+smu_data->power_tune_table.TdcWaterfallCtl = defaults->TdcWaterfallCtl;
+smu_data->power_tune_table.LPMLTemperatureMin =
 				(uint8_t)((temp >> 16) & 0xff);
-		smu_data->power_tune_table.LPMLTemperatureMax =
+smu_data->power_tune_table.LPMLTemperatureMax =
 				(uint8_t)((temp >> 8) & 0xff);
-		smu_data->power_tune_table.Reserved = (uint8_t)(temp & 0xff);
+smu_data->power_tune_table.Reserved = (uint8_t)(temp & 0xff);
 	}
 	return 0;
 }
@@ -363,7 +363,7 @@ static int fiji_populate_temperature_scaler(struct pp_hwmgr *hwmgr)
 
 	/* Currently not used. Set all to zero. */
 	for (i = 0; i < 16; i++)
-		smu_data->power_tune_table.LPMLTemperatureScaler[i] = 0;
+smu_data->power_tune_table.LPMLTemperatureScaler[i] = 0;
 
 	return 0;
 }
@@ -380,7 +380,7 @@ static int fiji_populate_fuzzy_fan(struct pp_hwmgr *hwmgr)
 		usFanOutputSensitivity = hwmgr->thermal_controller.
 			advanceFanControlParameters.usDefaultFanOutputSensitivity;
 
-	smu_data->power_tune_table.FuzzyFan_PwmSetDelta =
+smu_data->power_tune_table.FuzzyFan_PwmSetDelta =
 			PP_HOST_TO_SMC_US(hwmgr->thermal_controller.
 					advanceFanControlParameters.usFanOutputSensitivity);
 	return 0;
@@ -393,7 +393,7 @@ static int fiji_populate_gnb_lpml(struct pp_hwmgr *hwmgr)
 
 	/* Currently not used. Set all to zero. */
 	for (i = 0; i < 16; i++)
-		smu_data->power_tune_table.GnbLPML[i] = 0;
+smu_data->power_tune_table.GnbLPML[i] = 0;
 
 	return 0;
 }
@@ -408,16 +408,16 @@ static int fiji_populate_bapm_vddc_base_leakage_sidd(struct pp_hwmgr *hwmgr)
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	uint16_t HiSidd = smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd;
-	uint16_t LoSidd = smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd;
+uint16_t HiSidd = smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd;
+uint16_t LoSidd = smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd;
 	struct phm_cac_tdp_table *cac_table = table_info->cac_dtp_table;
 
 	HiSidd = (uint16_t)(cac_table->usHighCACLeakage / 100 * 256);
 	LoSidd = (uint16_t)(cac_table->usLowCACLeakage / 100 * 256);
 
-	smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd =
+smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd =
 			CONVERT_FROM_HOST_TO_SMC_US(HiSidd);
-	smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd =
+smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd =
 			CONVERT_FROM_HOST_TO_SMC_US(LoSidd);
 
 	return 0;
@@ -429,7 +429,7 @@ static int fiji_populate_pm_fuses(struct pp_hwmgr *hwmgr)
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_PowerContainment)) {
+PHM_PlatformCaps_PowerContainment)) {
 		if (smu7_read_smc_sram_dword(hwmgr->smumgr,
 				SMU7_FIRMWARE_HEADER_LOCATION +
 				offsetof(SMU73_Firmware_Header, PmFuseTable),
@@ -473,19 +473,19 @@ static int fiji_populate_pm_fuses(struct pp_hwmgr *hwmgr)
 					return -EINVAL);
 
 		/* DW19 */
-		if (fiji_min_max_vgnb_lpml_id_from_bapm_vddc(hwmgr))
+if (fiji_min_max_vgnb_lpml_id_from_bapm_vddc(hwmgr))
 			PP_ASSERT_WITH_CODE(false,
 					"Attempt to populate GnbLPML Min and Max Vid Failed!",
 					return -EINVAL);
 
 		/* DW20 */
-		if (fiji_populate_bapm_vddc_base_leakage_sidd(hwmgr))
+if (fiji_populate_bapm_vddc_base_leakage_sidd(hwmgr))
 			PP_ASSERT_WITH_CODE(false,
-					"Attempt to populate BapmVddCBaseLeakage Hi and Lo "
+"Attempt to populate BapmVddCBaseLeakage Hi and Lo "
 					"Sidd Failed!", return -EINVAL);
 
 		if (smu7_copy_bytes_to_smc(hwmgr->smumgr, pm_fuse_table_offset,
-				(uint8_t *)&smu_data->power_tune_table,
+(uint8_t *)&smu_data->power_tune_table,
 				sizeof(struct SMU73_Discrete_PmFuses), SMC_RAM_END))
 			PP_ASSERT_WITH_CODE(false,
 					"Attempt to download PmFuseTable Failed!",
@@ -509,20 +509,20 @@ static int fiji_populate_cac_table(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_voltage_lookup_table *lookup_table =
-			table_info->vddc_lookup_table;
+struct phm_ppt_v1_voltage_lookup_table *lookup_table =
+table_info->vddc_lookup_table;
 	/* tables is already swapped, so in order to use the value from it,
 	 * we need to swap it back.
-	 * We are populating vddc CAC data to BapmVddc table
+* We are populating vddc CAC data to BapmVddc table
 	 * in split and merged mode
 	 */
 
 	for (count = 0; count < lookup_table->count; count++) {
-		index = phm_get_voltage_index(lookup_table,
-				data->vddc_voltage_table.entries[count].value);
-		table->BapmVddcVidLoSidd[count] =
+index = phm_get_voltage_index(lookup_table,
+data->vddc_voltage_table.entries[count].value);
+table->BapmVddcVidLoSidd[count] =
 			convert_to_vid(lookup_table->entries[index].us_cac_low);
-		table->BapmVddcVidHiSidd[count] =
+table->BapmVddcVidHiSidd[count] =
 			convert_to_vid(lookup_table->entries[index].us_cac_high);
 	}
 
@@ -544,7 +544,7 @@ static int fiji_populate_smc_voltage_tables(struct pp_hwmgr *hwmgr,
 
 	result = fiji_populate_cac_table(hwmgr, table);
 	PP_ASSERT_WITH_CODE(0 == result,
-			"can not populate CAC voltage tables to SMC",
+"can not populate CAC voltage tables to SMC",
 			return -EINVAL);
 
 	return 0;
@@ -561,16 +561,16 @@ static int fiji_populate_ulv_level(struct pp_hwmgr *hwmgr,
 	state->CcPwrDynRm = 0;
 	state->CcPwrDynRm1 = 0;
 
-	state->VddcOffset = (uint16_t) table_info->us_ulv_voltage_offset;
-	state->VddcOffsetVid = (uint8_t)(table_info->us_ulv_voltage_offset *
-			VOLTAGE_VID_OFFSET_SCALE2 / VOLTAGE_VID_OFFSET_SCALE1);
+state->VddcOffset = (uint16_t) table_info->us_ulv_voltage_offset;
+state->VddcOffsetVid = (uint8_t)(table_info->us_ulv_voltage_offset *
+VOLTAGE_VID_OFFSET_SCALE2 / VOLTAGE_VID_OFFSET_SCALE1);
 
-	state->VddcPhase = 1;
+state->VddcPhase = 1;
 
 	if (!result) {
 		CONVERT_FROM_HOST_TO_SMC_UL(state->CcPwrDynRm);
 		CONVERT_FROM_HOST_TO_SMC_UL(state->CcPwrDynRm1);
-		CONVERT_FROM_HOST_TO_SMC_US(state->VddcOffset);
+CONVERT_FROM_HOST_TO_SMC_US(state->VddcOffset);
 	}
 	return result;
 }
@@ -665,9 +665,9 @@ static int fiji_calculate_sclk_params(struct pp_hwmgr *hwmgr,
 				PHM_PlatformCaps_EngineSpreadSpectrumSupport)) {
 		struct pp_atomctrl_internal_ss_info ssInfo;
 
-		uint32_t vco_freq = clock * dividers.uc_pll_post_div;
+uint32_t vco_freq = clock * dividers.uc_pll_post_div;
 		if (!atomctrl_get_engine_clock_spread_spectrum(hwmgr,
-				vco_freq, &ssInfo)) {
+vco_freq, &ssInfo)) {
 			/*
 			 * ss_info.speed_spectrum_percentage -- in unit of 0.01%
 			 * ss_info.speed_spectrum_rate -- in unit of khz
@@ -689,7 +689,7 @@ static int fiji_calculate_sclk_params(struct pp_hwmgr *hwmgr,
 		}
 	}
 
-	sclk->SclkFrequency        = clock;
+sclk->SclkFrequency        = clock;
 	sclk->CgSpllFuncCntl3      = spll_func_cntl_3;
 	sclk->CgSpllFuncCntl4      = spll_func_cntl_4;
 	sclk->SpllSpreadSpectrum   = cg_spll_spread_spectrum;
@@ -713,7 +713,7 @@ static int fiji_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 {
 	int result;
 	/* PP_Clocks minClocks; */
-	uint32_t threshold, mvdd;
+uint32_t threshold, mvdd;
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
@@ -722,14 +722,14 @@ static int fiji_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 
 	/* populate graphics levels */
 	result = fiji_get_dependency_volt_by_clk(hwmgr,
-			table_info->vdd_dep_on_sclk, clock,
-			(uint32_t *)(&level->MinVoltage), &mvdd);
+table_info->vdd_dep_on_sclk, clock,
+(uint32_t *)(&level->MinVoltage), &mvdd);
 	PP_ASSERT_WITH_CODE((0 == result),
-			"can not find VDDC voltage value for "
-			"VDDC engine clock dependency table",
+"can not find VDDC voltage value for "
+"VDDC engine clock dependency table",
 			return result);
 
-	level->SclkFrequency = clock;
+level->SclkFrequency = clock;
 	level->ActivityLevel = sclk_al_threshold;
 	level->CcPwrDynRm = 0;
 	level->CcPwrDynRm1 = 0;
@@ -737,8 +737,8 @@ static int fiji_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 	level->EnabledForThrottle = 1;
 	level->UpHyst = 10;
 	level->DownHyst = 0;
-	level->VoltageDownHyst = 0;
-	level->PowerThrottle = 0;
+level->VoltageDownHyst = 0;
+level->PowerThrottle = 0;
 
 	threshold = clock * data->fast_watermark_threshold / 100;
 
@@ -754,8 +754,8 @@ static int fiji_populate_single_graphic_level(struct pp_hwmgr *hwmgr,
 	 */
 	level->DisplayWatermark = PPSMC_DISPLAY_WATERMARK_LOW;
 
-	CONVERT_FROM_HOST_TO_SMC_UL(level->MinVoltage);
-	CONVERT_FROM_HOST_TO_SMC_UL(level->SclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(level->MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(level->SclkFrequency);
 	CONVERT_FROM_HOST_TO_SMC_US(level->ActivityLevel);
 	CONVERT_FROM_HOST_TO_SMC_UL(level->CgSpllFuncCntl3);
 	CONVERT_FROM_HOST_TO_SMC_UL(level->CgSpllFuncCntl4);
@@ -867,9 +867,9 @@ int fiji_populate_all_graphic_levels(struct pp_hwmgr *hwmgr)
 
 
 /**
- * MCLK Frequency Ratio
+* MCLK Frequency Ratio
  * SEQ_CG_RESP  Bit[31:24] - 0x0
- * Bit[27:24] \96 DDR3 Frequency ratio
+* Bit[27:24] \96 DDR3 Frequency ratio
  * 0x0 <= 100MHz,       450 < 0x8 <= 500MHz
  * 100 < 0x1 <= 150MHz,       500 < 0x9 <= 550MHz
  * 150 < 0x2 <= 200MHz,       550 < 0xA <= 600MHz
@@ -934,9 +934,9 @@ static int fiji_calculate_mclk_params(struct pp_hwmgr *hwmgr,
 			);
 
 	/* Save the result data to outpupt memory level structure */
-	mclk->MclkFrequency   = clock;
+mclk->MclkFrequency   = clock;
 	mclk->MclkDivider     = (uint8_t)mem_param.mpll_post_divider;
-	mclk->FreqRange       = fiji_get_mclk_frequency_ratio(clock);
+mclk->FreqRange       = fiji_get_mclk_frequency_ratio(clock);
 
 	return result;
 }
@@ -950,20 +950,20 @@ static int fiji_populate_single_memory_level(struct pp_hwmgr *hwmgr,
 	int result = 0;
 	uint32_t mclk_stutter_mode_threshold = 60000;
 
-	if (table_info->vdd_dep_on_mclk) {
+if (table_info->vdd_dep_on_mclk) {
 		result = fiji_get_dependency_volt_by_clk(hwmgr,
-				table_info->vdd_dep_on_mclk, clock,
-				(uint32_t *)(&mem_level->MinVoltage), &mem_level->MinMvdd);
+table_info->vdd_dep_on_mclk, clock,
+(uint32_t *)(&mem_level->MinVoltage), &mem_level->MinMvdd);
 		PP_ASSERT_WITH_CODE((0 == result),
-				"can not find MinVddc voltage value from memory "
-				"VDDC voltage dependency table", return result);
+"can not find MinVddc voltage value from memory "
+"VDDC voltage dependency table", return result);
 	}
 
 	mem_level->EnabledForThrottle = 1;
 	mem_level->EnabledForActivity = 0;
 	mem_level->UpHyst = 0;
 	mem_level->DownHyst = 100;
-	mem_level->VoltageDownHyst = 0;
+mem_level->VoltageDownHyst = 0;
 	mem_level->ActivityLevel = (uint16_t)data->mclk_activity_target;
 	mem_level->StutterEnable = false;
 
@@ -984,10 +984,10 @@ static int fiji_populate_single_memory_level(struct pp_hwmgr *hwmgr,
 
 	result = fiji_calculate_mclk_params(hwmgr, clock, mem_level);
 	if (!result) {
-		CONVERT_FROM_HOST_TO_SMC_UL(mem_level->MinMvdd);
-		CONVERT_FROM_HOST_TO_SMC_UL(mem_level->MclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(mem_level->MinMvdd);
+CONVERT_FROM_HOST_TO_SMC_UL(mem_level->MclkFrequency);
 		CONVERT_FROM_HOST_TO_SMC_US(mem_level->ActivityLevel);
-		CONVERT_FROM_HOST_TO_SMC_UL(mem_level->MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(mem_level->MinVoltage);
 	}
 	return result;
 }
@@ -1065,16 +1065,16 @@ static int fiji_populate_mvdd_value(struct pp_hwmgr *hwmgr,
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
 	uint32_t i = 0;
 
-	if (SMU7_VOLTAGE_CONTROL_NONE != data->mvdd_control) {
-		/* find mvdd value which clock is more than request */
-		for (i = 0; i < table_info->vdd_dep_on_mclk->count; i++) {
-			if (mclk <= table_info->vdd_dep_on_mclk->entries[i].clk) {
-				smio_pat->Voltage = data->mvdd_voltage_table.entries[i].value;
+if (SMU7_VOLTAGE_CONTROL_NONE != data->mvdd_control) {
+/* find mvdd value which clock is more than request */
+for (i = 0; i < table_info->vdd_dep_on_mclk->count; i++) {
+if (mclk <= table_info->vdd_dep_on_mclk->entries[i].clk) {
+smio_pat->Voltage = data->mvdd_voltage_table.entries[i].value;
 				break;
 			}
 		}
-		PP_ASSERT_WITH_CODE(i < table_info->vdd_dep_on_mclk->count,
-				"MVDD Voltage is outside the supported range.",
+PP_ASSERT_WITH_CODE(i < table_info->vdd_dep_on_mclk->count,
+"MVDD Voltage is outside the supported range.",
 				return -EINVAL);
 	} else
 		return -EINVAL;
@@ -1091,36 +1091,36 @@ static int fiji_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
 	struct pp_atomctrl_clock_dividers_vi dividers;
 	SMIO_Pattern vol_level;
-	uint32_t mvdd;
-	uint16_t us_mvdd;
+uint32_t mvdd;
+uint16_t us_mvdd;
 	uint32_t spll_func_cntl    = data->clock_registers.vCG_SPLL_FUNC_CNTL;
 	uint32_t spll_func_cntl_2  = data->clock_registers.vCG_SPLL_FUNC_CNTL_2;
 
 	table->ACPILevel.Flags &= ~PPSMC_SWSTATE_FLAG_DC;
 
 	if (!data->sclk_dpm_key_disabled) {
-		/* Get MinVoltage and Frequency from DPM0,
+/* Get MinVoltage and Frequency from DPM0,
 		 * already converted to SMC_UL */
-		table->ACPILevel.SclkFrequency =
+table->ACPILevel.SclkFrequency =
 				data->dpm_table.sclk_table.dpm_levels[0].value;
 		result = fiji_get_dependency_volt_by_clk(hwmgr,
-				table_info->vdd_dep_on_sclk,
-				table->ACPILevel.SclkFrequency,
-				(uint32_t *)(&table->ACPILevel.MinVoltage), &mvdd);
+table_info->vdd_dep_on_sclk,
+table->ACPILevel.SclkFrequency,
+(uint32_t *)(&table->ACPILevel.MinVoltage), &mvdd);
 		PP_ASSERT_WITH_CODE((0 == result),
-				"Cannot find ACPI VDDC voltage value " \
+"Cannot find ACPI VDDC voltage value " \
 				"in Clock Dependency Table",
 				);
 	} else {
-		table->ACPILevel.SclkFrequency =
+table->ACPILevel.SclkFrequency =
 				data->vbios_boot_state.sclk_bootup_value;
-		table->ACPILevel.MinVoltage =
-				data->vbios_boot_state.vddc_bootup_value * VOLTAGE_SCALE;
+table->ACPILevel.MinVoltage =
+data->vbios_boot_state.vddc_bootup_value * VOLTAGE_SCALE;
 	}
 
 	/* get the engine clock dividers for this clock value */
 	result = atomctrl_get_engine_pll_dividers_vi(hwmgr,
-			table->ACPILevel.SclkFrequency,  &dividers);
+table->ACPILevel.SclkFrequency,  &dividers);
 	PP_ASSERT_WITH_CODE(result == 0,
 			"Error retrieving Engine Clock dividers from VBIOS.",
 			return result);
@@ -1146,8 +1146,8 @@ static int fiji_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 	table->ACPILevel.CcPwrDynRm1 = 0;
 
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.Flags);
-	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.SclkFrequency);
-	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.SclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.MinVoltage);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CgSpllFuncCntl);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CgSpllFuncCntl2);
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CgSpllFuncCntl3);
@@ -1158,48 +1158,48 @@ static int fiji_populate_smc_acpi_level(struct pp_hwmgr *hwmgr,
 	CONVERT_FROM_HOST_TO_SMC_UL(table->ACPILevel.CcPwrDynRm1);
 
 	if (!data->mclk_dpm_key_disabled) {
-		/* Get MinVoltage and Frequency from DPM0, already converted to SMC_UL */
-		table->MemoryACPILevel.MclkFrequency =
+/* Get MinVoltage and Frequency from DPM0, already converted to SMC_UL */
+table->MemoryACPILevel.MclkFrequency =
 				data->dpm_table.mclk_table.dpm_levels[0].value;
 		result = fiji_get_dependency_volt_by_clk(hwmgr,
-				table_info->vdd_dep_on_mclk,
-				table->MemoryACPILevel.MclkFrequency,
-			(uint32_t *)(&table->MemoryACPILevel.MinVoltage), &mvdd);
+table_info->vdd_dep_on_mclk,
+table->MemoryACPILevel.MclkFrequency,
+(uint32_t *)(&table->MemoryACPILevel.MinVoltage), &mvdd);
 		PP_ASSERT_WITH_CODE((0 == result),
-				"Cannot find ACPI VDDCI voltage value in Clock Dependency Table",
+"Cannot find ACPI VDDCI voltage value in Clock Dependency Table",
 				);
 	} else {
-		table->MemoryACPILevel.MclkFrequency =
+table->MemoryACPILevel.MclkFrequency =
 				data->vbios_boot_state.mclk_bootup_value;
-		table->MemoryACPILevel.MinVoltage =
-				data->vbios_boot_state.vddci_bootup_value * VOLTAGE_SCALE;
+table->MemoryACPILevel.MinVoltage =
+data->vbios_boot_state.vddci_bootup_value * VOLTAGE_SCALE;
 	}
 
-	us_mvdd = 0;
-	if ((SMU7_VOLTAGE_CONTROL_NONE == data->mvdd_control) ||
+us_mvdd = 0;
+if ((SMU7_VOLTAGE_CONTROL_NONE == data->mvdd_control) ||
 			(data->mclk_dpm_key_disabled))
-		us_mvdd = data->vbios_boot_state.mvdd_bootup_value;
+us_mvdd = data->vbios_boot_state.mvdd_bootup_value;
 	else {
-		if (!fiji_populate_mvdd_value(hwmgr,
+if (!fiji_populate_mvdd_value(hwmgr,
 				data->dpm_table.mclk_table.dpm_levels[0].value,
 				&vol_level))
-			us_mvdd = vol_level.Voltage;
+us_mvdd = vol_level.Voltage;
 	}
 
-	table->MemoryACPILevel.MinMvdd =
-			PP_HOST_TO_SMC_UL(us_mvdd * VOLTAGE_SCALE);
+table->MemoryACPILevel.MinMvdd =
+PP_HOST_TO_SMC_UL(us_mvdd * VOLTAGE_SCALE);
 
 	table->MemoryACPILevel.EnabledForThrottle = 0;
 	table->MemoryACPILevel.EnabledForActivity = 0;
 	table->MemoryACPILevel.UpHyst = 0;
 	table->MemoryACPILevel.DownHyst = 100;
-	table->MemoryACPILevel.VoltageDownHyst = 0;
+table->MemoryACPILevel.VoltageDownHyst = 0;
 	table->MemoryACPILevel.ActivityLevel =
 			PP_HOST_TO_SMC_US((uint16_t)data->mclk_activity_target);
 
 	table->MemoryACPILevel.StutterEnable = false;
-	CONVERT_FROM_HOST_TO_SMC_UL(table->MemoryACPILevel.MclkFrequency);
-	CONVERT_FROM_HOST_TO_SMC_UL(table->MemoryACPILevel.MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(table->MemoryACPILevel.MclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->MemoryACPILevel.MinVoltage);
 
 	return result;
 }
@@ -1212,33 +1212,33 @@ static int fiji_populate_smc_vce_level(struct pp_hwmgr *hwmgr,
 	struct pp_atomctrl_clock_dividers_vi dividers;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 			table_info->mm_dep_table;
 
 	table->VceLevelCount = (uint8_t)(mm_table->count);
 	table->VceBootLevel = 0;
 
 	for (count = 0; count < table->VceLevelCount; count++) {
-		table->VceLevel[count].Frequency = mm_table->entries[count].eclk;
-		table->VceLevel[count].MinVoltage = 0;
-		table->VceLevel[count].MinVoltage |=
-				(mm_table->entries[count].vddc * VOLTAGE_SCALE) << VDDC_SHIFT;
-		table->VceLevel[count].MinVoltage |=
-				((mm_table->entries[count].vddc - VDDC_VDDCI_DELTA) *
-						VOLTAGE_SCALE) << VDDCI_SHIFT;
-		table->VceLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
+table->VceLevel[count].Frequency = mm_table->entries[count].eclk;
+table->VceLevel[count].MinVoltage = 0;
+table->VceLevel[count].MinVoltage |=
+(mm_table->entries[count].vddc * VOLTAGE_SCALE) << VDDC_SHIFT;
+table->VceLevel[count].MinVoltage |=
+((mm_table->entries[count].vddc - VDDC_VDDCI_DELTA) *
+VOLTAGE_SCALE) << VDDCI_SHIFT;
+table->VceLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
 
 		/*retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-				table->VceLevel[count].Frequency, &dividers);
+table->VceLevel[count].Frequency, &dividers);
 		PP_ASSERT_WITH_CODE((0 == result),
 				"can not find divide id for VCE engine clock",
 				return result);
 
 		table->VceLevel[count].Divider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->VceLevel[count].Frequency);
-		CONVERT_FROM_HOST_TO_SMC_UL(table->VceLevel[count].MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(table->VceLevel[count].Frequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->VceLevel[count].MinVoltage);
 	}
 	return result;
 }
@@ -1251,30 +1251,30 @@ static int fiji_populate_smc_acp_level(struct pp_hwmgr *hwmgr,
 	struct pp_atomctrl_clock_dividers_vi dividers;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 			table_info->mm_dep_table;
 
 	table->AcpLevelCount = (uint8_t)(mm_table->count);
 	table->AcpBootLevel = 0;
 
 	for (count = 0; count < table->AcpLevelCount; count++) {
-		table->AcpLevel[count].Frequency = mm_table->entries[count].aclk;
-		table->AcpLevel[count].MinVoltage |= (mm_table->entries[count].vddc *
-				VOLTAGE_SCALE) << VDDC_SHIFT;
-		table->AcpLevel[count].MinVoltage |= ((mm_table->entries[count].vddc -
-				VDDC_VDDCI_DELTA) * VOLTAGE_SCALE) << VDDCI_SHIFT;
-		table->AcpLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
+table->AcpLevel[count].Frequency = mm_table->entries[count].aclk;
+table->AcpLevel[count].MinVoltage |= (mm_table->entries[count].vddc *
+VOLTAGE_SCALE) << VDDC_SHIFT;
+table->AcpLevel[count].MinVoltage |= ((mm_table->entries[count].vddc -
+VDDC_VDDCI_DELTA) * VOLTAGE_SCALE) << VDDCI_SHIFT;
+table->AcpLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-				table->AcpLevel[count].Frequency, &dividers);
+table->AcpLevel[count].Frequency, &dividers);
 		PP_ASSERT_WITH_CODE((0 == result),
 				"can not find divide id for engine clock", return result);
 
 		table->AcpLevel[count].Divider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->AcpLevel[count].Frequency);
-		CONVERT_FROM_HOST_TO_SMC_UL(table->AcpLevel[count].MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(table->AcpLevel[count].Frequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->AcpLevel[count].MinVoltage);
 	}
 	return result;
 }
@@ -1287,7 +1287,7 @@ static int fiji_populate_smc_samu_level(struct pp_hwmgr *hwmgr,
 	struct pp_atomctrl_clock_dividers_vi dividers;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 			table_info->mm_dep_table;
 
 	table->SamuBootLevel = 0;
@@ -1295,24 +1295,24 @@ static int fiji_populate_smc_samu_level(struct pp_hwmgr *hwmgr,
 
 	for (count = 0; count < table->SamuLevelCount; count++) {
 		/* not sure whether we need evclk or not */
-		table->SamuLevel[count].MinVoltage = 0;
-		table->SamuLevel[count].Frequency = mm_table->entries[count].samclock;
-		table->SamuLevel[count].MinVoltage |= (mm_table->entries[count].vddc *
-				VOLTAGE_SCALE) << VDDC_SHIFT;
-		table->SamuLevel[count].MinVoltage |= ((mm_table->entries[count].vddc -
-				VDDC_VDDCI_DELTA) * VOLTAGE_SCALE) << VDDCI_SHIFT;
-		table->SamuLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
+table->SamuLevel[count].MinVoltage = 0;
+table->SamuLevel[count].Frequency = mm_table->entries[count].samclock;
+table->SamuLevel[count].MinVoltage |= (mm_table->entries[count].vddc *
+VOLTAGE_SCALE) << VDDC_SHIFT;
+table->SamuLevel[count].MinVoltage |= ((mm_table->entries[count].vddc -
+VDDC_VDDCI_DELTA) * VOLTAGE_SCALE) << VDDCI_SHIFT;
+table->SamuLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-				table->SamuLevel[count].Frequency, &dividers);
+table->SamuLevel[count].Frequency, &dividers);
 		PP_ASSERT_WITH_CODE((0 == result),
 				"can not find divide id for samu clock", return result);
 
 		table->SamuLevel[count].Divider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->SamuLevel[count].Frequency);
-		CONVERT_FROM_HOST_TO_SMC_UL(table->SamuLevel[count].MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(table->SamuLevel[count].Frequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->SamuLevel[count].MinVoltage);
 	}
 	return result;
 }
@@ -1386,40 +1386,40 @@ static int fiji_populate_smc_uvd_level(struct pp_hwmgr *hwmgr,
 	struct pp_atomctrl_clock_dividers_vi dividers;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
+struct phm_ppt_v1_mm_clock_voltage_dependency_table *mm_table =
 			table_info->mm_dep_table;
 
 	table->UvdLevelCount = (uint8_t)(mm_table->count);
 	table->UvdBootLevel = 0;
 
 	for (count = 0; count < table->UvdLevelCount; count++) {
-		table->UvdLevel[count].MinVoltage = 0;
-		table->UvdLevel[count].VclkFrequency = mm_table->entries[count].vclk;
-		table->UvdLevel[count].DclkFrequency = mm_table->entries[count].dclk;
-		table->UvdLevel[count].MinVoltage |= (mm_table->entries[count].vddc *
-				VOLTAGE_SCALE) << VDDC_SHIFT;
-		table->UvdLevel[count].MinVoltage |= ((mm_table->entries[count].vddc -
-				VDDC_VDDCI_DELTA) * VOLTAGE_SCALE) << VDDCI_SHIFT;
-		table->UvdLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
+table->UvdLevel[count].MinVoltage = 0;
+table->UvdLevel[count].VclkFrequency = mm_table->entries[count].vclk;
+table->UvdLevel[count].DclkFrequency = mm_table->entries[count].dclk;
+table->UvdLevel[count].MinVoltage |= (mm_table->entries[count].vddc *
+VOLTAGE_SCALE) << VDDC_SHIFT;
+table->UvdLevel[count].MinVoltage |= ((mm_table->entries[count].vddc -
+VDDC_VDDCI_DELTA) * VOLTAGE_SCALE) << VDDCI_SHIFT;
+table->UvdLevel[count].MinVoltage |= 1 << PHASES_SHIFT;
 
 		/* retrieve divider value for VBIOS */
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-				table->UvdLevel[count].VclkFrequency, &dividers);
+table->UvdLevel[count].VclkFrequency, &dividers);
 		PP_ASSERT_WITH_CODE((0 == result),
 				"can not find divide id for Vclk clock", return result);
 
 		table->UvdLevel[count].VclkDivider = (uint8_t)dividers.pll_post_divider;
 
 		result = atomctrl_get_dfs_pll_dividers_vi(hwmgr,
-				table->UvdLevel[count].DclkFrequency, &dividers);
+table->UvdLevel[count].DclkFrequency, &dividers);
 		PP_ASSERT_WITH_CODE((0 == result),
 				"can not find divide id for Dclk clock", return result);
 
 		table->UvdLevel[count].DclkDivider = (uint8_t)dividers.pll_post_divider;
 
-		CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].VclkFrequency);
-		CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].DclkFrequency);
-		CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].MinVoltage);
+CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].VclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].DclkFrequency);
+CONVERT_FROM_HOST_TO_SMC_UL(table->UvdLevel[count].MinVoltage);
 
 	}
 	return result;
@@ -1443,16 +1443,16 @@ static int fiji_populate_smc_boot_level(struct pp_hwmgr *hwmgr,
 			data->vbios_boot_state.mclk_bootup_value,
 			(uint32_t *)&(table->MemoryBootLevel));
 
-	table->BootVddc  = data->vbios_boot_state.vddc_bootup_value *
-			VOLTAGE_SCALE;
-	table->BootVddci = data->vbios_boot_state.vddci_bootup_value *
-			VOLTAGE_SCALE;
-	table->BootMVdd  = data->vbios_boot_state.mvdd_bootup_value *
-			VOLTAGE_SCALE;
+table->BootVddc  = data->vbios_boot_state.vddc_bootup_value *
+VOLTAGE_SCALE;
+table->BootVddci = data->vbios_boot_state.vddci_bootup_value *
+VOLTAGE_SCALE;
+table->BootMVdd  = data->vbios_boot_state.mvdd_bootup_value *
+VOLTAGE_SCALE;
 
-	CONVERT_FROM_HOST_TO_SMC_US(table->BootVddc);
-	CONVERT_FROM_HOST_TO_SMC_US(table->BootVddci);
-	CONVERT_FROM_HOST_TO_SMC_US(table->BootMVdd);
+CONVERT_FROM_HOST_TO_SMC_US(table->BootVddc);
+CONVERT_FROM_HOST_TO_SMC_US(table->BootVddci);
+CONVERT_FROM_HOST_TO_SMC_US(table->BootMVdd);
 
 	return 0;
 }
@@ -1465,18 +1465,18 @@ static int fiji_populate_smc_initailial_state(struct pp_hwmgr *hwmgr)
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
 	uint8_t count, level;
 
-	count = (uint8_t)(table_info->vdd_dep_on_sclk->count);
+count = (uint8_t)(table_info->vdd_dep_on_sclk->count);
 	for (level = 0; level < count; level++) {
-		if (table_info->vdd_dep_on_sclk->entries[level].clk >=
+if (table_info->vdd_dep_on_sclk->entries[level].clk >=
 				data->vbios_boot_state.sclk_bootup_value) {
 			smu_data->smc_state_table.GraphicsBootLevel = level;
 			break;
 		}
 	}
 
-	count = (uint8_t)(table_info->vdd_dep_on_mclk->count);
+count = (uint8_t)(table_info->vdd_dep_on_mclk->count);
 	for (level = 0; level < count; level++) {
-		if (table_info->vdd_dep_on_mclk->entries[level].clk >=
+if (table_info->vdd_dep_on_mclk->entries[level].clk >=
 				data->vbios_boot_state.mclk_bootup_value) {
 			smu_data->smc_state_table.MemoryBootLevel = level;
 			break;
@@ -1488,16 +1488,16 @@ static int fiji_populate_smc_initailial_state(struct pp_hwmgr *hwmgr)
 
 static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 {
-	uint32_t ro, efuse, efuse2, clock_freq, volt_without_cks,
+uint32_t ro, efuse, efuse2, clock_freq, volt_without_cks,
 			volt_with_cks, value;
-	uint16_t clock_freq_u16;
+uint16_t clock_freq_u16;
 	struct fiji_smumgr *smu_data = (struct fiji_smumgr *)(hwmgr->smumgr->backend);
 	uint8_t type, i, j, cks_setting, stretch_amount, stretch_amount2,
 			volt_offset = 0;
 	struct phm_ppt_v1_information *table_info =
 			(struct phm_ppt_v1_information *)(hwmgr->pptable);
-	struct phm_ppt_v1_clock_voltage_dependency_table *sclk_table =
-			table_info->vdd_dep_on_sclk;
+struct phm_ppt_v1_clock_voltage_dependency_table *sclk_table =
+table_info->vdd_dep_on_sclk;
 
 	stretch_amount = (uint8_t)table_info->cac_dtp_table->usClockStretchAmount;
 
@@ -1525,7 +1525,7 @@ static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 	/* Populate Stretch amount */
 	smu_data->smc_state_table.ClockStretcherAmount = stretch_amount;
 
-	/* Populate Sclk_CKS_masterEn0_7 and Sclk_voltageOffset */
+/* Populate Sclk_CKS_masterEn0_7 and Sclk_voltageOffset */
 	for (i = 0; i < sclk_table->count; i++) {
 		smu_data->smc_state_table.Sclk_CKS_masterEn0_7 |=
 				sclk_table->entries[i].cks_enable << i;
@@ -1538,7 +1538,7 @@ static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 		if (volt_without_cks >= volt_with_cks)
 			volt_offset = (uint8_t)(((volt_without_cks - volt_with_cks +
 					sclk_table->entries[i].cks_voffset) * 100 / 625) + 1);
-		smu_data->smc_state_table.Sclk_voltageOffset[i] = volt_offset;
+smu_data->smc_state_table.Sclk_voltageOffset[i] = volt_offset;
 	}
 
 	PHM_WRITE_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC, PWR_CKS_ENABLE,
@@ -1566,18 +1566,18 @@ static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 	value = cgs_read_ind_register(hwmgr->device, CGS_IND_REG__SMC,
 			ixPWR_CKS_CNTL);
 	value &= 0xFFC2FF87;
-	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].minFreq =
+smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].minFreq =
 			fiji_clock_stretcher_lookup_table[stretch_amount2][0];
-	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].maxFreq =
+smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].maxFreq =
 			fiji_clock_stretcher_lookup_table[stretch_amount2][1];
-	clock_freq_u16 = (uint16_t)(PP_SMC_TO_HOST_UL(smu_data->smc_state_table.
+clock_freq_u16 = (uint16_t)(PP_SMC_TO_HOST_UL(smu_data->smc_state_table.
 			GraphicsLevel[smu_data->smc_state_table.GraphicsDpmLevelCount - 1].
-			SclkFrequency) / 100);
+SclkFrequency) / 100);
 	if (fiji_clock_stretcher_lookup_table[stretch_amount2][0] <
-			clock_freq_u16 &&
+clock_freq_u16 &&
 	    fiji_clock_stretcher_lookup_table[stretch_amount2][1] >
-			clock_freq_u16) {
-		/* Program PWR_CKS_CNTL. CKS_USE_FOR_LOW_FREQ */
+clock_freq_u16) {
+/* Program PWR_CKS_CNTL. CKS_USE_FOR_LOW_FREQ */
 		value |= (fiji_clock_stretcher_lookup_table[stretch_amount2][3]) << 16;
 		/* Program PWR_CKS_CNTL. CKS_LDO_REFSEL */
 		value |= (fiji_clock_stretcher_lookup_table[stretch_amount2][2]) << 18;
@@ -1587,9 +1587,9 @@ static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 				 [stretch_amount]) << 3;
 	}
 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.CKS_LOOKUPTable.
-			CKS_LOOKUPTableEntry[0].minFreq);
+CKS_LOOKUPTableEntry[0].minFreq);
 	CONVERT_FROM_HOST_TO_SMC_US(smu_data->smc_state_table.CKS_LOOKUPTable.
-			CKS_LOOKUPTableEntry[0].maxFreq);
+CKS_LOOKUPTableEntry[0].maxFreq);
 	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].setting =
 			fiji_clock_stretcher_lookup_table[stretch_amount2][2] & 0x7F;
 	smu_data->smc_state_table.CKS_LOOKUPTable.CKS_LOOKUPTableEntry[0].setting |=
@@ -1601,7 +1601,7 @@ static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 	/* Populate DDT Lookup Table */
 	for (i = 0; i < 4; i++) {
 		/* Assign the minimum and maximum VID stored
-		 * in the last row of Clock Stretcher Voltage Table.
+* in the last row of Clock Stretcher Voltage Table.
 		 */
 		smu_data->smc_state_table.ClockStretcherDataTable.
 		ClockStretcherDataTableEntry[i].minVID =
@@ -1609,22 +1609,22 @@ static int fiji_populate_clock_stretcher_data_table(struct pp_hwmgr *hwmgr)
 		smu_data->smc_state_table.ClockStretcherDataTable.
 		ClockStretcherDataTableEntry[i].maxVID =
 				(uint8_t) fiji_clock_stretcher_ddt_table[type][i][3];
-		/* Loop through each SCLK and check the frequency
-		 * to see if it lies within the frequency for clock stretcher.
+/* Loop through each SCLK and check the frequency
+* to see if it lies within the frequency for clock stretcher.
 		 */
 		for (j = 0; j < smu_data->smc_state_table.GraphicsDpmLevelCount; j++) {
 			cks_setting = 0;
-			clock_freq = PP_SMC_TO_HOST_UL(
-					smu_data->smc_state_table.GraphicsLevel[j].SclkFrequency);
-			/* Check the allowed frequency against the sclk level[j].
+clock_freq = PP_SMC_TO_HOST_UL(
+smu_data->smc_state_table.GraphicsLevel[j].SclkFrequency);
+/* Check the allowed frequency against the sclk level[j].
 			 *  Sclk's endianness has already been converted,
 			 *  and it's in 10Khz unit,
 			 *  as opposed to Data table, which is in Mhz unit.
 			 */
-			if (clock_freq >=
+if (clock_freq >=
 					(fiji_clock_stretcher_ddt_table[type][i][0]) * 100) {
 				cks_setting |= 0x2;
-				if (clock_freq <
+if (clock_freq <
 						(fiji_clock_stretcher_ddt_table[type][i][1]) * 100)
 					cks_setting |= 0x1;
 			}
@@ -1656,39 +1656,39 @@ static int fiji_populate_vr_config(struct pp_hwmgr *hwmgr,
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 	uint16_t config;
 
-	config = VR_MERGED_WITH_VDDC;
-	table->VRConfig |= (config << VRCONF_VDDGFX_SHIFT);
+config = VR_MERGED_WITH_VDDC;
+table->VRConfig |= (config << VRCONF_VDDGFX_SHIFT);
 
-	/* Set Vddc Voltage Controller */
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
+/* Set Vddc Voltage Controller */
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->voltage_control) {
 		config = VR_SVI2_PLANE_1;
 		table->VRConfig |= config;
 	} else {
 		PP_ASSERT_WITH_CODE(false,
-				"VDDC should be on SVI2 control in merged mode!",
+"VDDC should be on SVI2 control in merged mode!",
 				);
 	}
-	/* Set Vddci Voltage Controller */
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vddci_control) {
+/* Set Vddci Voltage Controller */
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->vddci_control) {
 		config = VR_SVI2_PLANE_2;  /* only in merged mode */
-		table->VRConfig |= (config << VRCONF_VDDCI_SHIFT);
-	} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->vddci_control) {
+table->VRConfig |= (config << VRCONF_VDDCI_SHIFT);
+} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->vddci_control) {
 		config = VR_SMIO_PATTERN_1;
-		table->VRConfig |= (config << VRCONF_VDDCI_SHIFT);
+table->VRConfig |= (config << VRCONF_VDDCI_SHIFT);
 	} else {
-		config = VR_STATIC_VOLTAGE;
-		table->VRConfig |= (config << VRCONF_VDDCI_SHIFT);
+config = VR_STATIC_VOLTAGE;
+table->VRConfig |= (config << VRCONF_VDDCI_SHIFT);
 	}
-	/* Set Mvdd Voltage Controller */
-	if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->mvdd_control) {
+/* Set Mvdd Voltage Controller */
+if (SMU7_VOLTAGE_CONTROL_BY_SVID2 == data->mvdd_control) {
 		config = VR_SVI2_PLANE_2;
-		table->VRConfig |= (config << VRCONF_MVDD_SHIFT);
-	} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->mvdd_control) {
+table->VRConfig |= (config << VRCONF_MVDD_SHIFT);
+} else if (SMU7_VOLTAGE_CONTROL_BY_GPIO == data->mvdd_control) {
 		config = VR_SMIO_PATTERN_2;
-		table->VRConfig |= (config << VRCONF_MVDD_SHIFT);
+table->VRConfig |= (config << VRCONF_MVDD_SHIFT);
 	} else {
-		config = VR_STATIC_VOLTAGE;
-		table->VRConfig |= (config << VRCONF_MVDD_SHIFT);
+config = VR_STATIC_VOLTAGE;
+table->VRConfig |= (config << VRCONF_MVDD_SHIFT);
 	}
 
 	return 0;
@@ -1715,7 +1715,7 @@ static int fiji_init_arb_table_index(struct pp_smumgr *smumgr)
 		return result;
 
 	tmp &= 0x00FFFFFF;
-	tmp |= ((uint32_t)MC_CG_ARB_FREQ_F1) << 24;
+tmp |= ((uint32_t)MC_CG_ARB_FREQ_F1) << 24;
 
 	return smu7_write_smc_sram_dword(smumgr,
 			smu_data->smu7_data.arb_table_start,  tmp, SMC_RAM_END);
@@ -1728,18 +1728,18 @@ static int fiji_save_default_power_profile(struct pp_hwmgr *hwmgr)
 				data->smc_state_table.GraphicsLevel;
 	unsigned min_level = 1;
 
-	hwmgr->default_gfx_power_profile.activity_threshold =
+hwmgr->default_gfx_power_profile.activity_threshold =
 			be16_to_cpu(levels[0].ActivityLevel);
-	hwmgr->default_gfx_power_profile.up_hyst = levels[0].UpHyst;
-	hwmgr->default_gfx_power_profile.down_hyst = levels[0].DownHyst;
-	hwmgr->default_gfx_power_profile.type = AMD_PP_GFX_PROFILE;
+hwmgr->default_gfx_power_profile.up_hyst = levels[0].UpHyst;
+hwmgr->default_gfx_power_profile.down_hyst = levels[0].DownHyst;
+hwmgr->default_gfx_power_profile.type = AMD_PP_GFX_PROFILE;
 
-	hwmgr->default_compute_power_profile = hwmgr->default_gfx_power_profile;
-	hwmgr->default_compute_power_profile.type = AMD_PP_COMPUTE_PROFILE;
+hwmgr->default_compute_power_profile = hwmgr->default_gfx_power_profile;
+hwmgr->default_compute_power_profile.type = AMD_PP_COMPUTE_PROFILE;
 
 	/* Workaround compute SDMA instability: disable lowest SCLK
-	 * DPM level. Optimize compute power profile: Use only highest
-	 * 2 power levels (if more than 2 are available), Hysteresis:
+* DPM level. Optimize compute power profile: Use only highest
+* 2 power levels (if more than 2 are available), Hysteresis:
 	 * 0ms up, 5ms down
 	 */
 	if (data->smc_state_table.GraphicsDpmLevelCount > 2)
@@ -1748,25 +1748,25 @@ static int fiji_save_default_power_profile(struct pp_hwmgr *hwmgr)
 		min_level = 1;
 	else
 		min_level = 0;
-	hwmgr->default_compute_power_profile.min_sclk =
-			be32_to_cpu(levels[min_level].SclkFrequency);
-	hwmgr->default_compute_power_profile.up_hyst = 0;
-	hwmgr->default_compute_power_profile.down_hyst = 5;
+hwmgr->default_compute_power_profile.min_sclk =
+be32_to_cpu(levels[min_level].SclkFrequency);
+hwmgr->default_compute_power_profile.up_hyst = 0;
+hwmgr->default_compute_power_profile.down_hyst = 5;
 
-	hwmgr->gfx_power_profile = hwmgr->default_gfx_power_profile;
-	hwmgr->compute_power_profile = hwmgr->default_compute_power_profile;
+hwmgr->gfx_power_profile = hwmgr->default_gfx_power_profile;
+hwmgr->compute_power_profile = hwmgr->default_compute_power_profile;
 
 	return 0;
 }
 
 static int fiji_setup_dpm_led_config(struct pp_hwmgr *hwmgr)
 {
-	pp_atomctrl_voltage_table param_led_dpm;
+pp_atomctrl_voltage_table param_led_dpm;
 	int result = 0;
 	u32 mask = 0;
 
-	result = atomctrl_get_voltage_table_v3(hwmgr,
-					       VOLTAGE_TYPE_LEDDPM, VOLTAGE_OBJ_GPIO_LUT,
+result = atomctrl_get_voltage_table_v3(hwmgr,
+VOLTAGE_TYPE_LEDDPM, VOLTAGE_OBJ_GPIO_LUT,
 					       &param_led_dpm);
 	if (result == 0) {
 		int i, j;
@@ -1806,10 +1806,10 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 	uint8_t i;
 	struct pp_atomctrl_gpio_pin_assignment gpio_pin;
 
-	fiji_initialize_power_tune_defaults(hwmgr);
+fiji_initialize_power_tune_defaults(hwmgr);
 
-	if (SMU7_VOLTAGE_CONTROL_NONE != data->voltage_control)
-		fiji_populate_smc_voltage_tables(hwmgr, table);
+if (SMU7_VOLTAGE_CONTROL_NONE != data->voltage_control)
+fiji_populate_smc_voltage_tables(hwmgr, table);
 
 	table->SystemFlags = 0;
 
@@ -1818,13 +1818,13 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 		table->SystemFlags |= PPSMC_SYSTEMFLAG_GPIO_DC;
 
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_StepVddc))
-		table->SystemFlags |= PPSMC_SYSTEMFLAG_STEPVDDC;
+PHM_PlatformCaps_StepVddc))
+table->SystemFlags |= PPSMC_SYSTEMFLAG_STEPVDDC;
 
 	if (data->is_memory_gddr5)
 		table->SystemFlags |= PPSMC_SYSTEMFLAG_GDDR5;
 
-	if (data->ulv_supported && table_info->us_ulv_voltage_offset) {
+if (data->ulv_supported && table_info->us_ulv_voltage_offset) {
 		result = fiji_populate_ulv_state(hwmgr, table);
 		PP_ASSERT_WITH_CODE(0 == result,
 				"Failed to initialize ULV state!", return result);
@@ -1892,10 +1892,10 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 				return result);
 	}
 
-	table->GraphicsVoltageChangeEnable  = 1;
+table->GraphicsVoltageChangeEnable  = 1;
 	table->GraphicsThermThrottleEnable  = 1;
 	table->GraphicsInterval = 1;
-	table->VoltageInterval  = 1;
+table->VoltageInterval  = 1;
 	table->ThermalInterval  = 1;
 	table->TemperatureLimitHigh =
 			table_info->cac_dtp_table->usTargetOperatingTemp *
@@ -1903,9 +1903,9 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 	table->TemperatureLimitLow  =
 			(table_info->cac_dtp_table->usTargetOperatingTemp - 1) *
 			SMU7_Q88_FORMAT_CONVERSION_UNIT;
-	table->MemoryVoltageChangeEnable = 1;
+table->MemoryVoltageChangeEnable = 1;
 	table->MemoryInterval = 1;
-	table->VoltageResponseTime = 0;
+table->VoltageResponseTime = 0;
 	table->PhaseResponseTime = 0;
 	table->MemoryThermThrottleEnable = 1;
 	table->PCIeBootLinkLevel = 0;      /* 0:Gen1 1:Gen2 2:Gen3*/
@@ -1919,7 +1919,7 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 	table->ThermGpio = 17;
 	table->SclkStepSize = 0x4000;
 
-	if (atomctrl_get_pp_assign_pin(hwmgr, VDDC_VRHOT_GPIO_PINID, &gpio_pin)) {
+if (atomctrl_get_pp_assign_pin(hwmgr, VDDC_VRHOT_GPIO_PINID, &gpio_pin)) {
 		table->VRHotGpio = gpio_pin.uc_gpio_pin_bit_shift;
 		phm_cap_set(hwmgr->platform_descriptor.platformCaps,
 				PHM_PlatformCaps_RegulatorHot);
@@ -1981,7 +1981,7 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 	CONVERT_FROM_HOST_TO_SMC_UL(table->SclkStepSize);
 	CONVERT_FROM_HOST_TO_SMC_US(table->TemperatureLimitHigh);
 	CONVERT_FROM_HOST_TO_SMC_US(table->TemperatureLimitLow);
-	CONVERT_FROM_HOST_TO_SMC_US(table->VoltageResponseTime);
+CONVERT_FROM_HOST_TO_SMC_US(table->VoltageResponseTime);
 	CONVERT_FROM_HOST_TO_SMC_US(table->PhaseResponseTime);
 
 	/* Upload all dpm data to SMC memory.(dpm level, dpm level count etc) */
@@ -2006,7 +2006,7 @@ int fiji_init_smc_table(struct pp_hwmgr *hwmgr)
 	PP_ASSERT_WITH_CODE(0 == result,
 			    "Failed to setup dpm led config", return result);
 
-	fiji_save_default_power_profile(hwmgr);
+fiji_save_default_power_profile(hwmgr);
 
 	return 0;
 }
@@ -2201,8 +2201,8 @@ uint32_t fiji_get_offsetof(uint32_t type, uint32_t member)
 		switch (member) {
 		case HandshakeDisables:
 			return offsetof(SMU73_SoftRegisters, HandshakeDisables);
-		case VoltageChangeTimeout:
-			return offsetof(SMU73_SoftRegisters, VoltageChangeTimeout);
+case VoltageChangeTimeout:
+return offsetof(SMU73_SoftRegisters, VoltageChangeTimeout);
 		case AverageGraphicsActivity:
 			return offsetof(SMU73_SoftRegisters, AverageGraphicsActivity);
 		case PreVBlankGap:
@@ -2239,14 +2239,14 @@ uint32_t fiji_get_mac_definition(uint32_t value)
 		return SMU73_MAX_LEVELS_LINK;
 	case SMU_MAX_ENTRIES_SMIO:
 		return SMU73_MAX_ENTRIES_SMIO;
-	case SMU_MAX_LEVELS_VDDC:
-		return SMU73_MAX_LEVELS_VDDC;
-	case SMU_MAX_LEVELS_VDDGFX:
-		return SMU73_MAX_LEVELS_VDDGFX;
-	case SMU_MAX_LEVELS_VDDCI:
-		return SMU73_MAX_LEVELS_VDDCI;
-	case SMU_MAX_LEVELS_MVDD:
-		return SMU73_MAX_LEVELS_MVDD;
+case SMU_MAX_LEVELS_VDDC:
+return SMU73_MAX_LEVELS_VDDC;
+case SMU_MAX_LEVELS_VDDGFX:
+return SMU73_MAX_LEVELS_VDDGFX;
+case SMU_MAX_LEVELS_VDDCI:
+return SMU73_MAX_LEVELS_VDDCI;
+case SMU_MAX_LEVELS_MVDD:
+return SMU73_MAX_LEVELS_MVDD;
 	}
 
 	pr_warn("can't get the mac of %x\n", value);
@@ -2277,11 +2277,11 @@ static int fiji_update_uvd_smc_table(struct pp_hwmgr *hwmgr)
 			CGS_IND_REG__SMC, mm_boot_level_offset, mm_boot_level_value);
 
 	if (!phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_UVDDPM) ||
+PHM_PlatformCaps_UVDDPM) ||
 		phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
 			PHM_PlatformCaps_StablePState))
 		smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-				PPSMC_MSG_UVDDPM_SetEnabledMask,
+PPSMC_MSG_UVDDPM_SetEnabledMask,
 				(uint32_t)(1 << smu_data->smc_state_table.UvdBootLevel));
 	return 0;
 }
@@ -2468,7 +2468,7 @@ int fiji_initialize_mc_reg_table(struct pp_hwmgr *hwmgr)
 bool fiji_is_dpm_running(struct pp_hwmgr *hwmgr)
 {
 	return (1 == PHM_READ_INDIRECT_FIELD(hwmgr->device,
-			CGS_IND_REG__SMC, FEATURE_STATUS, VOLTAGE_CONTROLLER_ON))
+CGS_IND_REG__SMC, FEATURE_STATUS, VOLTAGE_CONTROLLER_ON))
 			? true : false;
 }
 

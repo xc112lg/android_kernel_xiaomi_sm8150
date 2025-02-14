@@ -1,8 +1,8 @@
 /*
- * Generic big.LITTLE CPUFreq Interface driver
+* Generic big.LITTLE CPUFreq Interface driver
  *
- * It provides necessary ops to arm_big_little cpufreq driver and gets
- * Frequency information from Device Tree. Freq table in DT must be in KHz.
+* It provides necessary ops to arm_big_little cpufreq driver and gets
+* Frequency information from Device Tree. Freq table in DT must be in KHz.
  *
  * Copyright (C) 2013 Linaro.
  * Viresh Kumar <viresh.kumar@linaro.org>
@@ -46,12 +46,12 @@ static struct device_node *get_cpu_node_with_valid_op(int cpu)
 static int dt_get_transition_latency(struct device *cpu_dev)
 {
 	struct device_node *np;
-	u32 transition_latency = CPUFREQ_ETERNAL;
+u32 transition_latency = CPUFREQ_ETERNAL;
 
 	np = of_node_get(cpu_dev->of_node);
 	if (!np) {
-		pr_info("Failed to find cpu node. Use CPUFREQ_ETERNAL transition latency\n");
-		return CPUFREQ_ETERNAL;
+pr_info("Failed to find cpu node. Use CPUFREQ_ETERNAL transition latency\n");
+return CPUFREQ_ETERNAL;
 	}
 
 	of_property_read_u32(np, "clock-latency", &transition_latency);
@@ -77,18 +77,18 @@ static int generic_bL_probe(struct platform_device *pdev)
 		return -ENODEV;
 
 	of_node_put(np);
-	return bL_cpufreq_register(&dt_bL_ops);
+return bL_cpufreq_register(&dt_bL_ops);
 }
 
 static int generic_bL_remove(struct platform_device *pdev)
 {
-	bL_cpufreq_unregister(&dt_bL_ops);
+bL_cpufreq_unregister(&dt_bL_ops);
 	return 0;
 }
 
 static struct platform_driver generic_bL_platdrv = {
 	.driver = {
-		.name	= "arm-bL-cpufreq-dt",
+.name	= "arm-bL-cpufreq-dt",
 	},
 	.probe		= generic_bL_probe,
 	.remove		= generic_bL_remove,

@@ -573,8 +573,8 @@ void __init apply_feature_fixups(void)
 			 PTRRELOC(&__stop___lwsync_fixup));
 
 #ifdef CONFIG_PPC64
-	saved_firmware_features = powerpc_firmware_features;
-	do_feature_fixups(powerpc_firmware_features,
+saved_firmware_features = powerpc_firmware_features;
+do_feature_fixups(powerpc_firmware_features,
 			  &__start___fw_ftr_fixup, &__stop___fw_ftr_fixup);
 #endif
 	do_final_fixups();
@@ -599,7 +599,7 @@ static int __init check_features(void)
 	WARN(saved_mmu_features != cur_cpu_spec->mmu_features,
 	     "MMU features changed after feature patching!\n");
 #ifdef CONFIG_PPC64
-	WARN(saved_firmware_features != powerpc_firmware_features,
+WARN(saved_firmware_features != powerpc_firmware_features,
 	     "Firmware features changed after feature patching!\n");
 #endif
 

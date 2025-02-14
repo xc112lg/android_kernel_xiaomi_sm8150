@@ -124,10 +124,10 @@ static struct regulator_ops tps65132_regulator_ops = {
 	.enable = tps65132_regulator_enable,
 	.disable = tps65132_regulator_disable,
 	.is_enabled = tps65132_regulator_is_enabled,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.set_active_discharge = regulator_set_active_discharge_regmap,
 };
 
@@ -182,7 +182,7 @@ static int tps65132_of_parse_cb(struct device_node *np,
 		.of_match = of_match_ptr(#_name),	\
 		.of_parse_cb	= tps65132_of_parse_cb,	\
 		.ops = &tps65132_regulator_ops,		\
-		.n_voltages = TPS65132_VOUT_N_VOLTAGE,	\
+.n_voltages = TPS65132_VOUT_N_VOLTAGE,	\
 		.min_uV = TPS65132_VOUT_VMIN,		\
 		.uV_step = TPS65132_VOUT_STEP,		\
 		.enable_time = 500,			\
@@ -192,7 +192,7 @@ static int tps65132_of_parse_cb(struct device_node *np,
 		.active_discharge_on = TPS65132_REG_APPS_DIS_##_id, \
 		.active_discharge_mask = TPS65132_REG_APPS_DIS_##_id, \
 		.active_discharge_reg = TPS65132_REG_APPS_DISP_DISN, \
-		.type = REGULATOR_VOLTAGE,		\
+.type = REGULATOR_VOLTAGE,		\
 		.owner = THIS_MODULE,			\
 	}
 

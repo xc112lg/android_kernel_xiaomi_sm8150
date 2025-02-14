@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
- * Watchdog support on powerpc systems.
+* Watchdog support on powerpc systems.
  *
  * Copyright 2017, IBM Corporation.
  *
@@ -389,7 +389,7 @@ static int stop_wd_on_cpu(unsigned int cpu)
 
 static void watchdog_calc_timeouts(void)
 {
-	wd_panic_timeout_tb = watchdog_thresh * ppc_tb_freq;
+wd_panic_timeout_tb = watchdog_thresh * ppc_tb_freq;
 
 	/* Have the SMP detector trigger a bit later */
 	wd_smp_panic_timeout_tb = wd_panic_timeout_tb * 3 / 2;
@@ -423,7 +423,7 @@ int __init watchdog_nmi_probe(void)
 	int err;
 
 	err = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-					"powerpc/watchdog:online",
+"powerpc/watchdog:online",
 					start_wd_on_cpu, stop_wd_on_cpu);
 	if (err < 0) {
 		pr_warn("Watchdog could not be initialized");

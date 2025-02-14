@@ -1,6 +1,6 @@
 /*
  * pv88090-regulator.c - Regulator device driver for PV88090
- * Copyright (C) 2015  Powerventure Semiconductor Ltd.
+* Copyright (C) 2015  Powerventure Semiconductor Ltd.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -190,9 +190,9 @@ static const struct regulator_ops pv88090_buck_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
 	.set_current_limit = pv88090_set_current_limit,
 	.get_current_limit = pv88090_get_current_limit,
 };
@@ -201,9 +201,9 @@ static const struct regulator_ops pv88090_ldo_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
 };
 
 #define PV88090_BUCK(chip, regl_name, min, step, max, limits_array) \
@@ -213,12 +213,12 @@ static const struct regulator_ops pv88090_ldo_ops = {
 		.name = __stringify(chip##_##regl_name),\
 		.of_match = of_match_ptr(#regl_name),\
 		.regulators_node = of_match_ptr("regulators"),\
-		.type = REGULATOR_VOLTAGE,\
+.type = REGULATOR_VOLTAGE,\
 		.owner = THIS_MODULE,\
 		.ops = &pv88090_buck_ops,\
 		.min_uV = min, \
 		.uV_step = step, \
-		.n_voltages = ((max) - (min))/(step) + 1, \
+.n_voltages = ((max) - (min))/(step) + 1, \
 		.enable_reg = PV88090_REG_##regl_name##_CONF0, \
 		.enable_mask = PV88090_##regl_name##_EN, \
 		.vsel_reg = PV88090_REG_##regl_name##_CONF0, \
@@ -238,12 +238,12 @@ static const struct regulator_ops pv88090_ldo_ops = {
 		.name = __stringify(chip##_##regl_name),\
 		.of_match = of_match_ptr(#regl_name),\
 		.regulators_node = of_match_ptr("regulators"),\
-		.type = REGULATOR_VOLTAGE,\
+.type = REGULATOR_VOLTAGE,\
 		.owner = THIS_MODULE,\
 		.ops = &pv88090_ldo_ops,\
 		.min_uV = min, \
 		.uV_step = step, \
-		.n_voltages = ((max) - (min))/(step) + 1, \
+.n_voltages = ((max) - (min))/(step) + 1, \
 		.enable_reg = PV88090_REG_##regl_name##_CONT, \
 		.enable_mask = PV88090_##regl_name##_EN, \
 		.vsel_reg = PV88090_REG_##regl_name##_CONT, \
@@ -271,17 +271,17 @@ static irqreturn_t pv88090_irq_handler(int irq, void *data)
 	if (err < 0)
 		goto error_i2c;
 
-	if (reg_val & PV88090_E_VDD_FLT) {
+if (reg_val & PV88090_E_VDD_FLT) {
 		for (i = 0; i < PV88090_MAX_REGULATORS; i++) {
 			if (chip->rdev[i] != NULL) {
 				regulator_notifier_call_chain(chip->rdev[i],
-					REGULATOR_EVENT_UNDER_VOLTAGE,
+REGULATOR_EVENT_UNDER_VOLTAGE,
 					NULL);
 			}
 		}
 
 		err = regmap_write(chip->regmap, PV88090_REG_EVENT_A,
-			PV88090_E_VDD_FLT);
+PV88090_E_VDD_FLT);
 		if (err < 0)
 			goto error_i2c;
 
@@ -365,7 +365,7 @@ static int pv88090_i2c_probe(struct i2c_client *i2c,
 		}
 
 		ret = regmap_update_bits(chip->regmap, PV88090_REG_MASK_A,
-			PV88090_M_VDD_FLT | PV88090_M_OVER_TEMP, 0);
+PV88090_M_VDD_FLT | PV88090_M_OVER_TEMP, 0);
 		if (ret < 0) {
 			dev_err(chip->dev,
 				"Failed to update mask reg: %d\n", ret);
@@ -411,7 +411,7 @@ static int pv88090_i2c_probe(struct i2c_client *i2c,
 				= pv88090_buck_vol[index].min_uV;
 			pv88090_regulator_info[i].desc.uV_step
 				= pv88090_buck_vol[index].uV_step;
-			pv88090_regulator_info[i].desc.n_voltages
+pv88090_regulator_info[i].desc.n_voltages
 				= ((pv88090_buck_vol[index].max_uV)
 				- (pv88090_buck_vol[index].min_uV))
 				/(pv88090_buck_vol[index].uV_step) + 1;

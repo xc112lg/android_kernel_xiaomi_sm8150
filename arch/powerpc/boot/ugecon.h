@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/boot/ugecon.h
+* arch/powerpc/boot/ugecon.h
  *
  * USB Gecko early bootwrapper console.
  * Copyright (C) 2008-2009 The GameCube Linux Team

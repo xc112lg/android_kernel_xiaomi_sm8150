@@ -25,10 +25,10 @@
  * Senders are user/kernel threads that submit compression/encryption or
  * other requests to the receivers. Senders must format their messages as
  * Coprocessor Request Blocks (CRB)s and submit them using the "copy" and
- * "paste" instructions which were introduced in Power9.
+* "paste" instructions which were introduced in Power9.
  *
- * A Power node can have (upto?) 8 Power chips. There is one instance of
- * VAS in each Power9 chip. Each instance of VAS has 64K windows or ports,
+* A Power node can have (upto?) 8 Power chips. There is one instance of
+* VAS in each Power9 chip. Each instance of VAS has 64K windows or ports,
  * Senders and receivers must each connect to a separate window before they
  * can exchange messages through the switchboard.
  *
@@ -50,7 +50,7 @@
  * HVWC BAR for the instance. Similarly the UWCs for all windows on an instance
  * are referred to as the UWC BAR for the instance.
  *
- * The two BARs for each instance are defined Power9 MMIO Ranges spreadsheet
+* The two BARs for each instance are defined Power9 MMIO Ranges spreadsheet
  * and available to the kernel in the VAS node's "reg" property in the device
  * tree:
  *
@@ -80,7 +80,7 @@
  * (again, see vas_probe() for ->paste_base_addr and ->paste_win_id_shift).
  *
  * The kernel maps this hardware address into the sender's address space
- * after which they can use the 'paste' instruction (new in Power9) to
+* after which they can use the 'paste' instruction (new in Power9) to
  * send a message (submit a request aka CRB) to the coprocessor.
  *
  * NOTE: In the initial version, senders can only in-kernel drivers/threads.

@@ -149,7 +149,7 @@ CFLAGS-$(CONFIG_GENERIC_CPU) += -mcpu=powerpc64
 endif
 
 ifdef CONFIG_MPROFILE_KERNEL
-    ifeq ($(shell $(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -I$(srctree)/include -D__KERNEL__),OK)
+ifeq ($(shell $(srctree)/arch/powerpc/tools/gcc-check-mprofile-kernel.sh $(CC) -I$(srctree)/include -D__KERNEL__),OK)
         CC_FLAGS_FTRACE := -pg -mprofile-kernel
         KBUILD_CPPFLAGS += -DCC_USING_MPROFILE_KERNEL
     else
@@ -204,7 +204,7 @@ endif
 
 ifeq ($(CONFIG_476FPE_ERR46),y)
 	KBUILD_LDFLAGS_MODULE += --ppc476-workaround \
-		-T $(srctree)/arch/powerpc/platforms/44x/ppc476_modules.lds
+-T $(srctree)/arch/powerpc/platforms/44x/ppc476_modules.lds
 endif
 
 # No AltiVec or VSX instructions when building kernel
@@ -265,13 +265,13 @@ head-$(CONFIG_ALTIVEC)		+= arch/powerpc/kernel/vector.o
 head-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE)  += arch/powerpc/kernel/prom_init.o
 
 core-y				+= arch/powerpc/kernel/ \
-				   arch/powerpc/mm/ \
-				   arch/powerpc/lib/ \
-				   arch/powerpc/sysdev/ \
-				   arch/powerpc/platforms/ \
-				   arch/powerpc/math-emu/ \
-				   arch/powerpc/crypto/ \
-				   arch/powerpc/net/
+arch/powerpc/mm/ \
+arch/powerpc/lib/ \
+arch/powerpc/sysdev/ \
+arch/powerpc/platforms/ \
+arch/powerpc/math-emu/ \
+arch/powerpc/crypto/ \
+arch/powerpc/net/
 core-$(CONFIG_XMON)		+= arch/powerpc/xmon/
 core-$(CONFIG_KVM) 		+= arch/powerpc/kvm/
 core-$(CONFIG_PERF_EVENTS)	+= arch/powerpc/perf/
@@ -323,7 +323,7 @@ ppc64le_defconfig:
 
 PHONY += powernv_be_defconfig
 powernv_be_defconfig:
-	$(call merge_into_defconfig,powernv_defconfig,be)
+$(call merge_into_defconfig,powernv_defconfig,be)
 
 PHONY += mpc85xx_defconfig
 mpc85xx_defconfig:

@@ -27,7 +27,7 @@
 		};
 
 	cpus {
-		PowerPC,P1020@0 {
+PowerPC,P1020@0 {
 			status = "disabled";
 		};
 	};

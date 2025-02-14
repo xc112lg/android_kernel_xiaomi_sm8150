@@ -135,23 +135,23 @@ static const struct regulator_ops pfuze100_ldo_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 };
 
 static const struct regulator_ops pfuze100_fixed_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 };
 
 static const struct regulator_ops pfuze100_sw_regulator_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
 	.set_ramp_delay = pfuze100_set_ramp_delay,
 };
 
@@ -159,10 +159,10 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
 
 };
 
@@ -170,12 +170,12 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 	[_chip ## _ ## _name] = {	\
 		.desc = {	\
 			.name = #_name,	\
-			.n_voltages = 1,	\
+.n_voltages = 1,	\
 			.ops = &pfuze100_fixed_regulator_ops,	\
-			.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 			.id = _chip ## _ ## _name,	\
 			.owner = THIS_MODULE,	\
-			.min_uV = (voltage),	\
+.min_uV = (voltage),	\
 			.enable_reg = (base),	\
 			.enable_mask = 0x10,	\
 		},	\
@@ -185,9 +185,9 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 	[_chip ## _ ## _name] = {	\
 		.desc = {	\
 			.name = #_name,\
-			.n_voltages = ((max) - (min)) / (step) + 1,	\
+.n_voltages = ((max) - (min)) / (step) + 1,	\
 			.ops = &pfuze100_sw_regulator_ops,	\
-			.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 			.id = _chip ## _ ## _name,	\
 			.owner = THIS_MODULE,	\
 			.min_uV = (min),	\
@@ -203,12 +203,12 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 	[_chip ## _ ##  _name] = {	\
 		.desc = {	\
 			.name = #_name,	\
-			.n_voltages = ARRAY_SIZE(voltages),	\
+.n_voltages = ARRAY_SIZE(voltages),	\
 			.ops = &pfuze100_swb_regulator_ops,	\
-			.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 			.id = _chip ## _ ## _name,	\
 			.owner = THIS_MODULE,	\
-			.volt_table = voltages,	\
+.volt_table = voltages,	\
 			.vsel_reg = (base),	\
 			.vsel_mask = (mask),	\
 			.enable_reg = (base),	\
@@ -220,9 +220,9 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 	[_chip ## _ ## _name] = {	\
 		.desc = {	\
 			.name = #_name,	\
-			.n_voltages = ((max) - (min)) / (step) + 1,	\
+.n_voltages = ((max) - (min)) / (step) + 1,	\
 			.ops = &pfuze100_ldo_regulator_ops,	\
-			.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 			.id = _chip ## _ ## _name,	\
 			.owner = THIS_MODULE,	\
 			.min_uV = (min),	\
@@ -240,12 +240,12 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 	[_chip ## _ ##  _name] = {	\
 		.desc = {	\
 			.name = #_name,	\
-			.n_voltages = ARRAY_SIZE(voltages),	\
+.n_voltages = ARRAY_SIZE(voltages),	\
 			.ops = &pfuze100_swb_regulator_ops,	\
-			.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 			.id = _chip ## _ ## _name,	\
 			.owner = THIS_MODULE,	\
-			.volt_table = voltages,	\
+.volt_table = voltages,	\
 			.vsel_reg = (base),	\
 			.vsel_mask = (mask),	\
 			.enable_reg = (base),	\
@@ -256,9 +256,9 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 #define PFUZE3000_VCC_REG(_chip, _name, base, min, max, step)	{	\
 	.desc = {	\
 		.name = #_name,	\
-		.n_voltages = ((max) - (min)) / (step) + 1,	\
+.n_voltages = ((max) - (min)) / (step) + 1,	\
 		.ops = &pfuze100_ldo_regulator_ops,	\
-		.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 		.id = _chip ## _ ## _name,	\
 		.owner = THIS_MODULE,	\
 		.min_uV = (min),	\
@@ -276,9 +276,9 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 #define PFUZE3000_SW2_REG(_chip, _name, base, min, max, step)	{	\
 	.desc = {	\
 		.name = #_name,\
-		.n_voltages = ((max) - (min)) / (step) + 1,	\
+.n_voltages = ((max) - (min)) / (step) + 1,	\
 		.ops = &pfuze100_sw_regulator_ops,	\
-		.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 		.id = _chip ## _ ## _name,	\
 		.owner = THIS_MODULE,	\
 		.min_uV = (min),	\
@@ -293,9 +293,9 @@ static const struct regulator_ops pfuze100_swb_regulator_ops = {
 #define PFUZE3000_SW3_REG(_chip, _name, base, min, max, step)	{	\
 	.desc = {	\
 		.name = #_name,\
-		.n_voltages = ((max) - (min)) / (step) + 1,	\
+.n_voltages = ((max) - (min)) / (step) + 1,	\
 		.ops = &pfuze100_sw_regulator_ops,	\
-		.type = REGULATOR_VOLTAGE,	\
+.type = REGULATOR_VOLTAGE,	\
 		.id = _chip ## _ ## _name,	\
 		.owner = THIS_MODULE,	\
 		.min_uV = (min),	\
@@ -632,7 +632,7 @@ static int pfuze100_regulator_probe(struct i2c_client *client,
 		else
 			init_data = match_init_data(i);
 
-		/* SW2~SW4 high bit check and modify the voltage value table */
+/* SW2~SW4 high bit check and modify the voltage value table */
 		if (i >= sw_check_start && i <= sw_check_end) {
 			ret = regmap_read(pfuze_chip->regmap,
 						desc->vsel_reg, &val);
@@ -644,11 +644,11 @@ static int pfuze100_regulator_probe(struct i2c_client *client,
 			if (val & sw_hi) {
 				if (pfuze_chip->chip_id == PFUZE3000) {
 					desc->volt_table = pfuze3000_sw2hi;
-					desc->n_voltages = ARRAY_SIZE(pfuze3000_sw2hi);
+desc->n_voltages = ARRAY_SIZE(pfuze3000_sw2hi);
 				} else {
 					desc->min_uV = 800000;
 					desc->uV_step = 50000;
-					desc->n_voltages = 51;
+desc->n_voltages = 51;
 				}
 			}
 		}

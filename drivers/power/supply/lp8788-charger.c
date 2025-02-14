@@ -94,19 +94,19 @@ struct lp8788_chg_irq {
 /*
  * struct lp8788_charger
  * @lp           : used for accessing the registers of mfd lp8788 device
- * @charger      : power supply driver for the battery charger
- * @battery      : power supply driver for the battery
+* @charger      : power supply driver for the battery charger
+* @battery      : power supply driver for the battery
  * @charger_work : work queue for charger input interrupts
  * @chan         : iio channels for getting adc values
- *                 eg) battery voltage, capacity and temperature
+*                 eg) battery voltage, capacity and temperature
  * @irqs         : charger dedicated interrupts
  * @num_irqs     : total numbers of charger interrupts
  * @pdata        : charger platform specific data
  */
 struct lp8788_charger {
 	struct lp8788 *lp;
-	struct power_supply *charger;
-	struct power_supply *battery;
+struct power_supply *charger;
+struct power_supply *battery;
 	struct work_struct charger_work;
 	struct iio_channel *chan[LP8788_NUM_CHG_ADC];
 	struct lp8788_chg_irq irqs[LP8788_MAX_CHG_IRQS];
@@ -119,19 +119,19 @@ static char *battery_supplied_to[] = {
 };
 
 static enum power_supply_property lp8788_charger_prop[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 };
 
 static enum power_supply_property lp8788_battery_prop[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_TEMP,
 };
 
 static bool lp8788_is_charger_detected(struct lp8788_charger *pchg)
@@ -145,17 +145,17 @@ static bool lp8788_is_charger_detected(struct lp8788_charger *pchg)
 }
 
 static int lp8788_charger_get_property(struct power_supply *psy,
-					enum power_supply_property psp,
-					union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct lp8788_charger *pchg = dev_get_drvdata(psy->dev.parent);
 	u8 read;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = lp8788_is_charger_detected(pchg);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		lp8788_read_byte(pchg->lp, LP8788_CHG_IDCIN, &read);
 		val->intval = LP8788_ISEL_STEP *
 				(min_t(int, read, LP8788_ISEL_MAX) + 1);
@@ -168,7 +168,7 @@ static int lp8788_charger_get_property(struct power_supply *psy,
 }
 
 static int lp8788_get_battery_status(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	enum lp8788_charging_state state;
 	u8 data;
@@ -181,19 +181,19 @@ static int lp8788_get_battery_status(struct lp8788_charger *pchg,
 	state = (data & LP8788_CHG_STATE_M) >> LP8788_CHG_STATE_S;
 	switch (state) {
 	case LP8788_OFF:
-		val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		break;
 	case LP8788_PRECHARGE:
 	case LP8788_CC:
 	case LP8788_CV:
 	case LP8788_HIGH_CURRENT:
-		val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		break;
 	case LP8788_MAINTENANCE:
-		val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		break;
 	default:
-		val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
 	}
 
@@ -201,7 +201,7 @@ static int lp8788_get_battery_status(struct lp8788_charger *pchg,
 }
 
 static int lp8788_get_battery_health(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 data;
 	int ret;
@@ -211,17 +211,17 @@ static int lp8788_get_battery_health(struct lp8788_charger *pchg,
 		return ret;
 
 	if (data & LP8788_NO_BATT_M)
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 	else if (data & LP8788_BAD_BATT_M)
-		val->intval = POWER_SUPPLY_HEALTH_DEAD;
+val->intval = POWER_SUPPLY_HEALTH_DEAD;
 	else
-		val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 
 	return 0;
 }
 
 static int lp8788_get_battery_present(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 data;
 	int ret;
@@ -245,13 +245,13 @@ static int lp8788_get_vbatt_adc(struct lp8788_charger *pchg, int *result)
 }
 
 static int lp8788_get_battery_voltage(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	return lp8788_get_vbatt_adc(pchg, &val->intval);
 }
 
 static int lp8788_get_battery_capacity(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	struct lp8788 *lp = pchg->lp;
 	struct lp8788_charger_platform_data *pdata = pchg->pdata;
@@ -289,7 +289,7 @@ static int lp8788_get_battery_capacity(struct lp8788_charger *pchg,
 }
 
 static int lp8788_get_battery_temperature(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	struct iio_channel *channel = pchg->chan[LP8788_BATT_TEMP];
 	int result;
@@ -309,7 +309,7 @@ static int lp8788_get_battery_temperature(struct lp8788_charger *pchg,
 }
 
 static int lp8788_get_battery_charging_current(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 read;
 
@@ -322,7 +322,7 @@ static int lp8788_get_battery_charging_current(struct lp8788_charger *pchg,
 }
 
 static int lp8788_get_charging_termination_voltage(struct lp8788_charger *pchg,
-				union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 read;
 
@@ -334,28 +334,28 @@ static int lp8788_get_charging_termination_voltage(struct lp8788_charger *pchg,
 }
 
 static int lp8788_battery_get_property(struct power_supply *psy,
-					enum power_supply_property psp,
-					union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct lp8788_charger *pchg = dev_get_drvdata(psy->dev.parent);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		return lp8788_get_battery_status(pchg, val);
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		return lp8788_get_battery_health(pchg, val);
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		return lp8788_get_battery_present(pchg, val);
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		return lp8788_get_battery_voltage(pchg, val);
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+return lp8788_get_battery_voltage(pchg, val);
+case POWER_SUPPLY_PROP_CAPACITY:
 		return lp8788_get_battery_capacity(pchg, val);
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		return lp8788_get_battery_temperature(pchg, val);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		return lp8788_get_battery_charging_current(pchg, val);
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
-		return lp8788_get_charging_termination_voltage(pchg, val);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+return lp8788_get_charging_termination_voltage(pchg, val);
 	default:
 		return -EINVAL;
 	}
@@ -396,7 +396,7 @@ static int lp8788_update_charger_params(struct platform_device *pdev,
 
 static const struct power_supply_desc lp8788_psy_charger_desc = {
 	.name		= LP8788_CHARGER_NAME,
-	.type		= POWER_SUPPLY_TYPE_MAINS,
+.type		= POWER_SUPPLY_TYPE_MAINS,
 	.properties	= lp8788_charger_prop,
 	.num_properties	= ARRAY_SIZE(lp8788_charger_prop),
 	.get_property	= lp8788_charger_get_property,
@@ -404,7 +404,7 @@ static const struct power_supply_desc lp8788_psy_charger_desc = {
 
 static const struct power_supply_desc lp8788_psy_battery_desc = {
 	.name		= LP8788_BATTERY_NAME,
-	.type		= POWER_SUPPLY_TYPE_BATTERY,
+.type		= POWER_SUPPLY_TYPE_BATTERY,
 	.properties	= lp8788_battery_prop,
 	.num_properties	= ARRAY_SIZE(lp8788_battery_prop),
 	.get_property	= lp8788_battery_get_property,
@@ -413,21 +413,21 @@ static const struct power_supply_desc lp8788_psy_battery_desc = {
 static int lp8788_psy_register(struct platform_device *pdev,
 				struct lp8788_charger *pchg)
 {
-	struct power_supply_config charger_cfg = {};
+struct power_supply_config charger_cfg = {};
 
 	charger_cfg.supplied_to = battery_supplied_to;
 	charger_cfg.num_supplicants = ARRAY_SIZE(battery_supplied_to);
 
-	pchg->charger = power_supply_register(&pdev->dev,
+pchg->charger = power_supply_register(&pdev->dev,
 					      &lp8788_psy_charger_desc,
 					      &charger_cfg);
 	if (IS_ERR(pchg->charger))
 		return -EPERM;
 
-	pchg->battery = power_supply_register(&pdev->dev,
+pchg->battery = power_supply_register(&pdev->dev,
 					      &lp8788_psy_battery_desc, NULL);
 	if (IS_ERR(pchg->battery)) {
-		power_supply_unregister(pchg->charger);
+power_supply_unregister(pchg->charger);
 		return -EPERM;
 	}
 
@@ -436,8 +436,8 @@ static int lp8788_psy_register(struct platform_device *pdev,
 
 static void lp8788_psy_unregister(struct lp8788_charger *pchg)
 {
-	power_supply_unregister(pchg->battery);
-	power_supply_unregister(pchg->charger);
+power_supply_unregister(pchg->battery);
+power_supply_unregister(pchg->charger);
 }
 
 static void lp8788_charger_event(struct work_struct *work)
@@ -481,8 +481,8 @@ static irqreturn_t lp8788_charger_irq_thread(int virq, void *ptr)
 	case LP8788_INT_EOC:
 	case LP8788_INT_BATT_LOW:
 	case LP8788_INT_NO_BATT:
-		power_supply_changed(pchg->charger);
-		power_supply_changed(pchg->battery);
+power_supply_changed(pchg->charger);
+power_supply_changed(pchg->battery);
 		break;
 	default:
 		break;
@@ -599,7 +599,7 @@ static void lp8788_setup_adc_channel(struct device *dev,
 	if (!pdata)
 		return;
 
-	/* ADC channel for battery voltage */
+/* ADC channel for battery voltage */
 	chan = devm_iio_channel_get(dev, pdata->adc_vbatt);
 	pchg->chan[LP8788_VBATT] = IS_ERR(chan) ? NULL : chan;
 

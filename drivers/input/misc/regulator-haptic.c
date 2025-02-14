@@ -67,11 +67,11 @@ static int regulator_haptic_set_voltage(struct regulator_haptic *haptic,
 	volt_mag_multi = (u64)(haptic->max_volt - haptic->min_volt) * magnitude;
 	intensity = (unsigned int)(volt_mag_multi >> MAX_MAGNITUDE_SHIFT);
 
-	error = regulator_set_voltage(haptic->regulator,
+error = regulator_set_voltage(haptic->regulator,
 				      intensity + haptic->min_volt,
 				      haptic->max_volt);
 	if (error) {
-		dev_err(haptic->dev, "cannot set regulator voltage to %d: %d\n",
+dev_err(haptic->dev, "cannot set regulator voltage to %d: %d\n",
 			intensity + haptic->min_volt, error);
 		return error;
 	}
@@ -89,7 +89,7 @@ static void regulator_haptic_work(struct work_struct *work)
 	mutex_lock(&haptic->mutex);
 
 	if (!haptic->suspended)
-		regulator_haptic_set_voltage(haptic, haptic->magnitude);
+regulator_haptic_set_voltage(haptic, haptic->magnitude);
 
 	mutex_unlock(&haptic->mutex);
 }
@@ -113,7 +113,7 @@ static void regulator_haptic_close(struct input_dev *input)
 	struct regulator_haptic *haptic = input_get_drvdata(input);
 
 	cancel_work_sync(&haptic->work);
-	regulator_haptic_set_voltage(haptic, 0);
+regulator_haptic_set_voltage(haptic, 0);
 }
 
 static int __maybe_unused
@@ -214,7 +214,7 @@ static int __maybe_unused regulator_haptic_suspend(struct device *dev)
 	if (error)
 		return error;
 
-	regulator_haptic_set_voltage(haptic, 0);
+regulator_haptic_set_voltage(haptic, 0);
 
 	haptic->suspended = true;
 
@@ -235,7 +235,7 @@ static int __maybe_unused regulator_haptic_resume(struct device *dev)
 
 	magnitude = ACCESS_ONCE(haptic->magnitude);
 	if (magnitude)
-		regulator_haptic_set_voltage(haptic, magnitude);
+regulator_haptic_set_voltage(haptic, magnitude);
 
 	mutex_unlock(&haptic->mutex);
 

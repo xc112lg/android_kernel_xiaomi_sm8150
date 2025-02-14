@@ -424,7 +424,7 @@ enum smb_irq_index {
 	HIGH_DUTY_CYCLE_IRQ,
 	INPUT_CURRENT_LIMITING_IRQ,
 	CONCURRENT_MODE_DISABLE_IRQ,
-	SWITCHER_POWER_OK_IRQ,
+SWITCHER_POWER_OK_IRQ,
 	/* BATIF */
 	BAT_TEMP_IRQ,
 	ALL_CHNL_CONV_DONE_IRQ,
@@ -512,7 +512,7 @@ enum quick_charge_type {
 };
 
 struct quick_charge {
-	enum power_supply_type adap_type;
+enum power_supply_type adap_type;
 	enum quick_charge_type adap_cap;
 };
 #endif
@@ -606,18 +606,18 @@ struct smb_chg_param {
 };
 
 struct buck_boost_freq {
-	int freq_khz;
+int freq_khz;
 	u8 val;
 };
 
 struct smb_chg_freq {
-	unsigned int		freq_5V;
-	unsigned int		freq_6V_8V;
-	unsigned int		freq_9V;
-	unsigned int		freq_12V;
-	unsigned int		freq_removal;
-	unsigned int		freq_below_otg_threshold;
-	unsigned int		freq_above_otg_threshold;
+unsigned int		freq_5V;
+unsigned int		freq_6V_8V;
+unsigned int		freq_9V;
+unsigned int		freq_12V;
+unsigned int		freq_removal;
+unsigned int		freq_below_otg_threshold;
+unsigned int		freq_above_otg_threshold;
 };
 
 struct smb_params {
@@ -630,13 +630,13 @@ struct smb_params {
 	struct smb_chg_param	dc_icl;
 	struct smb_chg_param	jeita_cc_comp_hot;
 	struct smb_chg_param	jeita_cc_comp_cold;
-	struct smb_chg_param	freq_switcher;
+struct smb_chg_param	freq_switcher;
 	struct smb_chg_param	aicl_5v_threshold;
 	struct smb_chg_param	aicl_cont_threshold;
 };
 
 struct parallel_params {
-	struct power_supply	*psy;
+struct power_supply	*psy;
 };
 
 struct smb_iio {
@@ -667,7 +667,7 @@ struct smb_charger {
 	int			*debug_mask;
 	int			*pd_disabled;
 	enum smb_mode		mode;
-	struct smb_chg_freq	chg_freq;
+struct smb_chg_freq	chg_freq;
 	int			otg_delay_ms;
 	int			*weak_chg_icl_ua;
 	bool			pd_not_supported;
@@ -690,33 +690,33 @@ struct smb_charger {
 	struct mutex		dcin_aicl_lock;
 	struct mutex		dpdm_lock;
 
-	/* power supplies */
-	struct power_supply		*batt_psy;
-	struct power_supply		*usb_psy;
-	struct power_supply		*dc_psy;
-	struct power_supply		*bms_psy;
+/* power supplies */
+struct power_supply		*batt_psy;
+struct power_supply		*usb_psy;
+struct power_supply		*dc_psy;
+struct power_supply		*bms_psy;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	struct power_supply_desc		usb_psy_desc;
+struct power_supply_desc		usb_psy_desc;
 #endif
-	struct power_supply		*usb_main_psy;
-	struct power_supply		*usb_port_psy;
-	struct power_supply		*wls_psy;
+struct power_supply		*usb_main_psy;
+struct power_supply		*usb_port_psy;
+struct power_supply		*wls_psy;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	struct power_supply		*idtp_psy;
-	struct power_supply		*wip_psy;
-	struct power_supply		*wireless_psy;
-	struct power_supply		*wls_chip_psy;
+struct power_supply		*idtp_psy;
+struct power_supply		*wip_psy;
+struct power_supply		*wireless_psy;
+struct power_supply		*wls_chip_psy;
 #endif
-	struct power_supply		*cp_psy;
+struct power_supply		*cp_psy;
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
-	struct power_supply		*ln_psy;
-	struct power_supply		*halo_psy;
-	struct power_supply		*cp_chip_psy;
-	struct power_supply		*batt_verify_psy;
+struct power_supply		*ln_psy;
+struct power_supply		*halo_psy;
+struct power_supply		*cp_chip_psy;
+struct power_supply		*batt_verify_psy;
 #endif
-	enum power_supply_type		real_charger_type;
+enum power_supply_type		real_charger_type;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
-	enum power_supply_type		wireless_charger_type;
+enum power_supply_type		wireless_charger_type;
 #endif
 
 	/* dual role class */
@@ -837,8 +837,8 @@ struct smb_charger {
 #endif
 
 	/* pd */
-	int			voltage_min_uv;
-	int			voltage_max_uv;
+int			voltage_min_uv;
+int			voltage_max_uv;
 	int			pd_active;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
@@ -931,7 +931,7 @@ struct smb_charger {
 	int			auto_recharge_vbat;
 #endif
 	enum sink_src_mode	sink_src_mode;
-	enum power_supply_typec_power_role power_role;
+enum power_supply_typec_power_role power_role;
 	enum jeita_cfg_stat	jeita_configured;
 	int			charger_temp_max;
 	int			smb_temp_max;
@@ -1006,7 +1006,7 @@ struct smb_charger {
 	u32			wa_flags;
 	int			boost_current_ua;
 	int                     qc2_max_pulses;
-	enum qc2_non_comp_voltage qc2_unsupported_voltage;
+enum qc2_non_comp_voltage qc2_unsupported_voltage;
 	bool			dbc_usbov;
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 	bool			fake_usb_insertion;
@@ -1035,7 +1035,7 @@ struct smb_charger {
 	bool			is_qc_class_a;
 	bool			is_qc_class_b;
 	bool			raise_vbus_to_detect;
-	bool			detect_low_power_qc3_charger;
+bool			detect_low_power_qc3_charger;
 	bool			high_vbus_detected;
 #endif
 
@@ -1069,7 +1069,7 @@ struct smb_charger {
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 	int			flag_cp_en;
 #endif
-	int			power_good_en;
+int			power_good_en;
 	int			fake_dc_on;
 	int			fake_dc_flag;
 	int			last_batt_stat;
@@ -1137,7 +1137,7 @@ struct smb_charger {
 	bool			qc3p5_authenticated;
 	bool			qc3p5_authentication_started;
 	bool			qc3p5_dp_tune_rapidly;
-	int 			qc3p5_power_limit_w;
+int 			qc3p5_power_limit_w;
 
 	bool			pps_fcc_therm_work_disabled;
 	int			wls_cp_vin;
@@ -1175,7 +1175,7 @@ int smblib_mapping_cc_delta_from_field_value(struct smb_chg_param *param,
 int smblib_set_chg_freq(struct smb_chg_param *param,
 				int val_u, u8 *val_raw);
 int smblib_set_prop_boost_current(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_aicl_cont_threshold(struct smb_chg_param *param,
 				int val_u, u8 *val_raw);
 int smblib_vbus_regulator_enable(struct regulator_dev *rdev);
@@ -1212,151 +1212,151 @@ irqreturn_t usbin_ov_irq_handler(int irq, void *data);
 irqreturn_t sdam_sts_change_irq_handler(int irq, void *data);
 irqreturn_t smb_micro_usb_irq_handler(int irq, void *data);
 int smblib_get_prop_input_suspend(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_batt_present(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_batt_capacity(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smblib_get_prop_batt_capacity_level(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 #endif
 int smblib_get_prop_batt_status(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_batt_charge_type(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_batt_charge_done(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_batt_health(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_system_temp_level(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_system_temp_level_max(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 int smblib_get_prop_dc_temp_level(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 #endif
 int smblib_get_prop_input_current_limited(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_batt_iterm(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_input_suspend(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_batt_capacity(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_batt_status(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_system_temp_level(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 int smblib_set_prop_dc_temp_level(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #endif
 int smblib_set_prop_input_current_limited(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 
 int smblib_get_prop_dc_present(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_dc_online(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_dc_current_max(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_dc_current_max(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_get_prop_dc_voltage_now(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_dc_voltage_max(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_voltage_wls_output(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_voltage_wls_output(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 int smblib_get_prop_wireless_version(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 #endif
 int smblib_set_prop_dc_reset(struct smb_charger *chg);
 int smblib_get_prop_usb_present(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_usb_online(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_usb_suspend(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_usb_voltage_max(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_usb_voltage_max_design(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_usb_voltage_max_limit(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_get_prop_usb_voltage_now(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_low_power(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_usb_current_now(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_typec_cc_orientation(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_typec_select_rp(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_typec_power_role(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_input_current_settled(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_input_voltage_settled(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_pd_in_hard_reset(struct smb_charger *chg,
-			       union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_pe_start(struct smb_charger *chg,
-			       union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_charger_temp(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_die_health(struct smb_charger *chg);
 int smblib_get_prop_smb_health(struct smb_charger *chg);
 int smblib_get_prop_connector_health(struct smb_charger *chg);
 int smblib_get_prop_input_current_max(struct smb_charger *chg,
-				  union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_thermal_overheat(struct smb_charger *chg,
 			       int therm_overheat);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smblib_get_prop_vph_voltage_now(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_connector_temp(struct smb_charger *chg);
 int smblib_set_vbus_disable(struct smb_charger *chg,
 					bool disable);
 #endif
 int smblib_get_skin_temp_status(struct smb_charger *chg);
 int smblib_get_prop_vph_voltage_now(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_pd_current_max(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_sdp_current_max(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_pd_voltage_max(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_pd_voltage_min(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_typec_power_role(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_typec_select_rp(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_pd_active(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_pd_in_hard_reset(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_ship_mode(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_rechg_soc_thresh(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smblib_set_prop_rechg_vbat_thresh(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #endif
 void smblib_suspend_on_debug_battery(struct smb_charger *chg);
 int smblib_rerun_apsd_if_required(struct smb_charger *chg);
 void smblib_rerun_apsd(struct smb_charger *chg);
 int smblib_get_prop_fcc_delta(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_thermal_threshold(struct smb_charger *chg, u16 addr, int *val);
 int smblib_dp_dm(struct smb_charger *chg, int val);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
@@ -1375,13 +1375,13 @@ int smblib_get_charge_current_limit(struct smb_charger *chg,
 				int *total_current_ua);
 #endif
 int smblib_get_prop_pr_swap_in_progress(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_pr_swap_in_progress(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_force_dr_mode(struct smb_charger *chg, int mode);
 int smblib_get_prop_from_bms(struct smb_charger *chg,
-				enum power_supply_property psp,
-				union power_supply_propval *val);
+enum power_supply_property psp,
+union power_supply_propval *val);
 int smblib_get_iio_channel(struct smb_charger *chg, const char *propname,
 					struct iio_channel **chan);
 int smblib_read_iio_channel(struct smb_charger *chg, struct iio_channel *chan,
@@ -1392,45 +1392,45 @@ enum alarmtimer_restart smblib_lpd_recheck_timer(struct alarm *alarm,
 				ktime_t time);
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 int smblib_set_prop_wireless_wakelock(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 
 int smblib_set_prop_type_recheck(struct smb_charger *chg,
-				 const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_get_prop_type_recheck(struct smb_charger *chg,
-				 union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_quick_charge_type(struct smb_charger *chg);
 int smblib_set_wirless_cp_enable(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_wirless_power_good_enable(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smblib_set_fastcharge_mode(struct smb_charger *chg, bool enable);
 int smblib_get_fastcharge_mode(struct smb_charger *chg);
 int smblib_set_sw_disable_dc_en(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #endif
 int smblib_get_prop_liquid_status(struct smb_charger *chg,
-					union power_supply_propval *val);
+union power_supply_propval *val);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smblib_set_prop_tx_mac(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #ifdef CONFIG_MACH_XIAOMI_NABU
 void smblib_set_prop_pen_mac(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #endif
 int smblib_set_prop_rx_cr(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_rx_cep(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_set_prop_bt_state(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #endif
 
 bool smblib_support_liquid_feature(struct smb_charger *chg);
 
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smblib_set_prop_battery_charging_enabled(struct smb_charger *chg,
-				const union power_supply_propval *val);
+const union power_supply_propval *val);
 #endif
 #endif
 int smblib_toggle_smb_en(struct smb_charger *chg, int toggle);
@@ -1439,19 +1439,19 @@ void smblib_hvdcp_exit_config(struct smb_charger *chg);
 void smblib_apsd_enable(struct smb_charger *chg, bool enable);
 int smblib_force_vbus_voltage(struct smb_charger *chg, u8 val);
 int smblib_get_irq_status(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
 int smb5_config_iterm(struct smb_charger *chg, int hi_thresh, int low_thresh);
 int smblib_get_prop_battery_charging_enabled(struct smb_charger *chg,
-				union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_battery_charging_limited(struct smb_charger *chg,
-					union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_get_prop_battery_slowly_charging(struct smb_charger *chg,
-					union power_supply_propval *val);
+union power_supply_propval *val);
 int smblib_set_prop_battery_slowly_charging(struct smb_charger *chg,
-					const union power_supply_propval *val);
+const union power_supply_propval *val);
 int smblib_get_prop_battery_bq_input_suspend(struct smb_charger *chg,
-					union power_supply_propval *val);
+union power_supply_propval *val);
 #endif
 int smblib_get_qc3_main_icl_offset(struct smb_charger *chg, int *offset_ua);
 #if defined(CONFIG_MACH_XIAOMI_VAYU) || defined(CONFIG_MACH_XIAOMI_NABU)
@@ -1462,6 +1462,6 @@ int smblib_init(struct smb_charger *chg);
 int smblib_deinit(struct smb_charger *chg);
 #ifdef CONFIG_MACH_XIAOMI_NABU
 int smblib_get_prop_wireless_fw_version(struct smb_charger *chg,
-					union power_supply_propval *val);
+union power_supply_propval *val);
 #endif
 #endif /* __SMB5_CHARGER_H */

@@ -46,7 +46,7 @@ enum cz_scratch_entry {
 	CZ_SCRATCH_ENTRY_UCODE_ID_RLC_SRM_DRAM,
 	CZ_SCRATCH_ENTRY_UCODE_ID_DMCU_ERAM,
 	CZ_SCRATCH_ENTRY_UCODE_ID_DMCU_IRAM,
-	CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING,
+CZ_SCRATCH_ENTRY_UCODE_ID_POWER_PROFILING,
 	CZ_SCRATCH_ENTRY_DATA_ID_SDMA_HALT,
 	CZ_SCRATCH_ENTRY_DATA_ID_SYS_CLOCKGATING,
 	CZ_SCRATCH_ENTRY_DATA_ID_SDMA_RING_REGS,
@@ -80,7 +80,7 @@ struct cz_smumgr {
 	uint8_t scratch_buffer_length;
 	uint16_t toc_entry_used_count;
 	uint16_t toc_entry_initialize_index;
-	uint16_t toc_entry_power_profiling_index;
+uint16_t toc_entry_power_profiling_index;
 	uint16_t toc_entry_aram;
 	uint16_t toc_entry_ih_register_restore_task_index;
 	uint16_t toc_entry_clock_table;

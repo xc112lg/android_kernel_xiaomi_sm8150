@@ -80,8 +80,8 @@ static int __init add_legacy_port(struct device_node *np, int want_index,
 	u32 shift = 0;
 	int index;
 
-	/* get clock freq. if present */
-	clk = of_get_property(np, "clock-frequency", NULL);
+/* get clock freq. if present */
+clk = of_get_property(np, "clock-frequency", NULL);
 	if (clk && *clk)
 		clock = be32_to_cpup(clk);
 
@@ -166,10 +166,10 @@ static int __init add_legacy_soc_port(struct device_node *np,
 	const __be32 *addrp;
 	struct device_node *tsi = of_get_parent(np);
 
-	/* We only support ports that have a clock frequency properly
+/* We only support ports that have a clock frequency properly
 	 * encoded in the device-tree.
 	 */
-	if (of_get_property(np, "clock-frequency", NULL) == NULL)
+if (of_get_property(np, "clock-frequency", NULL) == NULL)
 		return -1;
 
 	/* if reg-offset don't try to use it */
@@ -234,7 +234,7 @@ static int __init add_legacy_isa_port(struct device_node *np,
 	 *
 	 * Note: Don't even try on P8 lpc, we know it's not directly mapped
 	 */
-	if (!of_device_is_compatible(isa_brg, "ibm,power8-lpc") ||
+if (!of_device_is_compatible(isa_brg, "ibm,power8-lpc") ||
 	    of_get_property(isa_brg, "ranges", NULL)) {
 		taddr = of_translate_address(np, reg);
 		if (taddr == OF_BAD_ADDR)
@@ -259,14 +259,14 @@ static int __init add_legacy_pci_port(struct device_node *np,
 
 	DBG(" -> add_legacy_pci_port(%pOF)\n", np);
 
-	/* We only support ports that have a clock frequency properly
+/* We only support ports that have a clock frequency properly
 	 * encoded in the device-tree (that is have an fcode). Anything
 	 * else can't be used that early and will be normally probed by
 	 * the generic 8250_pci driver later on. The reason is that 8250
 	 * compatible UARTs on PCI need all sort of quirks (port offsets
 	 * etc...) that this code doesn't know about
 	 */
-	if (of_get_property(np, "clock-frequency", NULL) == NULL)
+if (of_get_property(np, "clock-frequency", NULL) == NULL)
 		return -1;
 
 	/* Get the PCI address. Assume BAR 0 */

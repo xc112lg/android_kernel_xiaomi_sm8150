@@ -149,7 +149,7 @@ typedef struct SMU7_Firmware_Header SMU7_Firmware_Header;
 #define SMU7_FIRMWARE_HEADER_LOCATION 0x20000
 
 enum  DisplayConfig {
-    PowerDown = 1,
+PowerDown = 1,
     DP54x4,
     DP54x2,
     DP54x1,

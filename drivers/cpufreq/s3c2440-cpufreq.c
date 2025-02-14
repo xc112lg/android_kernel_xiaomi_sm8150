@@ -4,7 +4,7 @@
  *	Ben Dooks <ben@simtec.co.uk>
  *	Vincent Sanders <vince@simtec.co.uk>
  *
- * S3C2440/S3C2442 CPU Frequency scaling
+* S3C2440/S3C2442 CPU Frequency scaling
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -47,10 +47,10 @@ static inline int within_khz(unsigned long a, unsigned long b)
 }
 
 /**
- * s3c2440_cpufreq_calcdivs - calculate divider settings
- * @cfg: The cpu frequency settings.
+* s3c2440_cpufreq_calcdivs - calculate divider settings
+* @cfg: The cpu frequency settings.
  *
- * Calcualte the divider values for the given frequency settings
+* Calcualte the divider values for the given frequency settings
  * specified in @cfg. The values are stored in @cfg for later use
  * by the relevant set routine if the request settings can be reached.
  */
@@ -60,11 +60,11 @@ static int s3c2440_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	unsigned long hclk, fclk, armclk;
 	unsigned long hclk_max;
 
-	fclk = cfg->freq.fclk;
-	armclk = cfg->freq.armclk;
+fclk = cfg->freq.fclk;
+armclk = cfg->freq.armclk;
 	hclk_max = cfg->max.hclk;
 
-	s3c_freq_dbg("%s: fclk is %lu, armclk %lu, max hclk %lu\n",
+s3c_freq_dbg("%s: fclk is %lu, armclk %lu, max hclk %lu\n",
 		     __func__, fclk, armclk, hclk_max);
 
 	if (armclk > fclk) {
@@ -85,7 +85,7 @@ static int s3c2440_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 			break;
 	}
 
-	s3c_freq_dbg("%s: hclk %lu, div %d\n", __func__, hclk, hdiv);
+s3c_freq_dbg("%s: hclk %lu, div %d\n", __func__, hclk, hdiv);
 
 	if (hdiv > 8)
 		goto invalid;
@@ -95,7 +95,7 @@ static int s3c2440_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	if ((hclk / pdiv) > cfg->max.pclk)
 		pdiv++;
 
-	s3c_freq_dbg("%s: pdiv %d\n", __func__, pdiv);
+s3c_freq_dbg("%s: pdiv %d\n", __func__, pdiv);
 
 	if (pdiv > 2)
 		goto invalid;
@@ -116,7 +116,7 @@ static int s3c2440_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 	} else
 		cfg->divs.dvs = 0;
 
-	cfg->freq.armclk = armclk;
+cfg->freq.armclk = armclk;
 
 	/* store the result, and then return */
 
@@ -133,17 +133,17 @@ static int s3c2440_cpufreq_calcdivs(struct s3c_cpufreq_config *cfg)
 			   S3C2440_CAMDIVN_HCLK4_HALF)
 
 /**
- * s3c2440_cpufreq_setdivs - set the cpu frequency divider settings
- * @cfg: The cpu frequency settings.
+* s3c2440_cpufreq_setdivs - set the cpu frequency divider settings
+* @cfg: The cpu frequency settings.
  *
  * Set the divisors from the settings in @cfg, which where generated
- * during the calculation phase by s3c2440_cpufreq_calcdivs().
+* during the calculation phase by s3c2440_cpufreq_calcdivs().
  */
 static void s3c2440_cpufreq_setdivs(struct s3c_cpufreq_config *cfg)
 {
 	unsigned long clkdiv, camdiv;
 
-	s3c_freq_dbg("%s: divsiors: h=%d, p=%d\n", __func__,
+s3c_freq_dbg("%s: divsiors: h=%d, p=%d\n", __func__,
 		     cfg->divs.h_divisor, cfg->divs.p_divisor);
 
 	clkdiv = __raw_readl(S3C2410_CLKDIVN);
@@ -183,7 +183,7 @@ static void s3c2440_cpufreq_setdivs(struct s3c_cpufreq_config *cfg)
 	/* todo - set pclk. */
 
 	/* Write the divisors first with hclk intentionally halved so that
-	 * when we write clkdiv we will under-frequency instead of over. We
+* when we write clkdiv we will under-frequency instead of over. We
 	 * then make a short delay and remove the hclk halving if necessary.
 	 */
 
@@ -198,21 +198,21 @@ static void s3c2440_cpufreq_setdivs(struct s3c_cpufreq_config *cfg)
 
 static int run_freq_for(unsigned long max_hclk, unsigned long fclk,
 			int *divs,
-			struct cpufreq_frequency_table *table,
+struct cpufreq_frequency_table *table,
 			size_t table_size)
 {
-	unsigned long freq;
+unsigned long freq;
 	int index = 0;
 	int div;
 
 	for (div = *divs; div > 0; div = *divs++) {
-		freq = fclk / div;
+freq = fclk / div;
 
-		if (freq > max_hclk && div != 1)
+if (freq > max_hclk && div != 1)
 			continue;
 
-		freq /= 1000; /* table is in kHz */
-		index = s3c_cpufreq_addfreq(table, index, table_size, freq);
+freq /= 1000; /* table is in kHz */
+index = s3c_cpufreq_addfreq(table, index, table_size, freq);
 		if (index < 0)
 			break;
 	}
@@ -223,7 +223,7 @@ static int run_freq_for(unsigned long max_hclk, unsigned long fclk,
 static int hclk_divs[] = { 1, 2, 3, 4, 6, 8, -1 };
 
 static int s3c2440_cpufreq_calctable(struct s3c_cpufreq_config *cfg,
-				     struct cpufreq_frequency_table *table,
+struct cpufreq_frequency_table *table,
 				     size_t table_size)
 {
 	int ret;
@@ -231,12 +231,12 @@ static int s3c2440_cpufreq_calctable(struct s3c_cpufreq_config *cfg,
 	WARN_ON(cfg->info == NULL);
 	WARN_ON(cfg->board == NULL);
 
-	ret = run_freq_for(cfg->info->max.hclk,
+ret = run_freq_for(cfg->info->max.hclk,
 			   cfg->info->max.fclk,
 			   hclk_divs,
 			   table, table_size);
 
-	s3c_freq_dbg("%s: returning %d\n", __func__, ret);
+s3c_freq_dbg("%s: returning %d\n", __func__, ret);
 
 	return ret;
 }
@@ -258,52 +258,52 @@ static struct s3c_cpufreq_info s3c2440_cpufreq_info = {
 	.get_iotiming	= s3c2410_iotiming_get,
 	.set_fvco	= s3c2410_set_fvco,
 
-	.set_refresh	= s3c2410_cpufreq_setrefresh,
-	.set_divs	= s3c2440_cpufreq_setdivs,
-	.calc_divs	= s3c2440_cpufreq_calcdivs,
-	.calc_freqtable	= s3c2440_cpufreq_calctable,
+.set_refresh	= s3c2410_cpufreq_setrefresh,
+.set_divs	= s3c2440_cpufreq_setdivs,
+.calc_divs	= s3c2440_cpufreq_calcdivs,
+.calc_freqtable	= s3c2440_cpufreq_calctable,
 
-	.debug_io_show  = s3c_cpufreq_debugfs_call(s3c2410_iotiming_debugfs),
+.debug_io_show  = s3c_cpufreq_debugfs_call(s3c2410_iotiming_debugfs),
 };
 
 static int s3c2440_cpufreq_add(struct device *dev,
 			       struct subsys_interface *sif)
 {
-	xtal = s3c_cpufreq_clk_get(NULL, "xtal");
-	hclk = s3c_cpufreq_clk_get(NULL, "hclk");
-	fclk = s3c_cpufreq_clk_get(NULL, "fclk");
-	armclk = s3c_cpufreq_clk_get(NULL, "armclk");
+xtal = s3c_cpufreq_clk_get(NULL, "xtal");
+hclk = s3c_cpufreq_clk_get(NULL, "hclk");
+fclk = s3c_cpufreq_clk_get(NULL, "fclk");
+armclk = s3c_cpufreq_clk_get(NULL, "armclk");
 
 	if (IS_ERR(xtal) || IS_ERR(hclk) || IS_ERR(fclk) || IS_ERR(armclk)) {
 		pr_err("%s: failed to get clocks\n", __func__);
 		return -ENOENT;
 	}
 
-	return s3c_cpufreq_register(&s3c2440_cpufreq_info);
+return s3c_cpufreq_register(&s3c2440_cpufreq_info);
 }
 
 static struct subsys_interface s3c2440_cpufreq_interface = {
-	.name		= "s3c2440_cpufreq",
+.name		= "s3c2440_cpufreq",
 	.subsys		= &s3c2440_subsys,
-	.add_dev	= s3c2440_cpufreq_add,
+.add_dev	= s3c2440_cpufreq_add,
 };
 
 static int s3c2440_cpufreq_init(void)
 {
-	return subsys_interface_register(&s3c2440_cpufreq_interface);
+return subsys_interface_register(&s3c2440_cpufreq_interface);
 }
 
 /* arch_initcall adds the clocks we need, so use subsys_initcall. */
 subsys_initcall(s3c2440_cpufreq_init);
 
 static struct subsys_interface s3c2442_cpufreq_interface = {
-	.name		= "s3c2442_cpufreq",
+.name		= "s3c2442_cpufreq",
 	.subsys		= &s3c2442_subsys,
-	.add_dev	= s3c2440_cpufreq_add,
+.add_dev	= s3c2440_cpufreq_add,
 };
 
 static int s3c2442_cpufreq_init(void)
 {
-	return subsys_interface_register(&s3c2442_cpufreq_interface);
+return subsys_interface_register(&s3c2442_cpufreq_interface);
 }
 subsys_initcall(s3c2442_cpufreq_init);

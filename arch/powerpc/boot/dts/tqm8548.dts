@@ -34,7 +34,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8548@0 {
+PowerPC,8548@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;	// 32 bytes
@@ -55,7 +55,7 @@
 		#size-cells = <1>;
 		device_type = "soc";
 		ranges = <0x0 0xe0000000 0x100000>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 		compatible = "fsl,mpc8548-immr", "simple-bus";
 
 		ecm-law@0 {
@@ -302,7 +302,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;	// reg base, size
-			clock-frequency = <0>;	// should we fill in in uboot?
+clock-frequency = <0>;	// should we fill in in uboot?
 			current-speed = <115200>;
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
@@ -313,7 +313,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;	// reg base, size
-			clock-frequency = <0>;	// should we fill in in uboot?
+clock-frequency = <0>;	// should we fill in in uboot?
 			current-speed = <115200>;
 			interrupts = <42 2>;
 			interrupt-parent = <&mpic>;
@@ -393,11 +393,11 @@
 			reg = <2 0x0 0x100>;
 			interrupts = <4 1>;
 			interrupt-parent = <&mpic>;
-			bosch,external-clock-frequency = <16000000>;
+bosch,external-clock-frequency = <16000000>;
 			bosch,disconnect-rx1-input;
 			bosch,disconnect-tx1-output;
 			bosch,iso-low-speed-mux;
-			bosch,clock-out-frequency = <16000000>;
+bosch,clock-out-frequency = <16000000>;
 		};
 
 		can@2,100 {
@@ -405,7 +405,7 @@
 			reg = <2 0x100 0x100>;
 			interrupts = <4 1>;
 			interrupt-parent = <&mpic>;
-			bosch,external-clock-frequency = <16000000>;
+bosch,external-clock-frequency = <16000000>;
 			bosch,disconnect-rx1-input;
 			bosch,disconnect-tx1-output;
 			bosch,iso-low-speed-mux;
@@ -443,7 +443,7 @@
 		compatible = "fsl,mpc8540-pcix", "fsl,mpc8540-pci";
 		device_type = "pci";
 		reg = <0xe0008000 0x1000>;
-		clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 		interrupt-map-mask = <0xf800 0x0 0x0 0x7>;
 		interrupt-map = <
 				/* IDSEL 28 */
@@ -478,7 +478,7 @@
 		bus-range = <0 0xff>;
 		ranges = <0x02000000 0 0xc0000000 0xc0000000 0 0x20000000
 			  0x01000000 0 0x00000000 0xef000000 0 0x08000000>;
-		clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
 		#address-cells = <3>;

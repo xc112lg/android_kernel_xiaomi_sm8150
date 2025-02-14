@@ -34,8 +34,8 @@ enum amd_pp_event;
 enum PEM_EventDataValid {
 	PEM_EventDataValid_RequestedStateID = 0,
 	PEM_EventDataValid_RequestedUILabel,
-	PEM_EventDataValid_NewPowerState,
-	PEM_EventDataValid_RequestedPowerSource,
+PEM_EventDataValid_NewPowerState,
+PEM_EventDataValid_RequestedPowerSource,
 	PEM_EventDataValid_RequestedClocks,
 	PEM_EventDataValid_CurrentTemperature,
 	PEM_EventDataValid_AsicBlocks,
@@ -90,8 +90,8 @@ struct pem_event_data {
 	unsigned long	valid_fields[100];
 	unsigned long   requested_state_id;
 	enum PP_StateUILabel requested_ui_label;
-	struct pp_power_state  *pnew_power_state;
-	enum pp_power_source  requested_power_source;
+struct pp_power_state  *pnew_power_state;
+enum pp_power_source  requested_power_source;
 	struct PP_Clocks       requested_clocks;
 	bool         skip_state_adjust_rules;
 	struct phm_asic_blocks  asic_blocks;

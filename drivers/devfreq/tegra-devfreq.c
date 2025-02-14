@@ -1,5 +1,5 @@
 /*
- * A devfreq driver for NVIDIA Tegra SoCs
+* A devfreq driver for NVIDIA Tegra SoCs
  *
  * Copyright (c) 2014 NVIDIA CORPORATION. All rights reserved.
  * Copyright (C) 2014 Google, Inc
@@ -85,7 +85,7 @@
 #define BUS_SATURATION_RATIO					25
 
 /**
- * struct tegra_devfreq_device_config - configuration specific to an ACTMON
+* struct tegra_devfreq_device_config - configuration specific to an ACTMON
  * device
  *
  * Coefficients and thresholds are percentages unless otherwise noted
@@ -94,7 +94,7 @@ struct tegra_devfreq_device_config {
 	u32		offset;
 	u32		irq_mask;
 
-	/* Factors applied to boost_freq every consecutive watermark breach */
+/* Factors applied to boost_freq every consecutive watermark breach */
 	unsigned int	boost_up_coeff;
 	unsigned int	boost_down_coeff;
 
@@ -103,9 +103,9 @@ struct tegra_devfreq_device_config {
 	unsigned int	boost_down_threshold;
 
 	/*
-	 * Threshold of activity (cycles) below which the CPU frequency isn't
+* Threshold of activity (cycles) below which the CPU frequency isn't
 	 * to be taken into account. This is to avoid increasing the EMC
-	 * frequency when the CPU is very busy but not accessing the bus often.
+* frequency when the CPU is very busy but not accessing the bus often.
 	 */
 	u32		avg_dependency_threshold;
 };
@@ -138,12 +138,12 @@ static struct tegra_devfreq_device_config actmon_device_configs[] = {
 };
 
 /**
- * struct tegra_devfreq_device - state specific to an ACTMON device
+* struct tegra_devfreq_device - state specific to an ACTMON device
  *
- * Frequencies are in kHz.
+* Frequencies are in kHz.
  */
 struct tegra_devfreq_device {
-	const struct tegra_devfreq_device_config *config;
+const struct tegra_devfreq_device_config *config;
 	void __iomem *regs;
 	spinlock_t lock;
 
@@ -151,33 +151,33 @@ struct tegra_devfreq_device {
 	u32 avg_count;
 
 	/*
-	 * Extra frequency to increase the target by due to consecutive
+* Extra frequency to increase the target by due to consecutive
 	 * watermark breaches.
 	 */
-	unsigned long boost_freq;
+unsigned long boost_freq;
 
-	/* Optimal frequency calculated from the stats for this device */
-	unsigned long target_freq;
+/* Optimal frequency calculated from the stats for this device */
+unsigned long target_freq;
 };
 
 struct tegra_devfreq {
-	struct devfreq		*devfreq;
+struct devfreq		*devfreq;
 
 	struct reset_control	*reset;
 	struct clk		*clock;
 	void __iomem		*regs;
 
 	struct clk		*emc_clock;
-	unsigned long		max_freq;
-	unsigned long		cur_freq;
+unsigned long		max_freq;
+unsigned long		cur_freq;
 	struct notifier_block	rate_change_nb;
 
-	struct tegra_devfreq_device devices[ARRAY_SIZE(actmon_device_configs)];
+struct tegra_devfreq_device devices[ARRAY_SIZE(actmon_device_configs)];
 };
 
 struct tegra_actmon_emc_ratio {
-	unsigned long cpu_freq;
-	unsigned long emc_freq;
+unsigned long cpu_freq;
+unsigned long emc_freq;
 };
 
 static struct tegra_actmon_emc_ratio actmon_emc_ratios[] = {
@@ -217,11 +217,11 @@ static unsigned long do_percent(unsigned long val, unsigned int pct)
 }
 
 static void tegra_devfreq_update_avg_wmark(struct tegra_devfreq *tegra,
-					   struct tegra_devfreq_device *dev)
+struct tegra_devfreq_device *dev)
 {
 	u32 avg = dev->avg_count;
-	u32 avg_band_freq = tegra->max_freq * ACTMON_DEFAULT_AVG_BAND / KHZ;
-	u32 band = avg_band_freq * ACTMON_SAMPLING_PERIOD;
+u32 avg_band_freq = tegra->max_freq * ACTMON_DEFAULT_AVG_BAND / KHZ;
+u32 band = avg_band_freq * ACTMON_SAMPLING_PERIOD;
 
 	device_writel(dev, avg + band, ACTMON_DEV_AVG_UPPER_WMARK);
 
@@ -230,9 +230,9 @@ static void tegra_devfreq_update_avg_wmark(struct tegra_devfreq *tegra,
 }
 
 static void tegra_devfreq_update_wmark(struct tegra_devfreq *tegra,
-				       struct tegra_devfreq_device *dev)
+struct tegra_devfreq_device *dev)
 {
-	u32 val = tegra->cur_freq * ACTMON_SAMPLING_PERIOD;
+u32 val = tegra->cur_freq * ACTMON_SAMPLING_PERIOD;
 
 	device_writel(dev, do_percent(val, dev->config->boost_up_threshold),
 		      ACTMON_DEV_UPPER_WMARK);
@@ -249,7 +249,7 @@ static void actmon_write_barrier(struct tegra_devfreq *tegra)
 }
 
 static void actmon_isr_device(struct tegra_devfreq *tegra,
-			      struct tegra_devfreq_device *dev)
+struct tegra_devfreq_device *dev)
 {
 	unsigned long flags;
 	u32 intr_status, dev_ctrl;
@@ -257,23 +257,23 @@ static void actmon_isr_device(struct tegra_devfreq *tegra,
 	spin_lock_irqsave(&dev->lock, flags);
 
 	dev->avg_count = device_readl(dev, ACTMON_DEV_AVG_COUNT);
-	tegra_devfreq_update_avg_wmark(tegra, dev);
+tegra_devfreq_update_avg_wmark(tegra, dev);
 
 	intr_status = device_readl(dev, ACTMON_DEV_INTR_STATUS);
 	dev_ctrl = device_readl(dev, ACTMON_DEV_CTRL);
 
 	if (intr_status & ACTMON_DEV_INTR_CONSECUTIVE_UPPER) {
 		/*
-		 * new_boost = min(old_boost * up_coef + step, max_freq)
+* new_boost = min(old_boost * up_coef + step, max_freq)
 		 */
-		dev->boost_freq = do_percent(dev->boost_freq,
+dev->boost_freq = do_percent(dev->boost_freq,
 					     dev->config->boost_up_coeff);
-		dev->boost_freq += ACTMON_BOOST_FREQ_STEP;
+dev->boost_freq += ACTMON_BOOST_FREQ_STEP;
 
 		dev_ctrl |= ACTMON_DEV_CTRL_CONSECUTIVE_BELOW_WMARK_EN;
 
-		if (dev->boost_freq >= tegra->max_freq)
-			dev->boost_freq = tegra->max_freq;
+if (dev->boost_freq >= tegra->max_freq)
+dev->boost_freq = tegra->max_freq;
 		else
 			dev_ctrl |= ACTMON_DEV_CTRL_CONSECUTIVE_ABOVE_WMARK_EN;
 	} else if (intr_status & ACTMON_DEV_INTR_CONSECUTIVE_LOWER) {
@@ -281,13 +281,13 @@ static void actmon_isr_device(struct tegra_devfreq *tegra,
 		 * new_boost = old_boost * down_coef
 		 * or 0 if (old_boost * down_coef < step / 2)
 		 */
-		dev->boost_freq = do_percent(dev->boost_freq,
+dev->boost_freq = do_percent(dev->boost_freq,
 					     dev->config->boost_down_coeff);
 
 		dev_ctrl |= ACTMON_DEV_CTRL_CONSECUTIVE_ABOVE_WMARK_EN;
 
-		if (dev->boost_freq < (ACTMON_BOOST_FREQ_STEP >> 1))
-			dev->boost_freq = 0;
+if (dev->boost_freq < (ACTMON_BOOST_FREQ_STEP >> 1))
+dev->boost_freq = 0;
 		else
 			dev_ctrl |= ACTMON_DEV_CTRL_CONSECUTIVE_BELOW_WMARK_EN;
 	}
@@ -295,7 +295,7 @@ static void actmon_isr_device(struct tegra_devfreq *tegra,
 	if (dev->config->avg_dependency_threshold) {
 		if (dev->avg_count >= dev->config->avg_dependency_threshold)
 			dev_ctrl |= ACTMON_DEV_CTRL_CONSECUTIVE_BELOW_WMARK_EN;
-		else if (dev->boost_freq == 0)
+else if (dev->boost_freq == 0)
 			dev_ctrl &= ~ACTMON_DEV_CTRL_CONSECUTIVE_BELOW_WMARK_EN;
 	}
 
@@ -310,7 +310,7 @@ static void actmon_isr_device(struct tegra_devfreq *tegra,
 
 static irqreturn_t actmon_isr(int irq, void *data)
 {
-	struct tegra_devfreq *tegra = data;
+struct tegra_devfreq *tegra = data;
 	bool handled = false;
 	unsigned int i;
 	u32 val;
@@ -327,17 +327,17 @@ static irqreturn_t actmon_isr(int irq, void *data)
 }
 
 static unsigned long actmon_cpu_to_emc_rate(struct tegra_devfreq *tegra,
-					    unsigned long cpu_freq)
+unsigned long cpu_freq)
 {
 	unsigned int i;
 	struct tegra_actmon_emc_ratio *ratio = actmon_emc_ratios;
 
 	for (i = 0; i < ARRAY_SIZE(actmon_emc_ratios); i++, ratio++) {
-		if (cpu_freq >= ratio->cpu_freq) {
-			if (ratio->emc_freq >= tegra->max_freq)
-				return tegra->max_freq;
+if (cpu_freq >= ratio->cpu_freq) {
+if (ratio->emc_freq >= tegra->max_freq)
+return tegra->max_freq;
 			else
-				return ratio->emc_freq;
+return ratio->emc_freq;
 		}
 	}
 
@@ -345,38 +345,38 @@ static unsigned long actmon_cpu_to_emc_rate(struct tegra_devfreq *tegra,
 }
 
 static void actmon_update_target(struct tegra_devfreq *tegra,
-				 struct tegra_devfreq_device *dev)
+struct tegra_devfreq_device *dev)
 {
-	unsigned long cpu_freq = 0;
-	unsigned long static_cpu_emc_freq = 0;
+unsigned long cpu_freq = 0;
+unsigned long static_cpu_emc_freq = 0;
 	unsigned int avg_sustain_coef;
 	unsigned long flags;
 
 	if (dev->config->avg_dependency_threshold) {
-		cpu_freq = cpufreq_get(0);
-		static_cpu_emc_freq = actmon_cpu_to_emc_rate(tegra, cpu_freq);
+cpu_freq = cpufreq_get(0);
+static_cpu_emc_freq = actmon_cpu_to_emc_rate(tegra, cpu_freq);
 	}
 
 	spin_lock_irqsave(&dev->lock, flags);
 
-	dev->target_freq = dev->avg_count / ACTMON_SAMPLING_PERIOD;
+dev->target_freq = dev->avg_count / ACTMON_SAMPLING_PERIOD;
 	avg_sustain_coef = 100 * 100 / dev->config->boost_up_threshold;
-	dev->target_freq = do_percent(dev->target_freq, avg_sustain_coef);
-	dev->target_freq += dev->boost_freq;
+dev->target_freq = do_percent(dev->target_freq, avg_sustain_coef);
+dev->target_freq += dev->boost_freq;
 
 	if (dev->avg_count >= dev->config->avg_dependency_threshold)
-		dev->target_freq = max(dev->target_freq, static_cpu_emc_freq);
+dev->target_freq = max(dev->target_freq, static_cpu_emc_freq);
 
 	spin_unlock_irqrestore(&dev->lock, flags);
 }
 
 static irqreturn_t actmon_thread_isr(int irq, void *data)
 {
-	struct tegra_devfreq *tegra = data;
+struct tegra_devfreq *tegra = data;
 
-	mutex_lock(&tegra->devfreq->lock);
-	update_devfreq(tegra->devfreq);
-	mutex_unlock(&tegra->devfreq->lock);
+mutex_lock(&tegra->devfreq->lock);
+update_devfreq(tegra->devfreq);
+mutex_unlock(&tegra->devfreq->lock);
 
 	return IRQ_HANDLED;
 }
@@ -385,23 +385,23 @@ static int tegra_actmon_rate_notify_cb(struct notifier_block *nb,
 				       unsigned long action, void *ptr)
 {
 	struct clk_notifier_data *data = ptr;
-	struct tegra_devfreq *tegra;
-	struct tegra_devfreq_device *dev;
+struct tegra_devfreq *tegra;
+struct tegra_devfreq_device *dev;
 	unsigned int i;
 	unsigned long flags;
 
 	if (action != POST_RATE_CHANGE)
 		return NOTIFY_OK;
 
-	tegra = container_of(nb, struct tegra_devfreq, rate_change_nb);
+tegra = container_of(nb, struct tegra_devfreq, rate_change_nb);
 
-	tegra->cur_freq = data->new_rate / KHZ;
+tegra->cur_freq = data->new_rate / KHZ;
 
 	for (i = 0; i < ARRAY_SIZE(tegra->devices); i++) {
 		dev = &tegra->devices[i];
 
 		spin_lock_irqsave(&dev->lock, flags);
-		tegra_devfreq_update_wmark(tegra, dev);
+tegra_devfreq_update_wmark(tegra, dev);
 		spin_unlock_irqrestore(&dev->lock, flags);
 	}
 
@@ -412,7 +412,7 @@ static int tegra_actmon_rate_notify_cb(struct notifier_block *nb,
 
 static void tegra_actmon_enable_interrupts(struct tegra_devfreq *tegra)
 {
-	struct tegra_devfreq_device *dev;
+struct tegra_devfreq_device *dev;
 	u32 val;
 	unsigned int i;
 
@@ -433,7 +433,7 @@ static void tegra_actmon_enable_interrupts(struct tegra_devfreq *tegra)
 
 static void tegra_actmon_disable_interrupts(struct tegra_devfreq *tegra)
 {
-	struct tegra_devfreq_device *dev;
+struct tegra_devfreq_device *dev;
 	u32 val;
 	unsigned int i;
 
@@ -453,17 +453,17 @@ static void tegra_actmon_disable_interrupts(struct tegra_devfreq *tegra)
 }
 
 static void tegra_actmon_configure_device(struct tegra_devfreq *tegra,
-					  struct tegra_devfreq_device *dev)
+struct tegra_devfreq_device *dev)
 {
 	u32 val = 0;
 
-	dev->target_freq = tegra->cur_freq;
+dev->target_freq = tegra->cur_freq;
 
-	dev->avg_count = tegra->cur_freq * ACTMON_SAMPLING_PERIOD;
+dev->avg_count = tegra->cur_freq * ACTMON_SAMPLING_PERIOD;
 	device_writel(dev, dev->avg_count, ACTMON_DEV_INIT_AVG);
 
-	tegra_devfreq_update_avg_wmark(tegra, dev);
-	tegra_devfreq_update_wmark(tegra, dev);
+tegra_devfreq_update_avg_wmark(tegra, dev);
+tegra_devfreq_update_wmark(tegra, dev);
 
 	device_writel(dev, ACTMON_COUNT_WEIGHT, ACTMON_DEV_COUNT_WEIGHT);
 	device_writel(dev, ACTMON_INTR_STATUS_CLEAR, ACTMON_DEV_INTR_STATUS);
@@ -485,16 +485,16 @@ static void tegra_actmon_configure_device(struct tegra_devfreq *tegra,
 static int tegra_devfreq_target(struct device *dev, unsigned long *freq,
 				u32 flags)
 {
-	struct tegra_devfreq *tegra = dev_get_drvdata(dev);
+struct tegra_devfreq *tegra = dev_get_drvdata(dev);
 	struct dev_pm_opp *opp;
 	unsigned long rate;
 
-	opp = devfreq_recommended_opp(dev, freq, flags);
+opp = devfreq_recommended_opp(dev, freq, flags);
 	if (IS_ERR(opp)) {
-		dev_err(dev, "Failed to find opp for %lu Hz\n", *freq);
+dev_err(dev, "Failed to find opp for %lu Hz\n", *freq);
 		return PTR_ERR(opp);
 	}
-	rate = dev_pm_opp_get_freq(opp);
+rate = dev_pm_opp_get_freq(opp);
 	dev_pm_opp_put(opp);
 
 	clk_set_min_rate(tegra->emc_clock, rate);
@@ -504,12 +504,12 @@ static int tegra_devfreq_target(struct device *dev, unsigned long *freq,
 }
 
 static int tegra_devfreq_get_dev_status(struct device *dev,
-					struct devfreq_dev_status *stat)
+struct devfreq_dev_status *stat)
 {
-	struct tegra_devfreq *tegra = dev_get_drvdata(dev);
-	struct tegra_devfreq_device *actmon_dev;
+struct tegra_devfreq *tegra = dev_get_drvdata(dev);
+struct tegra_devfreq_device *actmon_dev;
 
-	stat->current_frequency = tegra->cur_freq * KHZ;
+stat->current_frequency = tegra->cur_freq * KHZ;
 
 	/* To be used by the tegra governor */
 	stat->private_data = tegra;
@@ -525,7 +525,7 @@ static int tegra_devfreq_get_dev_status(struct device *dev,
 	stat->busy_time *= 100 / BUS_SATURATION_RATIO;
 
 	/* Number of cycles in a sampling period */
-	stat->total_time = ACTMON_SAMPLING_PERIOD * tegra->cur_freq;
+stat->total_time = ACTMON_SAMPLING_PERIOD * tegra->cur_freq;
 
 	stat->busy_time = min(stat->busy_time, stat->total_time);
 
@@ -534,25 +534,25 @@ static int tegra_devfreq_get_dev_status(struct device *dev,
 
 static struct devfreq_dev_profile tegra_devfreq_profile = {
 	.polling_ms	= 0,
-	.target		= tegra_devfreq_target,
-	.get_dev_status	= tegra_devfreq_get_dev_status,
+.target		= tegra_devfreq_target,
+.get_dev_status	= tegra_devfreq_get_dev_status,
 };
 
 static int tegra_governor_get_target(struct devfreq *devfreq,
-				     unsigned long *freq)
+unsigned long *freq)
 {
-	struct devfreq_dev_status *stat;
-	struct tegra_devfreq *tegra;
-	struct tegra_devfreq_device *dev;
-	unsigned long target_freq = 0;
+struct devfreq_dev_status *stat;
+struct tegra_devfreq *tegra;
+struct tegra_devfreq_device *dev;
+unsigned long target_freq = 0;
 	unsigned int i;
 	int err;
 
-	err = devfreq_update_stats(devfreq);
+err = devfreq_update_stats(devfreq);
 	if (err)
 		return err;
 
-	stat = &devfreq->last_status;
+stat = &devfreq->last_status;
 
 	tegra = stat->private_data;
 
@@ -561,10 +561,10 @@ static int tegra_governor_get_target(struct devfreq *devfreq,
 
 		actmon_update_target(tegra, dev);
 
-		target_freq = max(target_freq, dev->target_freq);
+target_freq = max(target_freq, dev->target_freq);
 	}
 
-	*freq = target_freq * KHZ;
+*freq = target_freq * KHZ;
 
 	return 0;
 }
@@ -572,29 +572,29 @@ static int tegra_governor_get_target(struct devfreq *devfreq,
 static int tegra_governor_event_handler(struct devfreq *devfreq,
 					unsigned int event, void *data)
 {
-	struct tegra_devfreq *tegra;
+struct tegra_devfreq *tegra;
 	int ret = 0;
 
-	tegra = dev_get_drvdata(devfreq->dev.parent);
+tegra = dev_get_drvdata(devfreq->dev.parent);
 
 	switch (event) {
-	case DEVFREQ_GOV_START:
-		devfreq_monitor_start(devfreq);
+case DEVFREQ_GOV_START:
+devfreq_monitor_start(devfreq);
 		tegra_actmon_enable_interrupts(tegra);
 		break;
 
-	case DEVFREQ_GOV_STOP:
+case DEVFREQ_GOV_STOP:
 		tegra_actmon_disable_interrupts(tegra);
-		devfreq_monitor_stop(devfreq);
+devfreq_monitor_stop(devfreq);
 		break;
 
-	case DEVFREQ_GOV_SUSPEND:
+case DEVFREQ_GOV_SUSPEND:
 		tegra_actmon_disable_interrupts(tegra);
-		devfreq_monitor_suspend(devfreq);
+devfreq_monitor_suspend(devfreq);
 		break;
 
-	case DEVFREQ_GOV_RESUME:
-		devfreq_monitor_resume(devfreq);
+case DEVFREQ_GOV_RESUME:
+devfreq_monitor_resume(devfreq);
 		tegra_actmon_enable_interrupts(tegra);
 		break;
 	}
@@ -604,14 +604,14 @@ static int tegra_governor_event_handler(struct devfreq *devfreq,
 
 static struct devfreq_governor tegra_devfreq_governor = {
 	.name = "tegra_actmon",
-	.get_target_freq = tegra_governor_get_target,
+.get_target_freq = tegra_governor_get_target,
 	.event_handler = tegra_governor_event_handler,
 };
 
 static int tegra_devfreq_probe(struct platform_device *pdev)
 {
-	struct tegra_devfreq *tegra;
-	struct tegra_devfreq_device *dev;
+struct tegra_devfreq *tegra;
+struct tegra_devfreq_device *dev;
 	struct resource *res;
 	unsigned int i;
 	unsigned long rate;
@@ -667,8 +667,8 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
 
 	reset_control_deassert(tegra->reset);
 
-	tegra->max_freq = clk_round_rate(tegra->emc_clock, ULONG_MAX) / KHZ;
-	tegra->cur_freq = clk_get_rate(tegra->emc_clock) / KHZ;
+tegra->max_freq = clk_round_rate(tegra->emc_clock, ULONG_MAX) / KHZ;
+tegra->cur_freq = clk_get_rate(tegra->emc_clock) / KHZ;
 
 	actmon_writel(tegra, ACTMON_SAMPLING_PERIOD - 1,
 		      ACTMON_GLB_PERIOD_CTRL);
@@ -682,7 +682,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
 		tegra_actmon_configure_device(tegra, dev);
 	}
 
-	for (rate = 0; rate <= tegra->max_freq * KHZ; rate++) {
+for (rate = 0; rate <= tegra->max_freq * KHZ; rate++) {
 		rate = clk_round_rate(tegra->emc_clock, rate);
 		dev_pm_opp_add(&pdev->dev, rate, 0);
 	}
@@ -697,15 +697,15 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
 
 	err = devm_request_threaded_irq(&pdev->dev, irq, actmon_isr,
 					actmon_thread_isr, IRQF_SHARED,
-					"tegra-devfreq", tegra);
+"tegra-devfreq", tegra);
 	if (err) {
 		dev_err(&pdev->dev, "Interrupt request failed\n");
 		return err;
 	}
 
-	tegra_devfreq_profile.initial_freq = clk_get_rate(tegra->emc_clock);
-	tegra->devfreq = devm_devfreq_add_device(&pdev->dev,
-						 &tegra_devfreq_profile,
+tegra_devfreq_profile.initial_freq = clk_get_rate(tegra->emc_clock);
+tegra->devfreq = devm_devfreq_add_device(&pdev->dev,
+&tegra_devfreq_profile,
 						 "tegra_actmon",
 						 NULL);
 
@@ -714,7 +714,7 @@ static int tegra_devfreq_probe(struct platform_device *pdev)
 
 static int tegra_devfreq_remove(struct platform_device *pdev)
 {
-	struct tegra_devfreq *tegra = platform_get_drvdata(pdev);
+struct tegra_devfreq *tegra = platform_get_drvdata(pdev);
 	int irq = platform_get_irq(pdev, 0);
 	u32 val;
 	unsigned int i;
@@ -744,11 +744,11 @@ static const struct of_device_id tegra_devfreq_of_match[] = {
 MODULE_DEVICE_TABLE(of, tegra_devfreq_of_match);
 
 static struct platform_driver tegra_devfreq_driver = {
-	.probe	= tegra_devfreq_probe,
-	.remove	= tegra_devfreq_remove,
+.probe	= tegra_devfreq_probe,
+.remove	= tegra_devfreq_remove,
 	.driver = {
-		.name = "tegra-devfreq",
-		.of_match_table = tegra_devfreq_of_match,
+.name = "tegra-devfreq",
+.of_match_table = tegra_devfreq_of_match,
 	},
 };
 
@@ -756,15 +756,15 @@ static int __init tegra_devfreq_init(void)
 {
 	int ret = 0;
 
-	ret = devfreq_add_governor(&tegra_devfreq_governor);
+ret = devfreq_add_governor(&tegra_devfreq_governor);
 	if (ret) {
 		pr_err("%s: failed to add governor: %d\n", __func__, ret);
 		return ret;
 	}
 
-	ret = platform_driver_register(&tegra_devfreq_driver);
+ret = platform_driver_register(&tegra_devfreq_driver);
 	if (ret)
-		devfreq_remove_governor(&tegra_devfreq_governor);
+devfreq_remove_governor(&tegra_devfreq_governor);
 
 	return ret;
 }
@@ -774,9 +774,9 @@ static void __exit tegra_devfreq_exit(void)
 {
 	int ret = 0;
 
-	platform_driver_unregister(&tegra_devfreq_driver);
+platform_driver_unregister(&tegra_devfreq_driver);
 
-	ret = devfreq_remove_governor(&tegra_devfreq_governor);
+ret = devfreq_remove_governor(&tegra_devfreq_governor);
 	if (ret)
 		pr_err("%s: failed to remove governor: %d\n", __func__, ret);
 }

@@ -1,5 +1,5 @@
 /*
- * SMP support for PowerNV machines.
+* SMP support for PowerNV machines.
  *
  * Copyright 2011 IBM Corp.
  *
@@ -186,7 +186,7 @@ static void pnv_smp_cpu_kill_self(void)
 		 * reason, so as to avoid a race where we wake up for
 		 * some other reason, find nothing and clear the interrupt
 		 * just as some other cpu is sending us an interrupt.
-		 * If we returned from power7_nap as a result of
+* If we returned from power7_nap as a result of
 		 * having finished executing in a KVM guest, then srr1
 		 * contains 0.
 		 */
@@ -222,7 +222,7 @@ static void pnv_smp_cpu_kill_self(void)
 static int pnv_cpu_bootable(unsigned int nr)
 {
 	/*
-	 * Starting with POWER8, the subcore logic relies on all threads of a
+* Starting with POWER8, the subcore logic relies on all threads of a
 	 * core being booted so that they can participate in split mode
 	 * switches. So on those machines we ignore the smt_enabled_at_boot
 	 * setting (smt-enabled on the kernel command line).
@@ -256,7 +256,7 @@ static void pnv_p9_dd1_cause_ipi(int cpu)
 	int this_cpu = get_cpu();
 
 	/*
-	 * POWER9 DD1 has a global addressed msgsnd, but for now we restrict
+* POWER9 DD1 has a global addressed msgsnd, but for now we restrict
 	 * IPIs to same core, because it requires additional synchronization
 	 * for inter-core doorbells which we do not implement.
 	 */
@@ -280,7 +280,7 @@ static void __init pnv_smp_probe(void)
 		WARN_ON(!ic_cause_ipi);
 
 		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-			if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 				smp_ops->cause_ipi = pnv_p9_dd1_cause_ipi;
 			else
 				smp_ops->cause_ipi = doorbell_global_ipi;

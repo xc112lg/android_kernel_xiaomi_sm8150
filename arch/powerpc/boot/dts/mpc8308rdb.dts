@@ -29,16 +29,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8308@0 {
+PowerPC,8308@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <16384>;
 			i-cache-size = <16384>;
-			timebase-frequency = <0>;	// from bootloader
-			bus-frequency = <0>;		// from bootloader
-			clock-frequency = <0>;		// from bootloader
+timebase-frequency = <0>;	// from bootloader
+bus-frequency = <0>;		// from bootloader
+clock-frequency = <0>;		// from bootloader
 		};
 	};
 
@@ -112,7 +112,7 @@
 		compatible = "fsl,mpc8308-immr", "simple-bus";
 		ranges = <0 0xe0000000 0x00100000>;
 		reg = <0xe0000000 0x00000200>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		i2c@3000 {
 			#address-cells = <1>;
@@ -209,7 +209,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <133333333>;
+clock-frequency = <133333333>;
 			interrupts = <9 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -219,7 +219,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <133333333>;
+clock-frequency = <133333333>;
 			interrupts = <10 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -292,7 +292,7 @@
 				 0 0 0 4 &ipic 1 8>;
 		interrupts = <0x1 0x8>;
 		interrupt-parent = <&ipic>;
-		clock-frequency = <0>;
+clock-frequency = <0>;
 
 		pcie@0 {
 			#address-cells = <3>;

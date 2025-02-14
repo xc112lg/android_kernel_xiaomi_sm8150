@@ -72,36 +72,36 @@
 /**
  * struct ad9832_state - driver instance specific data
  * @spi:		spi_device
- * @avdd:		supply regulator for the analog section
- * @dvdd:		supply regulator for the digital section
+* @avdd:		supply regulator for the analog section
+* @dvdd:		supply regulator for the digital section
  * @mclk:		external master clock
- * @ctrl_fp:		cached frequency/phase control word
+* @ctrl_fp:		cached frequency/phase control word
  * @ctrl_ss:		cached sync/selsrc control word
  * @ctrl_src:		cached sleep/reset/clr word
  * @xfer:		default spi transfer
  * @msg:		default spi message
- * @freq_xfer:		tuning word spi transfer
- * @freq_msg:		tuning word spi message
+* @freq_xfer:		tuning word spi transfer
+* @freq_msg:		tuning word spi message
  * @phase_xfer:		tuning word spi transfer
  * @phase_msg:		tuning word spi message
  * @lock		protect sensor state
  * @data:		spi transmit buffer
  * @phase_data:		tuning word spi transmit buffer
- * @freq_data:		tuning word spi transmit buffer
+* @freq_data:		tuning word spi transmit buffer
  */
 
 struct ad9832_state {
 	struct spi_device		*spi;
-	struct regulator		*avdd;
-	struct regulator		*dvdd;
+struct regulator		*avdd;
+struct regulator		*dvdd;
 	unsigned long			mclk;
 	unsigned short			ctrl_fp;
 	unsigned short			ctrl_ss;
 	unsigned short			ctrl_src;
 	struct spi_transfer		xfer;
 	struct spi_message		msg;
-	struct spi_transfer		freq_xfer[4];
-	struct spi_message		freq_msg;
+struct spi_transfer		freq_xfer[4];
+struct spi_message		freq_msg;
 	struct spi_transfer		phase_xfer[2];
 	struct spi_message		phase_msg;
 	struct mutex			lock;	/* protect sensor state */
@@ -110,7 +110,7 @@ struct ad9832_state {
 	 * transfer buffers to live in their own cache lines.
 	 */
 	union {
-		__be16			freq_data[4]____cacheline_aligned;
+__be16			freq_data[4]____cacheline_aligned;
 		__be16			phase_data[2];
 		__be16			data;
 	};
@@ -118,10 +118,10 @@ struct ad9832_state {
 
 static unsigned long ad9832_calc_freqreg(unsigned long mclk, unsigned long fout)
 {
-	unsigned long long freqreg = (u64)fout *
-				     (u64)((u64)1L << AD9832_FREQ_BITS);
-	do_div(freqreg, mclk);
-	return freqreg;
+unsigned long long freqreg = (u64)fout *
+(u64)((u64)1L << AD9832_FREQ_BITS);
+do_div(freqreg, mclk);
+return freqreg;
 }
 
 static int ad9832_write_frequency(struct ad9832_state *st,
@@ -132,22 +132,22 @@ static int ad9832_write_frequency(struct ad9832_state *st,
 	if (fout > (st->mclk / 2))
 		return -EINVAL;
 
-	regval = ad9832_calc_freqreg(st->mclk, fout);
+regval = ad9832_calc_freqreg(st->mclk, fout);
 
-	st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+st->freq_data[0] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
 					(addr << ADD_SHIFT) |
 					((regval >> 24) & 0xFF));
-	st->freq_data[1] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+st->freq_data[1] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
 					((addr - 1) << ADD_SHIFT) |
 					((regval >> 16) & 0xFF));
-	st->freq_data[2] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
+st->freq_data[2] = cpu_to_be16((AD9832_CMD_FRE8BITSW << CMD_SHIFT) |
 					((addr - 2) << ADD_SHIFT) |
 					((regval >> 8) & 0xFF));
-	st->freq_data[3] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
+st->freq_data[3] = cpu_to_be16((AD9832_CMD_FRE16BITSW << CMD_SHIFT) |
 					((addr - 3) << ADD_SHIFT) |
 					((regval >> 0) & 0xFF));
 
-	return spi_sync(st->spi, &st->freq_msg);
+return spi_sync(st->spi, &st->freq_msg);
 }
 
 static int ad9832_write_phase(struct ad9832_state *st,
@@ -181,9 +181,9 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
 
 	mutex_lock(&st->lock);
 	switch ((u32)this_attr->address) {
-	case AD9832_FREQ0HM:
-	case AD9832_FREQ1HM:
-		ret = ad9832_write_frequency(st, this_attr->address, val);
+case AD9832_FREQ0HM:
+case AD9832_FREQ1HM:
+ret = ad9832_write_frequency(st, this_attr->address, val);
 		break;
 	case AD9832_PHASE0H:
 	case AD9832_PHASE1H:
@@ -200,11 +200,11 @@ static ssize_t ad9832_write(struct device *dev, struct device_attribute *attr,
 					st->ctrl_ss);
 		ret = spi_sync(st->spi, &st->msg);
 		break;
-	case AD9832_FREQ_SYM:
+case AD9832_FREQ_SYM:
 		if (val == 1) {
-			st->ctrl_fp |= AD9832_FREQ;
+st->ctrl_fp |= AD9832_FREQ;
 		} else if (val == 0) {
-			st->ctrl_fp &= ~AD9832_FREQ;
+st->ctrl_fp &= ~AD9832_FREQ;
 		} else {
 			ret = -EINVAL;
 			break;
@@ -269,18 +269,18 @@ static IIO_DEV_ATTR_OUT_ENABLE(0, 0200, NULL,
 				ad9832_write, AD9832_OUTPUT_EN);
 
 static struct attribute *ad9832_attributes[] = {
-	&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
-	&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase2.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase3.dev_attr.attr,
-	&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_pincontrol_en.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
+&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase2.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase3.dev_attr.attr,
+&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_pincontrol_en.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
 	NULL,
 };
 
@@ -312,26 +312,26 @@ static int ad9832_probe(struct spi_device *spi)
 	spi_set_drvdata(spi, indio_dev);
 	st = iio_priv(indio_dev);
 
-	st->avdd = devm_regulator_get(&spi->dev, "avdd");
-	if (IS_ERR(st->avdd))
-		return PTR_ERR(st->avdd);
+st->avdd = devm_regulator_get(&spi->dev, "avdd");
+if (IS_ERR(st->avdd))
+return PTR_ERR(st->avdd);
 
-	ret = regulator_enable(st->avdd);
+ret = regulator_enable(st->avdd);
 	if (ret) {
-		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
+dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
 		return ret;
 	}
 
-	st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
-	if (IS_ERR(st->dvdd)) {
-		ret = PTR_ERR(st->dvdd);
-		goto error_disable_avdd;
+st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
+if (IS_ERR(st->dvdd)) {
+ret = PTR_ERR(st->dvdd);
+goto error_disable_avdd;
 	}
 
-	ret = regulator_enable(st->dvdd);
+ret = regulator_enable(st->dvdd);
 	if (ret) {
-		dev_err(&spi->dev, "Failed to enable specified DVDD supply\n");
-		goto error_disable_avdd;
+dev_err(&spi->dev, "Failed to enable specified DVDD supply\n");
+goto error_disable_avdd;
 	}
 
 	st->mclk = pdata->mclk;
@@ -351,23 +351,23 @@ static int ad9832_probe(struct spi_device *spi)
 	spi_message_init(&st->msg);
 	spi_message_add_tail(&st->xfer, &st->msg);
 
-	st->freq_xfer[0].tx_buf = &st->freq_data[0];
-	st->freq_xfer[0].len = 2;
-	st->freq_xfer[0].cs_change = 1;
-	st->freq_xfer[1].tx_buf = &st->freq_data[1];
-	st->freq_xfer[1].len = 2;
-	st->freq_xfer[1].cs_change = 1;
-	st->freq_xfer[2].tx_buf = &st->freq_data[2];
-	st->freq_xfer[2].len = 2;
-	st->freq_xfer[2].cs_change = 1;
-	st->freq_xfer[3].tx_buf = &st->freq_data[3];
-	st->freq_xfer[3].len = 2;
+st->freq_xfer[0].tx_buf = &st->freq_data[0];
+st->freq_xfer[0].len = 2;
+st->freq_xfer[0].cs_change = 1;
+st->freq_xfer[1].tx_buf = &st->freq_data[1];
+st->freq_xfer[1].len = 2;
+st->freq_xfer[1].cs_change = 1;
+st->freq_xfer[2].tx_buf = &st->freq_data[2];
+st->freq_xfer[2].len = 2;
+st->freq_xfer[2].cs_change = 1;
+st->freq_xfer[3].tx_buf = &st->freq_data[3];
+st->freq_xfer[3].len = 2;
 
-	spi_message_init(&st->freq_msg);
-	spi_message_add_tail(&st->freq_xfer[0], &st->freq_msg);
-	spi_message_add_tail(&st->freq_xfer[1], &st->freq_msg);
-	spi_message_add_tail(&st->freq_xfer[2], &st->freq_msg);
-	spi_message_add_tail(&st->freq_xfer[3], &st->freq_msg);
+spi_message_init(&st->freq_msg);
+spi_message_add_tail(&st->freq_xfer[0], &st->freq_msg);
+spi_message_add_tail(&st->freq_xfer[1], &st->freq_msg);
+spi_message_add_tail(&st->freq_xfer[2], &st->freq_msg);
+spi_message_add_tail(&st->freq_xfer[3], &st->freq_msg);
 
 	st->phase_xfer[0].tx_buf = &st->phase_data[0];
 	st->phase_xfer[0].len = 2;
@@ -385,43 +385,43 @@ static int ad9832_probe(struct spi_device *spi)
 	ret = spi_sync(st->spi, &st->msg);
 	if (ret) {
 		dev_err(&spi->dev, "device init failed\n");
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 	}
 
-	ret = ad9832_write_frequency(st, AD9832_FREQ0HM, pdata->freq0);
+ret = ad9832_write_frequency(st, AD9832_FREQ0HM, pdata->freq0);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
-	ret = ad9832_write_frequency(st, AD9832_FREQ1HM, pdata->freq1);
+ret = ad9832_write_frequency(st, AD9832_FREQ1HM, pdata->freq1);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
 	ret = ad9832_write_phase(st, AD9832_PHASE0H, pdata->phase0);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
 	ret = ad9832_write_phase(st, AD9832_PHASE1H, pdata->phase1);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
 	ret = ad9832_write_phase(st, AD9832_PHASE2H, pdata->phase2);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
 	ret = ad9832_write_phase(st, AD9832_PHASE3H, pdata->phase3);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
 	ret = iio_device_register(indio_dev);
 	if (ret)
-		goto error_disable_dvdd;
+goto error_disable_dvdd;
 
 	return 0;
 
 error_disable_dvdd:
-	regulator_disable(st->dvdd);
+regulator_disable(st->dvdd);
 error_disable_avdd:
-	regulator_disable(st->avdd);
+regulator_disable(st->avdd);
 
 	return ret;
 }
@@ -432,8 +432,8 @@ static int ad9832_remove(struct spi_device *spi)
 	struct ad9832_state *st = iio_priv(indio_dev);
 
 	iio_device_unregister(indio_dev);
-	regulator_disable(st->dvdd);
-	regulator_disable(st->avdd);
+regulator_disable(st->dvdd);
+regulator_disable(st->avdd);
 
 	return 0;
 }

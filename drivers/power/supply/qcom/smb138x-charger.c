@@ -60,8 +60,8 @@ static struct smb_params v1_params = {
 		.step_u	= 25000,
 	},
 	.fv		= {
-		.name	= "float voltage",
-		.reg	= FLOAT_VOLTAGE_CFG_REG,
+.name	= "float voltage",
+.reg	= FLOAT_VOLTAGE_CFG_REG,
 		.min_u	= 2450000,
 		.max_u	= 4950000,
 		.step_u	= 10000,
@@ -80,9 +80,9 @@ static struct smb_params v1_params = {
 		.max_u	= 6000000,
 		.step_u	= 25000,
 	},
-	.freq_buck	= {
-		.name	= "buck switching frequency",
-		.reg	= CFG_BUCKBOOST_FREQ_SELECT_BUCK_REG,
+.freq_buck	= {
+.name	= "buck switching frequency",
+.reg	= CFG_BUCKBOOST_FREQ_SELECT_BUCK_REG,
 		.min_u	= 500,
 		.max_u	= 2000,
 		.step_u	= 100,
@@ -102,7 +102,7 @@ struct smb_dt_props {
 struct smb138x {
 	struct smb_charger	chg;
 	struct smb_dt_props	dt;
-	struct power_supply	*parallel_psy;
+struct power_supply	*parallel_psy;
 	u32			wa_flags;
 };
 
@@ -117,15 +117,15 @@ static irqreturn_t smb138x_handle_slave_chg_state_change(int irq, void *data)
 	struct smb138x *chip = irq_data->parent_data;
 
 	if (chip->parallel_psy)
-		power_supply_changed(chip->parallel_psy);
+power_supply_changed(chip->parallel_psy);
 
 	return IRQ_HANDLED;
 }
 
 static int smb138x_get_prop_charger_temp(struct smb138x *chip,
-				 union power_supply_propval *val)
+union power_supply_propval *val)
 {
-	union power_supply_propval pval;
+union power_supply_propval pval;
 	int rc = 0, avg = 0, i;
 	struct smb_charger *chg = &chip->chg;
 	int die_avg_count;
@@ -165,7 +165,7 @@ static int smb138x_parse_dt(struct smb138x *chip)
 	rc = of_property_read_u32(node,
 				"qcom,parallel-mode", &chip->dt.pl_mode);
 	if (rc < 0)
-		chip->dt.pl_mode = POWER_SUPPLY_PL_USBMID_USBMID;
+chip->dt.pl_mode = POWER_SUPPLY_PL_USBMID_USBMID;
 
 	chip->dt.suspend_input = of_property_read_bool(node,
 				"qcom,suspend-input");
@@ -208,59 +208,59 @@ static int smb138x_parse_dt(struct smb138x *chip)
  ************************/
 
 static enum power_supply_property smb138x_usb_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_TYPE,
-	POWER_SUPPLY_PROP_TYPEC_MODE,
-	POWER_SUPPLY_PROP_TYPEC_POWER_ROLE,
-	POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION,
-	POWER_SUPPLY_PROP_SDP_CURRENT_MAX,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_MIN,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_TYPE,
+POWER_SUPPLY_PROP_TYPEC_MODE,
+POWER_SUPPLY_PROP_TYPEC_POWER_ROLE,
+POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION,
+POWER_SUPPLY_PROP_SDP_CURRENT_MAX,
 };
 
 static int smb138x_usb_get_prop(struct power_supply *psy,
-				enum power_supply_property prop,
-				union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb138x *chip = power_supply_get_drvdata(psy);
+struct smb138x *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = smblib_get_prop_usb_present(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		rc = smblib_get_prop_usb_online(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN:
-		val->intval = chg->voltage_min_uv;
+case POWER_SUPPLY_PROP_VOLTAGE_MIN:
+val->intval = chg->voltage_min_uv;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
-		val->intval = chg->voltage_max_uv;
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+val->intval = chg->voltage_max_uv;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		rc = smblib_get_prop_usb_voltage_now(chg, val);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+rc = smblib_get_prop_usb_voltage_now(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CURRENT_MAX:
 		val->intval = get_effective_result(chg->usb_icl_votable);
 		break;
-	case POWER_SUPPLY_PROP_TYPE:
+case POWER_SUPPLY_PROP_TYPE:
 		val->intval = chg->usb_psy_desc.type;
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_MODE:
+case POWER_SUPPLY_PROP_TYPEC_MODE:
 		val->intval = chg->typec_mode;
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
-		rc = smblib_get_prop_typec_power_role(chg, val);
+case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
+rc = smblib_get_prop_typec_power_role(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION:
+case POWER_SUPPLY_PROP_TYPEC_CC_ORIENTATION:
 		rc = smblib_get_prop_typec_cc_orientation(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
 		val->intval = get_client_vote(chg->usb_icl_votable,
 					      USB_PSY_VOTER);
 		break;
@@ -278,18 +278,18 @@ static int smb138x_usb_get_prop(struct power_supply *psy,
 }
 
 static int smb138x_usb_set_prop(struct power_supply *psy,
-				enum power_supply_property prop,
-				const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct smb138x *chip = power_supply_get_drvdata(psy);
+struct smb138x *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
-		rc = smblib_set_prop_typec_power_role(chg, val);
+case POWER_SUPPLY_PROP_TYPEC_POWER_ROLE:
+rc = smblib_set_prop_typec_power_role(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
+case POWER_SUPPLY_PROP_SDP_CURRENT_MAX:
 		rc = smblib_set_prop_sdp_current_max(chg, val);
 		break;
 	default:
@@ -301,18 +301,18 @@ static int smb138x_usb_set_prop(struct power_supply *psy,
 }
 
 static int smb138x_usb_prop_is_writeable(struct power_supply *psy,
-					 enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	return 0;
 }
 
 static int smb138x_init_usb_psy(struct smb138x *chip)
 {
-	struct power_supply_config usb_cfg = {};
+struct power_supply_config usb_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	chg->usb_psy_desc.name = "usb";
-	chg->usb_psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
+chg->usb_psy_desc.type = POWER_SUPPLY_TYPE_UNKNOWN;
 	chg->usb_psy_desc.properties = smb138x_usb_props;
 	chg->usb_psy_desc.num_properties = ARRAY_SIZE(smb138x_usb_props);
 	chg->usb_psy_desc.get_property = smb138x_usb_get_prop;
@@ -321,11 +321,11 @@ static int smb138x_init_usb_psy(struct smb138x *chip)
 
 	usb_cfg.drv_data = chip;
 	usb_cfg.of_node = chg->dev->of_node;
-	chg->usb_psy = devm_power_supply_register(chg->dev,
+chg->usb_psy = devm_power_supply_register(chg->dev,
 						  &chg->usb_psy_desc,
 						  &usb_cfg);
 	if (IS_ERR(chg->usb_psy)) {
-		pr_err("Couldn't register USB power supply\n");
+pr_err("Couldn't register USB power supply\n");
 		return PTR_ERR(chg->usb_psy);
 	}
 
@@ -337,56 +337,56 @@ static int smb138x_init_usb_psy(struct smb138x *chip)
  *************************/
 
 static enum power_supply_property smb138x_batt_props[] = {
-	POWER_SUPPLY_PROP_INPUT_SUSPEND,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CHARGER_TEMP,
-	POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
-	POWER_SUPPLY_PROP_SET_SHIP_MODE,
+POWER_SUPPLY_PROP_INPUT_SUSPEND,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CHARGER_TEMP,
+POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
+POWER_SUPPLY_PROP_SET_SHIP_MODE,
 };
 
 static int smb138x_batt_get_prop(struct power_supply *psy,
-				 enum power_supply_property prop,
-				 union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb138x *chip = power_supply_get_drvdata(psy);
+struct smb138x *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		rc = smblib_get_prop_batt_status(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		rc = smblib_get_prop_batt_health(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = smblib_get_prop_batt_present(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smblib_get_prop_input_suspend(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		rc = smblib_get_prop_batt_charge_type(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		rc = smblib_get_prop_batt_capacity(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP:
+case POWER_SUPPLY_PROP_CHARGER_TEMP:
 		rc = smb138x_get_prop_charger_temp(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
+case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
 		rc = smblib_get_prop_charger_temp_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as device is active */
 		val->intval = 0;
 		break;
 	default:
-		pr_err("batt power supply get prop %d not supported\n", prop);
+pr_err("batt power supply get prop %d not supported\n", prop);
 		return -EINVAL;
 	}
 
@@ -399,28 +399,28 @@ static int smb138x_batt_get_prop(struct power_supply *psy,
 }
 
 static int smb138x_batt_set_prop(struct power_supply *psy,
-				 enum power_supply_property prop,
-				 const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct smb138x *chip = power_supply_get_drvdata(psy);
+struct smb138x *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smblib_set_prop_input_suspend(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		rc = smblib_set_prop_batt_capacity(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as the device is active */
 		if (!val->intval)
 			break;
 		rc = smblib_set_prop_ship_mode(chg, val);
 		break;
 	default:
-		pr_err("batt power supply set prop %d not supported\n", prop);
+pr_err("batt power supply set prop %d not supported\n", prop);
 		return -EINVAL;
 	}
 
@@ -428,11 +428,11 @@ static int smb138x_batt_set_prop(struct power_supply *psy,
 }
 
 static int smb138x_batt_prop_is_writeable(struct power_supply *psy,
-					  enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	switch (prop) {
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_CAPACITY:
 		return 1;
 	default:
 		break;
@@ -443,7 +443,7 @@ static int smb138x_batt_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc batt_psy_desc = {
 	.name			= "battery",
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= smb138x_batt_props,
 	.num_properties		= ARRAY_SIZE(smb138x_batt_props),
 	.get_property		= smb138x_batt_get_prop,
@@ -453,17 +453,17 @@ static const struct power_supply_desc batt_psy_desc = {
 
 static int smb138x_init_batt_psy(struct smb138x *chip)
 {
-	struct power_supply_config batt_cfg = {};
+struct power_supply_config batt_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	batt_cfg.drv_data = chip;
 	batt_cfg.of_node = chg->dev->of_node;
-	chg->batt_psy = devm_power_supply_register(chg->dev,
+chg->batt_psy = devm_power_supply_register(chg->dev,
 						   &batt_psy_desc,
 						   &batt_cfg);
 	if (IS_ERR(chg->batt_psy)) {
-		pr_err("Couldn't register battery power supply\n");
+pr_err("Couldn't register battery power supply\n");
 		return PTR_ERR(chg->batt_psy);
 	}
 
@@ -485,138 +485,138 @@ static int smb138x_get_prop_connector_health(struct smb138x *chip)
 							"connector_temp");
 
 	if (IS_ERR(chg->iio.connector_temp_chan))
-		return POWER_SUPPLY_HEALTH_UNKNOWN;
+return POWER_SUPPLY_HEALTH_UNKNOWN;
 
 	rc = iio_read_channel_processed(chg->iio.connector_temp_thr1_chan,
 							&lb_mdegc);
 	if (rc < 0) {
 		pr_err("Couldn't read connector lower bound rc=%d\n", rc);
-		return POWER_SUPPLY_HEALTH_UNKNOWN;
+return POWER_SUPPLY_HEALTH_UNKNOWN;
 	}
 
 	rc = iio_read_channel_processed(chg->iio.connector_temp_thr2_chan,
 							&ub_mdegc);
 	if (rc < 0) {
 		pr_err("Couldn't read connector upper bound rc=%d\n", rc);
-		return POWER_SUPPLY_HEALTH_UNKNOWN;
+return POWER_SUPPLY_HEALTH_UNKNOWN;
 	}
 
 	rc = iio_read_channel_processed(chg->iio.connector_temp_thr3_chan,
 							&rst_mdegc);
 	if (rc < 0) {
 		pr_err("Couldn't read connector reset bound rc=%d\n", rc);
-		return POWER_SUPPLY_HEALTH_UNKNOWN;
+return POWER_SUPPLY_HEALTH_UNKNOWN;
 	}
 
 	rc = iio_read_channel_processed(chg->iio.connector_temp_chan,
 							&connector_mdegc);
 	if (rc < 0) {
 		pr_err("Couldn't read connector temperature rc=%d\n", rc);
-		return POWER_SUPPLY_HEALTH_UNKNOWN;
+return POWER_SUPPLY_HEALTH_UNKNOWN;
 	}
 
 	if (connector_mdegc < lb_mdegc)
-		return POWER_SUPPLY_HEALTH_COOL;
+return POWER_SUPPLY_HEALTH_COOL;
 	else if (connector_mdegc < ub_mdegc)
-		return POWER_SUPPLY_HEALTH_WARM;
+return POWER_SUPPLY_HEALTH_WARM;
 	else if (connector_mdegc < rst_mdegc)
-		return POWER_SUPPLY_HEALTH_HOT;
+return POWER_SUPPLY_HEALTH_HOT;
 
-	return POWER_SUPPLY_HEALTH_OVERHEAT;
+return POWER_SUPPLY_HEALTH_OVERHEAT;
 }
 
 static enum power_supply_property smb138x_parallel_props[] = {
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	POWER_SUPPLY_PROP_PIN_ENABLED,
-	POWER_SUPPLY_PROP_INPUT_SUSPEND,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
-	POWER_SUPPLY_PROP_CURRENT_MAX,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CHARGER_TEMP,
-	POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_PARALLEL_MODE,
-	POWER_SUPPLY_PROP_CONNECTOR_HEALTH,
-	POWER_SUPPLY_PROP_SET_SHIP_MODE,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_PIN_ENABLED,
+POWER_SUPPLY_PROP_INPUT_SUSPEND,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
+POWER_SUPPLY_PROP_CURRENT_MAX,
+POWER_SUPPLY_PROP_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CHARGER_TEMP,
+POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_PARALLEL_MODE,
+POWER_SUPPLY_PROP_CONNECTOR_HEALTH,
+POWER_SUPPLY_PROP_SET_SHIP_MODE,
 };
 
 static int smb138x_parallel_get_prop(struct power_supply *psy,
-				     enum power_supply_property prop,
-				     union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct smb138x *chip = power_supply_get_drvdata(psy);
+struct smb138x *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 	u8 temp;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		rc = smblib_get_prop_batt_charge_type(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		rc = smblib_read(chg, BATTERY_CHARGER_STATUS_5_REG,
 				 &temp);
 		if (rc >= 0)
 			val->intval = (bool)(temp & CHARGING_ENABLE_BIT);
 		break;
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		rc = smblib_read(chg, BATTERY_CHARGER_STATUS_5_REG,
 				 &temp);
 		if (rc >= 0)
 			val->intval = !(temp & DISABLE_CHARGING_BIT);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smblib_get_usb_suspend(chg, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
-		if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
-		|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED:
+if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
+|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
 			rc = smblib_get_prop_input_current_limited(chg, val);
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
-		if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
-		|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
+case POWER_SUPPLY_PROP_CURRENT_MAX:
+if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
+|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
 			rc = smblib_get_charge_param(chg, &chg->param.usb_icl,
 				&val->intval);
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		rc = smblib_get_charge_param(chg, &chg->param.fv, &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		rc = smblib_get_charge_param(chg, &chg->param.fcc,
 					     &val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		rc = smblib_get_prop_slave_current_now(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP:
+case POWER_SUPPLY_PROP_CHARGER_TEMP:
 		rc = smb138x_get_prop_charger_temp(chip, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
+case POWER_SUPPLY_PROP_CHARGER_TEMP_MAX:
 		rc = smblib_get_prop_charger_temp_max(chg, val);
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = "smb138x";
 		break;
-	case POWER_SUPPLY_PROP_PARALLEL_MODE:
+case POWER_SUPPLY_PROP_PARALLEL_MODE:
 		val->intval = chip->dt.pl_mode;
 		break;
-	case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
+case POWER_SUPPLY_PROP_CONNECTOR_HEALTH:
 		val->intval = smb138x_get_prop_connector_health(chip);
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as device is active */
 		val->intval = 0;
 		break;
 	default:
-		pr_err("parallel power supply get prop %d not supported\n",
+pr_err("parallel power supply get prop %d not supported\n",
 			prop);
 		return -EINVAL;
 	}
@@ -654,37 +654,37 @@ static int smb138x_set_parallel_suspend(struct smb138x *chip, bool suspend)
 }
 
 static int smb138x_parallel_set_prop(struct power_supply *psy,
-				     enum power_supply_property prop,
-				     const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct smb138x *chip = power_supply_get_drvdata(psy);
+struct smb138x *chip = power_supply_get_drvdata(psy);
 	struct smb_charger *chg = &chip->chg;
 	int rc = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_INPUT_SUSPEND:
+case POWER_SUPPLY_PROP_INPUT_SUSPEND:
 		rc = smb138x_set_parallel_suspend(chip, (bool)val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_MAX:
-		if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
-		|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
+case POWER_SUPPLY_PROP_CURRENT_MAX:
+if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
+|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT))
 			rc = smblib_set_charge_param(chg, &chg->param.usb_icl,
 				val->intval);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX:
 		rc = smblib_set_charge_param(chg, &chg->param.fv, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		rc = smblib_set_charge_param(chg, &chg->param.fcc, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_SET_SHIP_MODE:
+case POWER_SUPPLY_PROP_SET_SHIP_MODE:
 		/* Not in ship mode as long as the device is active */
 		if (!val->intval)
 			break;
 		rc = smblib_set_prop_ship_mode(chg, val);
 		break;
 	default:
-		pr_debug("parallel power supply set prop %d not supported\n",
+pr_debug("parallel power supply set prop %d not supported\n",
 			prop);
 		return -EINVAL;
 	}
@@ -693,14 +693,14 @@ static int smb138x_parallel_set_prop(struct power_supply *psy,
 }
 
 static int smb138x_parallel_prop_is_writeable(struct power_supply *psy,
-					      enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	return 0;
 }
 
 static const struct power_supply_desc parallel_psy_desc = {
 	.name			= "parallel",
-	.type			= POWER_SUPPLY_TYPE_PARALLEL,
+.type			= POWER_SUPPLY_TYPE_PARALLEL,
 	.properties		= smb138x_parallel_props,
 	.num_properties		= ARRAY_SIZE(smb138x_parallel_props),
 	.get_property		= smb138x_parallel_get_prop,
@@ -710,16 +710,16 @@ static const struct power_supply_desc parallel_psy_desc = {
 
 static int smb138x_init_parallel_psy(struct smb138x *chip)
 {
-	struct power_supply_config parallel_cfg = {};
+struct power_supply_config parallel_cfg = {};
 	struct smb_charger *chg = &chip->chg;
 
 	parallel_cfg.drv_data = chip;
 	parallel_cfg.of_node = chg->dev->of_node;
-	chip->parallel_psy = devm_power_supply_register(chg->dev,
+chip->parallel_psy = devm_power_supply_register(chg->dev,
 						   &parallel_psy_desc,
 						   &parallel_cfg);
 	if (IS_ERR(chip->parallel_psy)) {
-		pr_err("Couldn't register parallel power supply\n");
+pr_err("Couldn't register parallel power supply\n");
 		return PTR_ERR(chip->parallel_psy);
 	}
 
@@ -751,7 +751,7 @@ static int smb138x_init_vbus_regulator(struct smb138x *chip)
 	cfg.driver_data = chip;
 
 	chg->vbus_vreg->rdesc.owner = THIS_MODULE;
-	chg->vbus_vreg->rdesc.type = REGULATOR_VOLTAGE;
+chg->vbus_vreg->rdesc.type = REGULATOR_VOLTAGE;
 	chg->vbus_vreg->rdesc.ops = &smb138x_vbus_reg_ops;
 	chg->vbus_vreg->rdesc.of_match = "qcom,smb138x-vbus";
 	chg->vbus_vreg->rdesc.name = "qcom,smb138x-vbus";
@@ -793,7 +793,7 @@ static int smb138x_init_vconn_regulator(struct smb138x *chip)
 	cfg.driver_data = chip;
 
 	chg->vconn_vreg->rdesc.owner = THIS_MODULE;
-	chg->vconn_vreg->rdesc.type = REGULATOR_VOLTAGE;
+chg->vconn_vreg->rdesc.type = REGULATOR_VOLTAGE;
 	chg->vconn_vreg->rdesc.ops = &smb138x_vconn_reg_ops;
 	chg->vconn_vreg->rdesc.of_match = "qcom,smb138x-vconn";
 	chg->vconn_vreg->rdesc.name = "qcom,smb138x-vconn";
@@ -840,10 +840,10 @@ static int smb138x_init_slave_hw(struct smb138x *chip)
 		}
 	}
 
-	/* configure to a fixed 700khz freq to avoid tdie errors */
-	rc = smblib_set_charge_param(chg, &chg->param.freq_buck, 700);
+/* configure to a fixed 700khz freq to avoid tdie errors */
+rc = smblib_set_charge_param(chg, &chg->param.freq_buck, 700);
 	if (rc < 0) {
-		pr_err("Couldn't configure 700Khz switch freq rc=%d\n", rc);
+pr_err("Couldn't configure 700Khz switch freq rc=%d\n", rc);
 		return rc;
 	}
 
@@ -992,10 +992,10 @@ static int smb138x_init_hw(struct smb138x *chip)
 		return rc;
 	}
 
-	/* configure to a fixed 700khz freq to avoid tdie errors */
-	rc = smblib_set_charge_param(chg, &chg->param.freq_buck, 700);
+/* configure to a fixed 700khz freq to avoid tdie errors */
+rc = smblib_set_charge_param(chg, &chg->param.freq_buck, 700);
 	if (rc < 0) {
-		pr_err("Couldn't configure 700Khz switch freq rc=%d\n", rc);
+pr_err("Couldn't configure 700Khz switch freq rc=%d\n", rc);
 		return rc;
 	}
 
@@ -1042,11 +1042,11 @@ static int smb138x_init_hw(struct smb138x *chip)
 		return rc;
 	}
 
-	/* configure power role for dual-role */
+/* configure power role for dual-role */
 	rc = smblib_masked_write(chg, TYPE_C_INTRPT_ENB_SOFTWARE_CTRL_REG,
-				 TYPEC_POWER_ROLE_CMD_MASK, 0);
+TYPEC_POWER_ROLE_CMD_MASK, 0);
 	if (rc < 0) {
-		pr_err("Couldn't configure power role for DRP rc=%d\n", rc);
+pr_err("Couldn't configure power role for DRP rc=%d\n", rc);
 		return rc;
 	}
 
@@ -1117,7 +1117,7 @@ static irqreturn_t smb138x_handle_temperature_change(int irq, void *data)
 	struct smb_irq_data *irq_data = data;
 	struct smb138x *chip = irq_data->parent_data;
 
-	power_supply_changed(chip->parallel_psy);
+power_supply_changed(chip->parallel_psy);
 	return IRQ_HANDLED;
 }
 
@@ -1300,8 +1300,8 @@ static struct smb_irq_info smb138x_irqs[] = {
 		.name		= "temperature-change",
 		.handler	= smb138x_handle_temperature_change,
 	},
-	[SWITCH_POWER_OK_IRQ] = {
-		.name		= "switcher-power-ok",
+[SWITCH_POWER_OK_IRQ] = {
+.name		= "switcher-power-ok",
 		.handler	= smblib_handle_debug,
 	},
 };
@@ -1552,8 +1552,8 @@ static int smb138x_slave_probe(struct smb138x *chip)
 		goto cleanup;
 	}
 
-	if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
-		|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT)) {
+if ((chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN)
+|| (chip->dt.pl_mode == POWER_SUPPLY_PL_USBIN_USBIN_EXT)) {
 		rc = smb138x_init_vbus_regulator(chip);
 		if (rc < 0) {
 			pr_err("Couldn't initialize vbus regulator rc=%d\n",
@@ -1585,7 +1585,7 @@ static int smb138x_slave_probe(struct smb138x *chip)
 cleanup:
 	smblib_deinit(chg);
 	if (chip->parallel_psy)
-		power_supply_unregister(chip->parallel_psy);
+power_supply_unregister(chip->parallel_psy);
 	if (chg->vbus_vreg && chg->vbus_vreg->rdev)
 		regulator_unregister(chg->vbus_vreg->rdev);
 	return rc;

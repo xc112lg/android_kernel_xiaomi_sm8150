@@ -28,7 +28,7 @@ static u32 *samples;
  * start_spu_profiling_events().  The flag is cleared by the routines
  * stop_spu_profiling_cycles() and stop_spu_profiling_events().  These
  * routines are called via global_start() and global_stop() which are called in
- * op_powerpc_start() and op_powerpc_stop().  These routines are called once
+* op_powerpc_start() and op_powerpc_stop().  These routines are called once
  * per system as a result of the user starting/stopping oprofile.  Hence, only
  * one CPU per user at a time will be changing  the value of spu_prof_running.
  * In general, OProfile does not protect against multiple users trying to run
@@ -49,11 +49,11 @@ void set_spu_profiling_frequency(unsigned int freq_khz, unsigned int cycles_rese
 {
 	unsigned long ns_per_cyc;
 
-	if (!freq_khz)
-		freq_khz = ppc_proc_freq/1000;
+if (!freq_khz)
+freq_khz = ppc_proc_freq/1000;
 
 	/* To calculate a timeout in nanoseconds, the basic
-	 * formula is ns = cycles_reset * (NSEC_PER_SEC / cpu frequency).
+* formula is ns = cycles_reset * (NSEC_PER_SEC / cpu frequency).
 	 * To avoid floating point math, we use the scale math
 	 * technique as described in linux/jiffies.h.  We use
 	 * a scale factor of SCALE_SHIFT, which provides 4 decimal places
@@ -61,12 +61,12 @@ void set_spu_profiling_frequency(unsigned int freq_khz, unsigned int cycles_rese
 	 *
 	 * The value of the timeout should be small enough that the hw
 	 * trace buffer will not get more than about 1/3 full for the
-	 * maximum user specified (the LFSR value) hw sampling frequency.
+* maximum user specified (the LFSR value) hw sampling frequency.
 	 * This is to ensure the trace buffer will never fill even if the
 	 * kernel thread scheduling varies under a heavy system load.
 	 */
 
-	ns_per_cyc = (USEC_PER_SEC << SCALE_SHIFT)/freq_khz;
+ns_per_cyc = (USEC_PER_SEC << SCALE_SHIFT)/freq_khz;
 	profiling_interval = (ns_per_cyc * cycles_reset) >> SCALE_SHIFT;
 
 }

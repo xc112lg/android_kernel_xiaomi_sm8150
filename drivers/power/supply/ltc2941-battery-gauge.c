@@ -34,8 +34,8 @@ enum ltc294x_reg {
 	LTC294X_REG_CONTROL		= 0x01,
 	LTC294X_REG_ACC_CHARGE_MSB	= 0x02,
 	LTC294X_REG_ACC_CHARGE_LSB	= 0x03,
-	LTC294X_REG_VOLTAGE_MSB		= 0x08,
-	LTC294X_REG_VOLTAGE_LSB		= 0x09,
+LTC294X_REG_VOLTAGE_MSB		= 0x08,
+LTC294X_REG_VOLTAGE_LSB		= 0x09,
 	LTC2942_REG_TEMPERATURE_MSB	= 0x0C,
 	LTC2942_REG_TEMPERATURE_LSB	= 0x0D,
 	LTC2943_REG_CURRENT_MSB		= 0x0E,
@@ -63,8 +63,8 @@ enum ltc294x_id {
 
 struct ltc294x_info {
 	struct i2c_client *client;	/* I2C Client pointer */
-	struct power_supply *supply;	/* Supply pointer */
-	struct power_supply_desc supply_desc;	/* Supply description */
+struct power_supply *supply;	/* Supply pointer */
+struct power_supply_desc supply_desc;	/* Supply description */
 	struct delayed_work work;	/* Work scheduler */
 	enum ltc294x_id id;		/* Chip type */
 	int charge;	/* Last charge register content */
@@ -263,7 +263,7 @@ static int ltc294x_get_voltage(const struct ltc294x_info *info, int *val)
 	u32 value;
 
 	ret = ltc294x_read_regs(info->client,
-		LTC294X_REG_VOLTAGE_MSB, &datar[0], 2);
+LTC294X_REG_VOLTAGE_MSB, &datar[0], 2);
 	value = (datar[0] << 8) | datar[1];
 	switch (info->id) {
 	case LTC2943_ID:
@@ -329,21 +329,21 @@ static int ltc294x_get_temperature(const struct ltc294x_info *info, int *val)
 }
 
 static int ltc294x_get_property(struct power_supply *psy,
-				enum power_supply_property prop,
-				union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct ltc294x_info *info = power_supply_get_drvdata(psy);
+struct ltc294x_info *info = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		return ltc294x_get_charge_now(info, &val->intval);
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		return ltc294x_get_charge_counter(info, &val->intval);
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		return ltc294x_get_voltage(info, &val->intval);
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+return ltc294x_get_voltage(info, &val->intval);
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		return ltc294x_get_current(info, &val->intval);
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		return ltc294x_get_temperature(info, &val->intval);
 	default:
 		return -EINVAL;
@@ -351,13 +351,13 @@ static int ltc294x_get_property(struct power_supply *psy,
 }
 
 static int ltc294x_set_property(struct power_supply *psy,
-	enum power_supply_property psp,
-	const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct ltc294x_info *info = power_supply_get_drvdata(psy);
+struct ltc294x_info *info = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		return ltc294x_set_charge_now(info, val->intval);
 	default:
 		return -EPERM;
@@ -365,10 +365,10 @@ static int ltc294x_set_property(struct power_supply *psy,
 }
 
 static int ltc294x_property_is_writeable(
-	struct power_supply *psy, enum power_supply_property psp)
+struct power_supply *psy, enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		return 1;
 	default:
 		return 0;
@@ -381,7 +381,7 @@ static void ltc294x_update(struct ltc294x_info *info)
 
 	if (charge != info->charge) {
 		info->charge = charge;
-		power_supply_changed(info->supply);
+power_supply_changed(info->supply);
 	}
 }
 
@@ -395,11 +395,11 @@ static void ltc294x_work(struct work_struct *work)
 }
 
 static enum power_supply_property ltc294x_properties[] = {
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_CURRENT_NOW,
 };
 
 static int ltc294x_i2c_remove(struct i2c_client *client)
@@ -407,14 +407,14 @@ static int ltc294x_i2c_remove(struct i2c_client *client)
 	struct ltc294x_info *info = i2c_get_clientdata(client);
 
 	cancel_delayed_work_sync(&info->work);
-	power_supply_unregister(info->supply);
+power_supply_unregister(info->supply);
 	return 0;
 }
 
 static int ltc294x_i2c_probe(struct i2c_client *client,
 	const struct i2c_device_id *id)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct ltc294x_info *info;
 	struct device_node *np;
 	int ret;
@@ -478,7 +478,7 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 	}
 
 	info->client = client;
-	info->supply_desc.type = POWER_SUPPLY_TYPE_BATTERY;
+info->supply_desc.type = POWER_SUPPLY_TYPE_BATTERY;
 	info->supply_desc.properties = ltc294x_properties;
 	switch (info->id) {
 	case LTC2944_ID:
@@ -499,7 +499,7 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 	info->supply_desc.get_property = ltc294x_get_property;
 	info->supply_desc.set_property = ltc294x_set_property;
 	info->supply_desc.property_is_writeable = ltc294x_property_is_writeable;
-	info->supply_desc.external_power_changed	= NULL;
+info->supply_desc.external_power_changed	= NULL;
 
 	psy_cfg.drv_data = info;
 
@@ -511,7 +511,7 @@ static int ltc294x_i2c_probe(struct i2c_client *client,
 		return ret;
 	}
 
-	info->supply = power_supply_register(&client->dev, &info->supply_desc,
+info->supply = power_supply_register(&client->dev, &info->supply_desc,
 					     &psy_cfg);
 	if (IS_ERR(info->supply)) {
 		dev_err(&client->dev, "failed to register ltc2941\n");

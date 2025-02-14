@@ -17,9 +17,9 @@
  */
 
 /**
- * DOC: wlan_hdd_tx_power.c
+* DOC: wlan_hdd_tx_power.c
  *
- * WLAN tx power setting functions
+* WLAN tx power setting functions
  *
  */
 
@@ -36,11 +36,11 @@
 
 static const struct nla_policy
 txpower_scale_policy[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_MAX + 1] = {
-	[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE] = { .type = NLA_U8 },
+[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE] = { .type = NLA_U8 },
 };
 
 /**
- * __wlan_hdd_cfg80211_txpower_scale () - txpower scaling
+* __wlan_hdd_cfg80211_txpower_scale () - txpower scaling
  * @wiphy: Pointer to wireless phy
  * @wdev: Pointer to wireless device
  * @data: Pointer to data
@@ -57,7 +57,7 @@ static int __wlan_hdd_cfg80211_txpower_scale(struct wiphy *wiphy,
 	struct net_device *dev = wdev->netdev;
 	struct hdd_adapter *adapter;
 	int ret;
-	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_MAX + 1];
+struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_MAX + 1];
 	uint8_t scale_value;
 	QDF_STATUS status;
 
@@ -69,29 +69,29 @@ static int __wlan_hdd_cfg80211_txpower_scale(struct wiphy *wiphy,
 
 	adapter = WLAN_HDD_GET_PRIV_PTR(dev);
 
-	if (wlan_cfg80211_nla_parse(tb, QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_MAX,
-				    data, data_len, txpower_scale_policy)) {
+if (wlan_cfg80211_nla_parse(tb, QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_MAX,
+data, data_len, txpower_scale_policy)) {
 		hdd_err("Invalid ATTR");
 		return -EINVAL;
 	}
 
-	if (!tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE]) {
-		hdd_err("attr tx power scale failed");
+if (!tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE]) {
+hdd_err("attr tx power scale failed");
 		return -EINVAL;
 	}
 
 	scale_value = nla_get_u8(tb
-		    [QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE]);
+[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE]);
 
-	if (scale_value > MAX_TXPOWER_SCALE) {
-		hdd_err("Invalid tx power scale level");
+if (scale_value > MAX_TXPOWER_SCALE) {
+hdd_err("Invalid tx power scale level");
 		return -EINVAL;
 	}
 
-	status = wma_set_tx_power_scale(adapter->vdev_id, scale_value);
+status = wma_set_tx_power_scale(adapter->vdev_id, scale_value);
 
 	if (status != QDF_STATUS_SUCCESS) {
-		hdd_err("Set tx power scale failed");
+hdd_err("Set tx power scale failed");
 		return -EINVAL;
 	}
 
@@ -110,7 +110,7 @@ int wlan_hdd_cfg80211_txpower_scale(struct wiphy *wiphy,
 	if (errno)
 		return errno;
 
-	errno = __wlan_hdd_cfg80211_txpower_scale(wiphy, wdev, data, data_len);
+errno = __wlan_hdd_cfg80211_txpower_scale(wiphy, wdev, data, data_len);
 
 	osif_vdev_sync_op_stop(vdev_sync);
 
@@ -119,11 +119,11 @@ int wlan_hdd_cfg80211_txpower_scale(struct wiphy *wiphy,
 
 static const struct nla_policy txpower_scale_decr_db_policy
 [QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB_MAX + 1] = {
-	[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB] = { .type = NLA_U8 },
+[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB] = { .type = NLA_U8 },
 };
 
 /**
- * __wlan_hdd_cfg80211_txpower_scale_decr_db () - txpower scaling
+* __wlan_hdd_cfg80211_txpower_scale_decr_db () - txpower scaling
  * @wiphy: Pointer to wireless phy
  * @wdev: Pointer to wireless device
  * @data: Pointer to data
@@ -141,7 +141,7 @@ __wlan_hdd_cfg80211_txpower_scale_decr_db(struct wiphy *wiphy,
 	struct net_device *dev = wdev->netdev;
 	struct hdd_adapter *adapter;
 	int ret;
-	struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB_MAX + 1];
+struct nlattr *tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB_MAX + 1];
 	uint8_t scale_value;
 	QDF_STATUS status;
 
@@ -154,26 +154,26 @@ __wlan_hdd_cfg80211_txpower_scale_decr_db(struct wiphy *wiphy,
 	adapter = WLAN_HDD_GET_PRIV_PTR(dev);
 
 	if (wlan_cfg80211_nla_parse(tb,
-				QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB_MAX,
+QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB_MAX,
 				data, data_len,
-				txpower_scale_decr_db_policy)) {
+txpower_scale_decr_db_policy)) {
 		hdd_err("Invalid ATTR");
 		return -EINVAL;
 	}
 
-	if (!tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB]) {
-		hdd_err("attr tx power decrease db value failed");
+if (!tb[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB]) {
+hdd_err("attr tx power decrease db value failed");
 		return -EINVAL;
 	}
 
 	scale_value = nla_get_u8(tb
-		    [QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB]);
+[QCA_WLAN_VENDOR_ATTR_TXPOWER_SCALE_DECR_DB]);
 
-	status = wma_set_tx_power_scale_decr_db(adapter->vdev_id,
+status = wma_set_tx_power_scale_decr_db(adapter->vdev_id,
 						scale_value);
 
 	if (status != QDF_STATUS_SUCCESS) {
-		hdd_err("Set tx power decrease db failed");
+hdd_err("Set tx power decrease db failed");
 		return -EINVAL;
 	}
 
@@ -192,7 +192,7 @@ int wlan_hdd_cfg80211_txpower_scale_decr_db(struct wiphy *wiphy,
 	if (errno)
 		return errno;
 
-	errno = __wlan_hdd_cfg80211_txpower_scale_decr_db(wiphy, wdev,
+errno = __wlan_hdd_cfg80211_txpower_scale_decr_db(wiphy, wdev,
 							  data, data_len);
 
 	osif_vdev_sync_op_stop(vdev_sync);

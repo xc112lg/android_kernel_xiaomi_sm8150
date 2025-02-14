@@ -1,7 +1,7 @@
 /*
- * OMAP5 Voltage Management Routines
+* OMAP5 Voltage Management Routines
  *
- * Based on voltagedomains44xx_data.c
+* Based on voltagedomains44xx_data.c
  *
  * Copyright (C) 2013 Texas Instruments Incorporated - http://www.ti.com
  *
@@ -40,7 +40,7 @@ static struct voltagedomain omap5_voltdm_mpu = {
 	.write = omap4_prm_vcvp_write,
 	.rmw = omap4_prm_vcvp_rmw,
 	.vc = &omap4_vc_mpu,
-	.vfsm = &omap5_vdd_mpu_vfsm,
+.vfsm = &omap5_vdd_mpu_vfsm,
 	.vp = &omap4_vp_mpu,
 };
 
@@ -51,7 +51,7 @@ static struct voltagedomain omap5_voltdm_mm = {
 	.write = omap4_prm_vcvp_write,
 	.rmw = omap4_prm_vcvp_rmw,
 	.vc = &omap4_vc_iva,
-	.vfsm = &omap5_vdd_mm_vfsm,
+.vfsm = &omap5_vdd_mm_vfsm,
 	.vp = &omap4_vp_iva,
 };
 
@@ -62,7 +62,7 @@ static struct voltagedomain omap5_voltdm_core = {
 	.write = omap4_prm_vcvp_write,
 	.rmw = omap4_prm_vcvp_rmw,
 	.vc = &omap4_vc_core,
-	.vfsm = &omap5_vdd_core_vfsm,
+.vfsm = &omap5_vdd_core_vfsm,
 	.vp = &omap4_vp_core,
 };
 
@@ -82,11 +82,11 @@ static const char *const sys_clk_name __initconst = "sys_clkin";
 
 void __init omap54xx_voltagedomains_init(void)
 {
-	struct voltagedomain *voltdm;
+struct voltagedomain *voltdm;
 	int i;
 
-	for (i = 0; voltdm = voltagedomains_omap5[i], voltdm; i++)
+for (i = 0; voltdm = voltagedomains_omap5[i], voltdm; i++)
 		voltdm->sys_clk.name = sys_clk_name;
 
-	voltdm_init(voltagedomains_omap5);
+voltdm_init(voltagedomains_omap5);
 };

@@ -1,7 +1,7 @@
 /*
- * Contains register definitions common to the Book E PowerPC
+* Contains register definitions common to the Book E PowerPC
  * specification.  Notice that while the IBM-40x series of CPUs
- * are not true Book E PowerPCs, they borrowed a number of features
+* are not true Book E PowerPCs, they borrowed a number of features
  * before Book E was finalized, and are included here as well.  Unfortunately,
  * they sometimes used different locations than true Book E CPUs did.
  *

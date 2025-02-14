@@ -1,5 +1,5 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
  *  Derived from "arch/i386/mm/fault.c"
@@ -232,7 +232,7 @@ static bool bad_stack_expansion(struct pt_regs *regs, unsigned long address,
 				bool *must_retry)
 {
 	/*
-	 * N.B. The POWER/Open ABI allows programs to access up to
+* N.B. The POWER/Open ABI allows programs to access up to
 	 * 288 bytes below the stack pointer.
 	 * The kernel signal delivery code writes a bit over 4KB
 	 * below the stack pointer (r1) before decrementing it.

@@ -68,16 +68,16 @@ void dt_fixup_cpu_clocks(u32 cpu, u32 tb, u32 bus)
 {
 	void *devp = NULL;
 
-	printf("CPU clock-frequency <- 0x%x (%dMHz)\n\r", cpu, MHZ(cpu));
-	printf("CPU timebase-frequency <- 0x%x (%dMHz)\n\r", tb, MHZ(tb));
+printf("CPU clock-frequency <- 0x%x (%dMHz)\n\r", cpu, MHZ(cpu));
+printf("CPU timebase-frequency <- 0x%x (%dMHz)\n\r", tb, MHZ(tb));
 	if (bus > 0)
-		printf("CPU bus-frequency <- 0x%x (%dMHz)\n\r", bus, MHZ(bus));
+printf("CPU bus-frequency <- 0x%x (%dMHz)\n\r", bus, MHZ(bus));
 
 	while ((devp = find_node_by_devtype(devp, "cpu"))) {
-		setprop_val(devp, "clock-frequency", cpu_to_be32(cpu));
-		setprop_val(devp, "timebase-frequency", cpu_to_be32(tb));
+setprop_val(devp, "clock-frequency", cpu_to_be32(cpu));
+setprop_val(devp, "timebase-frequency", cpu_to_be32(tb));
 		if (bus > 0)
-			setprop_val(devp, "bus-frequency", cpu_to_be32(bus));
+setprop_val(devp, "bus-frequency", cpu_to_be32(bus));
 	}
 
 	timebase_period_ns = 1000000000 / tb;
@@ -88,8 +88,8 @@ void dt_fixup_clock(const char *path, u32 freq)
 	void *devp = finddevice(path);
 
 	if (devp) {
-		printf("%s: clock-frequency <- %x (%dMHz)\n\r", path, freq, MHZ(freq));
-		setprop_val(devp, "clock-frequency", cpu_to_be32(freq));
+printf("%s: clock-frequency <- %x (%dMHz)\n\r", path, freq, MHZ(freq));
+setprop_val(devp, "clock-frequency", cpu_to_be32(freq));
 	}
 }
 

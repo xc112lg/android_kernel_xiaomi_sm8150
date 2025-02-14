@@ -413,7 +413,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 /*
  * This instruction is not implemented on the PPC 603 or 601; however, on
  * the 403GCX and 405GP tlbia IS defined and tlbie is not.
- * All of these instructions exist in the 8xx, they have magical powers,
+* All of these instructions exist in the 8xx, they have magical powers,
  * and they must be used.
  */
 
@@ -423,7 +423,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 	mtctr	r4;				\
 	lis	r4,KERNELBASE@h;		\
 	.machine push;				\
-	.machine "power4";			\
+.machine "power4";			\
 0:	tlbie	r4;				\
 	.machine pop;				\
 	addi	r4,r4,0x1000;			\
@@ -439,7 +439,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 
 /* The following stops all load and store data streams associated with stream
  * ID (ie. streams created explicitly).  The embedded and server mnemonics for
- * dcbt are different so we use machine "power4" here explicitly.
+* dcbt are different so we use machine "power4" here explicitly.
  */
 #define DCBT_STOP_ALL_STREAM_IDS(scratch)	\
 .machine push ;					\
@@ -485,7 +485,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_601)
 	rotldi	rd,rd,48
 #else
 /*
- * On APUS (Amiga PowerPC cpu upgrade board), we don't know the
+* On APUS (Amiga PowerPC cpu upgrade board), we don't know the
  * physical base address of RAM at compile time.
  */
 #define toreal(rd)	tophys(rd,rd)

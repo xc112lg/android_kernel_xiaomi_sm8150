@@ -29,8 +29,8 @@
 		compatible = "fsl,mpc5200b-immr";
 		ranges = <0 0xf0000000 0x0000c000>;
 		reg = <0xf0000000 0x00000100>;
-		bus-frequency = <0>; /* From boot loader */
-		system-frequency = <0>; /* From boot loader */
+bus-frequency = <0>; /* From boot loader */
+system-frequency = <0>; /* From boot loader */
 
 		spi@f00 {
 			status = "disabled";

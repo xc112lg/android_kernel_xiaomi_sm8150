@@ -657,8 +657,8 @@ static void hpte_decode(struct hash_pte *hpte, unsigned long slot,
  * This must be called with interrupts disabled.
  *
  * Taking the native_tlbie_lock is unsafe here due to the possibility of
- * lockdep being on. On pre POWER5 hardware, not taking the lock could
- * cause deadlock. POWER5 and newer not taking the lock is fine. This only
+* lockdep being on. On pre POWER5 hardware, not taking the lock could
+* cause deadlock. POWER5 and newer not taking the lock is fine. This only
  * gets called during boot before secondary CPUs have come up and during
  * crashdump and all bets are off anyway.
  *

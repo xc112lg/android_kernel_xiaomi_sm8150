@@ -30,17 +30,17 @@
 
 /**
  * struct regulatory_rule
- * @start_freq: start frequency
- * @end_freq: end frequency
+* @start_freq: start frequency
+* @end_freq: end frequency
  * @max_bw: maximum bandwidth
- * @reg_power: regulatory power
+* @reg_power: regulatory power
  * @flags: regulatory flags
  */
 struct regulatory_rule {
-	uint16_t start_freq;
-	uint16_t end_freq;
+uint16_t start_freq;
+uint16_t end_freq;
 	uint16_t max_bw;
-	uint8_t reg_power;
+uint8_t reg_power;
 	uint16_t flags;
 };
 

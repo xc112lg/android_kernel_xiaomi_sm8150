@@ -1,5 +1,5 @@
 /*
- * This file contains sleep low-level functions for PowerBook G3.
+* This file contains sleep low-level functions for PowerBook G3.
  *    Copyright (C) 1999 Benjamin Herrenschmidt (benh@kernel.crashing.org)
  *    and Paul Mackerras (paulus@samba.org).
  *

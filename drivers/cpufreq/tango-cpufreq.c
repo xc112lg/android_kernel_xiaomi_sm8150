@@ -12,7 +12,7 @@ static const struct of_device_id machines[] __initconst = {
 static int __init tango_cpufreq_init(void)
 {
 	struct device *cpu_dev = get_cpu_device(0);
-	unsigned long max_freq;
+unsigned long max_freq;
 	struct clk *cpu_clk;
 	void *res;
 
@@ -23,15 +23,15 @@ static int __init tango_cpufreq_init(void)
 	if (IS_ERR(cpu_clk))
 		return -ENODEV;
 
-	max_freq = clk_get_rate(cpu_clk);
+max_freq = clk_get_rate(cpu_clk);
 
-	dev_pm_opp_add(cpu_dev, max_freq / 1, 0);
-	dev_pm_opp_add(cpu_dev, max_freq / 2, 0);
-	dev_pm_opp_add(cpu_dev, max_freq / 3, 0);
-	dev_pm_opp_add(cpu_dev, max_freq / 5, 0);
-	dev_pm_opp_add(cpu_dev, max_freq / 9, 0);
+dev_pm_opp_add(cpu_dev, max_freq / 1, 0);
+dev_pm_opp_add(cpu_dev, max_freq / 2, 0);
+dev_pm_opp_add(cpu_dev, max_freq / 3, 0);
+dev_pm_opp_add(cpu_dev, max_freq / 5, 0);
+dev_pm_opp_add(cpu_dev, max_freq / 9, 0);
 
-	res = platform_device_register_data(NULL, "cpufreq-dt", -1, NULL, 0);
+res = platform_device_register_data(NULL, "cpufreq-dt", -1, NULL, 0);
 
 	return PTR_ERR_OR_ZERO(res);
 }

@@ -1,8 +1,8 @@
 /*
  * tps80031-regulator.c -- TI TPS80031 regulator driver.
  *
- * Regulator driver for TI TPS80031/TPS80032 Fully Integrated Power
- * Management with Power Path and Battery Charger.
+* Regulator driver for TI TPS80031/TPS80032 Fully Integrated Power
+* Management with Power Path and Battery Charger.
  *
  * Copyright (c) 2012, NVIDIA Corporation.
  *
@@ -75,7 +75,7 @@ struct tps80031_regulator_info {
 	u8		volt_reg;
 	u8		volt_id;
 
-	/*Power request bits */
+/*Power request bits */
 	int		preq_bit;
 
 	/* used by regulator core */
@@ -170,9 +170,9 @@ static int tps80031_dcdc_list_voltage(struct regulator_dev *rdev, unsigned sel)
 	if (sel == 0)
 		return 0;
 	else if (sel < 58)
-		return regulator_list_voltage_linear(rdev, sel - 1);
+return regulator_list_voltage_linear(rdev, sel - 1);
 	else
-		return tps80031_dcdc_voltages[volt_index][sel - 58] * 1000;
+return tps80031_dcdc_voltages[volt_index][sel - 58] * 1000;
 }
 
 static int tps80031_dcdc_set_voltage_sel(struct regulator_dev *rdev,
@@ -259,7 +259,7 @@ static int tps80031_ldo_list_voltage(struct regulator_dev *rdev,
 		}
 	}
 
-	return regulator_list_voltage_linear(rdev, sel);
+return regulator_list_voltage_linear(rdev, sel);
 }
 
 static int tps80031_ldo_map_voltage(struct regulator_dev *rdev,
@@ -274,12 +274,12 @@ static int tps80031_ldo_map_voltage(struct regulator_dev *rdev,
 		if (((tps80031_get_chip_info(parent) == TPS80031) ||
 			((tps80031_get_chip_info(parent) == TPS80032) &&
 			(tps80031_get_pmu_version(parent) == 0x0)))) {
-			return regulator_map_voltage_iterate(rdev, min_uV,
+return regulator_map_voltage_iterate(rdev, min_uV,
 							     max_uV);
 		}
 	}
 
-	return regulator_map_voltage_linear(rdev, min_uV, max_uV);
+return regulator_map_voltage_linear(rdev, min_uV, max_uV);
 }
 
 static int tps80031_vbus_is_enabled(struct regulator_dev *rdev)
@@ -379,37 +379,37 @@ static int tps80031_vbus_disable(struct regulator_dev *rdev)
 }
 
 static struct regulator_ops tps80031_dcdc_ops = {
-	.list_voltage		= tps80031_dcdc_list_voltage,
-	.set_voltage_sel	= tps80031_dcdc_set_voltage_sel,
-	.get_voltage_sel	= tps80031_dcdc_get_voltage_sel,
+.list_voltage		= tps80031_dcdc_list_voltage,
+.set_voltage_sel	= tps80031_dcdc_set_voltage_sel,
+.get_voltage_sel	= tps80031_dcdc_get_voltage_sel,
 	.enable		= tps80031_reg_enable,
 	.disable	= tps80031_reg_disable,
 	.is_enabled	= tps80031_reg_is_enabled,
 };
 
 static struct regulator_ops tps80031_ldo_ops = {
-	.list_voltage		= tps80031_ldo_list_voltage,
-	.map_voltage		= tps80031_ldo_map_voltage,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= tps80031_ldo_list_voltage,
+.map_voltage		= tps80031_ldo_map_voltage,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
 	.enable			= tps80031_reg_enable,
 	.disable		= tps80031_reg_disable,
 	.is_enabled		= tps80031_reg_is_enabled,
 };
 
 static struct regulator_ops tps80031_vbus_sw_ops = {
-	.list_voltage	= regulator_list_voltage_linear,
+.list_voltage	= regulator_list_voltage_linear,
 	.enable		= tps80031_vbus_enable,
 	.disable	= tps80031_vbus_disable,
 	.is_enabled	= tps80031_vbus_is_enabled,
 };
 
 static struct regulator_ops tps80031_vbus_hw_ops = {
-	.list_voltage	= regulator_list_voltage_linear,
+.list_voltage	= regulator_list_voltage_linear,
 };
 
 static struct regulator_ops tps80031_ext_reg_ops = {
-	.list_voltage	= regulator_list_voltage_linear,
+.list_voltage	= regulator_list_voltage_linear,
 	.enable		= tps80031_reg_enable,
 	.disable	= tps80031_reg_disable,
 	.is_enabled	= tps80031_reg_is_enabled,
@@ -427,15 +427,15 @@ static struct regulator_ops tps80031_ext_reg_ops = {
 	.trans_reg = TPS80031_##_id##_CFG_TRANS,		\
 	.state_reg = TPS80031_##_id##_CFG_STATE,		\
 	.force_reg = TPS80031_##_id##_CFG_FORCE,		\
-	.volt_reg = TPS80031_##_id##_CFG_VOLTAGE,		\
+.volt_reg = TPS80031_##_id##_CFG_VOLTAGE,		\
 	.volt_id = TPS80031_SLAVE_##_volt_id,			\
 	.preq_bit = _pbit,					\
 	.desc = {						\
 		.name = "tps80031_"#_id,			\
 		.id = TPS80031_REGULATOR_##_id,			\
-		.n_voltages = 63,				\
+.n_voltages = 63,				\
 		.ops = &tps80031_dcdc_ops,			\
-		.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 		.owner = THIS_MODULE,				\
 		.enable_time = 500,				\
 	},							\
@@ -445,7 +445,7 @@ static struct regulator_ops tps80031_ext_reg_ops = {
 {								\
 	.trans_reg = TPS80031_##_id##_CFG_TRANS,		\
 	.state_reg = TPS80031_##_id##_CFG_STATE,		\
-	.volt_reg = TPS80031_##_id##_CFG_VOLTAGE,		\
+.volt_reg = TPS80031_##_id##_CFG_VOLTAGE,		\
 	.volt_id = TPS80031_SLAVE_ID1,				\
 	.preq_bit = _preq_bit,					\
 	.desc = {						\
@@ -453,12 +453,12 @@ static struct regulator_ops tps80031_ext_reg_ops = {
 		.name = "tps80031_"#_id,			\
 		.id = TPS80031_REGULATOR_##_id,			\
 		.ops = &tps80031_ldo_ops,			\
-		.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 		.min_uV = 1000000,				\
 		.uV_step = 100000,				\
 		.linear_min_sel = 1,				\
-		.n_voltages = 25,				\
-		.vsel_reg = TPS80031_##_id##_CFG_VOLTAGE,	\
+.n_voltages = 25,				\
+.vsel_reg = TPS80031_##_id##_CFG_VOLTAGE,	\
 		.vsel_mask = LDO_VSEL_MASK,			\
 		.enable_time = 500,				\
 	},							\
@@ -474,9 +474,9 @@ static struct regulator_ops tps80031_ext_reg_ops = {
 		.name = "tps80031_"#_id,			\
 		.id = TPS80031_REGULATOR_##_id,			\
 		.min_uV = max_mV * 1000,			\
-		.n_voltages = 1,				\
+.n_voltages = 1,				\
 		.ops = &_ops,					\
-		.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 		.owner = THIS_MODULE,				\
 		.enable_time = _delay,				\
 	},							\
@@ -513,11 +513,11 @@ static int tps80031_power_req_config(struct device *parent,
 	if (ri->rinfo->preq_bit < 0)
 		goto skip_pwr_req_config;
 
-	ret = tps80031_ext_power_req_config(parent, ri->ext_ctrl_flag,
+ret = tps80031_ext_power_req_config(parent, ri->ext_ctrl_flag,
 			ri->rinfo->preq_bit, ri->rinfo->state_reg,
 			ri->rinfo->trans_reg);
 	if (ret < 0) {
-		dev_err(ri->dev, "ext powerreq config failed, err = %d\n", ret);
+dev_err(ri->dev, "ext powerreq config failed, err = %d\n", ret);
 		return ret;
 	}
 
@@ -641,7 +641,7 @@ static int check_smps_mode_mult(struct device *parent,
 		if (ri->device_flags & TRACK_MODE_ENABLE) {
 			ri->rinfo->desc.min_uV = 600000;
 			ri->rinfo->desc.uV_step = 12500;
-			ri->rinfo->desc.n_voltages = 57;
+ri->rinfo->desc.n_voltages = 57;
 			ri->rinfo->desc.vsel_mask = LDO_TRACK_VSEL_MASK;
 		}
 		return 0;
@@ -720,7 +720,7 @@ static int tps80031_regulator_probe(struct platform_device *pdev)
 				return ret;
 			}
 
-			ret = tps80031_power_req_config(pdev->dev.parent,
+ret = tps80031_power_req_config(pdev->dev.parent,
 					ri, tps_pdata);
 			if (ret < 0) {
 				dev_err(&pdev->dev,

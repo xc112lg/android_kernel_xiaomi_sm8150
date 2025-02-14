@@ -75,10 +75,10 @@ _GLOBAL(__csum_partial)
 	ld	r11,24(r3)
 
 	/*
-	 * On POWER6 and POWER7 back to back adde instructions take 2 cycles
+* On POWER6 and POWER7 back to back adde instructions take 2 cycles
 	 * because of the XER dependency. This means the fastest this loop can
 	 * go is 16 cycles per iteration. The scheduling of the loop below has
-	 * been shown to hit this on both POWER6 and POWER7.
+* been shown to hit this on both POWER6 and POWER7.
 	 */
 	.align 5
 2:
@@ -269,10 +269,10 @@ source;	ld	r10,16(r3)
 source;	ld	r11,24(r3)
 
 	/*
-	 * On POWER6 and POWER7 back to back adde instructions take 2 cycles
+* On POWER6 and POWER7 back to back adde instructions take 2 cycles
 	 * because of the XER dependency. This means the fastest this loop can
 	 * go is 16 cycles per iteration. The scheduling of the loop below has
-	 * been shown to hit this on both POWER6 and POWER7.
+* been shown to hit this on both POWER6 and POWER7.
 	 */
 	.align 5
 2:

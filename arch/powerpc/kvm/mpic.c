@@ -217,7 +217,7 @@ struct openpic {
 	uint32_t gcr;		/* Global configuration register  */
 	uint32_t pir;		/* Processor initialization register */
 	uint32_t spve;		/* Spurious vector register */
-	uint32_t tfrr;		/* Timer frequency reporting register */
+uint32_t tfrr;		/* Timer frequency reporting register */
 	/* Source registers */
 	struct irq_source src[MAX_IRQ];
 	/* Local registers per output pin */

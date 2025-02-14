@@ -1,5 +1,5 @@
 /*
- * livepatch.h - powerpc-specific Kernel Live Patching Core
+* livepatch.h - powerpc-specific Kernel Live Patching Core
  *
  * Copyright (C) 2015-2016, SUSE, IBM Corp.
  *

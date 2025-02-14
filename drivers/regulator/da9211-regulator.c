@@ -226,9 +226,9 @@ static const struct regulator_ops da9211_buck_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
 	.set_current_limit = da9211_set_current_limit,
 	.get_current_limit = da9211_get_current_limit,
 };
@@ -237,9 +237,9 @@ static const struct regulator_ops da9211_buck_ops = {
 {\
 	.name = #_id,\
 	.ops = &da9211_buck_ops,\
-	.type = REGULATOR_VOLTAGE,\
+.type = REGULATOR_VOLTAGE,\
 	.id = DA9211_ID_##_id,\
-	.n_voltages = (DA9211_MAX_MV - DA9211_MIN_MV) / DA9211_STEP_MV + 1,\
+.n_voltages = (DA9211_MAX_MV - DA9211_MIN_MV) / DA9211_STEP_MV + 1,\
 	.min_uV = (DA9211_MIN_MV * 1000),\
 	.uV_step = (DA9211_STEP_MV * 1000),\
 	.enable_reg = DA9211_REG_BUCKA_CONT + DA9211_ID_##_id,\

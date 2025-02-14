@@ -1,5 +1,5 @@
 /*
- * OMAP3 voltage domain data
+* OMAP3 voltage domain data
  *
  * Copyright (C) 2007, 2010 Texas Instruments, Inc.
  * Rajendra Nayak <rnayak@ti.com>
@@ -27,7 +27,7 @@
 #include "vp.h"
 
 /*
- * VDD data
+* VDD data
  */
 
 /* OMAP3-common voltagedomain data */
@@ -55,7 +55,7 @@ static struct voltagedomain omap3_voltdm_mpu = {
 	.write = omap3_prm_vcvp_write,
 	.rmw = omap3_prm_vcvp_rmw,
 	.vc = &omap3_vc_mpu,
-	.vfsm = &omap3_vdd1_vfsm,
+.vfsm = &omap3_vdd1_vfsm,
 	.vp = &omap3_vp_mpu,
 };
 
@@ -66,7 +66,7 @@ static struct voltagedomain omap3_voltdm_core = {
 	.write = omap3_prm_vcvp_write,
 	.rmw = omap3_prm_vcvp_rmw,
 	.vc = &omap3_vc_core,
-	.vfsm = &omap3_vdd2_vfsm,
+.vfsm = &omap3_vdd2_vfsm,
 	.vp = &omap3_vp_core,
 };
 
@@ -99,8 +99,8 @@ static const char *const sys_clk_name __initconst = "sys_ck";
 
 void __init omap3xxx_voltagedomains_init(void)
 {
-	struct voltagedomain *voltdm;
-	struct voltagedomain **voltdms;
+struct voltagedomain *voltdm;
+struct voltagedomain **voltdms;
 	int i;
 
 	/*
@@ -109,11 +109,11 @@ void __init omap3xxx_voltagedomains_init(void)
 	 */
 #ifdef CONFIG_PM_OPP
 	if (cpu_is_omap3630()) {
-		omap3_voltdm_mpu.volt_data = omap36xx_vddmpu_volt_data;
-		omap3_voltdm_core.volt_data = omap36xx_vddcore_volt_data;
+omap3_voltdm_mpu.volt_data = omap36xx_vddmpu_volt_data;
+omap3_voltdm_core.volt_data = omap36xx_vddcore_volt_data;
 	} else {
-		omap3_voltdm_mpu.volt_data = omap34xx_vddmpu_volt_data;
-		omap3_voltdm_core.volt_data = omap34xx_vddcore_volt_data;
+omap3_voltdm_mpu.volt_data = omap34xx_vddmpu_volt_data;
+omap3_voltdm_core.volt_data = omap34xx_vddcore_volt_data;
 	}
 #endif
 
@@ -123,9 +123,9 @@ void __init omap3xxx_voltagedomains_init(void)
 	omap3_voltdm_core.vc_param = &omap3_core_vc_data;
 
 	if (soc_is_am35xx())
-		voltdms = voltagedomains_am35xx;
+voltdms = voltagedomains_am35xx;
 	else
-		voltdms = voltagedomains_omap3;
+voltdms = voltagedomains_omap3;
 
 	for (i = 0; voltdm = voltdms[i], voltdm; i++)
 		voltdm->sys_clk.name = sys_clk_name;

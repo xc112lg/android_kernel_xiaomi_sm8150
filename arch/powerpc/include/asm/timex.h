@@ -5,7 +5,7 @@
 #ifdef __KERNEL__
 
 /*
- * PowerPC architecture timex specifications
+* PowerPC architecture timex specifications
  */
 
 #include <asm/cputable.h>

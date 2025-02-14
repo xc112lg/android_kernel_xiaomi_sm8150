@@ -271,7 +271,7 @@ int kvmppc_mmu_hv_init(void)
 	if (!cpu_has_feature(CPU_FTR_HVMODE))
 		return -EINVAL;
 
-	/* POWER7 has 10-bit LPIDs (12-bit in POWER8) */
+/* POWER7 has 10-bit LPIDs (12-bit in POWER8) */
 	host_lpid = mfspr(SPRN_LPID);
 	rsvd_lpid = LPID_RSVD;
 
@@ -399,7 +399,7 @@ static int kvmppc_mmu_book3s_64_hv_xlate(struct kvm_vcpu *vcpu, gva_t eaddr,
 	gpte->may_write = hpte_write_permission(pp, key);
 	gpte->may_execute = gpte->may_read && !(gr & (HPTE_R_N | HPTE_R_G));
 
-	/* Storage key permission check for POWER7 */
+/* Storage key permission check for POWER7 */
 	if (data && virtmode) {
 		int amrfield = hpte_get_skey_perm(gr, vcpu->arch.amr);
 		if (amrfield & 1)
@@ -1389,7 +1389,7 @@ static int resize_hpt_rehash(struct kvm_resize_hpt *resize)
 
 	/*
 	 * resize_hpt_rehash_hpte() doesn't handle the new-format HPTEs
-	 * that POWER9 uses, and could well hit a BUG_ON on POWER9.
+* that POWER9 uses, and could well hit a BUG_ON on POWER9.
 	 */
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
 		return -EIO;
@@ -2135,7 +2135,7 @@ void kvmppc_mmu_book3s_hv_init(struct kvm_vcpu *vcpu)
 {
 	struct kvmppc_mmu *mmu = &vcpu->arch.mmu;
 
-	vcpu->arch.slb_nr = 32;		/* POWER7/POWER8 */
+vcpu->arch.slb_nr = 32;		/* POWER7/POWER8 */
 
 	if (kvm_is_radix(vcpu->kvm))
 		mmu->xlate = kvmppc_mmu_radix_xlate;

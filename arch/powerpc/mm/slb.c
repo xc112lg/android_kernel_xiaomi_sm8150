@@ -1,5 +1,5 @@
 /*
- * PowerPC64 SLB support.
+* PowerPC64 SLB support.
  *
  * Copyright (C) 2004 David Gibson <dwg@au.ibm.com>, IBM
  * Based on earlier code written by:
@@ -216,7 +216,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
 		__slb_flush_and_rebolt();
 	}
 
-	/* Workaround POWER5 < DD2.1 issue */
+/* Workaround POWER5 < DD2.1 issue */
 	if (offset == 1 || offset > SLB_CACHE_ENTRIES)
 		asm volatile("slbie %0" : : "r" (slbie_data));
 
@@ -225,7 +225,7 @@ void switch_slb(struct task_struct *tsk, struct mm_struct *mm)
 
 	/*
 	 * preload some userspace segments into the SLB.
-	 * Almost all 32 and 64bit PowerPC executables are linked at
+* Almost all 32 and 64bit PowerPC executables are linked at
 	 * 0x10000000 so it makes sense to preload this segment.
 	 */
 	exec_base = 0x10000000;

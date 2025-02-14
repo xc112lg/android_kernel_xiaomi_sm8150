@@ -1,5 +1,5 @@
 /*
- *	sc520_freq.c: cpufreq driver for the AMD Elan sc520
+*	sc520_freq.c: cpufreq driver for the AMD Elan sc520
  *
  *	Copyright (C) 2005 Sean Young <sean@mess.org>
  *
@@ -8,7 +8,7 @@
  *	as published by the Free Software Foundation; either version
  *	2 of the License, or (at your option) any later version.
  *
- *	Based on elanfreq.c
+*	Based on elanfreq.c
  *
  *	2005-03-30: - initial revision
  */
@@ -35,7 +35,7 @@ static __u8 __iomem *cpuctl;
 static struct cpufreq_frequency_table sc520_freq_table[] = {
 	{0, 0x01,	100000},
 	{0, 0x02,	133000},
-	{0, 0,	CPUFREQ_TABLE_END},
+{0, 0,	CPUFREQ_TABLE_END},
 };
 
 static unsigned int sc520_freq_get_cpu_frequency(unsigned int cpu)
@@ -61,7 +61,7 @@ static int sc520_freq_target(struct cpufreq_policy *policy, unsigned int state)
 	local_irq_disable();
 
 	clockspeed_reg = *cpuctl & ~0x03;
-	*cpuctl = clockspeed_reg | sc520_freq_table[state].driver_data;
+*cpuctl = clockspeed_reg | sc520_freq_table[state].driver_data;
 
 	local_irq_enable();
 
@@ -84,17 +84,17 @@ static int sc520_freq_cpu_init(struct cpufreq_policy *policy)
 	/* cpuinfo and default policy values */
 	policy->cpuinfo.transition_latency = 1000000; /* 1ms */
 
-	return cpufreq_table_validate_and_show(policy, sc520_freq_table);
+return cpufreq_table_validate_and_show(policy, sc520_freq_table);
 }
 
 
 static struct cpufreq_driver sc520_freq_driver = {
-	.get	= sc520_freq_get_cpu_frequency,
-	.verify	= cpufreq_generic_frequency_table_verify,
-	.target_index = sc520_freq_target,
-	.init	= sc520_freq_cpu_init,
-	.name	= "sc520_freq",
-	.attr	= cpufreq_generic_attr,
+.get	= sc520_freq_get_cpu_frequency,
+.verify	= cpufreq_generic_frequency_table_verify,
+.target_index = sc520_freq_target,
+.init	= sc520_freq_cpu_init,
+.name	= "sc520_freq",
+.attr	= cpufreq_generic_attr,
 };
 
 static const struct x86_cpu_id sc520_ids[] = {
@@ -112,11 +112,11 @@ static int __init sc520_freq_init(void)
 
 	cpuctl = ioremap((unsigned long)(MMCR_BASE + OFFS_CPUCTL), 1);
 	if (!cpuctl) {
-		pr_err("sc520_freq: error: failed to remap memory\n");
+pr_err("sc520_freq: error: failed to remap memory\n");
 		return -ENOMEM;
 	}
 
-	err = cpufreq_register_driver(&sc520_freq_driver);
+err = cpufreq_register_driver(&sc520_freq_driver);
 	if (err)
 		iounmap(cpuctl);
 
@@ -126,7 +126,7 @@ static int __init sc520_freq_init(void)
 
 static void __exit sc520_freq_exit(void)
 {
-	cpufreq_unregister_driver(&sc520_freq_driver);
+cpufreq_unregister_driver(&sc520_freq_driver);
 	iounmap(cpuctl);
 }
 

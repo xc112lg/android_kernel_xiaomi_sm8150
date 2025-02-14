@@ -88,7 +88,7 @@
 
 		i2c@3d40 {
 			fsl,preserve-clocking;
-			clock-frequency = <400000>;
+clock-frequency = <400000>;
 
 			hwmon@2c {
 				compatible = "ad,adm9240";

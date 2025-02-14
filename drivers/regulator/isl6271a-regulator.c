@@ -1,7 +1,7 @@
 /*
  * isl6271a-regulator.c
  *
- * Support for Intersil ISL6271A voltage regulator
+* Support for Intersil ISL6271A voltage regulator
  *
  * Copyright (C) 2010 Marek Vasut <marek.vasut@gmail.com>
  *
@@ -44,7 +44,7 @@ static int isl6271a_get_voltage_sel(struct regulator_dev *dev)
 
 	idx = i2c_smbus_read_byte(pmic->client);
 	if (idx < 0)
-		dev_err(&pmic->client->dev, "Error getting voltage\n");
+dev_err(&pmic->client->dev, "Error getting voltage\n");
 
 	mutex_unlock(&pmic->mtx);
 	return idx;
@@ -60,47 +60,47 @@ static int isl6271a_set_voltage_sel(struct regulator_dev *dev,
 
 	err = i2c_smbus_write_byte(pmic->client, selector);
 	if (err < 0)
-		dev_err(&pmic->client->dev, "Error setting voltage\n");
+dev_err(&pmic->client->dev, "Error setting voltage\n");
 
 	mutex_unlock(&pmic->mtx);
 	return err;
 }
 
 static struct regulator_ops isl_core_ops = {
-	.get_voltage_sel = isl6271a_get_voltage_sel,
-	.set_voltage_sel = isl6271a_set_voltage_sel,
-	.list_voltage	= regulator_list_voltage_linear,
-	.map_voltage	= regulator_map_voltage_linear,
+.get_voltage_sel = isl6271a_get_voltage_sel,
+.set_voltage_sel = isl6271a_set_voltage_sel,
+.list_voltage	= regulator_list_voltage_linear,
+.map_voltage	= regulator_map_voltage_linear,
 };
 
 static struct regulator_ops isl_fixed_ops = {
-	.list_voltage	= regulator_list_voltage_linear,
+.list_voltage	= regulator_list_voltage_linear,
 };
 
 static const struct regulator_desc isl_rd[] = {
 	{
 		.name		= "Core Buck",
 		.id		= 0,
-		.n_voltages	= 16,
+.n_voltages	= 16,
 		.ops		= &isl_core_ops,
-		.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 		.owner		= THIS_MODULE,
-		.min_uV		= ISL6271A_VOLTAGE_MIN,
-		.uV_step	= ISL6271A_VOLTAGE_STEP,
+.min_uV		= ISL6271A_VOLTAGE_MIN,
+.uV_step	= ISL6271A_VOLTAGE_STEP,
 	}, {
 		.name		= "LDO1",
 		.id		= 1,
-		.n_voltages	= 1,
+.n_voltages	= 1,
 		.ops		= &isl_fixed_ops,
-		.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 		.owner		= THIS_MODULE,
 		.min_uV		= 1100000,
 	}, {
 		.name		= "LDO2",
 		.id		= 2,
-		.n_voltages	= 1,
+.n_voltages	= 1,
 		.ops		= &isl_fixed_ops,
-		.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 		.owner		= THIS_MODULE,
 		.min_uV		= 1300000,
 	},

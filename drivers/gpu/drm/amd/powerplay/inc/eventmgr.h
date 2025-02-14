@@ -106,13 +106,13 @@ struct pp_eventmgr {
 	const struct action_chain *event_chain[AMD_PP_EVENT_MAX];
 	struct phm_platform_descriptor   *platform_descriptor;
 	struct pp_clock_range clock_range;
-	enum pp_power_source  current_power_source;
-	struct pem_power_source_ui_state_info  ui_state_info[PP_PowerSource_Max];
+enum pp_power_source  current_power_source;
+struct pem_power_source_ui_state_info  ui_state_info[PP_PowerSource_Max];
 	enum pp_state states[PP_NUM_RINGS];
 	struct pp_request hi_req;
 	struct list_head context_list;
 	struct mutex lock;
-	bool  block_adjust_power_state;
+bool  block_adjust_power_state;
 	bool enable_cg;
 	bool enable_gfx_cgpg;
 	int (*pp_eventmgr_init)(struct pp_eventmgr *eventmgr);

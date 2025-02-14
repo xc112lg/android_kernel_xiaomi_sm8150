@@ -17,7 +17,7 @@
 
 /*
  * Bits in feature control register.
- * These were mostly derived by experiment on a powerbook 3400
+* These were mostly derived by experiment on a powerbook 3400
  * and may differ for other machines.
  */
 #define OH_SCC_RESET		1
@@ -39,7 +39,7 @@
 #define OH_IDE1_RESET_N		0x800000
 
 /*
- * Bits to set in the feature control register on PowerBooks.
+* Bits to set in the feature control register on PowerBooks.
  */
 #define PBOOK_FEATURES		(OH_IDE_ENABLE | OH_SCC_ENABLE | \
 				 OH_MESH_ENABLE | OH_SCCA_IO | OH_SCCB_IO)

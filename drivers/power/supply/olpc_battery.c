@@ -52,18 +52,18 @@
 #define BAT_ADDR_MFR_TYPE	0x5F
 
 /*********************************************************************
- *		Power
+*		Power
  *********************************************************************/
 
 static int olpc_ac_get_prop(struct power_supply *psy,
-			    enum power_supply_property psp,
-			    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	int ret = 0;
 	uint8_t status;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = olpc_ec_cmd(EC_BAT_STATUS, NULL, 0, &status, 1);
 		if (ret)
 			return ret;
@@ -78,12 +78,12 @@ static int olpc_ac_get_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property olpc_ac_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static const struct power_supply_desc olpc_ac_desc = {
 	.name = "olpc-ac",
-	.type = POWER_SUPPLY_TYPE_MAINS,
+.type = POWER_SUPPLY_TYPE_MAINS,
 	.properties = olpc_ac_props,
 	.num_properties = ARRAY_SIZE(olpc_ac_props),
 	.get_property = olpc_ac_get_prop,
@@ -97,21 +97,21 @@ static int olpc_bat_get_status(union power_supply_propval *val, uint8_t ec_byte)
 {
 	if (olpc_platform_info.ecver > 0x44) {
 		if (ec_byte & (BAT_STAT_CHARGING | BAT_STAT_TRICKLE))
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else if (ec_byte & BAT_STAT_DISCHARGING)
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (ec_byte & BAT_STAT_FULL)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else /* er,... */
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	} else {
 		/* Older EC didn't report charge/discharge bits */
 		if (!(ec_byte & BAT_STAT_AC)) /* No AC means discharging */
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		else if (ec_byte & BAT_STAT_FULL)
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 		else /* Not _necessarily_ true but EC doesn't tell all yet */
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 	}
 
 	return 0;
@@ -128,22 +128,22 @@ static int olpc_bat_get_health(union power_supply_propval *val)
 
 	switch (ec_byte) {
 	case 0:
-		val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 		break;
 
 	case BAT_ERR_OVERTEMP:
-		val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 		break;
 
-	case BAT_ERR_OVERVOLTAGE:
-		val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+case BAT_ERR_OVERVOLTAGE:
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 		break;
 
 	case BAT_ERR_INFOFAIL:
 	case BAT_ERR_OUT_OF_CONTROL:
 	case BAT_ERR_ID_FAIL:
 	case BAT_ERR_ACR_FAIL:
-		val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		break;
 
 	default:
@@ -191,13 +191,13 @@ static int olpc_bat_get_tech(union power_supply_propval *val)
 
 	switch (ec_byte & 0xf) {
 	case 1:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_NiMH;
+val->intval = POWER_SUPPLY_TECHNOLOGY_NiMH;
 		break;
 	case 2:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_LiFe;
+val->intval = POWER_SUPPLY_TECHNOLOGY_LiFe;
 		break;
 	default:
-		val->intval = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+val->intval = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
 		break;
 	}
 
@@ -207,7 +207,7 @@ static int olpc_bat_get_tech(union power_supply_propval *val)
 static int olpc_bat_get_charge_full_design(union power_supply_propval *val)
 {
 	uint8_t ec_byte;
-	union power_supply_propval tech;
+union power_supply_propval tech;
 	int ret, mfr;
 
 	ret = olpc_bat_get_tech(&tech);
@@ -222,7 +222,7 @@ static int olpc_bat_get_charge_full_design(union power_supply_propval *val)
 	mfr = ec_byte >> 4;
 
 	switch (tech.intval) {
-	case POWER_SUPPLY_TECHNOLOGY_NiMH:
+case POWER_SUPPLY_TECHNOLOGY_NiMH:
 		switch (mfr) {
 		case 1: /* Gold Peak */
 			val->intval = 3000000*.8;
@@ -232,7 +232,7 @@ static int olpc_bat_get_charge_full_design(union power_supply_propval *val)
 		}
 		break;
 
-	case POWER_SUPPLY_TECHNOLOGY_LiFe:
+case POWER_SUPPLY_TECHNOLOGY_LiFe:
 		switch (mfr) {
 		case 1: /* Gold Peak, fall through */
 		case 2: /* BYD */
@@ -253,7 +253,7 @@ static int olpc_bat_get_charge_full_design(union power_supply_propval *val)
 static int olpc_bat_get_charge_now(union power_supply_propval *val)
 {
 	uint8_t soc;
-	union power_supply_propval full;
+union power_supply_propval full;
 	int ret;
 
 	ret = olpc_ec_cmd(EC_BAT_SOC, NULL, 0, &soc, 1);
@@ -271,7 +271,7 @@ static int olpc_bat_get_charge_now(union power_supply_propval *val)
 static int olpc_bat_get_voltage_max_design(union power_supply_propval *val)
 {
 	uint8_t ec_byte;
-	union power_supply_propval tech;
+union power_supply_propval tech;
 	int mfr;
 	int ret;
 
@@ -287,7 +287,7 @@ static int olpc_bat_get_voltage_max_design(union power_supply_propval *val)
 	mfr = ec_byte >> 4;
 
 	switch (tech.intval) {
-	case POWER_SUPPLY_TECHNOLOGY_NiMH:
+case POWER_SUPPLY_TECHNOLOGY_NiMH:
 		switch (mfr) {
 		case 1: /* Gold Peak */
 			val->intval = 6000000;
@@ -297,7 +297,7 @@ static int olpc_bat_get_voltage_max_design(union power_supply_propval *val)
 		}
 		break;
 
-	case POWER_SUPPLY_TECHNOLOGY_LiFe:
+case POWER_SUPPLY_TECHNOLOGY_LiFe:
 		switch (mfr) {
 		case 1: /* Gold Peak */
 			val->intval = 6400000;
@@ -321,8 +321,8 @@ static int olpc_bat_get_voltage_max_design(union power_supply_propval *val)
  *		Battery properties
  *********************************************************************/
 static int olpc_bat_get_property(struct power_supply *psy,
-				 enum power_supply_property psp,
-				 union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	int ret = 0;
 	__be16 ec_word;
@@ -340,31 +340,31 @@ static int olpc_bat_get_property(struct power_supply *psy,
 	   information, and it's as if we just ran that _little_ bit faster
 	   and managed to read it out before the battery went away. */
 	if (!(ec_byte & (BAT_STAT_PRESENT | BAT_STAT_TRICKLE)) &&
-			psp != POWER_SUPPLY_PROP_PRESENT)
+psp != POWER_SUPPLY_PROP_PRESENT)
 		return -ENODEV;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = olpc_bat_get_status(val, ec_byte);
 		if (ret)
 			return ret;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		if (ec_byte & BAT_STAT_TRICKLE)
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 		else if (ec_byte & BAT_STAT_CHARGING)
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
 		else
-			val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
+val->intval = POWER_SUPPLY_CHARGE_TYPE_NONE;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = !!(ec_byte & (BAT_STAT_PRESENT |
 					    BAT_STAT_TRICKLE));
 		break;
 
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		if (ec_byte & BAT_STAT_DESTROY)
-			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+val->intval = POWER_SUPPLY_HEALTH_DEAD;
 		else {
 			ret = olpc_bat_get_health(val);
 			if (ret)
@@ -372,78 +372,78 @@ static int olpc_bat_get_property(struct power_supply *psy,
 		}
 		break;
 
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		ret = olpc_bat_get_mfr(val);
 		if (ret)
 			return ret;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		ret = olpc_bat_get_tech(val);
 		if (ret)
 			return ret;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		ret = olpc_ec_cmd(EC_BAT_VOLTAGE, NULL, 0, (void *)&ec_word, 2);
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+ret = olpc_ec_cmd(EC_BAT_VOLTAGE, NULL, 0, (void *)&ec_word, 2);
 		if (ret)
 			return ret;
 
 		val->intval = (s16)be16_to_cpu(ec_word) * 9760L / 32;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = olpc_ec_cmd(EC_BAT_CURRENT, NULL, 0, (void *)&ec_word, 2);
 		if (ret)
 			return ret;
 
 		val->intval = (s16)be16_to_cpu(ec_word) * 15625L / 120;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = olpc_ec_cmd(EC_BAT_SOC, NULL, 0, &ec_byte, 1);
 		if (ret)
 			return ret;
 		val->intval = ec_byte;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
 		if (ec_byte & BAT_STAT_FULL)
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_FULL;
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_FULL;
 		else if (ec_byte & BAT_STAT_LOW)
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_LOW;
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_LOW;
 		else
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		ret = olpc_bat_get_charge_full_design(val);
 		if (ret)
 			return ret;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		ret = olpc_bat_get_charge_now(val);
 		if (ret)
 			return ret;
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		ret = olpc_ec_cmd(EC_BAT_TEMP, NULL, 0, (void *)&ec_word, 2);
 		if (ret)
 			return ret;
 
 		val->intval = (s16)be16_to_cpu(ec_word) * 10 / 256;
 		break;
-	case POWER_SUPPLY_PROP_TEMP_AMBIENT:
+case POWER_SUPPLY_PROP_TEMP_AMBIENT:
 		ret = olpc_ec_cmd(EC_AMB_TEMP, NULL, 0, (void *)&ec_word, 2);
 		if (ret)
 			return ret;
 
 		val->intval = (int)be16_to_cpu(ec_word) * 10 / 256;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		ret = olpc_ec_cmd(EC_BAT_ACR, NULL, 0, (void *)&ec_word, 2);
 		if (ret)
 			return ret;
 
 		val->intval = (s16)be16_to_cpu(ec_word) * 6250 / 15;
 		break;
-	case POWER_SUPPLY_PROP_SERIAL_NUMBER:
+case POWER_SUPPLY_PROP_SERIAL_NUMBER:
 		ret = olpc_ec_cmd(EC_BAT_SERIAL, NULL, 0, (void *)&ser_buf, 8);
 		if (ret)
 			return ret;
@@ -451,8 +451,8 @@ static int olpc_bat_get_property(struct power_supply *psy,
 		sprintf(bat_serial, "%016llx", (long long)be64_to_cpu(ser_buf));
 		val->strval = bat_serial;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		ret = olpc_bat_get_voltage_max_design(val);
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+ret = olpc_bat_get_voltage_max_design(val);
 		if (ret)
 			return ret;
 		break;
@@ -465,47 +465,47 @@ static int olpc_bat_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property olpc_xo1_bat_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_TEMP_AMBIENT,
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_TEMP_AMBIENT,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_SERIAL_NUMBER,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
 };
 
 /* XO-1.5 does not have ambient temperature property */
 static enum power_supply_property olpc_xo15_bat_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_SERIAL_NUMBER,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
 };
 
 /* EEPROM reading goes completely around the power_supply API, sadly */
@@ -618,7 +618,7 @@ static int olpc_battery_probe(struct platform_device *pdev)
 
 	/* Ignore the status. It doesn't actually matter */
 
-	olpc_ac = power_supply_register(&pdev->dev, &olpc_ac_desc, NULL);
+olpc_ac = power_supply_register(&pdev->dev, &olpc_ac_desc, NULL);
 	if (IS_ERR(olpc_ac))
 		return PTR_ERR(olpc_ac);
 
@@ -630,7 +630,7 @@ static int olpc_battery_probe(struct platform_device *pdev)
 		olpc_bat_desc.num_properties = ARRAY_SIZE(olpc_xo1_bat_props);
 	}
 
-	olpc_bat = power_supply_register(&pdev->dev, &olpc_bat_desc, NULL);
+olpc_bat = power_supply_register(&pdev->dev, &olpc_bat_desc, NULL);
 	if (IS_ERR(olpc_bat)) {
 		ret = PTR_ERR(olpc_bat);
 		goto battery_failed;
@@ -654,9 +654,9 @@ static int olpc_battery_probe(struct platform_device *pdev)
 error_failed:
 	device_remove_bin_file(&olpc_bat->dev, &olpc_bat_eeprom);
 eeprom_failed:
-	power_supply_unregister(olpc_bat);
+power_supply_unregister(olpc_bat);
 battery_failed:
-	power_supply_unregister(olpc_ac);
+power_supply_unregister(olpc_ac);
 	return ret;
 }
 
@@ -664,8 +664,8 @@ static int olpc_battery_remove(struct platform_device *pdev)
 {
 	device_remove_file(&olpc_bat->dev, &olpc_bat_error);
 	device_remove_bin_file(&olpc_bat->dev, &olpc_bat_eeprom);
-	power_supply_unregister(olpc_bat);
-	power_supply_unregister(olpc_ac);
+power_supply_unregister(olpc_bat);
+power_supply_unregister(olpc_ac);
 	return 0;
 }
 

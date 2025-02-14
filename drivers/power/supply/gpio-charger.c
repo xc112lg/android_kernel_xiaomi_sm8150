@@ -32,34 +32,34 @@ struct gpio_charger {
 	unsigned int irq;
 	bool wakeup_enabled;
 
-	struct power_supply *charger;
-	struct power_supply_desc charger_desc;
+struct power_supply *charger;
+struct power_supply_desc charger_desc;
 	struct gpio_desc *gpiod;
 	bool legacy_gpio_requested;
 };
 
 static irqreturn_t gpio_charger_irq(int irq, void *devid)
 {
-	struct power_supply *charger = devid;
+struct power_supply *charger = devid;
 
-	power_supply_changed(charger);
+power_supply_changed(charger);
 
 	return IRQ_HANDLED;
 }
 
 static inline struct gpio_charger *psy_to_gpio_charger(struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static int gpio_charger_get_property(struct power_supply *psy,
-		enum power_supply_property psp, union power_supply_propval *val)
+enum power_supply_property psp, union power_supply_propval *val)
 {
 	struct gpio_charger *gpio_charger = psy_to_gpio_charger(psy);
 	const struct gpio_charger_platform_data *pdata = gpio_charger->pdata;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = gpiod_get_value_cansleep(gpio_charger->gpiod);
 		/* This xor is only ever used with legacy pdata GPIO */
 		val->intval ^= pdata->gpio_active_low;
@@ -72,7 +72,7 @@ static int gpio_charger_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property gpio_charger_properties[] = {
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static
@@ -91,25 +91,25 @@ struct gpio_charger_platform_data *gpio_charger_parse_dt(struct device *dev)
 		return ERR_PTR(-ENOMEM);
 
 	pdata->name = np->name;
-	pdata->type = POWER_SUPPLY_TYPE_UNKNOWN;
+pdata->type = POWER_SUPPLY_TYPE_UNKNOWN;
 	ret = of_property_read_string(np, "charger-type", &chargetype);
 	if (ret >= 0) {
 		if (!strncmp("unknown", chargetype, 7))
-			pdata->type = POWER_SUPPLY_TYPE_UNKNOWN;
+pdata->type = POWER_SUPPLY_TYPE_UNKNOWN;
 		else if (!strncmp("battery", chargetype, 7))
-			pdata->type = POWER_SUPPLY_TYPE_BATTERY;
+pdata->type = POWER_SUPPLY_TYPE_BATTERY;
 		else if (!strncmp("ups", chargetype, 3))
-			pdata->type = POWER_SUPPLY_TYPE_UPS;
+pdata->type = POWER_SUPPLY_TYPE_UPS;
 		else if (!strncmp("mains", chargetype, 5))
-			pdata->type = POWER_SUPPLY_TYPE_MAINS;
+pdata->type = POWER_SUPPLY_TYPE_MAINS;
 		else if (!strncmp("usb-sdp", chargetype, 7))
-			pdata->type = POWER_SUPPLY_TYPE_USB;
+pdata->type = POWER_SUPPLY_TYPE_USB;
 		else if (!strncmp("usb-dcp", chargetype, 7))
-			pdata->type = POWER_SUPPLY_TYPE_USB_DCP;
+pdata->type = POWER_SUPPLY_TYPE_USB_DCP;
 		else if (!strncmp("usb-cdp", chargetype, 7))
-			pdata->type = POWER_SUPPLY_TYPE_USB_CDP;
+pdata->type = POWER_SUPPLY_TYPE_USB_CDP;
 		else if (!strncmp("usb-aca", chargetype, 7))
-			pdata->type = POWER_SUPPLY_TYPE_USB_ACA;
+pdata->type = POWER_SUPPLY_TYPE_USB_ACA;
 		else
 			dev_warn(dev, "unknown charger type %s\n", chargetype);
 	}
@@ -120,9 +120,9 @@ struct gpio_charger_platform_data *gpio_charger_parse_dt(struct device *dev)
 static int gpio_charger_probe(struct platform_device *pdev)
 {
 	const struct gpio_charger_platform_data *pdata = pdev->dev.platform_data;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct gpio_charger *gpio_charger;
-	struct power_supply_desc *charger_desc;
+struct power_supply_desc *charger_desc;
 	int ret;
 	int irq;
 
@@ -197,11 +197,11 @@ static int gpio_charger_probe(struct platform_device *pdev)
 
 	gpio_charger->pdata = pdata;
 
-	gpio_charger->charger = power_supply_register(&pdev->dev,
+gpio_charger->charger = power_supply_register(&pdev->dev,
 						      charger_desc, &psy_cfg);
 	if (IS_ERR(gpio_charger->charger)) {
 		ret = PTR_ERR(gpio_charger->charger);
-		dev_err(&pdev->dev, "Failed to register power supply: %d\n",
+dev_err(&pdev->dev, "Failed to register power supply: %d\n",
 			ret);
 		goto err_gpio_free;
 	}
@@ -236,7 +236,7 @@ static int gpio_charger_remove(struct platform_device *pdev)
 	if (gpio_charger->irq)
 		free_irq(gpio_charger->irq, gpio_charger->charger);
 
-	power_supply_unregister(gpio_charger->charger);
+power_supply_unregister(gpio_charger->charger);
 
 	if (gpio_charger->legacy_gpio_requested)
 		gpio_free(gpio_charger->pdata->gpio);
@@ -263,7 +263,7 @@ static int gpio_charger_resume(struct device *dev)
 
 	if (device_may_wakeup(dev) && gpio_charger->wakeup_enabled)
 		disable_irq_wake(gpio_charger->irq);
-	power_supply_changed(gpio_charger->charger);
+power_supply_changed(gpio_charger->charger);
 
 	return 0;
 }

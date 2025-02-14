@@ -23,12 +23,12 @@ typedef struct bd_info {
     unsigned int   bi_bdate;      /* bootstrap date, i.e. 0x19971106 */
     unsigned int   bi_memstart;   /* Memory start address */
     unsigned int   bi_memsize;    /* Memory (end) size in bytes */
-    unsigned int   bi_intfreq;    /* Internal Freq, in Hz */
-    unsigned int   bi_busfreq;    /* Bus Freq, in Hz */
-    unsigned int   bi_cpmfreq;    /* CPM Freq, in Hz */
-    unsigned int   bi_brgfreq;    /* BRG Freq, in Hz */
+unsigned int   bi_intfreq;    /* Internal Freq, in Hz */
+unsigned int   bi_busfreq;    /* Bus Freq, in Hz */
+unsigned int   bi_cpmfreq;    /* CPM Freq, in Hz */
+unsigned int   bi_brgfreq;    /* BRG Freq, in Hz */
     unsigned int   bi_vco;        /* VCO Out from PLL */
-    unsigned int   bi_pci_freq;   /* PCI Freq, in Hz */
+unsigned int   bi_pci_freq;   /* PCI Freq, in Hz */
     unsigned int   bi_baudrate;   /* Default console baud rate */
     unsigned int   bi_immr;       /* IMMR when called from boot rom */
     unsigned char  bi_enetaddr[6];

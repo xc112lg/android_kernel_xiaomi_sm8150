@@ -1,5 +1,5 @@
 /*
- * AM33XX Power domain data
+* AM33XX Power domain data
  *
  * Copyright (C) 2011-2012 Texas Instruments Incorporated - http://www.ti.com/
  *
@@ -29,7 +29,7 @@ static struct powerdomain gfx_33xx_pwrdm = {
 	.pwrstst_offs		= AM33XX_PM_GFX_PWRSTST_OFFSET,
 	.pwrsts			= PWRSTS_OFF_RET_ON,
 	.pwrsts_logic_ret	= PWRSTS_OFF_RET,
-	.flags			= PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags			= PWRDM_HAS_LOWPOWERSTATECHANGE,
 	.banks			= 1,
 	.logicretstate_mask	= AM33XX_LOGICRETSTATE_MASK,
 	.mem_on_mask		= {
@@ -80,7 +80,7 @@ static struct powerdomain per_33xx_pwrdm = {
 	.pwrstst_offs		= AM33XX_PM_PER_PWRSTST_OFFSET,
 	.pwrsts			= PWRSTS_OFF_RET_ON,
 	.pwrsts_logic_ret	= PWRSTS_OFF_RET,
-	.flags			= PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags			= PWRDM_HAS_LOWPOWERSTATECHANGE,
 	.banks			= 3,
 	.logicretstate_mask	= AM33XX_LOGICRETSTATE_3_3_MASK,
 	.mem_on_mask		= {
@@ -123,7 +123,7 @@ static struct powerdomain mpu_33xx_pwrdm = {
 	.pwrstst_offs		= AM33XX_PM_MPU_PWRSTST_OFFSET,
 	.pwrsts			= PWRSTS_OFF_RET_ON,
 	.pwrsts_logic_ret	= PWRSTS_OFF_RET,
-	.flags			= PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags			= PWRDM_HAS_LOWPOWERSTATECHANGE,
 	.banks			= 3,
 	.logicretstate_mask	= AM33XX_LOGICRETSTATE_MASK,
 	.mem_on_mask		= {
@@ -180,6 +180,6 @@ static struct powerdomain *powerdomains_am33xx[] __initdata = {
 void __init am33xx_powerdomains_init(void)
 {
 	pwrdm_register_platform_funcs(&am33xx_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_am33xx);
+pwrdm_register_pwrdms(powerdomains_am33xx);
 	pwrdm_complete_init();
 }

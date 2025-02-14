@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER5 (not POWER5++) processors.
+* Performance counter support for POWER5 (not POWER5++) processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  *
@@ -15,7 +15,7 @@
 #include <asm/cputable.h>
 
 /*
- * Bits in event code for POWER5 (not POWER5++)
+* Bits in event code for POWER5 (not POWER5++)
  */
 #define PM_PMC_SH	20	/* PMC number (1-based) for direct events */
 #define PM_PMC_MSK	0xf
@@ -42,7 +42,7 @@
 #define PM_LASTUNIT	0xc
 
 /*
- * Bits in MMCR1 for POWER5
+* Bits in MMCR1 for POWER5
  */
 #define MMCR1_TTM0SEL_SH	62
 #define MMCR1_TTM1SEL_SH	60
@@ -524,7 +524,7 @@ static int power5_compute_mmcr(u64 event[], int n_ev,
 			grsel = (event[i] >> PM_GRS_SH) & PM_GRS_MSK;
 			mmcr1 |= (unsigned long)grsel << grsel_shift[bit];
 		}
-		if (power5_marked_instr_event(event[i]))
+if (power5_marked_instr_event(event[i]))
 			mmcra |= MMCRA_SAMPLE_ENABLE;
 		if (pmc <= 3)
 			mmcr1 |= psel << MMCR1_PMCSEL_SH(pmc);
@@ -603,28 +603,28 @@ static int power5_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
 };
 
 static struct power_pmu power5_pmu = {
-	.name			= "POWER5",
+.name			= "POWER5",
 	.n_counter		= 6,
 	.max_alternatives	= MAX_ALT,
 	.add_fields		= 0x7000090000555ul,
 	.test_adder		= 0x3000490000000ul,
-	.compute_mmcr		= power5_compute_mmcr,
-	.get_constraint		= power5_get_constraint,
-	.get_alternatives	= power5_get_alternatives,
-	.disable_pmc		= power5_disable_pmc,
-	.n_generic		= ARRAY_SIZE(power5_generic_events),
-	.generic_events		= power5_generic_events,
-	.cache_events		= &power5_cache_events,
+.compute_mmcr		= power5_compute_mmcr,
+.get_constraint		= power5_get_constraint,
+.get_alternatives	= power5_get_alternatives,
+.disable_pmc		= power5_disable_pmc,
+.n_generic		= ARRAY_SIZE(power5_generic_events),
+.generic_events		= power5_generic_events,
+.cache_events		= &power5_cache_events,
 	.flags			= PPMU_HAS_SSLOT,
 };
 
 static int __init init_power5_pmu(void)
 {
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5"))
+strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power5"))
 		return -ENODEV;
 
-	return register_power_pmu(&power5_pmu);
+return register_power_pmu(&power5_pmu);
 }
 
 early_initcall(init_power5_pmu);

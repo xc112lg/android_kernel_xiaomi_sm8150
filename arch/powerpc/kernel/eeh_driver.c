@@ -549,7 +549,7 @@ static void *eeh_pe_detach_dev(void *data, void *userdata)
 }
 
 /*
- * Explicitly clear PE's frozen state for PowerNV where
+* Explicitly clear PE's frozen state for PowerNV where
  * we have frozen PE until BAR restore is completed. It's
  * harmless to clear it for pSeries. To be consistent with
  * PE reset (for 3 times), we try to clear the frozen state

@@ -27,9 +27,9 @@
 #define JITTER_DEFAULT 10 /* hope 10ms is enough */
 
 enum gab_chan_type {
-	GAB_VOLTAGE = 0,
+GAB_VOLTAGE = 0,
 	GAB_CURRENT,
-	GAB_POWER,
+GAB_POWER,
 	GAB_MAX_CHAN_TYPE
 };
 
@@ -38,14 +38,14 @@ enum gab_chan_type {
  * channel types.
  */
 static const char *const gab_chan_name[] = {
-	[GAB_VOLTAGE]	= "voltage",
+[GAB_VOLTAGE]	= "voltage",
 	[GAB_CURRENT]	= "current",
-	[GAB_POWER]		= "power",
+[GAB_POWER]		= "power",
 };
 
 struct gab {
-	struct power_supply		*psy;
-	struct power_supply_desc	psy_desc;
+struct power_supply		*psy;
+struct power_supply_desc	psy_desc;
 	struct iio_channel	*channel[GAB_MAX_CHAN_TYPE];
 	struct gab_platform_data	*pdata;
 	struct delayed_work bat_work;
@@ -56,7 +56,7 @@ struct gab {
 
 static struct gab *to_generic_bat(struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static void gab_ext_power_changed(struct power_supply *psy)
@@ -67,16 +67,16 @@ static void gab_ext_power_changed(struct power_supply *psy)
 }
 
 static const enum power_supply_property gab_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_MODEL_NAME,
 };
 
 /*
@@ -84,9 +84,9 @@ static const enum power_supply_property gab_props[] = {
  * should correspond one-to-one with enum chan_type.
  */
 static const enum power_supply_property gab_dyn_props[] = {
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_POWER_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_POWER_NOW,
 };
 
 static bool gab_charge_finished(struct gab *adc_bat)
@@ -103,28 +103,28 @@ static bool gab_charge_finished(struct gab *adc_bat)
 static int gab_get_status(struct gab *adc_bat)
 {
 	struct gab_platform_data *pdata = adc_bat->pdata;
-	struct power_supply_info *bat_info;
+struct power_supply_info *bat_info;
 
 	bat_info = &pdata->battery_info;
 	if (adc_bat->level == bat_info->charge_full_design)
-		return POWER_SUPPLY_STATUS_FULL;
+return POWER_SUPPLY_STATUS_FULL;
 	return adc_bat->status;
 }
 
 static enum gab_chan_type gab_prop_to_chan(enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_POWER_NOW:
-		return GAB_POWER;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		return GAB_VOLTAGE;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_POWER_NOW:
+return GAB_POWER;
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+return GAB_VOLTAGE;
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		return GAB_CURRENT;
 	default:
 		WARN_ON(1);
 		break;
 	}
-	return GAB_POWER;
+return GAB_POWER;
 }
 
 static int read_channel(struct gab *adc_bat, enum power_supply_property psp,
@@ -145,11 +145,11 @@ static int read_channel(struct gab *adc_bat, enum power_supply_property psp,
 }
 
 static int gab_get_property(struct power_supply *psy,
-		enum power_supply_property psp, union power_supply_propval *val)
+enum power_supply_property psp, union power_supply_propval *val)
 {
 	struct gab *adc_bat;
 	struct gab_platform_data *pdata;
-	struct power_supply_info *bat_info;
+struct power_supply_info *bat_info;
 	int result = 0;
 	int ret = 0;
 
@@ -162,36 +162,36 @@ static int gab_get_property(struct power_supply *psy,
 	bat_info = &pdata->battery_info;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = gab_get_status(adc_bat);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		val->intval = pdata->cal_charge(result);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
-	case POWER_SUPPLY_PROP_POWER_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_POWER_NOW:
 		ret = read_channel(adc_bat, psp, &result);
 		if (ret < 0)
 			goto err;
 		val->intval = result;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = bat_info->technology;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		val->intval = bat_info->voltage_min_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+val->intval = bat_info->voltage_min_design;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		val->intval = bat_info->voltage_max_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+val->intval = bat_info->voltage_max_design;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		val->intval = bat_info->charge_full_design;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = bat_info->name;
 		break;
 	default:
@@ -214,18 +214,18 @@ static void gab_work(struct work_struct *work)
 	pdata = adc_bat->pdata;
 	status = adc_bat->status;
 
-	is_plugged = power_supply_am_i_supplied(adc_bat->psy);
+is_plugged = power_supply_am_i_supplied(adc_bat->psy);
 	adc_bat->cable_plugged = is_plugged;
 
 	if (!is_plugged)
-		adc_bat->status =  POWER_SUPPLY_STATUS_DISCHARGING;
+adc_bat->status =  POWER_SUPPLY_STATUS_DISCHARGING;
 	else if (gab_charge_finished(adc_bat))
-		adc_bat->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+adc_bat->status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	else
-		adc_bat->status = POWER_SUPPLY_STATUS_CHARGING;
+adc_bat->status = POWER_SUPPLY_STATUS_CHARGING;
 
 	if (status != adc_bat->status)
-		power_supply_changed(adc_bat->psy);
+power_supply_changed(adc_bat->psy);
 }
 
 static irqreturn_t gab_charged(int irq, void *dev_id)
@@ -243,8 +243,8 @@ static irqreturn_t gab_charged(int irq, void *dev_id)
 static int gab_probe(struct platform_device *pdev)
 {
 	struct gab *adc_bat;
-	struct power_supply_desc *psy_desc;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_desc *psy_desc;
+struct power_supply_config psy_cfg = {};
 	struct gab_platform_data *pdata = pdev->dev.platform_data;
 	int ret = 0;
 	int chan;
@@ -263,10 +263,10 @@ static int gab_probe(struct platform_device *pdev)
 
 	/* bootup default values for the battery */
 	adc_bat->cable_plugged = false;
-	adc_bat->status = POWER_SUPPLY_STATUS_DISCHARGING;
-	psy_desc->type = POWER_SUPPLY_TYPE_BATTERY;
+adc_bat->status = POWER_SUPPLY_STATUS_DISCHARGING;
+psy_desc->type = POWER_SUPPLY_TYPE_BATTERY;
 	psy_desc->get_property = gab_get_property;
-	psy_desc->external_power_changed = gab_ext_power_changed;
+psy_desc->external_power_changed = gab_ext_power_changed;
 	adc_bat->pdata = pdata;
 
 	/*
@@ -324,7 +324,7 @@ static int gab_probe(struct platform_device *pdev)
 	 */
 	psy_desc->num_properties = index;
 
-	adc_bat->psy = power_supply_register(&pdev->dev, psy_desc, &psy_cfg);
+adc_bat->psy = power_supply_register(&pdev->dev, psy_desc, &psy_cfg);
 	if (IS_ERR(adc_bat->psy)) {
 		ret = PTR_ERR(adc_bat->psy);
 		goto err_reg_fail;
@@ -356,7 +356,7 @@ static int gab_probe(struct platform_device *pdev)
 err_gpio:
 	gpio_free(pdata->gpio_charge_finished);
 gpio_req_fail:
-	power_supply_unregister(adc_bat->psy);
+power_supply_unregister(adc_bat->psy);
 err_reg_fail:
 	for (chan = 0; chan < ARRAY_SIZE(gab_chan_name); chan++) {
 		if (adc_bat->channel[chan])
@@ -374,7 +374,7 @@ static int gab_remove(struct platform_device *pdev)
 	struct gab *adc_bat = platform_get_drvdata(pdev);
 	struct gab_platform_data *pdata = adc_bat->pdata;
 
-	power_supply_unregister(adc_bat->psy);
+power_supply_unregister(adc_bat->psy);
 
 	if (gpio_is_valid(pdata->gpio_charge_finished)) {
 		free_irq(gpio_to_irq(pdata->gpio_charge_finished), adc_bat);
@@ -396,7 +396,7 @@ static int __maybe_unused gab_suspend(struct device *dev)
 	struct gab *adc_bat = dev_get_drvdata(dev);
 
 	cancel_delayed_work_sync(&adc_bat->bat_work);
-	adc_bat->status = POWER_SUPPLY_STATUS_UNKNOWN;
+adc_bat->status = POWER_SUPPLY_STATUS_UNKNOWN;
 	return 0;
 }
 

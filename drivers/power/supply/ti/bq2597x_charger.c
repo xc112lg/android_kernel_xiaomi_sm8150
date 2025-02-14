@@ -312,9 +312,9 @@ struct bq2597x {
 
 	struct dentry *debug_root;
 
-	struct power_supply_desc psy_desc;
-	struct power_supply_config psy_cfg;
-	struct power_supply *fc2_psy;
+struct power_supply_desc psy_desc;
+struct power_supply_config psy_cfg;
+struct power_supply *fc2_psy;
 };
 
 static int bq_debug_flag;
@@ -1780,24 +1780,24 @@ static const struct attribute_group bq2597x_attr_group = {
 };
 
 static enum power_supply_property bq2597x_charger_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_STATUS,
 
-	POWER_SUPPLY_PROP_TI_BATTERY_PRESENT,
-	POWER_SUPPLY_PROP_TI_VBUS_PRESENT,
-	POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE,
-	POWER_SUPPLY_PROP_TI_BATTERY_CURRENT,
-	POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE,
-	POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
-	POWER_SUPPLY_PROP_TI_BUS_CURRENT,
-	POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE,
-	POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE,
-	POWER_SUPPLY_PROP_TI_ALARM_STATUS,
-	POWER_SUPPLY_PROP_TI_FAULT_STATUS,
-	POWER_SUPPLY_PROP_TI_REG_STATUS,
-	POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3,
-	POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_TI_BATTERY_PRESENT,
+POWER_SUPPLY_PROP_TI_VBUS_PRESENT,
+POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE,
+POWER_SUPPLY_PROP_TI_BATTERY_CURRENT,
+POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE,
+POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
+POWER_SUPPLY_PROP_TI_BUS_CURRENT,
+POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE,
+POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE,
+POWER_SUPPLY_PROP_TI_ALARM_STATUS,
+POWER_SUPPLY_PROP_TI_FAULT_STATUS,
+POWER_SUPPLY_PROP_TI_REG_STATUS,
+POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3,
+POWER_SUPPLY_PROP_MODEL_NAME,
 };
 
 static void bq2597x_check_alarm_status(struct bq2597x *bq);
@@ -1805,87 +1805,87 @@ static void bq2597x_check_fault_status(struct bq2597x *bq);
 static int bq2597x_check_vbus_error_status(struct bq2597x *bq);
 
 static int bq2597x_charger_get_property(struct power_supply *psy,
-					enum power_supply_property psp,
-					union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct bq2597x *bq = power_supply_get_drvdata(psy);
+struct bq2597x *bq = power_supply_get_drvdata(psy);
 	int result;
 	int ret;
 	u8 reg_val;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		bq2597x_check_charge_enabled(bq, &bq->charge_enabled);
 		val->intval = bq->charge_enabled;
 		break;
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = bq->usb_present;
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_PRESENT:
+case POWER_SUPPLY_PROP_TI_BATTERY_PRESENT:
 		ret = bq2597x_read_byte(bq, BQ2597X_REG_0D, &reg_val);
 		if (!ret)
 			bq->batt_present = !!(reg_val & VBAT_INSERT);
 		val->intval = bq->batt_present;
 		break;
-	case POWER_SUPPLY_PROP_TI_VBUS_PRESENT:
+case POWER_SUPPLY_PROP_TI_VBUS_PRESENT:
 		ret = bq2597x_read_byte(bq, BQ2597X_REG_0D, &reg_val);
 		if (!ret)
 			bq->vbus_present = !!(reg_val & VBUS_INSERT);
 		val->intval = bq->vbus_present;
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE:
+case POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE:
 		ret = bq2597x_get_adc_data(bq, ADC_VBAT, &result);
 		if (!ret)
 			bq->vbat_volt = result;
 
 		val->intval = bq->vbat_volt;
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_CURRENT:
+case POWER_SUPPLY_PROP_TI_BATTERY_CURRENT:
 		ret = bq2597x_get_adc_data(bq, ADC_IBAT, &result);
 		if (!ret)
 			bq->ibat_curr = result;
 
 		val->intval = bq->ibat_curr;
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE:
+case POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE:
 		ret = bq2597x_get_adc_data(bq, ADC_TBAT, &result);
 		if (!ret)
 			bq->bat_temp = result;
 
 		val->intval = bq->bat_temp;
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_VOLTAGE:
+case POWER_SUPPLY_PROP_TI_BUS_VOLTAGE:
 		ret = bq2597x_get_adc_data(bq, ADC_VBUS, &result);
 		if (!ret)
 			bq->vbus_volt = result;
 
 		val->intval = bq->vbus_volt;
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_CURRENT:
+case POWER_SUPPLY_PROP_TI_BUS_CURRENT:
 		ret = bq2597x_get_adc_data(bq, ADC_IBUS, &result);
 		if (!ret)
 			bq->ibus_curr = result;
 
 		val->intval = bq->ibus_curr;
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE:
+case POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE:
 		ret = bq2597x_get_adc_data(bq, ADC_TBUS, &result);
 		if (!ret)
 			bq->bus_temp = result;
 
 		val->intval = bq->bus_temp;
 		break;
-	case POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE:
+case POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE:
 		ret = bq2597x_get_adc_data(bq, ADC_TDIE, &result);
 		if (!ret)
 			bq->die_temp = result;
 
 		val->intval = bq->die_temp;
 		break;
-	case POWER_SUPPLY_PROP_TI_ALARM_STATUS:
+case POWER_SUPPLY_PROP_TI_ALARM_STATUS:
 
 		bq2597x_check_alarm_status(bq);
 
@@ -1899,7 +1899,7 @@ static int bq2597x_charger_get_property(struct power_supply *psy,
 			       (bq->die_therm_alarm << DIE_THERM_ALARM_SHIFT));
 		break;
 
-	case POWER_SUPPLY_PROP_TI_FAULT_STATUS:
+case POWER_SUPPLY_PROP_TI_FAULT_STATUS:
 		bq2597x_check_fault_status(bq);
 
 		val->intval = ((bq->bat_ovp_fault << BAT_OVP_FAULT_SHIFT) |
@@ -1911,15 +1911,15 @@ static int bq2597x_charger_get_property(struct power_supply *psy,
 			       (bq->die_therm_fault << DIE_THERM_FAULT_SHIFT));
 		break;
 
-	case POWER_SUPPLY_PROP_TI_REG_STATUS:
+case POWER_SUPPLY_PROP_TI_REG_STATUS:
 		bq2597x_check_reg_status(bq);
 		val->intval = (bq->vbat_reg << VBAT_REG_STATUS_SHIFT) |
 			      (bq->ibat_reg << IBAT_REG_STATUS_SHIFT);
 		break;
-	case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
+case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		ret = bq2597x_get_work_mode(bq, &bq->mode);
 		if (ret) {
 			val->strval = "unknown";
@@ -1932,7 +1932,7 @@ static int bq2597x_charger_get_property(struct power_supply *psy,
 				val->strval = "bq2597x-standalone";
 		}
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_ERROR_STATUS:
+case POWER_SUPPLY_PROP_TI_BUS_ERROR_STATUS:
 		val->intval = bq2597x_check_vbus_error_status(bq);
 		break;
 	default:
@@ -1943,22 +1943,22 @@ static int bq2597x_charger_get_property(struct power_supply *psy,
 }
 
 static int bq2597x_charger_set_property(struct power_supply *psy,
-					enum power_supply_property prop,
-					const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct bq2597x *bq = power_supply_get_drvdata(psy);
+struct bq2597x *bq = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		bq2597x_enable_charge(bq, val->intval);
 		bq2597x_check_charge_enabled(bq, &bq->charge_enabled);
-		bq_info("POWER_SUPPLY_PROP_CHARGING_ENABLED: %s\n",
+bq_info("POWER_SUPPLY_PROP_CHARGING_ENABLED: %s\n",
 			val->intval ? "enable" : "disable");
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		bq2597x_set_present(bq, !!val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
+case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
 		bq2597x_set_bus_protection(bq, val->intval);
 		break;
 	default:
@@ -1986,13 +1986,13 @@ static int bq2597x_check_vbus_error_status(struct bq2597x *bq)
 }
 
 static int bq2597x_charger_is_writeable(struct power_supply *psy,
-					enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	int ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
-	case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
 		ret = 1;
 		break;
 	default:
@@ -2016,21 +2016,21 @@ static int bq2597x_psy_register(struct bq2597x *bq)
 	else
 		bq->psy_desc.name = "bq2597x-standalone";
 
-	bq->psy_desc.type = POWER_SUPPLY_TYPE_MAINS;
+bq->psy_desc.type = POWER_SUPPLY_TYPE_MAINS;
 	bq->psy_desc.properties = bq2597x_charger_props;
 	bq->psy_desc.num_properties = ARRAY_SIZE(bq2597x_charger_props);
 	bq->psy_desc.get_property = bq2597x_charger_get_property;
 	bq->psy_desc.set_property = bq2597x_charger_set_property;
 	bq->psy_desc.property_is_writeable = bq2597x_charger_is_writeable;
 
-	bq->fc2_psy = devm_power_supply_register(bq->dev, &bq->psy_desc,
+bq->fc2_psy = devm_power_supply_register(bq->dev, &bq->psy_desc,
 						 &bq->psy_cfg);
 	if (IS_ERR(bq->fc2_psy)) {
 		bq_err("failed to register fc2_psy:%d\n", ret);
 		return PTR_ERR(bq->fc2_psy);
 	}
 
-	bq_info("%s power supply register successfully\n", bq->psy_desc.name);
+bq_info("%s power supply register successfully\n", bq->psy_desc.name);
 
 	return 0;
 }
@@ -2144,7 +2144,7 @@ static void bq2597x_charger_info(struct bq2597x *bq)
 
 /*
  * interrupt does nothing, just info event chagne, other module could get info
- * through power supply interface
+* through power supply interface
  */
 static irqreturn_t bq2597x_charger_interrupt(int irq, void *dev_id)
 {
@@ -2171,7 +2171,7 @@ static irqreturn_t bq2597x_charger_interrupt(int irq, void *dev_id)
 	bq2597x_charger_info(bq);
 	bq2597x_dump_reg(bq);
 	mutex_unlock(&bq->irq_complete);
-	power_supply_changed(bq->fc2_psy);
+power_supply_changed(bq->fc2_psy);
 
 	return IRQ_HANDLED;
 }
@@ -2342,7 +2342,7 @@ static int bq2597x_charger_probe(struct i2c_client *client,
 	return 0;
 
 err_1:
-	power_supply_unregister(bq->fc2_psy);
+power_supply_unregister(bq->fc2_psy);
 	return ret;
 }
 
@@ -2396,7 +2396,7 @@ static int bq2597x_resume(struct device *dev)
 	}
 
 	bq2597x_enable_adc(bq, true);
-	power_supply_changed(bq->fc2_psy);
+power_supply_changed(bq->fc2_psy);
 	bq_err("Resume successfully!");
 
 	return 0;
@@ -2407,7 +2407,7 @@ static int bq2597x_charger_remove(struct i2c_client *client)
 
 	bq2597x_enable_adc(bq, false);
 
-	power_supply_unregister(bq->fc2_psy);
+power_supply_unregister(bq->fc2_psy);
 
 	mutex_destroy(&bq->charging_disable_lock);
 	mutex_destroy(&bq->data_lock);

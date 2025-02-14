@@ -1,5 +1,5 @@
 /*
- * Performance events - AMD Processor Power Reporting Mechanism
+* Performance events - AMD Processor Power Reporting Mechanism
  *
  * Copyright (C) 2016 Advanced Micro Devices, Inc.
  *
@@ -24,12 +24,12 @@
 #define AMD_POWER_EVENT_MASK		0xFFULL
 
 /*
- * Accumulated power status counters.
+* Accumulated power status counters.
  */
 #define AMD_POWER_EVENTSEL_PKG		1
 
 /*
- * The ratio of compute unit power accumulator sample period to the
+* The ratio of compute unit power accumulator sample period to the
  * PTSC period.
  */
 static unsigned int cpu_pwr_sample_ratio;
@@ -40,10 +40,10 @@ static u64 max_cu_acc_power;
 static struct pmu pmu_class;
 
 /*
- * Accumulated power represents the sum of each compute unit's (CU) power
- * consumption. On any core of each CU we read the total accumulated power from
+* Accumulated power represents the sum of each compute unit's (CU) power
+* consumption. On any core of each CU we read the total accumulated power from
  * MSR_F15H_CU_PWR_ACCUMULATOR. cpu_mask represents CPU bit map of all cores
- * which are picked to measure the power for the CUs they belong to.
+* which are picked to measure the power for the CUs they belong to.
  */
 static cpumask_t cpu_mask;
 
@@ -59,11 +59,11 @@ static void event_update(struct perf_event *event)
 	rdmsrl(MSR_F15H_PTSC, new_ptsc);
 
 	/*
-	 * Calculate the CU power consumption over a time period, the unit of
+* Calculate the CU power consumption over a time period, the unit of
 	 * final value (delta) is micro-Watts. Then add it to the event count.
 	 */
 	if (new_pwr_acc < prev_pwr_acc) {
-		delta = max_cu_acc_power + new_pwr_acc;
+delta = max_cu_acc_power + new_pwr_acc;
 		delta -= prev_pwr_acc;
 	} else
 		delta = new_pwr_acc - prev_pwr_acc;
@@ -129,9 +129,9 @@ static void pmu_event_del(struct perf_event *event, int flags)
 
 static int pmu_event_init(struct perf_event *event)
 {
-	u64 cfg = event->attr.config & AMD_POWER_EVENT_MASK;
+u64 cfg = event->attr.config & AMD_POWER_EVENT_MASK;
 
-	/* Only look at AMD power events. */
+/* Only look at AMD power events. */
 	if (event->attr.type != pmu_class.type)
 		return -ENOENT;
 
@@ -146,7 +146,7 @@ static int pmu_event_init(struct perf_event *event)
 	    event->attr.sample_period)
 		return -EINVAL;
 
-	if (cfg != AMD_POWER_EVENTSEL_PKG)
+if (cfg != AMD_POWER_EVENTSEL_PKG)
 		return -EINVAL;
 
 	return 0;
@@ -175,7 +175,7 @@ static struct attribute_group pmu_attr_group = {
 };
 
 /*
- * Currently it only supports to report the power of each
+* Currently it only supports to report the power of each
  * processor/package.
  */
 EVENT_ATTR_STR(power-pkg, power_pkg, "event=0x01");
@@ -186,9 +186,9 @@ EVENT_ATTR_STR(power-pkg.unit, power_pkg_unit, "mWatts");
 EVENT_ATTR_STR(power-pkg.scale, power_pkg_scale, "1.000000e-3");
 
 static struct attribute *events_attr[] = {
-	EVENT_PTR(power_pkg),
-	EVENT_PTR(power_pkg_unit),
-	EVENT_PTR(power_pkg_scale),
+EVENT_PTR(power_pkg),
+EVENT_PTR(power_pkg_unit),
+EVENT_PTR(power_pkg_scale),
 	NULL,
 };
 
@@ -279,35 +279,35 @@ static int __init amd_power_pmu_init(void)
 	if (!x86_match_cpu(cpu_match))
 		return -ENODEV;
 
-	if (!boot_cpu_has(X86_FEATURE_ACC_POWER))
+if (!boot_cpu_has(X86_FEATURE_ACC_POWER))
 		return -ENODEV;
 
 	cpu_pwr_sample_ratio = cpuid_ecx(0x80000007);
 
-	if (rdmsrl_safe(MSR_F15H_CU_MAX_PWR_ACCUMULATOR, &max_cu_acc_power)) {
-		pr_err("Failed to read max compute unit power accumulator MSR\n");
+if (rdmsrl_safe(MSR_F15H_CU_MAX_PWR_ACCUMULATOR, &max_cu_acc_power)) {
+pr_err("Failed to read max compute unit power accumulator MSR\n");
 		return -ENODEV;
 	}
 
 
-	cpuhp_setup_state(CPUHP_AP_PERF_X86_AMD_POWER_ONLINE,
-			  "perf/x86/amd/power:online",
-			  power_cpu_init, power_cpu_exit);
+cpuhp_setup_state(CPUHP_AP_PERF_X86_AMD_POWER_ONLINE,
+"perf/x86/amd/power:online",
+power_cpu_init, power_cpu_exit);
 
-	ret = perf_pmu_register(&pmu_class, "power", -1);
+ret = perf_pmu_register(&pmu_class, "power", -1);
 	if (WARN_ON(ret)) {
-		pr_warn("AMD Power PMU registration failed\n");
+pr_warn("AMD Power PMU registration failed\n");
 		return ret;
 	}
 
-	pr_info("AMD Power PMU detected\n");
+pr_info("AMD Power PMU detected\n");
 	return ret;
 }
 module_init(amd_power_pmu_init);
 
 static void __exit amd_power_pmu_exit(void)
 {
-	cpuhp_remove_state_nocalls(CPUHP_AP_PERF_X86_AMD_POWER_ONLINE);
+cpuhp_remove_state_nocalls(CPUHP_AP_PERF_X86_AMD_POWER_ONLINE);
 	perf_pmu_unregister(&pmu_class);
 }
 module_exit(amd_power_pmu_exit);

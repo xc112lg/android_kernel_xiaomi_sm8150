@@ -1,5 +1,5 @@
 /*
- * acpi-cpufreq.c - ACPI Processor P-States Driver
+* acpi-cpufreq.c - ACPI Processor P-States Driver
  *
  *  Copyright (C) 2001, 2002 Andy Grover <andrew.grover@intel.com>
  *  Copyright (C) 2001, 2002 Paul Diefenbaugh <paul.s.diefenbaugh@intel.com>
@@ -69,9 +69,9 @@ struct acpi_cpufreq_data {
 	unsigned int resume;
 	unsigned int cpu_feature;
 	unsigned int acpi_perf_cpu;
-	cpumask_var_t freqdomain_cpus;
-	void (*cpu_freq_write)(struct acpi_pct_register *reg, u32 val);
-	u32 (*cpu_freq_read)(struct acpi_pct_register *reg);
+cpumask_var_t freqdomain_cpus;
+void (*cpu_freq_write)(struct acpi_pct_register *reg, u32 val);
+u32 (*cpu_freq_read)(struct acpi_pct_register *reg);
 };
 
 /* acpi_perf_data is a pointer to percpu data. */
@@ -152,12 +152,12 @@ static int set_boost(int val)
 
 static ssize_t show_freqdomain_cpus(struct cpufreq_policy *policy, char *buf)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 
 	if (unlikely(!data))
 		return -ENODEV;
 
-	return cpufreq_show_cpus(data->freqdomain_cpus, buf);
+return cpufreq_show_cpus(data->freqdomain_cpus, buf);
 }
 
 cpufreq_freq_attr_ro(freqdomain_cpus);
@@ -169,7 +169,7 @@ static ssize_t store_cpb(struct cpufreq_policy *policy, const char *buf,
 	int ret;
 	unsigned int val = 0;
 
-	if (!acpi_cpufreq_driver.set_boost)
+if (!acpi_cpufreq_driver.set_boost)
 		return -EINVAL;
 
 	ret = kstrtouint(buf, 10, &val);
@@ -183,7 +183,7 @@ static ssize_t store_cpb(struct cpufreq_policy *policy, const char *buf,
 
 static ssize_t show_cpb(struct cpufreq_policy *policy, char *buf)
 {
-	return sprintf(buf, "%u\n", acpi_cpufreq_driver.boost_enabled);
+return sprintf(buf, "%u\n", acpi_cpufreq_driver.boost_enabled);
 }
 
 cpufreq_freq_attr_rw(cpb);
@@ -205,7 +205,7 @@ static int check_amd_hwpstate_cpu(unsigned int cpuid)
 
 static unsigned extract_io(struct cpufreq_policy *policy, u32 value)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 	struct acpi_processor_performance *perf;
 	int i;
 
@@ -213,15 +213,15 @@ static unsigned extract_io(struct cpufreq_policy *policy, u32 value)
 
 	for (i = 0; i < perf->state_count; i++) {
 		if (value == perf->states[i].status)
-			return policy->freq_table[i].frequency;
+return policy->freq_table[i].frequency;
 	}
 	return 0;
 }
 
 static unsigned extract_msr(struct cpufreq_policy *policy, u32 msr)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
-	struct cpufreq_frequency_table *pos;
+struct acpi_cpufreq_data *data = policy->driver_data;
+struct cpufreq_frequency_table *pos;
 	struct acpi_processor_performance *perf;
 
 	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD)
@@ -231,15 +231,15 @@ static unsigned extract_msr(struct cpufreq_policy *policy, u32 msr)
 
 	perf = to_perf_data(data);
 
-	cpufreq_for_each_entry(pos, policy->freq_table)
+cpufreq_for_each_entry(pos, policy->freq_table)
 		if (msr == perf->states[pos->driver_data].status)
-			return pos->frequency;
-	return policy->freq_table[0].frequency;
+return pos->frequency;
+return policy->freq_table[0].frequency;
 }
 
 static unsigned extract_freq(struct cpufreq_policy *policy, u32 val)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 
 	switch (data->cpu_feature) {
 	case SYSTEM_INTEL_MSR_CAPABLE:
@@ -317,7 +317,7 @@ static u32 drv_read(struct acpi_cpufreq_data *data, const struct cpumask *mask)
 	struct acpi_processor_performance *perf = to_perf_data(data);
 	struct drv_cmd cmd = {
 		.reg = &perf->control_register,
-		.func.read = data->cpu_freq_read,
+.func.read = data->cpu_freq_read,
 	};
 	int err;
 
@@ -341,7 +341,7 @@ static void drv_write(struct acpi_cpufreq_data *data,
 	struct drv_cmd cmd = {
 		.reg = &perf->control_register,
 		.val = val,
-		.func.write = data->cpu_freq_write,
+.func.write = data->cpu_freq_write,
 	};
 	int this_cpu;
 
@@ -369,46 +369,46 @@ static u32 get_cur_val(const struct cpumask *mask, struct acpi_cpufreq_data *dat
 
 static unsigned int get_cur_freq_on_cpu(unsigned int cpu)
 {
-	struct acpi_cpufreq_data *data;
-	struct cpufreq_policy *policy;
-	unsigned int freq;
-	unsigned int cached_freq;
+struct acpi_cpufreq_data *data;
+struct cpufreq_policy *policy;
+unsigned int freq;
+unsigned int cached_freq;
 
-	pr_debug("get_cur_freq_on_cpu (%d)\n", cpu);
+pr_debug("get_cur_freq_on_cpu (%d)\n", cpu);
 
-	policy = cpufreq_cpu_get_raw(cpu);
+policy = cpufreq_cpu_get_raw(cpu);
 	if (unlikely(!policy))
 		return 0;
 
 	data = policy->driver_data;
-	if (unlikely(!data || !policy->freq_table))
+if (unlikely(!data || !policy->freq_table))
 		return 0;
 
-	cached_freq = policy->freq_table[to_perf_data(data)->state].frequency;
-	freq = extract_freq(policy, get_cur_val(cpumask_of(cpu), data));
-	if (freq != cached_freq) {
+cached_freq = policy->freq_table[to_perf_data(data)->state].frequency;
+freq = extract_freq(policy, get_cur_val(cpumask_of(cpu), data));
+if (freq != cached_freq) {
 		/*
-		 * The dreaded BIOS frequency change behind our back.
-		 * Force set the frequency on next target call.
+* The dreaded BIOS frequency change behind our back.
+* Force set the frequency on next target call.
 		 */
 		data->resume = 1;
 	}
 
-	pr_debug("cur freq = %u\n", freq);
+pr_debug("cur freq = %u\n", freq);
 
-	return freq;
+return freq;
 }
 
 static unsigned int check_freqs(struct cpufreq_policy *policy,
-				const struct cpumask *mask, unsigned int freq)
+const struct cpumask *mask, unsigned int freq)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
-	unsigned int cur_freq;
+struct acpi_cpufreq_data *data = policy->driver_data;
+unsigned int cur_freq;
 	unsigned int i;
 
 	for (i = 0; i < 100; i++) {
-		cur_freq = extract_freq(policy, get_cur_val(mask, data));
-		if (cur_freq == freq)
+cur_freq = extract_freq(policy, get_cur_val(mask, data));
+if (cur_freq == freq)
 			return 1;
 		udelay(10);
 	}
@@ -418,7 +418,7 @@ static unsigned int check_freqs(struct cpufreq_policy *policy,
 static int acpi_cpufreq_target(struct cpufreq_policy *policy,
 			       unsigned int index)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 	struct acpi_processor_performance *perf;
 	const struct cpumask *mask;
 	unsigned int next_perf_state = 0; /* Index into perf table */
@@ -429,7 +429,7 @@ static int acpi_cpufreq_target(struct cpufreq_policy *policy,
 	}
 
 	perf = to_perf_data(data);
-	next_perf_state = policy->freq_table[index].driver_data;
+next_perf_state = policy->freq_table[index].driver_data;
 	if (perf->state == next_perf_state) {
 		if (unlikely(data->resume)) {
 			pr_debug("Called after resume, resetting to P%d\n",
@@ -446,15 +446,15 @@ static int acpi_cpufreq_target(struct cpufreq_policy *policy,
 	 * The core won't allow CPUs to go away until the governor has been
 	 * stopped, so we can rely on the stability of policy->cpus.
 	 */
-	mask = policy->shared_type == CPUFREQ_SHARED_TYPE_ANY ?
+mask = policy->shared_type == CPUFREQ_SHARED_TYPE_ANY ?
 		cpumask_of(policy->cpu) : policy->cpus;
 
 	drv_write(data, mask, perf->states[next_perf_state].control);
 
 	if (acpi_pstate_strict) {
-		if (!check_freqs(policy, mask,
-				 policy->freq_table[index].frequency)) {
-			pr_debug("acpi_cpufreq_target failed (%d)\n",
+if (!check_freqs(policy, mask,
+policy->freq_table[index].frequency)) {
+pr_debug("acpi_cpufreq_target failed (%d)\n",
 				policy->cpu);
 			result = -EAGAIN;
 		}
@@ -467,23 +467,23 @@ static int acpi_cpufreq_target(struct cpufreq_policy *policy,
 }
 
 unsigned int acpi_cpufreq_fast_switch(struct cpufreq_policy *policy,
-				      unsigned int target_freq)
+unsigned int target_freq)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 	struct acpi_processor_performance *perf;
-	struct cpufreq_frequency_table *entry;
-	unsigned int next_perf_state, next_freq, index;
+struct cpufreq_frequency_table *entry;
+unsigned int next_perf_state, next_freq, index;
 
 	/*
-	 * Find the closest frequency above target_freq.
+* Find the closest frequency above target_freq.
 	 */
-	if (policy->cached_target_freq == target_freq)
+if (policy->cached_target_freq == target_freq)
 		index = policy->cached_resolved_idx;
 	else
-		index = cpufreq_table_find_index_dl(policy, target_freq);
+index = cpufreq_table_find_index_dl(policy, target_freq);
 
-	entry = &policy->freq_table[index];
-	next_freq = entry->frequency;
+entry = &policy->freq_table[index];
+next_freq = entry->frequency;
 	next_perf_state = entry->driver_data;
 
 	perf = to_perf_data(data);
@@ -491,13 +491,13 @@ unsigned int acpi_cpufreq_fast_switch(struct cpufreq_policy *policy,
 		if (unlikely(data->resume))
 			data->resume = 0;
 		else
-			return next_freq;
+return next_freq;
 	}
 
-	data->cpu_freq_write(&perf->control_register,
+data->cpu_freq_write(&perf->control_register,
 			     perf->states[next_perf_state].control);
 	perf->state = next_perf_state;
-	return next_freq;
+return next_freq;
 }
 
 static unsigned long
@@ -509,23 +509,23 @@ acpi_cpufreq_guess_freq(struct acpi_cpufreq_data *data, unsigned int cpu)
 	if (cpu_khz) {
 		/* search the closest match to cpu_khz */
 		unsigned int i;
-		unsigned long freq;
-		unsigned long freqn = perf->states[0].core_frequency * 1000;
+unsigned long freq;
+unsigned long freqn = perf->states[0].core_frequency * 1000;
 
 		for (i = 0; i < (perf->state_count-1); i++) {
-			freq = freqn;
-			freqn = perf->states[i+1].core_frequency * 1000;
-			if ((2 * cpu_khz) > (freqn + freq)) {
+freq = freqn;
+freqn = perf->states[i+1].core_frequency * 1000;
+if ((2 * cpu_khz) > (freqn + freq)) {
 				perf->state = i;
-				return freq;
+return freq;
 			}
 		}
 		perf->state = perf->state_count-1;
-		return freqn;
+return freqn;
 	} else {
 		/* assume CPU is at P0... */
 		perf->state = 0;
-		return perf->states[0].core_frequency * 1000;
+return perf->states[0].core_frequency * 1000;
 	}
 }
 
@@ -546,7 +546,7 @@ static int cpufreq_boost_online(unsigned int cpu)
 	 * On the CPU_UP path we simply keep the boost-disable flag
 	 * in sync with the current global state.
 	 */
-	return boost_set_msr(acpi_cpufreq_driver.boost_enabled);
+return boost_set_msr(acpi_cpufreq_driver.boost_enabled);
 }
 
 static int cpufreq_boost_down_prep(unsigned int cpu)
@@ -559,17 +559,17 @@ static int cpufreq_boost_down_prep(unsigned int cpu)
 }
 
 /*
- * acpi_cpufreq_early_init - initialize ACPI P-States library
+* acpi_cpufreq_early_init - initialize ACPI P-States library
  *
  * Initialize the ACPI P-States library (drivers/acpi/processor_perflib.c)
- * in order to determine correct frequency and voltage pairings. We can
+* in order to determine correct frequency and voltage pairings. We can
  * do _PDC and _PSD and find out the processor dependency for the
  * actual init that will happen later...
  */
 static int __init acpi_cpufreq_early_init(void)
 {
 	unsigned int i;
-	pr_debug("acpi_cpufreq_early_init\n");
+pr_debug("acpi_cpufreq_early_init\n");
 
 	acpi_perf_data = alloc_percpu(struct acpi_processor_performance);
 	if (!acpi_perf_data) {
@@ -631,7 +631,7 @@ static int acpi_cpufreq_blacklist(struct cpuinfo_x86 *c)
 		if ((c->x86 == 15) &&
 		    (c->x86_model == 6) &&
 		    (c->x86_stepping == 8)) {
-			pr_info("Intel(R) Xeon(R) 7100 Errata AL30, processors may lock up on frequency changes: disabling acpi-cpufreq\n");
+pr_info("Intel(R) Xeon(R) 7100 Errata AL30, processors may lock up on frequency changes: disabling acpi-cpufreq\n");
 			return -ENODEV;
 		    }
 		}
@@ -644,21 +644,21 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	unsigned int i;
 	unsigned int valid_states = 0;
 	unsigned int cpu = policy->cpu;
-	struct acpi_cpufreq_data *data;
+struct acpi_cpufreq_data *data;
 	unsigned int result = 0;
 	struct cpuinfo_x86 *c = &cpu_data(policy->cpu);
 	struct acpi_processor_performance *perf;
-	struct cpufreq_frequency_table *freq_table;
+struct cpufreq_frequency_table *freq_table;
 #ifdef CONFIG_SMP
 	static int blacklisted;
 #endif
 
-	pr_debug("acpi_cpufreq_cpu_init\n");
+pr_debug("acpi_cpufreq_cpu_init\n");
 
 #ifdef CONFIG_SMP
 	if (blacklisted)
 		return blacklisted;
-	blacklisted = acpi_cpufreq_blacklist(c);
+blacklisted = acpi_cpufreq_blacklist(c);
 	if (blacklisted)
 		return blacklisted;
 #endif
@@ -667,7 +667,7 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	if (!data)
 		return -ENOMEM;
 
-	if (!zalloc_cpumask_var(&data->freqdomain_cpus, GFP_KERNEL)) {
+if (!zalloc_cpumask_var(&data->freqdomain_cpus, GFP_KERNEL)) {
 		result = -ENOMEM;
 		goto err_free;
 	}
@@ -677,7 +677,7 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	policy->driver_data = data;
 
 	if (cpu_has(c, X86_FEATURE_CONSTANT_TSC))
-		acpi_cpufreq_driver.flags |= CPUFREQ_CONST_LOOPS;
+acpi_cpufreq_driver.flags |= CPUFREQ_CONST_LOOPS;
 
 	result = acpi_processor_register_performance(perf, cpu);
 	if (result)
@@ -689,16 +689,16 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	 * Will let policy->cpus know about dependency only when software
 	 * coordination is required.
 	 */
-	if (policy->shared_type == CPUFREQ_SHARED_TYPE_ALL ||
-	    policy->shared_type == CPUFREQ_SHARED_TYPE_ANY) {
+if (policy->shared_type == CPUFREQ_SHARED_TYPE_ALL ||
+policy->shared_type == CPUFREQ_SHARED_TYPE_ANY) {
 		cpumask_copy(policy->cpus, perf->shared_cpu_map);
 	}
-	cpumask_copy(data->freqdomain_cpus, perf->shared_cpu_map);
+cpumask_copy(data->freqdomain_cpus, perf->shared_cpu_map);
 
 #ifdef CONFIG_SMP
 	dmi_check_system(sw_any_bug_dmi_table);
 	if (bios_with_sw_any_bug && !policy_is_shared(policy)) {
-		policy->shared_type = CPUFREQ_SHARED_TYPE_ALL;
+policy->shared_type = CPUFREQ_SHARED_TYPE_ALL;
 		cpumask_copy(policy->cpus, topology_core_cpumask(cpu));
 	}
 
@@ -706,9 +706,9 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	    !acpi_pstate_strict) {
 		cpumask_clear(policy->cpus);
 		cpumask_set_cpu(cpu, policy->cpus);
-		cpumask_copy(data->freqdomain_cpus,
+cpumask_copy(data->freqdomain_cpus,
 			     topology_sibling_cpumask(cpu));
-		policy->shared_type = CPUFREQ_SHARED_TYPE_HW;
+policy->shared_type = CPUFREQ_SHARED_TYPE_HW;
 		pr_info_once("overriding BIOS provided _PSD data\n");
 	}
 #endif
@@ -735,21 +735,21 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		}
 		pr_debug("SYSTEM IO addr space\n");
 		data->cpu_feature = SYSTEM_IO_CAPABLE;
-		data->cpu_freq_read = cpu_freq_read_io;
-		data->cpu_freq_write = cpu_freq_write_io;
+data->cpu_freq_read = cpu_freq_read_io;
+data->cpu_freq_write = cpu_freq_write_io;
 		break;
 	case ACPI_ADR_SPACE_FIXED_HARDWARE:
 		pr_debug("HARDWARE addr space\n");
 		if (check_est_cpu(cpu)) {
 			data->cpu_feature = SYSTEM_INTEL_MSR_CAPABLE;
-			data->cpu_freq_read = cpu_freq_read_intel;
-			data->cpu_freq_write = cpu_freq_write_intel;
+data->cpu_freq_read = cpu_freq_read_intel;
+data->cpu_freq_write = cpu_freq_write_intel;
 			break;
 		}
 		if (check_amd_hwpstate_cpu(cpu)) {
 			data->cpu_feature = SYSTEM_AMD_MSR_CAPABLE;
-			data->cpu_freq_read = cpu_freq_read_amd;
-			data->cpu_freq_write = cpu_freq_write_amd;
+data->cpu_freq_read = cpu_freq_read_amd;
+data->cpu_freq_write = cpu_freq_write_amd;
 			break;
 		}
 		result = -ENODEV;
@@ -761,9 +761,9 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		goto err_unreg;
 	}
 
-	freq_table = kzalloc(sizeof(*freq_table) *
+freq_table = kzalloc(sizeof(*freq_table) *
 		    (perf->state_count+1), GFP_KERNEL);
-	if (!freq_table) {
+if (!freq_table) {
 		result = -ENOMEM;
 		goto err_unreg;
 	}
@@ -786,37 +786,37 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 
 	/* table init */
 	for (i = 0; i < perf->state_count; i++) {
-		if (i > 0 && perf->states[i].core_frequency >=
-		    freq_table[valid_states-1].frequency / 1000)
+if (i > 0 && perf->states[i].core_frequency >=
+freq_table[valid_states-1].frequency / 1000)
 			continue;
 
-		freq_table[valid_states].driver_data = i;
-		freq_table[valid_states].frequency =
-		    perf->states[i].core_frequency * 1000;
+freq_table[valid_states].driver_data = i;
+freq_table[valid_states].frequency =
+perf->states[i].core_frequency * 1000;
 		valid_states++;
 	}
-	freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
+freq_table[valid_states].frequency = CPUFREQ_TABLE_END;
 	perf->state = 0;
 
-	result = cpufreq_table_validate_and_show(policy, freq_table);
+result = cpufreq_table_validate_and_show(policy, freq_table);
 	if (result)
-		goto err_freqfree;
+goto err_freqfree;
 
-	if (perf->states[0].core_frequency * 1000 != policy->cpuinfo.max_freq)
-		pr_warn(FW_WARN "P-state 0 is not max freq\n");
+if (perf->states[0].core_frequency * 1000 != policy->cpuinfo.max_freq)
+pr_warn(FW_WARN "P-state 0 is not max freq\n");
 
 	switch (perf->control_register.space_id) {
 	case ACPI_ADR_SPACE_SYSTEM_IO:
 		/*
 		 * The core will not set policy->cur, because
-		 * cpufreq_driver->get is NULL, so we need to set it here.
+* cpufreq_driver->get is NULL, so we need to set it here.
 		 * However, we have to guess it, because the current speed is
 		 * unknown and not detectable via IO ports.
 		 */
-		policy->cur = acpi_cpufreq_guess_freq(data, policy->cpu);
+policy->cur = acpi_cpufreq_guess_freq(data, policy->cpu);
 		break;
 	case ACPI_ADR_SPACE_FIXED_HARDWARE:
-		acpi_cpufreq_driver.get = get_cur_freq_on_cpu;
+acpi_cpufreq_driver.get = get_cur_freq_on_cpu;
 		break;
 	default:
 		break;
@@ -829,8 +829,8 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	for (i = 0; i < perf->state_count; i++)
 		pr_debug("     %cP%d: %d MHz, %d mW, %d uS\n",
 			(i == perf->state ? '*' : ' '), i,
-			(u32) perf->states[i].core_frequency,
-			(u32) perf->states[i].power,
+(u32) perf->states[i].core_frequency,
+(u32) perf->states[i].power,
 			(u32) perf->states[i].transition_latency);
 
 	/*
@@ -840,16 +840,16 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	data->resume = 1;
 
 	policy->fast_switch_possible = !acpi_pstate_strict &&
-		!(policy_is_shared(policy) && policy->shared_type != CPUFREQ_SHARED_TYPE_ANY);
+!(policy_is_shared(policy) && policy->shared_type != CPUFREQ_SHARED_TYPE_ANY);
 
 	return result;
 
 err_freqfree:
-	kfree(freq_table);
+kfree(freq_table);
 err_unreg:
 	acpi_processor_unregister_performance(cpu);
 err_free_mask:
-	free_cpumask_var(data->freqdomain_cpus);
+free_cpumask_var(data->freqdomain_cpus);
 err_free:
 	kfree(data);
 	policy->driver_data = NULL;
@@ -859,15 +859,15 @@ err_free:
 
 static int acpi_cpufreq_cpu_exit(struct cpufreq_policy *policy)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 
-	pr_debug("acpi_cpufreq_cpu_exit\n");
+pr_debug("acpi_cpufreq_cpu_exit\n");
 
 	policy->fast_switch_possible = false;
 	policy->driver_data = NULL;
 	acpi_processor_unregister_performance(data->acpi_perf_cpu);
-	free_cpumask_var(data->freqdomain_cpus);
-	kfree(policy->freq_table);
+free_cpumask_var(data->freqdomain_cpus);
+kfree(policy->freq_table);
 	kfree(data);
 
 	return 0;
@@ -875,9 +875,9 @@ static int acpi_cpufreq_cpu_exit(struct cpufreq_policy *policy)
 
 static int acpi_cpufreq_resume(struct cpufreq_policy *policy)
 {
-	struct acpi_cpufreq_data *data = policy->driver_data;
+struct acpi_cpufreq_data *data = policy->driver_data;
 
-	pr_debug("acpi_cpufreq_resume\n");
+pr_debug("acpi_cpufreq_resume\n");
 
 	data->resume = 1;
 
@@ -885,8 +885,8 @@ static int acpi_cpufreq_resume(struct cpufreq_policy *policy)
 }
 
 static struct freq_attr *acpi_cpufreq_attr[] = {
-	&cpufreq_freq_attr_scaling_available_freqs,
-	&freqdomain_cpus,
+&cpufreq_freq_attr_scaling_available_freqs,
+&freqdomain_cpus,
 #ifdef CONFIG_X86_ACPI_CPUFREQ_CPB
 	&cpb,
 #endif
@@ -894,15 +894,15 @@ static struct freq_attr *acpi_cpufreq_attr[] = {
 };
 
 static struct cpufreq_driver acpi_cpufreq_driver = {
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= acpi_cpufreq_target,
-	.fast_switch	= acpi_cpufreq_fast_switch,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= acpi_cpufreq_target,
+.fast_switch	= acpi_cpufreq_fast_switch,
 	.bios_limit	= acpi_processor_get_bios_limit,
-	.init		= acpi_cpufreq_cpu_init,
-	.exit		= acpi_cpufreq_cpu_exit,
-	.resume		= acpi_cpufreq_resume,
-	.name		= "acpi-cpufreq",
-	.attr		= acpi_cpufreq_attr,
+.init		= acpi_cpufreq_cpu_init,
+.exit		= acpi_cpufreq_cpu_exit,
+.resume		= acpi_cpufreq_resume,
+.name		= "acpi-cpufreq",
+.attr		= acpi_cpufreq_attr,
 };
 
 static enum cpuhp_state acpi_cpufreq_online;
@@ -916,26 +916,26 @@ static void __init acpi_cpufreq_boost_init(void)
 		return;
 	}
 
-	acpi_cpufreq_driver.set_boost = set_boost;
-	acpi_cpufreq_driver.boost_enabled = boost_state(0);
+acpi_cpufreq_driver.set_boost = set_boost;
+acpi_cpufreq_driver.boost_enabled = boost_state(0);
 
 	/*
 	 * This calls the online callback on all online cpu and forces all
 	 * MSRs to the same value.
 	 */
-	ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "cpufreq/acpi:online",
-				cpufreq_boost_online, cpufreq_boost_down_prep);
+ret = cpuhp_setup_state(CPUHP_AP_ONLINE_DYN, "cpufreq/acpi:online",
+cpufreq_boost_online, cpufreq_boost_down_prep);
 	if (ret < 0) {
-		pr_err("acpi_cpufreq: failed to register hotplug callbacks\n");
+pr_err("acpi_cpufreq: failed to register hotplug callbacks\n");
 		return;
 	}
-	acpi_cpufreq_online = ret;
+acpi_cpufreq_online = ret;
 }
 
 static void acpi_cpufreq_boost_exit(void)
 {
-	if (acpi_cpufreq_online > 0)
-		cpuhp_remove_state_nocalls(acpi_cpufreq_online);
+if (acpi_cpufreq_online > 0)
+cpuhp_remove_state_nocalls(acpi_cpufreq_online);
 }
 
 static int __init acpi_cpufreq_init(void)
@@ -945,13 +945,13 @@ static int __init acpi_cpufreq_init(void)
 	if (acpi_disabled)
 		return -ENODEV;
 
-	/* don't keep reloading if cpufreq_driver exists */
-	if (cpufreq_get_current_driver())
+/* don't keep reloading if cpufreq_driver exists */
+if (cpufreq_get_current_driver())
 		return -EEXIST;
 
-	pr_debug("acpi_cpufreq_init\n");
+pr_debug("acpi_cpufreq_init\n");
 
-	ret = acpi_cpufreq_early_init();
+ret = acpi_cpufreq_early_init();
 	if (ret)
 		return ret;
 
@@ -963,34 +963,34 @@ static int __init acpi_cpufreq_init(void)
 	 * will probably be removed at some point in the future.
 	 */
 	if (!check_amd_hwpstate_cpu(0)) {
-		struct freq_attr **attr;
+struct freq_attr **attr;
 
 		pr_debug("CPB unsupported, do not expose it\n");
 
-		for (attr = acpi_cpufreq_attr; *attr; attr++)
+for (attr = acpi_cpufreq_attr; *attr; attr++)
 			if (*attr == &cpb) {
 				*attr = NULL;
 				break;
 			}
 	}
 #endif
-	acpi_cpufreq_boost_init();
+acpi_cpufreq_boost_init();
 
-	ret = cpufreq_register_driver(&acpi_cpufreq_driver);
+ret = cpufreq_register_driver(&acpi_cpufreq_driver);
 	if (ret) {
 		free_acpi_perf_data();
-		acpi_cpufreq_boost_exit();
+acpi_cpufreq_boost_exit();
 	}
 	return ret;
 }
 
 static void __exit acpi_cpufreq_exit(void)
 {
-	pr_debug("acpi_cpufreq_exit\n");
+pr_debug("acpi_cpufreq_exit\n");
 
-	acpi_cpufreq_boost_exit();
+acpi_cpufreq_boost_exit();
 
-	cpufreq_unregister_driver(&acpi_cpufreq_driver);
+cpufreq_unregister_driver(&acpi_cpufreq_driver);
 
 	free_acpi_perf_data();
 }
@@ -998,7 +998,7 @@ static void __exit acpi_cpufreq_exit(void)
 module_param(acpi_pstate_strict, uint, 0644);
 MODULE_PARM_DESC(acpi_pstate_strict,
 	"value 0 or non-zero. non-zero -> strict ACPI checks are "
-	"performed during frequency changes.");
+"performed during frequency changes.");
 
 late_initcall(acpi_cpufreq_init);
 module_exit(acpi_cpufreq_exit);

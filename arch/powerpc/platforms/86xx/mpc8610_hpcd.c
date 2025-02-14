@@ -229,7 +229,7 @@ void mpc8610hpcd_set_pixel_clock(unsigned int pixclock)
 {
 	struct device_node *guts_np = NULL;
 	struct ccsr_guts __iomem *guts;
-	unsigned long freq;
+unsigned long freq;
 	u64 temp;
 	u32 pxclk;
 
@@ -247,17 +247,17 @@ void mpc8610hpcd_set_pixel_clock(unsigned int pixclock)
 		return;
 	}
 
-	/* Convert pixclock from a wavelength to a frequency */
+/* Convert pixclock from a wavelength to a frequency */
 	temp = 1000000000000ULL;
 	do_div(temp, pixclock);
-	freq = temp;
+freq = temp;
 
 	/*
 	 * 'pxclk' is the ratio of the platform clock to the pixel clock.
 	 * On the MPC8610, the value programmed into CLKDVDR is the ratio
 	 * minus one.  The valid range of values is 2-31.
 	 */
-	pxclk = DIV_ROUND_CLOSEST(fsl_get_sys_freq(), freq) - 1;
+pxclk = DIV_ROUND_CLOSEST(fsl_get_sys_freq(), freq) - 1;
 	pxclk = clamp_t(u32, pxclk, 2, 31);
 
 	/* Disable the pixel clock, and set it to non-inverted and no delay */

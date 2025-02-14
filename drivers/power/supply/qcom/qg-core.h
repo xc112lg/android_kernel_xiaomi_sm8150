@@ -96,7 +96,7 @@ struct qpnp_qg {
 	struct regmap		*regmap;
 	struct qpnp_vadc_chip	*vadc_dev;
 	struct soh_profile	*sp;
-	struct power_supply	*qg_psy;
+struct power_supply	*qg_psy;
 	struct class		*qg_class;
 	struct device		*qg_device;
 	struct cdev		qg_cdev;
@@ -122,10 +122,10 @@ struct qpnp_qg {
 	u32			batt_id_ohm;
 	struct qg_kernel_data	kdata;
 	struct qg_user_data	udata;
-	struct power_supply	*batt_psy;
-	struct power_supply	*usb_psy;
-	struct power_supply	*dc_psy;
-	struct power_supply	*parallel_psy;
+struct power_supply	*batt_psy;
+struct power_supply	*usb_psy;
+struct power_supply	*dc_psy;
+struct power_supply	*parallel_psy;
 	struct qg_esr_data	esr_data[QG_MAX_ESR_COUNT];
 
 	/* status variable */

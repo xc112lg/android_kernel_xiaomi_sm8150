@@ -115,7 +115,7 @@
 				#size-cells = <1>;
 				compatible = "micron,n25q512ax3", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <10000000>; /* input clock */
+spi-max-frequency = <10000000>; /* input clock */
 			};
 		};
 
@@ -145,7 +145,7 @@
 		};
 
 		sdhc@114000 {
-			voltage-ranges = <1800 1800 3300 3300>;
+voltage-ranges = <1800 1800 3300 3300>;
 		};
 	};
 

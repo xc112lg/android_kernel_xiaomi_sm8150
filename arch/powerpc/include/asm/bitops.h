@@ -1,5 +1,5 @@
 /*
- * PowerPC atomic bit operations.
+* PowerPC atomic bit operations.
  *
  * Merged version by David Gibson <david@gibson.dropbear.id.au>.
  * Based on ppc64 versions by: Dave Engebretsen, Todd Inglett, Don

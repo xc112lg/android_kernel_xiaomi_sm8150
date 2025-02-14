@@ -43,7 +43,7 @@
 	ori	rx,rx,VSID_MULTIPLIER_##size@l;				\
 	mulld	rt,rt,rx;		/* rt = rt * MULTIPLIER */	\
 /*									\
- * powermac get slb fault before feature fixup, so make 65 bit part     \
+* powermac get slb fault before feature fixup, so make 65 bit part     \
  * the default part of feature fixup					\
  */									\
 BEGIN_MMU_FTR_SECTION							\

@@ -342,7 +342,7 @@ uint16_t reg_dmn_get_opclass_from_channel(uint8_t *country, uint8_t channel,
 }
 
 uint8_t reg_dmn_get_opclass_from_freq_width(uint8_t *country,
-					    qdf_freq_t freq,
+qdf_freq_t freq,
 					    uint8_t ch_width,
 					    uint16_t behav_limit)
 {
@@ -355,9 +355,9 @@ uint8_t reg_dmn_get_opclass_from_freq_width(uint8_t *country,
 		if (op_class_tbl->chan_spacing == ch_width) {
 			for (i = 0; (i < REG_MAX_CHANNELS_PER_OPERATING_CLASS &&
 				     op_class_tbl->channels[i]); i++) {
-				if ((op_class_tbl->start_freq +
-				     (FREQ_TO_CHAN_SCALE *
-				      op_class_tbl->channels[i]) == freq) &&
+if ((op_class_tbl->start_freq +
+(FREQ_TO_CHAN_SCALE *
+op_class_tbl->channels[i]) == freq) &&
 				    (behav_limit & op_class_tbl->behav_limit)) {
 					return op_class_tbl->op_class;
 				}
@@ -434,14 +434,14 @@ uint16_t reg_dmn_get_curr_opclasses(uint8_t *num_classes, uint8_t *class)
 
 #ifdef CONFIG_CHAN_FREQ_API
 void reg_freq_width_to_chan_op_class_auto(struct wlan_objmgr_pdev *pdev,
-					  qdf_freq_t freq,
+qdf_freq_t freq,
 					  uint16_t chan_width,
 					  bool global_tbl_lookup,
 					  uint16_t behav_limit,
 					  uint8_t *op_class,
 					  uint8_t *chan_num)
 {
-	if (reg_freq_to_band(freq) == REG_BAND_6G) {
+if (reg_freq_to_band(freq) == REG_BAND_6G) {
 		global_tbl_lookup = true;
 		if (chan_width == BW_40_MHZ)
 			behav_limit = BIT(BEHAV_NONE);
@@ -449,7 +449,7 @@ void reg_freq_width_to_chan_op_class_auto(struct wlan_objmgr_pdev *pdev,
 		global_tbl_lookup = false;
 	}
 
-	reg_freq_width_to_chan_op_class(pdev, freq,
+reg_freq_width_to_chan_op_class(pdev, freq,
 					chan_width,
 					global_tbl_lookup,
 					behav_limit,
@@ -458,7 +458,7 @@ void reg_freq_width_to_chan_op_class_auto(struct wlan_objmgr_pdev *pdev,
 }
 
 void reg_freq_width_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
-				     qdf_freq_t freq,
+qdf_freq_t freq,
 				     uint16_t chan_width,
 				     bool global_tbl_lookup,
 				     uint16_t behav_limit,
@@ -469,7 +469,7 @@ void reg_freq_width_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
 	enum channel_enum chan_enum;
 	uint16_t i;
 
-	chan_enum = reg_get_chan_enum_for_freq(freq);
+chan_enum = reg_get_chan_enum_for_freq(freq);
 
 	if (chan_enum == INVALID_CHANNEL) {
 		reg_err_rl("Invalid chan enum %d", chan_enum);
@@ -495,9 +495,9 @@ void reg_freq_width_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
 		if (op_class_tbl->chan_spacing >= chan_width) {
 			for (i = 0; (i < REG_MAX_CHANNELS_PER_OPERATING_CLASS &&
 				     op_class_tbl->channels[i]); i++) {
-				if ((op_class_tbl->start_freq +
-				     FREQ_TO_CHAN_SCALE *
-				     op_class_tbl->channels[i] == freq) &&
+if ((op_class_tbl->start_freq +
+FREQ_TO_CHAN_SCALE *
+op_class_tbl->channels[i] == freq) &&
 				    (behav_limit & op_class_tbl->behav_limit ||
 				     behav_limit == BIT(BEHAV_NONE))) {
 					*chan_num = op_class_tbl->channels[i];
@@ -509,11 +509,11 @@ void reg_freq_width_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
 		op_class_tbl++;
 	}
 
-	reg_err_rl("no op class for frequency %d", freq);
+reg_err_rl("no op class for frequency %d", freq);
 }
 
 void reg_freq_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
-			       qdf_freq_t freq,
+qdf_freq_t freq,
 			       bool global_tbl_lookup,
 			       uint16_t behav_limit,
 			       uint8_t *op_class,
@@ -533,7 +533,7 @@ void reg_freq_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
 
 	cur_chan_list = pdev_priv_obj->cur_chan_list;
 
-	chan_enum = reg_get_chan_enum_for_freq(freq);
+chan_enum = reg_get_chan_enum_for_freq(freq);
 
 	if (chan_enum == INVALID_CHANNEL) {
 		reg_err_rl("Invalid chan enum %d", chan_enum);
@@ -541,9 +541,9 @@ void reg_freq_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
 	}
 
 	chan_params.ch_width = CH_WIDTH_MAX;
-	reg_set_channel_params_for_freq(pdev, freq, 0, &chan_params);
+reg_set_channel_params_for_freq(pdev, freq, 0, &chan_params);
 
-	reg_freq_width_to_chan_op_class(pdev, freq,
+reg_freq_width_to_chan_op_class(pdev, freq,
 					reg_get_bw_value(chan_params.ch_width),
 					global_tbl_lookup,
 					behav_limit,
@@ -554,7 +554,7 @@ void reg_freq_to_chan_op_class(struct wlan_objmgr_pdev *pdev,
 bool reg_country_opclass_freq_check(struct wlan_objmgr_pdev *pdev,
 				    const uint8_t country[3],
 				    uint8_t op_class,
-				    qdf_freq_t chan_freq)
+qdf_freq_t chan_freq)
 {
 	const struct reg_dmn_op_class_map_t *op_class_tbl;
 	uint8_t i;
@@ -566,8 +566,8 @@ bool reg_country_opclass_freq_check(struct wlan_objmgr_pdev *pdev,
 			for (i = 0; (i < REG_MAX_CHANNELS_PER_OPERATING_CLASS &&
 				     op_class_tbl->channels[i]); i++) {
 				if (op_class_tbl->channels[i] *
-				    FREQ_TO_CHAN_SCALE +
-				    op_class_tbl->start_freq == chan_freq)
+FREQ_TO_CHAN_SCALE +
+op_class_tbl->start_freq == chan_freq)
 					return true;
 			}
 		}
@@ -640,8 +640,8 @@ uint16_t reg_chan_opclass_to_freq(uint8_t chan,
 				     op_class_tbl->channels[i]); i++) {
 				if (op_class_tbl->channels[i] == chan) {
 					chan = op_class_tbl->channels[i];
-					return op_class_tbl->start_freq +
-						(chan * FREQ_TO_CHAN_SCALE);
+return op_class_tbl->start_freq +
+(chan * FREQ_TO_CHAN_SCALE);
 				}
 			}
 			reg_err_rl("Channel not found");
@@ -673,8 +673,8 @@ qdf_freq_t reg_country_chan_opclass_to_freq(struct wlan_objmgr_pdev *pdev,
 			for (i = 0; (i < REG_MAX_CHANNELS_PER_OPERATING_CLASS &&
 				     op_class_tbl->channels[i]); i++) {
 				if (op_class_tbl->channels[i] == chan)
-					return op_class_tbl->start_freq +
-						(chan * FREQ_TO_CHAN_SCALE);
+return op_class_tbl->start_freq +
+(chan * FREQ_TO_CHAN_SCALE);
 			}
 		}
 		op_class_tbl++;
@@ -689,12 +689,12 @@ qdf_freq_t reg_country_chan_opclass_to_freq(struct wlan_objmgr_pdev *pdev,
 		for (i = 0; (i < REG_MAX_CHANNELS_PER_OPERATING_CLASS &&
 			     op_class_tbl->channels[i]); i++) {
 			if (op_class_tbl->channels[i] == chan)
-				return op_class_tbl->start_freq +
-					(chan * FREQ_TO_CHAN_SCALE);
+return op_class_tbl->start_freq +
+(chan * FREQ_TO_CHAN_SCALE);
 		}
 		op_class_tbl++;
 	}
-	reg_debug_rl("Got invalid freq 0 for ch %d", chan);
+reg_debug_rl("Got invalid freq 0 for ch %d", chan);
 
 	return 0;
 }
@@ -800,18 +800,18 @@ reg_get_channels_from_opclassmap(
 		bool *is_opclass_operable)
 {
 	uint8_t op_cls_chan;
-	qdf_freq_t search_freq;
-	bool is_freq_present;
+qdf_freq_t search_freq;
+bool is_freq_present;
 	uint8_t chan_idx = 0, n_sup_chans = 0, n_unsup_chans = 0;
 
 	while (op_class_tbl->channels[chan_idx]) {
 		op_cls_chan = op_class_tbl->channels[chan_idx];
-		search_freq = op_class_tbl->start_freq +
-					(FREQ_TO_CHAN_SCALE * op_cls_chan);
-		is_freq_present =
-			reg_is_freq_present_in_cur_chan_list(pdev, search_freq);
+search_freq = op_class_tbl->start_freq +
+(FREQ_TO_CHAN_SCALE * op_cls_chan);
+is_freq_present =
+reg_is_freq_present_in_cur_chan_list(pdev, search_freq);
 
-		if (!is_freq_present) {
+if (!is_freq_present) {
 			reg_ap_cap[index].non_sup_chan_list[n_unsup_chans++] =
 				reg_get_chan_or_chan_center(op_class_tbl,
 							    &chan_idx);
@@ -834,7 +834,7 @@ QDF_STATUS reg_get_opclass_details(struct wlan_objmgr_pdev *pdev,
 				   uint8_t max_supp_op_class,
 				   bool global_tbl_lookup)
 {
-	uint8_t max_reg_power = 0;
+uint8_t max_reg_power = 0;
 	const struct reg_dmn_op_class_map_t *op_class_tbl;
 	uint8_t index = 0;
 
@@ -843,7 +843,7 @@ QDF_STATUS reg_get_opclass_details(struct wlan_objmgr_pdev *pdev,
 	else
 		reg_get_op_class_tbl_by_chan_map(&op_class_tbl);
 
-	max_reg_power = reg_get_max_tx_power(pdev);
+max_reg_power = reg_get_max_tx_power(pdev);
 
 	while (op_class_tbl->op_class && (index < max_supp_op_class)) {
 		bool is_opclass_operable = false;
@@ -863,9 +863,9 @@ QDF_STATUS reg_get_opclass_details(struct wlan_objmgr_pdev *pdev,
 			reg_ap_cap[index].op_class = op_class_tbl->op_class;
 			reg_ap_cap[index].ch_width =
 						op_class_tbl->chan_spacing;
-			reg_ap_cap[index].start_freq =
-						op_class_tbl->start_freq;
-			reg_ap_cap[index].max_tx_pwr_dbm = max_reg_power;
+reg_ap_cap[index].start_freq =
+op_class_tbl->start_freq;
+reg_ap_cap[index].max_tx_pwr_dbm = max_reg_power;
 			reg_ap_cap[index].behav_limit =
 						op_class_tbl->behav_limit;
 			index++;

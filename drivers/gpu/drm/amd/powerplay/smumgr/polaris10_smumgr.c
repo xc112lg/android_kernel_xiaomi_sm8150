@@ -45,8 +45,8 @@
 #define PPPOLARIS10_TARGETACTIVITY_DFLT                     50
 
 static const SMU74_Discrete_GraphicsLevel avfs_graphics_level_polaris10[8] = {
-	/*  Min      pcie   DeepSleep Activity  CgSpll      CgSpll    CcPwr  CcPwr  Sclk         Enabled      Enabled                       Voltage    Power */
-	/* Voltage, DpmLevel, DivId,  Level,  FuncCntl3,  FuncCntl4,  DynRm, DynRm1 Did, Padding,ForActivity, ForThrottle, UpHyst, DownHyst, DownHyst, Throttle */
+/*  Min      pcie   DeepSleep Activity  CgSpll      CgSpll    CcPwr  CcPwr  Sclk         Enabled      Enabled                       Voltage    Power */
+/* Voltage, DpmLevel, DivId,  Level,  FuncCntl3,  FuncCntl4,  DynRm, DynRm1 Did, Padding,ForActivity, ForThrottle, UpHyst, DownHyst, DownHyst, Throttle */
 	{ 0x100ea446, 0x00, 0x03, 0x3200, 0, 0, 0, 0, 0, 0, 0x01, 0x01, 0x0a, 0x00, 0x00, 0x00, { 0x30750000, 0x3000, 0, 0x2600, 0, 0, 0x0004, 0x8f02, 0xffff, 0x2f00, 0x300e, 0x2700 } },
 	{ 0x400ea446, 0x01, 0x04, 0x3200, 0, 0, 0, 0, 0, 0, 0x01, 0x01, 0x0a, 0x00, 0x00, 0x00, { 0x409c0000, 0x2000, 0, 0x1e00, 1, 1, 0x0004, 0x8300, 0xffff, 0x1f00, 0xcb5e, 0x1a00 } },
 	{ 0x740ea446, 0x01, 0x00, 0x3200, 0, 0, 0, 0, 0, 0, 0x01, 0x01, 0x0a, 0x00, 0x00, 0x00, { 0x50c30000, 0x2800, 0, 0x2000, 1, 1, 0x0004, 0x0c02, 0xffff, 0x2700, 0x6433, 0x2100 } },
@@ -121,11 +121,11 @@ static int polaris10_setup_graphics_level_structure(struct pp_smumgr *smumgr)
 	uint32_t vr_config;
 	uint32_t dpm_table_start;
 
-	uint16_t u16_boot_mvdd;
+uint16_t u16_boot_mvdd;
 	uint32_t graphics_level_address, vr_config_address, graphics_level_size;
 
 	graphics_level_size = sizeof(avfs_graphics_level_polaris10);
-	u16_boot_mvdd = PP_HOST_TO_SMC_US(1300 * VOLTAGE_SCALE);
+u16_boot_mvdd = PP_HOST_TO_SMC_US(1300 * VOLTAGE_SCALE);
 
 	PP_ASSERT_WITH_CODE(0 == smu7_read_smc_sram_dword(smumgr,
 				SMU7_FIRMWARE_HEADER_LOCATION + offsetof(SMU74_Firmware_Header, DpmTable),
@@ -133,7 +133,7 @@ static int polaris10_setup_graphics_level_structure(struct pp_smumgr *smumgr)
 			"[AVFS][Polaris10_SetupGfxLvlStruct] SMU could not communicate starting address of DPM table",
 			return -1);
 
-	/*  Default value for VRConfig = VR_MERGED_WITH_VDDC + VR_STATIC_VOLTAGE(VDDCI) */
+/*  Default value for VRConfig = VR_MERGED_WITH_VDDC + VR_STATIC_VOLTAGE(VDDCI) */
 	vr_config = 0x01000500; /* Real value:0x50001 */
 
 	vr_config_address = dpm_table_start + offsetof(SMU74_Discrete_DpmTable, VRConfig);
@@ -158,12 +158,12 @@ static int polaris10_setup_graphics_level_structure(struct pp_smumgr *smumgr)
 				"[AVFS][Polaris10_SetupGfxLvlStruct] Copying of MCLK DPM table failed!",
 			return -1);
 
-	/* MVDD Boot value - neccessary for getting rid of the hang that occurs during Mclk DPM enablement */
+/* MVDD Boot value - neccessary for getting rid of the hang that occurs during Mclk DPM enablement */
 
-	graphics_level_address = dpm_table_start + offsetof(SMU74_Discrete_DpmTable, BootMVdd);
+graphics_level_address = dpm_table_start + offsetof(SMU74_Discrete_DpmTable, BootMVdd);
 
 	PP_ASSERT_WITH_CODE(0 == smu7_copy_bytes_to_smc(smumgr, graphics_level_address,
-			(uint8_t *)(&u16_boot_mvdd), sizeof(u16_boot_mvdd), 0x40000),
+(uint8_t *)(&u16_boot_mvdd), sizeof(u16_boot_mvdd), 0x40000),
 			"[AVFS][Polaris10_SetupGfxLvlStruct] Copying of DPM table failed!",
 			return -1);
 

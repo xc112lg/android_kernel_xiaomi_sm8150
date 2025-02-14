@@ -1,7 +1,7 @@
 /*
  * hack-coff.c - hack the header of an xcoff file to fill in
  * a few fields needed by the Open Firmware xcoff loader on
- * Power Macs but not initialized by objcopy.
+* Power Macs but not initialized by objcopy.
  *
  * Copyright (C) Paul Mackerras 1997.
  *

@@ -37,10 +37,10 @@ struct wm8994_ldo {
 #define WM8994_LDO2_MAX_SELECTOR 0x3
 
 static const struct regulator_ops wm8994_ldo1_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 };
 
 static int wm8994_ldo2_list_voltage(struct regulator_dev *rdev,
@@ -70,17 +70,17 @@ static int wm8994_ldo2_list_voltage(struct regulator_dev *rdev,
 }
 
 static const struct regulator_ops wm8994_ldo2_ops = {
-	.list_voltage = wm8994_ldo2_list_voltage,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = wm8994_ldo2_list_voltage,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 };
 
 static const struct regulator_desc wm8994_ldo_desc[] = {
 	{
 		.name = "LDO1",
 		.id = 1,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8994_LDO1_MAX_SELECTOR + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8994_LDO1_MAX_SELECTOR + 1,
 		.vsel_reg = WM8994_LDO_1,
 		.vsel_mask = WM8994_LDO1_VSEL_MASK,
 		.ops = &wm8994_ldo1_ops,
@@ -92,8 +92,8 @@ static const struct regulator_desc wm8994_ldo_desc[] = {
 	{
 		.name = "LDO2",
 		.id = 2,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = WM8994_LDO2_MAX_SELECTOR + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = WM8994_LDO2_MAX_SELECTOR + 1,
 		.vsel_reg = WM8994_LDO_2,
 		.vsel_mask = WM8994_LDO2_VSEL_MASK,
 		.ops = &wm8994_ldo2_ops,
@@ -103,8 +103,8 @@ static const struct regulator_desc wm8994_ldo_desc[] = {
 };
 
 static const struct regulator_consumer_supply wm8994_ldo_consumer[] = {
-	{ .supply = "AVDD1" },
-	{ .supply = "DCVDD" },
+{ .supply = "AVDD1" },
+{ .supply = "DCVDD" },
 };
 
 static const struct regulator_init_data wm8994_ldo_default[] = {

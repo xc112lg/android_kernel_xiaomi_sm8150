@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER8 processors.
+* Performance counter support for POWER8 processors.
  *
  * Copyright 2014 Sukadev Bhattiprolu, IBM Corporation.
  *
@@ -10,7 +10,7 @@
  */
 
 /*
- * Power8 event codes.
+* Power8 event codes.
  */
 EVENT(PM_CYC,					0x0001e)
 EVENT(PM_GCT_NOSLOT_CYC,			0x100f8)

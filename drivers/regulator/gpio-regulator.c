@@ -127,9 +127,9 @@ static int gpio_regulator_set_current_limit(struct regulator_dev *dev,
 }
 
 static struct regulator_ops gpio_regulator_voltage_ops = {
-	.get_voltage = gpio_regulator_get_value,
-	.set_voltage = gpio_regulator_set_voltage,
-	.list_voltage = gpio_regulator_list_voltage,
+.get_voltage = gpio_regulator_get_value,
+.set_voltage = gpio_regulator_set_voltage,
+.list_voltage = gpio_regulator_list_voltage,
 };
 
 static struct gpio_regulator_config *
@@ -228,11 +228,11 @@ of_get_gpio_regulator_config(struct device *dev, struct device_node *np,
 	}
 	config->nr_states = i;
 
-	config->type = REGULATOR_VOLTAGE;
+config->type = REGULATOR_VOLTAGE;
 	ret = of_property_read_string(np, "regulator-type", &regtype);
 	if (ret >= 0) {
-		if (!strncmp("voltage", regtype, 7))
-			config->type = REGULATOR_VOLTAGE;
+if (!strncmp("voltage", regtype, 7))
+config->type = REGULATOR_VOLTAGE;
 		else if (!strncmp("current", regtype, 7))
 			config->type = REGULATOR_CURRENT;
 		else
@@ -311,10 +311,10 @@ static int gpio_regulator_probe(struct platform_device *pdev)
 
 	/* handle regulator type*/
 	switch (config->type) {
-	case REGULATOR_VOLTAGE:
-		drvdata->desc.type = REGULATOR_VOLTAGE;
-		drvdata->desc.ops = &gpio_regulator_voltage_ops;
-		drvdata->desc.n_voltages = config->nr_states;
+case REGULATOR_VOLTAGE:
+drvdata->desc.type = REGULATOR_VOLTAGE;
+drvdata->desc.ops = &gpio_regulator_voltage_ops;
+drvdata->desc.n_voltages = config->nr_states;
 		break;
 	case REGULATOR_CURRENT:
 		drvdata->desc.type = REGULATOR_CURRENT;

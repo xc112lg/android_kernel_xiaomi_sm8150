@@ -22,16 +22,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,866@0 {
+PowerPC,866@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <16>;	// 16 bytes
 			i-cache-line-size = <16>;	// 16 bytes
 			d-cache-size = <0x2000>;		// L1, 8K
 			i-cache-size = <0x4000>;		// L1, 16K
-			timebase-frequency = <0>;
-			bus-frequency = <0>;
-			clock-frequency = <0>;
+timebase-frequency = <0>;
+bus-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <15 2>;	// decrementer interrupt
 			interrupt-parent = <&PIC>;
 		};
@@ -65,7 +65,7 @@
 		device_type = "soc";
 		ranges = <0x0 0xff000000 0x100000>;
 		reg = <0xff000000 0x200>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		mdio@e00 {
 			compatible = "fsl,mpc866-fec-mdio", "fsl,pq1-fec-mdio";
@@ -102,7 +102,7 @@
 			compatible = "fsl,mpc866-cpm", "fsl,cpm1";
 			ranges;
 			reg = <0x9c0 0x40>;
-			brg-frequency = <0>;
+brg-frequency = <0>;
 			interrupts = <0 2>;	// cpm error interrupt
 			interrupt-parent = <&CPM_PIC>;
 
@@ -122,7 +122,7 @@
 					     "fsl,cpm1-brg",
 					     "fsl,cpm-brg";
 				reg = <0x9f0 0x10>;
-				clock-frequency = <0>;
+clock-frequency = <0>;
 			};
 
 			CPM_PIC: pic@930 {

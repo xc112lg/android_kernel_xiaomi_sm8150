@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER7 processors.
+* Performance counter support for POWER7 processors.
  *
  * Copyright 2013 Runzhen Wang, IBM Corporation.
  *

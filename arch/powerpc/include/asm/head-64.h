@@ -25,7 +25,7 @@
  * can be open at any time.
  *
  * Each fixed section created in a .S file must have corresponding linkage
- * directives including location, added to  arch/powerpc/kernel/vmlinux.lds.S
+* directives including location, added to  arch/powerpc/kernel/vmlinux.lds.S
  *
  * For each fixed section, code is generated into it in the order which it
  * appears in the source.  Fixed section entries can be placed at a fixed
@@ -51,7 +51,7 @@
  *   CLOSE_FIXED_SECTION() or elsewhere, there may be something
  *   unexpected being added there. Remove the '. = x_len' line, rebuild, and
  *   check what is pushing the section down.
- * - If the build dies in linking, check arch/powerpc/tools/head_check.sh
+* - If the build dies in linking, check arch/powerpc/tools/head_check.sh
  *   comments.
  * - If the kernel crashes or hangs in very early boot, it could be linker
  *   stubs at the start of the main text.

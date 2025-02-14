@@ -26,7 +26,7 @@ static void platform_fixups(void)
 	planetcore_set_mac_addrs(table);
 
 	if (!planetcore_get_decimal(table, PLANETCORE_KEY_CRYSTAL_HZ, &val)) {
-		printf("No PlanetCore crystal frequency key.\r\n");
+printf("No PlanetCore crystal frequency key.\r\n");
 		return;
 	}
 

@@ -34,12 +34,12 @@ struct pp_power_state;
 
 
 /*
- * An item of a list containing Power States.
+* An item of a list containing Power States.
  */
 
 struct PP_StateLinkedList {
-	struct pp_power_state *next;
-	struct pp_power_state *prev;
+struct pp_power_state *next;
+struct pp_power_state *prev;
 };
 
 
@@ -56,7 +56,7 @@ enum PP_StateUILabel {
 enum PP_StateClassificationFlag {
 	PP_StateClassificationFlag_Boot                = 0x0001,
 	PP_StateClassificationFlag_Thermal             = 0x0002,
-	PP_StateClassificationFlag_LimitedPowerSource  = 0x0004,
+PP_StateClassificationFlag_LimitedPowerSource  = 0x0004,
 	PP_StateClassificationFlag_Rest                = 0x0008,
 	PP_StateClassificationFlag_Forced              = 0x0010,
 	PP_StateClassificationFlag_User3DPerformance   = 0x0020,
@@ -72,7 +72,7 @@ enum PP_StateClassificationFlag {
 	PP_StateClassificationFlag_UserDCPerformance    = 0x8000,
 	PP_StateClassificationFlag_DCOverdriveTemplate   = 0x10000,
 	PP_StateClassificationFlag_BACO                  = 0x20000,
-	PP_StateClassificationFlag_LimitedPowerSource_2  = 0x40000,
+PP_StateClassificationFlag_LimitedPowerSource_2  = 0x40000,
 	PP_StateClassificationFlag_ULV                   = 0x80000,
 	PP_StateClassificationFlag_UvdMVC               = 0x100000,
 };
@@ -129,7 +129,7 @@ struct PP_TemperatureRange {
 struct PP_StateValidationBlock {
 	bool singleDisplayOnly;
 	bool disallowOnDC;
-	uint8_t supportedPowerLevels;
+uint8_t supportedPowerLevels;
 };
 
 struct PP_UVD_CLOCKS {
@@ -153,7 +153,7 @@ struct pp_power_state {
 	struct PP_TemperatureRange                 temperatures;
 	struct PP_StateSoftwareAlgorithmBlock      software;
 	struct PP_UVD_CLOCKS                       uvd_clocks;
-	struct pp_hw_power_state  hardware;
+struct pp_hw_power_state  hardware;
 };
 
 enum PP_MMProfilingState {

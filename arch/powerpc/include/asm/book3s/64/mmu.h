@@ -19,7 +19,7 @@ struct mmu_psize_def {
 	unsigned long	avpnm;	/* bits to mask out in AVPN in the HPTE */
 	union {
 		unsigned long	sllp;	/* SLB L||LP (exact mask to use in slbmte) */
-		unsigned long ap;	/* Ap encoding used by PowerISA 3.0 */
+unsigned long ap;	/* Ap encoding used by PowerISA 3.0 */
 	};
 };
 extern struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT];
@@ -70,7 +70,7 @@ extern unsigned int mmu_base_pid;
 #define PRTB_ENTRIES	(1ul << mmu_pid_bits)
 
 /*
- * Power9 currently only support 64K partition table size.
+* Power9 currently only support 64K partition table size.
  */
 #define PATB_SIZE_SHIFT	16
 

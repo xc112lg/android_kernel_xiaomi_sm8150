@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL API wrappers
+* PowerNV OPAL API wrappers
  *
  * Copyright 2011 IBM Corp.
  *

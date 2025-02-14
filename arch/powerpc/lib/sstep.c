@@ -190,7 +190,7 @@ static nokprobe_inline unsigned long xform_ea(unsigned int instr,
 }
 
 /*
- * Return the largest power of 2, not greater than sizeof(unsigned long),
+* Return the largest power of 2, not greater than sizeof(unsigned long),
  * such that x is a multiple of it.
  */
 static nokprobe_inline unsigned long max_align(unsigned long x)
@@ -919,7 +919,7 @@ NOKPROBE_SYMBOL(emulate_dcbz);
 #define __put_user_asmx(x, addr, err, op, cr)		\
 	__asm__ __volatile__(				\
 		".machine push\n"			\
-		".machine power8\n"			\
+".machine power8\n"			\
 		"1:	" op " %2,0,%3\n"		\
 		".machine pop\n"			\
 		"	mfcr	%1\n"			\
@@ -935,7 +935,7 @@ NOKPROBE_SYMBOL(emulate_dcbz);
 #define __get_user_asmx(x, addr, err, op)		\
 	__asm__ __volatile__(				\
 		".machine push\n"			\
-		".machine power8\n"			\
+".machine power8\n"			\
 		"1:	"op" %1,0,%2\n"			\
 		".machine pop\n"			\
 		"2:\n"					\

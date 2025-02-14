@@ -12,9 +12,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * File: power.h
+* File: power.h
  *
- * Purpose: Handles 802.11 power management  functions
+* Purpose: Handles 802.11 power management  functions
  *
  * Author: Lyndon Chen
  *

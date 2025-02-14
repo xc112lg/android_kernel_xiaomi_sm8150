@@ -1058,7 +1058,7 @@ static int initial_lfsr[] = {
 static int calculate_lfsr(int n)
 {
 	/*
-	 * The ranges and steps are in powers of 2 so the calculations
+* The ranges and steps are in powers of 2 so the calculations
 	 * can be done using shifts rather then divide.
 	 */
 	int index;
@@ -1119,15 +1119,15 @@ static int
 oprof_cpufreq_notify(struct notifier_block *nb, unsigned long val, void *data)
 {
 	int ret = 0;
-	struct cpufreq_freqs *frq = data;
-	if ((val == CPUFREQ_PRECHANGE && frq->old < frq->new) ||
-	    (val == CPUFREQ_POSTCHANGE && frq->old > frq->new))
-		set_spu_profiling_frequency(frq->new, spu_cycle_reset);
+struct cpufreq_freqs *frq = data;
+if ((val == CPUFREQ_PRECHANGE && frq->old < frq->new) ||
+(val == CPUFREQ_POSTCHANGE && frq->old > frq->new))
+set_spu_profiling_frequency(frq->new, spu_cycle_reset);
 	return ret;
 }
 
 static struct notifier_block cpu_freq_notifier_block = {
-	.notifier_call	= oprof_cpufreq_notify
+.notifier_call	= oprof_cpufreq_notify
 };
 #endif
 
@@ -1149,8 +1149,8 @@ static void cell_global_stop_spu_cycles(void)
 	smp_wmb();
 
 #ifdef CONFIG_CPU_FREQ
-	cpufreq_unregister_notifier(&cpu_freq_notifier_block,
-				    CPUFREQ_TRANSITION_NOTIFIER);
+cpufreq_unregister_notifier(&cpu_freq_notifier_block,
+CPUFREQ_TRANSITION_NOTIFIER);
 #endif
 
 	for_each_online_cpu(cpu) {
@@ -1253,26 +1253,26 @@ static int cell_global_start_spu_cycles(struct op_counter_config *ctr)
 	int cpu;
 	int ret;
 	int rtas_error;
-	unsigned int cpu_khzfreq = 0;
+unsigned int cpu_khzfreq = 0;
 
 	/* The SPU profiling uses time-based profiling based on
-	 * cpu frequency, so if configured with the CPU_FREQ
-	 * option, we should detect frequency changes and react
+* cpu frequency, so if configured with the CPU_FREQ
+* option, we should detect frequency changes and react
 	 * accordingly.
 	 */
 #ifdef CONFIG_CPU_FREQ
-	ret = cpufreq_register_notifier(&cpu_freq_notifier_block,
-					CPUFREQ_TRANSITION_NOTIFIER);
+ret = cpufreq_register_notifier(&cpu_freq_notifier_block,
+CPUFREQ_TRANSITION_NOTIFIER);
 	if (ret < 0)
 		/* this is not a fatal error */
-		printk(KERN_ERR "CPU freq change registration failed: %d\n",
+printk(KERN_ERR "CPU freq change registration failed: %d\n",
 		       ret);
 
 	else
-		cpu_khzfreq = cpufreq_quick_get(smp_processor_id());
+cpu_khzfreq = cpufreq_quick_get(smp_processor_id());
 #endif
 
-	set_spu_profiling_frequency(cpu_khzfreq, spu_cycle_reset);
+set_spu_profiling_frequency(cpu_khzfreq, spu_cycle_reset);
 
 	for_each_online_cpu(cpu) {
 		if (cbe_get_hw_thread_id(cpu))

@@ -52,8 +52,8 @@ struct cpr3_fuse_param {
 
 /**
  * struct cpr4_sdelta - CPR4 controller specific data structure for the sdelta
- *			adjustment table which is used to adjust the VDD supply
- *			voltage automatically based upon the temperature and/or
+*			adjustment table which is used to adjust the VDD supply
+*			voltage automatically based upon the temperature and/or
  *			the number of online CPU cores.
  * @allow_core_count_adj: Core count adjustments are allowed.
  * @allow_temp_adj:	Temperature based adjustments are allowed.
@@ -67,17 +67,17 @@ struct cpr3_fuse_param {
  *			adjustments of size (max_core_count * temp_band_count)
  *			Outer: core count
  *			Inner: temperature band
- *			Each element has units of VDD supply steps. Positive
- *			values correspond to a reduction in voltage and negative
+*			Each element has units of VDD supply steps. Positive
+*			values correspond to a reduction in voltage and negative
  *			value correspond to an increase (this follows the SDELTA
  *			register semantics).
- * @allow_boost:	Voltage boost allowed.
- * @boost_num_cores:	The number of online cores at which the boost voltage
+* @allow_boost:	Voltage boost allowed.
+* @boost_num_cores:	The number of online cores at which the boost voltage
  *			adjustments will be applied
- * @boost_table:	SDELTA table with boost voltage adjustments of size
- *			temp_band_count. Each element has units of VDD supply
+* @boost_table:	SDELTA table with boost voltage adjustments of size
+*			temp_band_count. Each element has units of VDD supply
  *			steps. Positive values correspond to a reduction in
- *			voltage and negative value correspond to an increase
+*			voltage and negative value correspond to an increase
  *			(this follows the SDELTA register semantics).
  */
 struct cpr4_sdelta {
@@ -93,32 +93,32 @@ struct cpr4_sdelta {
 };
 
 /**
- * struct cpr3_corner - CPR3 virtual voltage corner data structure
- * @floor_volt:		CPR closed-loop floor voltage in microvolts
- * @ceiling_volt:	CPR closed-loop ceiling voltage in microvolts
- * @open_loop_volt:	CPR open-loop voltage (i.e. initial voltage) in
+* struct cpr3_corner - CPR3 virtual voltage corner data structure
+* @floor_volt:		CPR closed-loop floor voltage in microvolts
+* @ceiling_volt:	CPR closed-loop ceiling voltage in microvolts
+* @open_loop_volt:	CPR open-loop voltage (i.e. initial voltage) in
  *			microvolts
- * @last_volt:		Last known settled CPR closed-loop voltage which is used
+* @last_volt:		Last known settled CPR closed-loop voltage which is used
  *			when switching to a new corner
- * @abs_ceiling_volt:	The absolute CPR closed-loop ceiling voltage in
+* @abs_ceiling_volt:	The absolute CPR closed-loop ceiling voltage in
  *			microvolts.  This is used to limit the ceiling_volt
  *			value when it is increased as a result of aging
  *			adjustment.
- * @unaged_floor_volt:	The CPR closed-loop floor voltage in microvolts before
+* @unaged_floor_volt:	The CPR closed-loop floor voltage in microvolts before
  *			any aging adjustment is performed
- * @unaged_ceiling_volt: The CPR closed-loop ceiling voltage in microvolts
+* @unaged_ceiling_volt: The CPR closed-loop ceiling voltage in microvolts
  *			before any aging adjustment is performed
- * @unaged_open_loop_volt: The CPR open-loop voltage (i.e. initial voltage) in
+* @unaged_open_loop_volt: The CPR open-loop voltage (i.e. initial voltage) in
  *			microvolts before any aging adjusment is performed
- * @system_volt:	The system-supply voltage in microvolts or corners or
+* @system_volt:	The system-supply voltage in microvolts or corners or
  *			levels
- * @mem_acc_volt:	The mem-acc-supply voltage in corners
- * @proc_freq:		Processor frequency in Hertz. For CPR rev. 3 and 4
+* @mem_acc_volt:	The mem-acc-supply voltage in corners
+* @proc_freq:		Processor frequency in Hertz. For CPR rev. 3 and 4
  *			conrollers, this field is only used by platform specific
  *			CPR3 driver for interpolation. For CPRh-compliant
- *			controllers, this frequency is also utilized by the
+*			controllers, this frequency is also utilized by the
  *			clock driver to determine the corner to CPU clock
- *			frequency mappings.
+*			frequency mappings.
  * @cpr_fuse_corner:	Fused corner index associated with this virtual corner
  *			(only used by platform specific CPR3 driver for
  *			mapping purposes)
@@ -133,7 +133,7 @@ struct cpr4_sdelta {
  * @ro_mask:		Bitmap where each of the 16 LSBs indicate if the
  *			corresponding ROs should be masked for this corner
  * @irq_en:		Bitmap of the CPR interrupts to enable for this corner
- * @aging_derate:	The amount to derate the aging voltage adjustment
+* @aging_derate:	The amount to derate the aging voltage adjustment
  *			determined for the reference corner in units of uV/mV.
  *			E.g. a value of 900 would imply that the adjustment for
  *			this corner should be 90% (900/1000) of that for the
@@ -149,7 +149,7 @@ struct cpr4_sdelta {
  *
  * The value of last_volt is initialized inside of the cpr3_regulator_register()
  * call with the open_loop_volt value.  It can later be updated to the settled
- * VDD supply voltage.  The values for unaged_floor_volt, unaged_ceiling_volt,
+* VDD supply voltage.  The values for unaged_floor_volt, unaged_ceiling_volt,
  * and unaged_open_loop_volt are initialized inside of cpr3_regulator_register()
  * if ctrl->aging_required == true.  These three values must be pre-initialized
  * if cpr3_regulator_register() is called with ctrl->aging_required == false and
@@ -169,7 +169,7 @@ struct cpr3_corner {
 	int			unaged_open_loop_volt;
 	int			system_volt;
 	int			mem_acc_volt;
-	u32			proc_freq;
+u32			proc_freq;
 	int			cpr_fuse_corner;
 	u32			target_quot[CPR3_RO_COUNT];
 	u32			ro_scale[CPR3_RO_COUNT];
@@ -198,10 +198,10 @@ struct cprh_corner_band {
 
 /**
  * enum cpr3_ldo_type - Constants which define the LDO supply regulator
- *	types used to manage the subsystem component rail voltage.
+*	types used to manage the subsystem component rail voltage.
  * %CPR3_LDO_KRYO:	Kryo LDO regulator used to sub-regulate the HMSS
- *			per-cluster voltage.
- * %CPR3_LDO300:	LDO regulator used to sub-regulate the GFX voltage.
+*			per-cluster voltage.
+* %CPR3_LDO300:	LDO regulator used to sub-regulate the GFX voltage.
  */
 enum cpr3_ldo_type {
 	CPR3_LDO_KRYO	= 0,
@@ -222,9 +222,9 @@ enum cpr3_ldo_type {
  *			for this CPR3 regulator
  * @mem_acc_regulator:	Pointer to the optional mem-acc supply regulator used
  *			to manage memory circuitry settings based upon CPR3
- *			regulator output voltage.
+*			regulator output voltage.
  * @ldo_regulator:	Pointer to the LDO supply regulator used to manage
- *			per-cluster LDO voltage and bypass state
+*			per-cluster LDO voltage and bypass state
  * @ldo_regulator_bypass: Cached copy of the LDO regulator bypass state
  * @ldo_ret_regulator:	Pointer to the LDO retention supply regulator used to
  *			manage LDO retention bypass state
@@ -271,39 +271,39 @@ enum cpr3_ldo_type {
  * @speed_bin_corner_band_offset: The device tree property array offset for the
  *			corner band count corresponding to the selected speed
  *			bin
- * @pd_bypass_mask:	Bit mask of power domains associated with this CPR3
+* @pd_bypass_mask:	Bit mask of power domains associated with this CPR3
  *			regulator
- * @dynamic_floor_corner: Index identifying the voltage corner for the CPR3
+* @dynamic_floor_corner: Index identifying the voltage corner for the CPR3
  *			regulator whose last_volt value should be used as the
- *			global CPR floor voltage if all of the power domains
+*			global CPR floor voltage if all of the power domains
  *			associated with this CPR3 regulator are bypassed
  * @uses_dynamic_floor: Boolean flag indicating that dynamic_floor_corner should
  *			be utilized for the CPR3 regulator
- * @current_corner:	Index identifying the currently selected voltage corner
+* @current_corner:	Index identifying the currently selected voltage corner
  *			for the CPR3 regulator or less than 0 if no corner has
  *			been requested
- * @last_closed_loop_corner: Index identifying the last voltage corner for the
+* @last_closed_loop_corner: Index identifying the last voltage corner for the
  *			CPR3 regulator which was configured when operating in
  *			CPR closed-loop mode or less than 0 if no corner has
  *			been requested.  CPR registers are only written to when
  *			using closed-loop mode.
  * @aggregated:		Boolean flag indicating that this CPR3 regulator
  *			participated in the last aggregation event
- * @debug_corner:	Index identifying voltage corner used for displaying
+* @debug_corner:	Index identifying voltage corner used for displaying
  *			corner configuration values in debugfs
  * @ldo_type:		LDO regulator type.
- * @ldo_min_headroom_volt: Minimum voltage difference in microvolts required
- *			between the VDD supply voltage and the LDO output in
+* @ldo_min_headroom_volt: Minimum voltage difference in microvolts required
+*			between the VDD supply voltage and the LDO output in
  *			order for the LDO operate
- * @ldo_max_headroom_volt: Maximum voltage difference in microvolts between
+* @ldo_max_headroom_volt: Maximum voltage difference in microvolts between
  *			the input and output of the active LDO hardware to
  *			maintain optimum operability.
- * @ldo_adjust_volt:	Voltage in microvolts used to offset margin assigned
+* @ldo_adjust_volt:	Voltage in microvolts used to offset margin assigned
  *			to IR drop between PMIC and CPU
- * @ldo_ret_volt:	The lowest supported CPU retention voltage in
- *			microvolts. This voltage may vary part-to-part based
+* @ldo_ret_volt:	The lowest supported CPU retention voltage in
+*			microvolts. This voltage may vary part-to-part based
  *			upon the value of hardware fuses.
- * @ldo_max_volt:	The maximum physically supported LDO voltage in
+* @ldo_max_volt:	The maximum physically supported LDO voltage in
  *			microvolts
  * @ldo_mode_allowed:	Boolean which indicates if LDO mode is allowed for this
  *			CPR3 regulator
@@ -312,16 +312,16 @@ enum cpr3_ldo_type {
  * @aging_allowed:	Boolean defining if CPR aging adjustments are allowed
  *			for this CPR3 regulator given the fuse combo of the
  *			device
- * @aging_allow_open_loop_adj: Boolean defining if the open-loop voltage of each
+* @aging_allow_open_loop_adj: Boolean defining if the open-loop voltage of each
  *			corner of this regulator should be adjusted as a result
  *			of an aging measurement.  This flag can be set to false
- *			when the open-loop voltage adjustments have been
+*			when the open-loop voltage adjustments have been
  *			specified such that they include the maximum possible
  *			aging adjustment.  This flag is only used if
  *			aging_allowed == true.
  * @aging_corner:	The corner that should be configured for this regulator
  *			when an aging measurement is performed.
- * @aging_max_adjust_volt: The maximum aging voltage margin in microvolts that
+* @aging_max_adjust_volt: The maximum aging voltage margin in microvolts that
  *			may be added to the target quotients of this regulator.
  *			A value of 0 may be specified if this regulator does not
  *			require any aging adjustment.
@@ -330,7 +330,7 @@ enum cpr3_ldo_type {
  *			regulator.
  * @max_core_count:	Maximum number of cores considered for core count
  *			adjustment logic.
- * @allow_boost:	Voltage boost allowed for this regulator.
+* @allow_boost:	Voltage boost allowed for this regulator.
  *
  * This structure contains both configuration and runtime state data.  The
  * elements current_corner, last_closed_loop_corner, aggregated, debug_corner,
@@ -403,7 +403,7 @@ struct cpr3_regulator {
  * @ctrl:		Pointer to the CPR3 controller which manages this thread
  * @vreg:		Array of CPR3 regulators handled by the CPR3 thread
  * @vreg_count:		Number of elements in the vreg array
- * @aggr_corner:	CPR corner containing the in process aggregated voltage
+* @aggr_corner:	CPR corner containing the in process aggregated voltage
  *			and target quotient configurations which will be applied
  * @last_closed_loop_aggr_corner: CPR corner containing the most recent
  *			configurations which were written into hardware
@@ -442,10 +442,10 @@ struct cpr3_thread {
  *		regulator corners available in the mem-acc corner map array.
  * %CPR3_MEM_ACC_LOW_CORNER:	Index in mem-acc corner map array mapping to the
  *				mem-acc regulator corner
- *				to be used for low voltage vdd supply
+*				to be used for low voltage vdd supply
  * %CPR3_MEM_ACC_HIGH_CORNER:	Index in mem-acc corner map array mapping to the
  *				mem-acc regulator corner to be used for high
- *				voltage vdd supply
+*				voltage vdd supply
  * %CPR3_MEM_ACC_CORNERS:	Number of elements in the mem-acc corner map
  *				array
  */
@@ -546,7 +546,7 @@ struct cpr3_panic_regs_info {
  * struct cpr3_controller - CPR3 controller data structure
  * @dev:		Device pointer for the CPR3 controller device
  * @name:		Unique name for the CPR3 controller
- * @ctrl_id:		Controller ID corresponding to the VDD supply number
+* @ctrl_id:		Controller ID corresponding to the VDD supply number
  *			that this CPR3 controller manages.
  * @cpr_ctrl_base:	Virtual address of the CPR3 controller base register
  * @fuse_base:		Virtual address of fuse row 0
@@ -567,26 +567,26 @@ struct cpr3_panic_regs_info {
  *			different SoC revisions.
  * @lock:		Mutex lock used to ensure mutual exclusion between
  *			all of the threads associated with the controller
- * @vdd_regulator:	Pointer to the VDD supply regulator which this CPR3
+* @vdd_regulator:	Pointer to the VDD supply regulator which this CPR3
  *			controller manages
  * @system_regulator:	Pointer to the optional system-supply regulator upon
- *			which the VDD supply regulator depends.
+*			which the VDD supply regulator depends.
  * @mem_acc_regulator:	Pointer to the optional mem-acc supply regulator used
  *			to manage memory circuitry settings based upon the
- *			VDD supply output voltage.
- * @vdd_limit_regulator: Pointer to the VDD supply limit regulator which is used
+*			VDD supply output voltage.
+* @vdd_limit_regulator: Pointer to the VDD supply limit regulator which is used
  *			for hardware closed-loop in order specify ceiling and
- *			floor voltage limits (platform specific)
- * @system_supply_max_volt: Voltage in microvolts which corresponds to the
- *			absolute ceiling voltage of the system-supply
- * @mem_acc_threshold_volt: mem-acc threshold voltage in microvolts
+*			floor voltage limits (platform specific)
+* @system_supply_max_volt: Voltage in microvolts which corresponds to the
+*			absolute ceiling voltage of the system-supply
+* @mem_acc_threshold_volt: mem-acc threshold voltage in microvolts
  * @mem_acc_corner_map: mem-acc regulator corners mapping to low and high
- *			voltage mem-acc settings for the memories powered by
+*			voltage mem-acc settings for the memories powered by
  *			this CPR3 controller and its associated CPR3 regulators
- * @mem_acc_crossover_volt: Voltage in microvolts corresponding to the voltage
- *			that the VDD supply must be set to while a MEM ACC
+* @mem_acc_crossover_volt: Voltage in microvolts corresponding to the voltage
+*			that the VDD supply must be set to while a MEM ACC
  *			switch is in progress. This element must be initialized
- *			for CPRh controllers when a MEM ACC threshold voltage is
+*			for CPRh controllers when a MEM ACC threshold voltage is
  *			defined.
  * @core_clk:		Pointer to the CPR3 controller core clock
  * @iface_clk:		Pointer to the CPR3 interface clock (platform specific)
@@ -598,60 +598,60 @@ struct cpr3_panic_regs_info {
  *			CPU is brought back online
  * @ceiling_irq:	Interrupt number for the interrupt that is triggered
  *			when hardware closed-loop attempts to exceed the ceiling
- *			voltage
- * @apm:		Handle to the array power mux (APM)
- * @apm_threshold_volt:	Voltage in microvolts which defines the threshold
- *			voltage to determine the APM supply selection for
+*			voltage
+* @apm:		Handle to the array power mux (APM)
+* @apm_threshold_volt:	Voltage in microvolts which defines the threshold
+*			voltage to determine the APM supply selection for
  *			each corner
- * @apm_crossover_volt:	Voltage in microvolts corresponding to the voltage that
- *			the VDD supply must be set to while an APM switch is in
+* @apm_crossover_volt:	Voltage in microvolts corresponding to the voltage that
+*			the VDD supply must be set to while an APM switch is in
  *			progress. This element must be initialized for CPRh
- *			controllers when an APM threshold voltage is defined
- * @apm_adj_volt:	Minimum difference between APM threshold voltage and
- *			open-loop voltage which allows the APM threshold voltage
+*			controllers when an APM threshold voltage is defined
+* @apm_adj_volt:	Minimum difference between APM threshold voltage and
+*			open-loop voltage which allows the APM threshold voltage
  *			to be used as a ceiling
- * @apm_high_supply:	APM supply to configure if VDD voltage is greater than
- *			or equal to the APM threshold voltage
- * @apm_low_supply:	APM supply to configure if the VDD voltage is less than
- *			the APM threshold voltage
- * @base_volt:		Minimum voltage in microvolts supported by the VDD
+* @apm_high_supply:	APM supply to configure if VDD voltage is greater than
+*			or equal to the APM threshold voltage
+* @apm_low_supply:	APM supply to configure if the VDD voltage is less than
+*			the APM threshold voltage
+* @base_volt:		Minimum voltage in microvolts supported by the VDD
  *			supply managed by this CPR controller
  * @corner_switch_delay_time: The delay time in nanoseconds used by the CPR
- *			controller to wait for voltage settling before
+*			controller to wait for voltage settling before
  *			acknowledging the OSM block after corner changes
- * @cpr_clock_rate:	CPR reference clock frequency in Hz.
+* @cpr_clock_rate:	CPR reference clock frequency in Hz.
  * @sensor_time:	The time in nanoseconds that each sensor takes to
  *			perform a measurement.
  * @loop_time:		The time in nanoseconds between consecutive CPR
  *			measurements.
  * @up_down_delay_time: The time to delay in nanoseconds between consecutive CPR
  *			measurements when the last measurement recommended
- *			increasing or decreasing the vdd-supply voltage.
+*			increasing or decreasing the vdd-supply voltage.
  *			(platform specific)
  * @idle_clocks:	Number of CPR reference clock ticks that the CPR
  *			controller waits in transitional states.
  * @step_quot_init_min:	The default minimum CPR step quotient value.  The step
  *			quotient is the number of additional ring oscillator
- *			ticks observed when increasing one step in vdd-supply
- *			output voltage.
+*			ticks observed when increasing one step in vdd-supply
+*			output voltage.
  * @step_quot_init_max:	The default maximum CPR step quotient value.
  * @step_volt:		Step size in microvolts between available set points
- *			of the VDD supply
+*			of the VDD supply
  * @down_error_step_limit: CPR4 hardware closed-loop down error step limit which
- *			defines the maximum number of VDD supply regulator steps
- *			that the voltage may be reduced as the result of a
+*			defines the maximum number of VDD supply regulator steps
+*			that the voltage may be reduced as the result of a
  *			single CPR measurement.
  * @up_error_step_limit: CPR4 hardware closed-loop up error step limit which
- *			defines the maximum number of VDD supply regulator steps
- *			that the voltage may be increased as the result of a
+*			defines the maximum number of VDD supply regulator steps
+*			that the voltage may be increased as the result of a
  *			single CPR measurement.
  * @count_mode:		CPR controller count mode
  * @count_repeat:	Number of times to perform consecutive sensor
  *			measurements when using all-at-once count modes.
- * @proc_clock_throttle: Defines the processor clock frequency throttling
+* @proc_clock_throttle: Defines the processor clock frequency throttling
  *			register value to use.  This can be used to reduce the
- *			clock frequency when a power domain exits a low power
- *			mode until CPR settles at a new voltage.
+*			clock frequency when a power domain exits a low power
+*			mode until CPR settles at a new voltage.
  *			(platform specific)
  * @cpr_allowed_hw:	Boolean which indicates if closed-loop CPR operation is
  *			permitted for a given chip based upon hardware fuse
@@ -667,7 +667,7 @@ struct cpr3_panic_regs_info {
  * @saw_use_unit_mV:	Boolean which indicates the unit used in SAW PVC
  *			interface is mV.
  * @aggr_corner:	CPR corner containing the most recently aggregated
- *			voltage configurations which are being used currently
+*			voltage configurations which are being used currently
  * @cpr_enabled:	Boolean which indicates that the CPR controller is
  *			enabled and operating in closed-loop mode.  CPR clocks
  *			have been prepared and enabled whenever this flag is
@@ -677,15 +677,15 @@ struct cpr3_panic_regs_info {
  * @cpr_suspended:	Boolean which indicates that CPR has been temporarily
  *			disabled while enterring system suspend.
  * @debugfs:		Pointer to the debugfs directory of this CPR3 controller
- * @aging_ref_volt:	Reference voltage in microvolts to configure when
+* @aging_ref_volt:	Reference voltage in microvolts to configure when
  *			performing CPR aging measurements.
- * @aging_vdd_mode:	vdd-supply regulator mode to configure before performing
+* @aging_vdd_mode:	vdd-supply regulator mode to configure before performing
  *			a CPR aging measurement.  It should be one of
  *			REGULATOR_MODE_*.
- * @aging_complete_vdd_mode: vdd-supply regulator mode to configure after
+* @aging_complete_vdd_mode: vdd-supply regulator mode to configure after
  *			performing a CPR aging measurement.  It should be one of
  *			REGULATOR_MODE_*.
- * @aging_ref_adjust_volt: The reference aging voltage margin in microvolts that
+* @aging_ref_adjust_volt: The reference aging voltage margin in microvolts that
  *			should be added to the target quotients of the
  *			regulators managed by this controller after derating.
  * @aging_required:	Flag which indicates that a CPR aging measurement still
@@ -722,7 +722,7 @@ struct cpr3_panic_regs_info {
  * @allow_core_count_adj: Core count adjustments are allowed for this controller
  * @allow_temp_adj:	Temperature based adjustments are allowed for
  *			this controller
- * @allow_boost:	Voltage boost allowed for this controller.
+* @allow_boost:	Voltage boost allowed for this controller.
  * @temp_band_count:	Number of temperature bands used for temperature based
  *			adjustment logic
  * @temp_points:	Array of temperature points in decidegrees Celsius used
@@ -733,10 +733,10 @@ struct cpr3_panic_regs_info {
  *			based adjustments.
  * @temp_sensor_id_end:	End ID of temperature sensors used for temperature
  *			based adjustments.
- * @voltage_settling_time: The time in nanoseconds that it takes for the
- *			VDD supply voltage to settle after being increased or
+* @voltage_settling_time: The time in nanoseconds that it takes for the
+*			VDD supply voltage to settle after being increased or
  *			decreased by step_volt microvolts which is used when
- *			SDELTA voltage margin adjustments are applied.
+*			SDELTA voltage margin adjustments are applied.
  * @panic_regs_info:	Array of panic registers information which provides the
  *			list of registers to dump when the device crashes.
  * @panic_notifier:	Notifier block registered to global panic notifier list.
@@ -754,7 +754,7 @@ struct cpr3_panic_regs_info {
  * last_corner_was_closed_loop, cpr_suspended, aging_ref_adjust_volt,
  * aging_required, aging_succeeded, and aging_failed are state variables.
  *
- * The apm* elements do not need to be initialized if the VDD supply managed by
+* The apm* elements do not need to be initialized if the VDD supply managed by
  * the CPR3 controller does not utilize an APM.
  *
  * The elements step_quot_fixed, initial_temp_band, allow_core_count_adj,
@@ -775,10 +775,10 @@ struct cpr3_controller {
 	int			sensor_count;
 	int			soc_revision;
 	struct mutex		lock;
-	struct regulator	*vdd_regulator;
+struct regulator	*vdd_regulator;
 	struct regulator	*system_regulator;
 	struct regulator	*mem_acc_regulator;
-	struct regulator	*vdd_limit_regulator;
+struct regulator	*vdd_limit_regulator;
 	int			system_supply_max_volt;
 	int			mem_acc_threshold_volt;
 	int			mem_acc_corner_map[CPR3_MEM_ACC_CORNERS];
@@ -824,8 +824,8 @@ struct cpr3_controller {
 	struct dentry		*debugfs;
 
 	int			aging_ref_volt;
-	unsigned int		aging_vdd_mode;
-	unsigned int		aging_complete_vdd_mode;
+unsigned int		aging_vdd_mode;
+unsigned int		aging_complete_vdd_mode;
 	int			aging_ref_adjust_volt;
 	bool			aging_required;
 	bool			aging_succeeded;
@@ -846,7 +846,7 @@ struct cpr3_controller {
 	int			*temp_points;
 	u32			temp_sensor_id_start;
 	u32			temp_sensor_id_end;
-	u32			voltage_settling_time;
+u32			voltage_settling_time;
 	struct cpr3_panic_regs_info *panic_regs_info;
 	struct notifier_block	panic_notifier;
 	bool			support_ldo300_vreg;
@@ -864,8 +864,8 @@ struct cpr3_controller {
 	pr_debug("%s: " message, (cpr3_thread)->name, ##__VA_ARGS__)
 
 /*
- * Offset subtracted from voltage corner values passed in from the regulator
- * framework in order to get internal voltage corner values.  This is needed
+* Offset subtracted from voltage corner values passed in from the regulator
+* framework in order to get internal voltage corner values.  This is needed
  * since the regulator framework treats 0 as an error value at regulator
  * registration time.
  */

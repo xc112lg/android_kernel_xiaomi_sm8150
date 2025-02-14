@@ -1,5 +1,5 @@
 /*
- * TI DaVinci CPUFreq platform support.
+* TI DaVinci CPUFreq platform support.
  *
  * Copyright (C) 2009 Texas Instruments, Inc. http://www.ti.com/
  *
@@ -18,8 +18,8 @@
 #include <linux/cpufreq.h>
 
 struct davinci_cpufreq_config {
-	struct cpufreq_frequency_table *freq_table;
-	int (*set_voltage) (unsigned int index);
+struct cpufreq_frequency_table *freq_table;
+int (*set_voltage) (unsigned int index);
 	int (*init) (void);
 };
 

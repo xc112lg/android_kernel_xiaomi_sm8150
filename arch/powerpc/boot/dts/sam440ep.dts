@@ -36,10 +36,10 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			model = "PowerPC,440EP";
+model = "PowerPC,440EP";
 			reg = <0>;
-			clock-frequency = <0>; /* Filled in by zImage */
-			timebase-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
+timebase-frequency = <0>; /* Filled in by zImage */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <32768>;
@@ -91,7 +91,7 @@
 		#address-cells = <2>;
 		#size-cells = <1>;
 		ranges;
-		clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 
 		SDRAM0: sdram {
 			compatible = "ibm,sdram-440ep", "ibm,sdram-405gp";
@@ -131,14 +131,14 @@
 			          0x80000000 0 0x80000000 0x80000000>;
 		  	interrupt-parent = <&UIC1>;
 		  	interrupts = <7 4>;
-		  	clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 
 			EBC0: ebc {
 				compatible = "ibm,ebc-440ep", "ibm,ebc-440gp", "ibm,ebc";
 				dcr-reg = <0x012 2>;
 				#address-cells = <2>;
 				#size-cells = <1>;
-				clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 				interrupts = <5 1>;
 				interrupt-parent = <&UIC1>;
 			};
@@ -148,7 +148,7 @@
 		   		compatible = "ns16550";
 		   		reg = <0xef600300 8>;
 		   		virtual-reg = <0xef600300>;
-		   		clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 		   		current-speed = <0x1c200>;
 		   		interrupt-parent = <&UIC0>;
 		   		interrupts = <0 4>;
@@ -159,7 +159,7 @@
 		   		compatible = "ns16550";
 		   		reg = <0xef600400 8>;
 		   		virtual-reg = <0xef600400>;
-		   		clock-frequency = <0>;
+clock-frequency = <0>;
 		   		current-speed = <0>;
 		   		interrupt-parent = <&UIC0>;
 		   		interrupts = <1 4>;
@@ -170,7 +170,7 @@
 		   		compatible = "ns16550";
 		   		reg = <0xef600500 8>;
 		   		virtual-reg = <0xef600500>;
-		   		clock-frequency = <0>;
+clock-frequency = <0>;
 		   		current-speed = <0>;
 		   		interrupt-parent = <&UIC0>;
 		   		interrupts = <3 4>;
@@ -181,7 +181,7 @@
 		   		compatible = "ns16550";
 		   		reg = <0xef600600 8>;
 		   		virtual-reg = <0xef600600>;
-		   		clock-frequency = <0>;
+clock-frequency = <0>;
 		   		current-speed = <0>;
 		   		interrupt-parent = <&UIC0>;
 		   		interrupts = <4 4>;

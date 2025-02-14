@@ -1,5 +1,5 @@
 /*
- * OMAP3/OMAP4 Voltage Management Routines
+* OMAP3/OMAP4 Voltage Management Routines
  *
  * Author: Thara Gopinath	<thara@ti.com>
  *
@@ -54,7 +54,7 @@ static struct voltagedomain omap4_voltdm_mpu = {
 	.write = omap4_prm_vcvp_write,
 	.rmw = omap4_prm_vcvp_rmw,
 	.vc = &omap4_vc_mpu,
-	.vfsm = &omap4_vdd_mpu_vfsm,
+.vfsm = &omap4_vdd_mpu_vfsm,
 	.vp = &omap4_vp_mpu,
 };
 
@@ -65,7 +65,7 @@ static struct voltagedomain omap4_voltdm_iva = {
 	.write = omap4_prm_vcvp_write,
 	.rmw = omap4_prm_vcvp_rmw,
 	.vc = &omap4_vc_iva,
-	.vfsm = &omap4_vdd_iva_vfsm,
+.vfsm = &omap4_vdd_iva_vfsm,
 	.vp = &omap4_vp_iva,
 };
 
@@ -76,7 +76,7 @@ static struct voltagedomain omap4_voltdm_core = {
 	.write = omap4_prm_vcvp_write,
 	.rmw = omap4_prm_vcvp_rmw,
 	.vc = &omap4_vc_core,
-	.vfsm = &omap4_vdd_core_vfsm,
+.vfsm = &omap4_vdd_core_vfsm,
 	.vp = &omap4_vp_core,
 };
 
@@ -96,7 +96,7 @@ static const char *const sys_clk_name __initconst = "sys_clkin_ck";
 
 void __init omap44xx_voltagedomains_init(void)
 {
-	struct voltagedomain *voltdm;
+struct voltagedomain *voltdm;
 	int i;
 
 	/*
@@ -105,13 +105,13 @@ void __init omap44xx_voltagedomains_init(void)
 	 */
 #ifdef CONFIG_PM_OPP
 	if (cpu_is_omap443x()) {
-		omap4_voltdm_mpu.volt_data = omap443x_vdd_mpu_volt_data;
-		omap4_voltdm_iva.volt_data = omap443x_vdd_iva_volt_data;
-		omap4_voltdm_core.volt_data = omap443x_vdd_core_volt_data;
+omap4_voltdm_mpu.volt_data = omap443x_vdd_mpu_volt_data;
+omap4_voltdm_iva.volt_data = omap443x_vdd_iva_volt_data;
+omap4_voltdm_core.volt_data = omap443x_vdd_core_volt_data;
 	} else if (cpu_is_omap446x()) {
-		omap4_voltdm_mpu.volt_data = omap446x_vdd_mpu_volt_data;
-		omap4_voltdm_iva.volt_data = omap446x_vdd_iva_volt_data;
-		omap4_voltdm_core.volt_data = omap446x_vdd_core_volt_data;
+omap4_voltdm_mpu.volt_data = omap446x_vdd_mpu_volt_data;
+omap4_voltdm_iva.volt_data = omap446x_vdd_iva_volt_data;
+omap4_voltdm_core.volt_data = omap446x_vdd_core_volt_data;
 	}
 #endif
 
@@ -123,8 +123,8 @@ void __init omap44xx_voltagedomains_init(void)
 	omap4_voltdm_iva.vc_param = &omap4_iva_vc_data;
 	omap4_voltdm_core.vc_param = &omap4_core_vc_data;
 
-	for (i = 0; voltdm = voltagedomains_omap4[i], voltdm; i++)
+for (i = 0; voltdm = voltagedomains_omap4[i], voltdm; i++)
 		voltdm->sys_clk.name = sys_clk_name;
 
-	voltdm_init(voltagedomains_omap4);
+voltdm_init(voltagedomains_omap4);
 };

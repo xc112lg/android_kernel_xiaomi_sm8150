@@ -37,7 +37,7 @@
 
 /*
  * Register bit defines for CPCAP_REG_BPEOL. Some of these seem to
- * map to MC13783UG.pdf "Table 5-19. Register 13, Power Control 0"
+* map to MC13783UG.pdf "Table 5-19. Register 13, Power Control 0"
  * to enable BATTDETEN, LOBAT and EOL features. We currently use
  * LOBAT interrupts instead of EOL.
  */
@@ -56,7 +56,7 @@
 
 enum {
 	CPCAP_BATTERY_IIO_BATTDET,
-	CPCAP_BATTERY_IIO_VOLTAGE,
+CPCAP_BATTERY_IIO_VOLTAGE,
 	CPCAP_BATTERY_IIO_CHRG_CURRENT,
 	CPCAP_BATTERY_IIO_BATT_CURRENT,
 	CPCAP_BATTERY_IIO_NR,
@@ -65,7 +65,7 @@ enum {
 enum cpcap_battery_irq_action {
 	CPCAP_BATTERY_IRQ_ACTION_NONE,
 	CPCAP_BATTERY_IRQ_ACTION_BATTERY_LOW,
-	CPCAP_BATTERY_IRQ_ACTION_POWEROFF,
+CPCAP_BATTERY_IRQ_ACTION_POWEROFF,
 };
 
 struct cpcap_interrupt_desc {
@@ -78,7 +78,7 @@ struct cpcap_interrupt_desc {
 struct cpcap_battery_config {
 	int ccm;
 	int cd_factor;
-	struct power_supply_info info;
+struct power_supply_info info;
 };
 
 struct cpcap_coulomb_counter_data {
@@ -94,7 +94,7 @@ enum cpcap_battery_state {
 };
 
 struct cpcap_battery_state_data {
-	int voltage;
+int voltage;
 	int current_ua;
 	int counter_uah;
 	int temperature;
@@ -107,7 +107,7 @@ struct cpcap_battery_ddata {
 	struct regmap *reg;
 	struct list_head irq_list;
 	struct iio_channel *channels[CPCAP_BATTERY_IIO_NR];
-	struct power_supply *psy;
+struct power_supply *psy;
 	struct cpcap_battery_config config;
 	struct cpcap_battery_state_data state[CPCAP_BATTERY_STATE_NR];
 	atomic_t active;
@@ -164,7 +164,7 @@ static int cpcap_battery_get_voltage(struct cpcap_battery_ddata *ddata)
 	struct iio_channel *channel;
 	int error, value = 0;
 
-	channel = ddata->channels[CPCAP_BATTERY_IIO_VOLTAGE];
+channel = ddata->channels[CPCAP_BATTERY_IIO_VOLTAGE];
 	error = iio_read_channel_processed(channel, &value);
 	if (error < 0) {
 		dev_warn(ddata->dev, "%s failed: %i\n", __func__, error);
@@ -372,7 +372,7 @@ static bool cpcap_battery_full(struct cpcap_battery_ddata *ddata)
 	struct cpcap_battery_state_data *state = cpcap_battery_latest(ddata);
 
 	/* Basically anything that measures above 4347000 is full */
-	if (state->voltage >= (ddata->config.info.voltage_max_design - 4000))
+if (state->voltage >= (ddata->config.info.voltage_max_design - 4000))
 		return true;
 
 	return false;
@@ -396,7 +396,7 @@ static int cpcap_battery_update_status(struct cpcap_battery_ddata *ddata)
 	}
 
 	state.time = now;
-	state.voltage = cpcap_battery_get_voltage(ddata);
+state.voltage = cpcap_battery_get_voltage(ddata);
 	state.current_ua = cpcap_battery_get_current(ddata);
 	state.counter_uah = cpcap_battery_read_accumulated(ddata, &state.cc);
 
@@ -413,28 +413,28 @@ static int cpcap_battery_update_status(struct cpcap_battery_ddata *ddata)
 }
 
 static enum power_supply_property cpcap_battery_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_POWER_NOW,
-	POWER_SUPPLY_PROP_POWER_AVG,
-	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-	POWER_SUPPLY_PROP_SCOPE,
-	POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_POWER_NOW,
+POWER_SUPPLY_PROP_POWER_AVG,
+POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+POWER_SUPPLY_PROP_SCOPE,
+POWER_SUPPLY_PROP_TEMP,
 };
 
 static int cpcap_battery_get_property(struct power_supply *psy,
-				      enum power_supply_property psp,
-				      union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct cpcap_battery_ddata *ddata = power_supply_get_drvdata(psy);
+struct cpcap_battery_ddata *ddata = power_supply_get_drvdata(psy);
 	struct cpcap_battery_state_data *latest, *previous;
 	u32 sample;
 	s32 accumulator;
@@ -449,35 +449,35 @@ static int cpcap_battery_get_property(struct power_supply *psy,
 	previous = cpcap_battery_previous(ddata);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		if (latest->temperature > CPCAP_NO_BATTERY)
 			val->intval = 1;
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (cpcap_battery_full(ddata)) {
-			val->intval = POWER_SUPPLY_STATUS_FULL;
+val->intval = POWER_SUPPLY_STATUS_FULL;
 			break;
 		}
 		if (cpcap_battery_cc_get_avg_current(ddata) < 0)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = ddata->config.info.technology;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		val->intval = cpcap_battery_get_voltage(ddata);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+val->intval = cpcap_battery_get_voltage(ddata);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		val->intval = ddata->config.info.voltage_max_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+val->intval = ddata->config.info.voltage_max_design;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		val->intval = ddata->config.info.voltage_min_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+val->intval = ddata->config.info.voltage_min_design;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		if (cached) {
 			val->intval = cpcap_battery_cc_get_avg_current(ddata);
 			break;
@@ -488,20 +488,20 @@ static int cpcap_battery_get_property(struct power_supply *psy,
 						     accumulator,
 						     latest->cc.offset);
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		val->intval = latest->current_ua;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		val->intval = latest->counter_uah;
 		break;
-	case POWER_SUPPLY_PROP_POWER_NOW:
-		tmp = (latest->voltage / 10000) * latest->current_ua;
+case POWER_SUPPLY_PROP_POWER_NOW:
+tmp = (latest->voltage / 10000) * latest->current_ua;
 		val->intval = div64_s64(tmp, 100);
 		break;
-	case POWER_SUPPLY_PROP_POWER_AVG:
+case POWER_SUPPLY_PROP_POWER_AVG:
 		if (cached) {
 			tmp = cpcap_battery_cc_get_avg_current(ddata);
-			tmp *= (latest->voltage / 10000);
+tmp *= (latest->voltage / 10000);
 			val->intval = div64_s64(tmp, 100);
 			break;
 		}
@@ -509,30 +509,30 @@ static int cpcap_battery_get_property(struct power_supply *psy,
 		accumulator = latest->cc.accumulator - previous->cc.accumulator;
 		tmp = cpcap_battery_cc_to_ua(ddata, sample, accumulator,
 					     latest->cc.offset);
-		tmp *= ((latest->voltage + previous->voltage) / 20000);
+tmp *= ((latest->voltage + previous->voltage) / 20000);
 		val->intval = div64_s64(tmp, 100);
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
 		if (cpcap_battery_full(ddata))
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_FULL;
-		else if (latest->voltage >= 3750000)
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_HIGH;
-		else if (latest->voltage >= 3300000)
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
-		else if (latest->voltage > 3100000)
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_LOW;
-		else if (latest->voltage <= 3100000)
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_CRITICAL;
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_FULL;
+else if (latest->voltage >= 3750000)
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_HIGH;
+else if (latest->voltage >= 3300000)
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
+else if (latest->voltage > 3100000)
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_LOW;
+else if (latest->voltage <= 3100000)
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_CRITICAL;
 		else
-			val->intval = POWER_SUPPLY_CAPACITY_LEVEL_UNKNOWN;
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_UNKNOWN;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
 		val->intval = ddata->config.info.charge_full_design;
 		break;
-	case POWER_SUPPLY_PROP_SCOPE:
-		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
+case POWER_SUPPLY_PROP_SCOPE:
+val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		val->intval = latest->temperature;
 		break;
 	default:
@@ -566,18 +566,18 @@ static irqreturn_t cpcap_battery_irq_thread(int irq, void *data)
 		if (latest->counter_uah >= 0)
 			dev_warn(ddata->dev, "Battery low at 3.3V!\n");
 		break;
-	case CPCAP_BATTERY_IRQ_ACTION_POWEROFF:
+case CPCAP_BATTERY_IRQ_ACTION_POWEROFF:
 		if (latest->counter_uah >= 0) {
 			dev_emerg(ddata->dev,
-				  "Battery empty at 3.1V, powering off\n");
-			orderly_poweroff(true);
+"Battery empty at 3.1V, powering off\n");
+orderly_poweroff(true);
 		}
 		break;
 	default:
 		break;
 	}
 
-	power_supply_changed(ddata->psy);
+power_supply_changed(ddata->psy);
 
 	return IRQ_HANDLED;
 }
@@ -614,7 +614,7 @@ static int cpcap_battery_init_irq(struct platform_device *pdev,
 	if (!strncmp(name, "lowbph", 6))
 		d->action = CPCAP_BATTERY_IRQ_ACTION_BATTERY_LOW;
 	else if (!strncmp(name, "lowbpl", 6))
-		d->action = CPCAP_BATTERY_IRQ_ACTION_POWEROFF;
+d->action = CPCAP_BATTERY_IRQ_ACTION_POWEROFF;
 
 	list_add(&d->node, &ddata->irq_list);
 
@@ -690,9 +690,9 @@ out_err:
 static const struct cpcap_battery_config cpcap_battery_default_data = {
 	.ccm = 0x3ff,
 	.cd_factor = 0x3cc,
-	.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
-	.info.voltage_max_design = 4351000,
-	.info.voltage_min_design = 3100000,
+.info.technology = POWER_SUPPLY_TECHNOLOGY_LION,
+.info.voltage_max_design = 4351000,
+.info.voltage_min_design = 3100000,
 	.info.charge_full_design = 1740000,
 };
 
@@ -709,10 +709,10 @@ MODULE_DEVICE_TABLE(of, cpcap_battery_id_table);
 
 static int cpcap_battery_probe(struct platform_device *pdev)
 {
-	struct power_supply_desc *psy_desc;
+struct power_supply_desc *psy_desc;
 	struct cpcap_battery_ddata *ddata;
 	const struct of_device_id *match;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	int error;
 
 	match = of_match_device(of_match_ptr(cpcap_battery_id_table),
@@ -762,7 +762,7 @@ static int cpcap_battery_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	psy_desc->name = "battery",
-	psy_desc->type = POWER_SUPPLY_TYPE_BATTERY,
+psy_desc->type = POWER_SUPPLY_TYPE_BATTERY,
 	psy_desc->properties = cpcap_battery_props,
 	psy_desc->num_properties = ARRAY_SIZE(cpcap_battery_props),
 	psy_desc->get_property = cpcap_battery_get_property,
@@ -770,11 +770,11 @@ static int cpcap_battery_probe(struct platform_device *pdev)
 	psy_cfg.of_node = pdev->dev.of_node;
 	psy_cfg.drv_data = ddata;
 
-	ddata->psy = devm_power_supply_register(ddata->dev, psy_desc,
+ddata->psy = devm_power_supply_register(ddata->dev, psy_desc,
 						&psy_cfg);
 	error = PTR_ERR_OR_ZERO(ddata->psy);
 	if (error) {
-		dev_err(ddata->dev, "failed to register power supply\n");
+dev_err(ddata->dev, "failed to register power supply\n");
 		return error;
 	}
 

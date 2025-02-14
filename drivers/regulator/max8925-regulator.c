@@ -46,7 +46,7 @@ static int max8925_set_voltage_sel(struct regulator_dev *rdev,
 				   unsigned int selector)
 {
 	struct max8925_regulator_info *info = rdev_get_drvdata(rdev);
-	unsigned char mask = rdev->desc->n_voltages - 1;
+unsigned char mask = rdev->desc->n_voltages - 1;
 
 	return max8925_set_bits(info->i2c, info->vol_reg, mask, selector);
 }
@@ -60,7 +60,7 @@ static int max8925_get_voltage_sel(struct regulator_dev *rdev)
 	ret = max8925_reg_read(info->i2c, info->vol_reg);
 	if (ret < 0)
 		return ret;
-	mask = rdev->desc->n_voltages - 1;
+mask = rdev->desc->n_voltages - 1;
 	data = ret & mask;
 
 	return data;
@@ -133,23 +133,23 @@ static int max8925_set_dvm_disable(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops max8925_regulator_sdv_ops = {
-	.map_voltage		= regulator_map_voltage_linear,
-	.list_voltage		= regulator_list_voltage_linear,
-	.set_voltage_sel	= max8925_set_voltage_sel,
-	.get_voltage_sel	= max8925_get_voltage_sel,
+.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.set_voltage_sel	= max8925_set_voltage_sel,
+.get_voltage_sel	= max8925_get_voltage_sel,
 	.enable			= max8925_enable,
 	.disable		= max8925_disable,
 	.is_enabled		= max8925_is_enabled,
-	.set_suspend_voltage	= max8925_set_dvm_voltage,
+.set_suspend_voltage	= max8925_set_dvm_voltage,
 	.set_suspend_enable	= max8925_set_dvm_enable,
 	.set_suspend_disable	= max8925_set_dvm_disable,
 };
 
 static const struct regulator_ops max8925_regulator_ldo_ops = {
-	.map_voltage		= regulator_map_voltage_linear,
-	.list_voltage		= regulator_list_voltage_linear,
-	.set_voltage_sel	= max8925_set_voltage_sel,
-	.get_voltage_sel	= max8925_get_voltage_sel,
+.map_voltage		= regulator_map_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
+.set_voltage_sel	= max8925_set_voltage_sel,
+.get_voltage_sel	= max8925_get_voltage_sel,
 	.enable			= max8925_enable,
 	.disable		= max8925_disable,
 	.is_enabled		= max8925_is_enabled,
@@ -160,10 +160,10 @@ static const struct regulator_ops max8925_regulator_ldo_ops = {
 	.desc	= {						\
 		.name	= "SDV" #_id,				\
 		.ops	= &max8925_regulator_sdv_ops,		\
-		.type	= REGULATOR_VOLTAGE,			\
+.type	= REGULATOR_VOLTAGE,			\
 		.id	= MAX8925_ID_SD##_id,			\
 		.owner	= THIS_MODULE,				\
-		.n_voltages = 64,				\
+.n_voltages = 64,				\
 		.min_uV = min * 1000,				\
 		.uV_step = step * 1000,				\
 	},							\
@@ -176,10 +176,10 @@ static const struct regulator_ops max8925_regulator_ldo_ops = {
 	.desc	= {						\
 		.name	= "LDO" #_id,				\
 		.ops	= &max8925_regulator_ldo_ops,		\
-		.type	= REGULATOR_VOLTAGE,			\
+.type	= REGULATOR_VOLTAGE,			\
 		.id	= MAX8925_ID_LDO##_id,			\
 		.owner	= THIS_MODULE,				\
-		.n_voltages = 64,				\
+.n_voltages = 64,				\
 		.min_uV = min * 1000,				\
 		.uV_step = step * 1000,				\
 	},							\

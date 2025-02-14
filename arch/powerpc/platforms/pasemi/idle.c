@@ -44,7 +44,7 @@ static int current_mode = 0;
 
 static int pasemi_system_reset_exception(struct pt_regs *regs)
 {
-	/* If we were woken up from power savings, we need to return
+/* If we were woken up from power savings, we need to return
 	 * to the calling function, since nip is not saved across
 	 * all modes.
 	 */
@@ -67,7 +67,7 @@ static int pasemi_system_reset_exception(struct pt_regs *regs)
 		return 0;
 	}
 
-	/* Set higher astate since we come out of power savings at 0 */
+/* Set higher astate since we come out of power savings at 0 */
 	restore_astate(hard_smp_processor_id());
 
 	/* everything handled */
@@ -78,12 +78,12 @@ static int pasemi_system_reset_exception(struct pt_regs *regs)
 static int __init pasemi_idle_init(void)
 {
 #ifndef CONFIG_PPC_PASEMI_CPUFREQ
-	printk(KERN_WARNING "No cpufreq driver, powersavings modes disabled\n");
+printk(KERN_WARNING "No cpufreq driver, powersavings modes disabled\n");
 	current_mode = 0;
 #endif
 
 	ppc_md.system_reset_exception = pasemi_system_reset_exception;
-	ppc_md.power_save = modes[current_mode].entry;
+ppc_md.power_save = modes[current_mode].entry;
 	printk(KERN_INFO "Using PA6T idle loop (%s)\n", modes[current_mode].name);
 
 	return 0;

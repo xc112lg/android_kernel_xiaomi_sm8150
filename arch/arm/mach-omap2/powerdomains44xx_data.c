@@ -1,5 +1,5 @@
 /*
- * OMAP4 Power domains framework
+* OMAP4 Power domains framework
  *
  * Copyright (C) 2009-2011 Texas Instruments, Inc.
  * Copyright (C) 2009-2011 Nokia Corporation
@@ -53,7 +53,7 @@ static struct powerdomain core_44xx_pwrdm = {
 		[3] = PWRSTS_ON,	/* ducati_l2ram */
 		[4] = PWRSTS_ON,	/* ducati_unicache */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* gfx_44xx_pwrdm: 3D accelerator power domain */
@@ -70,7 +70,7 @@ static struct powerdomain gfx_44xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* gfx_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* abe_44xx_pwrdm: Audio back end power domain */
@@ -90,7 +90,7 @@ static struct powerdomain abe_44xx_pwrdm = {
 		[0] = PWRSTS_ON,	/* aessmem */
 		[1] = PWRSTS_ON,	/* periphmem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* dss_44xx_pwrdm: Display subsystem power domain */
@@ -108,7 +108,7 @@ static struct powerdomain dss_44xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* dss_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* tesla_44xx_pwrdm: Tesla processor power domain */
@@ -130,7 +130,7 @@ static struct powerdomain tesla_44xx_pwrdm = {
 		[1] = PWRSTS_ON,	/* tesla_l1 */
 		[2] = PWRSTS_ON,	/* tesla_l2 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* wkup_44xx_pwrdm: Wake-up power domain */
@@ -241,7 +241,7 @@ static struct powerdomain ivahd_44xx_pwrdm = {
 		[2] = PWRSTS_ON,	/* tcm1_mem */
 		[3] = PWRSTS_ON,	/* tcm2_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* cam_44xx_pwrdm: Camera subsystem power domain */
@@ -258,7 +258,7 @@ static struct powerdomain cam_44xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* cam_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* l3init_44xx_pwrdm: L3 initators pheripherals power domain  */
@@ -276,7 +276,7 @@ static struct powerdomain l3init_44xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_ON,	/* l3init_bank1 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* l4per_44xx_pwrdm: Target peripherals power domain */
@@ -296,11 +296,11 @@ static struct powerdomain l4per_44xx_pwrdm = {
 		[0] = PWRSTS_ON,	/* nonretained_bank */
 		[1] = PWRSTS_ON,	/* retained_bank */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /*
- * always_on_core_44xx_pwrdm: Always ON logic that sits in VDD_CORE voltage
+* always_on_core_44xx_pwrdm: Always ON logic that sits in VDD_CORE voltage
  * domain
  */
 static struct powerdomain always_on_core_44xx_pwrdm = {
@@ -318,11 +318,11 @@ static struct powerdomain cefuse_44xx_pwrdm = {
 	.prcm_offs	  = OMAP4430_PRM_CEFUSE_INST,
 	.prcm_partition	  = OMAP4430_PRM_PARTITION,
 	.pwrsts		  = PWRSTS_OFF_ON,
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /*
- * The following power domains are not under SW control
+* The following power domains are not under SW control
  *
  * always_on_iva
  * always_on_mpu
@@ -353,6 +353,6 @@ static struct powerdomain *powerdomains_omap44xx[] __initdata = {
 void __init omap44xx_powerdomains_init(void)
 {
 	pwrdm_register_platform_funcs(&omap4_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_omap44xx);
+pwrdm_register_pwrdms(powerdomains_omap44xx);
 	pwrdm_complete_init();
 }

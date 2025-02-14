@@ -92,7 +92,7 @@ static irqreturn_t pwrkey_press_irq(int irq, void *_pwr)
 {
 	struct input_dev *pwr = _pwr;
 
-	input_report_key(pwr, KEY_POWER, 1);
+input_report_key(pwr, KEY_POWER, 1);
 	input_sync(pwr);
 
 	return IRQ_HANDLED;
@@ -102,7 +102,7 @@ static irqreturn_t pwrkey_release_irq(int irq, void *_pwr)
 {
 	struct input_dev *pwr = _pwr;
 
-	input_report_key(pwr, KEY_POWER, 0);
+input_report_key(pwr, KEY_POWER, 0);
 	input_sync(pwr);
 
 	return IRQ_HANDLED;
@@ -161,7 +161,7 @@ static void pmic8xxx_pwrkey_shutdown(struct platform_device *pdev)
 /*
  * Set an SMPS regulator to be disabled in its CTRL register, but enabled
  * in the master enable register.  Also set it's pull down enable bit.
- * Take care to make sure that the output voltage doesn't change if switching
+* Take care to make sure that the output voltage doesn't change if switching
  * from advanced mode to legacy mode.
  */
 static int pm8058_disable_smps_locally_set_pull_down(struct regmap *regmap,
@@ -184,7 +184,7 @@ static int pm8058_disable_smps_locally_set_pull_down(struct regmap *regmap,
 	reg &= PM8058_SMPS_ADVANCED_MODE_MASK;
 	/* Check if in advanced mode. */
 	if (reg == PM8058_SMPS_ADVANCED_MODE) {
-		/* Determine current output voltage. */
+/* Determine current output voltage. */
 		error = regmap_read(regmap, ctrl_addr, &reg);
 		if (error)
 			return error;
@@ -244,7 +244,7 @@ static int pm8058_disable_smps_locally_set_pull_down(struct regmap *regmap,
 		if (error)
 			return error;
 
-		/* Enable locally, enable pull down, keep voltage the same. */
+/* Enable locally, enable pull down, keep voltage the same. */
 		error = regmap_update_bits(regmap, ctrl_addr,
 			PM8058_REGULATOR_ENABLE_MASK |
 			PM8058_REGULATOR_PULL_DOWN_MASK |
@@ -310,7 +310,7 @@ static int pm8058_pwrkey_shutdown(struct pmic8xxx_pwrkey *pwrkey, bool reset)
 	}
 
 	/*
-	 * Fix-up: Set regulator LDO22 to 1.225 V in high power mode. Leave its
+* Fix-up: Set regulator LDO22 to 1.225 V in high power mode. Leave its
 	 * pull-down state intact. This ensures a safe shutdown.
 	 */
 	error = regmap_update_bits(regmap, PM8058_L22_CTRL, 0xbf, 0x93);
@@ -355,7 +355,7 @@ static int pmic8xxx_pwrkey_probe(struct platform_device *pdev)
 
 	/* Valid range of pwr key trigger delay is 1/64 sec to 2 seconds. */
 	if (kpd_delay > USEC_PER_SEC * 2 || kpd_delay < USEC_PER_SEC / 64) {
-		dev_err(&pdev->dev, "invalid power key trigger delay\n");
+dev_err(&pdev->dev, "invalid power key trigger delay\n");
 		return -EINVAL;
 	}
 
@@ -377,11 +377,11 @@ static int pmic8xxx_pwrkey_probe(struct platform_device *pdev)
 
 	pwr = devm_input_allocate_device(&pdev->dev);
 	if (!pwr) {
-		dev_dbg(&pdev->dev, "Can't allocate power button\n");
+dev_dbg(&pdev->dev, "Can't allocate power button\n");
 		return -ENOMEM;
 	}
 
-	input_set_capability(pwr, EV_KEY, KEY_POWER);
+input_set_capability(pwr, EV_KEY, KEY_POWER);
 
 	pwr->name = "pmic8xxx_pwrkey";
 	pwr->phys = "pmic8xxx_pwrkey/input0";
@@ -428,7 +428,7 @@ static int pmic8xxx_pwrkey_probe(struct platform_device *pdev)
 
 	err = input_register_device(pwr);
 	if (err) {
-		dev_err(&pdev->dev, "Can't register power key: %d\n", err);
+dev_err(&pdev->dev, "Can't register power key: %d\n", err);
 		return err;
 	}
 

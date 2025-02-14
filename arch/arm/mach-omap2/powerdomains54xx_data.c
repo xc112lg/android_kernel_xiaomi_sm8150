@@ -1,5 +1,5 @@
 /*
- * OMAP54XX Power domains framework
+* OMAP54XX Power domains framework
  *
  * Copyright (C) 2013 Texas Instruments, Inc.
  *
@@ -51,7 +51,7 @@ static struct powerdomain core_54xx_pwrdm = {
 		[3] = PWRSTS_OFF_RET,	/* ipu_l2ram */
 		[4] = PWRSTS_OFF_RET,	/* ipu_unicache */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* abe_54xx_pwrdm: Audio back end power domain */
@@ -71,7 +71,7 @@ static struct powerdomain abe_54xx_pwrdm = {
 		[0] = PWRSTS_OFF_RET,	/* aessmem */
 		[1] = PWRSTS_OFF_RET,	/* periphmem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* coreaon_54xx_pwrdm: Always ON logic that sits in VDD_CORE voltage domain */
@@ -98,7 +98,7 @@ static struct powerdomain dss_54xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_OFF_RET,	/* dss_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* cpu0_54xx_pwrdm: MPU0 processor and Neon coprocessor power domain */
@@ -177,7 +177,7 @@ static struct powerdomain custefuse_54xx_pwrdm = {
 	.prcm_offs	  = OMAP54XX_PRM_CUSTEFUSE_INST,
 	.prcm_partition	  = OMAP54XX_PRM_PARTITION,
 	.pwrsts		  = PWRSTS_OFF_ON,
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* dsp_54xx_pwrdm: Tesla processor power domain */
@@ -199,7 +199,7 @@ static struct powerdomain dsp_54xx_pwrdm = {
 		[1] = PWRSTS_OFF_RET,	/* dsp_l1 */
 		[2] = PWRSTS_OFF_RET,	/* dsp_l2 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* cam_54xx_pwrdm: Camera subsystem power domain */
@@ -216,7 +216,7 @@ static struct powerdomain cam_54xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_OFF_RET,	/* cam_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* l3init_54xx_pwrdm: L3 initators pheripherals power domain  */
@@ -236,7 +236,7 @@ static struct powerdomain l3init_54xx_pwrdm = {
 		[0] = PWRSTS_OFF_RET,	/* l3init_bank1 */
 		[1] = PWRSTS_OFF_RET,	/* l3init_bank2 */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* gpu_54xx_pwrdm: 3D accelerator power domain */
@@ -253,7 +253,7 @@ static struct powerdomain gpu_54xx_pwrdm = {
 	.pwrsts_mem_on	= {
 		[0] = PWRSTS_OFF_RET,	/* gpu_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /* wkupaon_54xx_pwrdm: Wake-up power domain */
@@ -292,11 +292,11 @@ static struct powerdomain iva_54xx_pwrdm = {
 		[2] = PWRSTS_OFF_RET,	/* tcm1_mem */
 		[3] = PWRSTS_OFF_RET,	/* tcm2_mem */
 	},
-	.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
+.flags		  = PWRDM_HAS_LOWPOWERSTATECHANGE,
 };
 
 /*
- * The following power domains are not under SW control
+* The following power domains are not under SW control
  *
  * mpuaon
  * mmaon
@@ -325,6 +325,6 @@ static struct powerdomain *powerdomains_omap54xx[] __initdata = {
 void __init omap54xx_powerdomains_init(void)
 {
 	pwrdm_register_platform_funcs(&omap4_pwrdm_operations);
-	pwrdm_register_pwrdms(powerdomains_omap54xx);
+pwrdm_register_pwrdms(powerdomains_omap54xx);
 	pwrdm_complete_init();
 }

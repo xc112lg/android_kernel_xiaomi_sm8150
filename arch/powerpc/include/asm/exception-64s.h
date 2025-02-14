@@ -3,21 +3,21 @@
 /*
  * Extracted from head_64.S
  *
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
  *  Rewritten by Cort Dougan (cort@cs.nmt.edu) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@cs.nmt.edu>
- *  Adapted for Power Macintosh by Paul Mackerras.
+*  Adapted for Power Macintosh by Paul Mackerras.
  *  Low-level exception handlers and MMU support
  *  rewritten by Paul Mackerras.
  *    Copyright (C) 1996 Paul Mackerras.
  *
- *  Adapted for 64bit PowerPC by Dave Engebretsen, Peter Bergner, and
+*  Adapted for 64bit PowerPC by Dave Engebretsen, Peter Bergner, and
  *    Mike Corrigan {engebret|bergner|mikejc}@us.ibm.com
  *
  *  This file contains the low-level support and setup for the
- *  PowerPC-64 platform, including trap and interrupt dispatch.
+*  PowerPC-64 platform, including trap and interrupt dispatch.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -714,7 +714,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_CTRL)
 		ret_from_except_lite, FINISH_NAP;ADD_RECONCILE;RUNLATCH_ON)
 
 /*
- * When the idle code in power4_idle puts the CPU into NAP mode,
+* When the idle code in power4_idle puts the CPU into NAP mode,
  * it has to do so in a loop, and relies on the external interrupt
  * and decrementer interrupt entry code to get it out of the loop.
  * It sets the _TLF_NAPPING bit in current_thread_info()->local_flags
@@ -726,7 +726,7 @@ BEGIN_FTR_SECTION				\
 	CURRENT_THREAD_INFO(r11, r1);		\
 	ld	r9,TI_LOCAL_FLAGS(r11);		\
 	andi.	r10,r9,_TLF_NAPPING;		\
-	bnel	power4_fixup_nap;		\
+bnel	power4_fixup_nap;		\
 END_FTR_SECTION_IFSET(CPU_FTR_CAN_NAP)
 #else
 #define FINISH_NAP

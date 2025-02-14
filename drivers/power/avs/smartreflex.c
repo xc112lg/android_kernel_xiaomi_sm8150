@@ -1,5 +1,5 @@
 /*
- * OMAP SmartReflex Voltage Control
+* OMAP SmartReflex Voltage Control
  *
  * Author: Thara Gopinath	<thara@ti.com>
  *
@@ -83,7 +83,7 @@ static struct omap_sr *_sr_lookup(struct voltagedomain *voltdm)
 	struct omap_sr *sr_info;
 
 	if (!voltdm) {
-		pr_err("%s: Null voltage domain passed!\n", __func__);
+pr_err("%s: Null voltage domain passed!\n", __func__);
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -219,7 +219,7 @@ static int sr_late_init(struct omap_sr *sr_info)
 	}
 
 	if (pdata && pdata->enable_on_init)
-		sr_start_vddautocomp(sr_info);
+sr_start_vddautocomp(sr_info);
 
 	return ret;
 
@@ -547,13 +547,13 @@ int sr_configure_minmax(struct omap_sr *sr)
 /**
  * sr_enable() - Enables the smartreflex module.
  * @sr:		pointer to which the SR module to be configured belongs to.
- * @volt:	The voltage at which the Voltage domain associated with
+* @volt:	The voltage at which the Voltage domain associated with
  *		the smartreflex module is operating at.
  *		This is required only to program the correct Ntarget value.
  *
  * This API is to be called from the smartreflex class driver to
  * enable a smartreflex module. Returns 0 on success. Returns error
- * value if the voltage passed is wrong or if ntarget value is wrong.
+* value if the voltage passed is wrong or if ntarget value is wrong.
  */
 int sr_enable(struct omap_sr *sr, unsigned long volt)
 {
@@ -567,10 +567,10 @@ int sr_enable(struct omap_sr *sr, unsigned long volt)
 		return -EINVAL;
 	}
 
-	volt_data = omap_voltage_get_voltdata(sr->voltdm, volt);
+volt_data = omap_voltage_get_voltdata(sr->voltdm, volt);
 
 	if (IS_ERR(volt_data)) {
-		dev_warn(&sr->pdev->dev, "%s: Unable to get voltage table for nominal voltage %ld\n",
+dev_warn(&sr->pdev->dev, "%s: Unable to get voltage table for nominal voltage %ld\n",
 			 __func__, volt);
 		return PTR_ERR(volt_data);
 	}
@@ -578,12 +578,12 @@ int sr_enable(struct omap_sr *sr, unsigned long volt)
 	nvalue_row = sr_retrieve_nvalue_row(sr, volt_data->sr_efuse_offs);
 
 	if (!nvalue_row) {
-		dev_warn(&sr->pdev->dev, "%s: failure getting SR data for this voltage %ld\n",
+dev_warn(&sr->pdev->dev, "%s: failure getting SR data for this voltage %ld\n",
 			 __func__, volt);
 		return -ENODATA;
 	}
 
-	/* errminlimit is opp dependent and hence linked to voltage */
+/* errminlimit is opp dependent and hence linked to voltage */
 	sr->err_minlimit = nvalue_row->errminlimit;
 
 	pm_runtime_get_sync(&sr->pdev->dev);
@@ -683,7 +683,7 @@ int sr_register_class(struct omap_sr_class_data *class_data)
 /**
  * omap_sr_enable() -  API to enable SR clocks and to call into the
  *			registered smartreflex class enable API.
- * @voltdm:	VDD pointer to which the SR module to be configured belongs to.
+* @voltdm:	VDD pointer to which the SR module to be configured belongs to.
  *
  * This API is to be called from the kernel in order to enable
  * a particular smartreflex module. This API will do the initial
@@ -712,14 +712,14 @@ void omap_sr_enable(struct voltagedomain *voltdm)
 }
 
 /**
- * omap_sr_disable() - API to disable SR without resetting the voltage
- *			processor voltage
- * @voltdm:	VDD pointer to which the SR module to be configured belongs to.
+* omap_sr_disable() - API to disable SR without resetting the voltage
+*			processor voltage
+* @voltdm:	VDD pointer to which the SR module to be configured belongs to.
  *
  * This API is to be called from the kernel in order to disable
  * a particular smartreflex module. This API will in turn call
  * into the registered smartreflex class disable API. This API will tell
- * the smartreflex class disable not to reset the VP voltage after
+* the smartreflex class disable not to reset the VP voltage after
  * disabling smartreflex.
  */
 void omap_sr_disable(struct voltagedomain *voltdm)
@@ -745,13 +745,13 @@ void omap_sr_disable(struct voltagedomain *voltdm)
 
 /**
  * omap_sr_disable_reset_volt() - API to disable SR and reset the
- *				voltage processor voltage
- * @voltdm:	VDD pointer to which the SR module to be configured belongs to.
+*				voltage processor voltage
+* @voltdm:	VDD pointer to which the SR module to be configured belongs to.
  *
  * This API is to be called from the kernel in order to disable
  * a particular smartreflex module. This API will in turn call
  * into the registered smartreflex class disable API. This API will tell
- * the smartreflex class disable to reset the VP voltage after
+* the smartreflex class disable to reset the VP voltage after
  * disabling smartreflex.
  */
 void omap_sr_disable_reset_volt(struct voltagedomain *voltdm)
@@ -827,9 +827,9 @@ static int omap_sr_autocomp_store(void *data, u64 val)
 	/* control enable/disable only if there is a delta in value */
 	if (sr_info->autocomp_active != val) {
 		if (!val)
-			sr_stop_vddautocomp(sr_info);
+sr_stop_vddautocomp(sr_info);
 		else
-			sr_start_vddautocomp(sr_info);
+sr_start_vddautocomp(sr_info);
 	}
 
 	return 0;
@@ -945,7 +945,7 @@ static int __init omap_sr_probe(struct platform_device *pdev)
 	}
 
 	if (sr_info->nvalue_count == 0 || !sr_info->nvalue_table) {
-		dev_warn(&pdev->dev, "%s: %s: No Voltage table for the corresponding vdd. Cannot create debugfs entries for n-values\n",
+dev_warn(&pdev->dev, "%s: %s: No Voltage table for the corresponding vdd. Cannot create debugfs entries for n-values\n",
 			 __func__, sr_info->name);
 
 		ret = -ENODATA;
@@ -994,7 +994,7 @@ static int omap_sr_remove(struct platform_device *pdev)
 	}
 
 	if (sr_info->autocomp_active)
-		sr_stop_vddautocomp(sr_info);
+sr_stop_vddautocomp(sr_info);
 	debugfs_remove_recursive(sr_info->dbg_dir);
 
 	pm_runtime_disable(&pdev->dev);
@@ -1020,7 +1020,7 @@ static void omap_sr_shutdown(struct platform_device *pdev)
 	}
 
 	if (sr_info->autocomp_active)
-		sr_stop_vddautocomp(sr_info);
+sr_stop_vddautocomp(sr_info);
 
 	return;
 }

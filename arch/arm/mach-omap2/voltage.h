@@ -1,5 +1,5 @@
 /*
- * OMAP Voltage Management Routines
+* OMAP Voltage Management Routines
  *
  * Author: Thara Gopinath	<thara@ti.com>
  *
@@ -32,7 +32,7 @@ struct powerdomain;
 #define OMAP3_VOLTSETUP2	0xff
 
 /**
- * struct omap_vfsm_instance - per-voltage manager FSM register/bitfield
+* struct omap_vfsm_instance - per-voltage manager FSM register/bitfield
  * data
  * @voltsetup_mask: SETUP_TIME* bitmask in the PRM_VOLTSETUP* register
  * @voltsetup_reg: register offset of PRM_VOLTSETUP from PRM base
@@ -47,20 +47,20 @@ struct omap_vfsm_instance {
 };
 
 /**
- * struct voltagedomain - omap voltage domain global structure.
- * @name: Name of the voltage domain which can be used as a unique identifier.
- * @scalable: Whether or not this voltage domain is scalable
- * @node: list_head linking all voltage domains
- * @vc: pointer to VC channel associated with this voltagedomain
- * @vp: pointer to VP associated with this voltagedomain
+* struct voltagedomain - omap voltage domain global structure.
+* @name: Name of the voltage domain which can be used as a unique identifier.
+* @scalable: Whether or not this voltage domain is scalable
+* @node: list_head linking all voltage domains
+* @vc: pointer to VC channel associated with this voltagedomain
+* @vp: pointer to VP associated with this voltagedomain
  * @read: read a VC/VP register
  * @write: write a VC/VP register
  * @read: read-modify-write a VC/VP register
- * @sys_clk: system clock name/frequency, used for various timing calculations
- * @scale: function used to scale the voltage of the voltagedomain
- * @nominal_volt: current nominal voltage for this voltage domain
- * @volt_data: voltage table having the distinct voltages supported
- *             by the domain and other associated per voltage data.
+* @sys_clk: system clock name/frequency, used for various timing calculations
+* @scale: function used to scale the voltage of the voltagedomain
+* @nominal_volt: current nominal voltage for this voltage domain
+* @volt_data: voltage table having the distinct voltages supported
+*             by the domain and other associated per voltage data.
  */
 struct voltagedomain {
 	char *name;
@@ -83,7 +83,7 @@ struct voltagedomain {
 		u32 rate;
 	} sys_clk;
 
-	int (*scale) (struct voltagedomain *voltdm,
+int (*scale) (struct voltagedomain *voltdm,
 		      unsigned long target_volt);
 
 	u32 nominal_volt;
@@ -109,16 +109,16 @@ struct voltagedomain {
 #define OMAP4_VP_CORE_VLIMITTO_VDDMAX	1200000
 
 /**
- * struct omap_voltdm_pmic - PMIC specific data required by voltage driver.
+* struct omap_voltdm_pmic - PMIC specific data required by voltage driver.
  * @slew_rate:	PMIC slew rate (in uv/us)
- * @step_size:	PMIC voltage step size (in uv)
+* @step_size:	PMIC voltage step size (in uv)
  * @i2c_slave_addr: I2C slave address of PMIC
- * @volt_reg_addr: voltage configuration register address
+* @volt_reg_addr: voltage configuration register address
  * @cmd_reg_addr: command (on, on-LP, ret, off) configuration register address
  * @i2c_high_speed: whether VC uses I2C high-speed mode to PMIC
  * @i2c_mcode: master code value for I2C high-speed preamble transmission
- * @vsel_to_uv:	PMIC API to convert vsel value to actual voltage in uV.
- * @uv_to_vsel:	PMIC API to convert voltage in uV to vsel value.
+* @vsel_to_uv:	PMIC API to convert vsel value to actual voltage in uV.
+* @uv_to_vsel:	PMIC API to convert voltage in uV to vsel value.
  */
 struct omap_voltdm_pmic {
 	int slew_rate;
@@ -129,8 +129,8 @@ struct omap_voltdm_pmic {
 	u8 vp_erroroffset;
 	u8 vp_vstepmin;
 	u8 vp_vstepmax;
-	u32 vddmin;
-	u32 vddmax;
+u32 vddmin;
+u32 vddmax;
 	u8 vp_timeout_us;
 	bool i2c_high_speed;
 	u32 i2c_pad_load;
@@ -140,8 +140,8 @@ struct omap_voltdm_pmic {
 };
 
 struct omap_vp_param {
-	u32 vddmax;
-	u32 vddmin;
+u32 vddmax;
+u32 vddmin;
 };
 
 struct omap_vc_param {

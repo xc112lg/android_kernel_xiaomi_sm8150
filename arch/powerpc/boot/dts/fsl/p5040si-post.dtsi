@@ -61,7 +61,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0x0 0xff>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <16 2 1 15>;
 	fsl,iommu-parent = <&pamu0>;
 	pcie@0 {
@@ -89,7 +89,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0 0xff>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <16 2 1 14>;
 	fsl,iommu-parent = <&pamu0>;
 	pcie@0 {
@@ -117,7 +117,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0x0 0xff>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <16 2 1 13>;
 	fsl,iommu-parent = <&pamu0>;
 	pcie@0 {

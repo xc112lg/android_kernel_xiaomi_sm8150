@@ -89,7 +89,7 @@ static const struct regulator_ops max14577_safeout_ops = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.list_voltage		= regulator_list_voltage_linear,
 };
 
 static const struct regulator_ops max14577_charger_ops = {
@@ -106,10 +106,10 @@ static const struct regulator_ops max14577_charger_ops = {
 	.regulators_node = of_match_ptr("regulators"), \
 	.id		= MAX14577_SAFEOUT, \
 	.ops		= &max14577_safeout_ops, \
-	.type		= REGULATOR_VOLTAGE, \
+.type		= REGULATOR_VOLTAGE, \
 	.owner		= THIS_MODULE, \
-	.n_voltages	= 1, \
-	.min_uV		= MAX14577_REGULATOR_SAFEOUT_VOLTAGE, \
+.n_voltages	= 1, \
+.min_uV		= MAX14577_REGULATOR_SAFEOUT_VOLTAGE, \
 	.enable_reg	= MAX14577_REG_CONTROL2, \
 	.enable_mask	= CTRL2_SFOUTORD_MASK, \
 }
@@ -134,10 +134,10 @@ static const struct regulator_ops max77836_ldo_ops = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 	/* TODO: add .set_suspend_mode */
 };
 
@@ -147,11 +147,11 @@ static const struct regulator_ops max77836_ldo_ops = {
 	.regulators_node = of_match_ptr("regulators"), \
 	.id		= MAX77836_LDO ## num, \
 	.ops		= &max77836_ldo_ops, \
-	.type		= REGULATOR_VOLTAGE, \
+.type		= REGULATOR_VOLTAGE, \
 	.owner		= THIS_MODULE, \
-	.n_voltages	= MAX77836_REGULATOR_LDO_VOLTAGE_STEPS_NUM, \
-	.min_uV		= MAX77836_REGULATOR_LDO_VOLTAGE_MIN, \
-	.uV_step	= MAX77836_REGULATOR_LDO_VOLTAGE_STEP, \
+.n_voltages	= MAX77836_REGULATOR_LDO_VOLTAGE_STEPS_NUM, \
+.min_uV		= MAX77836_REGULATOR_LDO_VOLTAGE_MIN, \
+.uV_step	= MAX77836_REGULATOR_LDO_VOLTAGE_STEP, \
 	.enable_reg	= MAX77836_LDO_REG_CNFG1_LDO ## num, \
 	.enable_mask	= MAX77836_CNFG1_LDO_PWRMD_MASK, \
 	.vsel_reg	= MAX77836_LDO_REG_CNFG1_LDO ## num, \
@@ -316,10 +316,10 @@ static int __init max14577_regulator_init(void)
 	BUILD_BUG_ON(ARRAY_SIZE(max14577_supported_regulators) != MAX14577_REGULATOR_NUM);
 	BUILD_BUG_ON(ARRAY_SIZE(max77836_supported_regulators) != MAX77836_REGULATOR_NUM);
 
-	BUILD_BUG_ON(MAX77836_REGULATOR_LDO_VOLTAGE_MIN +
-			(MAX77836_REGULATOR_LDO_VOLTAGE_STEP *
-			  (MAX77836_REGULATOR_LDO_VOLTAGE_STEPS_NUM - 1)) !=
-			MAX77836_REGULATOR_LDO_VOLTAGE_MAX);
+BUILD_BUG_ON(MAX77836_REGULATOR_LDO_VOLTAGE_MIN +
+(MAX77836_REGULATOR_LDO_VOLTAGE_STEP *
+(MAX77836_REGULATOR_LDO_VOLTAGE_STEPS_NUM - 1)) !=
+MAX77836_REGULATOR_LDO_VOLTAGE_MAX);
 
 	return platform_driver_register(&max14577_regulator_driver);
 }

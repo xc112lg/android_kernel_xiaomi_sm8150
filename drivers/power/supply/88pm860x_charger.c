@@ -102,7 +102,7 @@ struct pm860x_charger_info {
 	struct i2c_client *i2c_8606;
 	struct device *dev;
 
-	struct power_supply *usb;
+struct power_supply *usb;
 	struct mutex lock;
 	int irq_nums;
 	int irq[7];
@@ -200,7 +200,7 @@ static int start_precharge(struct pm860x_charger_info *info)
 			      CC3_270MIN_TIMEOUT);
 	if (ret < 0)
 		goto out;
-	/* set precharge current, termination voltage, IBAT & TBAT monitor */
+/* set precharge current, termination voltage, IBAT & TBAT monitor */
 	ret = pm860x_reg_write(info->i2c, PM8607_CHG_CTRL4,
 			       CC4_IPRE_40MA | CC4_VPCHG_3_2V |
 			       CC4_IFCHG_MON_EN | CC4_BTEMP_MON_EN);
@@ -224,7 +224,7 @@ static int start_fastcharge(struct pm860x_charger_info *info)
 
 	dev_dbg(info->dev, "Start Fast-charging!\n");
 
-	/* set fastcharge termination current & voltage, disable charging */
+/* set fastcharge termination current & voltage, disable charging */
 	ret = pm860x_reg_write(info->i2c, PM8607_CHG_CTRL1,
 			       CC1_MODE_OFF | CC1_ITERM_60MA |
 			       CC1_VFCHG_4_2V);
@@ -280,36 +280,36 @@ static void stop_charge(struct pm860x_charger_info *info, int vbatt)
 
 static void power_off_notification(struct pm860x_charger_info *info)
 {
-	dev_dbg(info->dev, "Power-off notification!\n");
+dev_dbg(info->dev, "Power-off notification!\n");
 }
 
 static int set_charging_fsm(struct pm860x_charger_info *info)
 {
-	struct power_supply *psy;
-	union power_supply_propval data;
+struct power_supply *psy;
+union power_supply_propval data;
 	unsigned char fsm_state[][16] = { "init", "discharge", "precharge",
 		"fastcharge",
 	};
 	int ret;
 	int vbatt;
 
-	psy = power_supply_get_by_name(pm860x_supplied_to[0]);
+psy = power_supply_get_by_name(pm860x_supplied_to[0]);
 	if (!psy)
 		return -EINVAL;
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
 			&data);
 	if (ret) {
-		power_supply_put(psy);
+power_supply_put(psy);
 		return ret;
 	}
 	vbatt = data.intval / 1000;
 
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT, &data);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_PRESENT, &data);
 	if (ret) {
-		power_supply_put(psy);
+power_supply_put(psy);
 		return ret;
 	}
-	power_supply_put(psy);
+power_supply_put(psy);
 
 	mutex_lock(&info->lock);
 	info->present = data.intval;
@@ -335,8 +335,8 @@ static int set_charging_fsm(struct pm860x_charger_info *info)
 				start_fastcharge(info);
 			}
 		} else {
-			if (vbatt < POWEROFF_THRESHOLD) {
-				power_off_notification(info);
+if (vbatt < POWEROFF_THRESHOLD) {
+power_off_notification(info);
 			} else {
 				info->state = FSM_DISCHARGE;
 				stop_charge(info, vbatt);
@@ -375,8 +375,8 @@ static int set_charging_fsm(struct pm860x_charger_info *info)
 				start_fastcharge(info);
 			}
 		} else {
-			if (vbatt < POWEROFF_THRESHOLD)
-				power_off_notification(info);
+if (vbatt < POWEROFF_THRESHOLD)
+power_off_notification(info);
 			else if (vbatt > CHARGE_THRESHOLD && info->online)
 				set_vbatt_threshold(info, CHARGE_THRESHOLD, 0);
 		}
@@ -420,23 +420,23 @@ static irqreturn_t pm860x_charger_handler(int irq, void *data)
 
 	set_charging_fsm(info);
 
-	power_supply_changed(info->usb);
+power_supply_changed(info->usb);
 out:
 	return IRQ_HANDLED;
 }
 
 static irqreturn_t pm860x_temp_handler(int irq, void *data)
 {
-	struct power_supply *psy;
+struct power_supply *psy;
 	struct pm860x_charger_info *info = data;
-	union power_supply_propval temp;
+union power_supply_propval temp;
 	int value;
 	int ret;
 
-	psy = power_supply_get_by_name(pm860x_supplied_to[0]);
+psy = power_supply_get_by_name(pm860x_supplied_to[0]);
 	if (!psy)
 		return IRQ_HANDLED;
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TEMP, &temp);
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_TEMP, &temp);
 	if (ret)
 		goto out;
 	value = temp.intval / 10;
@@ -452,7 +452,7 @@ static irqreturn_t pm860x_temp_handler(int irq, void *data)
 
 	set_charging_fsm(info);
 out:
-	power_supply_put(psy);
+power_supply_put(psy);
 	return IRQ_HANDLED;
 }
 
@@ -472,8 +472,8 @@ static irqreturn_t pm860x_exception_handler(int irq, void *data)
 static irqreturn_t pm860x_done_handler(int irq, void *data)
 {
 	struct pm860x_charger_info *info = data;
-	struct power_supply *psy;
-	union power_supply_propval val;
+struct power_supply *psy;
+union power_supply_propval val;
 	int ret;
 	int vbatt;
 
@@ -489,10 +489,10 @@ static irqreturn_t pm860x_done_handler(int irq, void *data)
 	 */
 	mdelay(5);
 	info->allowed = 0;
-	psy = power_supply_get_by_name(pm860x_supplied_to[0]);
+psy = power_supply_get_by_name(pm860x_supplied_to[0]);
 	if (!psy)
 		goto out;
-	ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
+ret = power_supply_get_property(psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
 			&val);
 	if (ret)
 		goto out_psy_put;
@@ -508,11 +508,11 @@ static irqreturn_t pm860x_done_handler(int irq, void *data)
 	if (ret < 0)
 		goto out_psy_put;
 	if (vbatt > CHARGE_THRESHOLD && ret & STATUS2_CHG)
-		power_supply_set_property(psy, POWER_SUPPLY_PROP_CHARGE_FULL,
+power_supply_set_property(psy, POWER_SUPPLY_PROP_CHARGE_FULL,
 				&val);
 
 out_psy_put:
-	power_supply_put(psy);
+power_supply_put(psy);
 out:
 	mutex_unlock(&info->lock);
 	dev_dbg(info->dev, "%s, Allowed: %d\n", __func__, info->allowed);
@@ -592,20 +592,20 @@ out:
 }
 
 static int pm860x_usb_get_prop(struct power_supply *psy,
-			       enum power_supply_property psp,
-			       union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct pm860x_charger_info *info = power_supply_get_drvdata(psy);
+struct pm860x_charger_info *info = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (info->state == FSM_FASTCHARGE ||
 				info->state == FSM_PRECHARGE)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = info->online;
 		break;
 	default:
@@ -615,8 +615,8 @@ static int pm860x_usb_get_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property pm860x_usb_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static int pm860x_init_charger(struct pm860x_charger_info *info)
@@ -657,7 +657,7 @@ static struct pm860x_irq_desc {
 
 static const struct power_supply_desc pm860x_charger_desc = {
 	.name		= "usb",
-	.type		= POWER_SUPPLY_TYPE_USB,
+.type		= POWER_SUPPLY_TYPE_USB,
 	.properties	= pm860x_usb_props,
 	.num_properties	= ARRAY_SIZE(pm860x_usb_props),
 	.get_property	= pm860x_usb_get_prop,
@@ -666,7 +666,7 @@ static const struct power_supply_desc pm860x_charger_desc = {
 static int pm860x_charger_probe(struct platform_device *pdev)
 {
 	struct pm860x_chip *chip = dev_get_drvdata(pdev->dev.parent);
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct pm860x_charger_info *info;
 	int ret;
 	int count;
@@ -707,7 +707,7 @@ static int pm860x_charger_probe(struct platform_device *pdev)
 	psy_cfg.drv_data = info;
 	psy_cfg.supplied_to = pm860x_supplied_to;
 	psy_cfg.num_supplicants = ARRAY_SIZE(pm860x_supplied_to);
-	info->usb = power_supply_register(&pdev->dev, &pm860x_charger_desc,
+info->usb = power_supply_register(&pdev->dev, &pm860x_charger_desc,
 					  &psy_cfg);
 	if (IS_ERR(info->usb)) {
 		ret = PTR_ERR(info->usb);
@@ -729,7 +729,7 @@ static int pm860x_charger_probe(struct platform_device *pdev)
 	return 0;
 
 out_irq:
-	power_supply_unregister(info->usb);
+power_supply_unregister(info->usb);
 	while (--i >= 0)
 		free_irq(info->irq[i], info);
 out:
@@ -741,7 +741,7 @@ static int pm860x_charger_remove(struct platform_device *pdev)
 	struct pm860x_charger_info *info = platform_get_drvdata(pdev);
 	int i;
 
-	power_supply_unregister(info->usb);
+power_supply_unregister(info->usb);
 	for (i = 0; i < info->irq_nums; i++)
 		free_irq(info->irq[i], info);
 	return 0;

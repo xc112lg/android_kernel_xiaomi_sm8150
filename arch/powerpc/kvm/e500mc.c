@@ -4,7 +4,7 @@
  * Author: Varun Sethi, <varun.sethi@freescale.com>
  *
  * Description:
- * This file is derived from arch/powerpc/kvm/e500.c,
+* This file is derived from arch/powerpc/kvm/e500.c,
  * by Yu Liu <yu.liu@freescale.com>.
  *
  * This program is free software; you can redistribute it and/or modify

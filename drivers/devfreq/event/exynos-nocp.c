@@ -20,8 +20,8 @@
 #include "exynos-nocp.h"
 
 struct exynos_nocp {
-	struct devfreq_event_dev *edev;
-	struct devfreq_event_desc desc;
+struct devfreq_event_dev *edev;
+struct devfreq_event_desc desc;
 
 	struct device *dev;
 
@@ -30,11 +30,11 @@ struct exynos_nocp {
 };
 
 /*
- * The devfreq-event ops structure for nocp probe.
+* The devfreq-event ops structure for nocp probe.
  */
 static int exynos_nocp_set_event(struct devfreq_event_dev *edev)
 {
-	struct exynos_nocp *nocp = devfreq_event_get_drvdata(edev);
+struct exynos_nocp *nocp = devfreq_event_get_drvdata(edev);
 	int ret;
 
 	/* Disable NoC probe */
@@ -144,9 +144,9 @@ out:
 }
 
 static int exynos_nocp_get_event(struct devfreq_event_dev *edev,
-				struct devfreq_event_data *edata)
+struct devfreq_event_data *edata)
 {
-	struct exynos_nocp *nocp = devfreq_event_get_drvdata(edev);
+struct exynos_nocp *nocp = devfreq_event_get_drvdata(edev);
 	unsigned int counter[4];
 	int ret;
 
@@ -255,14 +255,14 @@ static int exynos_nocp_probe(struct platform_device *pdev)
 		return ret;
 	}
 
-	/* Add devfreq-event device to measure the bandwidth of NoC */
+/* Add devfreq-event device to measure the bandwidth of NoC */
 	nocp->desc.ops = &exynos_nocp_ops;
 	nocp->desc.driver_data = nocp;
 	nocp->desc.name = np->full_name;
-	nocp->edev = devm_devfreq_event_add_edev(&pdev->dev, &nocp->desc);
+nocp->edev = devm_devfreq_event_add_edev(&pdev->dev, &nocp->desc);
 	if (IS_ERR(nocp->edev)) {
 		dev_err(&pdev->dev,
-			"failed to add devfreq-event device\n");
+"failed to add devfreq-event device\n");
 		return PTR_ERR(nocp->edev);
 	}
 	platform_set_drvdata(pdev, nocp);

@@ -523,10 +523,10 @@ static int uGetScaledDecimal (fInt A) /*Converts the fractional portion to whole
 
 static int uPow(int base, int power)
 {
-	if (power == 0)
+if (power == 0)
 		return 1;
 	else
-		return (base)*uPow(base, power - 1);
+return (base)*uPow(base, power - 1);
 }
 
 static int uAbs(int X)

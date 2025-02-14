@@ -42,8 +42,8 @@ struct ds28e16_data {
 
 	int version;
 
-	struct power_supply *verify_psy;
-	struct power_supply_desc verify_psy_d;
+struct power_supply *verify_psy;
+struct power_supply_desc verify_psy_d;
 
 	struct delayed_work authentic_work;
 };
@@ -1117,38 +1117,38 @@ static int DS28E16_cmd_computeReadPageAuthentication_retry(
 /* All power supply functions here */
 
 static enum power_supply_property verify_props[] = {
-	POWER_SUPPLY_PROP_ROMID,
-	POWER_SUPPLY_PROP_DS_STATUS,
-	POWER_SUPPLY_PROP_PAGENUMBER,
-	POWER_SUPPLY_PROP_PAGEDATA,
-	POWER_SUPPLY_PROP_AUTHEN_RESULT,
-	POWER_SUPPLY_PROP_SESSION_SEED,
-	POWER_SUPPLY_PROP_S_SECRET,
-	POWER_SUPPLY_PROP_CHALLENGE,
-	POWER_SUPPLY_PROP_AUTH_ANON,
-	POWER_SUPPLY_PROP_AUTH_BDCONST,
-	POWER_SUPPLY_PROP_PAGE0_DATA,
-	POWER_SUPPLY_PROP_PAGE1_DATA,
-	POWER_SUPPLY_PROP_VERIFY_MODEL_NAME,
-	POWER_SUPPLY_PROP_CHIP_OK,
+POWER_SUPPLY_PROP_ROMID,
+POWER_SUPPLY_PROP_DS_STATUS,
+POWER_SUPPLY_PROP_PAGENUMBER,
+POWER_SUPPLY_PROP_PAGEDATA,
+POWER_SUPPLY_PROP_AUTHEN_RESULT,
+POWER_SUPPLY_PROP_SESSION_SEED,
+POWER_SUPPLY_PROP_S_SECRET,
+POWER_SUPPLY_PROP_CHALLENGE,
+POWER_SUPPLY_PROP_AUTH_ANON,
+POWER_SUPPLY_PROP_AUTH_BDCONST,
+POWER_SUPPLY_PROP_PAGE0_DATA,
+POWER_SUPPLY_PROP_PAGE1_DATA,
+POWER_SUPPLY_PROP_VERIFY_MODEL_NAME,
+POWER_SUPPLY_PROP_CHIP_OK,
 };
 
 static int verify_get_property(struct power_supply *psy,
-			       enum power_supply_property psp,
-			       union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	int ret;
 	unsigned char buf[50];
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_VERIFY_MODEL_NAME:
+case POWER_SUPPLY_PROP_VERIFY_MODEL_NAME:
 		ret = ds28el16_Read_RomID_retry(mi_romid);
 		if (ret == DS_TRUE)
 			val->strval = "ds28e16";
 		else
 			val->strval = "unknown";
 		break;
-	case POWER_SUPPLY_PROP_AUTHEN_RESULT:
+case POWER_SUPPLY_PROP_AUTHEN_RESULT:
 		ret = AuthenticateDS28E16(auth_ANON, auth_BDCONST, 0,
 					  pagenumber, challenge, session_seed,
 					  S_secret);
@@ -1157,17 +1157,17 @@ static int verify_get_property(struct power_supply *psy,
 		else
 			val->intval = false;
 		break;
-	case POWER_SUPPLY_PROP_PAGENUMBER:
+case POWER_SUPPLY_PROP_PAGENUMBER:
 		val->intval = pagenumber;
 		break;
-	case POWER_SUPPLY_PROP_ROMID:
+case POWER_SUPPLY_PROP_ROMID:
 		ret = ds28el16_Read_RomID_retry(mi_romid);
 		memcpy(val->arrayval, mi_romid, 8);
 		if (ret != DS_TRUE)
 			return -EAGAIN;
 		break;
-	case POWER_SUPPLY_PROP_CHIP_OK:
-		ds_log("lvchen---POWER_SUPPLY_PROP_CHIP_OK\n");
+case POWER_SUPPLY_PROP_CHIP_OK:
+ds_log("lvchen---POWER_SUPPLY_PROP_CHIP_OK\n");
 		ret = ds28el16_Read_RomID_retry(mi_romid);
 		if ((mi_romid[0] == FAMILY_CODE) &&
 		    (mi_romid[6] == CUSTOM_ID_MSB) &&
@@ -1178,25 +1178,25 @@ static int verify_get_property(struct power_supply *psy,
 		ds_log("lvchen---flag_mi_romid: %d, flag_mi_status: %d\n",
 		       flag_mi_romid, flag_mi_status);
 		break;
-	case POWER_SUPPLY_PROP_DS_STATUS:
+case POWER_SUPPLY_PROP_DS_STATUS:
 		ret = ds28el16_get_page_status_retry(buf);
 		memcpy(val->arrayval, buf, 8);
 		if (ret != DS_TRUE)
 			return -EAGAIN;
 		break;
-	case POWER_SUPPLY_PROP_PAGEDATA:
+case POWER_SUPPLY_PROP_PAGEDATA:
 		ret = ds28el16_get_page_data_retry(pagenumber, buf);
 		memcpy(val->arrayval, buf, 16);
 		if (ret != DS_TRUE)
 			return -EAGAIN;
 		break;
-	case POWER_SUPPLY_PROP_PAGE0_DATA:
+case POWER_SUPPLY_PROP_PAGE0_DATA:
 		ret = ds28el16_get_page_data_retry(0, buf);
 		memcpy(val->arrayval, buf, 16);
 		if (ret != DS_TRUE)
 			return -EAGAIN;
 		break;
-	case POWER_SUPPLY_PROP_PAGE1_DATA:
+case POWER_SUPPLY_PROP_PAGE1_DATA:
 		ret = ds28el16_get_page_data_retry(1, buf);
 		memcpy(val->arrayval, buf, 16);
 		if (ret != DS_TRUE)
@@ -1211,37 +1211,37 @@ static int verify_get_property(struct power_supply *psy,
 }
 
 static int verify_set_property(struct power_supply *psy,
-			       enum power_supply_property prop,
-			       const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
 	//int ret;
 	//unsigned char buf[50];
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_PAGENUMBER:
+case POWER_SUPPLY_PROP_PAGENUMBER:
 		pagenumber = val->intval;
 		break;
 		/*
-	case POWER_SUPPLY_PROP_PAGEDATA:
+case POWER_SUPPLY_PROP_PAGEDATA:
 		memcpy(buf, val->arrayval, 16);
 		ret = DS28E16_cmd_writeMemory(pagenumber, buf);
 		if (ret != DS_TRUE)
 			return -EAGAIN;
 		break;
-	case POWER_SUPPLY_PROP_SESSION_SEED:
+case POWER_SUPPLY_PROP_SESSION_SEED:
 		memcpy(session_seed, val->arrayval, 32);
 		break;
-	case POWER_SUPPLY_PROP_S_SECRET:
+case POWER_SUPPLY_PROP_S_SECRET:
 		memcpy(S_secret, val->arrayval, 32);
 		break;
-	case POWER_SUPPLY_PROP_CHALLENGE:
+case POWER_SUPPLY_PROP_CHALLENGE:
 		memcpy(challenge, val->arrayval, 32);
 		break;
 */
-	case POWER_SUPPLY_PROP_AUTH_ANON:
+case POWER_SUPPLY_PROP_AUTH_ANON:
 		auth_ANON = val->intval;
 		break;
-	case POWER_SUPPLY_PROP_AUTH_BDCONST:
+case POWER_SUPPLY_PROP_AUTH_BDCONST:
 		auth_BDCONST = val->intval;
 		break;
 	default:
@@ -1253,18 +1253,18 @@ static int verify_set_property(struct power_supply *psy,
 }
 
 static int verify_prop_is_writeable(struct power_supply *psy,
-				    enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	int ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_PAGENUMBER:
-	case POWER_SUPPLY_PROP_PAGEDATA:
-	case POWER_SUPPLY_PROP_SESSION_SEED:
-	case POWER_SUPPLY_PROP_S_SECRET:
-	case POWER_SUPPLY_PROP_CHALLENGE:
-	case POWER_SUPPLY_PROP_AUTH_ANON:
-	case POWER_SUPPLY_PROP_AUTH_BDCONST:
+case POWER_SUPPLY_PROP_PAGENUMBER:
+case POWER_SUPPLY_PROP_PAGEDATA:
+case POWER_SUPPLY_PROP_SESSION_SEED:
+case POWER_SUPPLY_PROP_S_SECRET:
+case POWER_SUPPLY_PROP_CHALLENGE:
+case POWER_SUPPLY_PROP_AUTH_ANON:
+case POWER_SUPPLY_PROP_AUTH_BDCONST:
 		ret = 1;
 		break;
 	default:
@@ -1276,10 +1276,10 @@ static int verify_prop_is_writeable(struct power_supply *psy,
 
 static int verify_psy_register(struct ds28e16_data *ds)
 {
-	struct power_supply_config verify_psy_cfg = {};
+struct power_supply_config verify_psy_cfg = {};
 
 	ds->verify_psy_d.name = "batt_verify";
-	ds->verify_psy_d.type = POWER_SUPPLY_TYPE_BATT_VERIFY;
+ds->verify_psy_d.type = POWER_SUPPLY_TYPE_BATT_VERIFY;
 	ds->verify_psy_d.properties = verify_props;
 	ds->verify_psy_d.num_properties = ARRAY_SIZE(verify_props);
 	ds->verify_psy_d.get_property = verify_get_property;
@@ -1289,21 +1289,21 @@ static int verify_psy_register(struct ds28e16_data *ds)
 	verify_psy_cfg.drv_data = ds;
 	verify_psy_cfg.of_node = ds->dev->of_node;
 	verify_psy_cfg.num_supplicants = 0;
-	ds->verify_psy = devm_power_supply_register(ds->dev, &ds->verify_psy_d,
+ds->verify_psy = devm_power_supply_register(ds->dev, &ds->verify_psy_d,
 						    &verify_psy_cfg);
 	if (IS_ERR(ds->verify_psy)) {
 		ds_err("Failed to register verify_psy");
 		return PTR_ERR(ds->verify_psy);
 	}
 
-	ds_log("%s power supply register successfully\n",
+ds_log("%s power supply register successfully\n",
 	       ds->verify_psy_d.name);
 	return 0;
 }
 
 static void verify_psy_unregister(struct ds28e16_data *ds)
 {
-	power_supply_unregister(ds->verify_psy);
+power_supply_unregister(ds->verify_psy);
 }
 
 // parse dts
@@ -1736,15 +1736,15 @@ int retry_authentic;
 static void authentic_work(struct work_struct *work)
 {
 	int rc;
-	union power_supply_propval pval = {
+union power_supply_propval pval = {
 		0,
 	};
 
 	struct ds28e16_data *ds28e16_data =
 		container_of(work, struct ds28e16_data, authentic_work.work);
 
-	rc = power_supply_get_property(ds28e16_data->verify_psy,
-				       POWER_SUPPLY_PROP_AUTHEN_RESULT, &pval);
+rc = power_supply_get_property(ds28e16_data->verify_psy,
+POWER_SUPPLY_PROP_AUTHEN_RESULT, &pval);
 	if (pval.intval != true) {
 		retry_authentic++;
 		if (retry_authentic < AUTHENTIC_COUNT_MAX) {
@@ -1767,7 +1767,7 @@ static int ds28e16_probe(struct platform_device *pdev)
 {
 	int retval = 0;
 	struct ds28e16_data *ds28e16_data;
-	union power_supply_propval b_val = {
+union power_supply_propval b_val = {
 		0,
 	};
 
@@ -1818,8 +1818,8 @@ static int ds28e16_probe(struct platform_device *pdev)
 		goto ds28e16_create_group_err;
 	}
 
-	retval = power_supply_get_property(ds28e16_data->verify_psy,
-					   POWER_SUPPLY_PROP_AUTHEN_RESULT,
+retval = power_supply_get_property(ds28e16_data->verify_psy,
+POWER_SUPPLY_PROP_AUTHEN_RESULT,
 					   &b_val);
 	if (b_val.intval != true) {
 		schedule_delayed_work(&ds28e16_data->authentic_work,

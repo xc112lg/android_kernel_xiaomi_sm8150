@@ -234,7 +234,7 @@
 			serial-flash@0 {
 				compatible = "st,m25p40";
 				reg = <0>;
-				spi-max-frequency = <25000000>;
+spi-max-frequency = <25000000>;
 			};
 		};
 
@@ -251,7 +251,7 @@
 				 &qe_pio_f 6 0   /* USBRP */
 				 &qe_pio_f 8 0   /* USBRN */
 				 &bcsr17   1 0   /* SPEED */
-				 &bcsr17   2 0>; /* POWER */
+&bcsr17   2 0>; /* POWER */
 		};
 
 		enet0: ucc@2000 {

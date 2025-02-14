@@ -1,5 +1,5 @@
 /*
- *  Functions private to power supply class
+*  Functions private to power supply class
  *
  *  Copyright © 2007  Anton Vorontsov <cbou@mail.ru>
  *  Copyright © 2004  Szabolcs Gyurko

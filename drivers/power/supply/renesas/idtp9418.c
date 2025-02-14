@@ -139,13 +139,13 @@ struct idtp9220_device_info {
 	struct pinctrl *idt_pinctrl;
 	struct pinctrl_state *idt_gpio_active;
 	struct pinctrl_state *idt_gpio_suspend;
-	struct power_supply *usb_psy;
-	struct power_supply *dc_psy;
-	struct power_supply *batt_psy;
-	struct power_supply *idtp_psy;
-	struct power_supply *wireless_psy;
-	struct power_supply *ln_psy;
-	struct power_supply *pc_port_psy;
+struct power_supply *usb_psy;
+struct power_supply *dc_psy;
+struct power_supply *batt_psy;
+struct power_supply *idtp_psy;
+struct power_supply *wireless_psy;
+struct power_supply *ln_psy;
+struct power_supply *pc_port_psy;
 	struct mutex read_lock;
 	struct mutex write_lock;
 	struct mutex sysfs_op_lock;
@@ -216,8 +216,8 @@ Factory Test Work
 	int exchange;
 	int dcin_present;
 	int epp;
-	int power_off_mode;
-	int power_max;
+int power_off_mode;
+int power_max;
 	u8 header;
 	u8 cmd;
 	int is_compatible_hwid;
@@ -229,7 +229,7 @@ Factory Test Work
 	int is_voice_box_tx;
 	int is_pan_tx;
 	int last_icl;
-	int power_good_flag;
+int power_good_flag;
 	int vout_on;
 
 	/*idt9220 charging info */
@@ -251,7 +251,7 @@ Factory Test Work
 	int last_qc3_vout;
 	int last_qc3_icl;
 	bool fw_update;
-	int adapter_voltage;
+int adapter_voltage;
 	bool first_rise_flag;
 	bool enable_ext5v;
 	bool vswitch_ok;
@@ -311,27 +311,27 @@ unsigned long event, void *data);
 
 static int idtp9220_get_property_names(struct idtp9220_device_info *di)
 {
-	di->batt_psy = power_supply_get_by_name("battery");
+di->batt_psy = power_supply_get_by_name("battery");
 	if (!di->batt_psy) {
 		dev_err(di->dev, "[idt] no batt_psy,return\n");
 		return -EINVAL;
 	}
-	di->dc_psy = power_supply_get_by_name("dc");
+di->dc_psy = power_supply_get_by_name("dc");
 	if (!di->dc_psy) {
 		dev_err(di->dev, "[idt] no dc_psy,return\n");
 		return -EINVAL;
 	}
-	di->usb_psy = power_supply_get_by_name("usb");
+di->usb_psy = power_supply_get_by_name("usb");
 	if (!di->usb_psy) {
 		dev_err(di->dev, "[idt] no usb_psy,return\n");
 		return -EINVAL;
 	}
-	di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 	if (!di->wireless_psy) {
 		dev_err(di->dev, "[idt] no wireless_psy,return\n");
 		return -EINVAL;
 	}
-	di->pc_port_psy = power_supply_get_by_name("pc_port");
+di->pc_port_psy = power_supply_get_by_name("pc_port");
 	if (!di->pc_port_psy) {
 		dev_err(di->dev, "[idt] no pc_port_psy,return\n");
 		return -EINVAL;
@@ -480,32 +480,32 @@ void idtp922x_receivePkt2(struct idtp9220_device_info *di, u8 *buf)
 void idtp922x_set_adap_vol(struct idtp9220_device_info *di, u16 mv)
 {
 	dev_info(di->dev, "set adapter vol to %d\n", mv);
-	di->bus.write(di, REG_FC_VOLTAGE_L, mv & 0xff);
-	di->bus.write(di, REG_FC_VOLTAGE_H, (mv >> 8) & 0xff);
+di->bus.write(di, REG_FC_VOLTAGE_L, mv & 0xff);
+di->bus.write(di, REG_FC_VOLTAGE_H, (mv >> 8) & 0xff);
 	di->bus.write(di, REG_SSCMND, VSWITCH);
 }
 
 void idtp922x_set_pmi_icl(struct idtp9220_device_info *di, int mA)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int rc;
-	if (!di->power_good_flag && val.intval)
+if (!di->power_good_flag && val.intval)
 		return;
 
 	rc = idtp9220_get_property_names(di);
 	val.intval = mA;
 	if (di->dt_props.wireless_by_usbin) {
 		if (di->usb_psy)
-			power_supply_set_property(di->usb_psy,
-						  POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_set_property(di->usb_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 						  &val);
 	} else {
 		/* set bbc icl only */
 		if (di->dc_psy)
-			power_supply_set_property(di->dc_psy,
-						  POWER_SUPPLY_PROP_CURRENT_MAX,
+power_supply_set_property(di->dc_psy,
+POWER_SUPPLY_PROP_CURRENT_MAX,
 						  &val);
 	}
 	dev_info(di->dev, "[%s] set wls icl %d\n", __func__, val.intval);
@@ -678,14 +678,14 @@ static void idtp9220_set_vout(struct idtp9220_device_info *di, int mv)
 	u8 vout_l, vout_h;
 	if (!di)
 		return;
-	if (!di->power_good_flag)
+if (!di->power_good_flag)
 		return;
 	val = (mv - 2800) * 10 / 84;
 	vout_l = val & 0xff;
 	vout_h = val >> 8;
 	di->bus.write(di, REG_VOUT_SET, vout_l);
 	di->bus.write(di, REG_VRECT_ADJ, vout_h);
-	dev_info(di->dev, "[idtp9220]: set vout voltage: %d %d\n", mv, val);
+dev_info(di->dev, "[idtp9220]: set vout voltage: %d %d\n", mv, val);
 }
 
 static void idt_set_reverse_fod(struct idtp9220_device_info *di, int mw)
@@ -716,10 +716,10 @@ static int get_cmdline(struct idtp9220_device_info *di)
 {
 	if (strnstr(saved_command_line,
 		    "androidboot.mode=", strlen(saved_command_line))) {
-		di->power_off_mode = 1;
-		dev_info(di->dev, "[idtp9220]: enter power off charging app\n");
+di->power_off_mode = 1;
+dev_info(di->dev, "[idtp9220]: enter power off charging app\n");
 	} else {
-		di->power_off_mode = 0;
+di->power_off_mode = 0;
 		dev_info(di->dev, "[idtp9220]: enter normal boot mode\n");
 	}
 	return 1;
@@ -782,7 +782,7 @@ static int idtp9220_get_freq(struct idtp9220_device_info *di)
 {
 	u8 data_list[2];
 
-	di->bus.read_buf(di, REG_FREQ_ADDR, data_list, 2);
+di->bus.read_buf(di, REG_FREQ_ADDR, data_list, 2);
 	di->f = 64 * HSCLK / (data_list[0] | (data_list[1] << 8)) / 10;
 
 	return di->f;
@@ -792,7 +792,7 @@ static int idtp9220_get_vrect(struct idtp9220_device_info *di)
 {
 	u8 data_list[2];
 
-	if (!di->power_good_flag)
+if (!di->power_good_flag)
 		return 0;
 	di->bus.read_buf(di, REG_ADC_VRECT, data_list, 2);
 	di->vrect = data_list[0] | ((data_list[1] & 0xf) << 8);
@@ -804,14 +804,14 @@ static int idtp9220_get_vrect(struct idtp9220_device_info *di)
 
 static int idtp9220_get_power_max(struct idtp9220_device_info *di)
 {
-	int power_max;
+int power_max;
 	u8 val;
 
-	di->bus.read(di, REG_POWER_MAX, &val);
-	power_max = (val / 2) * 1000;
-	dev_info(di->dev, "rx power max is %dmW\n", power_max);
+di->bus.read(di, REG_POWER_MAX, &val);
+power_max = (val / 2) * 1000;
+dev_info(di->dev, "rx power max is %dmW\n", power_max);
 
-	return power_max;
+return power_max;
 }
 
 /*
@@ -908,14 +908,14 @@ static void idtp9220_test_iout_work(struct work_struct *work)
 void idtp922x_sent_tx_mac(struct idtp9220_device_info *di)
 {
 	int64_t ble_mac = 0;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	memcpy(&ble_mac, di->mac_data, MAC_LEN);
 	val.int64val = ble_mac;
 	if (di->wireless_psy)
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_TX_MAC, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_TX_MAC, &val);
 	else
 		dev_err(di->dev, "BLE mac addr get error:\n");
 }
@@ -923,14 +923,14 @@ void idtp922x_sent_tx_mac(struct idtp9220_device_info *di)
 void idtp922x_sent_pen_mac(struct idtp9220_device_info *di)
 {
 	int64_t ble_mac = 0;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	memcpy(&ble_mac, di->pen_mac_data, MAC_LEN);
 	val.int64val = ble_mac;
 	if (di->wireless_psy)
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_PEN_MAC, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_PEN_MAC, &val);
 	else
 		dev_err(di->dev, "pen ble mac addr get error:\n");
 }
@@ -981,7 +981,7 @@ void idtp922x_sent_reverse_cnf(struct idtp9220_device_info *di)
 /*Factory end*/
 
 /*******************************************************
- * SET GPIO STATE TO SMB FOR IGNORE DC_POWER_ON IRQ*
+* SET GPIO STATE TO SMB FOR IGNORE DC_POWER_ON IRQ*
  *******************************************************/
 /* define for reverse state of wireless charging */
 #define REVERSE_GPIO_STATE_UNSET 0
@@ -990,12 +990,12 @@ void idtp922x_sent_reverse_cnf(struct idtp9220_device_info *di)
 static int idtp9220_set_reverse_gpio_state(struct idtp9220_device_info *di,
 					   int enable)
 {
-	union power_supply_propval reverse_val = {
+union power_supply_propval reverse_val = {
 		0,
 	};
 
 	if (!di->wireless_psy)
-		di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 
 	if (di->wireless_psy) {
 		dev_dbg(di->dev, "set_reverse_gpio_state\n",
@@ -1006,8 +1006,8 @@ static int idtp9220_set_reverse_gpio_state(struct idtp9220_device_info *di,
 			reverse_val.intval = REVERSE_GPIO_STATE_END;
 		}
 
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_REVERSE_GPIO_STATE,
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_REVERSE_GPIO_STATE,
 					  &reverse_val);
 
 	} else {
@@ -1051,11 +1051,11 @@ static int idtp9220_set_reverse_gpio(struct idtp9220_device_info *di,
 				     int enable)
 {
 	int ret;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	if (!di->wireless_psy)
-		di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 
 	if (!di->wireless_psy) {
 		dev_err(di->dev, "no wireless_psy,return\n");
@@ -1067,9 +1067,9 @@ static int idtp9220_set_reverse_gpio(struct idtp9220_device_info *di,
 	if (gpio_is_valid(di->dt_props.reverse_gpio)) {
 		if (enable) {
 			idtp9220_set_reverse_gpio_state(di, enable);
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_SW_DISABLE_DC_EN, &val);
+POWER_SUPPLY_PROP_SW_DISABLE_DC_EN, &val);
 			idtp9229_set_reverse_boost_enable_gpio(di, enable);
 		}
 		ret = gpio_request(di->dt_props.reverse_gpio,
@@ -1091,19 +1091,19 @@ static int idtp9220_set_reverse_gpio(struct idtp9220_device_info *di,
 		if (!enable) {
 			idtp9229_set_reverse_boost_enable_gpio(di, enable);
 			idtp9220_set_reverse_gpio_state(di, enable);
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_SW_DISABLE_DC_EN, &val);
+POWER_SUPPLY_PROP_SW_DISABLE_DC_EN, &val);
 		}
 
 	} else
 		dev_err(di->dev, "%s: unable to set tx_on\n");
 
-	di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 	if (!di->wireless_psy)
 		dev_err(di->dev, "[idt] no wireless_psy,return\n");
 	else
-		power_supply_changed(di->wireless_psy);
+power_supply_changed(di->wireless_psy);
 	return ret;
 }
 
@@ -1269,7 +1269,7 @@ static ssize_t chip_freq_show(struct device *dev, struct device_attribute *attr,
 	struct idtp9220_device_info *di = i2c_get_clientdata(client);
 	int f;
 
-	f = idtp9220_get_freq(di);
+f = idtp9220_get_freq(di);
 
 	return snprintf(buf, sizeof(buf), "Output Current: %dkHz\n", f);
 }
@@ -1281,11 +1281,11 @@ static void idtp9220_charging_info(struct idtp9220_device_info *di)
 
 	idtp9220_get_vout(di);
 	idtp9220_get_iout(di);
-	idtp9220_get_freq(di);
+idtp9220_get_freq(di);
 	idtp9220_get_vrect(di);
 
 	dev_info(di->dev,
-		 "%s:Vout:%dmV,Iout:%dmA,Freq:%dKHz,Vrect:%dmV,SS:%d\n",
+"%s:Vout:%dmV,Iout:%dmA,Freq:%dKHz,Vrect:%dmV,SS:%d\n",
 		 __func__, di->vout, di->iout, di->f, di->vrect, di->ss);
 }
 
@@ -1346,11 +1346,11 @@ static int idtp9220_set_reverse_enable(struct idtp9220_device_info *di,
 				       int enable)
 {
 	int ret = 0;
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 
-	di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 	if (!di->wireless_psy) {
 		dev_err(di->dev, "[idt] no wireless_psy,return\n");
 		if (!enable) {
@@ -1374,9 +1374,9 @@ static int idtp9220_set_reverse_enable(struct idtp9220_device_info *di,
 		if (ret) {
 			if (di->wireless_psy) {
 				wk_val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					di->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			alarm_start_relative(
@@ -1388,9 +1388,9 @@ static int idtp9220_set_reverse_enable(struct idtp9220_device_info *di,
 		dev_info(di->dev, "disable reverse charging for wireless\n");
 		if (di->wireless_psy) {
 			wk_val.intval = 0;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		di->is_reverse_mode = 0;
 		di->reverse_pen_soc = 255;
@@ -1654,7 +1654,7 @@ static int idtp9220_set_present(struct idtp9220_device_info *di, int enable)
 		di->is_ble_tx = 0;
 		di->vout_on = 0;
 		di->is_zm_mobil_tx = 0;
-		di->power_off_mode = 0;
+di->power_off_mode = 0;
 		di->is_epp_qc3 = 0;
 		di->bpp_vout_rise = 0;
 		di->is_f1_tx = 0;
@@ -1666,7 +1666,7 @@ static int idtp9220_set_present(struct idtp9220_device_info *di, int enable)
 		di->last_qc3_icl = 0;
 		di->fw_update = false;
 		di->tx_charger_type = ADAPTER_NONE;
-		di->adapter_voltage = 0;
+di->adapter_voltage = 0;
 		di->first_rise_flag = false;
 		di->enable_ext5v = false;
 		di->vswitch_ok = false;
@@ -1807,7 +1807,7 @@ static DEVICE_ATTR(chip_die_temp, S_IWUSR | S_IRUGO, chip_die_temp_show, NULL);
 
 static struct attribute *sysfs_attrs[] = {
 	&dev_attr_chip_version.attr,	 &dev_attr_chip_vout.attr,
-	&dev_attr_chip_iout.attr,	 &dev_attr_chip_freq.attr,
+&dev_attr_chip_iout.attr,	 &dev_attr_chip_freq.attr,
 	&dev_attr_chip_enable.attr,	 &dev_attr_reverse_enable.attr,
 	&dev_attr_vout_regulator.attr,	 &dev_attr_chip_fw.attr,
 	&dev_attr_reverse_set_gpio.attr, &dev_attr_ovp_set_gpio.attr,
@@ -2104,7 +2104,7 @@ int program_fw(struct idtp9220_device_info *di, u16 destAddr, u8 *src, u32 size)
 	}
 
 	// === Step-3 ===
-	// Restore system (Need to reset or power cycle 9220 to run the OTP code)
+// Restore system (Need to reset or power cycle 9220 to run the OTP code)
 	//
 	if (di->bus.write(di, 0x3000, 0x5a))
 		return false; // write key
@@ -2377,10 +2377,10 @@ static void idtp9220_chg_detect_work(struct work_struct *work)
 	struct idtp9220_device_info *di = container_of(
 		work, struct idtp9220_device_info, chg_detect_work.work);
 
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval pc_val = {
+union power_supply_propval pc_val = {
 		0,
 	};
 	int rc;
@@ -2392,12 +2392,12 @@ static void idtp9220_chg_detect_work(struct work_struct *work)
 	if (rc < 0)
 		return;
 	/*set idtp9220 into sleep mode when usbin */
-	power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_TYPEC_MODE,
+power_supply_get_property(di->usb_psy, POWER_SUPPLY_PROP_TYPEC_MODE,
 				  &val);
-	power_supply_get_property(di->pc_port_psy, POWER_SUPPLY_PROP_ONLINE,
+power_supply_get_property(di->pc_port_psy, POWER_SUPPLY_PROP_ONLINE,
 				  &pc_val);
-	if (val.intval >= POWER_SUPPLY_TYPEC_SOURCE_DEFAULT &&
-	    val.intval <= POWER_SUPPLY_TYPEC_SOURCE_HIGH)
+if (val.intval >= POWER_SUPPLY_TYPEC_SOURCE_DEFAULT &&
+val.intval <= POWER_SUPPLY_TYPEC_SOURCE_HIGH)
 		valid_typec_mode = true;
 
 	if (valid_typec_mode || pc_val.intval) {
@@ -2421,11 +2421,11 @@ static void idtp9220_bpp_connect_load_work(struct work_struct *work)
 		work, struct idtp9220_device_info, bpp_connect_load_work.work);
 	dev_info(di->dev, "[idt] %s: \n", __func__);
 	idtp922x_set_pmi_icl(di, BPP_DEFAULT_CURRENT / 3);
-	if (di->bpp_break || !di->power_good_flag)
+if (di->bpp_break || !di->power_good_flag)
 		return;
 	msleep(300);
 	idtp922x_set_pmi_icl(di, (BPP_DEFAULT_CURRENT / 3) * 2);
-	if (di->bpp_break || !di->power_good_flag)
+if (di->bpp_break || !di->power_good_flag)
 		return;
 	msleep(300);
 	idtp922x_set_pmi_icl(di, BPP_DEFAULT_CURRENT);
@@ -2437,8 +2437,8 @@ static void idtp9220_epp_connect_load_work(struct work_struct *work)
 		work, struct idtp9220_device_info, epp_connect_load_work.work);
 	int dc_load_curr = 0;
 
-	if (di->power_max < 10000) {
-		dc_load_curr = (di->power_max - 1000) / 11 * 1000;
+if (di->power_max < 10000) {
+dc_load_curr = (di->power_max - 1000) / 11 * 1000;
 
 	} else {
 		dc_load_curr = EPP_DEFAULT_BYPASS_CURRENT;
@@ -2454,7 +2454,7 @@ static void idtp9220_cmd_check_work(struct work_struct *work)
 
 	dev_info(di->dev, "[idt] %s: \n", __func__);
 	idtp922x_get_tx_vin(di);
-	if (di->power_off_mode) {
+if (di->power_off_mode) {
 		schedule_delayed_work(&di->load_fod_param_work,
 				      msecs_to_jiffies(500));
 		schedule_delayed_work(&di->vout_regulator_work,
@@ -2470,7 +2470,7 @@ static void idtp9220_initial_tx_work(struct work_struct *work)
 	u8 buf[2] = { 0 };
 	u16 int_val = 0;
 
-	ret = idtp9220_get_power_profile(di);
+ret = idtp9220_get_power_profile(di);
 	if (ret) {
 		ret = di->bus.read_buf(di, REG_TX_TYPE, buf, 2);
 		if (ret < 0)
@@ -2524,29 +2524,29 @@ static void idt_voice_tx_work(struct work_struct *work)
 	int icl_curr = VOICE_MAX_ICL_UA;
 	int effective_fcc = 0;
 	bool vout_change = false;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int vout = 0;
 	di->bpp_break = 1;
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 					  &val);
 		dc_level = val.intval;
 
-		power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_TEMP,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_TEMP,
 					  &val);
 		batt_temp = val.intval;
 	}
@@ -2561,7 +2561,7 @@ static void idt_voice_tx_work(struct work_struct *work)
 		break;
 	case TAPER_MODE:
 		dev_info(di->dev, "[voice]taper mode set Vin 11V\n");
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			di->status = FULL_MODE;
 		else if (soc < 95)
 			di->status = NORMAL_MODE;
@@ -2571,7 +2571,7 @@ static void idt_voice_tx_work(struct work_struct *work)
 		adapter_vol = EPP_VOL_THRESHOLD;
 		icl_curr = SCREEN_OFF_FUL_CURRENT;
 
-		if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 			dev_info(di->dev,
 				 "[voice]full mode -> recharge mode\n");
 			di->status = RECHG_MODE;
@@ -2579,7 +2579,7 @@ static void idt_voice_tx_work(struct work_struct *work)
 		}
 		break;
 	case RECHG_MODE:
-		if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
 			dev_info(di->dev,
 				 "[voice]recharge mode -> full mode\n");
 			di->status = FULL_MODE;
@@ -2587,9 +2587,9 @@ static void idt_voice_tx_work(struct work_struct *work)
 			adapter_vol = EPP_VOL_THRESHOLD;
 			if (di->wireless_psy) {
 				wk_val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					di->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			break;
@@ -2601,9 +2601,9 @@ static void idt_voice_tx_work(struct work_struct *work)
 
 		if (di->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		break;
 	default:
@@ -2644,9 +2644,9 @@ static void idt_voice_tx_work(struct work_struct *work)
 		/* disable cp charger */
 		if (di->wireless_psy) {
 			val.intval = 0;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 		}
 		dev_info(di->dev, "[voice]Disable cp, dc_level:%d\n", dc_level);
 	}
@@ -2716,25 +2716,25 @@ static void idt_pan_tx_work(struct work_struct *work)
 	int adapter_vol = ADAPTER_EPP_MI_VOL;
 	int icl_curr = DC_PAN_CURRENT_UA;
 	bool vout_change = false;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int vout = 0;
 	di->bpp_break = 1;
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 					  &val);
 		dc_level = val.intval;
 	}
@@ -2748,7 +2748,7 @@ static void idt_pan_tx_work(struct work_struct *work)
 			di->status = TAPER_MODE;
 		break;
 	case TAPER_MODE:
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			di->status = FULL_MODE;
 		else if (soc < FULL_SOC - 1)
 			di->status = NORMAL_MODE;
@@ -2758,23 +2758,23 @@ static void idt_pan_tx_work(struct work_struct *work)
 		adapter_vol = EPP_VOL_THRESHOLD;
 		icl_curr = SCREEN_OFF_FUL_CURRENT;
 
-		if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 			dev_info(di->dev, "[pan]full mode -> recharge mode\n");
 			di->status = RECHG_MODE;
 			icl_curr = DC_LOW_CURRENT;
 		}
 		break;
 	case RECHG_MODE:
-		if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
 			dev_info(di->dev, "recharge mode -> full mode\n");
 			di->status = FULL_MODE;
 			icl_curr = SCREEN_OFF_FUL_CURRENT;
 			adapter_vol = EPP_VOL_THRESHOLD;
 			if (di->wireless_psy) {
 				wk_val.intval = 0;
-				power_supply_set_property(
+power_supply_set_property(
 					di->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			break;
@@ -2786,9 +2786,9 @@ static void idt_pan_tx_work(struct work_struct *work)
 
 		if (di->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		break;
 	default:
@@ -2800,9 +2800,9 @@ static void idt_pan_tx_work(struct work_struct *work)
 		di->disable_cp = true;
 		if (di->wireless_psy) {
 			val.intval = 0;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 		}
 
 		if (di->cp_regulator_done) {
@@ -2870,24 +2870,24 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 	int icl_curr = BPP_QC_7W_CURRENT, adapter_vol = ADAPTER_BPP_QC_VOL;
 	int soc = 0, batt_sts = 0, health = 0;
 	int icl_setted = 0;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_HEALTH, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_HEALTH, &val);
 		health = val.intval;
 	}
 
@@ -2934,7 +2934,7 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 		adapter_vol = ADAPTER_DEFAULT_VOL;
 		icl_curr = min(DC_SDP_CURRENT, icl_curr);
 
-		if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 			di->status = FULL_MODE;
 		else if (soc < EPP_TAPER_SOC - 1)
 			di->status = NORMAL_MODE;
@@ -2944,7 +2944,7 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 		adapter_vol = ADAPTER_DEFAULT_VOL;
 		icl_curr = SCREEN_OFF_FUL_CURRENT;
 
-		if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 			di->status = RECHG_MODE;
 			icl_curr = DC_LOW_CURRENT;
 		}
@@ -2956,14 +2956,14 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 
 		if (soc < EPP_TAPER_SOC - 1)
 			di->status = NORMAL_MODE;
-		else if (batt_sts == POWER_SUPPLY_STATUS_FULL)
+else if (batt_sts == POWER_SUPPLY_STATUS_FULL)
 			di->status = FULL_MODE;
 
 		if (di->wireless_psy) {
 			wk_val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK, &wk_val);
 		}
 		break;
 	default:
@@ -2971,20 +2971,20 @@ static void idtp9220_bpp_e5_tx_work(struct work_struct *work)
 	}
 
 	switch (health) {
-	case POWER_SUPPLY_HEALTH_GOOD:
+case POWER_SUPPLY_HEALTH_GOOD:
 		break;
-	case POWER_SUPPLY_HEALTH_COOL:
+case POWER_SUPPLY_HEALTH_COOL:
 		break;
-	case POWER_SUPPLY_HEALTH_WARM:
+case POWER_SUPPLY_HEALTH_WARM:
 		adapter_vol = ADAPTER_DEFAULT_VOL;
 		icl_curr = min(DC_SDP_CURRENT, icl_curr);
 		break;
-	case POWER_SUPPLY_HEALTH_OVERVOLTAGE:
+case POWER_SUPPLY_HEALTH_OVERVOLTAGE:
 		adapter_vol = ADAPTER_DEFAULT_VOL;
 		icl_curr = min(SCREEN_OFF_FUL_CURRENT, icl_curr);
 		break;
-	case POWER_SUPPLY_HEALTH_COLD:
-	case POWER_SUPPLY_HEALTH_HOT:
+case POWER_SUPPLY_HEALTH_COLD:
+case POWER_SUPPLY_HEALTH_HOT:
 		adapter_vol = ADAPTER_DEFAULT_VOL;
 		icl_curr = SCREEN_OFF_FUL_CURRENT;
 		break;
@@ -3034,17 +3034,17 @@ static void idtp9220_qc2_f1_tx_work(struct work_struct *work)
 	int soc = 0, batt_sts = 0;
 	int vout = ADAPTER_BPP_QC2_VOL;
 	int dc_icl = DC_QC2_CURRENT;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 	}
 
@@ -3053,7 +3053,7 @@ static void idtp9220_qc2_f1_tx_work(struct work_struct *work)
 	if (soc == 100)
 		dc_icl = DC_LOW_CURRENT;
 
-	if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL) {
 		dev_info(di->dev,
 			 "qc2+f1_tx, full mode set vout to 8V,icl to 250mA\n");
 		dc_icl = SCREEN_OFF_FUL_CURRENT;
@@ -3085,17 +3085,17 @@ static void idtp9220_qc3_epp_work(struct work_struct *work)
 	int soc = 0, batt_sts = 0;
 	int adapter_vol = ADAPTER_EPP_QC3_VOL;
 	int dc_icl = DC_EPP_QC3_CURRENT;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_STATUS, &val);
 		batt_sts = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 	}
 
@@ -3105,7 +3105,7 @@ static void idtp9220_qc3_epp_work(struct work_struct *work)
 	if (soc == 100)
 		dc_icl = DC_SDP_CURRENT;
 
-	if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
+if (soc == FULL_SOC && batt_sts == POWER_SUPPLY_STATUS_FULL)
 		dc_icl = SCREEN_OFF_FUL_CURRENT;
 
 	if (adapter_vol != di->last_qc3_vout) {
@@ -3132,7 +3132,7 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 	struct idtp9220_device_info *di = container_of(
 		work, struct idtp9220_device_info, vout_regulator_work.work);
 
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int ret;
@@ -3143,12 +3143,12 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 	printk("idtp9220_vout_regulator_work\n");
 
 	if (di->batt_psy) {
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_CAPACITY, &val);
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_CAPACITY, &val);
 		soc = val.intval;
 
-		power_supply_get_property(di->batt_psy,
-					  POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
+power_supply_get_property(di->batt_psy,
+POWER_SUPPLY_PROP_DC_THERMAL_LEVELS,
 					  &val);
 		dc_level = val.intval;
 	}
@@ -3181,9 +3181,9 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 		ret = idtp9220_get_property_names(di);
 		if (di->wireless_psy) {
 			val.intval = 1;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 		} else {
 			dev_err(di->dev, "[idt] no wireless psy\n");
 		}
@@ -3192,9 +3192,9 @@ static void idtp9220_vout_regulator_work(struct work_struct *work)
 			 __func__);
 		if (di->wireless_psy) {
 			val.intval = 0;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_CP_EN, &val);
 		}
 		// set vout to 14.2v
 		msleep(200);
@@ -3394,7 +3394,7 @@ static void reverse_chg_sent_state_work(struct work_struct *work)
 	struct idtp9220_device_info *di =
 		container_of(work, struct idtp9220_device_info,
 			     reverse_sent_state_work.work);
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 
@@ -3402,10 +3402,10 @@ static void reverse_chg_sent_state_work(struct work_struct *work)
 		if (di->is_reverse_chg == 4)
 			idt_get_reverse_soc(di);
 		val.intval = di->is_reverse_chg;
-		power_supply_set_property(
+power_supply_set_property(
 			di->wireless_psy,
-			POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE, &val);
-		power_supply_changed(di->wireless_psy);
+POWER_SUPPLY_PROP_REVERSE_PEN_CHG_STATE, &val);
+power_supply_changed(di->wireless_psy);
 		dev_info(di->dev, "uevent: %d for reverse charging state\n",
 			 di->is_reverse_chg);
 	} else
@@ -3545,7 +3545,7 @@ static int idtp9220_get_charging_current(struct idtp9220_device_info *di)
 	switch (di->tx_charger_type) {
 	case ADAPTER_XIAOMI_QC3:
 	case ADAPTER_XIAOMI_PD:
-	case ADAPTER_ZIMI_CAR_POWER:
+case ADAPTER_ZIMI_CAR_POWER:
 		return ICL_CP_2SBATT_20W_MA;
 	case ADAPTER_XIAOMI_PD_40W:
 	case ADAPTER_VOICE_BOX:
@@ -3563,7 +3563,7 @@ static int idtp9220_get_taper_charging_current(struct idtp9220_device_info *di)
 	switch (di->tx_charger_type) {
 	case ADAPTER_XIAOMI_QC3:
 	case ADAPTER_XIAOMI_PD:
-	case ADAPTER_ZIMI_CAR_POWER:
+case ADAPTER_ZIMI_CAR_POWER:
 		return ICL_TAPER_2SBATT_20W_MA;
 	case ADAPTER_XIAOMI_PD_40W:
 	case ADAPTER_VOICE_BOX:
@@ -3583,10 +3583,10 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 	int adapter_vol = 0, icl_curr = 0;
 	int cur_now = 0, vol_now = 0, vin_inc = 0;
 	bool vout_change = false;
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
-	union power_supply_propval wk_val = {
+union power_supply_propval wk_val = {
 		0,
 	};
 	int vout = 0;
@@ -3619,8 +3619,8 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 	case ADAPTER_AUTH_FAILED:
 		if (di->epp) {
 			adapter_vol = ADAPTER_EPP_QC3_VOL;
-			if (di->power_max < 10000) {
-				icl_curr = ((di->power_max - 1000) / 11) * 1000;
+if (di->power_max < 10000) {
+icl_curr = ((di->power_max - 1000) / 11) * 1000;
 			} else {
 				icl_curr = EPP_DEFAULT_BYPASS_CURRENT;
 			}
@@ -3643,7 +3643,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		break;
 	case ADAPTER_XIAOMI_QC3:
 	case ADAPTER_XIAOMI_PD:
-	case ADAPTER_ZIMI_CAR_POWER:
+case ADAPTER_ZIMI_CAR_POWER:
 	case ADAPTER_XIAOMI_PD_40W:
 	case ADAPTER_VOICE_BOX:
 	case ADAPTER_XIAOMI_PD_45W:
@@ -3661,28 +3661,28 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		break;
 	}
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_STATUS, &val);
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_STATUS, &val);
 	batt_sts = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CAPACITY,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CAPACITY,
 				  &val);
 	soc = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_VOLTAGE_NOW,
 				  &val);
 	vol_now = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CURRENT_NOW,
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_CURRENT_NOW,
 				  &val);
 	cur_now = val.intval;
 
-	power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_HEALTH, &val);
+power_supply_get_property(di->batt_psy, POWER_SUPPLY_PROP_HEALTH, &val);
 	health = val.intval;
 
 	idtp9220_get_iout(di);
 
-	if ((batt_sts == POWER_SUPPLY_STATUS_DISCHARGING) && di->dcin_present &&
-	    di->power_good_flag) {
+if ((batt_sts == POWER_SUPPLY_STATUS_DISCHARGING) && di->dcin_present &&
+di->power_good_flag) {
 		dev_info(di->dev,
 			 "discharge when dc and pwr present, reset chip\n");
 		return;
@@ -3767,9 +3767,9 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		case NORMAL_MODE:
 			if (soc >= EPP_TAPER_SOC) {
 				if (di->wireless_psy) {
-					power_supply_get_property(
+power_supply_get_property(
 						di->wireless_psy,
-						POWER_SUPPLY_PROP_WIRELESS_CP_EN,
+POWER_SUPPLY_PROP_WIRELESS_CP_EN,
 						&val);
 					if (!val.intval) {
 						icl_curr =
@@ -3784,9 +3784,9 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 				/* close cp, avoid battery OV */
 				if (di->wireless_psy) {
 					val.intval = 0;
-					power_supply_set_property(
+power_supply_set_property(
 						di->wireless_psy,
-						POWER_SUPPLY_PROP_WIRELESS_CP_EN,
+POWER_SUPPLY_PROP_WIRELESS_CP_EN,
 						&val);
 				}
 				icl_curr = min(icl_curr, MAX_PMIC_ICL_UA);
@@ -3797,7 +3797,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 			break;
 		case TAPER_MODE:
 			if (soc == FULL_SOC &&
-			    batt_sts == POWER_SUPPLY_STATUS_FULL)
+batt_sts == POWER_SUPPLY_STATUS_FULL)
 				di->status = FULL_MODE;
 			else if (soc < FULL_SOC - 1)
 				di->status = NORMAL_MODE;
@@ -3807,7 +3807,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 			adapter_vol = EPP_VOL_THRESHOLD;
 			icl_curr = SCREEN_OFF_FUL_CURRENT;
 
-			if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
+if (batt_sts == POWER_SUPPLY_STATUS_CHARGING) {
 				dev_info(di->dev,
 					 "full mode -> recharge mode\n");
 				di->status = RECHG_MODE;
@@ -3815,7 +3815,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 			}
 			break;
 		case RECHG_MODE:
-			if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
+if (batt_sts == POWER_SUPPLY_STATUS_FULL) {
 				dev_info(di->dev,
 					 "recharge mode -> full mode\n");
 				di->status = FULL_MODE;
@@ -3823,9 +3823,9 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 				adapter_vol = EPP_VOL_THRESHOLD;
 				if (di->wireless_psy) {
 					wk_val.intval = 0;
-					power_supply_set_property(
+power_supply_set_property(
 						di->wireless_psy,
-						POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 						&wk_val);
 				}
 				break;
@@ -3837,9 +3837,9 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 
 			if (di->wireless_psy) {
 				wk_val.intval = 1;
-				power_supply_set_property(
+power_supply_set_property(
 					di->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
+POWER_SUPPLY_PROP_WIRELESS_WAKELOCK,
 					&wk_val);
 			}
 			break;
@@ -3852,7 +3852,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		di->enable_ext5v = true;
 		idtp922x_enable_ext5v(di);
 	}
-	if (!di->power_good_flag)
+if (!di->power_good_flag)
 		return;
 	dev_info(di->dev, "%s: ready to set_vin vol\n", __func__);
 	if (adapter_vol > 0 && adapter_vol != di->last_vin) {
@@ -3902,7 +3902,7 @@ static void idtp9220_set_charging_param(struct idtp9220_device_info *di)
 		di->status, adapter_vol, icl_curr, di->last_vin, di->last_icl);
 
 	if (!di->vswitch_ok && vin_inc) {
-		di->adapter_voltage = adapter_vol;
+di->adapter_voltage = adapter_vol;
 		schedule_delayed_work(&di->cmd_check_work,
 				      msecs_to_jiffies(8000));
 	}
@@ -3914,7 +3914,7 @@ static void idtp9220_wpc_det_work(struct work_struct *work)
 {
 	struct idtp9220_device_info *di = container_of(
 		work, struct idtp9220_device_info, wpc_det_work.work);
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int ret = 0;
@@ -3924,15 +3924,15 @@ static void idtp9220_wpc_det_work(struct work_struct *work)
 		dev_err(di->dev, "get property error: %d\n", ret);
 		return;
 	}
-	/* if power good is low return */
-	if (!di->power_good_flag)
+/* if power good is low return */
+if (!di->power_good_flag)
 		return;
 
 	pm_stay_awake(di->dev);
 
-	dev_info(di->dev, "power_good low, wireless detached\n");
+dev_info(di->dev, "power_good low, wireless detached\n");
 	cancel_delayed_work(&di->dc_check_work);
-	di->power_good_flag = 0;
+di->power_good_flag = 0;
 	val.intval = 0;
 	di->ss = 2;
 	di->bpp_break = true;
@@ -3952,15 +3952,15 @@ static void idtp9220_wpc_det_work(struct work_struct *work)
 
 	idtp922x_set_pmi_icl(di, 0);
 
-	power_supply_set_property(di->wireless_psy,
-				  POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
 				  &val);
 
 	if (di->wait_for_reverse_test) {
 		msleep(2000);
 		idtp9220_set_reverse_enable(di, true);
 		dev_err(di->dev,
-			"[ factory reverse test ] wait for factory reverse charging test, power good low\n");
+"[ factory reverse test ] wait for factory reverse charging test, power good low\n");
 		alarm_start_relative(
 			&di->reverse_test_ready_alarm,
 			ms_to_ktime(REVERSE_TEST_READY_CHECK_DELAY_MS));
@@ -3975,7 +3975,7 @@ static void idtp9220_fw_download_work(struct work_struct *work)
 		work, struct idtp9220_device_info, fw_download_work.work);
 
 	u8 fw_app_ver[4] = { 0 };
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	bool crc_ok = false;
@@ -3989,7 +3989,7 @@ static void idtp9220_fw_download_work(struct work_struct *work)
 		return;
 	}
 
-	power_supply_get_property(di->dc_psy, POWER_SUPPLY_PROP_ONLINE, &val);
+power_supply_get_property(di->dc_psy, POWER_SUPPLY_PROP_ONLINE, &val);
 
 	if (!val.intval) {
 		pm_stay_awake(di->dev);
@@ -4072,16 +4072,16 @@ static void idtp9220_rx_vout_cp_close_work(struct work_struct *work)
 	vout = idtp9220_get_vout(di);
 	while (vout > CP_CLOSE_VOUT_MV) {
 		vout = vout - 1000;
-		if (!di->power_good_flag)
+if (!di->power_good_flag)
 			return;
 		idtp9220_set_vout(di, vout);
 		msleep(300);
 	}
-	if (!di->power_good_flag)
+if (!di->power_good_flag)
 		return;
 	idtp9220_set_vout(di, CP_CLOSE_VOUT_MV);
 
-	if (di->power_good_flag)
+if (di->power_good_flag)
 		di->cp_regulator_done = true;
 }
 static void idtp9220_keep_awake_work(struct work_struct *work)
@@ -4127,14 +4127,14 @@ static void idtp9220_renegociation(struct idtp9220_device_info *di)
 {
 	if (di->tx_charger_type == ADAPTER_XIAOMI_PD_45W ||
 	    di->tx_charger_type == ADAPTER_XIAOMI_PD_60W) {
-		di->bus.write(di, REG_MAX_POWER, NEW_MAX_POWER_CMD);
+di->bus.write(di, REG_MAX_POWER, NEW_MAX_POWER_CMD);
 		di->bus.write(di, REG_RX_RESET, RENEGOTIATION_CMD);
 	}
 }
 #endif
 static void idtp9220_start_to_load(struct idtp9220_device_info *di)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	schedule_delayed_work(&di->rx_vout_work, msecs_to_jiffies(100));
@@ -4144,17 +4144,17 @@ static void idtp9220_start_to_load(struct idtp9220_device_info *di)
 	    di->tx_charger_type == ADAPTER_XIAOMI_PD_60W) {
 		if (di->wireless_psy) {
 			val.intval = di->tx_charger_type;
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_QUICK_CHARGE_TYPE, &val);
+POWER_SUPPLY_PROP_QUICK_CHARGE_TYPE, &val);
 		}
 		msleep(100);
 		if (di->usb_psy)
-			power_supply_changed(di->usb_psy);
+power_supply_changed(di->usb_psy);
 	}
 
 	if (di->wireless_psy)
-		power_supply_changed(di->wireless_psy);
+power_supply_changed(di->wireless_psy);
 }
 
 static void idtp9220_idt_first_boot(struct work_struct *work)
@@ -4163,7 +4163,7 @@ static void idtp9220_idt_first_boot(struct work_struct *work)
 		work, struct idtp9220_device_info, idt_first_boot.work);
 	idt_first_flag = true;
 	if (di->idtp_psy)
-		power_supply_changed(di->idtp_psy);
+power_supply_changed(di->idtp_psy);
 }
 
 static int idt_trx_get_ble_mac(struct idtp9220_device_info *di)
@@ -4235,7 +4235,7 @@ static void idtp9220_irq_work(struct work_struct *work)
 {
 	struct idtp9220_device_info *di =
 		container_of(work, struct idtp9220_device_info, irq_work.work);
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	u8 int_buf[4] = { 0 };
@@ -4373,7 +4373,7 @@ reverse_out:
 	dev_info(di->dev, "[idt] int: 0x%08x\n", int_val);
 
 	if (int_val & INT_MODE_CHANGE || int_val & INT_VOUT_OFF) {
-		if (di->power_good_flag) {
+if (di->power_good_flag) {
 			cancel_delayed_work_sync(&di->rx_ready_check_work);
 			schedule_delayed_work(&di->wpc_det_work,
 					      msecs_to_jiffies(0));
@@ -4416,49 +4416,49 @@ reverse_out:
 
 	if (int_val & INT_RXREADY) {
 		cancel_delayed_work_sync(&di->rx_ready_check_work);
-		if (di->power_good_flag) {
+if (di->power_good_flag) {
 			schedule_delayed_work(&di->wpc_det_work,
 					      msecs_to_jiffies(0));
 		}
 		schedule_delayed_work(&di->initial_tx_work,
 				      msecs_to_jiffies(100));
-		di->power_good_flag = 1;
+di->power_good_flag = 1;
 		val.intval = 1;
 		if (!di->wireless_psy)
-			di->wireless_psy = power_supply_get_by_name("wireless");
+di->wireless_psy = power_supply_get_by_name("wireless");
 		if (di->wireless_psy)
-			power_supply_set_property(
+power_supply_set_property(
 				di->wireless_psy,
-				POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN, &val);
 		schedule_delayed_work(&di->rx_ready_check_work,
 				      msecs_to_jiffies(100));
 	}
 	if (int_val & INT_VOUT_ON) {
-		if (!di->power_good_flag) {
+if (!di->power_good_flag) {
 			cancel_delayed_work_sync(&di->rx_ready_check_work);
-			if (di->power_good_flag) {
+if (di->power_good_flag) {
 				schedule_delayed_work(&di->wpc_det_work,
 						      msecs_to_jiffies(0));
 			}
 			schedule_delayed_work(&di->initial_tx_work,
 					      msecs_to_jiffies(100));
-			di->power_good_flag = 1;
+di->power_good_flag = 1;
 			val.intval = 1;
 			if (!di->wireless_psy)
 				di->wireless_psy =
-					power_supply_get_by_name("wireless");
+power_supply_get_by_name("wireless");
 			if (di->wireless_psy)
-				power_supply_set_property(
+power_supply_set_property(
 					di->wireless_psy,
-					POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
+POWER_SUPPLY_PROP_WIRELESS_POWER_GOOD_EN,
 					&val);
 			schedule_delayed_work(&di->rx_ready_check_work,
 					      msecs_to_jiffies(100));
 		}
 		di->vout_on = true;
-		di->epp = idtp9220_get_power_profile(di);
+di->epp = idtp9220_get_power_profile(di);
 		if (di->epp) {
-			di->power_max = idtp9220_get_power_max(di);
+di->power_max = idtp9220_get_power_max(di);
 			schedule_delayed_work(&di->epp_connect_load_work,
 					      msecs_to_jiffies(200));
 		} else
@@ -4560,7 +4560,7 @@ reverse_out:
 		if (di->tx_charger_type == ADAPTER_XIAOMI_PD_45W ||
 		    di->tx_charger_type == ADAPTER_XIAOMI_PD_60W) {
 			dev_err(di->dev,
-				"%s: max power renegociation success\n",
+"%s: max power renegociation success\n",
 				__func__);
 			idtp9220_start_to_load(di);
 			renego_retry_count = 0;
@@ -4595,7 +4595,7 @@ reverse_out:
 		case BC_TX_HWID:
 			dev_info(
 				di->dev,
-				"[idt] TX chip_vendor:0x%x, module:0x%x, hw:0x%x and power:0x%x\n",
+"[idt] TX chip_vendor:0x%x, module:0x%x, hw:0x%x and power:0x%x\n",
 				recive_data[4], recive_data[2], recive_data[3],
 				recive_data[1]);
 			if (recive_data[4] == 0x07 && recive_data[2] == 0x1 &&
@@ -4660,7 +4660,7 @@ reverse_out:
 
 			if (di->is_car_tx &&
 			    (recive_data[1] == ADAPTER_XIAOMI_QC3))
-				di->tx_charger_type = ADAPTER_ZIMI_CAR_POWER;
+di->tx_charger_type = ADAPTER_ZIMI_CAR_POWER;
 			else if (di->is_voice_box_tx)
 				di->tx_charger_type = ADAPTER_VOICE_BOX;
 			else
@@ -4692,10 +4692,10 @@ reverse_out:
 			break;
 		case BC_READ_Vin:
 			tx_vin = recive_data[1] | (recive_data[2] << 8);
-			if (!di->power_off_mode) {
+if (!di->power_off_mode) {
 				if (di->epp)
 					idtp9220_set_vout(di,
-							  di->adapter_voltage);
+di->adapter_voltage);
 				else
 					idtp9220_set_vout(di,
 							  ADAPTER_BPP_QC_VOL);
@@ -4981,7 +4981,7 @@ static u8 oob_check_sum(u8 *buf, u32 size)
 
 static int idtp9220_set_ept(struct idtp9220_device_info *di)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int ept = 0;
@@ -5000,8 +5000,8 @@ static int idtp9220_set_ept(struct idtp9220_device_info *di)
 
 	if (di->wireless_psy) {
 		mutex_lock(&di->sysfs_op_lock);
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_RX_CEP, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_RX_CEP, &val);
 		mutex_unlock(&di->sysfs_op_lock);
 	} else {
 		dev_err(di->dev, "BLE EPT set error:\n");
@@ -5021,7 +5021,7 @@ static int idtp9220_set_rpp(struct idtp9220_device_info *di)
 	u8 rpp_raw[2] = { 0 };
 	u8 header[2] = { 0 };
 	u8 chksum[4] = { 0 };
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int rc = 0;
@@ -5045,8 +5045,8 @@ static int idtp9220_set_rpp(struct idtp9220_device_info *di)
 
 	if (di->wireless_psy) {
 		mutex_lock(&di->sysfs_op_lock);
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_RX_CR, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_RX_CR, &val);
 		mutex_unlock(&di->sysfs_op_lock);
 	} else {
 		dev_err(di->dev, "BLE RPP set error:\n");
@@ -5061,7 +5061,7 @@ static int idtp9220_set_cep(struct idtp9220_device_info *di)
 	u8 cep_raw = 0;
 	u8 header[2] = { 0 };
 	u8 chksum[4] = { 0 };
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	int rc = 0;
@@ -5079,8 +5079,8 @@ static int idtp9220_set_cep(struct idtp9220_device_info *di)
 	val.int64val = cep;
 	if (di->wireless_psy) {
 		mutex_lock(&di->sysfs_op_lock);
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_RX_CEP, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_RX_CEP, &val);
 		mutex_unlock(&di->sysfs_op_lock);
 	} else {
 		dev_err(di->dev, "BLE CEP set error:\n");
@@ -5228,7 +5228,7 @@ static void idtp_oob_set_ept_work(struct work_struct *work)
 
 static void idtp_oob_clean_work(struct work_struct *work)
 {
-	union power_supply_propval val = {
+union power_supply_propval val = {
 		0,
 	};
 	struct idtp9220_device_info *di = container_of(
@@ -5236,10 +5236,10 @@ static void idtp_oob_clean_work(struct work_struct *work)
 	memset(di->mac_data, 0x0, sizeof(di->mac_data));
 	idtp922x_sent_tx_mac(di);
 	if (di->wireless_psy) {
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_RX_CR, &val);
-		power_supply_set_property(di->wireless_psy,
-					  POWER_SUPPLY_PROP_RX_CEP, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_RX_CR, &val);
+power_supply_set_property(di->wireless_psy,
+POWER_SUPPLY_PROP_RX_CEP, &val);
 	}
 	return;
 }
@@ -5264,8 +5264,8 @@ static void idtp_rx_ready_check_work(struct work_struct *work)
 	dev_info(di->dev, "rx status: %d mod:0x%x  2C_RISTER 0x%x 0x%x\n",
 		 rx_dead, mode, buffer[0], buffer[1]);
 	if (rx_dead || (mode != WPC_MODE_BPP && mode != WPC_MODE_EPP)) {
-		dev_err(di->dev, "rx not respond, power good low\n");
-		if (di->power_good_flag) {
+dev_err(di->dev, "rx not respond, power good low\n");
+if (di->power_good_flag) {
 			schedule_delayed_work(&di->wpc_det_work,
 					      msecs_to_jiffies(0));
 		}
@@ -5284,9 +5284,9 @@ static int idtp9220_get_temperature(struct idtp9220_device_info *di, u8 *temp)
 
 static void idtp9220_power_off(struct idtp9220_device_info *di)
 {
-	dev_err(di->dev, "bbc or smb report power off, PG:%d\n",
-		di->power_good_flag);
-	if (di->power_good_flag && di->vout_on) {
+dev_err(di->dev, "bbc or smb report power off, PG:%d\n",
+di->power_good_flag);
+if (di->power_good_flag && di->vout_on) {
 		schedule_delayed_work(&di->wpc_det_work, msecs_to_jiffies(0));
 	}
 }
@@ -5339,84 +5339,84 @@ static int rx_set_otg_state(struct idtp9220_device_info *di, int plugin)
 }
 
 static enum power_supply_property idtp9220_props[] = {
-	POWER_SUPPLY_PROP_PIN_ENABLED,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_WIRELESS_VERSION,
-	POWER_SUPPLY_PROP_WIRELESS_FW_VERSION,
-	POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
-	POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT,
-	POWER_SUPPLY_PROP_RX_IOUT,
-	POWER_SUPPLY_PROP_WIRELESS_TX_ID,
-	POWER_SUPPLY_PROP_TX_ADAPTER,
-	POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
-	POWER_SUPPLY_PROP_CHIP_OK,
-	POWER_SUPPLY_PROP_DIV_2_MODE,
-	POWER_SUPPLY_PROP_OTG_STATE,
-	POWER_SUPPLY_PROP_REVERSE_CHG_HALL3,
-	POWER_SUPPLY_PROP_REVERSE_CHG_HALL4,
-	POWER_SUPPLY_PROP_REVERSE_PEN_SOC,
-	POWER_SUPPLY_PROP_REVERSE_VOUT,
-	POWER_SUPPLY_PROP_REVERSE_IOUT,
+POWER_SUPPLY_PROP_PIN_ENABLED,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_WIRELESS_VERSION,
+POWER_SUPPLY_PROP_WIRELESS_FW_VERSION,
+POWER_SUPPLY_PROP_SIGNAL_STRENGTH,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION,
+POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT,
+POWER_SUPPLY_PROP_RX_IOUT,
+POWER_SUPPLY_PROP_WIRELESS_TX_ID,
+POWER_SUPPLY_PROP_TX_ADAPTER,
+POWER_SUPPLY_PROP_REVERSE_CHG_MODE,
+POWER_SUPPLY_PROP_CHIP_OK,
+POWER_SUPPLY_PROP_DIV_2_MODE,
+POWER_SUPPLY_PROP_OTG_STATE,
+POWER_SUPPLY_PROP_REVERSE_CHG_HALL3,
+POWER_SUPPLY_PROP_REVERSE_CHG_HALL4,
+POWER_SUPPLY_PROP_REVERSE_PEN_SOC,
+POWER_SUPPLY_PROP_REVERSE_VOUT,
+POWER_SUPPLY_PROP_REVERSE_IOUT,
 };
 
 static int idtp9220_get_prop(struct power_supply *psy,
-			     enum power_supply_property psp,
-			     union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
+struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
 	u8 temp = 0;
 	int rc = 0;
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		val->intval = di->gpio_enable_val;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = di->dcin_present;
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_VERSION:
 		val->intval = di->epp;
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_FW_VERSION:
+case POWER_SUPPLY_PROP_WIRELESS_FW_VERSION:
 		val->intval = di->fw_version;
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		val->intval = di->ss;
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-		if (!di->power_good_flag) {
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+if (!di->power_good_flag) {
 			val->intval = 0;
 			break;
 		}
 		val->intval = idtp9220_get_vout(di);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT:
-		if (!di->power_good_flag) {
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_VRECT:
+if (!di->power_good_flag) {
 			val->intval = 0;
 			break;
 		}
 		val->intval = idtp9220_get_vrect(di);
 		break;
-	case POWER_SUPPLY_PROP_RX_IOUT:
-		if (!di->power_good_flag) {
+case POWER_SUPPLY_PROP_RX_IOUT:
+if (!di->power_good_flag) {
 			val->intval = 0;
 			break;
 		}
 		val->intval = idtp9220_get_iout(di);
 		break;
-	case POWER_SUPPLY_PROP_WIRELESS_TX_ID:
+case POWER_SUPPLY_PROP_WIRELESS_TX_ID:
 		val->intval = idtp9220_get_tx_id(di);
 		break;
-	case POWER_SUPPLY_PROP_TX_ADAPTER:
+case POWER_SUPPLY_PROP_TX_ADAPTER:
 		val->intval = di->tx_charger_type;
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		val->intval = gpio_get_value(di->dt_props.reverse_gpio);
 		break;
-	case POWER_SUPPLY_PROP_CHIP_OK:
+case POWER_SUPPLY_PROP_CHIP_OK:
 		val->intval = di->chip_ok;
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_HALL3:
+case POWER_SUPPLY_PROP_REVERSE_CHG_HALL3:
 		if (gpio_is_valid(di->dt_props.hall3_gpio)) {
 			val->intval = gpio_get_value(di->dt_props.hall3_gpio);
 			dev_info(di->dev, "hall3 gpio:%d\n", val->intval);
@@ -5425,7 +5425,7 @@ static int idtp9220_get_prop(struct power_supply *psy,
 			dev_err(di->dev, "hall3 gpio is not provided\n");
 		}
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_HALL4:
+case POWER_SUPPLY_PROP_REVERSE_CHG_HALL4:
 		if (gpio_is_valid(di->dt_props.hall4_gpio)) {
 			val->intval = gpio_get_value(di->dt_props.hall4_gpio);
 			dev_info(di->dev, "hall4 gpio:%d\n", val->intval);
@@ -5434,26 +5434,26 @@ static int idtp9220_get_prop(struct power_supply *psy,
 			dev_err(di->dev, "hall4 gpio is not provided\n");
 		}
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_PEN_SOC:
+case POWER_SUPPLY_PROP_REVERSE_PEN_SOC:
 		if (di->is_reverse_mode || di->is_boost_mode)
 			val->intval = di->reverse_pen_soc;
 		else
 			val->intval = 50;
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_VOUT:
+case POWER_SUPPLY_PROP_REVERSE_VOUT:
 		if (di->is_reverse_mode || di->is_boost_mode)
 			val->intval = di->reverse_vout;
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_IOUT:
+case POWER_SUPPLY_PROP_REVERSE_IOUT:
 		if (di->is_reverse_mode || di->is_boost_mode)
 			val->intval = di->reverse_iout;
 		else
 			val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_OTG_STATE:
-		if (!di->power_good_flag) {
+case POWER_SUPPLY_PROP_OTG_STATE:
+if (!di->power_good_flag) {
 			val->intval = 0;
 			break;
 		}
@@ -5473,27 +5473,27 @@ static int idtp9220_get_prop(struct power_supply *psy,
 #define RX_VOUT_OFFSET_MV 100
 
 static int idtp9220_set_prop(struct power_supply *psy,
-			     enum power_supply_property psp,
-			     const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
+struct idtp9220_device_info *di = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	int data;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
 		rc = idtp9220_set_enable_mode(di, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		rc = idtp9220_set_present(di, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
 		di->ss = val->intval;
 		if (di->idtp_psy)
-			power_supply_changed(di->idtp_psy);
+power_supply_changed(di->idtp_psy);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
 		data = val->intval / 1000;
 
 		if (data > RX_VOUT_MAX_MV)
@@ -5501,7 +5501,7 @@ static int idtp9220_set_prop(struct power_supply *psy,
 		else if (data < RX_VOUT_MIN_MV)
 			data = RX_VOUT_MIN_MV + RX_VOUT_OFFSET_MV;
 
-		if (di->power_good_flag) {
+if (di->power_good_flag) {
 			if (data == CP_CLOSE_VOUT_MV)
 				schedule_delayed_work(
 					&di->rx_vout_cp_close_work, 0);
@@ -5509,7 +5509,7 @@ static int idtp9220_set_prop(struct power_supply *psy,
 				idtp9220_set_vout(di, data);
 		}
 		break;
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		if (di->fw_update) {
 			dev_info(di->dev, "fw update going, break\n");
 			break;
@@ -5529,18 +5529,18 @@ static int idtp9220_set_prop(struct power_supply *psy,
 
 		di->is_reverse_chg = 0;
 		schedule_delayed_work(&di->reverse_sent_state_work, 0);
-		if (!di->power_good_flag) {
+if (!di->power_good_flag) {
 			idtp9220_set_reverse_enable(di, val->intval);
 		} else {
 			di->is_reverse_chg = 3;
 			schedule_delayed_work(&di->reverse_sent_state_work, 0);
 		}
 		break;
-	case POWER_SUPPLY_PROP_OTG_STATE:
+case POWER_SUPPLY_PROP_OTG_STATE:
 		rx_set_otg_state(di, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
-		idtp9220_power_off(di);
+case POWER_SUPPLY_PROP_DIV_2_MODE:
+idtp9220_power_off(di);
 		break;
 	default:
 		return -EINVAL;
@@ -5550,16 +5550,16 @@ static int idtp9220_set_prop(struct power_supply *psy,
 }
 
 static int idtp9220_prop_is_writeable(struct power_supply *psy,
-				      enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PIN_ENABLED:
-	case POWER_SUPPLY_PROP_PRESENT:
-	case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
-	case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
-	case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
+case POWER_SUPPLY_PROP_PIN_ENABLED:
+case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_SIGNAL_STRENGTH:
+case POWER_SUPPLY_PROP_INPUT_VOLTAGE_REGULATION:
+case POWER_SUPPLY_PROP_REVERSE_CHG_MODE:
 		return 1;
 	default:
 		rc = 0;
@@ -5571,7 +5571,7 @@ static int idtp9220_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc idtp_psy_desc = {
 	.name = "idt",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = idtp9220_props,
 	.num_properties = ARRAY_SIZE(idtp9220_props),
 	.get_property = idtp9220_get_prop,
@@ -5664,7 +5664,7 @@ static int idtp9220_probe(struct i2c_client *client,
 	int hall3_val = 1, hall4_val = 1;
 	struct idtp9220_device_info *di;
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
-	struct power_supply_config idtp_cfg = {};
+struct power_supply_config idtp_cfg = {};
 
 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE)) {
 		dev_err(&client->dev, "i2c check functionality failed!\n");
@@ -5747,7 +5747,7 @@ static int idtp9220_probe(struct i2c_client *client,
 	}
 	idtp_cfg.drv_data = di;
 	di->idtp_psy =
-		power_supply_register(di->dev, &idtp_psy_desc, &idtp_cfg);
+power_supply_register(di->dev, &idtp_psy_desc, &idtp_cfg);
 
 	INIT_DELAYED_WORK(&di->chg_monitor_work, idtp9220_monitor_work);
 	INIT_DELAYED_WORK(&di->chg_detect_work, idtp9220_chg_detect_work);
@@ -5866,7 +5866,7 @@ static int idtp9220_probe(struct i2c_client *client,
 
 	dev_info(di->dev, "[idt] success probe idtp922x driver\n");
 	get_cmdline(di);
-	if (!di->power_off_mode)
+if (!di->power_off_mode)
 #ifdef CONFIG_FACTORY_BUILD
 		schedule_delayed_work(&di->chg_detect_work, 3 * HZ);
 #else
@@ -5916,7 +5916,7 @@ static void idtp9220_shutdown(struct i2c_client *client)
 {
 	struct idtp9220_device_info *di = i2c_get_clientdata(client);
 
-	if (di->power_good_flag) {
+if (di->power_good_flag) {
 		msleep(30);
 		idtp9220_set_enable_mode(di, false);
 		msleep(10);

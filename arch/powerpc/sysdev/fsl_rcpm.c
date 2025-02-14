@@ -1,5 +1,5 @@
 /*
- * RCPM(Run Control/Power Management) support
+* RCPM(Run Control/Power Management) support
  *
  * Copyright 2012-2015 Freescale Semiconductor Inc.
  *
@@ -323,7 +323,7 @@ static const struct fsl_pm_ops qoriq_rcpm_v1_ops = {
 	.cpu_up_prepare = rcpm_v1_cpu_up_prepare,
 	.cpu_die = rcpm_v1_cpu_die,
 	.plat_enter_sleep = rcpm_v1_plat_enter_sleep,
-	.set_ip_power = rcpm_v1_set_ip_power,
+.set_ip_power = rcpm_v1_set_ip_power,
 	.freeze_time_base = rcpm_v1_freeze_time_base,
 	.get_pm_modes = rcpm_get_pm_modes,
 };
@@ -336,7 +336,7 @@ static const struct fsl_pm_ops qoriq_rcpm_v2_ops = {
 	.cpu_up_prepare = rcpm_v2_cpu_up_prepare,
 	.cpu_die = rcpm_v2_cpu_die,
 	.plat_enter_sleep = rcpm_v2_plat_enter_sleep,
-	.set_ip_power = rcpm_v2_set_ip_power,
+.set_ip_power = rcpm_v2_set_ip_power,
 	.freeze_time_base = rcpm_v2_freeze_time_base,
 	.get_pm_modes = rcpm_get_pm_modes,
 };

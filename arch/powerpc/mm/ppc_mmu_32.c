@@ -1,6 +1,6 @@
 /*
  * This file contains the routines for handling the MMU on those
- * PowerPC implementations where the MMU substantially follows the
+* PowerPC implementations where the MMU substantially follows the
  * architecture specification.  This includes the 6xx, 7xx, 7xxx,
  * and 8260 implementations but excludes the 8xx and 4xx.
  *  -- paulus
@@ -8,7 +8,7 @@
  *  Derived from arch/ppc/mm/init.c:
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *
@@ -109,7 +109,7 @@ unsigned long __init mmu_mapin_ram(unsigned long top)
 
 /*
  * Set up one of the I/D BAT (block address translation) register pairs.
- * The parameters are not checked; in particular size must be a power
+* The parameters are not checked; in particular size must be a power
  * of 2 between 128k and 256M.
  */
 void __init setbat(int index, unsigned long virt, phys_addr_t phys,
@@ -215,7 +215,7 @@ void __init MMU_init_hw(void)
 		n_hpteg = MIN_N_HPTEG;
 	lg_n_hpteg = __ilog2(n_hpteg);
 	if (n_hpteg & (n_hpteg - 1)) {
-		++lg_n_hpteg;		/* round up if not power of 2 */
+++lg_n_hpteg;		/* round up if not power of 2 */
 		n_hpteg = 1 << lg_n_hpteg;
 	}
 	Hash_size = n_hpteg << LG_HPTEG_SIZE;

@@ -59,8 +59,8 @@ struct vega10_didt_config_reg {
 
 struct vega10_pt_defaults {
     uint8_t   SviLoadLineEn;
-    uint8_t   SviLoadLineVddC;
-    uint8_t   TDC_VDDC_ThrottleReleaseLimitPerc;
+uint8_t   SviLoadLineVddC;
+uint8_t   TDC_VDDC_ThrottleReleaseLimitPerc;
     uint8_t   TDC_MAWt;
     uint8_t   TdcWaterfallCtl;
     uint8_t   DTEAmbientTempBase;

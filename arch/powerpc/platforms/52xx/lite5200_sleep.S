@@ -39,7 +39,7 @@ registers:
 /* ---------------------------------------------------------------------- */
 /* low-power mode with help of M68HLC908QT1 */
 
-	.globl lite5200_low_power
+.globl lite5200_low_power
 lite5200_low_power:
 
 	mr	r7, r3	/* save SRAM va */

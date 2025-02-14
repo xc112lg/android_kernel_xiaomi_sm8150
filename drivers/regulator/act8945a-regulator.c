@@ -1,5 +1,5 @@
 /*
- * Voltage regulation driver for active-semi ACT8945A PMIC
+* Voltage regulation driver for active-semi ACT8945A PMIC
  *
  * Copyright (C) 2015 Atmel Corporation
  *
@@ -48,7 +48,7 @@
 #define ACT8945A_VSEL_MASK	0x3F	/* VSET - [5:0] */
 
 /**
- * ACT8945A Voltage Number
+* ACT8945A Voltage Number
  */
 #define ACT8945A_VOLTAGE_NUM	64
 
@@ -70,10 +70,10 @@ static const struct regulator_linear_range act8945a_voltage_ranges[] = {
 };
 
 static const struct regulator_ops act8945a_ops = {
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
@@ -86,11 +86,11 @@ static const struct regulator_ops act8945a_ops = {
 		.of_match		= of_match_ptr("REG_"#_id),	\
 		.regulators_node	= of_match_ptr("regulators"),	\
 		.id			= _family##_ID_##_id,		\
-		.type			= REGULATOR_VOLTAGE,		\
+.type			= REGULATOR_VOLTAGE,		\
 		.ops			= &act8945a_ops,		\
-		.n_voltages		= ACT8945A_VOLTAGE_NUM,		\
-		.linear_ranges		= act8945a_voltage_ranges,	\
-		.n_linear_ranges	= ARRAY_SIZE(act8945a_voltage_ranges), \
+.n_voltages		= ACT8945A_VOLTAGE_NUM,		\
+.linear_ranges		= act8945a_voltage_ranges,	\
+.n_linear_ranges	= ARRAY_SIZE(act8945a_voltage_ranges), \
 		.vsel_reg		= _family##_##_id##_##_vsel_reg, \
 		.vsel_mask		= ACT8945A_VSEL_MASK,		\
 		.enable_reg		= _family##_##_id##_CTRL,	\
@@ -124,12 +124,12 @@ static int act8945a_pmic_probe(struct platform_device *pdev)
 	const struct regulator_desc *regulators;
 	struct regulator_dev *rdev;
 	int i, num_regulators;
-	bool voltage_select;
+bool voltage_select;
 
-	voltage_select = of_property_read_bool(pdev->dev.parent->of_node,
+voltage_select = of_property_read_bool(pdev->dev.parent->of_node,
 					       "active-semi,vsel-high");
 
-	if (voltage_select) {
+if (voltage_select) {
 		regulators = act8945a_alt_regulators;
 		num_regulators = ARRAY_SIZE(act8945a_alt_regulators);
 	} else {

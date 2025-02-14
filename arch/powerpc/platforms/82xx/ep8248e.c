@@ -280,8 +280,8 @@ static void __init ep8248e_setup_arch(void)
 	}
 
 	setbits8(&ep8248e_bcsr[7], BCSR7_SCC2_ENABLE);
-	setbits8(&ep8248e_bcsr[8], BCSR8_PHY1_ENABLE | BCSR8_PHY1_POWER |
-	                           BCSR8_PHY2_ENABLE | BCSR8_PHY2_POWER);
+setbits8(&ep8248e_bcsr[8], BCSR8_PHY1_ENABLE | BCSR8_PHY1_POWER |
+BCSR8_PHY2_ENABLE | BCSR8_PHY2_POWER);
 
 	init_ioports();
 

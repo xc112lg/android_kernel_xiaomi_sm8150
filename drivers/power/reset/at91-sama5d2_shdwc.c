@@ -5,7 +5,7 @@
  * Copyright (C) 2015 Atmel Corporation,
  *                    Nicolas Ferre <nicolas.ferre@atmel.com>
  *
- * Evolved from driver at91-poweroff.c.
+* Evolved from driver at91-poweroff.c.
  *
  * This file is licensed under the terms of the GNU General Public
  * License version 2.  This program is licensed "as is" without any
@@ -15,7 +15,7 @@
  * - addition to status of other wake-up inputs [1 - 15]
  * - Analog Comparator wake-up alarm
  * - Serial RX wake-up alarm
- * - low power debouncer
+* - low power debouncer
  */
 
 #include <linux/clk.h>
@@ -59,7 +59,7 @@
 #define SHDW_RTCWKEN(cfg)	(1 << ((cfg)->mr_rtcwk_shift))
 
 #define DBC_PERIOD_US(x)	DIV_ROUND_UP_ULL((1000000 * (x)), \
-							SLOW_CLOCK_FREQ)
+SLOW_CLOCK_FREQ)
 
 struct shdwc_config {
 	u8 wkup_pin_input;
@@ -74,7 +74,7 @@ struct shdwc {
 
 /*
  * Hold configuration here, cannot be more than one instance of the driver
- * since pm_power_off itself is global.
+* since pm_power_off itself is global.
  */
 static struct shdwc *at91_shdwc;
 static struct clk *sclk;
@@ -94,7 +94,7 @@ static void __init at91_wakeup_status(struct platform_device *pdev)
 
 	dev_dbg(&pdev->dev, "%s: status = %#x\n", __func__, reg);
 
-	/* Simple power-on, just bail out */
+/* Simple power-on, just bail out */
 	if (!reg)
 		return;
 
@@ -121,7 +121,7 @@ static void at91_lpddr_poweroff(void)
 		/* Ensure AT91_SHDW_CR is in the TLB by reading it */
 		"	ldr	r6, [%2, #" __stringify(AT91_SHDW_CR) "]\n\t"
 
-		/* Power down SDRAM0 */
+/* Power down SDRAM0 */
 		"	str	%1, [%0, #" __stringify(AT91_DDRSDRC_LPR) "]\n\t"
 		/* Shutdown CPU */
 		"	str	%3, [%2, #" __stringify(AT91_SHDW_CR) "]\n\t"
@@ -279,7 +279,7 @@ static int __init at91_shdwc_probe(struct platform_device *pdev)
 
 	at91_shdwc_dt_configure(pdev);
 
-	pm_power_off = at91_poweroff;
+pm_power_off = at91_poweroff;
 
 	np = of_find_compatible_node(NULL, NULL, "atmel,sama5d3-ddramc");
 	if (!np)
@@ -294,7 +294,7 @@ static int __init at91_shdwc_probe(struct platform_device *pdev)
 	ddr_type = readl(mpddrc_base + AT91_DDRSDRC_MDR) & AT91_DDRSDRC_MD;
 	if ((ddr_type == AT91_DDRSDRC_MD_LPDDR2) ||
 	    (ddr_type == AT91_DDRSDRC_MD_LPDDR3))
-		pm_power_off = at91_lpddr_poweroff;
+pm_power_off = at91_lpddr_poweroff;
 	else
 		iounmap(mpddrc_base);
 
@@ -305,9 +305,9 @@ static int __exit at91_shdwc_remove(struct platform_device *pdev)
 {
 	struct shdwc *shdw = platform_get_drvdata(pdev);
 
-	if (pm_power_off == at91_poweroff ||
-	    pm_power_off == at91_lpddr_poweroff)
-		pm_power_off = NULL;
+if (pm_power_off == at91_poweroff ||
+pm_power_off == at91_lpddr_poweroff)
+pm_power_off = NULL;
 
 	/* Reset values to disable wake-up features  */
 	writel(0, shdw->at91_shdwc_base + AT91_SHDW_MR);

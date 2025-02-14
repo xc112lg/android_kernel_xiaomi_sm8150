@@ -1,13 +1,13 @@
 /*
  * This file contains the routines for handling the MMU on those
- * PowerPC implementations where the MMU is not using the hash
+* PowerPC implementations where the MMU is not using the hash
  * table, such as 8xx, 4xx, BookE's etc...
  *
  * Copyright 2008 Ben Herrenschmidt <benh@kernel.crashing.org>
  *                IBM Corp.
  *
- *  Derived from previous arch/powerpc/mm/mmu_context.c
- *  and arch/powerpc/include/asm/mmu_context.h
+*  Derived from previous arch/powerpc/mm/mmu_context.c
+*  and arch/powerpc/include/asm/mmu_context.h
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -468,8 +468,8 @@ void __init mmu_context_init(void)
 #else
 	stale_map[boot_cpuid] = memblock_virt_alloc(CTX_MAP_SIZE, 0);
 
-	cpuhp_setup_state_nocalls(CPUHP_POWERPC_MMU_CTX_PREPARE,
-				  "powerpc/mmu/ctx:prepare",
+cpuhp_setup_state_nocalls(CPUHP_POWERPC_MMU_CTX_PREPARE,
+"powerpc/mmu/ctx:prepare",
 				  mmu_ctx_cpu_prepare, mmu_ctx_cpu_dead);
 #endif
 

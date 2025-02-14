@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER9 processors.
+* Performance counter support for POWER9 processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  * Copyright 2013 Michael Ellerman, IBM Corporation.
@@ -16,7 +16,7 @@
 #include "isa207-common.h"
 
 /*
- * Raw event encoding for Power9:
+* Raw event encoding for Power9:
  *
  *        60        56        52        48        44        40        36        32
  * | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - | - - - - |
@@ -86,7 +86,7 @@
  */
 
 /*
- * Some power9 event codes.
+* Some power9 event codes.
  */
 #define EVENT(_name, _code)	_name = _code,
 
@@ -119,8 +119,8 @@ static int power9_get_alternatives(u64 event, unsigned int flags, u64 alt[])
 	int num_alt = 0;
 
 	num_alt = isa207_get_alternatives(event, alt,
-					  ARRAY_SIZE(power9_event_alternatives), flags,
-					  power9_event_alternatives);
+ARRAY_SIZE(power9_event_alternatives), flags,
+power9_event_alternatives);
 
 	return num_alt;
 }
@@ -181,12 +181,12 @@ static struct attribute *power9_events_attr[] = {
 
 static struct attribute_group power9_pmu_events_group = {
 	.name = "events",
-	.attrs = power9_events_attr,
+.attrs = power9_events_attr,
 };
 
 static const struct attribute_group *power9_isa207_pmu_attr_groups[] = {
 	&isa207_pmu_format_group,
-	&power9_pmu_events_group,
+&power9_pmu_events_group,
 	NULL,
 };
 
@@ -223,12 +223,12 @@ static struct attribute *power9_pmu_format_attr[] = {
 
 static struct attribute_group power9_pmu_format_group = {
 	.name = "format",
-	.attrs = power9_pmu_format_attr,
+.attrs = power9_pmu_format_attr,
 };
 
 static const struct attribute_group *power9_pmu_attr_groups[] = {
-	&power9_pmu_format_group,
-	&power9_pmu_events_group,
+&power9_pmu_format_group,
+&power9_pmu_events_group,
 	NULL,
 };
 
@@ -280,7 +280,7 @@ static u64 power9_bhrb_filter_map(u64 branch_sample_type)
 		return -1;
 
 	if (branch_sample_type & PERF_SAMPLE_BRANCH_ANY_CALL) {
-		pmu_bhrb_filter |= POWER9_MMCRA_IFM1;
+pmu_bhrb_filter |= POWER9_MMCRA_IFM1;
 		return pmu_bhrb_filter;
 	}
 
@@ -290,7 +290,7 @@ static u64 power9_bhrb_filter_map(u64 branch_sample_type)
 
 static void power9_config_bhrb(u64 pmu_bhrb_filter)
 {
-	pmu_bhrb_filter &= POWER9_MMCRA_BHRB_MASK;
+pmu_bhrb_filter &= POWER9_MMCRA_BHRB_MASK;
 
 	/* Enable BHRB filter in PMU */
 	mtspr(SPRN_MMCRA, (mfspr(SPRN_MMCRA) | pmu_bhrb_filter));
@@ -407,42 +407,42 @@ static int power9_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
 #undef C
 
 static struct power_pmu power9_isa207_pmu = {
-	.name			= "POWER9",
+.name			= "POWER9",
 	.n_counter		= MAX_PMU_COUNTERS,
 	.add_fields		= ISA207_ADD_FIELDS,
 	.test_adder		= P9_DD1_TEST_ADDER,
 	.compute_mmcr		= isa207_compute_mmcr,
-	.config_bhrb		= power9_config_bhrb,
-	.bhrb_filter_map	= power9_bhrb_filter_map,
+.config_bhrb		= power9_config_bhrb,
+.bhrb_filter_map	= power9_bhrb_filter_map,
 	.get_constraint		= isa207_get_constraint,
-	.get_alternatives	= power9_get_alternatives,
+.get_alternatives	= power9_get_alternatives,
 	.disable_pmc		= isa207_disable_pmc,
 	.flags			= PPMU_NO_SIAR | PPMU_ARCH_207S,
-	.n_generic		= ARRAY_SIZE(power9_generic_events_dd1),
-	.generic_events		= power9_generic_events_dd1,
-	.cache_events		= &power9_cache_events,
-	.attr_groups		= power9_isa207_pmu_attr_groups,
+.n_generic		= ARRAY_SIZE(power9_generic_events_dd1),
+.generic_events		= power9_generic_events_dd1,
+.cache_events		= &power9_cache_events,
+.attr_groups		= power9_isa207_pmu_attr_groups,
 	.bhrb_nr		= 32,
 };
 
 static struct power_pmu power9_pmu = {
-	.name			= "POWER9",
+.name			= "POWER9",
 	.n_counter		= MAX_PMU_COUNTERS,
 	.add_fields		= ISA207_ADD_FIELDS,
 	.test_adder		= ISA207_TEST_ADDER,
 	.compute_mmcr		= isa207_compute_mmcr,
-	.config_bhrb		= power9_config_bhrb,
-	.bhrb_filter_map	= power9_bhrb_filter_map,
+.config_bhrb		= power9_config_bhrb,
+.bhrb_filter_map	= power9_bhrb_filter_map,
 	.get_constraint		= isa207_get_constraint,
-	.get_alternatives	= power9_get_alternatives,
+.get_alternatives	= power9_get_alternatives,
 	.get_mem_data_src	= isa207_get_mem_data_src,
 	.get_mem_weight		= isa207_get_mem_weight,
 	.disable_pmc		= isa207_disable_pmc,
 	.flags			= PPMU_HAS_SIER | PPMU_ARCH_207S,
-	.n_generic		= ARRAY_SIZE(power9_generic_events),
-	.generic_events		= power9_generic_events,
-	.cache_events		= &power9_cache_events,
-	.attr_groups		= power9_pmu_attr_groups,
+.n_generic		= ARRAY_SIZE(power9_generic_events),
+.generic_events		= power9_generic_events,
+.cache_events		= &power9_cache_events,
+.attr_groups		= power9_pmu_attr_groups,
 	.bhrb_nr		= 32,
 };
 
@@ -452,24 +452,24 @@ static int __init init_power9_pmu(void)
 
 	/* Comes from cpu_specs[] */
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power9"))
+strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power9"))
 		return -ENODEV;
 
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 		/*
 		 * Since PM_INST_CMPL may not provide right counts in all
-		 * sampling scenarios in power9 DD1, instead use PM_INST_DISP.
+* sampling scenarios in power9 DD1, instead use PM_INST_DISP.
 		 */
 		EVENT_VAR(PM_INST_CMPL, _g).id = PM_INST_DISP;
 		/*
-		 * Power9 DD1 should use PM_BR_CMPL_ALT event code for
+* Power9 DD1 should use PM_BR_CMPL_ALT event code for
 		 * "branches" to provide correct counter value.
 		 */
 		EVENT_VAR(PM_BR_CMPL, _g).id = PM_BR_CMPL_ALT;
 		EVENT_VAR(PM_BR_CMPL, _c).id = PM_BR_CMPL_ALT;
-		rc = register_power_pmu(&power9_isa207_pmu);
+rc = register_power_pmu(&power9_isa207_pmu);
 	} else {
-		rc = register_power_pmu(&power9_pmu);
+rc = register_power_pmu(&power9_pmu);
 	}
 
 	if (rc)

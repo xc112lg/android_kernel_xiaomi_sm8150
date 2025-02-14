@@ -91,7 +91,7 @@ QDF_STATUS tgt_if_regulatory_register_ch_avoid_event_handler(
 		return QDF_STATUS_E_FAILURE;
 
 	return wmi_unified_register_event(wmi_handle,
-					  wmi_wlan_freq_avoid_event_id,
+wmi_wlan_freq_avoid_event_id,
 					  tgt_reg_ch_avoid_event_handler);
 }
 
@@ -104,6 +104,6 @@ QDF_STATUS tgt_if_regulatory_unregister_ch_avoid_event_handler(
 		return QDF_STATUS_E_FAILURE;
 
 	return wmi_unified_unregister_event(wmi_handle,
-			wmi_wlan_freq_avoid_event_id);
+wmi_wlan_freq_avoid_event_id);
 }
 #endif

@@ -461,7 +461,7 @@ void odm_txpowertracking_init(void *dm_void)
 {
 	struct phy_dm_struct *dm = (struct phy_dm_struct *)dm_void;
 
-	odm_txpowertracking_thermal_meter_init(dm);
+odm_txpowertracking_thermal_meter_init(dm);
 }
 
 static u8 get_swing_index(void *dm_void)
@@ -510,22 +510,22 @@ void odm_txpowertracking_thermal_meter_init(void *dm_void)
 	struct rtl_priv *rtlpriv = (struct rtl_priv *)dm->adapter;
 	struct rtl_efuse *rtlefu = rtl_efuse(rtlpriv);
 
-	cali_info->is_txpowertracking = true;
-	cali_info->tx_powercount = 0;
-	cali_info->is_txpowertracking_init = false;
+cali_info->is_txpowertracking = true;
+cali_info->tx_powercount = 0;
+cali_info->is_txpowertracking_init = false;
 
 	if (!dm->mp_mode)
-		cali_info->txpowertrack_control = true;
+cali_info->txpowertrack_control = true;
 	else
-		cali_info->txpowertrack_control = false;
+cali_info->txpowertrack_control = false;
 
 	if (!dm->mp_mode)
-		cali_info->txpowertrack_control = true;
+cali_info->txpowertrack_control = true;
 
-	ODM_RT_TRACE(dm, ODM_COMP_CALIBRATION, "dm txpowertrack_control = %d\n",
-		     cali_info->txpowertrack_control);
+ODM_RT_TRACE(dm, ODM_COMP_CALIBRATION, "dm txpowertrack_control = %d\n",
+cali_info->txpowertrack_control);
 
-	/* dm->rf_calibrate_info.txpowertrack_control = true; */
+/* dm->rf_calibrate_info.txpowertrack_control = true; */
 	cali_info->thermal_value = rtlefu->eeprom_thermalmeter;
 	cali_info->thermal_value_iqk = rtlefu->eeprom_thermalmeter;
 	cali_info->thermal_value_lck = rtlefu->eeprom_thermalmeter;
@@ -570,9 +570,9 @@ void odm_txpowertracking_thermal_meter_init(void *dm_void)
 		cali_info->bb_swing_idx_ofdm_base[p] =
 			cali_info->default_ofdm_index;
 		cali_info->OFDM_index[p] = cali_info->default_ofdm_index;
-		cali_info->delta_power_index[p] = 0;
-		cali_info->delta_power_index_last[p] = 0;
-		cali_info->power_index_offset[p] = 0;
+cali_info->delta_power_index[p] = 0;
+cali_info->delta_power_index_last[p] = 0;
+cali_info->power_index_offset[p] = 0;
 	}
 	cali_info->modify_tx_agc_value_ofdm = 0;
 	cali_info->modify_tx_agc_value_cck = 0;
@@ -589,15 +589,15 @@ void odm_txpowertracking_check(void *dm_void)
 
 	switch (dm->support_platform) {
 	case ODM_WIN:
-		odm_txpowertracking_check_mp(dm);
+odm_txpowertracking_check_mp(dm);
 		break;
 
 	case ODM_CE:
-		odm_txpowertracking_check_ce(dm);
+odm_txpowertracking_check_ce(dm);
 		break;
 
 	case ODM_AP:
-		odm_txpowertracking_check_ap(dm);
+odm_txpowertracking_check_ap(dm);
 		break;
 
 	default:
@@ -635,7 +635,7 @@ void odm_txpowertracking_check_ce(void *dm_void)
 		return;
 	}
 
-	odm_txpowertracking_callback_thermal_meter(dm);
+odm_txpowertracking_callback_thermal_meter(dm);
 	dm->rf_calibrate_info.tm_trigger = 0;
 }
 

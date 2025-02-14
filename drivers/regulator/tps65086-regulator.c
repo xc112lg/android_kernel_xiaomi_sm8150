@@ -34,8 +34,8 @@ enum tps65086_regulators { BUCK1, BUCK2, BUCK3, BUCK4, BUCK5, BUCK6, LDOA1,
 			.of_parse_cb		= tps65086_of_parse_cb,	\
 			.id			= _id,			\
 			.ops			= &reg_ops,		\
-			.n_voltages		= _nv,			\
-			.type			= REGULATOR_VOLTAGE,	\
+.n_voltages		= _nv,			\
+.type			= REGULATOR_VOLTAGE,	\
 			.owner			= THIS_MODULE,		\
 			.vsel_reg		= _vr,			\
 			.vsel_mask		= _vm,			\
@@ -58,7 +58,7 @@ enum tps65086_regulators { BUCK1, BUCK2, BUCK3, BUCK4, BUCK5, BUCK6, LDOA1,
 			.of_parse_cb		= tps65086_of_parse_cb,	\
 			.id			= _id,			\
 			.ops			= &switch_ops,		\
-			.type			= REGULATOR_VOLTAGE,	\
+.type			= REGULATOR_VOLTAGE,	\
 			.owner			= THIS_MODULE,		\
 			.enable_reg		= _er,			\
 			.enable_mask		= _em,			\
@@ -105,10 +105,10 @@ static struct regulator_ops reg_ops = {
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
 };
 
 /* Operations permitted on load switches */

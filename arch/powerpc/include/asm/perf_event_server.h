@@ -1,5 +1,5 @@
 /*
- * Performance event support - PowerPC classic/server specific definitions.
+* Performance event support - PowerPC classic/server specific definitions.
  *
  * Copyright 2008-2009 Paul Mackerras, IBM Corporation.
  *
@@ -23,7 +23,7 @@ struct perf_event;
 
 /*
  * This struct provides the constants and functions needed to
- * describe the PMU on a particular POWER-family CPU.
+* describe the PMU on a particular POWER-family CPU.
  */
 struct power_pmu {
 	const char	*name;
@@ -58,7 +58,7 @@ struct power_pmu {
 };
 
 /*
- * Values for power_pmu.flags
+* Values for power_pmu.flags
  */
 #define PPMU_LIMITED_PMC5_6	0x00000001 /* PMC5/6 have limited function */
 #define PPMU_ALT_SIPR		0x00000002 /* uses alternate posn for SIPR/HV */
@@ -93,7 +93,7 @@ extern unsigned long int read_bhrb(int n);
 #endif
 
 /*
- * The power_pmu.get_constraint function returns a 32/64-bit value and
+* The power_pmu.get_constraint function returns a 32/64-bit value and
  * a 32/64-bit mask that express the constraints between this event_id and
  * other events.
  *
@@ -113,7 +113,7 @@ extern unsigned long int read_bhrb(int n);
  * N <= 2^(k-1) - 1.  The mask has the most significant bit of the field
  * set (and the other bits 0), and the value has only the least significant
  * bit of the field set.  In addition, the 'add_fields' and 'test_adder'
- * in the struct power_pmu for this processor come into play.  The
+* in the struct power_pmu for this processor come into play.  The
  * add_fields value contains 1 in the LSB of the field, and the
  * test_adder contains 2^(k-1) - 1 - N in the field.
  *
@@ -139,10 +139,10 @@ extern ssize_t power_events_sysfs_show(struct device *dev,
  * Having a suffix allows us to have aliases in sysfs - eg: the generic
  * event 'cpu-cycles' can have two entries in sysfs: 'cpu-cycles' and
  * 'PM_CYC' where the latter is the name by which the event is known in
- * POWER CPU specification.
+* POWER CPU specification.
  *
  * Similarly, some hardware and cache events use the same event code. Eg.
- * on POWER8, both "cache-references" and "L1-dcache-loads" events refer
+* on POWER8, both "cache-references" and "L1-dcache-loads" events refer
  * to the same event, PM_LD_REF_L1.  The suffix, allows us to have two
  * sysfs objects for the same event and thus two entries/aliases in sysfs.
  */
@@ -151,7 +151,7 @@ extern ssize_t power_events_sysfs_show(struct device *dev,
 
 #define	EVENT_ATTR(_name, _id, _suffix)					\
 	PMU_EVENT_ATTR(_name, EVENT_VAR(_id, _suffix), _id,		\
-			power_events_sysfs_show)
+power_events_sysfs_show)
 
 #define	GENERIC_EVENT_ATTR(_name, _id)	EVENT_ATTR(_name, _id, _g)
 #define	GENERIC_EVENT_PTR(_id)		EVENT_PTR(_id, _g)

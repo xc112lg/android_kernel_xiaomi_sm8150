@@ -17,7 +17,7 @@
 
 /* r3 = n  (where n = [0-31])
  * The maximum number of BHRB entries supported with PPC_MFBHRBE instruction
- * is 1024. We have limited number of table entries here as POWER8 implements
+* is 1024. We have limited number of table entries here as POWER8 implements
  * 32 BHRB entries.
  */
 

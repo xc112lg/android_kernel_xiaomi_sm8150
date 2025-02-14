@@ -6,7 +6,7 @@
  *    Kevin Wolf <mail@kevin-wolf.de>
  *
  * Description:
- * This file is derived from arch/powerpc/kvm/44x.c,
+* This file is derived from arch/powerpc/kvm/44x.c,
  * by Hollis Blanchard <hollisb@us.ibm.com>.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -863,7 +863,7 @@ int kvmppc_h_logical_ci_load(struct kvm_vcpu *vcpu)
 	int srcu_idx;
 	int ret;
 
-	if (!is_power_of_2(size) || (size > sizeof(buf)))
+if (!is_power_of_2(size) || (size > sizeof(buf)))
 		return H_TOO_HARD;
 
 	srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);

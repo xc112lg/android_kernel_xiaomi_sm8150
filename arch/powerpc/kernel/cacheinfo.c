@@ -50,7 +50,7 @@ struct cache_type_info {
 	const char *size_prop;
 
 	/* Allow for both [di]-cache-line-size and
-	 * [di]-cache-block-size properties.  According to the PowerPC
+* [di]-cache-block-size properties.  According to the PowerPC
 	 * Processor binding, -line-size should be provided if it
 	 * differs from the cache block size (that which is operated
 	 * on by cache instructions), so we look for -line-size first.
@@ -77,7 +77,7 @@ static const struct cache_type_info cache_type_info[] = {
 		.nr_sets_prop    = "cache-sets",
 	},
 	{
-		/* PowerPC Processor binding says the [di]-cache-*
+/* PowerPC Processor binding says the [di]-cache-*
 		 * must be equal on unified caches, so just use
 		 * d-cache properties. */
 		.name            = "Unified",

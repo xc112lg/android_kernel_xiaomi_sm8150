@@ -1,5 +1,5 @@
 /*
- * Power supply driver for testing.
+* Power supply driver for testing.
  *
  * Copyright 2010  Anton Vorontsov <cbouatmailru@gmail.com>
  *
@@ -25,7 +25,7 @@ enum test_power_id {
 	TEST_AC,
 	TEST_BATTERY,
 	TEST_USB,
-	TEST_POWER_NUM,
+TEST_POWER_NUM,
 };
 
 static int ac_online			= 1;
@@ -40,11 +40,11 @@ static int battery_voltage		= 3300;
 static bool module_initialized;
 
 static int test_power_get_ac_property(struct power_supply *psy,
-				      enum power_supply_property psp,
-				      union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = ac_online;
 		break;
 	default:
@@ -54,11 +54,11 @@ static int test_power_get_ac_property(struct power_supply *psy,
 }
 
 static int test_power_get_usb_property(struct power_supply *psy,
-				      enum power_supply_property psp,
-				      union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = usb_online;
 		break;
 	default:
@@ -68,54 +68,54 @@ static int test_power_get_usb_property(struct power_supply *psy,
 }
 
 static int test_power_get_battery_property(struct power_supply *psy,
-					   enum power_supply_property psp,
-					   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = "Test battery";
 		break;
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = "Linux";
 		break;
-	case POWER_SUPPLY_PROP_SERIAL_NUMBER:
+case POWER_SUPPLY_PROP_SERIAL_NUMBER:
 		val->strval = UTS_RELEASE;
 		break;
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = battery_status;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
-		val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
+val->intval = POWER_SUPPLY_CHARGE_TYPE_FAST;
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		val->intval = battery_health;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = battery_present;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = battery_technology;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
-		val->intval = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
+case POWER_SUPPLY_PROP_CAPACITY_LEVEL:
+val->intval = POWER_SUPPLY_CAPACITY_LEVEL_NORMAL;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		val->intval = battery_capacity;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
-	case POWER_SUPPLY_PROP_CHARGE_FULL:
+case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+case POWER_SUPPLY_PROP_CHARGE_FULL:
 		val->intval = 100;
 		break;
-	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
-	case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
+case POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG:
+case POWER_SUPPLY_PROP_TIME_TO_FULL_NOW:
 		val->intval = 3600;
 		break;
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		val->intval = 26;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		val->intval = battery_voltage;
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+val->intval = battery_voltage;
 		break;
 	default:
 		pr_info("%s: some properties deliberately report errors.\n",
@@ -126,27 +126,27 @@ static int test_power_get_battery_property(struct power_supply *psy,
 }
 
 static enum power_supply_property test_power_ac_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static enum power_supply_property test_power_battery_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
-	POWER_SUPPLY_PROP_CHARGE_FULL,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CAPACITY_LEVEL,
-	POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
-	POWER_SUPPLY_PROP_TIME_TO_FULL_NOW,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_SERIAL_NUMBER,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN,
+POWER_SUPPLY_PROP_CHARGE_FULL,
+POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CAPACITY_LEVEL,
+POWER_SUPPLY_PROP_TIME_TO_EMPTY_AVG,
+POWER_SUPPLY_PROP_TIME_TO_FULL_NOW,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_SERIAL_NUMBER,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
 };
 
 static char *test_power_ac_supplied_to[] = {
@@ -158,38 +158,38 @@ static struct power_supply *test_power_supplies[TEST_POWER_NUM];
 static const struct power_supply_desc test_power_desc[] = {
 	[TEST_AC] = {
 		.name = "test_ac",
-		.type = POWER_SUPPLY_TYPE_MAINS,
-		.properties = test_power_ac_props,
-		.num_properties = ARRAY_SIZE(test_power_ac_props),
-		.get_property = test_power_get_ac_property,
+.type = POWER_SUPPLY_TYPE_MAINS,
+.properties = test_power_ac_props,
+.num_properties = ARRAY_SIZE(test_power_ac_props),
+.get_property = test_power_get_ac_property,
 	},
 	[TEST_BATTERY] = {
 		.name = "test_battery",
-		.type = POWER_SUPPLY_TYPE_BATTERY,
-		.properties = test_power_battery_props,
-		.num_properties = ARRAY_SIZE(test_power_battery_props),
-		.get_property = test_power_get_battery_property,
+.type = POWER_SUPPLY_TYPE_BATTERY,
+.properties = test_power_battery_props,
+.num_properties = ARRAY_SIZE(test_power_battery_props),
+.get_property = test_power_get_battery_property,
 	},
 	[TEST_USB] = {
 		.name = "test_usb",
-		.type = POWER_SUPPLY_TYPE_USB,
-		.properties = test_power_ac_props,
-		.num_properties = ARRAY_SIZE(test_power_ac_props),
-		.get_property = test_power_get_usb_property,
+.type = POWER_SUPPLY_TYPE_USB,
+.properties = test_power_ac_props,
+.num_properties = ARRAY_SIZE(test_power_ac_props),
+.get_property = test_power_get_usb_property,
 	},
 };
 
 static const struct power_supply_config test_power_configs[] = {
 	{
 		/* test_ac */
-		.supplied_to = test_power_ac_supplied_to,
-		.num_supplicants = ARRAY_SIZE(test_power_ac_supplied_to),
+.supplied_to = test_power_ac_supplied_to,
+.num_supplicants = ARRAY_SIZE(test_power_ac_supplied_to),
 	}, {
 		/* test_battery */
 	}, {
 		/* test_usb */
-		.supplied_to = test_power_ac_supplied_to,
-		.num_supplicants = ARRAY_SIZE(test_power_ac_supplied_to),
+.supplied_to = test_power_ac_supplied_to,
+.num_supplicants = ARRAY_SIZE(test_power_ac_supplied_to),
 	},
 };
 
@@ -198,17 +198,17 @@ static int __init test_power_init(void)
 	int i;
 	int ret;
 
-	BUILD_BUG_ON(TEST_POWER_NUM != ARRAY_SIZE(test_power_supplies));
-	BUILD_BUG_ON(TEST_POWER_NUM != ARRAY_SIZE(test_power_configs));
+BUILD_BUG_ON(TEST_POWER_NUM != ARRAY_SIZE(test_power_supplies));
+BUILD_BUG_ON(TEST_POWER_NUM != ARRAY_SIZE(test_power_configs));
 
-	for (i = 0; i < ARRAY_SIZE(test_power_supplies); i++) {
-		test_power_supplies[i] = power_supply_register(NULL,
-						&test_power_desc[i],
-						&test_power_configs[i]);
-		if (IS_ERR(test_power_supplies[i])) {
+for (i = 0; i < ARRAY_SIZE(test_power_supplies); i++) {
+test_power_supplies[i] = power_supply_register(NULL,
+&test_power_desc[i],
+&test_power_configs[i]);
+if (IS_ERR(test_power_supplies[i])) {
 			pr_err("%s: failed to register %s\n", __func__,
-				test_power_desc[i].name);
-			ret = PTR_ERR(test_power_supplies[i]);
+test_power_desc[i].name);
+ret = PTR_ERR(test_power_supplies[i]);
 			goto failed;
 		}
 	}
@@ -217,7 +217,7 @@ static int __init test_power_init(void)
 	return 0;
 failed:
 	while (--i >= 0)
-		power_supply_unregister(test_power_supplies[i]);
+power_supply_unregister(test_power_supplies[i]);
 	return ret;
 }
 module_init(test_power_init);
@@ -229,15 +229,15 @@ static void __exit test_power_exit(void)
 	/* Let's see how we handle changes... */
 	ac_online = 0;
 	usb_online = 0;
-	battery_status = POWER_SUPPLY_STATUS_DISCHARGING;
-	for (i = 0; i < ARRAY_SIZE(test_power_supplies); i++)
-		power_supply_changed(test_power_supplies[i]);
+battery_status = POWER_SUPPLY_STATUS_DISCHARGING;
+for (i = 0; i < ARRAY_SIZE(test_power_supplies); i++)
+power_supply_changed(test_power_supplies[i]);
 	pr_info("%s: 'changed' event sent, sleeping for 10 seconds...\n",
 		__func__);
 	ssleep(10);
 
-	for (i = 0; i < ARRAY_SIZE(test_power_supplies); i++)
-		power_supply_unregister(test_power_supplies[i]);
+for (i = 0; i < ARRAY_SIZE(test_power_supplies); i++)
+power_supply_unregister(test_power_supplies[i]);
 
 	module_initialized = false;
 }
@@ -258,19 +258,19 @@ static struct battery_property_map map_ac_online[] = {
 };
 
 static struct battery_property_map map_status[] = {
-	{ POWER_SUPPLY_STATUS_CHARGING,     "charging"     },
-	{ POWER_SUPPLY_STATUS_DISCHARGING,  "discharging"  },
-	{ POWER_SUPPLY_STATUS_NOT_CHARGING, "not-charging" },
-	{ POWER_SUPPLY_STATUS_FULL,         "full"         },
+{ POWER_SUPPLY_STATUS_CHARGING,     "charging"     },
+{ POWER_SUPPLY_STATUS_DISCHARGING,  "discharging"  },
+{ POWER_SUPPLY_STATUS_NOT_CHARGING, "not-charging" },
+{ POWER_SUPPLY_STATUS_FULL,         "full"         },
 	{ -1,                               NULL           },
 };
 
 static struct battery_property_map map_health[] = {
-	{ POWER_SUPPLY_HEALTH_GOOD,           "good"        },
-	{ POWER_SUPPLY_HEALTH_OVERHEAT,       "overheat"    },
-	{ POWER_SUPPLY_HEALTH_DEAD,           "dead"        },
-	{ POWER_SUPPLY_HEALTH_OVERVOLTAGE,    "overvoltage" },
-	{ POWER_SUPPLY_HEALTH_UNSPEC_FAILURE, "failure"     },
+{ POWER_SUPPLY_HEALTH_GOOD,           "good"        },
+{ POWER_SUPPLY_HEALTH_OVERHEAT,       "overheat"    },
+{ POWER_SUPPLY_HEALTH_DEAD,           "dead"        },
+{ POWER_SUPPLY_HEALTH_OVERVOLTAGE,    "overvoltage" },
+{ POWER_SUPPLY_HEALTH_UNSPEC_FAILURE, "failure"     },
 	{ -1,                                 NULL          },
 };
 
@@ -281,12 +281,12 @@ static struct battery_property_map map_present[] = {
 };
 
 static struct battery_property_map map_technology[] = {
-	{ POWER_SUPPLY_TECHNOLOGY_NiMH, "NiMH" },
-	{ POWER_SUPPLY_TECHNOLOGY_LION, "LION" },
-	{ POWER_SUPPLY_TECHNOLOGY_LIPO, "LIPO" },
-	{ POWER_SUPPLY_TECHNOLOGY_LiFe, "LiFe" },
-	{ POWER_SUPPLY_TECHNOLOGY_NiCd, "NiCd" },
-	{ POWER_SUPPLY_TECHNOLOGY_LiMn, "LiMn" },
+{ POWER_SUPPLY_TECHNOLOGY_NiMH, "NiMH" },
+{ POWER_SUPPLY_TECHNOLOGY_LION, "LION" },
+{ POWER_SUPPLY_TECHNOLOGY_LIPO, "LIPO" },
+{ POWER_SUPPLY_TECHNOLOGY_LiFe, "LiFe" },
+{ POWER_SUPPLY_TECHNOLOGY_NiCd, "NiCd" },
+{ POWER_SUPPLY_TECHNOLOGY_LiMn, "LiMn" },
 	{ -1,				NULL   },
 };
 
@@ -331,13 +331,13 @@ static const char *map_get_key(struct battery_property_map *map, int value,
 static inline void signal_power_supply_changed(struct power_supply *psy)
 {
 	if (module_initialized)
-		power_supply_changed(psy);
+power_supply_changed(psy);
 }
 
 static int param_set_ac_online(const char *key, const struct kernel_param *kp)
 {
 	ac_online = map_get_value(map_ac_online, key, ac_online);
-	signal_power_supply_changed(test_power_supplies[TEST_AC]);
+signal_power_supply_changed(test_power_supplies[TEST_AC]);
 	return 0;
 }
 
@@ -351,7 +351,7 @@ static int param_get_ac_online(char *buffer, const struct kernel_param *kp)
 static int param_set_usb_online(const char *key, const struct kernel_param *kp)
 {
 	usb_online = map_get_value(map_ac_online, key, usb_online);
-	signal_power_supply_changed(test_power_supplies[TEST_USB]);
+signal_power_supply_changed(test_power_supplies[TEST_USB]);
 	return 0;
 }
 
@@ -366,7 +366,7 @@ static int param_set_battery_status(const char *key,
 					const struct kernel_param *kp)
 {
 	battery_status = map_get_value(map_status, key, battery_status);
-	signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
+signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
 	return 0;
 }
 
@@ -381,7 +381,7 @@ static int param_set_battery_health(const char *key,
 					const struct kernel_param *kp)
 {
 	battery_health = map_get_value(map_health, key, battery_health);
-	signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
+signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
 	return 0;
 }
 
@@ -396,7 +396,7 @@ static int param_set_battery_present(const char *key,
 					const struct kernel_param *kp)
 {
 	battery_present = map_get_value(map_present, key, battery_present);
-	signal_power_supply_changed(test_power_supplies[TEST_AC]);
+signal_power_supply_changed(test_power_supplies[TEST_AC]);
 	return 0;
 }
 
@@ -413,7 +413,7 @@ static int param_set_battery_technology(const char *key,
 {
 	battery_technology = map_get_value(map_technology, key,
 						battery_technology);
-	signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
+signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
 	return 0;
 }
 
@@ -435,7 +435,7 @@ static int param_set_battery_capacity(const char *key,
 		return -EINVAL;
 
 	battery_capacity = tmp;
-	signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
+signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
 	return 0;
 }
 
@@ -449,8 +449,8 @@ static int param_set_battery_voltage(const char *key,
 	if (1 != sscanf(key, "%d", &tmp))
 		return -EINVAL;
 
-	battery_voltage = tmp;
-	signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
+battery_voltage = tmp;
+signal_power_supply_changed(test_power_supplies[TEST_BATTERY]);
 	return 0;
 }
 
@@ -492,8 +492,8 @@ static const struct kernel_param_ops param_ops_battery_capacity = {
 };
 
 static const struct kernel_param_ops param_ops_battery_voltage = {
-	.set = param_set_battery_voltage,
-	.get = param_get_battery_voltage,
+.set = param_set_battery_voltage,
+.get = param_get_battery_voltage,
 };
 
 #define param_check_ac_online(name, p) __param_check(name, p, void);
@@ -518,7 +518,7 @@ MODULE_PARM_DESC(battery_status,
 
 module_param(battery_present, battery_present, 0644);
 MODULE_PARM_DESC(battery_present,
-	"battery presence state <good|overheat|dead|overvoltage|failure>");
+"battery presence state <good|overheat|dead|overvoltage|failure>");
 
 module_param(battery_technology, battery_technology, 0644);
 MODULE_PARM_DESC(battery_technology,
@@ -526,7 +526,7 @@ MODULE_PARM_DESC(battery_technology,
 
 module_param(battery_health, battery_health, 0644);
 MODULE_PARM_DESC(battery_health,
-	"battery health state <good|overheat|dead|overvoltage|failure>");
+"battery health state <good|overheat|dead|overvoltage|failure>");
 
 module_param(battery_capacity, battery_capacity, 0644);
 MODULE_PARM_DESC(battery_capacity, "battery capacity (percentage)");

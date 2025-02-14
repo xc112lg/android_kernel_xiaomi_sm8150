@@ -40,11 +40,11 @@
 #define TI_ABB_SLOW_OPP		3
 
 /**
- * struct ti_abb_info - ABB information per voltage setting
+* struct ti_abb_info - ABB information per voltage setting
  * @opp_sel:	one of TI_ABB macro
  * @vset:	(optional) vset value that LDOVBB needs to be overriden with.
  *
- * Array of per voltage entries organized in the same order as regulator_desc's
+* Array of per voltage entries organized in the same order as regulator_desc's
  * volt_table list. (selector is used to index from this array)
  */
 struct ti_abb_info {
@@ -93,7 +93,7 @@ struct ti_abb_reg {
  * @ldovbb_override_mask:	mask to ldo_base for overriding default LDO VBB
  *				vset with value from efuse
  * @ldovbb_vset_mask:		mask to ldo_base for providing the VSET override
- * @info:			array to per voltage ABB configuration
+* @info:			array to per voltage ABB configuration
  * @current_info_idx:		current index to info
  * @settling_time:		SoC specific settling time for LDO VBB
  */
@@ -302,7 +302,7 @@ out:
 }
 
 /**
- * ti_abb_set_voltage_sel() - regulator accessor function to set ABB LDO
+* ti_abb_set_voltage_sel() - regulator accessor function to set ABB LDO
  * @rdev:	regulator device
  * @sel:	selector to index into required ABB LDO settings (maps to
  *		regulator descriptor's volt_table)
@@ -323,16 +323,16 @@ static int ti_abb_set_voltage_sel(struct regulator_dev *rdev, unsigned sel)
 		return -ENODEV;
 	}
 
-	if (!desc->n_voltages || !abb->info) {
+if (!desc->n_voltages || !abb->info) {
 		dev_err_ratelimited(dev,
-				    "%s: No valid voltage table entries?\n",
+"%s: No valid voltage table entries?\n",
 				    __func__);
 		return -EINVAL;
 	}
 
-	if (sel >= desc->n_voltages) {
-		dev_err(dev, "%s: sel idx(%d) >= n_voltages(%d)\n", __func__,
-			sel, desc->n_voltages);
+if (sel >= desc->n_voltages) {
+dev_err(dev, "%s: sel idx(%d) >= n_voltages(%d)\n", __func__,
+sel, desc->n_voltages);
 		return -EINVAL;
 	}
 
@@ -375,7 +375,7 @@ out:
 }
 
 /**
- * ti_abb_get_voltage_sel() - Regulator accessor to get current ABB LDO setting
+* ti_abb_get_voltage_sel() - Regulator accessor to get current ABB LDO setting
  * @rdev:	regulator device
  *
  * Return: 0 on success or appropriate error value when fails
@@ -392,16 +392,16 @@ static int ti_abb_get_voltage_sel(struct regulator_dev *rdev)
 		return -ENODEV;
 	}
 
-	if (!desc->n_voltages || !abb->info) {
+if (!desc->n_voltages || !abb->info) {
 		dev_err_ratelimited(dev,
-				    "%s: No valid voltage table entries?\n",
+"%s: No valid voltage table entries?\n",
 				    __func__);
 		return -EINVAL;
 	}
 
-	if (abb->current_info_idx >= (int)desc->n_voltages) {
-		dev_err(dev, "%s: Corrupted data? idx(%d) >= n_voltages(%d)\n",
-			__func__, abb->current_info_idx, desc->n_voltages);
+if (abb->current_info_idx >= (int)desc->n_voltages) {
+dev_err(dev, "%s: Corrupted data? idx(%d) >= n_voltages(%d)\n",
+__func__, abb->current_info_idx, desc->n_voltages);
 		return -EINVAL;
 	}
 
@@ -463,7 +463,7 @@ static int ti_abb_init_timings(struct device *dev, struct ti_abb *abb)
 	 * This value depends on:
 	 * settling time of ldo in micro-seconds (varies per OMAP family)
 	 * # of clock cycles per SYS_CLK period (varies per OMAP family)
-	 * the SYS_CLK frequency in MHz (varies per board)
+* the SYS_CLK frequency in MHz (varies per board)
 	 * The formula is:
 	 *
 	 *                      ldo settling time (in micro-seconds)
@@ -516,8 +516,8 @@ static int ti_abb_init_table(struct device *dev, struct ti_abb *abb,
 
 	/*
 	 * Each abb_info is a set of n-tuple, where n is num_values, consisting
-	 * of voltage and a set of detection logic for ABB information for that
-	 * voltage to apply.
+* of voltage and a set of detection logic for ABB information for that
+* voltage to apply.
 	 */
 	num_entries = of_property_count_u32_elems(dev->of_node, pname);
 	if (num_entries < 0) {
@@ -543,9 +543,9 @@ static int ti_abb_init_table(struct device *dev, struct ti_abb *abb,
 	if (!volt_table)
 		return -ENOMEM;
 
-	abb->rdesc.n_voltages = num_entries;
+abb->rdesc.n_voltages = num_entries;
 	abb->rdesc.volt_table = volt_table;
-	/* We do not know where the OPP voltage is at the moment */
+/* We do not know where the OPP voltage is at the moment */
 	abb->current_info_idx = -EINVAL;
 
 	for (i = 0; i < num_entries; i++, info++, volt_table++) {
@@ -571,7 +571,7 @@ static int ti_abb_init_table(struct device *dev, struct ti_abb *abb,
 			i, *volt_table, info->opp_sel, efuse_offset, rbb_mask,
 			fbb_mask, vset_mask);
 
-		/* Find min/max for voltage set */
+/* Find min/max for voltage set */
 		if (min_uV > *volt_table)
 			min_uV = *volt_table;
 		if (max_uV < *volt_table)
@@ -622,7 +622,7 @@ check_abb:
 		}
 	}
 
-	/* Setup the min/max voltage constraints from the supported list */
+/* Setup the min/max voltage constraints from the supported list */
 	c->min_uV = min_uV;
 	c->max_uV = max_uV;
 
@@ -630,10 +630,10 @@ check_abb:
 }
 
 static struct regulator_ops ti_abb_reg_ops = {
-	.list_voltage = regulator_list_voltage_table,
+.list_voltage = regulator_list_voltage_table,
 
-	.set_voltage_sel = ti_abb_set_voltage_sel,
-	.get_voltage_sel = ti_abb_get_voltage_sel,
+.set_voltage_sel = ti_abb_set_voltage_sel,
+.get_voltage_sel = ti_abb_get_voltage_sel,
 };
 
 /* Default ABB block offsets, IF this changes in future, create new one */
@@ -688,7 +688,7 @@ MODULE_DEVICE_TABLE(of, ti_abb_of_match);
  * @pdev: ABB platform device
  *
  * Initializes an individual ABB LDO for required Body-Bias. ABB is used to
- * addional bias supply to SoC modules for power savings or mandatory stability
+* addional bias supply to SoC modules for power savings or mandatory stability
  * configuration at certain Operating Performance Points(OPPs).
  *
  * Return: 0 on success or appropriate error value when fails
@@ -858,12 +858,12 @@ skip_opt:
 	desc = &abb->rdesc;
 	desc->name = dev_name(dev);
 	desc->owner = THIS_MODULE;
-	desc->type = REGULATOR_VOLTAGE;
+desc->type = REGULATOR_VOLTAGE;
 	desc->ops = &ti_abb_reg_ops;
 
 	c = &initdata->constraints;
-	if (desc->n_voltages > 1)
-		c->valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
+if (desc->n_voltages > 1)
+c->valid_ops_mask |= REGULATOR_CHANGE_VOLTAGE;
 	c->always_on = true;
 
 	config.dev = dev;

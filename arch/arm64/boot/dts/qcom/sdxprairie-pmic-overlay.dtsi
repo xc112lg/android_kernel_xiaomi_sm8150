@@ -30,7 +30,7 @@
 /delete-node/ &pm8150b_hr_led;
 
 &pm8150b_pdphy {
-	vdd-pdphy-supply = <&L10E>;
+vdd-pdphy-supply = <&L10E>;
 	vbus-supply = <&smb5_vbus>;
 	vconn-supply = <&smb5_vconn>;
 };

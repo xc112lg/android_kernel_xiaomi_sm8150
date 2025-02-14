@@ -235,7 +235,7 @@ void destroy_context(struct mm_struct *mm)
 void radix__switch_mmu_context(struct mm_struct *prev, struct mm_struct *next)
 {
 
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 		isync();
 		mtspr(SPRN_PID, next->context.id);
 		isync();

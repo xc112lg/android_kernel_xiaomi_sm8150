@@ -30,24 +30,24 @@ nvbios_power_budget_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt,
 			  u8 *len)
 {
 	struct bit_entry bit_P;
-	u32 power_budget;
+u32 power_budget;
 
 	if (bit_entry(bios, 'P', &bit_P) || bit_P.version != 2 ||
 	    bit_P.length < 0x30)
 		return 0;
 
-	power_budget = nvbios_rd32(bios, bit_P.offset + 0x2c);
-	if (!power_budget)
+power_budget = nvbios_rd32(bios, bit_P.offset + 0x2c);
+if (!power_budget)
 		return 0;
 
-	*ver = nvbios_rd08(bios, power_budget);
+*ver = nvbios_rd08(bios, power_budget);
 	switch (*ver) {
 	case 0x20:
 	case 0x30:
-		*hdr = nvbios_rd08(bios, power_budget + 0x1);
-		*len = nvbios_rd08(bios, power_budget + 0x2);
-		*cnt = nvbios_rd08(bios, power_budget + 0x3);
-		return power_budget;
+*hdr = nvbios_rd08(bios, power_budget + 0x1);
+*len = nvbios_rd08(bios, power_budget + 0x2);
+*cnt = nvbios_rd08(bios, power_budget + 0x3);
+return power_budget;
 	default:
 		break;
 	}
@@ -57,7 +57,7 @@ nvbios_power_budget_table(struct nvkm_bios *bios, u8 *ver, u8 *hdr, u8 *cnt,
 
 int
 nvbios_power_budget_header(struct nvkm_bios *bios,
-                           struct nvbios_power_budget *budget)
+struct nvbios_power_budget *budget)
 {
 	struct nvkm_subdev *subdev = &bios->subdev;
 	u8 ver, hdr, cnt, len, cap_entry;
@@ -66,7 +66,7 @@ nvbios_power_budget_header(struct nvkm_bios *bios,
 	if (!bios || !budget)
 		return -EINVAL;
 
-	header = nvbios_power_budget_table(bios, &ver, &hdr, &cnt, &len);
+header = nvbios_power_budget_table(bios, &ver, &hdr, &cnt, &len);
 	if (!header || !cnt)
 		return -ENODEV;
 
@@ -83,7 +83,7 @@ nvbios_power_budget_header(struct nvkm_bios *bios,
 
 	if (cap_entry >= cnt && cap_entry != 0xff) {
 		nvkm_warn(subdev,
-		          "invalid cap_entry in power budget table found\n");
+"invalid cap_entry in power budget table found\n");
 		budget->cap_entry = 0xff;
 		return -EINVAL;
 	}
@@ -101,8 +101,8 @@ nvbios_power_budget_header(struct nvkm_bios *bios,
 
 int
 nvbios_power_budget_entry(struct nvkm_bios *bios,
-                          struct nvbios_power_budget *budget,
-                          u8 idx, struct nvbios_power_budget_entry *entry)
+struct nvbios_power_budget *budget,
+u8 idx, struct nvbios_power_budget_entry *entry)
 {
 	u32 entry_offset;
 

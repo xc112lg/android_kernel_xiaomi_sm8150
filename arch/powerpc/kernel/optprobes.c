@@ -224,7 +224,7 @@ int arch_prepare_optimized_kprobe(struct optimized_kprobe *op, struct kprobe *p)
 	 * OPTPROBE uses 'b' instruction to branch to optinsn.insn.
 	 *
 	 * The target address has to be relatively nearby, to permit use
-	 * of branch instruction in powerpc, because the address is specified
+* of branch instruction in powerpc, because the address is specified
 	 * in an immediate field in the instruction opcode itself, ie 24 bits
 	 * in the opcode specify the address. Therefore the address should
 	 * be within 32MB on either side of the current instruction.
@@ -308,7 +308,7 @@ int arch_prepared_optinsn(struct arch_optimized_insn *optinsn)
 }
 
 /*
- * On powerpc, Optprobes always replaces one instruction (4 bytes
+* On powerpc, Optprobes always replaces one instruction (4 bytes
  * aligned and 4 bytes long). It is impossible to encounter another
  * kprobe in this address range. So always return 0.
  */

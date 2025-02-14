@@ -310,7 +310,7 @@ static inline bool slot_is_aligned(struct kvm_memory_slot *memslot,
 }
 
 /*
- * This works for 4k, 64k and 16M pages on POWER7,
+* This works for 4k, 64k and 16M pages on POWER7,
  * and 4k and 16M pages on PPC970.
  */
 static inline unsigned long slb_pgsize_encoding(unsigned long psize)

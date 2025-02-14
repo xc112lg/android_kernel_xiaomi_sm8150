@@ -20,8 +20,8 @@
 #include <linux/of.h>
 
 struct ltc3651_charger {
-	struct power_supply *charger;
-	struct power_supply_desc charger_desc;
+struct power_supply *charger;
+struct power_supply_desc charger_desc;
 	struct gpio_desc *acpr_gpio;
 	struct gpio_desc *fault_gpio;
 	struct gpio_desc *chrg_gpio;
@@ -29,45 +29,45 @@ struct ltc3651_charger {
 
 static irqreturn_t ltc3651_charger_irq(int irq, void *devid)
 {
-	struct power_supply *charger = devid;
+struct power_supply *charger = devid;
 
-	power_supply_changed(charger);
+power_supply_changed(charger);
 
 	return IRQ_HANDLED;
 }
 
 static inline struct ltc3651_charger *psy_to_ltc3651_charger(
-	struct power_supply *psy)
+struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static int ltc3651_charger_get_property(struct power_supply *psy,
-		enum power_supply_property psp, union power_supply_propval *val)
+enum power_supply_property psp, union power_supply_propval *val)
 {
 	struct ltc3651_charger *ltc3651_charger = psy_to_ltc3651_charger(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		if (!ltc3651_charger->chrg_gpio) {
-			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 			break;
 		}
 		if (gpiod_get_value(ltc3651_charger->chrg_gpio))
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = gpiod_get_value(ltc3651_charger->acpr_gpio);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		if (!ltc3651_charger->fault_gpio) {
-			val->intval = POWER_SUPPLY_HEALTH_UNKNOWN;
+val->intval = POWER_SUPPLY_HEALTH_UNKNOWN;
 			break;
 		}
 		if (!gpiod_get_value(ltc3651_charger->fault_gpio)) {
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 			break;
 		}
 		/*
@@ -75,12 +75,12 @@ static int ltc3651_charger_get_property(struct power_supply *psy,
 		 * of failure.
 		 */
 		if (!ltc3651_charger->chrg_gpio) {
-			val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 			break;
 		}
 		val->intval = gpiod_get_value(ltc3651_charger->chrg_gpio) ?
-				POWER_SUPPLY_HEALTH_OVERHEAT :
-				POWER_SUPPLY_HEALTH_DEAD;
+POWER_SUPPLY_HEALTH_OVERHEAT :
+POWER_SUPPLY_HEALTH_DEAD;
 		break;
 	default:
 		return -EINVAL;
@@ -90,16 +90,16 @@ static int ltc3651_charger_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property ltc3651_charger_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_HEALTH,
 };
 
 static int ltc3651_charger_probe(struct platform_device *pdev)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct ltc3651_charger *ltc3651_charger;
-	struct power_supply_desc *charger_desc;
+struct power_supply_desc *charger_desc;
 	int ret;
 
 	ltc3651_charger = devm_kzalloc(&pdev->dev, sizeof(*ltc3651_charger),
@@ -131,18 +131,18 @@ static int ltc3651_charger_probe(struct platform_device *pdev)
 
 	charger_desc = &ltc3651_charger->charger_desc;
 	charger_desc->name = pdev->dev.of_node->name;
-	charger_desc->type = POWER_SUPPLY_TYPE_MAINS;
+charger_desc->type = POWER_SUPPLY_TYPE_MAINS;
 	charger_desc->properties = ltc3651_charger_properties;
 	charger_desc->num_properties = ARRAY_SIZE(ltc3651_charger_properties);
 	charger_desc->get_property = ltc3651_charger_get_property;
 	psy_cfg.of_node = pdev->dev.of_node;
 	psy_cfg.drv_data = ltc3651_charger;
 
-	ltc3651_charger->charger = devm_power_supply_register(&pdev->dev,
+ltc3651_charger->charger = devm_power_supply_register(&pdev->dev,
 						      charger_desc, &psy_cfg);
 	if (IS_ERR(ltc3651_charger->charger)) {
 		ret = PTR_ERR(ltc3651_charger->charger);
-		dev_err(&pdev->dev, "Failed to register power supply: %d\n",
+dev_err(&pdev->dev, "Failed to register power supply: %d\n",
 			ret);
 		return ret;
 	}

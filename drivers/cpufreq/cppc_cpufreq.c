@@ -1,6 +1,6 @@
 /*
  * CPPC (Collaborative Processor Performance Control) driver for
- * interfacing with the CPUfreq layer and governors. See
+* interfacing with the CPUfreq layer and governors. See
  * cppc_acpi.c for CPPC specific methods.
  *
  * (C) Copyright 2014, 2015 Linaro Ltd.
@@ -76,28 +76,28 @@ static u64 cppc_get_dmi_max_khz(void)
 }
 
 static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
-		unsigned int target_freq,
+unsigned int target_freq,
 		unsigned int relation)
 {
 	struct cppc_cpudata *cpu;
-	struct cpufreq_freqs freqs;
+struct cpufreq_freqs freqs;
 	u32 desired_perf;
 	int ret = 0;
 
 	cpu = all_cpu_data[policy->cpu];
 
-	desired_perf = (u64)target_freq * cpu->perf_caps.highest_perf / cppc_dmi_max_khz;
+desired_perf = (u64)target_freq * cpu->perf_caps.highest_perf / cppc_dmi_max_khz;
 	/* Return if it is exactly the same perf */
 	if (desired_perf == cpu->perf_ctrls.desired_perf)
 		return ret;
 
 	cpu->perf_ctrls.desired_perf = desired_perf;
-	freqs.old = policy->cur;
-	freqs.new = target_freq;
+freqs.old = policy->cur;
+freqs.new = target_freq;
 
-	cpufreq_freq_transition_begin(policy, &freqs);
+cpufreq_freq_transition_begin(policy, &freqs);
 	ret = cppc_set_perf(cpu->cpu, &cpu->perf_ctrls);
-	cpufreq_freq_transition_end(policy, &freqs, ret != 0);
+cpufreq_freq_transition_end(policy, &freqs, ret != 0);
 
 	if (ret)
 		pr_debug("Failed to set target on CPU:%d. ret:%d\n",
@@ -108,7 +108,7 @@ static int cppc_cpufreq_set_target(struct cpufreq_policy *policy,
 
 static int cppc_verify_policy(struct cpufreq_policy *policy)
 {
-	cpufreq_verify_within_cpu_limits(policy);
+cpufreq_verify_within_cpu_limits(policy);
 	return 0;
 }
 
@@ -128,7 +128,7 @@ static void cppc_cpufreq_stop_cpu(struct cpufreq_policy *policy)
 
 /*
  * The PCC subspace describes the rate at which platform can accept commands
- * on the shared PCC channel (including READs which do not count towards freq
+* on the shared PCC channel (including READs which do not count towards freq
  * trasition requests), so ideally we need to use the PCC values as a fallback
  * if we don't have a platform specific transition_delay_us
  */
@@ -197,19 +197,19 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	policy->max = cppc_dmi_max_khz;
 
 	/*
-	 * Set cpuinfo.min_freq to Lowest to make the full range of performance
+* Set cpuinfo.min_freq to Lowest to make the full range of performance
 	 * available if userspace wants to use any perf between lowest & lowest
 	 * nonlinear perf
 	 */
-	policy->cpuinfo.min_freq = cpu->perf_caps.lowest_perf * cppc_dmi_max_khz /
+policy->cpuinfo.min_freq = cpu->perf_caps.lowest_perf * cppc_dmi_max_khz /
 		cpu->perf_caps.highest_perf;
-	policy->cpuinfo.max_freq = cppc_dmi_max_khz;
+policy->cpuinfo.max_freq = cppc_dmi_max_khz;
 
 	policy->cpuinfo.transition_latency = cppc_get_transition_latency(cpu_num);
-	policy->transition_delay_us = cppc_cpufreq_get_transition_delay_us(cpu_num);
+policy->transition_delay_us = cppc_cpufreq_get_transition_delay_us(cpu_num);
 	policy->shared_type = cpu->shared_type;
 
-	if (policy->shared_type == CPUFREQ_SHARED_TYPE_ANY) {
+if (policy->shared_type == CPUFREQ_SHARED_TYPE_ANY) {
 		int i;
 
 		cpumask_copy(policy->cpus, cpu->shared_cpu_map);
@@ -221,7 +221,7 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 			memcpy(&all_cpu_data[i]->perf_caps, &cpu->perf_caps,
 			       sizeof(cpu->perf_caps));
 		}
-	} else if (policy->shared_type == CPUFREQ_SHARED_TYPE_ALL) {
+} else if (policy->shared_type == CPUFREQ_SHARED_TYPE_ALL) {
 		/* Support only SW_ANY for now. */
 		pr_debug("Unsupported CPU co-ord type\n");
 		return -EFAULT;
@@ -242,12 +242,12 @@ static int cppc_cpufreq_cpu_init(struct cpufreq_policy *policy)
 }
 
 static struct cpufreq_driver cppc_cpufreq_driver = {
-	.flags = CPUFREQ_CONST_LOOPS,
+.flags = CPUFREQ_CONST_LOOPS,
 	.verify = cppc_verify_policy,
-	.target = cppc_cpufreq_set_target,
-	.init = cppc_cpufreq_cpu_init,
-	.stop_cpu = cppc_cpufreq_stop_cpu,
-	.name = "cppc_cpufreq",
+.target = cppc_cpufreq_set_target,
+.init = cppc_cpufreq_cpu_init,
+.stop_cpu = cppc_cpufreq_stop_cpu,
+.name = "cppc_cpufreq",
 };
 
 static int __init cppc_cpufreq_init(void)
@@ -274,11 +274,11 @@ static int __init cppc_cpufreq_init(void)
 
 	ret = acpi_get_psd_map(all_cpu_data);
 	if (ret) {
-		pr_debug("Error parsing PSD data. Aborting cpufreq registration.\n");
+pr_debug("Error parsing PSD data. Aborting cpufreq registration.\n");
 		goto out;
 	}
 
-	ret = cpufreq_register_driver(&cppc_cpufreq_driver);
+ret = cpufreq_register_driver(&cppc_cpufreq_driver);
 	if (ret)
 		goto out;
 
@@ -302,7 +302,7 @@ static void __exit cppc_cpufreq_exit(void)
 	struct cppc_cpudata *cpu;
 	int i;
 
-	cpufreq_unregister_driver(&cppc_cpufreq_driver);
+cpufreq_unregister_driver(&cppc_cpufreq_driver);
 
 	for_each_possible_cpu(i) {
 		cpu = all_cpu_data[i];

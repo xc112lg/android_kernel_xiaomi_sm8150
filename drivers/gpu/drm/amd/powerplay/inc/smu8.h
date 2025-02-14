@@ -45,10 +45,10 @@ struct SMU8_Firmware_Header {
 };
 
 struct SMU8_MultimediaPowerLogData {
-	uint32_t avgTotalPower;
-	uint32_t avgGpuPower;
-	uint32_t avgUvdPower;
-	uint32_t avgVcePower;
+uint32_t avgTotalPower;
+uint32_t avgGpuPower;
+uint32_t avgUvdPower;
+uint32_t avgVcePower;
 
 	uint32_t avgSclk;
 	uint32_t avgDclk;

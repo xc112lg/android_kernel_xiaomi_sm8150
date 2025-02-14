@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/mpc834x_mds.c
+* arch/powerpc/platforms/83xx/mpc834x_mds.c
  *
  * MPC834x MDS board specific routines
  *

@@ -61,7 +61,7 @@
 /*
  * Max physical address bit we will use for now.
  *
- * This is mostly a hardware limitation and for now Power9 has
+* This is mostly a hardware limitation and for now Power9 has
  * a 51 bit limit.
  *
  * This is different from the number of physical bit required to address
@@ -139,7 +139,7 @@
 
 /* Permission masks used to generate the __P and __S table,
  *
- * Note:__pgprot is defined in arch/powerpc/include/asm/page.h
+* Note:__pgprot is defined in arch/powerpc/include/asm/page.h
  *
  * Write permissions imply read permissions for now (we could make write-only
  * pages on BookE but we don't bother for now). Execute permission control is

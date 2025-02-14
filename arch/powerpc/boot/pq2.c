@@ -1,5 +1,5 @@
 /*
- * PowerQUICC II support functions
+* PowerQUICC II support functions
  *
  * Author: Scott Wood <scottwood@freescale.com>
  *
@@ -29,7 +29,7 @@ static int pq2_corecnf_map[] = {
  * Returns zero on failure and non-zero on success.
  */
 int pq2_get_clocks(u32 crystal, u32 *sysfreq, u32 *corefreq,
-                   u32 *timebase, u32 *brgfreq)
+u32 *timebase, u32 *brgfreq)
 {
 	u32 *immr;
 	u32 sccr, scmr, mainclk, busclk;
@@ -53,22 +53,22 @@ int pq2_get_clocks(u32 crystal, u32 *sysfreq, u32 *corefreq,
 	mainclk = crystal * (pllmf + 1) / (plldf + 1);
 	busclk = mainclk / (busdf + 1);
 
-	if (sysfreq)
-		*sysfreq = mainclk / 2;
+if (sysfreq)
+*sysfreq = mainclk / 2;
 	if (timebase)
 		*timebase = busclk / 4;
-	if (brgfreq)
-		*brgfreq = mainclk / (1 << ((dfbrg + 1) * 2));
+if (brgfreq)
+*brgfreq = mainclk / (1 << ((dfbrg + 1) * 2));
 
-	if (corefreq) {
+if (corefreq) {
 		int coremult = pq2_corecnf_map[corecnf];
 
 		if (coremult < 0)
-			*corefreq = mainclk / 2;
+*corefreq = mainclk / 2;
 		else if (coremult == 0)
 			return 0;
 		else
-			*corefreq = busclk * coremult / 2;
+*corefreq = busclk * coremult / 2;
 	}
 
 	return 1;
@@ -79,24 +79,24 @@ void pq2_set_clocks(u32 sysfreq, u32 corefreq, u32 timebase, u32 brgfreq)
 {
 	void *node;
 
-	dt_fixup_cpu_clocks(corefreq, timebase, sysfreq);
+dt_fixup_cpu_clocks(corefreq, timebase, sysfreq);
 
 	node = finddevice("/soc/cpm");
 	if (node)
-		setprop(node, "clock-frequency", &sysfreq, 4);
+setprop(node, "clock-frequency", &sysfreq, 4);
 
 	node = finddevice("/soc/cpm/brg");
 	if (node)
-		setprop(node, "clock-frequency", &brgfreq, 4);
+setprop(node, "clock-frequency", &brgfreq, 4);
 }
 
 int pq2_fixup_clocks(u32 crystal)
 {
-	u32 sysfreq, corefreq, timebase, brgfreq;
+u32 sysfreq, corefreq, timebase, brgfreq;
 
-	if (!pq2_get_clocks(crystal, &sysfreq, &corefreq, &timebase, &brgfreq))
+if (!pq2_get_clocks(crystal, &sysfreq, &corefreq, &timebase, &brgfreq))
 		return 0;
 
-	pq2_set_clocks(sysfreq, corefreq, timebase, brgfreq);
+pq2_set_clocks(sysfreq, corefreq, timebase, brgfreq);
 	return 1;
 }

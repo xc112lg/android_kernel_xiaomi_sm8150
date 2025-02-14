@@ -3,7 +3,7 @@
  * on the 8xx series of chips.
  *  -- christophe
  *
- *  Derived from arch/powerpc/mm/40x_mmu.c:
+*  Derived from arch/powerpc/mm/40x_mmu.c:
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -136,7 +136,7 @@ unsigned long __init mmu_mapin_ram(unsigned long top)
 	mmu_patch_cmp_limit(&DTLBMiss_cmp, mapped);
 	mmu_patch_cmp_limit(&FixupDAR_cmp, mapped);
 
-	/* If the size of RAM is not an exact power of two, we may not
+/* If the size of RAM is not an exact power of two, we may not
 	 * have covered RAM in its entirety with 8 MiB
 	 * pages. Consequently, restrict the top end of RAM currently
 	 * allocable so that calls to the MEMBLOCK to allocate PTEs for "tail"

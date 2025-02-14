@@ -363,13 +363,13 @@ const struct powerpc_operand powerpc_operands[] =
 #define ST E
   { 0x1, 15, NULL, NULL, 0 },
 
-  /* The FL1 field in a POWER SC form instruction.  */
+/* The FL1 field in a POWER SC form instruction.  */
 #define FL1 E + 1
   /* The U field in an X form instruction.  */
 #define U FL1
   { 0xf, 12, NULL, NULL, 0 },
 
-  /* The FL2 field in a POWER SC form instruction.  */
+/* The FL2 field in a POWER SC form instruction.  */
 #define FL2 FL1 + 1
   { 0x7, 2, NULL, NULL, 0 },
 
@@ -416,7 +416,7 @@ const struct powerpc_operand powerpc_operands[] =
 #define FXM FRSp + 1
   { 0xff, 12, insert_fxm, extract_fxm, 0 },
 
-  /* Power4 version for mfcr.  */
+/* Power4 version for mfcr.  */
 #define FXM4 FXM + 1
   { 0xff, 12, insert_fxm, extract_fxm,
     PPC_OPERAND_OPTIONAL | PPC_OPERAND_OPTIONAL_VALUE},
@@ -445,7 +445,7 @@ const struct powerpc_operand powerpc_operands[] =
 #define L2OPT L32OPT + 1
   { 0x3, 21, NULL, NULL, PPC_OPERAND_OPTIONAL },
 
-  /* The LEV field in a POWER SVC form instruction.  */
+/* The LEV field in a POWER SVC form instruction.  */
 #define SVC_LEV L2OPT + 1
   { 0x7f, 5, NULL, NULL, 0 },
 
@@ -700,7 +700,7 @@ const struct powerpc_operand powerpc_operands[] =
 #define ESYNC STRM + 1
   { 0xf, 16, insert_esync, NULL, PPC_OPERAND_OPTIONAL },
 
-  /* The SV field in a POWER SC form instruction.  */
+/* The SV field in a POWER SC form instruction.  */
 #define SV ESYNC + 1
   { 0x3fff, 2, NULL, NULL, 0 },
 
@@ -801,7 +801,7 @@ const struct powerpc_operand powerpc_operands[] =
 #define DRM WS
   { 0x7, 11, NULL, NULL, 0 },
 
-  /* PowerPC paired singles extensions.  */
+/* PowerPC paired singles extensions.  */
   /* W bit in the pair singles instructions for x type instructions.  */
 #define PSWM WS + 1
   /* The BO16 field in a BD8 form instruction.  */
@@ -967,7 +967,7 @@ const struct powerpc_operand powerpc_operands[] =
 };
 
 const unsigned int num_powerpc_operands = (sizeof (powerpc_operands)
-					   / sizeof (powerpc_operands[0]));
+/ sizeof (powerpc_operands[0]));
 
 /* The functions used to insert and extract complicated operands.  */
 
@@ -1130,11 +1130,11 @@ extract_bba (unsigned long insn,
 /* The BD field in a B form instruction when the - modifier is used.
    This modifier means that the branch is not expected to be taken.
    For chips built to versions of the architecture prior to version 2
-   (ie. not Power4 compatible), we set the y bit of the BO field to 1
+(ie. not Power4 compatible), we set the y bit of the BO field to 1
    if the offset is negative.  When extracting, we require that the y
    bit be 1 and that the offset be positive, since if the y bit is 0
    we just want to print the normal form of the instruction.
-   Power4 compatible targets use two bits, "a", and "t", instead of
+Power4 compatible targets use two bits, "a", and "t", instead of
    the "y" bit.  "at" == 00 => no hint, "at" == 01 => unpredictable,
    "at" == 10 => not taken, "at" == 11 => taken.  The "t" bit is 00001
    in BO field, the "a" bit is 00010 for branch on CR(BI) and 01000
@@ -1438,13 +1438,13 @@ insert_fxm (unsigned long insn,
     }
 
   /* If only one bit of the FXM field is set, we can use the new form
-     of the instruction, which is faster.  Unlike the Power4 branch hint
+of the instruction, which is faster.  Unlike the Power4 branch hint
      encoding, this is not backward compatible.  Do not generate the
-     new form unless -mpower4 has been given, or -many and the two
+new form unless -mpower4 has been given, or -many and the two
      operand form of mfcr was used.  */
   else if (value > 0
 	   && (value & -value) == value
-	   && ((dialect & PPC_OPCODE_POWER4) != 0
+&& ((dialect & PPC_OPCODE_POWER4) != 0
 	       || ((dialect & PPC_OPCODE_ANY) != 0
 		   && (insn & (0x3ff << 1)) == 19 << 1)))
     insn |= 1 << 20;
@@ -1469,7 +1469,7 @@ extract_fxm (unsigned long insn,
 {
   long mask = (insn >> 12) & 0xff;
 
-  /* Is this a Power4 insn?  */
+/* Is this a Power4 insn?  */
   if ((insn & (1 << 20)) != 0)
     {
       /* Exactly one bit of MASK should be set.  */
@@ -1477,7 +1477,7 @@ extract_fxm (unsigned long insn,
 	*invalid = 1;
     }
 
-  /* Check that non-power4 form of mfcr has a zero MASK.  */
+/* Check that non-power4 form of mfcr has a zero MASK.  */
   else if ((insn & (0x3ff << 1)) == 19 << 1)
     {
       if (mask != 0)
@@ -1526,7 +1526,7 @@ insert_ls (unsigned long insn,
   /* For SYNC, some L values are illegal.  */
   if (((insn >> 1) & 0x3ff) == 598)
     {
-      long max_lvalue = (dialect & PPC_OPCODE_POWER4) ? 2 : 1;
+long max_lvalue = (dialect & PPC_OPCODE_POWER4) ? 2 : 1;
       if (value > max_lvalue)
 	{
 	  *errmsg = _("illegal L operand value");
@@ -1552,7 +1552,7 @@ insert_esync (unsigned long insn,
   if (value == 0)
     {
       if (((dialect & PPC_OPCODE_E6500) != 0 && ls > 1)
-	  || ((dialect & PPC_OPCODE_POWER9) != 0 && ls > 2))
+|| ((dialect & PPC_OPCODE_POWER9) != 0 && ls > 2))
         *errmsg = _("illegal L operand value");
       return insn;
     }
@@ -2397,7 +2397,7 @@ extract_vleil (unsigned long insn,
 
 /* A BBO_MASK with the y bit of the BO field removed.  This permits
    matching a conditional branch regardless of the setting of the y
-   bit.  Similarly for the 'at' bits used for power4 branch hints.  */
+bit.  Similarly for the 'at' bits used for power4 branch hints.  */
 #define Y_MASK	 (((unsigned long) 1) << 21)
 #define AT1_MASK (((unsigned long) 3) << 21)
 #define AT2_MASK (((unsigned long) 9) << 21)
@@ -6981,7 +6981,7 @@ const struct powerpc_opcode powerpc_opcodes[] = {
 };
 
 const int powerpc_num_opcodes =
-  sizeof (powerpc_opcodes) / sizeof (powerpc_opcodes[0]);
+sizeof (powerpc_opcodes) / sizeof (powerpc_opcodes[0]);
 
 /* The VLE opcode table.
 
@@ -7289,4 +7289,4 @@ const struct powerpc_macro powerpc_macros[] = {
 };
 
 const int powerpc_num_macros =
-  sizeof (powerpc_macros) / sizeof (powerpc_macros[0]);
+sizeof (powerpc_macros) / sizeof (powerpc_macros[0]);

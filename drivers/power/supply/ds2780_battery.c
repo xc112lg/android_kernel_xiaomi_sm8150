@@ -37,8 +37,8 @@
 
 struct ds2780_device_info {
 	struct device *dev;
-	struct power_supply *bat;
-	struct power_supply_desc bat_desc;
+struct power_supply *bat;
+struct power_supply_desc bat_desc;
 	struct device *w1_dev;
 };
 
@@ -53,7 +53,7 @@ static const char manufacturer[] = "Maxim/Dallas";
 static inline struct ds2780_device_info *
 to_ds2780_device_info(struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static inline struct power_supply *to_power_supply(struct device *dev)
@@ -162,30 +162,30 @@ static int ds2780_set_rsgain_register(struct ds2780_device_info *dev_info,
 }
 
 static int ds2780_get_voltage(struct ds2780_device_info *dev_info,
-	int *voltage_uV)
+int *voltage_uV)
 {
 	int ret;
-	s16 voltage_raw;
+s16 voltage_raw;
 
 	/*
-	 * The voltage value is located in 10 bits across the voltage MSB
+* The voltage value is located in 10 bits across the voltage MSB
 	 * and LSB registers in two's compliment form
-	 * Sign bit of the voltage value is in bit 7 of the voltage MSB register
-	 * Bits 9 - 3 of the voltage value are in bits 6 - 0 of the
-	 * voltage MSB register
-	 * Bits 2 - 0 of the voltage value are in bits 7 - 5 of the
-	 * voltage LSB register
+* Sign bit of the voltage value is in bit 7 of the voltage MSB register
+* Bits 9 - 3 of the voltage value are in bits 6 - 0 of the
+* voltage MSB register
+* Bits 2 - 0 of the voltage value are in bits 7 - 5 of the
+* voltage LSB register
 	 */
-	ret = ds2780_read16(dev_info, &voltage_raw,
+ret = ds2780_read16(dev_info, &voltage_raw,
 				DS2780_VOLT_MSB_REG);
 	if (ret < 0)
 		return ret;
 
 	/*
-	 * DS2780 reports voltage in units of 4.88mV, but the battery class
+* DS2780 reports voltage in units of 4.88mV, but the battery class
 	 * reports in units of uV, so convert by multiplying by 4880.
 	 */
-	*voltage_uV = (voltage_raw / 32) * 4880;
+*voltage_uV = (voltage_raw / 32) * 4880;
 	return 0;
 }
 
@@ -212,7 +212,7 @@ static int ds2780_get_temperature(struct ds2780_device_info *dev_info,
 
 	/*
 	 * Temperature is measured in units of 0.125 degrees celcius, the
-	 * power_supply class measures temperature in tenths of degrees
+* power_supply class measures temperature in tenths of degrees
 	 * celsius. The temperature value is stored as a 10 bit number, plus
 	 * sign in the upper bits of a 16 bit register.
 	 */
@@ -329,13 +329,13 @@ static int ds2780_get_status(struct ds2780_device_info *dev_info, int *status)
 		return ret;
 
 	if (capacity == 100)
-		*status = POWER_SUPPLY_STATUS_FULL;
+*status = POWER_SUPPLY_STATUS_FULL;
 	else if (current_uA == 0)
-		*status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+*status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	else if (current_uA < 0)
-		*status = POWER_SUPPLY_STATUS_DISCHARGING;
+*status = POWER_SUPPLY_STATUS_DISCHARGING;
 	else
-		*status = POWER_SUPPLY_STATUS_CHARGING;
+*status = POWER_SUPPLY_STATUS_CHARGING;
 
 	return 0;
 }
@@ -382,50 +382,50 @@ static int ds2780_set_control_register(struct ds2780_device_info *dev_info,
 }
 
 static int ds2780_battery_get_property(struct power_supply *psy,
-	enum power_supply_property psp,
-	union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	int ret = 0;
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		ret = ds2780_get_voltage(dev_info, &val->intval);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+ret = ds2780_get_voltage(dev_info, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_TEMP:
+case POWER_SUPPLY_PROP_TEMP:
 		ret = ds2780_get_temperature(dev_info, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = model;
 		break;
 
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = manufacturer;
 		break;
 
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		ret = ds2780_get_current(dev_info, CURRENT_NOW, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		ret = ds2780_get_current(dev_info, CURRENT_AVG, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = ds2780_get_status(dev_info, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		ret = ds2780_get_capacity(dev_info, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_COUNTER:
+case POWER_SUPPLY_PROP_CHARGE_COUNTER:
 		ret = ds2780_get_accumulated_current(dev_info, &val->intval);
 		break;
 
-	case POWER_SUPPLY_PROP_CHARGE_NOW:
+case POWER_SUPPLY_PROP_CHARGE_NOW:
 		ret = ds2780_get_charge_now(dev_info, &val->intval);
 		break;
 
@@ -437,16 +437,16 @@ static int ds2780_battery_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property ds2780_battery_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_TEMP,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_CHARGE_COUNTER,
-	POWER_SUPPLY_PROP_CHARGE_NOW,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_TEMP,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_CHARGE_COUNTER,
+POWER_SUPPLY_PROP_CHARGE_NOW,
 };
 
 static ssize_t ds2780_get_pmod_enabled(struct device *dev,
@@ -455,10 +455,10 @@ static ssize_t ds2780_get_pmod_enabled(struct device *dev,
 {
 	int ret;
 	u8 control_reg;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
-	/* Get power mode */
+/* Get power mode */
 	ret = ds2780_get_control_register(dev_info, &control_reg);
 	if (ret < 0)
 		return ret;
@@ -474,10 +474,10 @@ static ssize_t ds2780_set_pmod_enabled(struct device *dev,
 {
 	int ret;
 	u8 control_reg, new_setting;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
-	/* Set power mode */
+/* Set power mode */
 	ret = ds2780_get_control_register(dev_info, &control_reg);
 	if (ret < 0)
 		return ret;
@@ -509,7 +509,7 @@ static ssize_t ds2780_get_sense_resistor_value(struct device *dev,
 {
 	int ret;
 	u8 sense_resistor;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	ret = ds2780_read8(dev_info, &sense_resistor, DS2780_RSNSP_REG);
@@ -527,7 +527,7 @@ static ssize_t ds2780_set_sense_resistor_value(struct device *dev,
 {
 	int ret;
 	u8 new_setting;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	ret = kstrtou8(buf, 0, &new_setting);
@@ -547,7 +547,7 @@ static ssize_t ds2780_get_rsgain_setting(struct device *dev,
 {
 	int ret;
 	u16 rsgain;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	ret = ds2780_get_rsgain_register(dev_info, &rsgain);
@@ -564,7 +564,7 @@ static ssize_t ds2780_set_rsgain_setting(struct device *dev,
 {
 	int ret;
 	u16 new_setting;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	ret = kstrtou16(buf, 0, &new_setting);
@@ -590,7 +590,7 @@ static ssize_t ds2780_get_pio_pin(struct device *dev,
 {
 	int ret;
 	u8 sfr;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	ret = ds2780_read8(dev_info, &sfr, DS2780_SFR_REG);
@@ -608,7 +608,7 @@ static ssize_t ds2780_set_pio_pin(struct device *dev,
 {
 	int ret;
 	u8 new_setting;
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	ret = kstrtou8(buf, 0, &new_setting);
@@ -634,7 +634,7 @@ static ssize_t ds2780_read_param_eeprom_bin(struct file *filp,
 				char *buf, loff_t off, size_t count)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	return ds2780_read_block(dev_info, buf,
@@ -647,7 +647,7 @@ static ssize_t ds2780_write_param_eeprom_bin(struct file *filp,
 				char *buf, loff_t off, size_t count)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 	int ret;
 
@@ -679,7 +679,7 @@ static ssize_t ds2780_read_user_eeprom_bin(struct file *filp,
 				char *buf, loff_t off, size_t count)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 
 	return ds2780_read_block(dev_info, buf,
@@ -692,7 +692,7 @@ static ssize_t ds2780_write_user_eeprom_bin(struct file *filp,
 				char *buf, loff_t off, size_t count)
 {
 	struct device *dev = container_of(kobj, struct device, kobj);
-	struct power_supply *psy = to_power_supply(dev);
+struct power_supply *psy = to_power_supply(dev);
 	struct ds2780_device_info *dev_info = to_ds2780_device_info(psy);
 	int ret;
 
@@ -742,7 +742,7 @@ static const struct attribute_group ds2780_attr_group = {
 
 static int ds2780_battery_probe(struct platform_device *pdev)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	int ret = 0;
 	struct ds2780_device_info *dev_info;
 
@@ -757,14 +757,14 @@ static int ds2780_battery_probe(struct platform_device *pdev)
 	dev_info->dev			= &pdev->dev;
 	dev_info->w1_dev		= pdev->dev.parent;
 	dev_info->bat_desc.name		= dev_name(&pdev->dev);
-	dev_info->bat_desc.type		= POWER_SUPPLY_TYPE_BATTERY;
+dev_info->bat_desc.type		= POWER_SUPPLY_TYPE_BATTERY;
 	dev_info->bat_desc.properties	= ds2780_battery_props;
 	dev_info->bat_desc.num_properties = ARRAY_SIZE(ds2780_battery_props);
 	dev_info->bat_desc.get_property	= ds2780_battery_get_property;
 
 	psy_cfg.drv_data		= dev_info;
 
-	dev_info->bat = power_supply_register(&pdev->dev, &dev_info->bat_desc,
+dev_info->bat = power_supply_register(&pdev->dev, &dev_info->bat_desc,
 					      &psy_cfg);
 	if (IS_ERR(dev_info->bat)) {
 		dev_err(dev_info->dev, "failed to register battery\n");
@@ -802,7 +802,7 @@ fail_remove_bin_file:
 fail_remove_group:
 	sysfs_remove_group(&dev_info->bat->dev.kobj, &ds2780_attr_group);
 fail_unregister:
-	power_supply_unregister(dev_info->bat);
+power_supply_unregister(dev_info->bat);
 fail:
 	return ret;
 }
@@ -812,12 +812,12 @@ static int ds2780_battery_remove(struct platform_device *pdev)
 	struct ds2780_device_info *dev_info = platform_get_drvdata(pdev);
 
 	/*
-	 * Remove attributes before unregistering power supply
-	 * because 'bat' will be freed on power_supply_unregister() call.
+* Remove attributes before unregistering power supply
+* because 'bat' will be freed on power_supply_unregister() call.
 	 */
 	sysfs_remove_group(&dev_info->bat->dev.kobj, &ds2780_attr_group);
 
-	power_supply_unregister(dev_info->bat);
+power_supply_unregister(dev_info->bat);
 
 	return 0;
 }

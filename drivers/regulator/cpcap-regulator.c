@@ -111,10 +111,10 @@ struct cpcap_regulator {
 		.of_match = of_match_ptr(#_ID),				\
 		.ops = &cpcap_regulator_ops,				\
 		.regulators_node = of_match_ptr("regulators"),		\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = CPCAP_##_ID,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = ARRAY_SIZE(val_tbl),			\
+.n_voltages = ARRAY_SIZE(val_tbl),			\
 		.volt_table = (val_tbl),				\
 		.vsel_reg = (reg),					\
 		.vsel_mask = (volt_mask),				\
@@ -262,10 +262,10 @@ static struct regulator_ops cpcap_regulator_ops = {
 	.enable = cpcap_regulator_enable,
 	.disable = cpcap_regulator_disable,
 	.is_enabled = regulator_is_enabled_regmap,
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_iterate,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_iterate,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.get_mode = cpcap_regulator_get_mode,
 	.set_mode = cpcap_regulator_set_mode,
 };

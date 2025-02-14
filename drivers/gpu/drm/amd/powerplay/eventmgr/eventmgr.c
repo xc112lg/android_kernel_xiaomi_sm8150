@@ -33,7 +33,7 @@ static int pem_init(struct pp_eventmgr *eventmgr)
 	int result = 0;
 	struct pem_event_data event_data = { {0} };
 
-	/* Initialize PowerPlay feature info */
+/* Initialize PowerPlay feature info */
 	pem_init_feature_info(eventmgr);
 
 	/* Initialize event action chains */
@@ -100,5 +100,5 @@ int pem_handle_event(struct pp_eventmgr *eventmgr, enum amd_pp_event event, stru
 
 bool pem_is_hw_access_blocked(struct pp_eventmgr *eventmgr)
 {
-	return (eventmgr->block_adjust_power_state || phm_is_hw_access_blocked(eventmgr->hwmgr));
+return (eventmgr->block_adjust_power_state || phm_is_hw_access_blocked(eventmgr->hwmgr));
 }

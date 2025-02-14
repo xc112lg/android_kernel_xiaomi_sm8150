@@ -156,7 +156,7 @@ _GLOBAL(call_setup_cpu)
 
 /* This gets called by via-pmu.c to switch the PLL selection
  * on 750fx CPU. This function should really be moved to some
- * other place (as most of the cpufreq code in via-pmu
+* other place (as most of the cpufreq code in via-pmu
  */
 _GLOBAL(low_choose_750fx_pll)
 	/* Clear MSR:EE */

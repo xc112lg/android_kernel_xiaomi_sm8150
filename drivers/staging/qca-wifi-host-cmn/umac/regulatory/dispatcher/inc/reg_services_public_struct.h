@@ -107,162 +107,162 @@ enum op_class_table_num {
 
 /**
  * enum channel_enum - channel enumeration
- * @CHAN_ENUM_2412: channel with freq 2412
- * @CHAN_ENUM_2417: channel with freq 2417
- * @CHAN_ENUM_2422: channel with freq 2422
- * @CHAN_ENUM_2427: channel with freq 2427
- * @CHAN_ENUM_2432: channel with freq 2432
- * @CHAN_ENUM_2437: channel with freq 2437
- * @CHAN_ENUM_2442: channel with freq 2442
- * @CHAN_ENUM_2447: channel with freq 2447
- * @CHAN_ENUM_2452: channel with freq 2452
- * @CHAN_ENUM_2457: channel with freq 2457
- * @CHAN_ENUM_2462: channel with freq 2462
- * @CHAN_ENUM_2467: channel with freq 2467
- * @CHAN_ENUM_2472: channel with freq 2472
- * @CHAN_ENUM_2484: channel with freq 2484
- * @CHAN_ENUM_4912: channel with freq 4912
- * @CHAN_ENUM_4915: channel with freq 4915
- * @CHAN_ENUM_4917: channel with freq 4917
- * @CHAN_ENUM_4920: channel with freq 4920
- * @CHAN_ENUM_4922: channel with freq 4922
- * @CHAN_ENUM_4925: channel with freq 4925
- * @CHAN_ENUM_4927: channel with freq 4927
- * @CHAN_ENUM_4932: channel with freq 4932
- * @CHAN_ENUM_4935: channel with freq 4935
- * @CHAN_ENUM_4937: channel with freq 4937
- * @CHAN_ENUM_4940: channel with freq 4940
- * @CHAN_ENUM_4942: channel with freq 4942
- * @CHAN_ENUM_4945: channel with freq 4945
- * @CHAN_ENUM_4947: channel with freq 4947
- * @CHAN_ENUM_4950: channel with freq 4950
- * @CHAN_ENUM_4952: channel with freq 4952
- * @CHAN_ENUM_4955: channel with freq 4955
- * @CHAN_ENUM_4957: channel with freq 4957
- * @CHAN_ENUM_4960: channel with freq 4960
- * @CHAN_ENUM_4962: channel with freq 4962
- * @CHAN_ENUM_4965: channel with freq 4965
- * @CHAN_ENUM_4967: channel with freq 4967
- * @CHAN_ENUM_4970: channel with freq 4970
- * @CHAN_ENUM_4972: channel with freq 4972
- * @CHAN_ENUM_4975: channel with freq 4975
- * @CHAN_ENUM_4977: channel with freq 4977
- * @CHAN_ENUM_4980: channel with freq 4980
- * @CHAN_ENUM_4982: channel with freq 4982
- * @CHAN_ENUM_4985: channel with freq 4985
- * @CHAN_ENUM_4987: channel with freq 4987
- * @CHAN_ENUM_5032: channel with freq 5032
- * @CHAN_ENUM_5035: channel with freq 5035
- * @CHAN_ENUM_5037: channel with freq 5037
- * @CHAN_ENUM_5040: channel with freq 5040
- * @CHAN_ENUM_5042: channel with freq 5042
- * @CHAN_ENUM_5045: channel with freq 5045
- * @CHAN_ENUM_5047: channel with freq 5047
- * @CHAN_ENUM_5052: channel with freq 5052
- * @CHAN_ENUM_5055: channel with freq 5055
- * @CHAN_ENUM_5057: channel with freq 5057
- * @CHAN_ENUM_5060: channel with freq 5060
- * @CHAN_ENUM_5080: channel with freq 5080
- * @CHAN_ENUM_5180: channel with freq 5180
- * @CHAN_ENUM_5200: channel with freq 5200
- * @CHAN_ENUM_5220: channel with freq 5220
- * @CHAN_ENUM_5240: channel with freq 5240
- * @CHAN_ENUM_5260: channel with freq 5260
- * @CHAN_ENUM_5280: channel with freq 5280
- * @CHAN_ENUM_5300: channel with freq 5300
- * @CHAN_ENUM_5320: channel with freq 5320
- * @CHAN_ENUM_5500: channel with freq 5500
- * @CHAN_ENUM_5520: channel with freq 5520
- * @CHAN_ENUM_5540: channel with freq 5540
- * @CHAN_ENUM_5560: channel with freq 5560
- * @CHAN_ENUM_5580: channel with freq 5580
- * @CHAN_ENUM_5600: channel with freq 5600
- * @CHAN_ENUM_5620: channel with freq 5620
- * @CHAN_ENUM_5640: channel with freq 5640
- * @CHAN_ENUM_5660: channel with freq 5660
- * @CHAN_ENUM_5680: channel with freq 5680
- * @CHAN_ENUM_5700: channel with freq 5700
- * @CHAN_ENUM_5720: channel with freq 5720
- * @CHAN_ENUM_5745: channel with freq 5745
- * @CHAN_ENUM_5765: channel with freq 5765
- * @CHAN_ENUM_5785: channel with freq 5785
- * @CHAN_ENUM_5805: channel with freq 5805
- * @CHAN_ENUM_5825: channel with freq 5825
- * @CHAN_ENUM_5845: channel with freq 5845
- * @CHAN_ENUM_5850: channel with freq 5850
- * @CHAN_ENUM_5855: channel with freq 5855
- * @CHAN_ENUM_5860: channel with freq 5860
- * @CHAN_ENUM_5865: channel with freq 5865
- * @CHAN_ENUM_5870: channel with freq 5870
- * @CHAN_ENUM_5875: channel with freq 5875
- * @CHAN_ENUM_5880: channel with freq 5880
- * @CHAN_ENUM_5885: channel with freq 5885
- * @CHAN_ENUM_5890: channel with freq 5890
- * @CHAN_ENUM_5895: channel with freq 5895
- * @CHAN_ENUM_5900: channel with freq 5900
- * @CHAN_ENUM_5905: channel with freq 5905
- * @CHAN_ENUM_5910: channel with freq 5910
- * @CHAN_ENUM_5915: channel with freq 5915
- * @CHAN_ENUM_5920: channel with freq 5920
- * @CHAN_ENUM_5945: channel with freq 5945
- * @CHAN_ENUM_5965: channel with freq 5965
- * @CHAN_ENUM_5985: channel with freq 5985
- * @CHAN_ENUM_6005: channel with freq 6005
- * @CHAN_ENUM_6025: channel with freq 6025
- * @CHAN_ENUM_6045: channel with freq 6045
- * @CHAN_ENUM_6065: channel with freq 6065
- * @CHAN_ENUM_6085: channel with freq 6085
- * @CHAN_ENUM_6105: channel with freq 6105
- * @CHAN_ENUM_6125: channel with freq 6125
- * @CHAN_ENUM_6145: channel with freq 6145
- * @CHAN_ENUM_6165: channel with freq 6165
- * @CHAN_ENUM_6185: channel with freq 6185
- * @CHAN_ENUM_6205: channel with freq 6205
- * @CHAN_ENUM_6225: channel with freq 6225
- * @CHAN_ENUM_6245: channel with freq 6245
- * @CHAN_ENUM_6265: channel with freq 6265
- * @CHAN_ENUM_6285: channel with freq 6285
- * @CHAN_ENUM_6305: channel with freq 6305
- * @CHAN_ENUM_6325: channel with freq 6325
- * @CHAN_ENUM_6345: channel with freq 6345
- * @CHAN_ENUM_6365: channel with freq 6365
- * @CHAN_ENUM_6385: channel with freq 6385
- * @CHAN_ENUM_6405: channel with freq 6405
- * @CHAN_ENUM_6425: channel with freq 6425
- * @CHAN_ENUM_6445: channel with freq 6445
- * @CHAN_ENUM_6465: channel with freq 6465
- * @CHAN_ENUM_6485: channel with freq 6485
- * @CHAN_ENUM_6505: channel with freq 6505
- * @CHAN_ENUM_6525: channel with freq 6525
- * @CHAN_ENUM_6545: channel with freq 6545
- * @CHAN_ENUM_6565: channel with freq 6565
- * @CHAN_ENUM_6585: channel with freq 6585
- * @CHAN_ENUM_6605: channel with freq 6605
- * @CHAN_ENUM_6625: channel with freq 6625
- * @CHAN_ENUM_6645: channel with freq 6645
- * @CHAN_ENUM_6665: channel with freq 6665
- * @CHAN_ENUM_6685: channel with freq 6685
- * @CHAN_ENUM_6705: channel with freq 6705
- * @CHAN_ENUM_6725: channel with freq 6725
- * @CHAN_ENUM_6745: channel with freq 6745
- * @CHAN_ENUM_6765: channel with freq 6765
- * @CHAN_ENUM_6785: channel with freq 6785
- * @CHAN_ENUM_6805: channel with freq 6805
- * @CHAN_ENUM_6825: channel with freq 6825
- * @CHAN_ENUM_6845: channel with freq 6845
- * @CHAN_ENUM_6865: channel with freq 6865
- * @CHAN_ENUM_6885: channel with freq 6885
- * @CHAN_ENUM_6905: channel with freq 6905
- * @CHAN_ENUM_6925: channel with freq 6925
- * @CHAN_ENUM_6945: channel with freq 6945
- * @CHAN_ENUM_6965: channel with freq 6965
- * @CHAN_ENUM_6985: channel with freq 6985
- * @CHAN_ENUM_7005: channel with freq 7005
- * @CHAN_ENUM_7025: channel with freq 7025
- * @CHAN_ENUM_7045: channel with freq 7045
- * @CHAN_ENUM_7065: channel with freq 7065
- * @CHAN_ENUM_7085: channel with freq 7085
- * @CHAN_ENUM_7105: channel with freq 7105
+* @CHAN_ENUM_2412: channel with freq 2412
+* @CHAN_ENUM_2417: channel with freq 2417
+* @CHAN_ENUM_2422: channel with freq 2422
+* @CHAN_ENUM_2427: channel with freq 2427
+* @CHAN_ENUM_2432: channel with freq 2432
+* @CHAN_ENUM_2437: channel with freq 2437
+* @CHAN_ENUM_2442: channel with freq 2442
+* @CHAN_ENUM_2447: channel with freq 2447
+* @CHAN_ENUM_2452: channel with freq 2452
+* @CHAN_ENUM_2457: channel with freq 2457
+* @CHAN_ENUM_2462: channel with freq 2462
+* @CHAN_ENUM_2467: channel with freq 2467
+* @CHAN_ENUM_2472: channel with freq 2472
+* @CHAN_ENUM_2484: channel with freq 2484
+* @CHAN_ENUM_4912: channel with freq 4912
+* @CHAN_ENUM_4915: channel with freq 4915
+* @CHAN_ENUM_4917: channel with freq 4917
+* @CHAN_ENUM_4920: channel with freq 4920
+* @CHAN_ENUM_4922: channel with freq 4922
+* @CHAN_ENUM_4925: channel with freq 4925
+* @CHAN_ENUM_4927: channel with freq 4927
+* @CHAN_ENUM_4932: channel with freq 4932
+* @CHAN_ENUM_4935: channel with freq 4935
+* @CHAN_ENUM_4937: channel with freq 4937
+* @CHAN_ENUM_4940: channel with freq 4940
+* @CHAN_ENUM_4942: channel with freq 4942
+* @CHAN_ENUM_4945: channel with freq 4945
+* @CHAN_ENUM_4947: channel with freq 4947
+* @CHAN_ENUM_4950: channel with freq 4950
+* @CHAN_ENUM_4952: channel with freq 4952
+* @CHAN_ENUM_4955: channel with freq 4955
+* @CHAN_ENUM_4957: channel with freq 4957
+* @CHAN_ENUM_4960: channel with freq 4960
+* @CHAN_ENUM_4962: channel with freq 4962
+* @CHAN_ENUM_4965: channel with freq 4965
+* @CHAN_ENUM_4967: channel with freq 4967
+* @CHAN_ENUM_4970: channel with freq 4970
+* @CHAN_ENUM_4972: channel with freq 4972
+* @CHAN_ENUM_4975: channel with freq 4975
+* @CHAN_ENUM_4977: channel with freq 4977
+* @CHAN_ENUM_4980: channel with freq 4980
+* @CHAN_ENUM_4982: channel with freq 4982
+* @CHAN_ENUM_4985: channel with freq 4985
+* @CHAN_ENUM_4987: channel with freq 4987
+* @CHAN_ENUM_5032: channel with freq 5032
+* @CHAN_ENUM_5035: channel with freq 5035
+* @CHAN_ENUM_5037: channel with freq 5037
+* @CHAN_ENUM_5040: channel with freq 5040
+* @CHAN_ENUM_5042: channel with freq 5042
+* @CHAN_ENUM_5045: channel with freq 5045
+* @CHAN_ENUM_5047: channel with freq 5047
+* @CHAN_ENUM_5052: channel with freq 5052
+* @CHAN_ENUM_5055: channel with freq 5055
+* @CHAN_ENUM_5057: channel with freq 5057
+* @CHAN_ENUM_5060: channel with freq 5060
+* @CHAN_ENUM_5080: channel with freq 5080
+* @CHAN_ENUM_5180: channel with freq 5180
+* @CHAN_ENUM_5200: channel with freq 5200
+* @CHAN_ENUM_5220: channel with freq 5220
+* @CHAN_ENUM_5240: channel with freq 5240
+* @CHAN_ENUM_5260: channel with freq 5260
+* @CHAN_ENUM_5280: channel with freq 5280
+* @CHAN_ENUM_5300: channel with freq 5300
+* @CHAN_ENUM_5320: channel with freq 5320
+* @CHAN_ENUM_5500: channel with freq 5500
+* @CHAN_ENUM_5520: channel with freq 5520
+* @CHAN_ENUM_5540: channel with freq 5540
+* @CHAN_ENUM_5560: channel with freq 5560
+* @CHAN_ENUM_5580: channel with freq 5580
+* @CHAN_ENUM_5600: channel with freq 5600
+* @CHAN_ENUM_5620: channel with freq 5620
+* @CHAN_ENUM_5640: channel with freq 5640
+* @CHAN_ENUM_5660: channel with freq 5660
+* @CHAN_ENUM_5680: channel with freq 5680
+* @CHAN_ENUM_5700: channel with freq 5700
+* @CHAN_ENUM_5720: channel with freq 5720
+* @CHAN_ENUM_5745: channel with freq 5745
+* @CHAN_ENUM_5765: channel with freq 5765
+* @CHAN_ENUM_5785: channel with freq 5785
+* @CHAN_ENUM_5805: channel with freq 5805
+* @CHAN_ENUM_5825: channel with freq 5825
+* @CHAN_ENUM_5845: channel with freq 5845
+* @CHAN_ENUM_5850: channel with freq 5850
+* @CHAN_ENUM_5855: channel with freq 5855
+* @CHAN_ENUM_5860: channel with freq 5860
+* @CHAN_ENUM_5865: channel with freq 5865
+* @CHAN_ENUM_5870: channel with freq 5870
+* @CHAN_ENUM_5875: channel with freq 5875
+* @CHAN_ENUM_5880: channel with freq 5880
+* @CHAN_ENUM_5885: channel with freq 5885
+* @CHAN_ENUM_5890: channel with freq 5890
+* @CHAN_ENUM_5895: channel with freq 5895
+* @CHAN_ENUM_5900: channel with freq 5900
+* @CHAN_ENUM_5905: channel with freq 5905
+* @CHAN_ENUM_5910: channel with freq 5910
+* @CHAN_ENUM_5915: channel with freq 5915
+* @CHAN_ENUM_5920: channel with freq 5920
+* @CHAN_ENUM_5945: channel with freq 5945
+* @CHAN_ENUM_5965: channel with freq 5965
+* @CHAN_ENUM_5985: channel with freq 5985
+* @CHAN_ENUM_6005: channel with freq 6005
+* @CHAN_ENUM_6025: channel with freq 6025
+* @CHAN_ENUM_6045: channel with freq 6045
+* @CHAN_ENUM_6065: channel with freq 6065
+* @CHAN_ENUM_6085: channel with freq 6085
+* @CHAN_ENUM_6105: channel with freq 6105
+* @CHAN_ENUM_6125: channel with freq 6125
+* @CHAN_ENUM_6145: channel with freq 6145
+* @CHAN_ENUM_6165: channel with freq 6165
+* @CHAN_ENUM_6185: channel with freq 6185
+* @CHAN_ENUM_6205: channel with freq 6205
+* @CHAN_ENUM_6225: channel with freq 6225
+* @CHAN_ENUM_6245: channel with freq 6245
+* @CHAN_ENUM_6265: channel with freq 6265
+* @CHAN_ENUM_6285: channel with freq 6285
+* @CHAN_ENUM_6305: channel with freq 6305
+* @CHAN_ENUM_6325: channel with freq 6325
+* @CHAN_ENUM_6345: channel with freq 6345
+* @CHAN_ENUM_6365: channel with freq 6365
+* @CHAN_ENUM_6385: channel with freq 6385
+* @CHAN_ENUM_6405: channel with freq 6405
+* @CHAN_ENUM_6425: channel with freq 6425
+* @CHAN_ENUM_6445: channel with freq 6445
+* @CHAN_ENUM_6465: channel with freq 6465
+* @CHAN_ENUM_6485: channel with freq 6485
+* @CHAN_ENUM_6505: channel with freq 6505
+* @CHAN_ENUM_6525: channel with freq 6525
+* @CHAN_ENUM_6545: channel with freq 6545
+* @CHAN_ENUM_6565: channel with freq 6565
+* @CHAN_ENUM_6585: channel with freq 6585
+* @CHAN_ENUM_6605: channel with freq 6605
+* @CHAN_ENUM_6625: channel with freq 6625
+* @CHAN_ENUM_6645: channel with freq 6645
+* @CHAN_ENUM_6665: channel with freq 6665
+* @CHAN_ENUM_6685: channel with freq 6685
+* @CHAN_ENUM_6705: channel with freq 6705
+* @CHAN_ENUM_6725: channel with freq 6725
+* @CHAN_ENUM_6745: channel with freq 6745
+* @CHAN_ENUM_6765: channel with freq 6765
+* @CHAN_ENUM_6785: channel with freq 6785
+* @CHAN_ENUM_6805: channel with freq 6805
+* @CHAN_ENUM_6825: channel with freq 6825
+* @CHAN_ENUM_6845: channel with freq 6845
+* @CHAN_ENUM_6865: channel with freq 6865
+* @CHAN_ENUM_6885: channel with freq 6885
+* @CHAN_ENUM_6905: channel with freq 6905
+* @CHAN_ENUM_6925: channel with freq 6925
+* @CHAN_ENUM_6945: channel with freq 6945
+* @CHAN_ENUM_6965: channel with freq 6965
+* @CHAN_ENUM_6985: channel with freq 6985
+* @CHAN_ENUM_7005: channel with freq 7005
+* @CHAN_ENUM_7025: channel with freq 7025
+* @CHAN_ENUM_7045: channel with freq 7045
+* @CHAN_ENUM_7065: channel with freq 7065
+* @CHAN_ENUM_7085: channel with freq 7085
+* @CHAN_ENUM_7105: channel with freq 7105
  */
 enum channel_enum {
 	CHAN_ENUM_2412,
@@ -526,30 +526,30 @@ enum ctl_value {
  * struct ch_params
  * @ch_width: channel width
  * @sec_ch_offset: secondary channel offset
- * @center_freq_seg0: channel number for segment 0
- * @center_freq_seg1: channel number segment 1
- * @mhz_freq_seg0: Center frequency for segment 0
- * @mhz_freq_seg1: Center frequency for segment 1
+* @center_freq_seg0: channel number for segment 0
+* @center_freq_seg1: channel number segment 1
+* @mhz_freq_seg0: Center frequency for segment 0
+* @mhz_freq_seg1: Center frequency for segment 1
  */
 struct ch_params {
 	enum phy_ch_width ch_width;
 	uint8_t sec_ch_offset;
-	uint8_t center_freq_seg0;
-	uint8_t center_freq_seg1;
-	qdf_freq_t mhz_freq_seg0;
-	qdf_freq_t mhz_freq_seg1;
+uint8_t center_freq_seg0;
+uint8_t center_freq_seg1;
+qdf_freq_t mhz_freq_seg0;
+qdf_freq_t mhz_freq_seg1;
 };
 
 /**
- * struct channel_power
- * @center_freq: Channel Center Frequency
+* struct channel_power
+* @center_freq: Channel Center Frequency
  * @chan_num: channel number
- * @tx_power: TX power
+* @tx_power: TX power
  */
 struct channel_power {
-	qdf_freq_t center_freq;
+qdf_freq_t center_freq;
 	uint8_t chan_num;
-	uint32_t tx_power;
+uint32_t tx_power;
 };
 
 /**
@@ -591,7 +591,7 @@ enum behav_limit {
  * @chan_spacing: channel spacing
  * @offset: offset
  * @behav_limit: OR of bitmaps of enum behav_limit
- * @start_freq: starting frequency
+* @start_freq: starting frequency
  * @channels: channel set
  */
 struct reg_dmn_op_class_map_t {
@@ -599,7 +599,7 @@ struct reg_dmn_op_class_map_t {
 	uint8_t chan_spacing;
 	enum offset_t offset;
 	uint16_t behav_limit;
-	qdf_freq_t start_freq;
+qdf_freq_t start_freq;
 	uint8_t channels[REG_MAX_CHANNELS_PER_OPERATING_CLASS];
 };
 
@@ -607,9 +607,9 @@ struct reg_dmn_op_class_map_t {
  * struct regdmn_ap_cap_opclass_t: AP Cap operation class table
  * @op_class: operating class number
  * @ch_width: channel width in MHz
- * @start_freq: Starting Frequency in MHz
+* @start_freq: Starting Frequency in MHz
  * @behav_limit: OR of bitmaps of enum behav_limit
- * @max_tx_pwr_dbm: Maximum tx power in dbm
+* @max_tx_pwr_dbm: Maximum tx power in dbm
  * @num_supported_chan: Number of supported channels
  * @num_non_supported_chan: Number of non-supported channels
  * @sup_chan_list: Array of supported channel numbers
@@ -618,7 +618,7 @@ struct reg_dmn_op_class_map_t {
 struct regdmn_ap_cap_opclass_t {
 	uint8_t op_class;
 	uint8_t ch_width;
-	qdf_freq_t start_freq;
+qdf_freq_t start_freq;
 	uint16_t behav_limit;
 	uint8_t max_tx_pwr_dbm;
 	uint8_t num_supported_chan;
@@ -693,22 +693,22 @@ enum country_src {
 
 /**
  * struct regulatory_channel
- * @center_freq: center frequency
+* @center_freq: center frequency
  * @chan_num: channel number
  * @state: channel state
  * @chan_flags: channel flags
- * @tx_power: TX powers
+* @tx_power: TX powers
  * @min_bw: min bandwidth
  * @max_bw: max bandwidth
  * @nol_chan: whether channel is nol
  * @nol_history: Set NOL-History when STA vap detects RADAR.
  */
 struct regulatory_channel {
-	qdf_freq_t center_freq;
+qdf_freq_t center_freq;
 	uint8_t chan_num;
 	enum channel_state state;
 	uint32_t chan_flags;
-	uint32_t tx_power;
+uint32_t tx_power;
 	uint16_t min_bw;
 	uint16_t max_bw;
 	uint8_t ant_gain;
@@ -744,13 +744,13 @@ struct regulatory {
 
 /**
  * struct chan_map
- * @center_freq: center freq in mhz
+* @center_freq: center freq in mhz
  * @chan_num: channel number
  * @min_bw: min bw
  * @max_bw: max bw
  */
 struct chan_map {
-	qdf_freq_t center_freq;
+qdf_freq_t center_freq;
 	uint8_t chan_num;
 	uint16_t min_bw;
 	uint16_t max_bw;
@@ -767,13 +767,13 @@ struct bonded_channel {
 };
 
 /**
- * struct bonded_channel_freq
- * @start_freq: start channel frequency
- * @end_freq: end channel frequency
+* struct bonded_channel_freq
+* @start_freq: start channel frequency
+* @end_freq: end channel frequency
  */
 struct bonded_channel_freq {
-	uint16_t start_freq;
-	uint16_t end_freq;
+uint16_t start_freq;
+uint16_t end_freq;
 };
 
 struct set_country {
@@ -803,18 +803,18 @@ enum cc_setting_code {
 
 /**
  * struct cur_reg_rule
- * @start_freq: start frequency
- * @end_freq: end frequency
+* @start_freq: start frequency
+* @end_freq: end frequency
  * @max_bw: maximum bandwidth
- * @reg_power: regulatory power
+* @reg_power: regulatory power
  * @ant_gain: antenna gain
  * @flags: regulatory flags
  */
 struct cur_reg_rule {
-	uint16_t start_freq;
-	uint16_t end_freq;
+uint16_t start_freq;
+uint16_t end_freq;
 	uint16_t max_bw;
-	uint8_t reg_power;
+uint8_t reg_power;
 	uint8_t ant_gain;
 	uint16_t flags;
 };
@@ -966,13 +966,13 @@ struct reg_config_vars {
 };
 
 /**
- * struct reg_freq_range
- * @low_freq: low frequency
- * @high_freq: high frequency
+* struct reg_freq_range
+* @low_freq: low frequency
+* @high_freq: high frequency
  */
 struct reg_freq_range {
-	uint32_t low_freq;
-	uint32_t high_freq;
+uint32_t low_freq;
+uint32_t high_freq;
 };
 
 /**
@@ -1070,42 +1070,42 @@ struct cur_regdmn_info {
 };
 
 /**
- * struct ch_avoid_freq_type
- * @start_freq: start freq
- * @end_freq: end freq
+* struct ch_avoid_freq_type
+* @start_freq: start freq
+* @end_freq: end freq
  */
 struct ch_avoid_freq_type {
-	qdf_freq_t start_freq;
-	qdf_freq_t end_freq;
+qdf_freq_t start_freq;
+qdf_freq_t end_freq;
 };
 
 /**
  * struct ch_avoid_ind_type
  * @ch_avoid_range_cnt: count
- * @avoid_freq_range: avoid freq range array
+* @avoid_freq_range: avoid freq range array
  */
 struct ch_avoid_ind_type {
 	uint32_t ch_avoid_range_cnt;
-	struct ch_avoid_freq_type avoid_freq_range[CH_AVOID_MAX_RANGE];
+struct ch_avoid_freq_type avoid_freq_range[CH_AVOID_MAX_RANGE];
 };
 
 /**
  * struct unsafe_ch_list
  * @chan_cnt: no.of channels
- * @chan_freq_list: channel frequency list
+* @chan_freq_list: channel frequency list
  */
 struct unsafe_ch_list {
 	uint16_t chan_cnt;
-	uint16_t chan_freq_list[NUM_CHANNELS];
+uint16_t chan_freq_list[NUM_CHANNELS];
 };
 
 /**
- * struct avoid_freq_ind_data
- * @freq_list: frequency list
+* struct avoid_freq_ind_data
+* @freq_list: frequency list
  * @chan_list: channel list
  */
 struct avoid_freq_ind_data {
-	struct ch_avoid_ind_type freq_list;
+struct ch_avoid_ind_type freq_list;
 	struct unsafe_ch_list chan_list;
 };
 

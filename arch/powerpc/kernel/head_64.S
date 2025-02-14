@@ -1,19 +1,19 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
  *  Rewritten by Cort Dougan (cort@cs.nmt.edu) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@cs.nmt.edu>
- *  Adapted for Power Macintosh by Paul Mackerras.
+*  Adapted for Power Macintosh by Paul Mackerras.
  *  Low-level exception handlers and MMU support
  *  rewritten by Paul Mackerras.
  *    Copyright (C) 1996 Paul Mackerras.
  *
- *  Adapted for 64bit PowerPC by Dave Engebretsen, Peter Bergner, and
+*  Adapted for 64bit PowerPC by Dave Engebretsen, Peter Bergner, and
  *    Mike Corrigan {engebret|bergner|mikejc}@us.ibm.com
  *
  *  This file contains the entry point for the 64-bit kernel along
- *  with some early initialization code common to all 64-bit powerpc
+*  with some early initialization code common to all 64-bit powerpc
  *  variants.
  *
  *  This program is free software; you can redistribute it and/or
@@ -544,7 +544,7 @@ __boot_from_prom:
 	/*
 	 * Align the stack to 16-byte boundary
 	 * Depending on the size and layout of the ELF sections in the initial
-	 * boot binary, the stack pointer may be unaligned on PowerMac
+* boot binary, the stack pointer may be unaligned on PowerMac
 	 */
 	rldicr	r1,r1,0,59
 
@@ -706,7 +706,7 @@ copy_to_here:
 #ifdef CONFIG_SMP
 #ifdef CONFIG_PPC_PMAC
 /*
- * On PowerMac, secondary processors starts from the reset vector, which
+* On PowerMac, secondary processors starts from the reset vector, which
  * is temporarily turned into a call to one of the functions below.
  */
 	.section ".text";

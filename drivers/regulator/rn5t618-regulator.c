@@ -23,9 +23,9 @@ static const struct regulator_ops rn5t618_reg_ops = {
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
 	.is_enabled		= regulator_is_enabled_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
 };
 
 #define REG(rid, ereg, emask, vreg, vmask, min, max, step)		\
@@ -34,10 +34,10 @@ static const struct regulator_ops rn5t618_reg_ops = {
 		.of_match	= of_match_ptr(#rid),			\
 		.regulators_node = of_match_ptr("regulators"),		\
 		.id		= RN5T618_##rid,			\
-		.type		= REGULATOR_VOLTAGE,			\
+.type		= REGULATOR_VOLTAGE,			\
 		.owner		= THIS_MODULE,				\
 		.ops		= &rn5t618_reg_ops,			\
-		.n_voltages	= ((max) - (min)) / (step) + 1,		\
+.n_voltages	= ((max) - (min)) / (step) + 1,		\
 		.min_uV		= (min),				\
 		.uV_step	= (step),				\
 		.enable_reg	= RN5T618_##ereg,			\

@@ -737,12 +737,12 @@ static void eeh_bridge_check_link(struct eeh_dev *edev)
 		return;
 	}
 
-	/* Check power status if we have the capability */
+/* Check power status if we have the capability */
 	eeh_ops->read_config(pdn, cap + PCI_EXP_SLTCAP, 2, &val);
 	if (val & PCI_EXP_SLTCAP_PCP) {
 		eeh_ops->read_config(pdn, cap + PCI_EXP_SLTCTL, 2, &val);
 		if (val & PCI_EXP_SLTCTL_PCC) {
-			pr_debug("  In power-off state, power it on ...\n");
+pr_debug("  In power-off state, power it on ...\n");
 			val &= ~(PCI_EXP_SLTCTL_PCC | PCI_EXP_SLTCTL_PIC);
 			val |= (0x0100 & PCI_EXP_SLTCTL_PIC);
 			eeh_ops->write_config(pdn, cap + PCI_EXP_SLTCTL, 2, val);

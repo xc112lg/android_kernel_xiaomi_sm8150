@@ -6,7 +6,7 @@
  *
  * Maintained by: Olof Johansson <olof@lixom.net>
  *
- * Based on arch/powerpc/platforms/maple/pci.c
+* Based on arch/powerpc/platforms/maple/pci.c
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

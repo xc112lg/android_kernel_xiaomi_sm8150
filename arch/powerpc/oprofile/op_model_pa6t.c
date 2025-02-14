@@ -5,7 +5,7 @@
  *
  * Maintained by: Olof Johansson <olof@lixom.net>
  *
- * Based on arch/powerpc/oprofile/op_model_power4.c
+* Based on arch/powerpc/oprofile/op_model_power4.c
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

@@ -65,7 +65,7 @@ config XILINX_VIRTEX_GENERIC_BOARD
 
 	  The generic virtex board support matches any device tree which
 	  specifies 'xilinx,virtex' in its compatible field.  This includes
-	  the Xilinx ML3xx and ML4xx reference designs using the powerpc
+the Xilinx ML3xx and ML4xx reference designs using the powerpc
 	  core.
 
 	  Most Virtex designs should use this unless it needs to do some
@@ -81,10 +81,10 @@ config OBS600
 
 
 config PPC40x_SIMPLE
-	bool "Simple PowerPC 40x board support"
+bool "Simple PowerPC 40x board support"
 	depends on 40x
 	help
-	  This option enables the simple PowerPC 40x platform support.
+This option enables the simple PowerPC 40x platform support.
 
 # OAK doesn't exist but wanted to keep this around for any future 403GCX boards
 config 403GCX

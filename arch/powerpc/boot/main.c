@@ -171,7 +171,7 @@ static void prep_cmdline(void *chosen)
 	if (cmdline[0] == '\0')
 		getprop(chosen, "bootargs", cmdline, BOOT_COMMAND_LINE_SIZE-1);
 
-	printf("\n\rLinux/PowerPC load: %s", cmdline);
+printf("\n\rLinux/PowerPC load: %s", cmdline);
 
 	/* If possible, edit the command line */
 	if (console_ops.edit_cmdline && getline_timeout)

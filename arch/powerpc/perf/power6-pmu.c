@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER6 processors.
+* Performance counter support for POWER6 processors.
  *
  * Copyright 2008-2009 Paul Mackerras, IBM Corporation.
  *
@@ -15,7 +15,7 @@
 #include <asm/cputable.h>
 
 /*
- * Bits in event code for POWER6
+* Bits in event code for POWER6
  */
 #define PM_PMC_SH	20	/* PMC number (1-based) for direct events */
 #define PM_PMC_MSK	0x7
@@ -34,7 +34,7 @@
 #define PM_BUSEVENT_MSK	0xf3700
 
 /*
- * Bits in MMCR1 for POWER6
+* Bits in MMCR1 for POWER6
  */
 #define MMCR1_TTM0SEL_SH	60
 #define MMCR1_TTMSEL_SH(n)	(MMCR1_TTM0SEL_SH - (n) * 4)
@@ -242,7 +242,7 @@ static int p6_compute_mmcr(u64 event[], int n_ev,
 			if (ev & PM_LLAV)
 				mmcr1 |= MMCR1_PMC1_LLA_VALUE >> pmc;
 		}
-		if (power6_marked_instr_event(event[i]))
+if (power6_marked_instr_event(event[i]))
 			mmcra |= MMCRA_SAMPLE_ENABLE;
 		if (pmc < 4)
 			mmcr1 |= (unsigned long)psel << MMCR1_PMCSEL_SH(pmc);
@@ -524,7 +524,7 @@ static int power6_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
 };
 
 static struct power_pmu power6_pmu = {
-	.name			= "POWER6",
+.name			= "POWER6",
 	.n_counter		= 6,
 	.max_alternatives	= MAX_ALT,
 	.add_fields		= 0x1555,
@@ -535,18 +535,18 @@ static struct power_pmu power6_pmu = {
 	.disable_pmc		= p6_disable_pmc,
 	.limited_pmc_event	= p6_limited_pmc_event,
 	.flags			= PPMU_LIMITED_PMC5_6 | PPMU_ALT_SIPR,
-	.n_generic		= ARRAY_SIZE(power6_generic_events),
-	.generic_events		= power6_generic_events,
-	.cache_events		= &power6_cache_events,
+.n_generic		= ARRAY_SIZE(power6_generic_events),
+.generic_events		= power6_generic_events,
+.cache_events		= &power6_cache_events,
 };
 
 static int __init init_power6_pmu(void)
 {
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power6"))
+strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power6"))
 		return -ENODEV;
 
-	return register_power_pmu(&power6_pmu);
+return register_power_pmu(&power6_pmu);
 }
 
 early_initcall(init_power6_pmu);

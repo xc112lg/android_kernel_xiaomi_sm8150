@@ -19,21 +19,21 @@
 #include "debug.h"
 
 static struct cnss_vreg_cfg cnss_vreg_list[] = {
-	{"vdd-wlan-core", 1300000, 1300000, 0, 0},
-	{"vdd-wlan-io", 1800000, 1800000, 0, 0},
-	{"vdd-wlan-xtal-aon", 0, 0, 0, 0},
-	{"vdd-wlan-xtal", 1800000, 1800000, 0, 2},
-	{"vdd-wlan", 0, 0, 0, 0},
-	{"vdd-wlan-aon", 1055000, 1055000, 0, 0},
-	{"vdd-wlan-rfa1", 1350000, 1350000, 0, 0},
-	{"vdd-wlan-rfa2", 2040000, 2040000, 0, 0},
-	{"vdd-wlan-rfa3", 1900000, 1900000, 0, 0},
-	{"vdd-wlan-ctrl1", 0, 0, 0, 0},
-	{"vdd-wlan-ctrl2", 0, 0, 0, 0},
-	{"vdd-wlan-sp2t", 2700000, 2700000, 0, 0},
+{"vdd-wlan-core", 1300000, 1300000, 0, 0},
+{"vdd-wlan-io", 1800000, 1800000, 0, 0},
+{"vdd-wlan-xtal-aon", 0, 0, 0, 0},
+{"vdd-wlan-xtal", 1800000, 1800000, 0, 2},
+{"vdd-wlan", 0, 0, 0, 0},
+{"vdd-wlan-aon", 1055000, 1055000, 0, 0},
+{"vdd-wlan-rfa1", 1350000, 1350000, 0, 0},
+{"vdd-wlan-rfa2", 2040000, 2040000, 0, 0},
+{"vdd-wlan-rfa3", 1900000, 1900000, 0, 0},
+{"vdd-wlan-ctrl1", 0, 0, 0, 0},
+{"vdd-wlan-ctrl2", 0, 0, 0, 0},
+{"vdd-wlan-sp2t", 2700000, 2700000, 0, 0},
 	{"wlan-ant-switch", 2700000, 2700000, 20000, 0},
 	{"wlan-soc-swreg", 1200000, 1200000, 0, 0},
-	{"vdd-wlan-en", 0, 0, 0, 10},
+{"vdd-wlan-en", 0, 0, 0, 10},
 };
 
 #define CNSS_VREG_INFO_SIZE		ARRAY_SIZE(cnss_vreg_list)
@@ -203,12 +203,12 @@ static int cnss_vreg_on(struct cnss_plat_data *plat_priv)
 			    vreg->cfg.name);
 
 		if (vreg->cfg.min_uv != 0 && vreg->cfg.max_uv != 0) {
-			ret = regulator_set_voltage(vreg->reg,
+ret = regulator_set_voltage(vreg->reg,
 						    vreg->cfg.min_uv,
 						    vreg->cfg.max_uv);
 
 			if (ret) {
-				cnss_pr_err("Failed to set voltage for regulator %s, min_uv: %u, max_uv: %u, err = %d\n",
+cnss_pr_err("Failed to set voltage for regulator %s, min_uv: %u, max_uv: %u, err = %d\n",
 					    vreg->cfg.name,
 					    vreg->cfg.min_uv,
 					    vreg->cfg.max_uv, ret);
@@ -251,7 +251,7 @@ static int cnss_vreg_on(struct cnss_plat_data *plat_priv)
 		if (vreg->cfg.load_ua)
 			regulator_set_load(vreg->reg, 0);
 		if (vreg->cfg.min_uv != 0 && vreg->cfg.max_uv != 0)
-			regulator_set_voltage(vreg->reg, 0, vreg->cfg.max_uv);
+regulator_set_voltage(vreg->reg, 0, vreg->cfg.max_uv);
 		vreg->enabled = false;
 	}
 
@@ -294,10 +294,10 @@ static int cnss_vreg_off(struct cnss_plat_data *plat_priv)
 		}
 
 		if (vreg->cfg.min_uv != 0 && vreg->cfg.max_uv != 0) {
-			ret = regulator_set_voltage(vreg->reg, 0,
+ret = regulator_set_voltage(vreg->reg, 0,
 						    vreg->cfg.max_uv);
 			if (ret)
-				cnss_pr_err("Failed to set voltage for regulator %s, err = %d\n",
+cnss_pr_err("Failed to set voltage for regulator %s, err = %d\n",
 					    vreg->cfg.name, ret);
 		}
 		vreg->enabled = false;
@@ -497,5 +497,5 @@ int cnss_dev_specific_power_on(struct cnss_plat_data *plat_priv)
 	if (ret)
 		return ret;
 
-	return cnss_power_on_device(plat_priv);
+return cnss_power_on_device(plat_priv);
 }

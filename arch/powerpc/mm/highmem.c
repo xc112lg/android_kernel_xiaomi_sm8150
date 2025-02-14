@@ -2,7 +2,7 @@
 /*
  * highmem.c: virtual kernel memory mappings for high memory
  *
- * PowerPC version, stolen from the i386 version.
+* PowerPC version, stolen from the i386 version.
  *
  * Used in CONFIG_HIGHMEM systems for memory pages which
  * are not addressable by direct kernel virtual addresses.
@@ -17,7 +17,7 @@
  *
  * Copyright (C) 1999 Ingo Molnar <mingo@redhat.com>
  *
- * Reworked for PowerPC by various contributors. Moved from
+* Reworked for PowerPC by various contributors. Moved from
  * highmem.h by Benjamin Herrenschmidt (c) 2009 IBM Corp.
  */
 

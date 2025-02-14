@@ -105,10 +105,10 @@ struct mt6380_regulator_info {
 		.name = #vreg,						\
 		.of_match = of_match_ptr(match),			\
 		.ops = &mt6380_volt_range_ops,				\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = MT6380_ID_##vreg,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = ((max) - (min)) / (step) + 1,		\
+.n_voltages = ((max) - (min)) / (step) + 1,		\
 		.linear_ranges = volt_ranges,				\
 		.n_linear_ranges = ARRAY_SIZE(volt_ranges),		\
 		.vsel_reg = vosel,					\
@@ -128,10 +128,10 @@ struct mt6380_regulator_info {
 		.name = #vreg,						\
 		.of_match = of_match_ptr(match),			\
 		.ops = &mt6380_volt_table_ops,				\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = MT6380_ID_##vreg,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = ARRAY_SIZE(ldo_volt_table),		\
+.n_voltages = ARRAY_SIZE(ldo_volt_table),		\
 		.volt_table = ldo_volt_table,				\
 		.vsel_reg = vosel,					\
 		.vsel_mask = vosel_mask,				\
@@ -149,10 +149,10 @@ struct mt6380_regulator_info {
 		.name = #vreg,						\
 		.of_match = of_match_ptr(match),			\
 		.ops = &mt6380_volt_fixed_ops,				\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = MT6380_ID_##vreg,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = 1,					\
+.n_voltages = 1,					\
 		.enable_reg = enreg,					\
 		.enable_mask = BIT(enbit),				\
 		.min_uV = volt,						\
@@ -243,11 +243,11 @@ static unsigned int mt6380_regulator_get_mode(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops mt6380_volt_range_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -256,11 +256,11 @@ static const struct regulator_ops mt6380_volt_range_ops = {
 };
 
 static const struct regulator_ops mt6380_volt_table_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_iterate,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_iterate,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -269,7 +269,7 @@ static const struct regulator_ops mt6380_volt_table_ops = {
 };
 
 static const struct regulator_ops mt6380_volt_fixed_ops = {
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -295,7 +295,7 @@ static struct mt6380_regulator_info mt6380_regulators[] = {
 		   2, MT6380_ALDO_CON_0, 0x400, MT6380_ALDO_CON_0, 0x20),
 	MT6380_REG_FIXED("ldo-vphy", VPHYLDO, MT6380_LDO_CTRL_0, 7, 1800000,
 			 MT6380_PHYLDO_CON_0, 0x80),
-	MT6380_LDO("ldo-vddr", VDDRLDO, ldo_volt_table3, MT6380_LDO_CTRL_0,
+MT6380_LDO("ldo-vddr", VDDRLDO, ldo_volt_table3, MT6380_LDO_CTRL_0,
 		   8, MT6380_DDRLDO_CON_0, 0x3000, MT6380_DDRLDO_CON_0, 0x80),
 	MT6380_LDO("ldo-vt", VTLDO, ldo_volt_table4, MT6380_LDO_CTRL_0, 3,
 		   MT6380_TLDO_CON_0, 0x400, MT6380_TLDO_CON_0, 0x20),

@@ -89,13 +89,13 @@ struct opp_table *_find_opp_table(struct device *dev)
 }
 
 /**
- * dev_pm_opp_get_voltage() - Gets the voltage corresponding to an opp
- * @opp:	opp for which voltage has to be returned for
+* dev_pm_opp_get_voltage() - Gets the voltage corresponding to an opp
+* @opp:	opp for which voltage has to be returned for
  *
- * Return: voltage in micro volt corresponding to the opp, else
+* Return: voltage in micro volt corresponding to the opp, else
  * return 0
  *
- * This is useful only for devices with single power supply.
+* This is useful only for devices with single power supply.
  */
 unsigned long dev_pm_opp_get_voltage(struct dev_pm_opp *opp)
 {
@@ -109,10 +109,10 @@ unsigned long dev_pm_opp_get_voltage(struct dev_pm_opp *opp)
 EXPORT_SYMBOL_GPL(dev_pm_opp_get_voltage);
 
 /**
- * dev_pm_opp_get_freq() - Gets the frequency corresponding to an available opp
- * @opp:	opp for which frequency has to be returned for
+* dev_pm_opp_get_freq() - Gets the frequency corresponding to an available opp
+* @opp:	opp for which frequency has to be returned for
  *
- * Return: frequency in hertz corresponding to the opp, else
+* Return: frequency in hertz corresponding to the opp, else
  * return 0
  */
 unsigned long dev_pm_opp_get_freq(struct dev_pm_opp *opp)
@@ -171,10 +171,10 @@ unsigned long dev_pm_opp_get_max_clock_latency(struct device *dev)
 EXPORT_SYMBOL_GPL(dev_pm_opp_get_max_clock_latency);
 
 /**
- * dev_pm_opp_get_max_volt_latency() - Get max voltage latency in nanoseconds
+* dev_pm_opp_get_max_volt_latency() - Get max voltage latency in nanoseconds
  * @dev: device for which we do this operation
  *
- * Return: This function returns the max voltage latency in nanoseconds.
+* Return: This function returns the max voltage latency in nanoseconds.
  */
 unsigned long dev_pm_opp_get_max_volt_latency(struct device *dev)
 {
@@ -227,7 +227,7 @@ unsigned long dev_pm_opp_get_max_volt_latency(struct device *dev)
 	 */
 	for (i = 0; i < count; i++) {
 		reg = opp_table->regulators[i];
-		ret = regulator_set_voltage_time(reg, uV[i].min, uV[i].max);
+ret = regulator_set_voltage_time(reg, uV[i].min, uV[i].max);
 		if (ret > 0)
 			latency_ns += ret * 1000;
 	}
@@ -256,27 +256,27 @@ unsigned long dev_pm_opp_get_max_transition_latency(struct device *dev)
 EXPORT_SYMBOL_GPL(dev_pm_opp_get_max_transition_latency);
 
 /**
- * dev_pm_opp_get_suspend_opp_freq() - Get frequency of suspend opp in Hz
+* dev_pm_opp_get_suspend_opp_freq() - Get frequency of suspend opp in Hz
  * @dev:	device for which we do this operation
  *
- * Return: This function returns the frequency of the OPP marked as suspend_opp
+* Return: This function returns the frequency of the OPP marked as suspend_opp
  * if one is available, else returns 0;
  */
 unsigned long dev_pm_opp_get_suspend_opp_freq(struct device *dev)
 {
 	struct opp_table *opp_table;
-	unsigned long freq = 0;
+unsigned long freq = 0;
 
 	opp_table = _find_opp_table(dev);
 	if (IS_ERR(opp_table))
 		return 0;
 
 	if (opp_table->suspend_opp && opp_table->suspend_opp->available)
-		freq = dev_pm_opp_get_freq(opp_table->suspend_opp);
+freq = dev_pm_opp_get_freq(opp_table->suspend_opp);
 
 	dev_pm_opp_put_opp_table(opp_table);
 
-	return freq;
+return freq;
 }
 EXPORT_SYMBOL_GPL(dev_pm_opp_get_suspend_opp_freq);
 
@@ -316,9 +316,9 @@ int dev_pm_opp_get_opp_count(struct device *dev)
 EXPORT_SYMBOL_GPL(dev_pm_opp_get_opp_count);
 
 /**
- * dev_pm_opp_find_freq_exact() - search for an exact frequency
+* dev_pm_opp_find_freq_exact() - search for an exact frequency
  * @dev:		device for which we do this operation
- * @freq:		frequency to search for
+* @freq:		frequency to search for
  * @available:		true/false - match for available opp
  *
  * Return: Searches for exact match in the opp table and returns pointer to the
@@ -329,8 +329,8 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_get_opp_count);
  * ENODEV:	if device not found in list of registered devices
  *
  * Note: available is a modifier for the search. if available=true, then the
- * match is for exact matching frequency and is available in the stored OPP
- * table. if false, the match is for exact frequency which is not available.
+* match is for exact matching frequency and is available in the stored OPP
+* table. if false, the match is for exact frequency which is not available.
  *
  * This provides a mechanism to enable an opp which is not available currently
  * or the opposite as well.
@@ -339,7 +339,7 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_get_opp_count);
  * use.
  */
 struct dev_pm_opp *dev_pm_opp_find_freq_exact(struct device *dev,
-					      unsigned long freq,
+unsigned long freq,
 					      bool available)
 {
 	struct opp_table *opp_table;
@@ -357,7 +357,7 @@ struct dev_pm_opp *dev_pm_opp_find_freq_exact(struct device *dev,
 
 	list_for_each_entry(temp_opp, &opp_table->opp_list, node) {
 		if (temp_opp->available == available &&
-				temp_opp->rate == freq) {
+temp_opp->rate == freq) {
 			opp = temp_opp;
 
 			/* Increment the reference count of OPP */
@@ -374,16 +374,16 @@ struct dev_pm_opp *dev_pm_opp_find_freq_exact(struct device *dev,
 EXPORT_SYMBOL_GPL(dev_pm_opp_find_freq_exact);
 
 static noinline struct dev_pm_opp *_find_freq_ceil(struct opp_table *opp_table,
-						   unsigned long *freq)
+unsigned long *freq)
 {
 	struct dev_pm_opp *temp_opp, *opp = ERR_PTR(-ERANGE);
 
 	mutex_lock(&opp_table->lock);
 
 	list_for_each_entry(temp_opp, &opp_table->opp_list, node) {
-		if (temp_opp->available && temp_opp->rate >= *freq) {
+if (temp_opp->available && temp_opp->rate >= *freq) {
 			opp = temp_opp;
-			*freq = opp->rate;
+*freq = opp->rate;
 
 			/* Increment the reference count of OPP */
 			dev_pm_opp_get(opp);
@@ -397,14 +397,14 @@ static noinline struct dev_pm_opp *_find_freq_ceil(struct opp_table *opp_table,
 }
 
 /**
- * dev_pm_opp_find_freq_ceil() - Search for an rounded ceil freq
+* dev_pm_opp_find_freq_ceil() - Search for an rounded ceil freq
  * @dev:	device for which we do this operation
- * @freq:	Start frequency
+* @freq:	Start frequency
  *
- * Search for the matching ceil *available* OPP from a starting freq
+* Search for the matching ceil *available* OPP from a starting freq
  * for a device.
  *
- * Return: matching *opp and refreshes *freq accordingly, else returns
+* Return: matching *opp and refreshes *freq accordingly, else returns
  * ERR_PTR in case of error and should be handled using IS_ERR. Error return
  * values can be:
  * EINVAL:	for bad pointer
@@ -415,13 +415,13 @@ static noinline struct dev_pm_opp *_find_freq_ceil(struct opp_table *opp_table,
  * use.
  */
 struct dev_pm_opp *dev_pm_opp_find_freq_ceil(struct device *dev,
-					     unsigned long *freq)
+unsigned long *freq)
 {
 	struct opp_table *opp_table;
 	struct dev_pm_opp *opp;
 
-	if (!dev || !freq) {
-		dev_err(dev, "%s: Invalid argument freq=%p\n", __func__, freq);
+if (!dev || !freq) {
+dev_err(dev, "%s: Invalid argument freq=%p\n", __func__, freq);
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -429,7 +429,7 @@ struct dev_pm_opp *dev_pm_opp_find_freq_ceil(struct device *dev,
 	if (IS_ERR(opp_table))
 		return ERR_CAST(opp_table);
 
-	opp = _find_freq_ceil(opp_table, freq);
+opp = _find_freq_ceil(opp_table, freq);
 
 	dev_pm_opp_put_opp_table(opp_table);
 
@@ -438,14 +438,14 @@ struct dev_pm_opp *dev_pm_opp_find_freq_ceil(struct device *dev,
 EXPORT_SYMBOL_GPL(dev_pm_opp_find_freq_ceil);
 
 /**
- * dev_pm_opp_find_freq_floor() - Search for a rounded floor freq
+* dev_pm_opp_find_freq_floor() - Search for a rounded floor freq
  * @dev:	device for which we do this operation
- * @freq:	Start frequency
+* @freq:	Start frequency
  *
- * Search for the matching floor *available* OPP from a starting freq
+* Search for the matching floor *available* OPP from a starting freq
  * for a device.
  *
- * Return: matching *opp and refreshes *freq accordingly, else returns
+* Return: matching *opp and refreshes *freq accordingly, else returns
  * ERR_PTR in case of error and should be handled using IS_ERR. Error return
  * values can be:
  * EINVAL:	for bad pointer
@@ -456,13 +456,13 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_find_freq_ceil);
  * use.
  */
 struct dev_pm_opp *dev_pm_opp_find_freq_floor(struct device *dev,
-					      unsigned long *freq)
+unsigned long *freq)
 {
 	struct opp_table *opp_table;
 	struct dev_pm_opp *temp_opp, *opp = ERR_PTR(-ERANGE);
 
-	if (!dev || !freq) {
-		dev_err(dev, "%s: Invalid argument freq=%p\n", __func__, freq);
+if (!dev || !freq) {
+dev_err(dev, "%s: Invalid argument freq=%p\n", __func__, freq);
 		return ERR_PTR(-EINVAL);
 	}
 
@@ -475,7 +475,7 @@ struct dev_pm_opp *dev_pm_opp_find_freq_floor(struct device *dev,
 	list_for_each_entry(temp_opp, &opp_table->opp_list, node) {
 		if (temp_opp->available) {
 			/* go to the next node, before choosing prev */
-			if (temp_opp->rate > *freq)
+if (temp_opp->rate > *freq)
 				break;
 			else
 				opp = temp_opp;
@@ -489,7 +489,7 @@ struct dev_pm_opp *dev_pm_opp_find_freq_floor(struct device *dev,
 	dev_pm_opp_put_opp_table(opp_table);
 
 	if (!IS_ERR(opp))
-		*freq = opp->rate;
+*freq = opp->rate;
 
 	return opp;
 }
@@ -507,13 +507,13 @@ static int _set_opp_voltage(struct device *dev, struct regulator *reg,
 		return 0;
 	}
 
-	dev_dbg(dev, "%s: voltages (mV): %lu %lu %lu\n", __func__,
+dev_dbg(dev, "%s: voltages (mV): %lu %lu %lu\n", __func__,
 		supply->u_volt_min, supply->u_volt, supply->u_volt_max);
 
-	ret = regulator_set_voltage_triplet(reg, supply->u_volt_min,
+ret = regulator_set_voltage_triplet(reg, supply->u_volt_min,
 					    supply->u_volt, supply->u_volt_max);
 	if (ret)
-		dev_err(dev, "%s: failed to set voltage (%lu %lu %lu mV): %d\n",
+dev_err(dev, "%s: failed to set voltage (%lu %lu %lu mV): %d\n",
 			__func__, supply->u_volt_min, supply->u_volt,
 			supply->u_volt_max, ret);
 
@@ -522,11 +522,11 @@ static int _set_opp_voltage(struct device *dev, struct regulator *reg,
 
 static inline int
 _generic_set_opp_clk_only(struct device *dev, struct clk *clk,
-			  unsigned long old_freq, unsigned long freq)
+unsigned long old_freq, unsigned long freq)
 {
 	int ret;
 
-	ret = clk_set_rate(clk, freq);
+ret = clk_set_rate(clk, freq);
 	if (ret) {
 		dev_err(dev, "%s: failed to set clock rate: %d\n", __func__,
 			ret);
@@ -537,8 +537,8 @@ _generic_set_opp_clk_only(struct device *dev, struct clk *clk,
 
 static int _generic_set_opp_regulator(const struct opp_table *opp_table,
 				      struct device *dev,
-				      unsigned long old_freq,
-				      unsigned long freq,
+unsigned long old_freq,
+unsigned long freq,
 				      struct dev_pm_opp_supply *old_supply,
 				      struct dev_pm_opp_supply *new_supply)
 {
@@ -551,58 +551,58 @@ static int _generic_set_opp_regulator(const struct opp_table *opp_table,
 		return -EINVAL;
 	}
 
-	/* Scaling up? Scale voltage before frequency */
-	if (freq >= old_freq) {
-		ret = _set_opp_voltage(dev, reg, new_supply);
+/* Scaling up? Scale voltage before frequency */
+if (freq >= old_freq) {
+ret = _set_opp_voltage(dev, reg, new_supply);
 		if (ret)
-			goto restore_voltage;
+goto restore_voltage;
 	}
 
-	/* Change frequency */
-	ret = _generic_set_opp_clk_only(dev, opp_table->clk, old_freq, freq);
+/* Change frequency */
+ret = _generic_set_opp_clk_only(dev, opp_table->clk, old_freq, freq);
 	if (ret)
-		goto restore_voltage;
+goto restore_voltage;
 
-	/* Scaling down? Scale voltage after frequency */
-	if (freq < old_freq) {
-		ret = _set_opp_voltage(dev, reg, new_supply);
+/* Scaling down? Scale voltage after frequency */
+if (freq < old_freq) {
+ret = _set_opp_voltage(dev, reg, new_supply);
 		if (ret)
-			goto restore_freq;
+goto restore_freq;
 	}
 
 	return 0;
 
 restore_freq:
-	if (_generic_set_opp_clk_only(dev, opp_table->clk, freq, old_freq))
-		dev_err(dev, "%s: failed to restore old-freq (%lu Hz)\n",
-			__func__, old_freq);
+if (_generic_set_opp_clk_only(dev, opp_table->clk, freq, old_freq))
+dev_err(dev, "%s: failed to restore old-freq (%lu Hz)\n",
+__func__, old_freq);
 restore_voltage:
-	/* This shouldn't harm even if the voltages weren't updated earlier */
+/* This shouldn't harm even if the voltages weren't updated earlier */
 	if (old_supply)
-		_set_opp_voltage(dev, reg, old_supply);
+_set_opp_voltage(dev, reg, old_supply);
 
 	return ret;
 }
 
 /**
- * dev_pm_opp_set_rate() - Configure new OPP based on frequency
+* dev_pm_opp_set_rate() - Configure new OPP based on frequency
  * @dev:	 device for which we do this operation
- * @target_freq: frequency to achieve
+* @target_freq: frequency to achieve
  *
- * This configures the power-supplies and clock source to the levels specified
- * by the OPP corresponding to the target_freq.
+* This configures the power-supplies and clock source to the levels specified
+* by the OPP corresponding to the target_freq.
  */
 int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
 {
 	struct opp_table *opp_table;
-	unsigned long freq, old_freq;
+unsigned long freq, old_freq;
 	struct dev_pm_opp *old_opp, *opp;
 	struct clk *clk;
 	int ret, size;
 
-	if (unlikely(!target_freq)) {
-		dev_err(dev, "%s: Invalid target frequency %lu\n", __func__,
-			target_freq);
+if (unlikely(!target_freq)) {
+dev_err(dev, "%s: Invalid target frequency %lu\n", __func__,
+target_freq);
 		return -EINVAL;
 	}
 
@@ -620,42 +620,42 @@ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
 		goto put_opp_table;
 	}
 
-	freq = clk_round_rate(clk, target_freq);
-	if ((long)freq <= 0)
-		freq = target_freq;
+freq = clk_round_rate(clk, target_freq);
+if ((long)freq <= 0)
+freq = target_freq;
 
-	old_freq = clk_get_rate(clk);
+old_freq = clk_get_rate(clk);
 
 	/* Return early if nothing to do */
-	if (old_freq == freq) {
-		dev_dbg(dev, "%s: old/new frequencies (%lu Hz) are same, nothing to do\n",
-			__func__, freq);
+if (old_freq == freq) {
+dev_dbg(dev, "%s: old/new frequencies (%lu Hz) are same, nothing to do\n",
+__func__, freq);
 		ret = 0;
 		goto put_opp_table;
 	}
 
-	old_opp = _find_freq_ceil(opp_table, &old_freq);
+old_opp = _find_freq_ceil(opp_table, &old_freq);
 	if (IS_ERR(old_opp)) {
-		dev_err(dev, "%s: failed to find current OPP for freq %lu (%ld)\n",
-			__func__, old_freq, PTR_ERR(old_opp));
+dev_err(dev, "%s: failed to find current OPP for freq %lu (%ld)\n",
+__func__, old_freq, PTR_ERR(old_opp));
 	}
 
-	opp = _find_freq_ceil(opp_table, &freq);
+opp = _find_freq_ceil(opp_table, &freq);
 	if (IS_ERR(opp)) {
 		ret = PTR_ERR(opp);
-		dev_err(dev, "%s: failed to find OPP for freq %lu (%d)\n",
-			__func__, freq, ret);
+dev_err(dev, "%s: failed to find OPP for freq %lu (%d)\n",
+__func__, freq, ret);
 		goto put_old_opp;
 	}
 
 	dev_dbg(dev, "%s: switching OPP: %lu Hz --> %lu Hz\n", __func__,
-		old_freq, freq);
+old_freq, freq);
 
-	/* Only frequency scaling */
+/* Only frequency scaling */
 	if (!opp_table->regulators) {
-		ret = _generic_set_opp_clk_only(dev, clk, old_freq, freq);
+ret = _generic_set_opp_clk_only(dev, clk, old_freq, freq);
 	} else if (!opp_table->set_opp) {
-		ret = _generic_set_opp_regulator(opp_table, dev, old_freq, freq,
+ret = _generic_set_opp_regulator(opp_table, dev, old_freq, freq,
 						 IS_ERR(old_opp) ? NULL : old_opp->supplies,
 						 opp->supplies);
 	} else {
@@ -667,14 +667,14 @@ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
 		data->clk = clk;
 		data->dev = dev;
 
-		data->old_opp.rate = old_freq;
+data->old_opp.rate = old_freq;
 		size = sizeof(*opp->supplies) * opp_table->regulator_count;
 		if (IS_ERR(old_opp))
 			memset(data->old_opp.supplies, 0, size);
 		else
 			memcpy(data->old_opp.supplies, old_opp->supplies, size);
 
-		data->new_opp.rate = freq;
+data->new_opp.rate = freq;
 		memcpy(data->new_opp.supplies, opp->supplies, size);
 
 		ret = opp_table->set_opp(data);
@@ -729,7 +729,7 @@ static struct opp_table *_allocate_opp_table(struct device *dev)
 	int ret;
 
 	/*
-	 * Allocate a new OPP table. In the infrequent case where a new
+* Allocate a new OPP table. In the infrequent case where a new
 	 * device is needed to be added, we pay this penalty.
 	 */
 	opp_table = kzalloc(sizeof(*opp_table), GFP_KERNEL);
@@ -833,7 +833,7 @@ static void _opp_kref_release(struct kref *kref)
 
 	/*
 	 * Notify the changes in the availability of the operable
-	 * frequency/voltage list.
+* frequency/voltage list.
 	 */
 	blocking_notifier_call_chain(&opp_table->head, OPP_EVENT_REMOVE, opp);
 	opp_debug_remove_one(opp);
@@ -858,7 +858,7 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_put);
 /**
  * dev_pm_opp_remove()  - Remove an OPP from OPP table
  * @dev:	device for which we do this operation
- * @freq:	OPP to remove with matching 'freq'
+* @freq:	OPP to remove with matching 'freq'
  *
  * This function removes an opp from the opp table.
  */
@@ -875,7 +875,7 @@ void dev_pm_opp_remove(struct device *dev, unsigned long freq)
 	mutex_lock(&opp_table->lock);
 
 	list_for_each_entry(opp, &opp_table->opp_list, node) {
-		if (opp->rate == freq) {
+if (opp->rate == freq) {
 			found = true;
 			break;
 		}
@@ -886,8 +886,8 @@ void dev_pm_opp_remove(struct device *dev, unsigned long freq)
 	if (found) {
 		dev_pm_opp_put(opp);
 	} else {
-		dev_warn(dev, "%s: Couldn't find OPP with freq: %lu\n",
-			 __func__, freq);
+dev_warn(dev, "%s: Couldn't find OPP with freq: %lu\n",
+__func__, freq);
 	}
 
 	dev_pm_opp_put_opp_table(opp_table);
@@ -927,7 +927,7 @@ static bool _opp_supported_by_regulators(struct dev_pm_opp *opp,
 	for (i = 0; i < opp_table->regulator_count; i++) {
 		reg = opp_table->regulators[i];
 
-		if (!regulator_is_supported_voltage(reg,
+if (!regulator_is_supported_voltage(reg,
 					opp->supplies[i].u_volt_min,
 					opp->supplies[i].u_volt_max)) {
 			pr_warn("%s: OPP minuV: %lu maxuV: %lu, not supported by regulator\n",
@@ -943,11 +943,11 @@ static bool _opp_supported_by_regulators(struct dev_pm_opp *opp,
 /*
  * Returns:
  * 0: On success. And appropriate error message for duplicate OPPs.
- * -EBUSY: For OPP with same freq/volt and is available. The callers of
+* -EBUSY: For OPP with same freq/volt and is available. The callers of
  *  _opp_add() must return 0 if they receive -EBUSY from it. This is to make
  *  sure we don't print error messages unnecessarily if different parts of
  *  kernel try to initialize the OPP table.
- * -EEXIST: For OPP with same freq but different volt or is unavailable. This
+* -EEXIST: For OPP with same freq but different volt or is unavailable. This
  *  should be considered an error by the callers of _opp_add().
  */
 int _opp_add(struct device *dev, struct dev_pm_opp *new_opp,
@@ -958,7 +958,7 @@ int _opp_add(struct device *dev, struct dev_pm_opp *new_opp,
 	int ret;
 
 	/*
-	 * Insert new OPP in order of increasing frequency and discard if
+* Insert new OPP in order of increasing frequency and discard if
 	 * already present.
 	 *
 	 * Need to use &opp_table->opp_list in the condition part of the 'for'
@@ -978,12 +978,12 @@ int _opp_add(struct device *dev, struct dev_pm_opp *new_opp,
 			break;
 
 		/* Duplicate OPPs */
-		dev_warn(dev, "%s: duplicate OPPs detected. Existing: freq: %lu, volt: %lu, enabled: %d. New: freq: %lu, volt: %lu, enabled: %d\n",
+dev_warn(dev, "%s: duplicate OPPs detected. Existing: freq: %lu, volt: %lu, enabled: %d. New: freq: %lu, volt: %lu, enabled: %d\n",
 			 __func__, opp->rate, opp->supplies[0].u_volt,
 			 opp->available, new_opp->rate,
 			 new_opp->supplies[0].u_volt, new_opp->available);
 
-		/* Should we compare voltages for all regulators here ? */
+/* Should we compare voltages for all regulators here ? */
 		ret = opp->available &&
 		      new_opp->supplies[0].u_volt == opp->supplies[0].u_volt ? -EBUSY : -EEXIST;
 
@@ -1018,8 +1018,8 @@ int _opp_add(struct device *dev, struct dev_pm_opp *new_opp,
  * _opp_add_v1() - Allocate a OPP based on v1 bindings.
  * @opp_table:	OPP table
  * @dev:	device for which we do this operation
- * @freq:	Frequency in Hz for this OPP
- * @u_volt:	Voltage in uVolts for this OPP
+* @freq:	Frequency in Hz for this OPP
+* @u_volt:	Voltage in uVolts for this OPP
  * @dynamic:	Dynamically added OPPs.
  *
  * This function adds an opp definition to the opp table and returns status.
@@ -1031,13 +1031,13 @@ int _opp_add(struct device *dev, struct dev_pm_opp *new_opp,
  *
  * Return:
  * 0		On success OR
- *		Duplicate OPPs (both freq and volt are same) and opp->available
- * -EEXIST	Freq are same and volt are different OR
- *		Duplicate OPPs (both freq and volt are same) and !opp->available
+*		Duplicate OPPs (both freq and volt are same) and opp->available
+* -EEXIST	Freq are same and volt are different OR
+*		Duplicate OPPs (both freq and volt are same) and !opp->available
  * -ENOMEM	Memory allocation failure
  */
 int _opp_add_v1(struct opp_table *opp_table, struct device *dev,
-		unsigned long freq, long u_volt, bool dynamic)
+unsigned long freq, long u_volt, bool dynamic)
 {
 	struct dev_pm_opp *new_opp;
 	unsigned long tol;
@@ -1048,8 +1048,8 @@ int _opp_add_v1(struct opp_table *opp_table, struct device *dev,
 		return -ENOMEM;
 
 	/* populate the opp table */
-	new_opp->rate = freq;
-	tol = u_volt * opp_table->voltage_tolerance_v1 / 100;
+new_opp->rate = freq;
+tol = u_volt * opp_table->voltage_tolerance_v1 / 100;
 	new_opp->supplies[0].u_volt = u_volt;
 	new_opp->supplies[0].u_volt_min = u_volt - tol;
 	new_opp->supplies[0].u_volt_max = u_volt + tol;
@@ -1066,7 +1066,7 @@ int _opp_add_v1(struct opp_table *opp_table, struct device *dev,
 
 	/*
 	 * Notify the changes in the availability of the operable
-	 * frequency/voltage list.
+* frequency/voltage list.
 	 */
 	blocking_notifier_call_chain(&opp_table->head, OPP_EVENT_ADD, new_opp);
 	return 0;
@@ -1263,7 +1263,7 @@ static void _free_set_opp_data(struct opp_table *opp_table)
  * @count: Number of regulators.
  *
  * In order to support OPP switching, OPP layer needs to know the name of the
- * device's regulators, as the core would be required to switch voltages as
+* device's regulators, as the core would be required to switch voltages as
  * well.
  *
  * This must be called before any OPPs are initialized for the device.
@@ -1505,8 +1505,8 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_register_put_opp_helper);
 /**
  * dev_pm_opp_add()  - Add an OPP table from a table definitions
  * @dev:	device for which we do this operation
- * @freq:	Frequency in Hz for this OPP
- * @u_volt:	Voltage in uVolts for this OPP
+* @freq:	Frequency in Hz for this OPP
+* @u_volt:	Voltage in uVolts for this OPP
  *
  * This function adds an opp definition to the opp table and returns status.
  * The opp is made available by default and it can be controlled using
@@ -1514,9 +1514,9 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_register_put_opp_helper);
  *
  * Return:
  * 0		On success OR
- *		Duplicate OPPs (both freq and volt are same) and opp->available
- * -EEXIST	Freq are same and volt are different OR
- *		Duplicate OPPs (both freq and volt are same) and !opp->available
+*		Duplicate OPPs (both freq and volt are same) and opp->available
+* -EEXIST	Freq are same and volt are different OR
+*		Duplicate OPPs (both freq and volt are same) and !opp->available
  * -ENOMEM	Memory allocation failure
  */
 int dev_pm_opp_add(struct device *dev, unsigned long freq, unsigned long u_volt)
@@ -1528,7 +1528,7 @@ int dev_pm_opp_add(struct device *dev, unsigned long freq, unsigned long u_volt)
 	if (!opp_table)
 		return -ENOMEM;
 
-	ret = _opp_add_v1(opp_table, dev, freq, u_volt, true);
+ret = _opp_add_v1(opp_table, dev, freq, u_volt, true);
 
 	dev_pm_opp_put_opp_table(opp_table);
 	return ret;
@@ -1538,7 +1538,7 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_add);
 /**
  * _opp_set_availability() - helper to set the availability of an opp
  * @dev:		device for which we do this operation
- * @freq:		OPP frequency to modify availability
+* @freq:		OPP frequency to modify availability
  * @availability_req:	availability status requested for this opp
  *
  * Set the availability of an OPP, opp_{enable,disable} share a common logic
@@ -1565,9 +1565,9 @@ static int _opp_set_availability(struct device *dev, unsigned long freq,
 
 	mutex_lock(&opp_table->lock);
 
-	/* Do we have the frequency? */
+/* Do we have the frequency? */
 	list_for_each_entry(tmp_opp, &opp_table->opp_list, node) {
-		if (tmp_opp->rate == freq) {
+if (tmp_opp->rate == freq) {
 			opp = tmp_opp;
 			break;
 		}
@@ -1608,7 +1608,7 @@ put_table:
 /**
  * dev_pm_opp_enable() - Enable a specific OPP
  * @dev:	device for which we do this operation
- * @freq:	OPP frequency to enable
+* @freq:	OPP frequency to enable
  *
  * Enables a provided opp. If the operation is valid, this returns 0, else the
  * corresponding error value. It is meant to be used for users an OPP available
@@ -1620,14 +1620,14 @@ put_table:
  */
 int dev_pm_opp_enable(struct device *dev, unsigned long freq)
 {
-	return _opp_set_availability(dev, freq, true);
+return _opp_set_availability(dev, freq, true);
 }
 EXPORT_SYMBOL_GPL(dev_pm_opp_enable);
 
 /**
  * dev_pm_opp_disable() - Disable a specific OPP
  * @dev:	device for which we do this operation
- * @freq:	OPP frequency to disable
+* @freq:	OPP frequency to disable
  *
  * Disables a provided opp. If the operation is valid, this returns
  * 0, else the corresponding error value. It is meant to be a temporary
@@ -1640,7 +1640,7 @@ EXPORT_SYMBOL_GPL(dev_pm_opp_enable);
  */
 int dev_pm_opp_disable(struct device *dev, unsigned long freq)
 {
-	return _opp_set_availability(dev, freq, false);
+return _opp_set_availability(dev, freq, false);
 }
 EXPORT_SYMBOL_GPL(dev_pm_opp_disable);
 

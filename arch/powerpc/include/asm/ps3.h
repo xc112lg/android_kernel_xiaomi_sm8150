@@ -445,7 +445,7 @@ extern struct bus_type ps3_system_bus_type;
 
 struct ps3_sys_manager_ops {
 	struct ps3_system_bus_device *dev;
-	void (*power_off)(struct ps3_system_bus_device *dev);
+void (*power_off)(struct ps3_system_bus_device *dev);
 	void (*restart)(struct ps3_system_bus_device *dev);
 };
 

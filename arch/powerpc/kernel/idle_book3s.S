@@ -1,6 +1,6 @@
 /*
- *  This file contains idle entry/exit functions for POWER7,
- *  POWER8 and POWER9 CPUs.
+*  This file contains idle entry/exit functions for POWER7,
+*  POWER8 and POWER9 CPUs.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -58,7 +58,7 @@ save_sprs_to_stack:
 	 */
 BEGIN_FTR_SECTION
 	/*
-	 * Note - SDR1 is dropped in Power ISA v3. Hence not restoring
+* Note - SDR1 is dropped in Power ISA v3. Hence not restoring
 	 * SDR1 here
 	 */
 	mfspr	r3,SPRN_PTCR
@@ -86,12 +86,12 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_ARCH_300)
 	mfspr	r3,SPRN_WORC
 	std	r3,_WORC(r1)
 /*
- * On POWER9, there are idle states such as stop4, invoked via cpuidle,
+* On POWER9, there are idle states such as stop4, invoked via cpuidle,
  * that lose hypervisor resources. In such cases, we need to save
  * additional SPRs before entering those idle states so that they can
  * be restored to their older values on wakeup from the idle state.
  *
- * On POWER8, the only such deep idle state is winkle which is used
+* On POWER8, the only such deep idle state is winkle which is used
  * only in the context of CPU-Hotplug, where these additional SPRs are
  * reinitiazed to a sane value. Hence there is no need to save/restore
  * these SPRs.
@@ -171,8 +171,8 @@ core_idle_lock_held:
 
 /*
  * Pass requested state in r3:
- *	r3 - PNV_THREAD_NAP/SLEEP/WINKLE in POWER8
- *	   - Requested PSSCR value in POWER9
+*	r3 - PNV_THREAD_NAP/SLEEP/WINKLE in POWER8
+*	   - Requested PSSCR value in POWER9
  *
  * Address of idle handler to branch to in realmode in r4
  */
@@ -204,12 +204,12 @@ BEGIN_FTR_SECTION
 	mfspr	r4, SPRN_AMR
 	mfspr	r5, SPRN_IAMR
 	mfspr	r6, SPRN_UAMOR
-	std	r4, PNV_POWERSAVE_AMR(r1)
-	std	r5, PNV_POWERSAVE_IAMR(r1)
-	std	r6, PNV_POWERSAVE_UAMOR(r1)
+std	r4, PNV_POWERSAVE_AMR(r1)
+std	r5, PNV_POWERSAVE_IAMR(r1)
+std	r6, PNV_POWERSAVE_UAMOR(r1)
 BEGIN_FTR_SECTION_NESTED(42)
 	mfspr	r7, SPRN_AMOR
-	std	r7, PNV_POWERSAVE_AMOR(r1)
+std	r7, PNV_POWERSAVE_AMOR(r1)
 END_FTR_SECTION_NESTED_IFSET(CPU_FTR_HVMODE, 42)
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 
@@ -219,14 +219,14 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 
 BEGIN_FTR_SECTION
 	/*
-	 * POWER9 does not require real mode to stop, and presently does not
+* POWER9 does not require real mode to stop, and presently does not
 	 * set hwthread_state for KVM (threads don't share MMU context), so
 	 * we can remain in virtual mode for this.
 	 */
 	bctr
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	/*
-	 * POWER8
+* POWER8
 	 * Go to real mode to do the nap, as required by the architecture.
 	 * Also, we need to be in real mode before setting hwthread_state,
 	 * because as soon as we do that, another thread can switch
@@ -261,7 +261,7 @@ pnv_enter_arch207_idle_mode:
 	/* MUST occur in real mode, i.e. with the MMU off,    */
 	/* and the MMU must stay off until we clear this flag */
 	/* and test HSTATE_HWTHREAD_REQ(r13) in               */
-	/* pnv_powersave_wakeup in this file.                 */
+/* pnv_powersave_wakeup in this file.                 */
 	/* The reason is that another thread can switch the   */
 	/* MMU to a guest context whenever this flag is set   */
 	/* to KVM_HWTHREAD_IN_IDLE, and if the MMU was on,    */
@@ -344,7 +344,7 @@ enter_winkle:
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 power_enter_stop_kvm_rm:
 	/*
-	 * This is currently unused because POWER9 KVM does not have to
+* This is currently unused because POWER9 KVM does not have to
 	 * gather secondary threads into sibling mode, but the code is
 	 * here in case that function is required.
 	 *
@@ -380,7 +380,7 @@ power_enter_stop:
 
 .Lhandle_esl_ec_set:
 	/*
-	 * POWER9 DD2 can incorrectly set PMAO when waking up after a
+* POWER9 DD2 can incorrectly set PMAO when waking up after a
 	 * state-loss idle. Saving and restoring MMCR0 over idle is a
 	 * workaround.
 	 */
@@ -426,7 +426,7 @@ lwarx_loop_stop:
 _GLOBAL(power7_idle_insn)
 	/* Now check if user or arch enabled NAP mode */
 	LOAD_REG_ADDR(r4, pnv_enter_arch207_idle_mode)
-	b	pnv_powersave_common
+b	pnv_powersave_common
 
 #define CHECK_HMI_INTERRUPT						\
 BEGIN_FTR_SECTION_NESTED(66);						\
@@ -453,12 +453,12 @@ ALT_FTR_SECTION_END_NESTED_IFSET(CPU_FTR_ARCH_207S, 66);		\
 _GLOBAL(power9_idle_stop)
 	std	r3, PACA_REQ_PSSCR(r13)
 	mtspr 	SPRN_PSSCR,r3
-	LOAD_REG_ADDR(r4,power_enter_stop)
-	b	pnv_powersave_common
+LOAD_REG_ADDR(r4,power_enter_stop)
+b	pnv_powersave_common
 	/* No return */
 
 /*
- * On waking up from stop 0,1,2 with ESL=1 on POWER9 DD1,
+* On waking up from stop 0,1,2 with ESL=1 on POWER9 DD1,
  * HSPRG0 will be set to the HSPRG0 value of one of the
  * threads in this core. Thus the value we have in r13
  * may not be this thread's paca pointer.
@@ -495,7 +495,7 @@ power9_dd1_recover_paca:
 	blr
 
 /*
- * Called from machine check handler for powersave wakeups.
+* Called from machine check handler for powersave wakeups.
  * Low level machine check processing has already been done. Now just
  * go through the wake up path to get everything in order.
  *
@@ -505,7 +505,7 @@ power9_dd1_recover_paca:
  */
 .global pnv_powersave_wakeup_mce
 pnv_powersave_wakeup_mce:
-	/* Set cr3 for pnv_powersave_wakeup */
+/* Set cr3 for pnv_powersave_wakeup */
 	rlwinm	r11,r3,47-31,30,31
 	cmpwi	cr3,r11,2
 
@@ -516,7 +516,7 @@ pnv_powersave_wakeup_mce:
 	 */
 	oris	r12,r3,SRR1_WAKEMCE_RESVD@h
 
-	b	pnv_powersave_wakeup
+b	pnv_powersave_wakeup
 
 #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 kvm_start_guest_check:
@@ -531,7 +531,7 @@ kvm_start_guest_check:
 #endif
 
 /*
- * Called from reset vector for powersave wakeups.
+* Called from reset vector for powersave wakeups.
  * cr3 - set to gt if waking up with partial/complete hypervisor state loss
  * r12 - SRR1
  */
@@ -541,7 +541,7 @@ pnv_powersave_wakeup:
 
 BEGIN_FTR_SECTION
 BEGIN_FTR_SECTION_NESTED(70)
-	bl	power9_dd1_recover_paca
+bl	power9_dd1_recover_paca
 END_FTR_SECTION_NESTED_IFSET(CPU_FTR_POWER9_DD1, 70)
 	bl	pnv_restore_hyp_resource_arch300
 FTR_SECTION_ELSE
@@ -559,7 +559,7 @@ BEGIN_FTR_SECTION
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
 #endif
 
-	/* Return SRR1 from power7_nap() */
+/* Return SRR1 from power7_nap() */
 	blt	cr3,pnv_wakeup_noloss
 	b	pnv_wakeup_loss
 
@@ -571,7 +571,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
  */
 pnv_restore_hyp_resource_arch300:
 	/*
-	 * Workaround for POWER9, if we lost resources, the ERAT
+* Workaround for POWER9, if we lost resources, the ERAT
 	 * might have been mixed up and needs flushing. We also need
 	 * to reload MMCR0 (see comment above). We also need to set
 	 * then clear bit 60 in MMCRA to ensure the PMU starts running.
@@ -588,7 +588,7 @@ pnv_restore_hyp_resource_arch300:
 	mtspr	SPRN_MMCR0,r4
 1:
 	/*
-	 * POWER ISA 3. Use PSSCR to determine if we
+* POWER ISA 3. Use PSSCR to determine if we
 	 * are waking up from deep idle state
 	 */
 	LOAD_REG_ADDRBASE(r5,pnv_first_deep_stop_state)
@@ -604,7 +604,7 @@ BEGIN_FTR_SECTION_NESTED(71)
 	rldicl  r5,r5,0,60
 FTR_SECTION_ELSE_NESTED(71)
 	/*
-	 * 0-3 bits correspond to Power-Saving Level Status
+* 0-3 bits correspond to Power-Saving Level Status
 	 * which indicates the idle state we are waking up from
 	 */
 	mfspr	r5, SPRN_PSSCR
@@ -618,7 +618,7 @@ ALT_FTR_SECTION_END_NESTED_IFSET(CPU_FTR_POWER9_DD1, 71)
 /* Same calling convention as arch300 */
 pnv_restore_hyp_resource_arch207:
 	/*
-	 * POWER ISA 2.07 or less.
+* POWER ISA 2.07 or less.
 	 * Check if we slept with sleep or winkle.
 	 */
 	lbz	r4,PACA_THREAD_IDLE_STATE(r13)
@@ -637,8 +637,8 @@ pnv_restore_hyp_resource_arch207:
 /*
  * Called if waking up from idle state which can cause either partial or
  * complete hyp state loss.
- * In POWER8, called if waking up from fastsleep or winkle
- * In POWER9, called if waking up from stop state >= pnv_first_deep_stop_state
+* In POWER8, called if waking up from fastsleep or winkle
+* In POWER9, called if waking up from stop state >= pnv_first_deep_stop_state
  *
  * r13 - PACA
  * cr3 - gt if waking up with partial/complete hypervisor state loss
@@ -844,7 +844,7 @@ timebase_resync:
 	/* Time base re-sync */
 	bl	opal_resync_timebase;
 	/*
-	 * If waking up from sleep (POWER8), per core state
+* If waking up from sleep (POWER8), per core state
 	 * is not lost, skip to clear_lock.
 	 */
 .Ltb_resynced:
@@ -925,21 +925,21 @@ no_segments:
 	bctrl
 
 /*
- * On POWER9, we can come here on wakeup from a cpuidle stop state.
+* On POWER9, we can come here on wakeup from a cpuidle stop state.
  * Hence restore the additional SPRs to the saved value.
  *
- * On POWER8, we come here only on winkle. Since winkle is used
+* On POWER8, we come here only on winkle. Since winkle is used
  * only in the case of CPU-Hotplug, we don't need to restore
  * the additional SPRs.
  */
 BEGIN_FTR_SECTION
-	bl 	power9_restore_additional_sprs
+bl 	power9_restore_additional_sprs
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 hypervisor_state_restored:
 
 	mr	r12,r19
 	mtlr	r17
-	blr		/* return to pnv_powersave_wakeup */
+blr		/* return to pnv_powersave_wakeup */
 
 fastsleep_workaround_at_exit:
 	li	r3,1
@@ -949,7 +949,7 @@ fastsleep_workaround_at_exit:
 
 /*
  * R3 here contains the value that will be returned to the caller
- * of power7_nap.
+* of power7_nap.
  * R12 contains SRR1 for CHECK_HMI_INTERRUPT.
  */
 .global pnv_wakeup_loss
@@ -962,15 +962,15 @@ END_FTR_SECTION_IFSET(CPU_FTR_HVMODE)
 	REST_GPR(2, r1)
 
 BEGIN_FTR_SECTION
-	/* These regs were saved in pnv_powersave_common() */
-	ld	r4, PNV_POWERSAVE_AMR(r1)
-	ld	r5, PNV_POWERSAVE_IAMR(r1)
-	ld	r6, PNV_POWERSAVE_UAMOR(r1)
+/* These regs were saved in pnv_powersave_common() */
+ld	r4, PNV_POWERSAVE_AMR(r1)
+ld	r5, PNV_POWERSAVE_IAMR(r1)
+ld	r6, PNV_POWERSAVE_UAMOR(r1)
 	mtspr	SPRN_AMR, r4
 	mtspr	SPRN_IAMR, r5
 	mtspr	SPRN_UAMOR, r6
 BEGIN_FTR_SECTION_NESTED(42)
-	ld	r7, PNV_POWERSAVE_AMOR(r1)
+ld	r7, PNV_POWERSAVE_AMOR(r1)
 	mtspr	SPRN_AMOR, r7
 END_FTR_SECTION_NESTED_IFSET(CPU_FTR_HVMODE, 42)
 	/*
@@ -990,7 +990,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 
 /*
  * R3 here contains the value that will be returned to the caller
- * of power7_nap.
+* of power7_nap.
  * R12 contains SRR1 for CHECK_HMI_INTERRUPT.
  */
 pnv_wakeup_noloss:

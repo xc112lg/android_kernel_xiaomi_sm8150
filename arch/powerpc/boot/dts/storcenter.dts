@@ -29,12 +29,12 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8241@0 {
+PowerPC,8241@0 {
 			device_type = "cpu";
 			reg = <0>;
-			clock-frequency = <200000000>;
-			timebase-frequency = <25000000>;
-			bus-frequency = <0>;	/* from bootwrapper */
+clock-frequency = <200000000>;
+timebase-frequency = <25000000>;
+bus-frequency = <0>;	/* from bootwrapper */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <16384>;
@@ -55,7 +55,7 @@
 		store-gathering = <0>; /* 0 == off, !0 == on */
 		ranges = <0x0 0xfc000000 0x100000>;
 		reg = <0xfc000000 0x100000>;	/* EUMB */
-		bus-frequency = <0>;		/* fixed by loader */
+bus-frequency = <0>;		/* fixed by loader */
 
 		i2c@3000 {
 			#address-cells = <1>;
@@ -76,7 +76,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x20>;
-			clock-frequency = <97553800>; /* Hz */
+clock-frequency = <97553800>; /* Hz */
 			current-speed = <115200>;
 			interrupts = <25 2>;
 			interrupt-parent = <&mpic>;
@@ -87,7 +87,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x20>;
-			clock-frequency = <97553800>; /* Hz */
+clock-frequency = <97553800>; /* Hz */
 			current-speed = <9600>;
 			interrupts = <26 2>;
 			interrupt-parent = <&mpic>;
@@ -114,7 +114,7 @@
 		ranges = <0x01000000 0x0        0x0 0xfe000000 0x0 0x00c00000
 			  0x02000000 0x0 0x80000000 0x80000000 0x0 0x70000000>;
 		bus-range = <0 0xff>;
-		clock-frequency = <97553800>;
+clock-frequency = <97553800>;
 		interrupt-parent = <&mpic>;
 		interrupt-map-mask = <0xf800 0 0 7>;
 		interrupt-map = <

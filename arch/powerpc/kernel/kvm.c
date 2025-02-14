@@ -736,7 +736,7 @@ static int __init kvm_guest_init(void)
 
 #ifdef CONFIG_PPC_BOOK3S_64
 	/* Enable napping */
-	powersave_nap = 1;
+powersave_nap = 1;
 #endif
 
 free_tmp:

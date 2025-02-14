@@ -161,8 +161,8 @@
 struct bq24190_dev_info {
 	struct i2c_client		*client;
 	struct device			*dev;
-	struct power_supply		*charger;
-	struct power_supply		*battery;
+struct power_supply		*charger;
+struct power_supply		*battery;
 	struct extcon_dev		*extcon;
 	struct notifier_block		extcon_nb;
 	struct delayed_work		extcon_work;
@@ -323,9 +323,9 @@ static int bq24190_set_field_val(struct bq24190_dev_info *bdi,
 #ifdef CONFIG_SYSFS
 /*
  * There are a numerous options that are configurable on the bq24190
- * that go well beyond what the power_supply properties provide access to.
+* that go well beyond what the power_supply properties provide access to.
  * Provide sysfs access to them so they can be examined and possibly modified
- * on the fly.  They will be provided for the charger power_supply object only
+* on the fly.  They will be provided for the charger power_supply object only
  * and will be prefixed by 'f_' to make them easier to recognize.
  */
 
@@ -439,8 +439,8 @@ static struct bq24190_sysfs_field_info *bq24190_sysfs_field_lookup(
 static ssize_t bq24190_sysfs_show(struct device *dev,
 		struct device_attribute *attr, char *buf)
 {
-	struct power_supply *psy = dev_get_drvdata(dev);
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct power_supply *psy = dev_get_drvdata(dev);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 	struct bq24190_sysfs_field_info *info;
 	ssize_t count;
 	int ret;
@@ -471,8 +471,8 @@ static ssize_t bq24190_sysfs_show(struct device *dev,
 static ssize_t bq24190_sysfs_store(struct device *dev,
 		struct device_attribute *attr, const char *buf, size_t count)
 {
-	struct power_supply *psy = dev_get_drvdata(dev);
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct power_supply *psy = dev_get_drvdata(dev);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 	struct bq24190_sysfs_field_info *info;
 	int ret;
 	u8 v;
@@ -588,11 +588,11 @@ static const struct regulator_ops bq24190_vbus_ops = {
 
 static const struct regulator_desc bq24190_vbus_desc = {
 	.name = "usb_otg_vbus",
-	.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 	.owner = THIS_MODULE,
 	.ops = &bq24190_vbus_ops,
 	.fixed_uV = 5000000,
-	.n_voltages = 1,
+.n_voltages = 1,
 };
 
 static const struct regulator_init_data bq24190_vbus_init_data = {
@@ -725,7 +725,7 @@ static int bq24190_register_reset(struct bq24190_dev_info *bdi)
 /* Charger power supply property routines */
 
 static int bq24190_charger_get_charge_type(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 v;
 	int type, ret;
@@ -739,7 +739,7 @@ static int bq24190_charger_get_charge_type(struct bq24190_dev_info *bdi,
 
 	/* If POC[CHG_CONFIG] (REG01[5:4]) == 0, charge is disabled */
 	if (!v) {
-		type = POWER_SUPPLY_CHARGE_TYPE_NONE;
+type = POWER_SUPPLY_CHARGE_TYPE_NONE;
 	} else {
 		ret = bq24190_read_mask(bdi, BQ24190_REG_CCC,
 				BQ24190_REG_CCC_FORCE_20PCT_MASK,
@@ -748,8 +748,8 @@ static int bq24190_charger_get_charge_type(struct bq24190_dev_info *bdi,
 		if (ret < 0)
 			return ret;
 
-		type = (v) ? POWER_SUPPLY_CHARGE_TYPE_TRICKLE :
-			     POWER_SUPPLY_CHARGE_TYPE_FAST;
+type = (v) ? POWER_SUPPLY_CHARGE_TYPE_TRICKLE :
+POWER_SUPPLY_CHARGE_TYPE_FAST;
 	}
 
 	val->intval = type;
@@ -758,7 +758,7 @@ static int bq24190_charger_get_charge_type(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_set_charge_type(struct bq24190_dev_info *bdi,
-		const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	u8 chg_config, force_20pct, en_term;
 	int ret;
@@ -774,15 +774,15 @@ static int bq24190_charger_set_charge_type(struct bq24190_dev_info *bdi,
 	 * there could be battery damage.  So, use this mode at your own risk.
 	 */
 	switch (val->intval) {
-	case POWER_SUPPLY_CHARGE_TYPE_NONE:
+case POWER_SUPPLY_CHARGE_TYPE_NONE:
 		chg_config = 0x0;
 		break;
-	case POWER_SUPPLY_CHARGE_TYPE_TRICKLE:
+case POWER_SUPPLY_CHARGE_TYPE_TRICKLE:
 		chg_config = 0x1;
 		force_20pct = 0x1;
 		en_term = 0x0;
 		break;
-	case POWER_SUPPLY_CHARGE_TYPE_FAST:
+case POWER_SUPPLY_CHARGE_TYPE_FAST:
 		chg_config = 0x1;
 		force_20pct = 0x0;
 		en_term = 0x1;
@@ -813,7 +813,7 @@ static int bq24190_charger_set_charge_type(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_health(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 v;
 	int health;
@@ -827,49 +827,49 @@ static int bq24190_charger_get_health(struct bq24190_dev_info *bdi,
 		case 0x1: /* TS1  Cold */
 		case 0x3: /* TS2  Cold */
 		case 0x5: /* Both Cold */
-			health = POWER_SUPPLY_HEALTH_COLD;
+health = POWER_SUPPLY_HEALTH_COLD;
 			break;
 		case 0x2: /* TS1  Hot */
 		case 0x4: /* TS2  Hot */
 		case 0x6: /* Both Hot */
-			health = POWER_SUPPLY_HEALTH_OVERHEAT;
+health = POWER_SUPPLY_HEALTH_OVERHEAT;
 			break;
 		default:
-			health = POWER_SUPPLY_HEALTH_UNKNOWN;
+health = POWER_SUPPLY_HEALTH_UNKNOWN;
 		}
 	} else if (v & BQ24190_REG_F_BAT_FAULT_MASK) {
-		health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 	} else if (v & BQ24190_REG_F_CHRG_FAULT_MASK) {
 		switch (v >> BQ24190_REG_F_CHRG_FAULT_SHIFT & 0x3) {
 		case 0x1: /* Input Fault (VBUS OVP or VBAT<VBUS<3.8V) */
 			/*
-			 * This could be over-voltage or under-voltage
+* This could be over-voltage or under-voltage
 			 * and there's no way to tell which.  Instead
-			 * of looking foolish and returning 'OVERVOLTAGE'
-			 * when its really under-voltage, just return
+* of looking foolish and returning 'OVERVOLTAGE'
+* when its really under-voltage, just return
 			 * 'UNSPEC_FAILURE'.
 			 */
-			health = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+health = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 			break;
 		case 0x2: /* Thermal Shutdown */
-			health = POWER_SUPPLY_HEALTH_OVERHEAT;
+health = POWER_SUPPLY_HEALTH_OVERHEAT;
 			break;
 		case 0x3: /* Charge Safety Timer Expiration */
-			health = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+health = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 			break;
 		default:  /* prevent compiler warning */
 			health = -1;
 		}
 	} else if (v & BQ24190_REG_F_BOOST_FAULT_MASK) {
 		/*
-		 * This could be over-current or over-voltage but there's
-		 * no way to tell which.  Return 'OVERVOLTAGE' since there
+* This could be over-current or over-voltage but there's
+* no way to tell which.  Return 'OVERVOLTAGE' since there
 		 * isn't an 'OVERCURRENT' value defined that we can return
 		 * even if it was over-current.
 		 */
-		health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 	} else {
-		health = POWER_SUPPLY_HEALTH_GOOD;
+health = POWER_SUPPLY_HEALTH_GOOD;
 	}
 
 	val->intval = health;
@@ -878,7 +878,7 @@ static int bq24190_charger_get_health(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_online(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 pg_stat, batfet_disable;
 	int ret;
@@ -901,40 +901,40 @@ static int bq24190_charger_get_online(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_set_online(struct bq24190_dev_info *bdi,
-				      const union power_supply_propval *val);
+const union power_supply_propval *val);
 static int bq24190_battery_get_status(struct bq24190_dev_info *bdi,
-				      union power_supply_propval *val);
+union power_supply_propval *val);
 static int bq24190_battery_get_temp_alert_max(struct bq24190_dev_info *bdi,
-					      union power_supply_propval *val);
+union power_supply_propval *val);
 static int bq24190_battery_set_temp_alert_max(struct bq24190_dev_info *bdi,
-					      const union power_supply_propval *val);
+const union power_supply_propval *val);
 
 static int bq24190_charger_set_online(struct bq24190_dev_info *bdi,
-				      const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	return bq24190_battery_set_online(bdi, val);
 }
 
 static int bq24190_charger_get_status(struct bq24190_dev_info *bdi,
-				      union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	return bq24190_battery_get_status(bdi, val);
 }
 
 static int bq24190_charger_get_temp_alert_max(struct bq24190_dev_info *bdi,
-					      union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	return bq24190_battery_get_temp_alert_max(bdi, val);
 }
 
 static int bq24190_charger_set_temp_alert_max(struct bq24190_dev_info *bdi,
-					      const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	return bq24190_battery_set_temp_alert_max(bdi, val);
 }
 
 static int bq24190_charger_get_precharge(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 v;
 	int ret;
@@ -950,7 +950,7 @@ static int bq24190_charger_get_precharge(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_charge_term(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 v;
 	int ret;
@@ -966,7 +966,7 @@ static int bq24190_charger_get_charge_term(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_current(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 v;
 	int curr, ret;
@@ -993,7 +993,7 @@ static int bq24190_charger_get_current(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_current_max(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int idx = ARRAY_SIZE(bq24190_ccc_ichg_values) - 1;
 
@@ -1002,7 +1002,7 @@ static int bq24190_charger_get_current_max(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_set_current(struct bq24190_dev_info *bdi,
-		const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	u8 v;
 	int ret, curr = val->intval;
@@ -1024,23 +1024,23 @@ static int bq24190_charger_set_current(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_voltage(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
-	int voltage, ret;
+int voltage, ret;
 
 	ret = bq24190_get_field_val(bdi, BQ24190_REG_CVC,
 			BQ24190_REG_CVC_VREG_MASK, BQ24190_REG_CVC_VREG_SHIFT,
 			bq24190_cvc_vreg_values,
-			ARRAY_SIZE(bq24190_cvc_vreg_values), &voltage);
+ARRAY_SIZE(bq24190_cvc_vreg_values), &voltage);
 	if (ret < 0)
 		return ret;
 
-	val->intval = voltage;
+val->intval = voltage;
 	return 0;
 }
 
 static int bq24190_charger_get_voltage_max(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int idx = ARRAY_SIZE(bq24190_cvc_vreg_values) - 1;
 
@@ -1049,7 +1049,7 @@ static int bq24190_charger_get_voltage_max(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_set_voltage(struct bq24190_dev_info *bdi,
-		const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	return bq24190_set_field_val(bdi, BQ24190_REG_CVC,
 			BQ24190_REG_CVC_VREG_MASK, BQ24190_REG_CVC_VREG_SHIFT,
@@ -1058,7 +1058,7 @@ static int bq24190_charger_set_voltage(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_iinlimit(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int iinlimit, ret;
 
@@ -1075,7 +1075,7 @@ static int bq24190_charger_get_iinlimit(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_set_iinlimit(struct bq24190_dev_info *bdi,
-		const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	return bq24190_set_field_val(bdi, BQ24190_REG_ISC,
 			BQ24190_REG_ISC_IINLIM_MASK,
@@ -1085,9 +1085,9 @@ static int bq24190_charger_set_iinlimit(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_charger_get_property(struct power_supply *psy,
-		enum power_supply_property psp, union power_supply_propval *val)
+enum power_supply_property psp, union power_supply_propval *val)
 {
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 	int ret;
 
 	dev_dbg(bdi->dev, "prop: %d\n", psp);
@@ -1099,51 +1099,51 @@ static int bq24190_charger_get_property(struct power_supply *psy,
 	}
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		ret = bq24190_charger_get_charge_type(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		ret = bq24190_charger_get_health(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = bq24190_charger_get_online(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = bq24190_charger_get_status(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
+case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
 		ret =  bq24190_charger_get_temp_alert_max(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
+case POWER_SUPPLY_PROP_PRECHARGE_CURRENT:
 		ret = bq24190_charger_get_precharge(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
+case POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT:
 		ret = bq24190_charger_get_charge_term(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		ret = bq24190_charger_get_current(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		ret = bq24190_charger_get_current_max(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-		ret = bq24190_charger_get_voltage(bdi, val);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+ret = bq24190_charger_get_voltage(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
-		ret = bq24190_charger_get_voltage_max(bdi, val);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+ret = bq24190_charger_get_voltage_max(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		ret = bq24190_charger_get_iinlimit(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_SCOPE:
-		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
+case POWER_SUPPLY_PROP_SCOPE:
+val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
 		ret = 0;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = bdi->model_name;
 		ret = 0;
 		break;
-	case POWER_SUPPLY_PROP_MANUFACTURER:
+case POWER_SUPPLY_PROP_MANUFACTURER:
 		val->strval = BQ24190_MANUFACTURER;
 		ret = 0;
 		break;
@@ -1158,10 +1158,10 @@ static int bq24190_charger_get_property(struct power_supply *psy,
 }
 
 static int bq24190_charger_set_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 	int ret;
 
 	dev_dbg(bdi->dev, "prop: %d\n", psp);
@@ -1173,22 +1173,22 @@ static int bq24190_charger_set_property(struct power_supply *psy,
 	}
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = bq24190_charger_set_online(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
+case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
 		ret = bq24190_charger_set_temp_alert_max(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		ret = bq24190_charger_set_charge_type(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		ret = bq24190_charger_set_current(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-		ret = bq24190_charger_set_voltage(bdi, val);
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+ret = bq24190_charger_set_voltage(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		ret = bq24190_charger_set_iinlimit(bdi, val);
 		break;
 	default:
@@ -1202,17 +1202,17 @@ static int bq24190_charger_set_property(struct power_supply *psy,
 }
 
 static int bq24190_charger_property_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
-	case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		ret = 1;
 		break;
 	default:
@@ -1228,16 +1228,16 @@ static void bq24190_input_current_limit_work(struct work_struct *work)
 		container_of(work, struct bq24190_dev_info,
 			     input_current_limit_work.work);
 
-	power_supply_set_input_current_limit_from_supplier(bdi->charger);
+power_supply_set_input_current_limit_from_supplier(bdi->charger);
 }
 
 /* Sync the input-current-limit with our parent supply (if we have one) */
 static void bq24190_charger_external_power_changed(struct power_supply *psy)
 {
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 
 	/*
-	 * The Power-Good detection may take up to 220ms, sometimes
+* The Power-Good detection may take up to 220ms, sometimes
 	 * the external charger detection is quicker, and the bq24190 will
 	 * reset to iinlim based on its own charger detection (which is not
 	 * hooked up when using external charger detection) resulting in a
@@ -1249,21 +1249,21 @@ static void bq24190_charger_external_power_changed(struct power_supply *psy)
 }
 
 static enum power_supply_property bq24190_charger_properties[] = {
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_TEMP_ALERT_MAX,
-	POWER_SUPPLY_PROP_PRECHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
-	POWER_SUPPLY_PROP_SCOPE,
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_MANUFACTURER,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_TEMP_ALERT_MAX,
+POWER_SUPPLY_PROP_PRECHARGE_CURRENT,
+POWER_SUPPLY_PROP_CHARGE_TERM_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+POWER_SUPPLY_PROP_SCOPE,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_MANUFACTURER,
 };
 
 static char *bq24190_charger_supplied_to[] = {
@@ -1272,19 +1272,19 @@ static char *bq24190_charger_supplied_to[] = {
 
 static const struct power_supply_desc bq24190_charger_desc = {
 	.name			= "bq24190-charger",
-	.type			= POWER_SUPPLY_TYPE_USB,
+.type			= POWER_SUPPLY_TYPE_USB,
 	.properties		= bq24190_charger_properties,
 	.num_properties		= ARRAY_SIZE(bq24190_charger_properties),
 	.get_property		= bq24190_charger_get_property,
 	.set_property		= bq24190_charger_set_property,
 	.property_is_writeable	= bq24190_charger_property_is_writeable,
-	.external_power_changed	= bq24190_charger_external_power_changed,
+.external_power_changed	= bq24190_charger_external_power_changed,
 };
 
 /* Battery power supply property routines */
 
 static int bq24190_battery_get_status(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 ss_reg, chrg_fault;
 	int status, ret;
@@ -1302,27 +1302,27 @@ static int bq24190_battery_get_status(struct bq24190_dev_info *bdi,
 
 	/*
 	 * The battery must be discharging when any of these are true:
-	 * - there is no good power source;
+* - there is no good power source;
 	 * - there is a charge fault.
 	 * Could also be discharging when in "supplement mode" but
 	 * there is no way to tell when its in that mode.
 	 */
 	if (!(ss_reg & BQ24190_REG_SS_PG_STAT_MASK) || chrg_fault) {
-		status = POWER_SUPPLY_STATUS_DISCHARGING;
+status = POWER_SUPPLY_STATUS_DISCHARGING;
 	} else {
 		ss_reg &= BQ24190_REG_SS_CHRG_STAT_MASK;
 		ss_reg >>= BQ24190_REG_SS_CHRG_STAT_SHIFT;
 
 		switch (ss_reg) {
 		case 0x0: /* Not Charging */
-			status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 			break;
 		case 0x1: /* Pre-charge */
 		case 0x2: /* Fast Charging */
-			status = POWER_SUPPLY_STATUS_CHARGING;
+status = POWER_SUPPLY_STATUS_CHARGING;
 			break;
 		case 0x3: /* Charge Termination Done */
-			status = POWER_SUPPLY_STATUS_FULL;
+status = POWER_SUPPLY_STATUS_FULL;
 			break;
 		default:
 			ret = -EIO;
@@ -1336,7 +1336,7 @@ static int bq24190_battery_get_status(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_get_health(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 v;
 	int health;
@@ -1346,27 +1346,27 @@ static int bq24190_battery_get_health(struct bq24190_dev_info *bdi,
 	mutex_unlock(&bdi->f_reg_lock);
 
 	if (v & BQ24190_REG_F_BAT_FAULT_MASK) {
-		health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+health = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 	} else {
 		v &= BQ24190_REG_F_NTC_FAULT_MASK;
 		v >>= BQ24190_REG_F_NTC_FAULT_SHIFT;
 
 		switch (v) {
 		case 0x0: /* Normal */
-			health = POWER_SUPPLY_HEALTH_GOOD;
+health = POWER_SUPPLY_HEALTH_GOOD;
 			break;
 		case 0x1: /* TS1 Cold */
 		case 0x3: /* TS2 Cold */
 		case 0x5: /* Both Cold */
-			health = POWER_SUPPLY_HEALTH_COLD;
+health = POWER_SUPPLY_HEALTH_COLD;
 			break;
 		case 0x2: /* TS1 Hot */
 		case 0x4: /* TS2 Hot */
 		case 0x6: /* Both Hot */
-			health = POWER_SUPPLY_HEALTH_OVERHEAT;
+health = POWER_SUPPLY_HEALTH_OVERHEAT;
 			break;
 		default:
-			health = POWER_SUPPLY_HEALTH_UNKNOWN;
+health = POWER_SUPPLY_HEALTH_UNKNOWN;
 		}
 	}
 
@@ -1375,7 +1375,7 @@ static int bq24190_battery_get_health(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_get_online(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	u8 batfet_disable;
 	int ret;
@@ -1391,7 +1391,7 @@ static int bq24190_battery_get_online(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_set_online(struct bq24190_dev_info *bdi,
-		const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	return bq24190_write_mask(bdi, BQ24190_REG_MOC,
 			BQ24190_REG_MOC_BATFET_DISABLE_MASK,
@@ -1399,7 +1399,7 @@ static int bq24190_battery_set_online(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_get_temp_alert_max(struct bq24190_dev_info *bdi,
-		union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	int temp, ret;
 
@@ -1416,7 +1416,7 @@ static int bq24190_battery_get_temp_alert_max(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_set_temp_alert_max(struct bq24190_dev_info *bdi,
-		const union power_supply_propval *val)
+const union power_supply_propval *val)
 {
 	return bq24190_set_field_val(bdi, BQ24190_REG_ICTRC,
 			BQ24190_REG_ICTRC_TREG_MASK,
@@ -1426,12 +1426,12 @@ static int bq24190_battery_set_temp_alert_max(struct bq24190_dev_info *bdi,
 }
 
 static int bq24190_battery_get_property(struct power_supply *psy,
-		enum power_supply_property psp, union power_supply_propval *val)
+enum power_supply_property psp, union power_supply_propval *val)
 {
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 	int ret;
 
-	dev_warn(bdi->dev, "warning: /sys/class/power_supply/bq24190-battery is deprecated\n");
+dev_warn(bdi->dev, "warning: /sys/class/power_supply/bq24190-battery is deprecated\n");
 	dev_dbg(bdi->dev, "prop: %d\n", psp);
 
 	ret = pm_runtime_get_sync(bdi->dev);
@@ -1441,25 +1441,25 @@ static int bq24190_battery_get_property(struct power_supply *psy,
 	}
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		ret = bq24190_battery_get_status(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		ret = bq24190_battery_get_health(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = bq24190_battery_get_online(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		/* Could be Li-on or Li-polymer but no way to tell which */
-		val->intval = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+val->intval = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
 		ret = 0;
 		break;
-	case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
+case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
 		ret = bq24190_battery_get_temp_alert_max(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_SCOPE:
-		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
+case POWER_SUPPLY_PROP_SCOPE:
+val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
 		ret = 0;
 		break;
 	default:
@@ -1473,13 +1473,13 @@ static int bq24190_battery_get_property(struct power_supply *psy,
 }
 
 static int bq24190_battery_set_property(struct power_supply *psy,
-		enum power_supply_property psp,
-		const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
+struct bq24190_dev_info *bdi = power_supply_get_drvdata(psy);
 	int ret;
 
-	dev_warn(bdi->dev, "warning: /sys/class/power_supply/bq24190-battery is deprecated\n");
+dev_warn(bdi->dev, "warning: /sys/class/power_supply/bq24190-battery is deprecated\n");
 	dev_dbg(bdi->dev, "prop: %d\n", psp);
 
 	ret = pm_runtime_get_sync(bdi->dev);
@@ -1489,10 +1489,10 @@ static int bq24190_battery_set_property(struct power_supply *psy,
 	}
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		ret = bq24190_battery_set_online(bdi, val);
 		break;
-	case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
+case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
 		ret = bq24190_battery_set_temp_alert_max(bdi, val);
 		break;
 	default:
@@ -1506,13 +1506,13 @@ static int bq24190_battery_set_property(struct power_supply *psy,
 }
 
 static int bq24190_battery_property_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
-	case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
+case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_TEMP_ALERT_MAX:
 		ret = 1;
 		break;
 	default:
@@ -1523,17 +1523,17 @@ static int bq24190_battery_property_is_writeable(struct power_supply *psy,
 }
 
 static enum power_supply_property bq24190_battery_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_TEMP_ALERT_MAX,
-	POWER_SUPPLY_PROP_SCOPE,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_TEMP_ALERT_MAX,
+POWER_SUPPLY_PROP_SCOPE,
 };
 
 static const struct power_supply_desc bq24190_battery_desc = {
 	.name			= "bq24190-battery",
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= bq24190_battery_properties,
 	.num_properties		= ARRAY_SIZE(bq24190_battery_properties),
 	.get_property		= bq24190_battery_get_property,
@@ -1565,7 +1565,7 @@ static void bq24190_check_status(struct bq24190_dev_info *bdi)
 		}
 	} while (f_reg && ++i < 2);
 
-	/* ignore over/under voltage fault after disconnect */
+/* ignore over/under voltage fault after disconnect */
 	if (f_reg == (1 << BQ24190_REG_F_CHRG_FAULT_SHIFT) &&
 	    !(ss_reg & BQ24190_REG_SS_PG_STAT_MASK))
 		f_reg = 0;
@@ -1590,7 +1590,7 @@ static void bq24190_check_status(struct bq24190_dev_info *bdi)
 	if (ss_reg != bdi->ss_reg) {
 		/*
 		 * The device is in host mode so when PG_STAT goes from 1->0
-		 * (i.e., power removed) HIZ needs to be disabled.
+* (i.e., power removed) HIZ needs to be disabled.
 		 */
 		if ((bdi->ss_reg & BQ24190_REG_SS_PG_STAT_MASK) &&
 				!(ss_reg & BQ24190_REG_SS_PG_STAT_MASK)) {
@@ -1611,9 +1611,9 @@ static void bq24190_check_status(struct bq24190_dev_info *bdi)
 	}
 
 	if (alert_charger || alert_battery)
-		power_supply_changed(bdi->charger);
+power_supply_changed(bdi->charger);
 	if (alert_battery && bdi->battery)
-		power_supply_changed(bdi->battery);
+power_supply_changed(bdi->battery);
 
 	dev_dbg(bdi->dev, "ss_reg: 0x%02x, f_reg: 0x%02x\n", ss_reg, f_reg);
 }
@@ -1695,7 +1695,7 @@ static int bq24190_extcon_event(struct notifier_block *nb, unsigned long event,
 		container_of(nb, struct bq24190_dev_info, extcon_nb);
 
 	/*
-	 * The Power-Good detection may take up to 220ms, sometimes
+* The Power-Good detection may take up to 220ms, sometimes
 	 * the external charger detection is quicker, and the bq24190 will
 	 * reset to iinlim based on its own charger detection (which is not
 	 * hooked up when using external charger detection) resulting in
@@ -1740,7 +1740,7 @@ static int bq24190_hw_init(struct bq24190_dev_info *bdi)
 static int bq24190_get_config(struct bq24190_dev_info *bdi)
 {
 	const char * const s = "ti,system-minimum-microvolt";
-	struct power_supply_battery_info info = {};
+struct power_supply_battery_info info = {};
 	int v;
 
 	if (device_property_read_u32(bdi->dev, s, &v) == 0) {
@@ -1753,7 +1753,7 @@ static int bq24190_get_config(struct bq24190_dev_info *bdi)
 	}
 
 	if (bdi->dev->of_node &&
-	    !power_supply_get_battery_info(bdi->charger, &info)) {
+!power_supply_get_battery_info(bdi->charger, &info)) {
 		v = info.precharge_current_ua / 1000;
 		if (v >= BQ24190_REG_PCTCC_IPRECHG_MIN
 		 && v <= BQ24190_REG_PCTCC_IPRECHG_MAX)
@@ -1779,7 +1779,7 @@ static int bq24190_probe(struct i2c_client *client,
 {
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
 	struct device *dev = &client->dev;
-	struct power_supply_config charger_cfg = {}, battery_cfg = {};
+struct power_supply_config charger_cfg = {}, battery_cfg = {};
 	struct bq24190_dev_info *bdi;
 	const char *name;
 	int ret;
@@ -1843,7 +1843,7 @@ static int bq24190_probe(struct i2c_client *client,
 	charger_cfg.of_node = dev->of_node;
 	charger_cfg.supplied_to = bq24190_charger_supplied_to;
 	charger_cfg.num_supplicants = ARRAY_SIZE(bq24190_charger_supplied_to),
-	bdi->charger = power_supply_register(dev, &bq24190_charger_desc,
+bdi->charger = power_supply_register(dev, &bq24190_charger_desc,
 						&charger_cfg);
 	if (IS_ERR(bdi->charger)) {
 		dev_err(dev, "Can't register charger\n");
@@ -1855,7 +1855,7 @@ static int bq24190_probe(struct i2c_client *client,
 	/* in the interim, this property hides it.              */
 	if (!device_property_read_bool(dev, "omit-battery-class")) {
 		battery_cfg.drv_data = bdi;
-		bdi->battery = power_supply_register(dev, &bq24190_battery_desc,
+bdi->battery = power_supply_register(dev, &bq24190_battery_desc,
 						     &battery_cfg);
 		if (IS_ERR(bdi->battery)) {
 			dev_err(dev, "Can't register battery\n");
@@ -1923,8 +1923,8 @@ out_sysfs:
 
 out_charger:
 	if (!IS_ERR_OR_NULL(bdi->battery))
-		power_supply_unregister(bdi->battery);
-	power_supply_unregister(bdi->charger);
+power_supply_unregister(bdi->battery);
+power_supply_unregister(bdi->charger);
 
 out_pmrt:
 	pm_runtime_put_sync(dev);
@@ -1947,8 +1947,8 @@ static int bq24190_remove(struct i2c_client *client)
 	bq24190_register_reset(bdi);
 	bq24190_sysfs_remove_group(bdi);
 	if (bdi->battery)
-		power_supply_unregister(bdi->battery);
-	power_supply_unregister(bdi->charger);
+power_supply_unregister(bdi->battery);
+power_supply_unregister(bdi->charger);
 	if (error >= 0)
 		pm_runtime_put_sync(bdi->dev);
 	pm_runtime_dont_use_autosuspend(bdi->dev);
@@ -2033,9 +2033,9 @@ static __maybe_unused int bq24190_pm_resume(struct device *dev)
 	}
 
 	/* Things may have changed while suspended so alert upper layer */
-	power_supply_changed(bdi->charger);
+power_supply_changed(bdi->charger);
 	if (bdi->battery)
-		power_supply_changed(bdi->battery);
+power_supply_changed(bdi->battery);
 
 	return 0;
 }

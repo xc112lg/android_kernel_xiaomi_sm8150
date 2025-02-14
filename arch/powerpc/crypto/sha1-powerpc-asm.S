@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
- * SHA-1 implementation for PowerPC.
+* SHA-1 implementation for PowerPC.
  *
  * Copyright (C) 2005 Paul Mackerras <paulus@samba.org>
  */

@@ -1,12 +1,12 @@
 /*
  * Architecture- / platform-specific boot-time initialization code for
- * IBM PowerPC 4xx based boards. Adapted from original
+* IBM PowerPC 4xx based boards. Adapted from original
  * code by Gary Thomas, Cort Dougan <cort@fsmlabs.com>, and Dan Malek
  * <dan@net4x.com>.
  *
  * Copyright(c) 1999-2000 Grant Erickson <grant@lcse.umn.edu>
  *
- * Rewritten and ported to the merged powerpc tree:
+* Rewritten and ported to the merged powerpc tree:
  * Copyright 2007 IBM Corporation
  * Josh Boyer <jwboyer@linux.vnet.ibm.com>
  *

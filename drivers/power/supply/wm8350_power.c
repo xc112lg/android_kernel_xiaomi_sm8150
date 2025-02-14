@@ -44,7 +44,7 @@ static int wm8350_read_usb_uvolts(struct wm8350 *wm8350)
 
 static inline int wm8350_charge_time_min(struct wm8350 *wm8350, int min)
 {
-	if (!wm8350->power.rev_g_coeff)
+if (!wm8350->power.rev_g_coeff)
 		return (((min - 30) / 15) & 0xf) << 8;
 	else
 		return (((min - 30) / 30) & 0xf) << 8;
@@ -145,14 +145,14 @@ static int wm8350_batt_status(struct wm8350 *wm8350)
 
 	switch (state) {
 	case WM8350_CHG_STS_OFF:
-		return POWER_SUPPLY_STATUS_DISCHARGING;
+return POWER_SUPPLY_STATUS_DISCHARGING;
 
 	case WM8350_CHG_STS_TRICKLE:
 	case WM8350_CHG_STS_FAST:
-		return POWER_SUPPLY_STATUS_CHARGING;
+return POWER_SUPPLY_STATUS_CHARGING;
 
 	default:
-		return POWER_SUPPLY_STATUS_UNKNOWN;
+return POWER_SUPPLY_STATUS_UNKNOWN;
 	}
 }
 
@@ -187,8 +187,8 @@ static DEVICE_ATTR_RO(charger_state);
 static irqreturn_t wm8350_charger_handler(int irq, void *data)
 {
 	struct wm8350 *wm8350 = data;
-	struct wm8350_power *power = &wm8350->power;
-	struct wm8350_charger_policy *policy = power->policy;
+struct wm8350_power *power = &wm8350->power;
+struct wm8350_charger_policy *policy = power->policy;
 
 	switch (irq - wm8350->irq_base) {
 	case WM8350_IRQ_CHG_BAT_FAIL:
@@ -196,14 +196,14 @@ static irqreturn_t wm8350_charger_handler(int irq, void *data)
 		break;
 	case WM8350_IRQ_CHG_TO:
 		dev_err(wm8350->dev, "charger timeout\n");
-		power_supply_changed(power->battery);
+power_supply_changed(power->battery);
 		break;
 
 	case WM8350_IRQ_CHG_BAT_HOT:
 	case WM8350_IRQ_CHG_BAT_COLD:
 	case WM8350_IRQ_CHG_START:
 	case WM8350_IRQ_CHG_END:
-		power_supply_changed(power->battery);
+power_supply_changed(power->battery);
 		break;
 
 	case WM8350_IRQ_CHG_FAST_RDY:
@@ -231,9 +231,9 @@ static irqreturn_t wm8350_charger_handler(int irq, void *data)
 	case WM8350_IRQ_EXT_WALL_FB:
 		wm8350_charger_config(wm8350, policy);
 	case WM8350_IRQ_EXT_BAT_FB:   /* Fall through */
-		power_supply_changed(power->battery);
-		power_supply_changed(power->usb);
-		power_supply_changed(power->ac);
+power_supply_changed(power->battery);
+power_supply_changed(power->usb);
+power_supply_changed(power->ac);
 		break;
 
 	default:
@@ -244,21 +244,21 @@ static irqreturn_t wm8350_charger_handler(int irq, void *data)
 }
 
 /*********************************************************************
- *		AC Power
+*		AC Power
  *********************************************************************/
 static int wm8350_ac_get_prop(struct power_supply *psy,
-			      enum power_supply_property psp,
-			      union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct wm8350 *wm8350 = dev_get_drvdata(psy->dev.parent);
 	int ret = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = !!(wm8350_get_supplies(wm8350) &
 				 WM8350_LINE_SUPPLY);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		val->intval = wm8350_read_line_uvolts(wm8350);
 		break;
 	default:
@@ -269,26 +269,26 @@ static int wm8350_ac_get_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property wm8350_ac_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
 };
 
 /*********************************************************************
- *		USB Power
+*		USB Power
  *********************************************************************/
 static int wm8350_usb_get_prop(struct power_supply *psy,
-			       enum power_supply_property psp,
-			       union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct wm8350 *wm8350 = dev_get_drvdata(psy->dev.parent);
 	int ret = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = !!(wm8350_get_supplies(wm8350) &
 				 WM8350_USB_SUPPLY);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		val->intval = wm8350_read_usb_uvolts(wm8350);
 		break;
 	default:
@@ -299,8 +299,8 @@ static int wm8350_usb_get_prop(struct power_supply *psy,
 }
 
 static enum power_supply_property wm8350_usb_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
 };
 
 /*********************************************************************
@@ -312,16 +312,16 @@ static int wm8350_bat_check_health(struct wm8350 *wm8350)
 	u16 reg;
 
 	if (wm8350_read_battery_uvolts(wm8350) < 2850000)
-		return POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+return POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 
 	reg = wm8350_reg_read(wm8350, WM8350_CHARGER_OVERRIDES);
 	if (reg & WM8350_CHG_BATT_HOT_OVRDE)
-		return POWER_SUPPLY_HEALTH_OVERHEAT;
+return POWER_SUPPLY_HEALTH_OVERHEAT;
 
 	if (reg & WM8350_CHG_BATT_COLD_OVRDE)
-		return POWER_SUPPLY_HEALTH_COLD;
+return POWER_SUPPLY_HEALTH_COLD;
 
-	return POWER_SUPPLY_HEALTH_GOOD;
+return POWER_SUPPLY_HEALTH_GOOD;
 }
 
 static int wm8350_bat_get_charge_type(struct wm8350 *wm8350)
@@ -332,38 +332,38 @@ static int wm8350_bat_get_charge_type(struct wm8350 *wm8350)
 	    WM8350_CHG_STS_MASK;
 	switch (state) {
 	case WM8350_CHG_STS_OFF:
-		return POWER_SUPPLY_CHARGE_TYPE_NONE;
+return POWER_SUPPLY_CHARGE_TYPE_NONE;
 	case WM8350_CHG_STS_TRICKLE:
-		return POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
+return POWER_SUPPLY_CHARGE_TYPE_TRICKLE;
 	case WM8350_CHG_STS_FAST:
-		return POWER_SUPPLY_CHARGE_TYPE_FAST;
+return POWER_SUPPLY_CHARGE_TYPE_FAST;
 	default:
-		return POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
+return POWER_SUPPLY_CHARGE_TYPE_UNKNOWN;
 	}
 }
 
 static int wm8350_bat_get_property(struct power_supply *psy,
-				   enum power_supply_property psp,
-				   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct wm8350 *wm8350 = dev_get_drvdata(psy->dev.parent);
 	int ret = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = wm8350_batt_status(wm8350);
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = !!(wm8350_get_supplies(wm8350) &
 				 WM8350_BATT_SUPPLY);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		val->intval = wm8350_read_battery_uvolts(wm8350);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		val->intval = wm8350_bat_check_health(wm8350);
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_TYPE:
+case POWER_SUPPLY_PROP_CHARGE_TYPE:
 		val->intval = wm8350_bat_get_charge_type(wm8350);
 		break;
 	default:
@@ -375,16 +375,16 @@ static int wm8350_bat_get_property(struct power_supply *psy,
 }
 
 static enum power_supply_property wm8350_bat_props[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_CHARGE_TYPE,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_CHARGE_TYPE,
 };
 
 static const struct power_supply_desc wm8350_ac_desc = {
 	.name		= "wm8350-ac",
-	.type		= POWER_SUPPLY_TYPE_MAINS,
+.type		= POWER_SUPPLY_TYPE_MAINS,
 	.properties	= wm8350_ac_props,
 	.num_properties	= ARRAY_SIZE(wm8350_ac_props),
 	.get_property	= wm8350_ac_get_prop,
@@ -400,7 +400,7 @@ static const struct power_supply_desc wm8350_battery_desc = {
 
 static const struct power_supply_desc wm8350_usb_desc = {
 	.name		= "wm8350-usb",
-	.type		= POWER_SUPPLY_TYPE_USB,
+.type		= POWER_SUPPLY_TYPE_USB,
 	.properties	= wm8350_usb_props,
 	.num_properties	= ARRAY_SIZE(wm8350_usb_props),
 	.get_property	= wm8350_usb_get_prop,
@@ -538,24 +538,24 @@ static void free_charger_irq(struct wm8350 *wm8350)
 static int wm8350_power_probe(struct platform_device *pdev)
 {
 	struct wm8350 *wm8350 = platform_get_drvdata(pdev);
-	struct wm8350_power *power = &wm8350->power;
-	struct wm8350_charger_policy *policy = power->policy;
+struct wm8350_power *power = &wm8350->power;
+struct wm8350_charger_policy *policy = power->policy;
 	int ret;
 
-	power->ac = power_supply_register(&pdev->dev, &wm8350_ac_desc, NULL);
-	if (IS_ERR(power->ac))
-		return PTR_ERR(power->ac);
+power->ac = power_supply_register(&pdev->dev, &wm8350_ac_desc, NULL);
+if (IS_ERR(power->ac))
+return PTR_ERR(power->ac);
 
-	power->battery = power_supply_register(&pdev->dev, &wm8350_battery_desc,
+power->battery = power_supply_register(&pdev->dev, &wm8350_battery_desc,
 					       NULL);
-	if (IS_ERR(power->battery)) {
-		ret = PTR_ERR(power->battery);
+if (IS_ERR(power->battery)) {
+ret = PTR_ERR(power->battery);
 		goto battery_failed;
 	}
 
-	power->usb = power_supply_register(&pdev->dev, &wm8350_usb_desc, NULL);
-	if (IS_ERR(power->usb)) {
-		ret = PTR_ERR(power->usb);
+power->usb = power_supply_register(&pdev->dev, &wm8350_usb_desc, NULL);
+if (IS_ERR(power->usb)) {
+ret = PTR_ERR(power->usb);
 		goto usb_failed;
 	}
 
@@ -567,16 +567,16 @@ static int wm8350_power_probe(struct platform_device *pdev)
 	wm8350_init_charger(wm8350);
 	if (wm8350_charger_config(wm8350, policy) == 0) {
 		wm8350_reg_unlock(wm8350);
-		wm8350_set_bits(wm8350, WM8350_POWER_MGMT_5, WM8350_CHG_ENA);
+wm8350_set_bits(wm8350, WM8350_POWER_MGMT_5, WM8350_CHG_ENA);
 		wm8350_reg_lock(wm8350);
 	}
 
 	return ret;
 
 usb_failed:
-	power_supply_unregister(power->battery);
+power_supply_unregister(power->battery);
 battery_failed:
-	power_supply_unregister(power->ac);
+power_supply_unregister(power->ac);
 
 	return ret;
 }
@@ -584,21 +584,21 @@ battery_failed:
 static int wm8350_power_remove(struct platform_device *pdev)
 {
 	struct wm8350 *wm8350 = platform_get_drvdata(pdev);
-	struct wm8350_power *power = &wm8350->power;
+struct wm8350_power *power = &wm8350->power;
 
 	free_charger_irq(wm8350);
 	device_remove_file(&pdev->dev, &dev_attr_charger_state);
-	power_supply_unregister(power->battery);
-	power_supply_unregister(power->ac);
-	power_supply_unregister(power->usb);
+power_supply_unregister(power->battery);
+power_supply_unregister(power->ac);
+power_supply_unregister(power->usb);
 	return 0;
 }
 
 static struct platform_driver wm8350_power_driver = {
-	.probe = wm8350_power_probe,
-	.remove = wm8350_power_remove,
+.probe = wm8350_power_probe,
+.remove = wm8350_power_remove,
 	.driver = {
-		.name = "wm8350-power",
+.name = "wm8350-power",
 	},
 };
 

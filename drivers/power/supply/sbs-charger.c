@@ -39,50 +39,50 @@
 
 struct sbs_info {
 	struct i2c_client		*client;
-	struct power_supply		*power_supply;
+struct power_supply		*power_supply;
 	struct regmap			*regmap;
 	struct delayed_work		work;
 	unsigned int			last_state;
 };
 
 static int sbs_get_property(struct power_supply *psy,
-			    enum power_supply_property psp,
-			    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct sbs_info *chip = power_supply_get_drvdata(psy);
+struct sbs_info *chip = power_supply_get_drvdata(psy);
 	unsigned int reg;
 
 	reg = chip->last_state;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = !!(reg & SBS_CHARGER_STATUS_BATTERY_PRESENT);
 		break;
 
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = !!(reg & SBS_CHARGER_STATUS_AC_PRESENT);
 		break;
 
-	case POWER_SUPPLY_PROP_STATUS:
-		val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+case POWER_SUPPLY_PROP_STATUS:
+val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 
 		if (!(reg & SBS_CHARGER_STATUS_BATTERY_PRESENT))
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 		else if (reg & SBS_CHARGER_STATUS_AC_PRESENT &&
 			 !(reg & SBS_CHARGER_STATUS_CHARGE_INHIBITED))
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 
 		break;
 
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		if (reg & SBS_CHARGER_STATUS_RES_COLD)
-			val->intval = POWER_SUPPLY_HEALTH_COLD;
+val->intval = POWER_SUPPLY_HEALTH_COLD;
 		if (reg & SBS_CHARGER_STATUS_RES_HOT)
-			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 		else
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 
 		break;
 
@@ -101,7 +101,7 @@ static int sbs_check_state(struct sbs_info *chip)
 	ret = regmap_read(chip->regmap, SBS_CHARGER_REG_STATUS, &reg);
 	if (!ret && reg != chip->last_state) {
 		chip->last_state = reg;
-		power_supply_changed(chip->power_supply);
+power_supply_changed(chip->power_supply);
 		return 1;
 	}
 
@@ -129,10 +129,10 @@ static irqreturn_t sbs_irq_thread(int irq, void *data)
 }
 
 static enum power_supply_property sbs_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_HEALTH,
 };
 
 static bool sbs_readable_reg(struct device *dev, unsigned int reg)
@@ -161,7 +161,7 @@ static const struct regmap_config sbs_regmap = {
 
 static const struct power_supply_desc sbs_desc = {
 	.name = "sbs-charger",
-	.type = POWER_SUPPLY_TYPE_MAINS,
+.type = POWER_SUPPLY_TYPE_MAINS,
 	.properties = sbs_properties,
 	.num_properties = ARRAY_SIZE(sbs_properties),
 	.get_property = sbs_get_property,
@@ -170,7 +170,7 @@ static const struct power_supply_desc sbs_desc = {
 static int sbs_probe(struct i2c_client *client,
 		     const struct i2c_device_id *id)
 {
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct sbs_info *chip;
 	int ret, val;
 
@@ -199,11 +199,11 @@ static int sbs_probe(struct i2c_client *client,
 	}
 	chip->last_state = val;
 
-	chip->power_supply = devm_power_supply_register(&client->dev, &sbs_desc,
+chip->power_supply = devm_power_supply_register(&client->dev, &sbs_desc,
 							&psy_cfg);
-	if (IS_ERR(chip->power_supply)) {
-		dev_err(&client->dev, "Failed to register power supply\n");
-		return PTR_ERR(chip->power_supply);
+if (IS_ERR(chip->power_supply)) {
+dev_err(&client->dev, "Failed to register power supply\n");
+return PTR_ERR(chip->power_supply);
 	}
 
 	/*

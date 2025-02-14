@@ -62,10 +62,10 @@ QDF_STATUS reg_regrules_assign(uint8_t dmn_id_2g, uint8_t dmn_id_5g,
 
 	for (k = 0; k < reg_info->num_2g_reg_rules; k++) {
 		rule_index = regdomains_2g[dmn_id_2g].reg_rule_id[k];
-		r_r_2g->start_freq = reg_rules_2g[rule_index].start_freq;
-		r_r_2g->end_freq = reg_rules_2g[rule_index].end_freq;
+r_r_2g->start_freq = reg_rules_2g[rule_index].start_freq;
+r_r_2g->end_freq = reg_rules_2g[rule_index].end_freq;
 		r_r_2g->max_bw = reg_rules_2g[rule_index].max_bw;
-		r_r_2g->reg_power = reg_rules_2g[rule_index].reg_power;
+r_r_2g->reg_power = reg_rules_2g[rule_index].reg_power;
 		r_r_2g->flags = reg_rules_2g[rule_index].flags;
 		r_r_2g->ant_gain = ant_gain_2g;
 		r_r_2g++;
@@ -73,10 +73,10 @@ QDF_STATUS reg_regrules_assign(uint8_t dmn_id_2g, uint8_t dmn_id_5g,
 
 	for (k = 0; k < reg_info->num_5g_reg_rules; k++) {
 		rule_index = regdomains_5g[dmn_id_5g].reg_rule_id[k];
-		r_r_5g->start_freq = reg_rules_5g[rule_index].start_freq;
-		r_r_5g->end_freq = reg_rules_5g[rule_index].end_freq;
+r_r_5g->start_freq = reg_rules_5g[rule_index].start_freq;
+r_r_5g->end_freq = reg_rules_5g[rule_index].end_freq;
 		r_r_5g->max_bw = reg_rules_5g[rule_index].max_bw;
-		r_r_5g->reg_power = reg_rules_5g[rule_index].reg_power;
+r_r_5g->reg_power = reg_rules_5g[rule_index].reg_power;
 		r_r_5g->flags = reg_rules_5g[rule_index].flags;
 		r_r_5g->ant_gain = ant_gain_5g;
 		r_r_5g++;

@@ -51,7 +51,7 @@ struct sclkFcwRange_t {
 typedef struct sclkFcwRange_t sclkFcwRange_t;
 
 struct SMIO_Pattern {
-	uint16_t Voltage;
+uint16_t Voltage;
 	uint8_t  Smio;
 	uint8_t  padding;
 };
@@ -65,7 +65,7 @@ struct SMIO_Table {
 typedef struct SMIO_Table SMIO_Table;
 
 struct SMU_SclkSetting {
-	uint32_t    SclkFrequency;
+uint32_t    SclkFrequency;
 	uint16_t    Fcw_int;
 	uint16_t    Fcw_frac;
 	uint16_t    Pcc_fcw_int;
@@ -81,7 +81,7 @@ struct SMU_SclkSetting {
 typedef struct SMU_SclkSetting SMU_SclkSetting;
 
 struct SMU74_Discrete_GraphicsLevel {
-	SMU_VoltageLevel MinVoltage;
+SMU_VoltageLevel MinVoltage;
 	uint8_t     pcieDpmLevel;
 	uint8_t     DeepSleepDivId;
 	uint16_t    ActivityLevel;
@@ -95,8 +95,8 @@ struct SMU74_Discrete_GraphicsLevel {
 	uint8_t     EnabledForThrottle;
 	uint8_t     UpHyst;
 	uint8_t     DownHyst;
-	uint8_t     VoltageDownHyst;
-	uint8_t     PowerThrottle;
+uint8_t     VoltageDownHyst;
+uint8_t     PowerThrottle;
 	SMU_SclkSetting SclkSetting;
 };
 
@@ -104,8 +104,8 @@ typedef struct SMU74_Discrete_GraphicsLevel SMU74_Discrete_GraphicsLevel;
 
 struct SMU74_Discrete_ACPILevel {
 	uint32_t    Flags;
-	SMU_VoltageLevel MinVoltage;
-	uint32_t    SclkFrequency;
+SMU_VoltageLevel MinVoltage;
+uint32_t    SclkFrequency;
 	uint8_t     SclkDid;
 	uint8_t     DisplayWatermark;
 	uint8_t     DeepSleepDivId;
@@ -121,9 +121,9 @@ typedef struct SMU74_Discrete_ACPILevel SMU74_Discrete_ACPILevel;
 struct SMU74_Discrete_Ulv {
 	uint32_t    CcPwrDynRm;
 	uint32_t    CcPwrDynRm1;
-	uint16_t    VddcOffset;
-	uint8_t     VddcOffsetVid;
-	uint8_t     VddcPhase;
+uint16_t    VddcOffset;
+uint8_t     VddcOffsetVid;
+uint8_t     VddcPhase;
 	uint16_t    BifSclkDfs;
 	uint16_t    Reserved;
 };
@@ -131,10 +131,10 @@ struct SMU74_Discrete_Ulv {
 typedef struct SMU74_Discrete_Ulv SMU74_Discrete_Ulv;
 
 struct SMU74_Discrete_MemoryLevel {
-	SMU_VoltageLevel MinVoltage;
-	uint32_t    MinMvdd;
+SMU_VoltageLevel MinVoltage;
+uint32_t    MinMvdd;
 
-	uint32_t    MclkFrequency;
+uint32_t    MclkFrequency;
 
 	uint8_t     StutterEnable;
 	uint8_t     EnabledForThrottle;
@@ -143,7 +143,7 @@ struct SMU74_Discrete_MemoryLevel {
 
 	uint8_t     UpHyst;
 	uint8_t     DownHyst;
-	uint8_t     VoltageDownHyst;
+uint8_t     VoltageDownHyst;
 	uint8_t     padding_1;
 
 	uint16_t    ActivityLevel;
@@ -182,9 +182,9 @@ struct SMU74_Discrete_MCArbDramTimingTable {
 typedef struct SMU74_Discrete_MCArbDramTimingTable SMU74_Discrete_MCArbDramTimingTable;
 
 struct SMU74_Discrete_UvdLevel {
-	uint32_t VclkFrequency;
-	uint32_t DclkFrequency;
-	SMU_VoltageLevel MinVoltage;
+uint32_t VclkFrequency;
+uint32_t DclkFrequency;
+SMU_VoltageLevel MinVoltage;
 	uint8_t  VclkDivider;
 	uint8_t  DclkDivider;
 	uint8_t  padding[2];
@@ -193,8 +193,8 @@ struct SMU74_Discrete_UvdLevel {
 typedef struct SMU74_Discrete_UvdLevel SMU74_Discrete_UvdLevel;
 
 struct SMU74_Discrete_ExtClkLevel {
-	uint32_t Frequency;
-	SMU_VoltageLevel MinVoltage;
+uint32_t Frequency;
+SMU_VoltageLevel MinVoltage;
 	uint8_t  Divider;
 	uint8_t  padding[3];
 };
@@ -202,14 +202,14 @@ struct SMU74_Discrete_ExtClkLevel {
 typedef struct SMU74_Discrete_ExtClkLevel SMU74_Discrete_ExtClkLevel;
 
 struct SMU74_Discrete_StateInfo {
-	uint32_t SclkFrequency;
-	uint32_t MclkFrequency;
-	uint32_t VclkFrequency;
-	uint32_t DclkFrequency;
-	uint32_t SamclkFrequency;
-	uint32_t AclkFrequency;
-	uint32_t EclkFrequency;
-	uint16_t MvddVoltage;
+uint32_t SclkFrequency;
+uint32_t MclkFrequency;
+uint32_t VclkFrequency;
+uint32_t DclkFrequency;
+uint32_t SamclkFrequency;
+uint32_t AclkFrequency;
+uint32_t EclkFrequency;
+uint16_t MvddVoltage;
 	uint16_t padding16;
 	uint8_t  DisplayWatermark;
 	uint8_t  McArbIndex;
@@ -247,12 +247,12 @@ struct SMU74_Discrete_DpmTable {
 	SMIO_Table                          SmioTable1;
 	SMIO_Table                          SmioTable2;
 
-	uint32_t                            MvddLevelCount;
+uint32_t                            MvddLevelCount;
 
 
-	uint8_t                             BapmVddcVidHiSidd[SMU74_MAX_LEVELS_VDDC];
-	uint8_t                             BapmVddcVidLoSidd[SMU74_MAX_LEVELS_VDDC];
-	uint8_t                             BapmVddcVidHiSidd2[SMU74_MAX_LEVELS_VDDC];
+uint8_t                             BapmVddcVidHiSidd[SMU74_MAX_LEVELS_VDDC];
+uint8_t                             BapmVddcVidLoSidd[SMU74_MAX_LEVELS_VDDC];
+uint8_t                             BapmVddcVidHiSidd2[SMU74_MAX_LEVELS_VDDC];
 
 	uint8_t                             GraphicsDpmLevelCount;
 	uint8_t                             MemoryDpmLevelCount;
@@ -274,7 +274,7 @@ struct SMU74_Discrete_DpmTable {
 	uint8_t                             Reserved1[2];
 	uint16_t                            FanStartTemperature;
 	uint16_t                            FanStopTemperature;
-	uint16_t                            MaxVoltage;
+uint16_t                            MaxVoltage;
 	uint16_t                            Reserved2;
 	uint32_t                            Reserved[1];
 
@@ -300,23 +300,23 @@ struct SMU74_Discrete_DpmTable {
 	uint8_t                             SamuBootLevel;
 
 	uint8_t                             GraphicsBootLevel;
-	uint8_t                             GraphicsVoltageChangeEnable;
+uint8_t                             GraphicsVoltageChangeEnable;
 	uint8_t                             GraphicsThermThrottleEnable;
 	uint8_t                             GraphicsInterval;
 
-	uint8_t                             VoltageInterval;
+uint8_t                             VoltageInterval;
 	uint8_t                             ThermalInterval;
 	uint16_t                            TemperatureLimitHigh;
 
 	uint16_t                            TemperatureLimitLow;
 	uint8_t                             MemoryBootLevel;
-	uint8_t                             MemoryVoltageChangeEnable;
+uint8_t                             MemoryVoltageChangeEnable;
 
-	uint16_t                            BootMVdd;
+uint16_t                            BootMVdd;
 	uint8_t                             MemoryInterval;
 	uint8_t                             MemoryThermThrottleEnable;
 
-	uint16_t                            VoltageResponseTime;
+uint16_t                            VoltageResponseTime;
 	uint16_t                            PhaseResponseTime;
 
 	uint8_t                             PCIeBootLinkLevel;
@@ -344,21 +344,21 @@ struct SMU74_Discrete_DpmTable {
 	uint16_t                            TemperatureLimitEdge;
 	uint16_t                            TemperatureLimitHotspot;
 
-	uint16_t                            BootVddc;
-	uint16_t                            BootVddci;
+uint16_t                            BootVddc;
+uint16_t                            BootVddci;
 
 	uint16_t                            FanGainEdge;
 	uint16_t                            FanGainHotspot;
 
 	uint32_t                            LowSclkInterruptThreshold;
-	uint32_t                            VddGfxReChkWait;
+uint32_t                            VddGfxReChkWait;
 
 	uint8_t                             ClockStretcherAmount;
 	uint8_t                             Sclk_CKS_masterEn0_7;
 	uint8_t                             Sclk_CKS_masterEn8_15;
 	uint8_t                             DPMFreezeAndForced;
 
-	uint8_t                             Sclk_voltageOffset[8];
+uint8_t                             Sclk_voltageOffset[8];
 
 	SMU_ClockStretcherDataTable         ClockStretcherDataTable;
 	SMU_CKS_LOOKUPTable                 CKS_LOOKUPTable;
@@ -415,7 +415,7 @@ struct SMU7_MclkDpmScoreboard {
 	uint8_t  TdpClampMode;
 	uint8_t  TdcClampMode;
 	uint8_t  ThermClampMode;
-	uint8_t  VoltageBusy;
+uint8_t  VoltageBusy;
 
 	int8_t   CurrLevel;
 	int8_t   TargLevel;
@@ -423,7 +423,7 @@ struct SMU7_MclkDpmScoreboard {
 	uint8_t  UpHyst;
 
 	uint8_t  DownHyst;
-	uint8_t  VoltageDownHyst;
+uint8_t  VoltageDownHyst;
 	uint8_t  DpmEnable;
 	uint8_t  DpmRunning;
 
@@ -458,8 +458,8 @@ struct SMU7_MclkDpmScoreboard {
 	uint16_t MclkSwitchingTime;
 
 	uint8_t  fastSwitch;
-	uint8_t  Save_PIC_VDDGFX_EXIT;
-	uint8_t  Save_PIC_VDDGFX_ENTER;
+uint8_t  Save_PIC_VDDGFX_EXIT;
+uint8_t  Save_PIC_VDDGFX_ENTER;
 	uint8_t  padding;
 };
 
@@ -492,17 +492,17 @@ struct VddgfxSavedRegisters {
 typedef struct VddgfxSavedRegisters VddgfxSavedRegisters;
 
 struct SMU7_VddGfxScoreboard {
-	uint8_t     VddGfxEnable;
-	uint8_t     VddGfxActive;
+uint8_t     VddGfxEnable;
+uint8_t     VddGfxActive;
 	uint8_t     VPUResetOccured;
 	uint8_t     padding;
 
-	uint32_t    VddGfxEnteredCount;
-	uint32_t    VddGfxAbortedCount;
+uint32_t    VddGfxEnteredCount;
+uint32_t    VddGfxAbortedCount;
 
-	uint32_t    VddGfxVid;
+uint32_t    VddGfxVid;
 
-	VddgfxSavedRegisters SavedRegisters;
+VddgfxSavedRegisters SavedRegisters;
 };
 
 typedef struct SMU7_VddGfxScoreboard SMU7_VddGfxScoreboard;
@@ -533,19 +533,19 @@ struct SMU7_PkgPwrLimitScoreboard {
 typedef struct SMU7_PkgPwrLimitScoreboard SMU7_PkgPwrLimitScoreboard;
 
 struct SMU7_BapmScoreboard {
-	uint32_t source_powers[SMU74_DTE_SOURCES];
-	uint32_t source_powers_last[SMU74_DTE_SOURCES];
+uint32_t source_powers[SMU74_DTE_SOURCES];
+uint32_t source_powers_last[SMU74_DTE_SOURCES];
 	int32_t entity_temperatures[SMU74_NUM_GPU_TES];
 	int32_t initial_entity_temperatures[SMU74_NUM_GPU_TES];
 	int32_t Limit;
 	int32_t Hyst;
 	int32_t therm_influence_coeff_table[SMU74_DTE_ITERATIONS * SMU74_DTE_SOURCES * SMU74_DTE_SINKS * 2];
 	int32_t therm_node_table[SMU74_DTE_ITERATIONS * SMU74_DTE_SOURCES * SMU74_DTE_SINKS];
-	uint16_t ConfigTDPPowerScalar;
-	uint16_t FanSpeedPowerScalar;
-	uint16_t OverDrivePowerScalar;
+uint16_t ConfigTDPPowerScalar;
+uint16_t FanSpeedPowerScalar;
+uint16_t OverDrivePowerScalar;
 	uint16_t OverDriveLimitScalar;
-	uint16_t FinalPowerScalar;
+uint16_t FinalPowerScalar;
 	uint8_t VariantID;
 	uint8_t spare997;
 
@@ -571,15 +571,15 @@ struct SMU7_AcpiScoreboard {
 typedef struct SMU7_AcpiScoreboard SMU7_AcpiScoreboard;
 
 struct SMU74_Discrete_PmFuses {
-	uint8_t BapmVddCVidHiSidd[8];
-	uint8_t BapmVddCVidLoSidd[8];
-	uint8_t VddCVid[8];
+uint8_t BapmVddCVidHiSidd[8];
+uint8_t BapmVddCVidLoSidd[8];
+uint8_t VddCVid[8];
 	uint8_t SviLoadLineEn;
-	uint8_t SviLoadLineVddC;
-	uint8_t SviLoadLineTrimVddC;
-	uint8_t SviLoadLineOffsetVddC;
-	uint16_t TDC_VDDC_PkgLimit;
-	uint8_t TDC_VDDC_ThrottleReleaseLimitPerc;
+uint8_t SviLoadLineVddC;
+uint8_t SviLoadLineTrimVddC;
+uint8_t SviLoadLineOffsetVddC;
+uint16_t TDC_VDDC_PkgLimit;
+uint8_t TDC_VDDC_ThrottleReleaseLimitPerc;
 	uint8_t TDC_MAWt;
 	uint8_t TdcWaterfallCtl;
 	uint8_t LPMLTemperatureMin;
@@ -599,8 +599,8 @@ struct SMU74_Discrete_PmFuses {
 	uint8_t GnbLPMLMinVid;
 	uint8_t Reserved1[2];
 
-	uint16_t BapmVddCBaseLeakageHiSidd;
-	uint16_t BapmVddCBaseLeakageLoSidd;
+uint16_t BapmVddCBaseLeakageHiSidd;
+uint16_t BapmVddCBaseLeakageLoSidd;
 
 	uint16_t  VFT_Temp[3];
 	uint16_t  padding;
@@ -612,9 +612,9 @@ struct SMU74_Discrete_PmFuses {
 
 	SMU_QuadraticCoeffs P2V;
 
-	uint32_t PsmCharzFreq;
+uint32_t PsmCharzFreq;
 
-	uint16_t InversionVoltage;
+uint16_t InversionVoltage;
 	uint16_t PsmCharzTemp;
 
 	uint32_t EnabledAvfsModules;
@@ -663,25 +663,25 @@ struct SMU7_Discrete_Cac_Collection_Table {
 typedef struct SMU7_Discrete_Cac_Collection_Table SMU7_Discrete_Cac_Collection_Table;
 
 struct SMU7_Discrete_Cac_Verification_Table {
-	uint32_t VddcTotalPower;
-	uint32_t VddcLeakagePower;
-	uint32_t VddcConstantPower;
-	uint32_t VddcGfxDynamicPower;
-	uint32_t VddcUvdDynamicPower;
-	uint32_t VddcVceDynamicPower;
-	uint32_t VddcAcpDynamicPower;
-	uint32_t VddcPcieDynamicPower;
-	uint32_t VddcDceDynamicPower;
-	uint32_t VddcCurrent;
-	uint32_t VddcVoltage;
-	uint32_t VddciTotalPower;
-	uint32_t VddciLeakagePower;
-	uint32_t VddciConstantPower;
-	uint32_t VddciDynamicPower;
-	uint32_t Vddr1TotalPower;
-	uint32_t Vddr1LeakagePower;
-	uint32_t Vddr1ConstantPower;
-	uint32_t Vddr1DynamicPower;
+uint32_t VddcTotalPower;
+uint32_t VddcLeakagePower;
+uint32_t VddcConstantPower;
+uint32_t VddcGfxDynamicPower;
+uint32_t VddcUvdDynamicPower;
+uint32_t VddcVceDynamicPower;
+uint32_t VddcAcpDynamicPower;
+uint32_t VddcPcieDynamicPower;
+uint32_t VddcDceDynamicPower;
+uint32_t VddcCurrent;
+uint32_t VddcVoltage;
+uint32_t VddciTotalPower;
+uint32_t VddciLeakagePower;
+uint32_t VddciConstantPower;
+uint32_t VddciDynamicPower;
+uint32_t Vddr1TotalPower;
+uint32_t Vddr1LeakagePower;
+uint32_t Vddr1ConstantPower;
+uint32_t Vddr1DynamicPower;
 	uint32_t spare[4];
 	uint32_t temperature;
 };
@@ -699,26 +699,26 @@ struct SMU7_Discrete_Pm_Status_Table {
 
 	uint32_t I_calc_max;
 	uint32_t I_calc_acc;
-	uint32_t I_calc_acc_vddci;
+uint32_t I_calc_acc_vddci;
 	uint32_t V_calc_noload_acc;
 	uint32_t V_calc_load_acc;
-	uint32_t V_calc_noload_acc_vddci;
+uint32_t V_calc_noload_acc_vddci;
 	uint32_t P_meas_acc;
 	uint32_t V_meas_noload_acc;
 	uint32_t V_meas_load_acc;
 	uint32_t I_meas_acc;
-	uint32_t P_meas_acc_vddci;
-	uint32_t V_meas_noload_acc_vddci;
-	uint32_t V_meas_load_acc_vddci;
-	uint32_t I_meas_acc_vddci;
+uint32_t P_meas_acc_vddci;
+uint32_t V_meas_noload_acc_vddci;
+uint32_t V_meas_load_acc_vddci;
+uint32_t I_meas_acc_vddci;
 
 	uint16_t Sclk_dpm_residency[8];
 	uint16_t Uvd_dpm_residency[8];
 	uint16_t Vce_dpm_residency[8];
 	uint16_t Mclk_dpm_residency[4];
 
-	uint32_t P_vddci_acc;
-	uint32_t P_vddr1_acc;
+uint32_t P_vddci_acc;
+uint32_t P_vddr1_acc;
 	uint32_t P_nte1_acc;
 	uint32_t PkgPwr_max;
 	uint32_t PkgPwr_acc;

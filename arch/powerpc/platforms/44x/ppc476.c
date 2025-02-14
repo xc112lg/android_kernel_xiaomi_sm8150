@@ -1,5 +1,5 @@
 /*
- * PowerPC 476FPE board specific routines
+* PowerPC 476FPE board specific routines
  *
  * Copyright © 2013 Tony Breeds IBM Corporation
  * Copyright © 2013 Alistair Popple IBM Corporation
@@ -11,7 +11,7 @@
  *    Eugene Surovegin <eugene.surovegin@zultys.com> or <ebs@ebshome.net>
  *    Copyright (c) 2003-2005 Zultys Technologies
  *
- *    Rewritten and ported to the merged powerpc tree:
+*    Rewritten and ported to the merged powerpc tree:
  *    Copyright 2007 David Gibson <dwg@au1.ibm.com>, IBM Corporation.
  *    Copyright © 2011 David Kliekamp IBM Corporation
  *
@@ -58,7 +58,7 @@ static void quirk_ppc_currituck_usb_fixup(struct pci_dev *dev)
 DECLARE_PCI_FIXUP_HEADER(0x1033, 0x0035, quirk_ppc_currituck_usb_fixup);
 
 /* Akebono has an AVR microcontroller attached to the I2C bus
- * which is used to power off/reset the system. */
+* which is used to power off/reset the system. */
 
 /* AVR I2C Commands */
 #define AVR_PWRCTL_CMD (0x26)
@@ -94,7 +94,7 @@ static int avr_probe(struct i2c_client *client,
 {
 	avr_i2c_client = client;
 	ppc_md.restart = avr_reset_system;
-	pm_power_off = avr_power_off_system;
+pm_power_off = avr_power_off_system;
 	return 0;
 }
 
@@ -287,7 +287,7 @@ static int __init ppc47x_probe(void)
 }
 
 define_machine(ppc47x) {
-	.name			= "PowerPC 47x",
+.name			= "PowerPC 47x",
 	.probe			= ppc47x_probe,
 	.progress		= udbg_progress,
 	.init_IRQ		= ppc47x_init_irq,

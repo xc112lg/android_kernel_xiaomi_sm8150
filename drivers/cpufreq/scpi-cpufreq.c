@@ -1,7 +1,7 @@
 /*
- * System Control and Power Interface (SCPI) based CPUFreq Interface driver
+* System Control and Power Interface (SCPI) based CPUFreq Interface driver
  *
- * It provides necessary ops to arm_big_little cpufreq driver.
+* It provides necessary ops to arm_big_little cpufreq driver.
  *
  * Copyright (C) 2015 ARM Ltd.
  * Sudeep Holla <sudeep.holla@arm.com>
@@ -66,22 +66,22 @@ static int scpi_cpufreq_probe(struct platform_device *pdev)
 	if (!scpi_ops)
 		return -EIO;
 
-	return bL_cpufreq_register(&scpi_cpufreq_ops);
+return bL_cpufreq_register(&scpi_cpufreq_ops);
 }
 
 static int scpi_cpufreq_remove(struct platform_device *pdev)
 {
-	bL_cpufreq_unregister(&scpi_cpufreq_ops);
+bL_cpufreq_unregister(&scpi_cpufreq_ops);
 	scpi_ops = NULL;
 	return 0;
 }
 
 static struct platform_driver scpi_cpufreq_platdrv = {
 	.driver = {
-		.name	= "scpi-cpufreq",
+.name	= "scpi-cpufreq",
 	},
-	.probe		= scpi_cpufreq_probe,
-	.remove		= scpi_cpufreq_remove,
+.probe		= scpi_cpufreq_probe,
+.remove		= scpi_cpufreq_remove,
 };
 module_platform_driver(scpi_cpufreq_platdrv);
 

@@ -1,5 +1,5 @@
 /*
- * Match running platform with pre-defined OPP values for CPUFreq
+* Match running platform with pre-defined OPP values for CPUFreq
  *
  * Author: Ajit Pal Singh <ajitpal.singh@st.com>
  *         Lee Jones <lee.jones@linaro.org>
@@ -43,7 +43,7 @@ enum {
 };
 
 /**
- * ST CPUFreq Driver Data
+* ST CPUFreq Driver Data
  *
  * @cpu_node		CPU's OF node
  * @syscfg_eng		Engineering Syscon register map
@@ -163,9 +163,9 @@ static int sti_cpufreq_set_opp_info(void)
 	char name[MAX_PCODE_NAME_LEN];
 	struct opp_table *opp_table;
 
-	reg_fields = sti_cpufreq_match();
+reg_fields = sti_cpufreq_match();
 	if (!reg_fields) {
-		dev_err(dev, "This SoC doesn't support voltage scaling\n");
+dev_err(dev, "This SoC doesn't support voltage scaling\n");
 		return -ENODEV;
 	}
 
@@ -178,7 +178,7 @@ static int sti_cpufreq_set_opp_info(void)
 		goto use_defaults;
 	}
 
-	pcode = sti_cpufreq_fetch_regmap_field(reg_fields,
+pcode = sti_cpufreq_fetch_regmap_field(reg_fields,
 					       hw_info_offset,
 					       PCODE);
 	if (pcode < 0) {
@@ -187,7 +187,7 @@ static int sti_cpufreq_set_opp_info(void)
 		pcode = 0;
 	}
 
-	substrate = sti_cpufreq_fetch_regmap_field(reg_fields,
+substrate = sti_cpufreq_fetch_regmap_field(reg_fields,
 						   hw_info_offset,
 						   SUBSTRATE);
 	if (substrate) {
@@ -197,14 +197,14 @@ static int sti_cpufreq_set_opp_info(void)
 	}
 
 use_defaults:
-	major = sti_cpufreq_fetch_major();
+major = sti_cpufreq_fetch_major();
 	if (major < 0) {
 		dev_err(dev, "Failed to obtain major version\n");
 		/* Use default major number */
 		major = DEFAULT_VERSION;
 	}
 
-	minor = sti_cpufreq_fetch_minor();
+minor = sti_cpufreq_fetch_minor();
 	if (minor < 0) {
 		dev_err(dev, "Failed to obtain minor version\n");
 		/* Use default minor number */
@@ -269,27 +269,27 @@ static int sti_cpufreq_init(void)
 	ddata.cpu = get_cpu_device(0);
 	if (!ddata.cpu) {
 		dev_err(ddata.cpu, "Failed to get device for CPU0\n");
-		goto skip_voltage_scaling;
+goto skip_voltage_scaling;
 	}
 
 	if (!of_get_property(ddata.cpu->of_node, "operating-points-v2", NULL)) {
 		dev_err(ddata.cpu, "OPP-v2 not supported\n");
-		goto skip_voltage_scaling;
+goto skip_voltage_scaling;
 	}
 
-	ret = sti_cpufreq_fetch_syscon_registers();
+ret = sti_cpufreq_fetch_syscon_registers();
 	if (ret)
-		goto skip_voltage_scaling;
+goto skip_voltage_scaling;
 
-	ret = sti_cpufreq_set_opp_info();
+ret = sti_cpufreq_set_opp_info();
 	if (!ret)
-		goto register_cpufreq_dt;
+goto register_cpufreq_dt;
 
 skip_voltage_scaling:
-	dev_err(ddata.cpu, "Not doing voltage scaling\n");
+dev_err(ddata.cpu, "Not doing voltage scaling\n");
 
 register_cpufreq_dt:
-	platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
+platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
 
 	return 0;
 }

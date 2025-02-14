@@ -1,5 +1,5 @@
 /*
- * Copied from <file:arch/powerpc/kernel/misc_32.S>
+* Copied from <file:arch/powerpc/kernel/misc_32.S>
  *
  * This file contains miscellaneous low-level functions.
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
@@ -29,7 +29,7 @@
  * 60 for backward compatibility, but it can be overridden as necessary
  * with code something like this:
  *    extern unsigned long timebase_period_ns;
- *    timebase_period_ns = 1000000000 / bd->bi_tbfreq;
+*    timebase_period_ns = 1000000000 / bd->bi_tbfreq;
  */
 	.data
 	.globl timebase_period_ns

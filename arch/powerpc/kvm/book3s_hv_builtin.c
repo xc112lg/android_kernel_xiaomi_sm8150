@@ -52,7 +52,7 @@ EXPORT_SYMBOL_GPL(__xive_vm_h_eoi);
 
 /*
  * Hash page table alignment on newer cpus(CPU_FTR_ARCH_206)
- * should be power of 2.
+* should be power of 2.
  */
 #define HPT_ALIGN_PAGES		((1 << 18) >> PAGE_SHIFT) /* 256k */
 /*
@@ -201,7 +201,7 @@ EXPORT_SYMBOL_GPL(kvmppc_hcall_impl_hv_realmode);
 
 int kvmppc_hwrng_present(void)
 {
-	return powernv_hwrng_present();
+return powernv_hwrng_present();
 }
 EXPORT_SYMBOL_GPL(kvmppc_hwrng_present);
 
@@ -211,9 +211,9 @@ long kvmppc_h_random(struct kvm_vcpu *vcpu)
 
 	/* Only need to do the expensive mfmsr() on radix */
 	if (kvm_is_radix(vcpu->kvm) && (mfmsr() & MSR_IR))
-		r = powernv_get_random_long(&vcpu->arch.gpr[4]);
+r = powernv_get_random_long(&vcpu->arch.gpr[4]);
 	else
-		r = powernv_get_random_real_mode(&vcpu->arch.gpr[4]);
+r = powernv_get_random_real_mode(&vcpu->arch.gpr[4]);
 	if (r)
 		return H_SUCCESS;
 
@@ -230,14 +230,14 @@ void kvmhv_rm_send_ipi(int cpu)
 	void __iomem *xics_phys;
 	unsigned long msg = PPC_DBELL_TYPE(PPC_DBELL_SERVER);
 
-	/* On POWER9 we can use msgsnd for any destination cpu. */
+/* On POWER9 we can use msgsnd for any destination cpu. */
 	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
 		msg |= get_hard_smp_processor_id(cpu);
 		__asm__ __volatile__ (PPC_MSGSND(%0) : : "r" (msg));
 		return;
 	}
 
-	/* On POWER8 for IPIs to threads in the same core, use msgsnd. */
+/* On POWER8 for IPIs to threads in the same core, use msgsnd. */
 	if (cpu_has_feature(CPU_FTR_ARCH_207S) &&
 	    cpu_first_thread_sibling(cpu) ==
 	    cpu_first_thread_sibling(raw_smp_processor_id())) {

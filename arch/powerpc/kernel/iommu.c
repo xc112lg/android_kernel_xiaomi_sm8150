@@ -71,7 +71,7 @@ static DEFINE_PER_CPU(unsigned int, iommu_pool_hash);
  * We precalculate the hash to avoid doing it on every allocation.
  *
  * The hash is important to spread CPUs across all the pools. For example,
- * on a POWER7 with 4 way SMT we want interrupts on the primary threads and
+* on a POWER7 with 4 way SMT we want interrupts on the primary threads and
  * with 4 pools all primary threads would map to the same pool.
  */
 static int __init setup_iommu_pool_hash(void)
@@ -935,7 +935,7 @@ void iommu_register_group(struct iommu_table_group *table_group,
 
 	grp = iommu_group_alloc();
 	if (IS_ERR(grp)) {
-		pr_warn("powerpc iommu api: cannot create new group, err=%ld\n",
+pr_warn("powerpc iommu api: cannot create new group, err=%ld\n",
 				PTR_ERR(grp));
 		return;
 	}

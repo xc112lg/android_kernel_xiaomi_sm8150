@@ -124,7 +124,7 @@ static const struct of_device_id powernv_vas_match[] = {
 static struct platform_driver vas_driver = {
 	.driver = {
 		.name = "vas",
-		.of_match_table = powernv_vas_match,
+.of_match_table = powernv_vas_match,
 	},
 	.probe = vas_probe,
 };

@@ -1,5 +1,5 @@
 /*
- * axp288_charger.c - X-power AXP288 PMIC Charger driver
+* axp288_charger.c - X-power AXP288 PMIC Charger driver
  *
  * Copyright (C) 2014 Intel Corporation
  * Author: Ramakrishna Pallala <ramakrishna.pallala@intel.com>
@@ -138,7 +138,7 @@ struct axp288_chrg_info {
 	struct regmap *regmap;
 	struct regmap_irq_chip_data *regmap_irqc;
 	int irq[CHRG_INTR_END];
-	struct power_supply *psy_usb;
+struct power_supply *psy_usb;
 	struct mutex lock;
 
 	/* OTG/Host mode */
@@ -153,7 +153,7 @@ struct axp288_chrg_info {
 	struct {
 		struct extcon_dev *edev;
 		bool connected;
-		enum power_supply_type chg_type;
+enum power_supply_type chg_type;
 		struct notifier_block nb[ARRAY_SIZE(cable_ids)];
 		struct work_struct work;
 	} cable;
@@ -340,7 +340,7 @@ static int axp288_charger_is_online(struct axp288_chrg_info *info)
 static int axp288_get_charger_health(struct axp288_chrg_info *info)
 {
 	int ret, pwr_stat, chrg_stat;
-	int health = POWER_SUPPLY_HEALTH_UNKNOWN;
+int health = POWER_SUPPLY_HEALTH_UNKNOWN;
 	unsigned int val;
 
 	ret = regmap_read(info->regmap, AXP20X_PWR_INPUT_STATUS, &val);
@@ -356,42 +356,42 @@ static int axp288_get_charger_health(struct axp288_chrg_info *info)
 		chrg_stat = val;
 
 	if (!(pwr_stat & PS_STAT_VBUS_VALID))
-		health = POWER_SUPPLY_HEALTH_DEAD;
+health = POWER_SUPPLY_HEALTH_DEAD;
 	else if (chrg_stat & CHRG_STAT_PMIC_OTP)
-		health = POWER_SUPPLY_HEALTH_OVERHEAT;
+health = POWER_SUPPLY_HEALTH_OVERHEAT;
 	else if (chrg_stat & CHRG_STAT_BAT_SAFE_MODE)
-		health = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
+health = POWER_SUPPLY_HEALTH_SAFETY_TIMER_EXPIRE;
 	else
-		health = POWER_SUPPLY_HEALTH_GOOD;
+health = POWER_SUPPLY_HEALTH_GOOD;
 
 health_read_fail:
 	return health;
 }
 
 static int axp288_charger_usb_set_property(struct power_supply *psy,
-				    enum power_supply_property psp,
-				    const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct axp288_chrg_info *info = power_supply_get_drvdata(psy);
+struct axp288_chrg_info *info = power_supply_get_drvdata(psy);
 	int ret = 0;
 	int scaled_val;
 
 	mutex_lock(&info->lock);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		scaled_val = min(val->intval, info->max_cc);
 		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
 		ret = axp288_charger_set_cc(info, scaled_val);
 		if (ret < 0)
 			dev_warn(&info->pdev->dev, "set charge current failed\n");
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
 		scaled_val = min(scaled_val, info->max_cv);
 		ret = axp288_charger_set_cv(info, scaled_val);
 		if (ret < 0)
-			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
+dev_warn(&info->pdev->dev, "set charge voltage failed\n");
 		break;
 	default:
 		ret = -EINVAL;
@@ -402,16 +402,16 @@ static int axp288_charger_usb_set_property(struct power_supply *psy,
 }
 
 static int axp288_charger_usb_get_property(struct power_supply *psy,
-				    enum power_supply_property psp,
-				    union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct axp288_chrg_info *info = power_supply_get_drvdata(psy);
+struct axp288_chrg_info *info = power_supply_get_drvdata(psy);
 	int ret = 0;
 
 	mutex_lock(&info->lock);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		/* Check for OTG case first */
 		if (info->otg.id_short) {
 			val->intval = 0;
@@ -422,7 +422,7 @@ static int axp288_charger_usb_get_property(struct power_supply *psy,
 			goto psy_get_prop_fail;
 		val->intval = ret;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		/* Check for OTG case first */
 		if (info->otg.id_short) {
 			val->intval = 0;
@@ -433,22 +433,22 @@ static int axp288_charger_usb_get_property(struct power_supply *psy,
 			goto psy_get_prop_fail;
 		val->intval = ret;
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		val->intval = axp288_get_charger_health(info);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
 		val->intval = info->cc * 1000;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX:
 		val->intval = info->max_cc * 1000;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		val->intval = info->cv * 1000;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX:
 		val->intval = info->max_cv * 1000;
 		break;
-	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
 		val->intval = info->inlmt * 1000;
 		break;
 	default:
@@ -462,13 +462,13 @@ psy_get_prop_fail:
 }
 
 static int axp288_charger_property_is_writeable(struct power_supply *psy,
-		enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		ret = 1;
 		break;
 	default:
@@ -479,20 +479,20 @@ static int axp288_charger_property_is_writeable(struct power_supply *psy,
 }
 
 static enum power_supply_property axp288_usb_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_TYPE,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
-	POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_TYPE,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_CURRENT_MAX,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE_MAX,
+POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT,
 };
 
 static const struct power_supply_desc axp288_charger_desc = {
 	.name			= "axp288_charger",
-	.type			= POWER_SUPPLY_TYPE_USB,
+.type			= POWER_SUPPLY_TYPE_USB,
 	.properties		= axp288_usb_props,
 	.num_properties		= ARRAY_SIZE(axp288_usb_props),
 	.get_property		= axp288_charger_usb_get_property,
@@ -517,7 +517,7 @@ static irqreturn_t axp288_charger_irq_thread_handler(int irq, void *dev)
 
 	switch (i) {
 	case VBUS_OV_IRQ:
-		dev_dbg(&info->pdev->dev, "VBUS Over Voltage INTR\n");
+dev_dbg(&info->pdev->dev, "VBUS Over Voltage INTR\n");
 		break;
 	case CHARGE_DONE_IRQ:
 		dev_dbg(&info->pdev->dev, "Charging Done INTR\n");
@@ -554,7 +554,7 @@ static irqreturn_t axp288_charger_irq_thread_handler(int irq, void *dev)
 		goto out;
 	}
 
-	power_supply_changed(info->psy_usb);
+power_supply_changed(info->psy_usb);
 out:
 	return IRQ_HANDLED;
 }
@@ -566,26 +566,26 @@ static void axp288_charger_extcon_evt_worker(struct work_struct *work)
 	int ret, current_limit;
 	struct extcon_dev *edev = info->cable.edev;
 	bool old_connected = info->cable.connected;
-	enum power_supply_type old_chg_type = info->cable.chg_type;
+enum power_supply_type old_chg_type = info->cable.chg_type;
 
 	/* Determine cable/charger type */
 	if (extcon_get_state(edev, EXTCON_CHG_USB_SDP) > 0) {
 		dev_dbg(&info->pdev->dev, "USB SDP charger  is connected");
 		info->cable.connected = true;
-		info->cable.chg_type = POWER_SUPPLY_TYPE_USB;
+info->cable.chg_type = POWER_SUPPLY_TYPE_USB;
 	} else if (extcon_get_state(edev, EXTCON_CHG_USB_CDP) > 0) {
 		dev_dbg(&info->pdev->dev, "USB CDP charger is connected");
 		info->cable.connected = true;
-		info->cable.chg_type = POWER_SUPPLY_TYPE_USB_CDP;
+info->cable.chg_type = POWER_SUPPLY_TYPE_USB_CDP;
 	} else if (extcon_get_state(edev, EXTCON_CHG_USB_DCP) > 0) {
 		dev_dbg(&info->pdev->dev, "USB DCP charger is connected");
 		info->cable.connected = true;
-		info->cable.chg_type = POWER_SUPPLY_TYPE_USB_DCP;
+info->cable.chg_type = POWER_SUPPLY_TYPE_USB_DCP;
 	} else {
 		if (old_connected)
 			dev_dbg(&info->pdev->dev, "USB charger disconnected");
 		info->cable.connected = false;
-		info->cable.chg_type = POWER_SUPPLY_TYPE_USB;
+info->cable.chg_type = POWER_SUPPLY_TYPE_USB;
 	}
 
 	/* Cable status changed */
@@ -599,13 +599,13 @@ static void axp288_charger_extcon_evt_worker(struct work_struct *work)
 		axp288_charger_enable_charger(info, false);
 
 		switch (info->cable.chg_type) {
-		case POWER_SUPPLY_TYPE_USB:
+case POWER_SUPPLY_TYPE_USB:
 			current_limit = ILIM_500MA;
 			break;
-		case POWER_SUPPLY_TYPE_USB_CDP:
+case POWER_SUPPLY_TYPE_USB_CDP:
 			current_limit = ILIM_1500MA;
 			break;
-		case POWER_SUPPLY_TYPE_USB_DCP:
+case POWER_SUPPLY_TYPE_USB_DCP:
 			current_limit = ILIM_2000MA;
 			break;
 		default:
@@ -627,7 +627,7 @@ static void axp288_charger_extcon_evt_worker(struct work_struct *work)
 
 	mutex_unlock(&info->lock);
 
-	power_supply_changed(info->psy_usb);
+power_supply_changed(info->psy_usb);
 }
 
 /*
@@ -745,7 +745,7 @@ static int charger_init_hw_regs(struct axp288_chrg_info *info)
 		return ret;
 	}
 
-	/* Read current charge voltage and current limit */
+/* Read current charge voltage and current limit */
 	ret = regmap_read(info->regmap, AXP20X_CHRG_CTRL1, &val);
 	if (ret < 0) {
 		dev_err(&info->pdev->dev, "register(%x) read error(%d)\n",
@@ -753,7 +753,7 @@ static int charger_init_hw_regs(struct axp288_chrg_info *info)
 		return ret;
 	}
 
-	/* Determine charge voltage */
+/* Determine charge voltage */
 	cv = (val & CHRG_CCCV_CV_MASK) >> CHRG_CCCV_CV_BIT_POS;
 	switch (cv) {
 	case CHRG_CCCV_CV_4100MV:
@@ -799,7 +799,7 @@ static int axp288_charger_probe(struct platform_device *pdev)
 	struct axp288_chrg_info *info;
 	struct device *dev = &pdev->dev;
 	struct axp20x_dev *axp20x = dev_get_drvdata(pdev->dev.parent);
-	struct power_supply_config charger_cfg = {};
+struct power_supply_config charger_cfg = {};
 	info = devm_kzalloc(&pdev->dev, sizeof(*info), GFP_KERNEL);
 	if (!info)
 		return -ENOMEM;
@@ -834,13 +834,13 @@ static int axp288_charger_probe(struct platform_device *pdev)
 	if (ret)
 		return ret;
 
-	/* Register with power supply class */
+/* Register with power supply class */
 	charger_cfg.drv_data = info;
-	info->psy_usb = devm_power_supply_register(dev, &axp288_charger_desc,
+info->psy_usb = devm_power_supply_register(dev, &axp288_charger_desc,
 						   &charger_cfg);
 	if (IS_ERR(info->psy_usb)) {
 		ret = PTR_ERR(info->psy_usb);
-		dev_err(dev, "failed to register power supply: %d\n", ret);
+dev_err(dev, "failed to register power supply: %d\n", ret);
 		return ret;
 	}
 

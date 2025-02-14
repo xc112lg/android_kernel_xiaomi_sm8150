@@ -36,11 +36,11 @@
 #ifdef CONFIG_CHAN_NUM_API
 #define REG_IS_CHANNEL_VALID_5G_SBS(curchan, newchan)	\
 	((curchan) > (newchan) ?				\
-	 REG_CH_TO_FREQ(reg_get_chan_enum(curchan))	\
-	 - REG_CH_TO_FREQ(reg_get_chan_enum(newchan))	\
+REG_CH_TO_FREQ(reg_get_chan_enum(curchan))	\
+- REG_CH_TO_FREQ(reg_get_chan_enum(newchan))	\
 	 > REG_SBS_SEPARATION_THRESHOLD :		\
-	 REG_CH_TO_FREQ(reg_get_chan_enum(newchan))	\
-	 - REG_CH_TO_FREQ(reg_get_chan_enum(curchan))	\
+REG_CH_TO_FREQ(reg_get_chan_enum(newchan))	\
+- REG_CH_TO_FREQ(reg_get_chan_enum(curchan))	\
 	 > REG_SBS_SEPARATION_THRESHOLD)
 #endif /* CONFIG_LEGACY_REG_API */
 
@@ -103,32 +103,32 @@ reg_is_disable_ch(struct wlan_objmgr_pdev *pdev, uint8_t chan)
 
 #if defined(CONFIG_REG_CLIENT) && defined(CONFIG_CHAN_FREQ_API)
 /**
- * reg_chan_has_dfs_attribute_for_freq() - check channel frequency has dfs
+* reg_chan_has_dfs_attribute_for_freq() - check channel frequency has dfs
  * attribue or not
- * @freq: channel frequency.
+* @freq: channel frequency.
  *
- * This API gets initial dfs attribute flag of the channel frequency from
+* This API gets initial dfs attribute flag of the channel frequency from
  * regdomain
  *
- * Return: true if channel frequency is dfs, otherwise false
+* Return: true if channel frequency is dfs, otherwise false
  */
 bool reg_chan_has_dfs_attribute_for_freq(struct wlan_objmgr_pdev *pdev,
-					 qdf_freq_t freq);
+qdf_freq_t freq);
 /**
- * reg_is_passive_or_disable_for_freq() - Check if the given channel is
+* reg_is_passive_or_disable_for_freq() - Check if the given channel is
  * passive or disabled.
  * @pdev: Pointer to physical dev
- * @chan: Channel frequency
+* @chan: Channel frequency
  *
- * Return: true if channel frequency is passive or disabled, else false.
+* Return: true if channel frequency is passive or disabled, else false.
  */
 bool reg_is_passive_or_disable_for_freq(struct wlan_objmgr_pdev *pdev,
-					qdf_freq_t freq);
+qdf_freq_t freq);
 /**
- * reg_is_disable_for_freq() - Check if the given channel frequency in
+* reg_is_disable_for_freq() - Check if the given channel frequency in
  * disable state
  * @pdev: Pointer to pdev
- * @freq: Channel frequency
+* @freq: Channel frequency
  *
  * Return: True if channel state is disabled, else false
  */
@@ -136,14 +136,14 @@ bool reg_is_disable_for_freq(struct wlan_objmgr_pdev *pdev, qdf_freq_t freq);
 #else
 static inline bool
 reg_chan_has_dfs_attribute_for_freq(struct wlan_objmgr_pdev *pdev,
-				    qdf_freq_t freq)
+qdf_freq_t freq)
 {
 	return false;
 }
 
 static inline bool
 reg_is_passive_or_disable_for_freq(struct wlan_objmgr_pdev *pdev,
-				   qdf_freq_t freq)
+qdf_freq_t freq)
 {
 	return false;
 }
@@ -181,8 +181,8 @@ QDF_STATUS reg_disable_cached_channels(struct wlan_objmgr_pdev *pdev)
 
 #if defined(DISABLE_CHANNEL_LIST) && defined(CONFIG_CHAN_FREQ_API)
 /**
- * reg_cache_channel_freq_state() - Cache the current state of the channels
- * based on the channel center frequency
+* reg_cache_channel_freq_state() - Cache the current state of the channels
+* based on the channel center frequency
  * @pdev: The physical dev to cache the channels for
  * @channel_list: List of the channels for which states needs to be cached
  * @num_channels: Number of channels in the list
@@ -245,7 +245,7 @@ QDF_STATUS reg_get_band(struct wlan_objmgr_pdev *pdev, uint32_t *band_bitmap);
  * reg_set_fcc_constraint() - Apply fcc constraints on channels 12/13
  * @pdev: The physical dev to set the band for
  *
- * This function reduces the transmit power on channels 12 and 13, to comply
+* This function reduces the transmit power on channels 12 and 13, to comply
  * with FCC regulations in the USA.
  *
  * Return: QDF_STATUS
@@ -254,11 +254,11 @@ QDF_STATUS reg_set_fcc_constraint(struct wlan_objmgr_pdev *pdev,
 				  bool fcc_constraint);
 
 /**
- * reg_get_fcc_constraint() - Check FCC constraint on given frequency
+* reg_get_fcc_constraint() - Check FCC constraint on given frequency
  * @pdev: physical dev to get
- * @freq: frequency to be checked
+* @freq: frequency to be checked
  *
- * Return: If FCC constraint is applied on given frequency return true
+* Return: If FCC constraint is applied on given frequency return true
  *	   else return false.
  */
 bool reg_get_fcc_constraint(struct wlan_objmgr_pdev *pdev, uint32_t freq);
@@ -519,8 +519,8 @@ bool reg_get_fcc_constraint(struct wlan_objmgr_pdev *pdev, uint32_t freq)
 
 #if defined(WLAN_FEATURE_DSRC) && defined(CONFIG_REG_CLIENT)
 /**
- * reg_is_dsrc_freq () - Checks the channel frequency is DSRC or not
- * @freq: Channel center frequency
+* reg_is_dsrc_freq () - Checks the channel frequency is DSRC or not
+* @freq: Channel center frequency
  * @pdev: pdev ptr
  *
  * Return: true or false
@@ -552,9 +552,9 @@ static inline bool reg_is_etsi13_regdmn(struct wlan_objmgr_pdev *pdev)
 }
 
 /**
- * reg_is_etsi13_srd_chan_for_freq() - Checks the channel for ETSI13 srd ch
- * frequency or not
- * @freq: Channel center frequency
+* reg_is_etsi13_srd_chan_for_freq() - Checks the channel for ETSI13 srd ch
+* frequency or not
+* @freq: Channel center frequency
  * @pdev: pdev ptr
  *
  * Return: true or false
@@ -584,7 +584,7 @@ static inline bool reg_is_dsrc_freq(qdf_freq_t freq)
 
 #ifdef CONFIG_CHAN_FREQ_API
 bool reg_is_etsi13_srd_chan_for_freq(struct wlan_objmgr_pdev
-				     *pdev, uint16_t freq);
+*pdev, uint16_t freq);
 #endif /*CONFIG_CHAN_FREQ_API */
 
 /**
@@ -629,7 +629,7 @@ static inline bool reg_is_dsrc_freq(qdf_freq_t freq)
 
 static inline
 bool reg_is_etsi13_srd_chan_for_freq(struct wlan_objmgr_pdev *pdev,
-				     uint16_t freq)
+uint16_t freq)
 {
 	return false;
 }

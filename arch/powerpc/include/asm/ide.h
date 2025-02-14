@@ -2,7 +2,7 @@
 /*
  *  Copyright (C) 1994-1996 Linus Torvalds & authors
  *
- *  This file contains the powerpc architecture specific IDE code.
+*  This file contains the powerpc architecture specific IDE code.
  */
 #ifndef _ASM_POWERPC_IDE_H
 #define _ASM_POWERPC_IDE_H

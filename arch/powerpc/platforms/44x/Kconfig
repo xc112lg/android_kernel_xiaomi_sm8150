@@ -241,7 +241,7 @@ config XILINX_VIRTEX440_GENERIC_BOARD
 
 	  The generic virtex board support matches any device tree which
 	  specifies 'xlnx,virtex440' in its compatible field.  This includes
-	  the Xilinx ML5xx reference designs using the powerpc core.
+the Xilinx ML5xx reference designs using the powerpc core.
 
 	  Most Virtex 5 designs should use this unless it needs to do some
 	  special configuration at board probe time.
@@ -258,10 +258,10 @@ config XILINX_ML510
 	  board.  The ML510 has a PCI bus with ALI south bridge.
 
 config PPC44x_SIMPLE
-	bool "Simple PowerPC 44x board support"
+bool "Simple PowerPC 44x board support"
 	depends on 44x
 	help
-	  This option enables the simple PowerPC 44x platform support.
+This option enables the simple PowerPC 44x platform support.
 
 config PPC4xx_GPIO
 	bool "PPC4xx GPIO support"
@@ -275,7 +275,7 @@ config PPC4xx_OCM
 	depends on 4xx
 	select PPC_LIB_RHEAP
 	help
-	  Enable OCM support for PowerPC 4xx platforms with on chip memory,
+Enable OCM support for PowerPC 4xx platforms with on chip memory,
 	  OCM provides the fast place for memory access to improve performance.
 
 # 44x specific CPU modules, selected based on the board above.

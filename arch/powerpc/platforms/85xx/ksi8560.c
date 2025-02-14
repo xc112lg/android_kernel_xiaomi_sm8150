@@ -150,7 +150,7 @@ static void ksi8560_show_cpuinfo(struct seq_file *m)
 	pvid = mfspr(SPRN_PVR);
 	svid = mfspr(SPRN_SVR);
 
-	seq_printf(m, "Vendor\t\t: Emerson Network Power\n");
+seq_printf(m, "Vendor\t\t: Emerson Network Power\n");
 	seq_printf(m, "Board\t\t: KSI8560\n");
 
 	if (cpld_base) {

@@ -6,7 +6,7 @@
  *  Derived from arch/ppc/mm/init.c:
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *
@@ -134,7 +134,7 @@ unsigned long __init mmu_mapin_ram(unsigned long top)
 
 	mapped = total_lowmem - s;
 
-	/* If the size of RAM is not an exact power of two, we may not
+/* If the size of RAM is not an exact power of two, we may not
 	 * have covered RAM in its entirety with 16 and 4 MiB
 	 * pages. Consequently, restrict the top end of RAM currently
 	 * allocable so that calls to the MEMBLOCK to allocate PTEs for "tail"

@@ -39,7 +39,7 @@
 #define DMCFS_260M	(3)
 
 struct pxa3xx_freq_info {
-	unsigned int cpufreq_mhz;
+unsigned int cpufreq_mhz;
 	unsigned int core_xl : 5;
 	unsigned int core_xn : 3;
 	unsigned int hss : 2;
@@ -54,7 +54,7 @@ struct pxa3xx_freq_info {
 
 #define OP(cpufreq, _xl, _xn, _hss, _dmc, _smc, _sfl, _dfi, vcore, vsram) \
 {									\
-	.cpufreq_mhz	= cpufreq,					\
+.cpufreq_mhz	= cpufreq,					\
 	.core_xl	= _xl,						\
 	.core_xn	= _xn,						\
 	.hss		= HSS_##_hss##M,				\
@@ -88,9 +88,9 @@ static struct pxa3xx_freq_info *pxa3xx_freqs;
 static struct cpufreq_frequency_table *pxa3xx_freqs_table;
 
 static int setup_freqs_table(struct cpufreq_policy *policy,
-			     struct pxa3xx_freq_info *freqs, int num)
+struct pxa3xx_freq_info *freqs, int num)
 {
-	struct cpufreq_frequency_table *table;
+struct cpufreq_frequency_table *table;
 	int i;
 
 	table = kzalloc((num + 1) * sizeof(*table), GFP_KERNEL);
@@ -99,16 +99,16 @@ static int setup_freqs_table(struct cpufreq_policy *policy,
 
 	for (i = 0; i < num; i++) {
 		table[i].driver_data = i;
-		table[i].frequency = freqs[i].cpufreq_mhz * 1000;
+table[i].frequency = freqs[i].cpufreq_mhz * 1000;
 	}
 	table[num].driver_data = i;
-	table[num].frequency = CPUFREQ_TABLE_END;
+table[num].frequency = CPUFREQ_TABLE_END;
 
-	pxa3xx_freqs = freqs;
-	pxa3xx_freqs_num = num;
-	pxa3xx_freqs_table = table;
+pxa3xx_freqs = freqs;
+pxa3xx_freqs_num = num;
+pxa3xx_freqs_table = table;
 
-	return cpufreq_table_validate_and_show(policy, table);
+return cpufreq_table_validate_and_show(policy, table);
 }
 
 static void __update_core_freq(struct pxa3xx_freq_info *info)
@@ -152,22 +152,22 @@ static void __update_bus_freq(struct pxa3xx_freq_info *info)
 
 static unsigned int pxa3xx_cpufreq_get(unsigned int cpu)
 {
-	return pxa3xx_get_clk_frequency_khz(0);
+return pxa3xx_get_clk_frequency_khz(0);
 }
 
 static int pxa3xx_cpufreq_set(struct cpufreq_policy *policy, unsigned int index)
 {
-	struct pxa3xx_freq_info *next;
+struct pxa3xx_freq_info *next;
 	unsigned long flags;
 
 	if (policy->cpu != 0)
 		return -EINVAL;
 
-	next = &pxa3xx_freqs[index];
+next = &pxa3xx_freqs[index];
 
 	local_irq_save(flags);
-	__update_core_freq(next);
-	__update_bus_freq(next);
+__update_core_freq(next);
+__update_bus_freq(next);
 	local_irq_restore(flags);
 
 	return 0;
@@ -178,41 +178,41 @@ static int pxa3xx_cpufreq_init(struct cpufreq_policy *policy)
 	int ret = -EINVAL;
 
 	/* set default policy and cpuinfo */
-	policy->min = policy->cpuinfo.min_freq = 104000;
-	policy->max = policy->cpuinfo.max_freq =
+policy->min = policy->cpuinfo.min_freq = 104000;
+policy->max = policy->cpuinfo.max_freq =
 		(cpu_is_pxa320()) ? 806000 : 624000;
 	policy->cpuinfo.transition_latency = 1000; /* FIXME: 1 ms, assumed */
 
 	if (cpu_is_pxa300() || cpu_is_pxa310())
-		ret = setup_freqs_table(policy, pxa300_freqs,
-					ARRAY_SIZE(pxa300_freqs));
+ret = setup_freqs_table(policy, pxa300_freqs,
+ARRAY_SIZE(pxa300_freqs));
 
 	if (cpu_is_pxa320())
-		ret = setup_freqs_table(policy, pxa320_freqs,
-					ARRAY_SIZE(pxa320_freqs));
+ret = setup_freqs_table(policy, pxa320_freqs,
+ARRAY_SIZE(pxa320_freqs));
 
 	if (ret) {
-		pr_err("failed to setup frequency table\n");
+pr_err("failed to setup frequency table\n");
 		return ret;
 	}
 
-	pr_info("CPUFREQ support for PXA3xx initialized\n");
+pr_info("CPUFREQ support for PXA3xx initialized\n");
 	return 0;
 }
 
 static struct cpufreq_driver pxa3xx_cpufreq_driver = {
-	.flags		= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= pxa3xx_cpufreq_set,
-	.init		= pxa3xx_cpufreq_init,
-	.get		= pxa3xx_cpufreq_get,
-	.name		= "pxa3xx-cpufreq",
+.flags		= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= pxa3xx_cpufreq_set,
+.init		= pxa3xx_cpufreq_init,
+.get		= pxa3xx_cpufreq_get,
+.name		= "pxa3xx-cpufreq",
 };
 
 static int __init cpufreq_init(void)
 {
 	if (cpu_is_pxa3xx())
-		return cpufreq_register_driver(&pxa3xx_cpufreq_driver);
+return cpufreq_register_driver(&pxa3xx_cpufreq_driver);
 
 	return 0;
 }
@@ -220,7 +220,7 @@ module_init(cpufreq_init);
 
 static void __exit cpufreq_exit(void)
 {
-	cpufreq_unregister_driver(&pxa3xx_cpufreq_driver);
+cpufreq_unregister_driver(&pxa3xx_cpufreq_driver);
 }
 module_exit(cpufreq_exit);
 

@@ -1,5 +1,5 @@
 /*
- * CPU frequency scaling for Broadcom SoCs with AVS firmware that
+* CPU frequency scaling for Broadcom SoCs with AVS firmware that
  * supports DVS or DVFS
  *
  * Copyright (c) 2016 Broadcom
@@ -16,26 +16,26 @@
 
 /*
  * "AVS" is the name of a firmware developed at Broadcom. It derives
- * its name from the technique called "Adaptive Voltage Scaling".
- * Adaptive voltage scaling was the original purpose of this firmware.
+* its name from the technique called "Adaptive Voltage Scaling".
+* Adaptive voltage scaling was the original purpose of this firmware.
  * The AVS firmware still supports "AVS mode", where all it does is
- * adaptive voltage scaling. However, on some newer Broadcom SoCs, the
+* adaptive voltage scaling. However, on some newer Broadcom SoCs, the
  * AVS Firmware, despite its unchanged name, also supports DFS mode and
  * DVFS mode.
  *
  * In the context of this document and the related driver, "AVS" by
  * itself always means the Broadcom firmware and never refers to the
- * technique called "Adaptive Voltage Scaling".
+* technique called "Adaptive Voltage Scaling".
  *
- * The Broadcom STB AVS CPUfreq driver provides voltage and frequency
+* The Broadcom STB AVS CPUfreq driver provides voltage and frequency
  * scaling on Broadcom SoCs using AVS firmware with support for DFS and
  * DVFS. The AVS firmware is running on its own co-processor. The
  * driver supports both uniprocessor (UP) and symmetric multiprocessor
- * (SMP) systems which share clock and voltage across all CPUs.
+* (SMP) systems which share clock and voltage across all CPUs.
  *
- * Actual voltage and frequency scaling is done solely by the AVS
- * firmware. This driver does not change frequency or voltage itself.
- * It provides a standard CPUfreq interface to the rest of the kernel
+* Actual voltage and frequency scaling is done solely by the AVS
+* firmware. This driver does not change frequency or voltage itself.
+* It provides a standard CPUfreq interface to the rest of the kernel
  * and to userland. It interfaces with the AVS firmware to effect the
  * requested changes and to report back the current system status in a
  * way that is expected by existing tools.
@@ -229,7 +229,7 @@ struct debugfs_entry {
 static struct debugfs_entry debugfs_entries[] = {
 	DEBUGFS_ENTRY(COMMAND, S_IWUSR, DEBUGFS_NORMAL),
 	DEBUGFS_ENTRY(STATUS, S_IWUSR, DEBUGFS_NORMAL),
-	DEBUGFS_ENTRY(VOLTAGE0, 0, DEBUGFS_FLOAT),
+DEBUGFS_ENTRY(VOLTAGE0, 0, DEBUGFS_FLOAT),
 	DEBUGFS_ENTRY(TEMP0, 0, DEBUGFS_FLOAT),
 	DEBUGFS_ENTRY(PV0, 0, DEBUGFS_FLOAT),
 	DEBUGFS_ENTRY(MV0, 0, DEBUGFS_FLOAT),
@@ -243,11 +243,11 @@ static struct debugfs_entry debugfs_entries[] = {
 	DEBUGFS_ENTRY(MAGIC, S_IWUSR, DEBUGFS_NORMAL),
 	DEBUGFS_ENTRY(SIGMA_HVT, 0, DEBUGFS_NORMAL),
 	DEBUGFS_ENTRY(SIGMA_SVT, 0, DEBUGFS_NORMAL),
-	DEBUGFS_ENTRY(VOLTAGE1, 0, DEBUGFS_FLOAT),
+DEBUGFS_ENTRY(VOLTAGE1, 0, DEBUGFS_FLOAT),
 	DEBUGFS_ENTRY(TEMP1, 0, DEBUGFS_FLOAT),
 	DEBUGFS_ENTRY(PV1, 0, DEBUGFS_FLOAT),
 	DEBUGFS_ENTRY(MV1, 0, DEBUGFS_FLOAT),
-	DEBUGFS_ENTRY(FREQUENCY, 0, DEBUGFS_NORMAL),
+DEBUGFS_ENTRY(FREQUENCY, 0, DEBUGFS_NORMAL),
 };
 
 static int brcm_avs_target_index(struct cpufreq_policy *, unsigned int);
@@ -470,22 +470,22 @@ static int brcm_avs_set_pstate(struct private_data *priv, unsigned int pstate)
 
 static u32 brcm_avs_get_voltage(void __iomem *base)
 {
-	return readl(base + AVS_MBOX_VOLTAGE1);
+return readl(base + AVS_MBOX_VOLTAGE1);
 }
 
 static u32 brcm_avs_get_frequency(void __iomem *base)
 {
-	return readl(base + AVS_MBOX_FREQUENCY) * 1000;	/* in kHz */
+return readl(base + AVS_MBOX_FREQUENCY) * 1000;	/* in kHz */
 }
 
 /*
- * We determine which frequencies are supported by cycling through all P-states
- * and reading back what frequency we are running at for each P-state.
+* We determine which frequencies are supported by cycling through all P-states
+* and reading back what frequency we are running at for each P-state.
  */
 static struct cpufreq_frequency_table *
 brcm_avs_get_freq_table(struct device *dev, struct private_data *priv)
 {
-	struct cpufreq_frequency_table *table;
+struct cpufreq_frequency_table *table;
 	unsigned int pstate;
 	int i, ret;
 
@@ -503,10 +503,10 @@ brcm_avs_get_freq_table(struct device *dev, struct private_data *priv)
 		ret = brcm_avs_set_pstate(priv, i);
 		if (ret)
 			return ERR_PTR(ret);
-		table[i].frequency = brcm_avs_get_frequency(priv->base);
+table[i].frequency = brcm_avs_get_frequency(priv->base);
 		table[i].driver_data = i;
 	}
-	table[i].frequency = CPUFREQ_TABLE_END;
+table[i].frequency = CPUFREQ_TABLE_END;
 
 	/* Restore P-state */
 	ret = brcm_avs_set_pstate(priv, pstate);
@@ -596,20 +596,20 @@ static ssize_t brcm_avs_seq_write(struct file *file, const char __user *buf,
 
 	/*
 	 * Setting the P-state is a special case. We need to update the CPU
-	 * frequency we report.
+* frequency we report.
 	 */
 	if (val == AVS_CMD_SET_PSTATE) {
-		struct cpufreq_policy *policy;
+struct cpufreq_policy *policy;
 		unsigned int pstate;
 
-		policy = cpufreq_cpu_get(smp_processor_id());
+policy = cpufreq_cpu_get(smp_processor_id());
 		/* Read back the P-state we are about to set */
 		pstate = readl(base + AVS_MBOX_PARAM(0));
 		if (use_issue_command) {
 			ret = brcm_avs_target_index(policy, pstate);
 			return ret ? ret : size;
 		}
-		policy->cur = policy->freq_table[pstate].frequency;
+policy->cur = policy->freq_table[pstate].frequency;
 	}
 
 	if (use_issue_command) {
@@ -708,7 +708,7 @@ static void brcm_avs_cpufreq_debug_init(struct platform_device *pdev)
 	if (!priv)
 		return;
 
-	dir = debugfs_create_dir(BRCM_AVS_CPUFREQ_NAME, NULL);
+dir = debugfs_create_dir(BRCM_AVS_CPUFREQ_NAME, NULL);
 	if (IS_ERR_OR_NULL(dir))
 		return;
 	priv->debugfs = dir;
@@ -768,17 +768,17 @@ static bool brcm_avs_is_firmware_loaded(struct private_data *priv)
 
 static unsigned int brcm_avs_cpufreq_get(unsigned int cpu)
 {
-	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
 	struct private_data *priv = policy->driver_data;
 
-	return brcm_avs_get_frequency(priv->base);
+return brcm_avs_get_frequency(priv->base);
 }
 
 static int brcm_avs_target_index(struct cpufreq_policy *policy,
 				 unsigned int index)
 {
 	return brcm_avs_set_pstate(policy->driver_data,
-				  policy->freq_table[index].driver_data);
+policy->freq_table[index].driver_data);
 }
 
 static int brcm_avs_suspend(struct cpufreq_policy *policy)
@@ -806,7 +806,7 @@ static int brcm_avs_resume(struct cpufreq_policy *policy)
 
 	ret = brcm_avs_set_pmap(priv, &priv->pmap);
 	if (ret == -EEXIST) {
-		struct platform_device *pdev  = cpufreq_get_driver_data();
+struct platform_device *pdev  = cpufreq_get_driver_data();
 		struct device *dev = &pdev->dev;
 
 		dev_warn(dev, "PMAP was already set\n");
@@ -819,7 +819,7 @@ static int brcm_avs_resume(struct cpufreq_policy *policy)
 /*
  * All initialization code that we only want to execute once goes here. Setup
  * code that can be re-tried on every core (if it failed before) can go into
- * brcm_avs_cpufreq_init().
+* brcm_avs_cpufreq_init().
  */
 static int brcm_avs_prepare_init(struct platform_device *pdev)
 {
@@ -884,27 +884,27 @@ unmap_base:
 
 static int brcm_avs_cpufreq_init(struct cpufreq_policy *policy)
 {
-	struct cpufreq_frequency_table *freq_table;
+struct cpufreq_frequency_table *freq_table;
 	struct platform_device *pdev;
 	struct private_data *priv;
 	struct device *dev;
 	int ret;
 
-	pdev = cpufreq_get_driver_data();
+pdev = cpufreq_get_driver_data();
 	priv = platform_get_drvdata(pdev);
 	policy->driver_data = priv;
 	dev = &pdev->dev;
 
-	freq_table = brcm_avs_get_freq_table(dev, priv);
-	if (IS_ERR(freq_table)) {
-		ret = PTR_ERR(freq_table);
-		dev_err(dev, "Couldn't determine frequency table (%d).\n", ret);
+freq_table = brcm_avs_get_freq_table(dev, priv);
+if (IS_ERR(freq_table)) {
+ret = PTR_ERR(freq_table);
+dev_err(dev, "Couldn't determine frequency table (%d).\n", ret);
 		return ret;
 	}
 
-	ret = cpufreq_table_validate_and_show(policy, freq_table);
+ret = cpufreq_table_validate_and_show(policy, freq_table);
 	if (ret) {
-		dev_err(dev, "invalid frequency table: %d\n", ret);
+dev_err(dev, "invalid frequency table: %d\n", ret);
 		return ret;
 	}
 
@@ -917,7 +917,7 @@ static int brcm_avs_cpufreq_init(struct cpufreq_policy *policy)
 
 		ret = brcm_avs_get_pstate(priv, &pstate);
 		if (!ret) {
-			policy->cur = freq_table[pstate].frequency;
+policy->cur = freq_table[pstate].frequency;
 			dev_info(dev, "registered\n");
 			return 0;
 		}
@@ -973,14 +973,14 @@ static ssize_t show_brcm_avs_voltage(struct cpufreq_policy *policy, char *buf)
 {
 	struct private_data *priv = policy->driver_data;
 
-	return sprintf(buf, "0x%08x\n", brcm_avs_get_voltage(priv->base));
+return sprintf(buf, "0x%08x\n", brcm_avs_get_voltage(priv->base));
 }
 
 static ssize_t show_brcm_avs_frequency(struct cpufreq_policy *policy, char *buf)
 {
 	struct private_data *priv = policy->driver_data;
 
-	return sprintf(buf, "0x%08x\n", brcm_avs_get_frequency(priv->base));
+return sprintf(buf, "0x%08x\n", brcm_avs_get_frequency(priv->base));
 }
 
 cpufreq_freq_attr_ro(brcm_avs_pstate);
@@ -990,25 +990,25 @@ cpufreq_freq_attr_ro(brcm_avs_voltage);
 cpufreq_freq_attr_ro(brcm_avs_frequency);
 
 static struct freq_attr *brcm_avs_cpufreq_attr[] = {
-	&cpufreq_freq_attr_scaling_available_freqs,
+&cpufreq_freq_attr_scaling_available_freqs,
 	&brcm_avs_pstate,
 	&brcm_avs_mode,
 	&brcm_avs_pmap,
-	&brcm_avs_voltage,
-	&brcm_avs_frequency,
+&brcm_avs_voltage,
+&brcm_avs_frequency,
 	NULL
 };
 
 static struct cpufreq_driver brcm_avs_driver = {
-	.flags		= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.verify		= cpufreq_generic_frequency_table_verify,
+.flags		= CPUFREQ_NEED_INITIAL_FREQ_CHECK,
+.verify		= cpufreq_generic_frequency_table_verify,
 	.target_index	= brcm_avs_target_index,
-	.get		= brcm_avs_cpufreq_get,
+.get		= brcm_avs_cpufreq_get,
 	.suspend	= brcm_avs_suspend,
 	.resume		= brcm_avs_resume,
-	.init		= brcm_avs_cpufreq_init,
-	.attr		= brcm_avs_cpufreq_attr,
-	.name		= BRCM_AVS_CPUFREQ_PREFIX,
+.init		= brcm_avs_cpufreq_init,
+.attr		= brcm_avs_cpufreq_attr,
+.name		= BRCM_AVS_CPUFREQ_PREFIX,
 };
 
 static int brcm_avs_cpufreq_probe(struct platform_device *pdev)
@@ -1020,9 +1020,9 @@ static int brcm_avs_cpufreq_probe(struct platform_device *pdev)
 		return ret;
 
 	brcm_avs_driver.driver_data = pdev;
-	ret = cpufreq_register_driver(&brcm_avs_driver);
+ret = cpufreq_register_driver(&brcm_avs_driver);
 	if (!ret)
-		brcm_avs_cpufreq_debug_init(pdev);
+brcm_avs_cpufreq_debug_init(pdev);
 
 	return ret;
 }
@@ -1032,10 +1032,10 @@ static int brcm_avs_cpufreq_remove(struct platform_device *pdev)
 	struct private_data *priv;
 	int ret;
 
-	ret = cpufreq_unregister_driver(&brcm_avs_driver);
+ret = cpufreq_unregister_driver(&brcm_avs_driver);
 	WARN_ON(ret);
 
-	brcm_avs_cpufreq_debug_exit(pdev);
+brcm_avs_cpufreq_debug_exit(pdev);
 
 	priv = platform_get_drvdata(pdev);
 	iounmap(priv->base);
@@ -1052,11 +1052,11 @@ MODULE_DEVICE_TABLE(of, brcm_avs_cpufreq_match);
 
 static struct platform_driver brcm_avs_cpufreq_platdrv = {
 	.driver = {
-		.name	= BRCM_AVS_CPUFREQ_NAME,
-		.of_match_table = brcm_avs_cpufreq_match,
+.name	= BRCM_AVS_CPUFREQ_NAME,
+.of_match_table = brcm_avs_cpufreq_match,
 	},
-	.probe		= brcm_avs_cpufreq_probe,
-	.remove		= brcm_avs_cpufreq_remove,
+.probe		= brcm_avs_cpufreq_probe,
+.remove		= brcm_avs_cpufreq_remove,
 };
 module_platform_driver(brcm_avs_cpufreq_platdrv);
 

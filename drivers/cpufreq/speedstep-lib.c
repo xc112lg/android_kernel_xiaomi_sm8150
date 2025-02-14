@@ -36,8 +36,8 @@ static unsigned int pentium3_get_frequency(enum speedstep_processor processor)
 {
 	/* See table 14 of p3_ds.pdf and table 22 of 29834003.pdf */
 	static const struct {
-		unsigned int ratio;	/* Frequency Multiplier (x10) */
-		u8 bitmap;		/* power on configuration bits
+unsigned int ratio;	/* Frequency Multiplier (x10) */
+u8 bitmap;		/* power on configuration bits
 					[27, 25:22] (in MSR 0x2a) */
 	} msr_decode_mult[] = {
 		{ 30, 0x01 },
@@ -60,7 +60,7 @@ static unsigned int pentium3_get_frequency(enum speedstep_processor processor)
 	/* PIII(-M) FSB settings: see table b1-b of 24547206.pdf */
 	static const struct {
 		unsigned int value;	/* Front Side Bus speed in MHz */
-		u8 bitmap;		/* power on configuration bits [18: 19]
+u8 bitmap;		/* power on configuration bits [18: 19]
 					(in MSR 0x2a) */
 	} msr_decode_fsb[] = {
 		{  66, 0x0 },
@@ -73,8 +73,8 @@ static unsigned int pentium3_get_frequency(enum speedstep_processor processor)
 	int i = 0, j = 0;
 
 	/* read MSR 0x2a - we only need the low 32 bits */
-	rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_tmp);
-	pr_debug("P3 - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x\n", msr_lo, msr_tmp);
+rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_tmp);
+pr_debug("P3 - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x\n", msr_lo, msr_tmp);
 	msr_tmp = msr_lo;
 
 	/* decode the FSB */
@@ -110,8 +110,8 @@ static unsigned int pentiumM_get_frequency(void)
 {
 	u32 msr_lo, msr_tmp;
 
-	rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_tmp);
-	pr_debug("PM - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x\n", msr_lo, msr_tmp);
+rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_tmp);
+pr_debug("PM - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x\n", msr_lo, msr_tmp);
 
 	/* see table B-2 of 24547212.pdf */
 	if (msr_lo & 0x00040000) {
@@ -133,7 +133,7 @@ static unsigned int pentium_core_get_frequency(void)
 	u32 msr_lo, msr_tmp;
 	int ret;
 
-	rdmsr(MSR_FSB_FREQ, msr_lo, msr_tmp);
+rdmsr(MSR_FSB_FREQ, msr_lo, msr_tmp);
 	/* see table B-2 of 25366920.pdf */
 	switch (msr_lo & 0x07) {
 	case 5:
@@ -155,11 +155,11 @@ static unsigned int pentium_core_get_frequency(void)
 		fsb = 333333;
 		break;
 	default:
-		pr_err("PCORE - MSR_FSB_FREQ undefined value\n");
+pr_err("PCORE - MSR_FSB_FREQ undefined value\n");
 	}
 
-	rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_tmp);
-	pr_debug("PCORE - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x\n",
+rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_tmp);
+pr_debug("PCORE - MSR_IA32_EBL_CR_POWERON: 0x%x 0x%x\n",
 			msr_lo, msr_tmp);
 
 	msr_tmp = (msr_lo >> 22) & 0x1f;
@@ -179,17 +179,17 @@ static unsigned int pentium4_get_frequency(void)
 	unsigned int ret;
 	u8 fsb_code;
 
-	/* Pentium 4 Model 0 and 1 do not have the Core Clock Frequency
-	 * to System Bus Frequency Ratio Field in the Processor Frequency
+/* Pentium 4 Model 0 and 1 do not have the Core Clock Frequency
+* to System Bus Frequency Ratio Field in the Processor Frequency
 	 * Configuration Register of the MSR. Therefore the current
-	 * frequency cannot be calculated and has to be measured.
+* frequency cannot be calculated and has to be measured.
 	 */
 	if (c->x86_model < 2)
 		return cpu_khz;
 
 	rdmsr(0x2c, msr_lo, msr_hi);
 
-	pr_debug("P4 - MSR_EBC_FREQUENCY_ID: 0x%x 0x%x\n", msr_lo, msr_hi);
+pr_debug("P4 - MSR_EBC_FREQUENCY_ID: 0x%x 0x%x\n", msr_lo, msr_hi);
 
 	/* decode the FSB: see IA-32 Intel (C) Architecture Software
 	 * Developer's Manual, Volume 3: System Prgramming Guide,
@@ -229,16 +229,16 @@ unsigned int speedstep_get_frequency(enum speedstep_processor processor)
 {
 	switch (processor) {
 	case SPEEDSTEP_CPU_PCORE:
-		return pentium_core_get_frequency();
+return pentium_core_get_frequency();
 	case SPEEDSTEP_CPU_PM:
-		return pentiumM_get_frequency();
+return pentiumM_get_frequency();
 	case SPEEDSTEP_CPU_P4D:
 	case SPEEDSTEP_CPU_P4M:
-		return pentium4_get_frequency();
+return pentium4_get_frequency();
 	case SPEEDSTEP_CPU_PIII_T:
 	case SPEEDSTEP_CPU_PIII_C:
 	case SPEEDSTEP_CPU_PIII_C_EARLY:
-		return pentium3_get_frequency(processor);
+return pentium3_get_frequency(processor);
 	default:
 		return 0;
 	};
@@ -343,8 +343,8 @@ unsigned int speedstep_detect_processor(void)
 
 		/* all mobile PIII Coppermines have FSB 100 MHz
 		 * ==> sort out a few desktop PIIIs. */
-		rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_hi);
-		pr_debug("Coppermine: MSR_IA32_EBL_CR_POWERON is 0x%x, 0x%x\n",
+rdmsr(MSR_IA32_EBL_CR_POWERON, msr_lo, msr_hi);
+pr_debug("Coppermine: MSR_IA32_EBL_CR_POWERON is 0x%x, 0x%x\n",
 				msr_lo, msr_hi);
 		msr_lo &= 0x00c0000;
 		if (msr_lo != 0x0080000)
@@ -396,7 +396,7 @@ unsigned int speedstep_get_freqs(enum speedstep_processor processor,
 	pr_debug("trying to determine both speeds\n");
 
 	/* get current speed */
-	prev_speed = speedstep_get_frequency(processor);
+prev_speed = speedstep_get_frequency(processor);
 	if (!prev_speed)
 		return -EIO;
 
@@ -407,7 +407,7 @@ unsigned int speedstep_get_freqs(enum speedstep_processor processor,
 
 	/* switch to low state */
 	set_state(SPEEDSTEP_LOW);
-	*low_speed = speedstep_get_frequency(processor);
+*low_speed = speedstep_get_frequency(processor);
 	if (!*low_speed) {
 		ret = -EIO;
 		goto out;
@@ -426,7 +426,7 @@ unsigned int speedstep_get_freqs(enum speedstep_processor processor,
 	if (transition_latency)
 		tv2 = ktime_get();
 
-	*high_speed = speedstep_get_frequency(processor);
+*high_speed = speedstep_get_frequency(processor);
 	if (!*high_speed) {
 		ret = -EIO;
 		goto out;
@@ -455,7 +455,7 @@ unsigned int speedstep_get_freqs(enum speedstep_processor processor,
 		 */
 		if (*transition_latency > 10000000 ||
 		    *transition_latency < 50000) {
-			pr_warn("frequency transition measured seems out of range (%u nSec), falling back to a safe one of %u nSec\n",
+pr_warn("frequency transition measured seems out of range (%u nSec), falling back to a safe one of %u nSec\n",
 				*transition_latency, 500000);
 			*transition_latency = 500000;
 		}

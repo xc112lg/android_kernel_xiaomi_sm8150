@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2007 PA Semi, Inc
  *
- * Parts based on arch/powerpc/sysdev/fsl_soc.c:
+* Parts based on arch/powerpc/sysdev/fsl_soc.c:
  *
  * 2006 (c) MontaVista Software, Inc.
  *

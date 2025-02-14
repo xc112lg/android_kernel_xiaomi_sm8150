@@ -1,5 +1,5 @@
 /*
- * internal.h  --  Voltage/Current Regulator framework internal code
+* internal.h  --  Voltage/Current Regulator framework internal code
  *
  * Copyright 2007, 2008 Wolfson Microelectronics PLC.
  * Copyright 2008 SlimLogic Ltd.

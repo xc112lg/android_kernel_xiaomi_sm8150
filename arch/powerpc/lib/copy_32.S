@@ -1,5 +1,5 @@
 /*
- * Memory copy functions for 32-bit PowerPC.
+* Memory copy functions for 32-bit PowerPC.
  *
  * Copyright (C) 1996-2005 Paul Mackerras.
  *
@@ -59,7 +59,7 @@
 	EX_TABLE(8 ## n ## 7b,9 ## n ## 1b)
 
 	.text
-	.stabs	"arch/powerpc/lib/",N_SO,0,0,0f
+.stabs	"arch/powerpc/lib/",N_SO,0,0,0f
 	.stabs	"copy_32.S",N_SO,0,0,0f
 0:
 

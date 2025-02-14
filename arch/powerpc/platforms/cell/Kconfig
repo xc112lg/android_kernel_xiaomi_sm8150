@@ -69,12 +69,12 @@ config PPC_IBM_CELL_RESETBUTTON
 	  This adds a method to trigger system reset via front panel pinhole button.
 
 config PPC_IBM_CELL_POWERBUTTON
-	tristate "IBM Cell Blade power button"
+tristate "IBM Cell Blade power button"
 	depends on PPC_IBM_CELL_BLADE && INPUT_EVDEV
 	default y
 	help
-	  Support Powerbutton on IBM Cell blades.
-	  This will enable the powerbutton as an input device.
+Support Powerbutton on IBM Cell blades.
+This will enable the powerbutton as an input device.
 
 config CBE_THERM
 	tristate "CBE thermal support"
@@ -84,20 +84,20 @@ config CBE_THERM
 config PPC_PMI
 	tristate
 	default y
-	depends on CPU_FREQ_CBE_PMI || PPC_IBM_CELL_POWERBUTTON
+depends on CPU_FREQ_CBE_PMI || PPC_IBM_CELL_POWERBUTTON
 	help
 	  PMI (Platform Management Interrupt) is a way to
 	  communicate with the BMC (Baseboard Management Controller).
 	  It is used in some IBM Cell blades.
 
 config CBE_CPUFREQ_SPU_GOVERNOR
-	tristate "CBE frequency scaling based on SPU usage"
-	depends on SPU_FS && CPU_FREQ
+tristate "CBE frequency scaling based on SPU usage"
+depends on SPU_FS && CPU_FREQ
 	default m
 	help
-	  This governor checks for spu usage to adjust the cpu frequency.
+This governor checks for spu usage to adjust the cpu frequency.
 	  If no spu is running on a given cpu, that cpu will be throttled to
-	  the minimal possible frequency.
+the minimal possible frequency.
 
 endmenu
 

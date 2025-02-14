@@ -39,7 +39,7 @@ mpic: pic@40000 {
 	reg = <0x40000 0x40000>;
 	compatible = "fsl,mpic", "chrp,open-pic";
 	device_type = "open-pic";
-	clock-frequency = <0x0>;
+clock-frequency = <0x0>;
 };
 
 timer@41100 {

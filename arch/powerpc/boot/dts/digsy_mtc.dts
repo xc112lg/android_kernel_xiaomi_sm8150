@@ -32,7 +32,7 @@
 		spi@f00 {
 			msp430@0 {
 				compatible = "spidev";
-				spi-max-frequency = <32000>;
+spi-max-frequency = <32000>;
 				reg = <0>;
 			};
 		};
@@ -99,7 +99,7 @@
 				 0xc000 0 0 2 &mpc5200_pic 0 0 3
 				 0xc000 0 0 3 &mpc5200_pic 0 0 3
 				 0xc000 0 0 4 &mpc5200_pic 0 0 3>;
-		clock-frequency = <0>; // From boot loader
+clock-frequency = <0>; // From boot loader
 		interrupts = <2 8 0 2 9 0 2 10 0>;
 		bus-range = <0 0>;
 		ranges = <0x42000000 0 0x80000000 0x80000000 0 0x10000000
@@ -141,14 +141,14 @@
 		can@4,0 {
 			compatible = "nxp,sja1000";
 			reg = <4 0x000 0x80>;
-			nxp,external-clock-frequency = <24000000>;
+nxp,external-clock-frequency = <24000000>;
 			interrupts = <1 2 3>; // Level-low
 		};
 
 		can@4,100 {
 			compatible = "nxp,sja1000";
 			reg = <4 0x100 0x80>;
-			nxp,external-clock-frequency = <24000000>;
+nxp,external-clock-frequency = <24000000>;
 			interrupts = <1 2 3>;  // Level-low
 		};
 

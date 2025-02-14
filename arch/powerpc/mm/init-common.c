@@ -1,8 +1,8 @@
 /*
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *
@@ -68,9 +68,9 @@ void pgtable_cache_add(unsigned shift, void (*ctor)(void *))
 	struct kmem_cache *new = NULL;
 
 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
-	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
+* moment, gcc doesn't seem to recognize is_power_of_2 as a
 	 * constant expression, so so much for that. */
-	BUG_ON(!is_power_of_2(minalign));
+BUG_ON(!is_power_of_2(minalign));
 	BUG_ON((shift < 1) || (shift > MAX_PGTABLE_INDEX_SIZE));
 
 	if (PGT_CACHE(shift))

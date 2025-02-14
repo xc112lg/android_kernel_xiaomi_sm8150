@@ -163,10 +163,10 @@ enum qpnp_pon_version {
 };
 
 enum pon_type {
-	PON_KPDPWR	 = PON_POWER_ON_TYPE_KPDPWR,
-	PON_RESIN	 = PON_POWER_ON_TYPE_RESIN,
-	PON_CBLPWR	 = PON_POWER_ON_TYPE_CBLPWR,
-	PON_KPDPWR_RESIN = PON_POWER_ON_TYPE_KPDPWR_RESIN,
+PON_KPDPWR	 = PON_POWER_ON_TYPE_KPDPWR,
+PON_RESIN	 = PON_POWER_ON_TYPE_RESIN,
+PON_CBLPWR	 = PON_POWER_ON_TYPE_CBLPWR,
+PON_KPDPWR_RESIN = PON_POWER_ON_TYPE_KPDPWR_RESIN,
 };
 
 struct pon_reg {
@@ -222,7 +222,7 @@ struct qpnp_pon {
 	int			num_pon_config;
 	int			num_pon_reg;
 	int			pon_trigger_reason;
-	int			pon_power_off_reason;
+int			pon_power_off_reason;
 	u32			dbc_time_us;
 	u32			uvlo;
 	int			warm_reset_poff_type;
@@ -261,13 +261,13 @@ static u32 s1_delay[PON_S1_COUNT_MAX + 1] = {
 
 static const char * const qpnp_pon_reason[] = {
 	[0] = "Triggered from Hard Reset",
-	[1] = "Triggered from SMPL (Sudden Momentary Power Loss)",
+[1] = "Triggered from SMPL (Sudden Momentary Power Loss)",
 	[2] = "Triggered from RTC (RTC Alarm Expiry)",
 	[3] = "Triggered from DC (DC Charger Insertion)",
 	[4] = "Triggered from USB (USB Charger Insertion)",
 	[5] = "Triggered from PON1 (Secondary PMIC)",
-	[6] = "Triggered from CBL (External Power Supply)",
-	[7] = "Triggered from KPD (Power Key Press)",
+[6] = "Triggered from CBL (External Power Supply)",
+[7] = "Triggered from KPD (Power Key Press)",
 };
 
 #define POFF_REASON_FAULT_OFFSET	16
@@ -279,15 +279,15 @@ static const char * const qpnp_poff_reason[] = {
 	[2] = "Triggered from PMIC_WD (PMIC Watchdog)",
 	[3] = "Triggered from GP1 (Keypad_Reset1)",
 	[4] = "Triggered from GP2 (Keypad_Reset2)",
-	[5] = "Triggered from KPDPWR_AND_RESIN (Power Key and Reset Line)",
+[5] = "Triggered from KPDPWR_AND_RESIN (Power Key and Reset Line)",
 	[6] = "Triggered from RESIN_N (Reset Line/Volume Down Key)",
-	[7] = "Triggered from KPDPWR_N (Long Power Key Hold)",
+[7] = "Triggered from KPDPWR_N (Long Power Key Hold)",
 	[8] = "N/A",
 	[9] = "N/A",
 	[10] = "N/A",
 	[11] = "Triggered from CHARGER (Charger ENUM_TIMER, BOOT_DONE)",
 	[12] = "Triggered from TFT (Thermal Fault Tolerance)",
-	[13] = "Triggered from UVLO (Under Voltage Lock Out)",
+[13] = "Triggered from UVLO (Under Voltage Lock Out)",
 	[14] = "Triggered from OTST3 (Over Temperature)",
 	[15] = "Triggered from STAGE3 (Stage 3 Reset)",
 
@@ -297,9 +297,9 @@ static const char * const qpnp_poff_reason[] = {
 	[18] = "Triggered from GP_FAULT2",
 	[19] = "Triggered from GP_FAULT3",
 	[20] = "Triggered from MBG_FAULT",
-	[21] = "Triggered from OVLO (Over Voltage Lock Out)",
-	[22] = "Triggered from UVLO (Under Voltage Lock Out)",
-	[23] = "Triggered from AVDD_RB",
+[21] = "Triggered from OVLO (Over Voltage Lock Out)",
+[22] = "Triggered from UVLO (Under Voltage Lock Out)",
+[23] = "Triggered from AVDD_RB",
 	[24] = "N/A",
 	[25] = "N/A",
 	[26] = "N/A",
@@ -556,7 +556,7 @@ qpnp_get_cfg(struct qpnp_pon *pon, u32 pon_type)
 
 #define PON_TWM_ENTRY_PBS_BIT           BIT(0)
 static int qpnp_pon_reset_config(struct qpnp_pon *pon,
-				 enum pon_power_off_type type)
+enum pon_power_off_type type)
 {
 	int rc;
 	bool disable = false;
@@ -578,7 +578,7 @@ static int qpnp_pon_reset_config(struct qpnp_pon *pon,
 			/* configure KPDPWR_S2 to Hard reset */
 			rc = qpnp_pon_masked_write(pon, cfg->s2_cntl_addr,
 						QPNP_PON_S2_CNTL_TYPE_MASK,
-						PON_POWER_OFF_HARD_RESET);
+PON_POWER_OFF_HARD_RESET);
 			if (rc < 0)
 				pr_err("Unable to config KPDPWR_N S2 for hard-reset rc=%d\n",
 					rc);
@@ -594,20 +594,20 @@ static int qpnp_pon_reset_config(struct qpnp_pon *pon,
 		rst_en_reg = QPNP_PON_PS_HOLD_RST_CTL2(pon);
 
 	/*
-	 * Based on the power-off type set for a PON device through device tree
+* Based on the power-off type set for a PON device through device tree
 	 * change the type being configured into PS_HOLD_RST_CTL.
 	 */
 	switch (type) {
-	case PON_POWER_OFF_WARM_RESET:
+case PON_POWER_OFF_WARM_RESET:
 		if (pon->warm_reset_poff_type != -EINVAL)
 			type = pon->warm_reset_poff_type;
 		break;
-	case PON_POWER_OFF_HARD_RESET:
+case PON_POWER_OFF_HARD_RESET:
 		if (pon->hard_reset_poff_type != -EINVAL)
 			type = pon->hard_reset_poff_type;
 		disable = pon->ps_hold_hard_reset_disable;
 		break;
-	case PON_POWER_OFF_SHUTDOWN:
+case PON_POWER_OFF_SHUTDOWN:
 		if (pon->shutdown_poff_type != -EINVAL)
 			type = pon->shutdown_poff_type;
 		disable = pon->ps_hold_shutdown_disable;
@@ -621,7 +621,7 @@ static int qpnp_pon_reset_config(struct qpnp_pon *pon,
 		return rc;
 
 	/*
-	 * Check if ps-hold power off configuration needs to be disabled.
+* Check if ps-hold power off configuration needs to be disabled.
 	 * If yes, then return without configuring.
 	 */
 	if (disable)
@@ -635,7 +635,7 @@ static int qpnp_pon_reset_config(struct qpnp_pon *pon,
 	udelay(500);
 
 	rc = qpnp_pon_masked_write(pon, QPNP_PON_PS_HOLD_RST_CTL(pon),
-				   QPNP_PON_POWER_OFF_MASK, type);
+QPNP_PON_POWER_OFF_MASK, type);
 	if (rc)
 		return rc;
 
@@ -644,13 +644,13 @@ static int qpnp_pon_reset_config(struct qpnp_pon *pon,
 	if (rc)
 		return rc;
 
-	dev_dbg(pon->dev, "ps_hold power off type = 0x%02X\n", type);
+dev_dbg(pon->dev, "ps_hold power off type = 0x%02X\n", type);
 
 	return 0;
 }
 
 static int qpnp_resin_pon_reset_config(struct qpnp_pon *pon,
-				       enum pon_power_off_type type)
+enum pon_power_off_type type)
 {
 	int rc;
 	bool disable = false;
@@ -662,20 +662,20 @@ static int qpnp_resin_pon_reset_config(struct qpnp_pon *pon,
 		rst_en_reg = QPNP_PON_RESIN_S2_CNTL2(pon);
 
 	/*
-	 * Based on the power-off type set for a PON device through device tree
+* Based on the power-off type set for a PON device through device tree
 	 * change the type being configured into PON_RESIN_S2_CTL.
 	 */
 	switch (type) {
-	case PON_POWER_OFF_WARM_RESET:
+case PON_POWER_OFF_WARM_RESET:
 		if (pon->resin_warm_reset_type != -EINVAL)
 			type = pon->resin_warm_reset_type;
 		break;
-	case PON_POWER_OFF_HARD_RESET:
+case PON_POWER_OFF_HARD_RESET:
 		if (pon->resin_hard_reset_type != -EINVAL)
 			type = pon->resin_hard_reset_type;
 		disable = pon->resin_hard_reset_disable;
 		break;
-	case PON_POWER_OFF_SHUTDOWN:
+case PON_POWER_OFF_SHUTDOWN:
 		if (pon->resin_shutdown_type != -EINVAL)
 			type = pon->resin_shutdown_type;
 		disable = pon->resin_shutdown_disable;
@@ -689,7 +689,7 @@ static int qpnp_resin_pon_reset_config(struct qpnp_pon *pon,
 		return rc;
 
 	/*
-	 * Check if resin power off configuration needs to be disabled.
+* Check if resin power off configuration needs to be disabled.
 	 * If yes, then return without configuring.
 	 */
 	if (disable)
@@ -712,14 +712,14 @@ static int qpnp_resin_pon_reset_config(struct qpnp_pon *pon,
 	if (rc)
 		return rc;
 
-	dev_dbg(pon->dev, "resin power off type = 0x%02X\n", type);
+dev_dbg(pon->dev, "resin power off type = 0x%02X\n", type);
 
 	return 0;
 }
 
 /**
  * qpnp_pon_system_pwr_off() - Configure system-reset PMIC for shutdown or reset
- * @type: Determines the type of power off to perform - shutdown, reset, etc
+* @type: Determines the type of power off to perform - shutdown, reset, etc
  *
  * This function supports configuration of multiple PMICs. In some cases, the
  * PON of secondary PMICs also needs to be configured, so this supports that
@@ -733,8 +733,8 @@ static int qpnp_resin_pon_reset_config(struct qpnp_pon *pon,
 int qpnp_pon_system_pwr_off(enum pon_power_off_type type)
 {
 	struct qpnp_pon *pon, *tmp;
-	struct power_supply *batt_psy;
-	union power_supply_propval val;
+struct power_supply *batt_psy;
+union power_supply_propval val;
 	unsigned long flags;
 	int rc;
 
@@ -750,7 +750,7 @@ int qpnp_pon_system_pwr_off(enum pon_power_off_type type)
 
 	/*
 	 * Check if a secondary PON device needs to be configured. If it
-	 * is available, configure that also as per the requested power-off
+* is available, configure that also as per the requested power-off
 	 * type
 	 */
 	spin_lock_irqsave(&spon_list_slock, flags);
@@ -780,12 +780,12 @@ out:
 	spin_unlock_irqrestore(&spon_list_slock, flags);
 	/* Set ship mode here if it has been requested */
 	if (!!pon_ship_mode_en) {
-		batt_psy = power_supply_get_by_name("battery");
+batt_psy = power_supply_get_by_name("battery");
 		if (batt_psy) {
 			pr_debug("Setting ship mode\n");
 			val.intval = 1;
-			rc = power_supply_set_property(batt_psy,
-					POWER_SUPPLY_PROP_SET_SHIP_MODE, &val);
+rc = power_supply_set_property(batt_psy,
+POWER_SUPPLY_PROP_SET_SHIP_MODE, &val);
 			if (rc)
 				dev_err(sys_reset_dev->dev, "Failed to set ship mode\n");
 		}
@@ -878,9 +878,9 @@ static int qpnp_pon_get_trigger_config(enum pon_trigger_source pon_src,
  * @pon_src: PON source to be configured
  * @enable: to enable or disable the PON trigger
  *
- * This function configures the power-on trigger capability of a
+* This function configures the power-on trigger capability of a
  * PON source. If a specific PON trigger is disabled it cannot act
- * as a power-on source to the PMIC.
+* as a power-on source to the PMIC.
  */
 
 int qpnp_pon_trigger_config(enum pon_trigger_source pon_src, bool enable)
@@ -1855,7 +1855,7 @@ static int pon_regulator_init(struct qpnp_pon *pon)
 			return -EINVAL;
 		}
 
-		pon_reg->rdesc.type = REGULATOR_VOLTAGE;
+pon_reg->rdesc.type = REGULATOR_VOLTAGE;
 		pon_reg->rdesc.ops = &pon_spare_reg_ops;
 		pon_reg->rdesc.name = init_data->constraints.name;
 
@@ -1925,7 +1925,7 @@ qpnp_pon_uvlo_dload_get(char *buf, const struct kernel_param *kp)
 	if (!pon)
 		return -ENODEV;
 
-	rc = qpnp_pon_read(pon, QPNP_PON_XVDD_RB_SPARE(pon), &reg);
+rc = qpnp_pon_read(pon, QPNP_PON_XVDD_RB_SPARE(pon), &reg);
 	if (rc)
 		return rc;
 
@@ -1951,7 +1951,7 @@ qpnp_pon_uvlo_dload_set(const char *val, const struct kernel_param *kp)
 
 	reg = *(bool *)kp->arg ? QPNP_PON_UVLO_DLOAD_EN : 0;
 
-	return qpnp_pon_masked_write_backup(pon, QPNP_PON_XVDD_RB_SPARE(pon),
+return qpnp_pon_masked_write_backup(pon, QPNP_PON_XVDD_RB_SPARE(pon),
 				   QPNP_PON_UVLO_DLOAD_EN, reg);
 }
 
@@ -1978,7 +1978,7 @@ static int qpnp_pon_debugfs_uvlo_set(void *data, u64 val)
 	struct qpnp_pon *pon = data;
 
 	if (pon->pon_trigger_reason == PON_SMPL ||
-	    pon->pon_power_off_reason == QPNP_POFF_REASON_UVLO)
+pon->pon_power_off_reason == QPNP_POFF_REASON_UVLO)
 		panic("UVLO occurred");
 	pon->uvlo = val;
 
@@ -2200,12 +2200,12 @@ static int qpnp_pon_read_hardware_info(struct qpnp_pon *pon, bool sys_reset)
 	cold_boot = sys_reset_dev ? !_qpnp_pon_is_warm_reset(sys_reset_dev)
 				  : !_qpnp_pon_is_warm_reset(pon);
 	if (index >= ARRAY_SIZE(qpnp_pon_reason) || index < 0) {
-		dev_info(dev, "PMIC@SID%d Power-on reason: Unknown and '%s' boot\n",
+dev_info(dev, "PMIC@SID%d Power-on reason: Unknown and '%s' boot\n",
 			 to_spmi_device(dev->parent)->usid,
 			 cold_boot ? "cold" : "warm");
 	} else {
 		pon->pon_trigger_reason = index;
-		dev_info(dev, "PMIC@SID%d Power-on reason: %s and '%s' boot\n",
+dev_info(dev, "PMIC@SID%d Power-on reason: %s and '%s' boot\n",
 			 to_spmi_device(dev->parent)->usid,
 			 qpnp_pon_reason[index],
 			 cold_boot ? "cold" : "warm");
@@ -2229,17 +2229,17 @@ static int qpnp_pon_read_hardware_info(struct qpnp_pon *pon, bool sys_reset)
 	}
 	index = ffs(poff_sts) - 1 + reason_index_offset;
 	if (index >= ARRAY_SIZE(qpnp_poff_reason) || index < 0) {
-		dev_info(dev, "PMIC@SID%d: Unknown power-off reason\n",
+dev_info(dev, "PMIC@SID%d: Unknown power-off reason\n",
 			 to_spmi_device(dev->parent)->usid);
 	} else {
-		pon->pon_power_off_reason = index;
-		dev_info(dev, "PMIC@SID%d: Power-off reason: %s\n",
+pon->pon_power_off_reason = index;
+dev_info(dev, "PMIC@SID%d: Power-off reason: %s\n",
 			 to_spmi_device(dev->parent)->usid,
 			 qpnp_poff_reason[index]);
 	}
 
 	if ((pon->pon_trigger_reason == PON_SMPL ||
-		pon->pon_power_off_reason == QPNP_POFF_REASON_UVLO) &&
+pon->pon_power_off_reason == QPNP_POFF_REASON_UVLO) &&
 	    of_property_read_bool(dev->of_node, "qcom,uvlo-panic")) {
 		panic("UVLO occurred");
 	}
@@ -2264,7 +2264,7 @@ static int qpnp_pon_parse_power_off_type(struct qpnp_pon *pon,
 		return 0;
 	}
 
-	if (type >= PON_POWER_OFF_MAX_TYPE) {
+if (type >= PON_POWER_OFF_MAX_TYPE) {
 		dev_err(pon->dev, "Invalid property value %s=%u\n", prop, type);
 		return -EINVAL;
 	}
@@ -2279,32 +2279,32 @@ static int qpnp_pon_parse_dt_power_off_config(struct qpnp_pon *pon)
 	struct device_node *node = pon->dev->of_node;
 	int rc;
 
-	rc = qpnp_pon_parse_power_off_type(pon, "qcom,warm-reset-poweroff-type",
+rc = qpnp_pon_parse_power_off_type(pon, "qcom,warm-reset-poweroff-type",
 					   &pon->warm_reset_poff_type);
 	if (rc)
 		return rc;
 
-	rc = qpnp_pon_parse_power_off_type(pon, "qcom,hard-reset-poweroff-type",
+rc = qpnp_pon_parse_power_off_type(pon, "qcom,hard-reset-poweroff-type",
 					   &pon->hard_reset_poff_type);
 	if (rc)
 		return rc;
 
-	rc = qpnp_pon_parse_power_off_type(pon, "qcom,shutdown-poweroff-type",
+rc = qpnp_pon_parse_power_off_type(pon, "qcom,shutdown-poweroff-type",
 					   &pon->shutdown_poff_type);
 	if (rc)
 		return rc;
 
-	rc = qpnp_pon_parse_power_off_type(pon, "qcom,resin-warm-reset-type",
+rc = qpnp_pon_parse_power_off_type(pon, "qcom,resin-warm-reset-type",
 					   &pon->resin_warm_reset_type);
 	if (rc)
 		return rc;
 
-	rc = qpnp_pon_parse_power_off_type(pon, "qcom,resin-hard-reset-type",
+rc = qpnp_pon_parse_power_off_type(pon, "qcom,resin-hard-reset-type",
 					   &pon->resin_hard_reset_type);
 	if (rc)
 		return rc;
 
-	rc = qpnp_pon_parse_power_off_type(pon, "qcom,resin-shutdown-type",
+rc = qpnp_pon_parse_power_off_type(pon, "qcom,resin-shutdown-type",
 					   &pon->resin_shutdown_type);
 	if (rc)
 		return rc;
@@ -2407,7 +2407,7 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 
 	INIT_DELAYED_WORK(&pon->bark_work, bark_work_func);
 
-	rc = qpnp_pon_parse_dt_power_off_config(pon);
+rc = qpnp_pon_parse_dt_power_off_config(pon);
 	if (rc)
 		return rc;
 
@@ -2536,13 +2536,13 @@ static const struct dev_pm_ops qpnp_pon_pm_ops = {
 #endif
 
 static const struct of_device_id qpnp_pon_match_table[] = {
-	{ .compatible = "qcom,qpnp-power-on" },
+{ .compatible = "qcom,qpnp-power-on" },
 	{}
 };
 
 static struct platform_driver qpnp_pon_driver = {
 	.driver = {
-		.name = "qcom,qpnp-power-on",
+.name = "qcom,qpnp-power-on",
 		.of_match_table = qpnp_pon_match_table,
 #ifdef CONFIG_PM
 		.pm = &qpnp_pon_pm_ops,

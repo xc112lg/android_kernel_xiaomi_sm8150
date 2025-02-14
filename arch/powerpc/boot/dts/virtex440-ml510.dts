@@ -35,8 +35,8 @@
 		ppc440_0: cpu@0 {
 			#address-cells = <1>;
 			#size-cells = <1>;
-			clock-frequency = <300000000>;
-			compatible = "PowerPC,440", "ibm,ppc440";
+clock-frequency = <300000000>;
+compatible = "PowerPC,440", "ibm,ppc440";
 			d-cache-line-size = <0x20>;
 			d-cache-size = <0x8000>;
 			dcr-access-method = "native";
@@ -44,9 +44,9 @@
 			device_type = "cpu";
 			i-cache-line-size = <0x20>;
 			i-cache-size = <0x8000>;
-			model = "PowerPC,440";
+model = "PowerPC,440";
 			reg = <0>;
-			timebase-frequency = <300000000>;
+timebase-frequency = <300000000>;
 			xlnx,apu-control = <0x2000>;
 			xlnx,apu-udi-0 = <0x0>;
 			xlnx,apu-udi-1 = <0x0>;
@@ -258,10 +258,10 @@
 			interrupt-parent = <&xps_intc_0>;
 			interrupts = < 9 2 >;
 			reg = < 0x81600000 0x10000 >;
-			xlnx,clk-freq = <0x5f5e100>;
+xlnx,clk-freq = <0x5f5e100>;
 			xlnx,family = "virtex5";
 			xlnx,gpo-width = <0x1>;
-			xlnx,iic-freq = <0x186a0>;
+xlnx,iic-freq = <0x186a0>;
 			xlnx,scl-inertial-delay = <0x5>;
 			xlnx,sda-inertial-delay = <0x5>;
 			xlnx,ten-bit-adr = <0x0>;
@@ -299,7 +299,7 @@
 			xlnx,tri-default-2 = <0xffffffff>;
 		} ;
 		RS232_Uart_1: serial@83e00000 {
-			clock-frequency = <100000000>;
+clock-frequency = <100000000>;
 			compatible = "xlnx,xps-uart16550-2.00.b", "ns16550";
 			current-speed = <9600>;
 			device_type = "serial";
@@ -367,8 +367,8 @@
 				 *
 				 * The M1533 contains various peripherals
 				 * including AC97 audio, a modem, USB, IDE and
-				 * some power management stuff. The modem
-				 * isn't connected on the ML510 and the power
+* some power management stuff. The modem
+* isn't connected on the ML510 and the power
 				 * management core also isn't used.
 				 */
 

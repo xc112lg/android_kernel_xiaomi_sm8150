@@ -84,7 +84,7 @@ int smu7_fan_ctrl_get_fan_speed_percent(struct pp_hwmgr *hwmgr,
 int smu7_fan_ctrl_get_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t *speed)
 {
 	uint32_t tach_period;
-	uint32_t crystal_clock_freq;
+uint32_t crystal_clock_freq;
 
 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
 			(hwmgr->thermal_controller.fanInfo.
@@ -97,9 +97,9 @@ int smu7_fan_ctrl_get_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t *speed)
 	if (tach_period == 0)
 		return -EINVAL;
 
-	crystal_clock_freq = smu7_get_xclk(hwmgr);
+crystal_clock_freq = smu7_get_xclk(hwmgr);
 
-	*speed = 60 * crystal_clock_freq * 10000 / tach_period;
+*speed = 60 * crystal_clock_freq * 10000 / tach_period;
 
 	return 0;
 }
@@ -261,7 +261,7 @@ int smu7_fan_ctrl_reset_fan_speed_to_default(struct pp_hwmgr *hwmgr)
 int smu7_fan_ctrl_set_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t speed)
 {
 	uint32_t tach_period;
-	uint32_t crystal_clock_freq;
+uint32_t crystal_clock_freq;
 
 	if (hwmgr->thermal_controller.fanInfo.bNoFan ||
 			(hwmgr->thermal_controller.fanInfo.
@@ -274,9 +274,9 @@ int smu7_fan_ctrl_set_fan_speed_rpm(struct pp_hwmgr *hwmgr, uint32_t speed)
 			PHM_PlatformCaps_MicrocodeFanControl))
 		smu7_fan_ctrl_stop_smc_fan_control(hwmgr);
 
-	crystal_clock_freq = smu7_get_xclk(hwmgr);
+crystal_clock_freq = smu7_get_xclk(hwmgr);
 
-	tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
+tach_period = 60 * crystal_clock_freq * 10000 / (8 * speed);
 
 	PHM_WRITE_VFPF_INDIRECT_FIELD(hwmgr->device, CGS_IND_REG__SMC,
 				CG_TACH_STATUS, TACH_PERIOD, tach_period);

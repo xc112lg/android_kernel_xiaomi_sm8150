@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
  * mediabay.h: definitions for using the media bay
- * on PowerBook 3400 and similar computers.
+* on PowerBook 3400 and similar computers.
  *
  * Copyright (C) 1997 Paul Mackerras.
  */

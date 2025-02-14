@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER9 processors.
+* Performance counter support for POWER9 processors.
  *
  * Copyright 2016 Madhavan Srinivasan, IBM Corporation.
  *
@@ -10,7 +10,7 @@
  */
 
 /*
- * Power9 event codes.
+* Power9 event codes.
  */
 EVENT(PM_CYC,					0x0001e)
 EVENT(PM_ICT_NOSLOT_CYC,			0x100f8)

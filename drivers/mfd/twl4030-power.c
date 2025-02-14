@@ -1,6 +1,6 @@
 /*
  *
- * Handle TWL4030 Power initialization
+* Handle TWL4030 Power initialization
  *
  * Copyright (C) 2008 Nokia Corporation
  * Copyright (C) 2006 Texas Instruments, Inc
@@ -121,8 +121,8 @@ static u8 res_config_addrs[] = {
 	[RES_VINTANA2]	= 0x43,
 	[RES_VINTDIG]	= 0x47,
 	[RES_VIO]	= 0x4b,
-	[RES_VDD1]	= 0x55,
-	[RES_VDD2]	= 0x63,
+[RES_VDD1]	= 0x55,
+[RES_VDD2]	= 0x63,
 	[RES_VUSB_1V5]	= 0x71,
 	[RES_VUSB_1V8]	= 0x74,
 	[RES_VUSB_3V1]	= 0x77,
@@ -655,15 +655,15 @@ relock:
 }
 
 /*
- * In master mode, start the power off sequence.
- * After a successful execution, TWL shuts down the power to the SoC
+* In master mode, start the power off sequence.
+* After a successful execution, TWL shuts down the power to the SoC
  * and all peripherals connected to it.
  */
 void twl4030_power_off(void)
 {
 	int err;
 
-	/* Disable start on charger or VBUS as it can break poweroff */
+/* Disable start on charger or VBUS as it can break poweroff */
 	err = twl4030_starton_mask_and_set(STARTON_VBUS | STARTON_CHG, 0);
 	if (err)
 		pr_err("TWL4030 Unable to configure start-up\n");
@@ -671,19 +671,19 @@ void twl4030_power_off(void)
 	err = twl_i2c_write_u8(TWL_MODULE_PM_MASTER, PWR_DEVOFF,
 			       TWL4030_PM_MASTER_P1_SW_EVENTS);
 	if (err)
-		pr_err("TWL4030 Unable to power off\n");
+pr_err("TWL4030 Unable to power off\n");
 }
 
 static bool twl4030_power_use_poweroff(const struct twl4030_power_data *pdata,
 					struct device_node *node)
 {
-	if (pdata && pdata->use_poweroff)
+if (pdata && pdata->use_poweroff)
 		return true;
 
-	if (of_property_read_bool(node, "ti,system-power-controller"))
+if (of_property_read_bool(node, "ti,system-power-controller"))
 		return true;
 
-	if (of_property_read_bool(node, "ti,use_poweroff"))
+if (of_property_read_bool(node, "ti,use_poweroff"))
 		return true;
 
 	return false;
@@ -718,8 +718,8 @@ static struct twl4030_script *omap3_reset_scripts[] = {
 
 static struct twl4030_resconfig omap3_rconfig[] = {
 	TWL_REMAP_SLEEP(RES_HFCLKOUT, DEV_GRP_P3, -1, -1),
-	TWL_REMAP_SLEEP(RES_VDD1, DEV_GRP_P1, -1, -1),
-	TWL_REMAP_SLEEP(RES_VDD2, DEV_GRP_P1, -1, -1),
+TWL_REMAP_SLEEP(RES_VDD1, DEV_GRP_P1, -1, -1),
+TWL_REMAP_SLEEP(RES_VDD2, DEV_GRP_P1, -1, -1),
 	{ 0, 0 },
 };
 
@@ -795,8 +795,8 @@ static struct twl4030_resconfig omap3_idle_rconfig[] = {
 	TWL_REMAP_SLEEP(RES_VINTANA2, TWL_DEV_GRP_P123, 0, 2),
 	TWL_REMAP_SLEEP(RES_VINTDIG, TWL_DEV_GRP_P123, 1, 2),
 	TWL_REMAP_SLEEP(RES_VIO, TWL_DEV_GRP_P123, 2, 2),
-	TWL_REMAP_OFF(RES_VDD1, DEV_GRP_P1, 4, 1),
-	TWL_REMAP_OFF(RES_VDD2, DEV_GRP_P1, 3, 1),
+TWL_REMAP_OFF(RES_VDD1, DEV_GRP_P1, 4, 1),
+TWL_REMAP_OFF(RES_VDD2, DEV_GRP_P1, 3, 1),
 	TWL_REMAP_SLEEP(RES_VUSB_1V5, TWL4030_RESCONFIG_UNDEF, 0, 0),
 	TWL_REMAP_SLEEP(RES_VUSB_1V8, TWL4030_RESCONFIG_UNDEF, 0, 0),
 	TWL_REMAP_SLEEP(RES_VUSB_3V1, TWL_DEV_GRP_P123, 0, 0),
@@ -848,30 +848,30 @@ static struct twl4030_power_data omap3_idle_ac_quirk_osc_off = {
 
 static const struct of_device_id twl4030_power_of_match[] = {
 	{
-		.compatible = "ti,twl4030-power",
+.compatible = "ti,twl4030-power",
 	},
 	{
-		.compatible = "ti,twl4030-power-reset",
+.compatible = "ti,twl4030-power-reset",
 		.data = &omap3_reset,
 	},
 	{
-		.compatible = "ti,twl4030-power-idle",
+.compatible = "ti,twl4030-power-idle",
 		.data = &omap3_idle,
 	},
 	{
-		.compatible = "ti,twl4030-power-idle-osc-off",
+.compatible = "ti,twl4030-power-idle-osc-off",
 		.data = &osc_off_idle,
 	},
 	{
-		.compatible = "ti,twl4030-power-omap3-sdp",
+.compatible = "ti,twl4030-power-omap3-sdp",
 		.data = &omap3_idle_ac_quirk,
 	},
 	{
-		.compatible = "ti,twl4030-power-omap3-ldp",
+.compatible = "ti,twl4030-power-omap3-ldp",
 		.data = &omap3_idle_ac_quirk_osc_off,
 	},
 	{
-		.compatible = "ti,twl4030-power-omap3-evm",
+.compatible = "ti,twl4030-power-omap3-evm",
 		.data = &omap3_idle_ac_quirk,
 	},
 	{ },
@@ -881,7 +881,7 @@ MODULE_DEVICE_TABLE(of, twl4030_power_of_match);
 
 static int twl4030_power_probe(struct platform_device *pdev)
 {
-	const struct twl4030_power_data *pdata = dev_get_platdata(&pdev->dev);
+const struct twl4030_power_data *pdata = dev_get_platdata(&pdev->dev);
 	struct device_node *node = pdev->dev.of_node;
 	const struct of_device_id *match;
 	int err = 0;
@@ -904,18 +904,18 @@ static int twl4030_power_probe(struct platform_device *pdev)
 		return err;
 	}
 
-	match = of_match_device(of_match_ptr(twl4030_power_of_match),
+match = of_match_device(of_match_ptr(twl4030_power_of_match),
 				&pdev->dev);
 	if (match && match->data)
 		pdata = match->data;
 
 	if (pdata) {
-		err = twl4030_power_configure_scripts(pdata);
+err = twl4030_power_configure_scripts(pdata);
 		if (err) {
 			pr_err("TWL4030 failed to load scripts\n");
 			goto relock;
 		}
-		err = twl4030_power_configure_resources(pdata);
+err = twl4030_power_configure_resources(pdata);
 		if (err) {
 			pr_err("TWL4030 failed to configure resource\n");
 			goto relock;
@@ -923,7 +923,7 @@ static int twl4030_power_probe(struct platform_device *pdev)
 	}
 
 	/* Board has to be wired properly to use this feature */
-	if (twl4030_power_use_poweroff(pdata, node) && !pm_power_off) {
+if (twl4030_power_use_poweroff(pdata, node) && !pm_power_off) {
 		/* Default for SEQ_OFFSYNC is set, lets ensure this */
 		err = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val,
 				      TWL4030_PM_MASTER_CFG_P123_TRANSITION);
@@ -939,7 +939,7 @@ static int twl4030_power_probe(struct platform_device *pdev)
 			}
 		}
 
-		pm_power_off = twl4030_power_off;
+pm_power_off = twl4030_power_off;
 	}
 
 relock:
@@ -960,11 +960,11 @@ static int twl4030_power_remove(struct platform_device *pdev)
 
 static struct platform_driver twl4030_power_driver = {
 	.driver = {
-		.name	= "twl4030_power",
-		.of_match_table = of_match_ptr(twl4030_power_of_match),
+.name	= "twl4030_power",
+.of_match_table = of_match_ptr(twl4030_power_of_match),
 	},
-	.probe		= twl4030_power_probe,
-	.remove		= twl4030_power_remove,
+.probe		= twl4030_power_probe,
+.remove		= twl4030_power_remove,
 };
 
 module_platform_driver(twl4030_power_driver);

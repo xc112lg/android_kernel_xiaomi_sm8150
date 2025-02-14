@@ -4,7 +4,7 @@
 #ifdef __KERNEL__
 
 /*
- * The "classic" 32-bit implementation of the PowerPC MMU uses a hash
+* The "classic" 32-bit implementation of the PowerPC MMU uses a hash
  * table containing PTEs, together with a set of 16 segment registers,
  * to define the virtual to physical address mapping.
  *

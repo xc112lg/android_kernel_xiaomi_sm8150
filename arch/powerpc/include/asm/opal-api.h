@@ -205,7 +205,7 @@
 /* Device tree flags */
 
 /*
- * Flags set in power-mgmt nodes in device tree describing
+* Flags set in power-mgmt nodes in device tree describing
  * idle states that are supported in the platform.
  */
 
@@ -399,8 +399,8 @@ enum OpalPciSlotPresence {
 };
 
 enum OpalPciSlotPower {
-	OPAL_PCI_SLOT_POWER_OFF	= 0,
-	OPAL_PCI_SLOT_POWER_ON	= 1,
+OPAL_PCI_SLOT_POWER_OFF	= 0,
+OPAL_PCI_SLOT_POWER_ON	= 1,
 	OPAL_PCI_SLOT_OFFLINE	= 2,
 	OPAL_PCI_SLOT_ONLINE	= 3
 };
@@ -1002,7 +1002,7 @@ struct opal_i2c_request {
 
 /* System EPOW type */
 enum OpalSysEpow {
-	OPAL_SYSEPOW_POWER	= 0,	/* Power EPOW */
+OPAL_SYSEPOW_POWER	= 0,	/* Power EPOW */
 	OPAL_SYSEPOW_TEMP	= 1,	/* Temperature EPOW */
 	OPAL_SYSEPOW_COOLING	= 2,	/* Cooling EPOW */
 	OPAL_SYSEPOW_MAX	= 3,	/* Max EPOW categories */
@@ -1010,10 +1010,10 @@ enum OpalSysEpow {
 
 /* Power EPOW */
 enum OpalSysPower {
-	OPAL_SYSPOWER_UPS	= 0x0001, /* System on UPS power */
-	OPAL_SYSPOWER_CHNG	= 0x0002, /* System power config change */
-	OPAL_SYSPOWER_FAIL	= 0x0004, /* System impending power failure */
-	OPAL_SYSPOWER_INCL	= 0x0008, /* System incomplete power */
+OPAL_SYSPOWER_UPS	= 0x0001, /* System on UPS power */
+OPAL_SYSPOWER_CHNG	= 0x0002, /* System power config change */
+OPAL_SYSPOWER_FAIL	= 0x0004, /* System impending power failure */
+OPAL_SYSPOWER_INCL	= 0x0008, /* System incomplete power */
 };
 
 /* Temperature EPOW */

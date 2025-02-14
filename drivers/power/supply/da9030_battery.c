@@ -89,8 +89,8 @@ struct da9030_battery_thresholds {
 };
 
 struct da9030_charger {
-	struct power_supply *psy;
-	struct power_supply_desc psy_desc;
+struct power_supply *psy;
+struct power_supply_desc psy_desc;
 
 	struct device *master;
 
@@ -98,7 +98,7 @@ struct da9030_charger {
 	struct delayed_work work;
 	unsigned int interval;
 
-	struct power_supply_info *battery_info;
+struct power_supply_info *battery_info;
 
 	struct da9030_battery_thresholds thresholds;
 
@@ -246,14 +246,14 @@ static void da9030_set_charge(struct da9030_charger *charger, int on)
 
 	da903x_write(charger->master, DA9030_CHARGE_CONTROL, val);
 
-	power_supply_changed(charger->psy);
+power_supply_changed(charger->psy);
 }
 
 static void da9030_charger_check_state(struct da9030_charger *charger)
 {
 	da9030_charger_update_state(charger);
 
-	/* we wake or boot with external power on */
+/* we wake or boot with external power on */
 	if (!charger->is_on) {
 		if ((charger->chdet) &&
 		    (charger->adc.vbat_res <
@@ -304,70 +304,70 @@ static void da9030_charging_monitor(struct work_struct *work)
 }
 
 static enum power_supply_property da9030_battery_props[] = {
-	POWER_SUPPLY_PROP_MODEL_NAME,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_CURRENT_AVG,
+POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_CURRENT_AVG,
 };
 
 static void da9030_battery_check_status(struct da9030_charger *charger,
-				    union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	if (charger->chdet) {
 		if (charger->is_on)
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 	} else {
-		val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
+val->intval = POWER_SUPPLY_STATUS_DISCHARGING;
 	}
 }
 
 static void da9030_battery_check_health(struct da9030_charger *charger,
-				    union power_supply_propval *val)
+union power_supply_propval *val)
 {
 	if (charger->fault & DA9030_FAULT_LOG_OVER_TEMP)
-		val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 	else if (charger->fault & DA9030_FAULT_LOG_VBAT_OVER)
-		val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 	else
-		val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 }
 
 static int da9030_battery_get_property(struct power_supply *psy,
-				   enum power_supply_property psp,
-				   union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct da9030_charger *charger = power_supply_get_drvdata(psy);
+struct da9030_charger *charger = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		da9030_battery_check_status(charger, val);
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		da9030_battery_check_health(charger, val);
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = charger->battery_info->technology;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		val->intval = charger->battery_info->voltage_max_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+val->intval = charger->battery_info->voltage_max_design;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		val->intval = charger->battery_info->voltage_min_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+val->intval = charger->battery_info->voltage_min_design;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
 		val->intval = da9030_reg_to_mV(charger->adc.vbat_res) * 1000;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_AVG:
+case POWER_SUPPLY_PROP_CURRENT_AVG:
 		val->intval =
 			da9030_reg_to_mA(charger->adc.ichaverage_res) * 1000;
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = charger->battery_info->name;
 		break;
 	default:
@@ -447,12 +447,12 @@ static void da9030_battery_convert_thresholds(struct da9030_charger *charger,
 
 static void da9030_battery_setup_psy(struct da9030_charger *charger)
 {
-	struct power_supply_desc *psy_desc = &charger->psy_desc;
-	struct power_supply_info *info = charger->battery_info;
+struct power_supply_desc *psy_desc = &charger->psy_desc;
+struct power_supply_info *info = charger->battery_info;
 
 	psy_desc->name = info->name;
 	psy_desc->use_for_apm = info->use_for_apm;
-	psy_desc->type = POWER_SUPPLY_TYPE_BATTERY;
+psy_desc->type = POWER_SUPPLY_TYPE_BATTERY;
 	psy_desc->get_property = da9030_battery_get_property;
 
 	psy_desc->properties = da9030_battery_props;
@@ -474,7 +474,7 @@ static int da9030_battery_charger_init(struct da9030_charger *charger)
 		return ret;
 
 	/*
-	 * Enable reference voltage supply for ADC from the LDO_INTERNAL
+* Enable reference voltage supply for ADC from the LDO_INTERNAL
 	 * regulator. Must be set before ADC measurements can be made.
 	 */
 	ret = da903x_write(charger->master, DA9030_ADC_MAN_CONTROL,
@@ -494,7 +494,7 @@ static int da9030_battery_charger_init(struct da9030_charger *charger)
 static int da9030_battery_probe(struct platform_device *pdev)
 {
 	struct da9030_charger *charger;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct da9030_battery_info *pdata = pdev->dev.platform_data;
 	int ret;
 
@@ -543,7 +543,7 @@ static int da9030_battery_probe(struct platform_device *pdev)
 
 	da9030_battery_setup_psy(charger);
 	psy_cfg.drv_data = charger;
-	charger->psy = power_supply_register(&pdev->dev, &charger->psy_desc,
+charger->psy = power_supply_register(&pdev->dev, &charger->psy_desc,
 					     &psy_cfg);
 	if (IS_ERR(charger->psy)) {
 		ret = PTR_ERR(charger->psy);
@@ -576,7 +576,7 @@ static int da9030_battery_remove(struct platform_device *dev)
 				   DA9030_EVENT_CHIOVER | DA9030_EVENT_TBAT);
 	cancel_delayed_work_sync(&charger->work);
 	da9030_set_charge(charger, 0);
-	power_supply_unregister(charger->psy);
+power_supply_unregister(charger->psy);
 
 	return 0;
 }

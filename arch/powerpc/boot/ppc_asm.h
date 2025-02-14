@@ -2,7 +2,7 @@
 #define _PPC64_PPC_ASM_H
 /*
  *
- * Definitions used by various bits of low-level assembly code on PowerPC.
+* Definitions used by various bits of low-level assembly code on PowerPC.
  *
  * Copyright (C) 1995-1999 Gary Thomas, Paul Mackerras, Cort Dougan.
  *

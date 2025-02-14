@@ -61,11 +61,11 @@
  * @control:		cached control word
  * @xfer:		default spi transfer
  * @msg:		default spi message
- * @freq_xfer:		tuning word spi transfer
- * @freq_msg:		tuning word spi message
+* @freq_xfer:		tuning word spi transfer
+* @freq_msg:		tuning word spi message
  * @lock:		protect sensor state
  * @data:		spi transmit buffer
- * @freq_data:		tuning word spi transmit buffer
+* @freq_data:		tuning word spi transmit buffer
  */
 
 struct ad9834_state {
@@ -76,8 +76,8 @@ struct ad9834_state {
 	unsigned short			devid;
 	struct spi_transfer		xfer;
 	struct spi_message		msg;
-	struct spi_transfer		freq_xfer[2];
-	struct spi_message		freq_msg;
+struct spi_transfer		freq_xfer[2];
+struct spi_message		freq_msg;
 	struct mutex                    lock;   /* protect sensor state */
 
 	/*
@@ -85,7 +85,7 @@ struct ad9834_state {
 	 * transfer buffers to live in their own cache lines.
 	 */
 	__be16				data ____cacheline_aligned;
-	__be16				freq_data[2];
+__be16				freq_data[2];
 };
 
 /**
@@ -101,10 +101,10 @@ enum ad9834_supported_device_ids {
 
 static unsigned int ad9834_calc_freqreg(unsigned long mclk, unsigned long fout)
 {
-	unsigned long long freqreg = (u64)fout * (u64)BIT(AD9834_FREQ_BITS);
+unsigned long long freqreg = (u64)fout * (u64)BIT(AD9834_FREQ_BITS);
 
-	do_div(freqreg, mclk);
-	return freqreg;
+do_div(freqreg, mclk);
+return freqreg;
 }
 
 static int ad9834_write_frequency(struct ad9834_state *st,
@@ -115,15 +115,15 @@ static int ad9834_write_frequency(struct ad9834_state *st,
 	if (fout > (st->mclk / 2))
 		return -EINVAL;
 
-	regval = ad9834_calc_freqreg(st->mclk, fout);
+regval = ad9834_calc_freqreg(st->mclk, fout);
 
-	st->freq_data[0] = cpu_to_be16(addr | (regval &
-				       RES_MASK(AD9834_FREQ_BITS / 2)));
-	st->freq_data[1] = cpu_to_be16(addr | ((regval >>
-				       (AD9834_FREQ_BITS / 2)) &
-				       RES_MASK(AD9834_FREQ_BITS / 2)));
+st->freq_data[0] = cpu_to_be16(addr | (regval &
+RES_MASK(AD9834_FREQ_BITS / 2)));
+st->freq_data[1] = cpu_to_be16(addr | ((regval >>
+(AD9834_FREQ_BITS / 2)) &
+RES_MASK(AD9834_FREQ_BITS / 2)));
 
-	return spi_sync(st->spi, &st->freq_msg);
+return spi_sync(st->spi, &st->freq_msg);
 }
 
 static int ad9834_write_phase(struct ad9834_state *st,
@@ -153,9 +153,9 @@ static ssize_t ad9834_write(struct device *dev,
 
 	mutex_lock(&st->lock);
 	switch ((u32)this_attr->address) {
-	case AD9834_REG_FREQ0:
-	case AD9834_REG_FREQ1:
-		ret = ad9834_write_frequency(st, this_attr->address, val);
+case AD9834_REG_FREQ0:
+case AD9834_REG_FREQ1:
+ret = ad9834_write_frequency(st, this_attr->address, val);
 		break;
 	case AD9834_REG_PHASE0:
 	case AD9834_REG_PHASE1:
@@ -338,36 +338,36 @@ static IIO_DEV_ATTR_OUT_WAVETYPE(0, 0, ad9834_store_wavetype, 0);
 static IIO_DEV_ATTR_OUT_WAVETYPE(0, 1, ad9834_store_wavetype, 1);
 
 static struct attribute *ad9834_attributes[] = {
-	&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
-	&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
-	&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_pincontrol_en.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out1_enable.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out0_wavetype.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out1_wavetype.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out0_wavetype_available.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out1_wavetype_available.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
+&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
+&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_pincontrol_en.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out1_enable.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out0_wavetype.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out1_wavetype.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out0_wavetype_available.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out1_wavetype_available.dev_attr.attr,
 	NULL,
 };
 
 static struct attribute *ad9833_attributes[] = {
-	&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
-	&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
-	&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out0_wavetype.dev_attr.attr,
-	&iio_dev_attr_out_altvoltage0_out0_wavetype_available.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequency0.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequency1.dev_attr.attr,
+&iio_const_attr_out_altvoltage0_frequency_scale.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase0.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phase1.dev_attr.attr,
+&iio_const_attr_out_altvoltage0_phase_scale.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_frequencysymbol.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_phasesymbol.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out_enable.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out0_wavetype.dev_attr.attr,
+&iio_dev_attr_out_altvoltage0_out0_wavetype_available.dev_attr.attr,
 	NULL,
 };
 
@@ -402,13 +402,13 @@ static int ad9834_probe(struct spi_device *spi)
 		return -ENODEV;
 	}
 
-	reg = devm_regulator_get(&spi->dev, "avdd");
+reg = devm_regulator_get(&spi->dev, "avdd");
 	if (IS_ERR(reg))
 		return PTR_ERR(reg);
 
 	ret = regulator_enable(reg);
 	if (ret) {
-		dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
+dev_err(&spi->dev, "Failed to enable specified AVDD supply\n");
 		return ret;
 	}
 
@@ -445,15 +445,15 @@ static int ad9834_probe(struct spi_device *spi)
 	spi_message_init(&st->msg);
 	spi_message_add_tail(&st->xfer, &st->msg);
 
-	st->freq_xfer[0].tx_buf = &st->freq_data[0];
-	st->freq_xfer[0].len = 2;
-	st->freq_xfer[0].cs_change = 1;
-	st->freq_xfer[1].tx_buf = &st->freq_data[1];
-	st->freq_xfer[1].len = 2;
+st->freq_xfer[0].tx_buf = &st->freq_data[0];
+st->freq_xfer[0].len = 2;
+st->freq_xfer[0].cs_change = 1;
+st->freq_xfer[1].tx_buf = &st->freq_data[1];
+st->freq_xfer[1].len = 2;
 
-	spi_message_init(&st->freq_msg);
-	spi_message_add_tail(&st->freq_xfer[0], &st->freq_msg);
-	spi_message_add_tail(&st->freq_xfer[1], &st->freq_msg);
+spi_message_init(&st->freq_msg);
+spi_message_add_tail(&st->freq_xfer[0], &st->freq_msg);
+spi_message_add_tail(&st->freq_xfer[1], &st->freq_msg);
 
 	st->control = AD9834_B28 | AD9834_RESET;
 
@@ -470,11 +470,11 @@ static int ad9834_probe(struct spi_device *spi)
 		goto error_disable_reg;
 	}
 
-	ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, pdata->freq0);
+ret = ad9834_write_frequency(st, AD9834_REG_FREQ0, pdata->freq0);
 	if (ret)
 		goto error_disable_reg;
 
-	ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, pdata->freq1);
+ret = ad9834_write_frequency(st, AD9834_REG_FREQ1, pdata->freq1);
 	if (ret)
 		goto error_disable_reg;
 

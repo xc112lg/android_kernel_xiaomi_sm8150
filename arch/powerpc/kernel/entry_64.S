@@ -1,16 +1,16 @@
 /*
- *  PowerPC version 
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *  Rewritten by Cort Dougan (cort@cs.nmt.edu) for PReP
  *    Copyright (C) 1996 Cort Dougan <cort@cs.nmt.edu>
- *  Adapted for Power Macintosh by Paul Mackerras.
+*  Adapted for Power Macintosh by Paul Mackerras.
  *  Low-level exception handlers and MMU support
  *  rewritten by Paul Mackerras.
  *    Copyright (C) 1996 Paul Mackerras.
  *  MPC8xx modifications Copyright (C) 1997 Dan Malek (dmalek@jlc.net).
  *
  *  This file contains the system call entry code, context switch
- *  code, and exception/interrupt return code for PowerPC.
+*  code, and exception/interrupt return code for PowerPC.
  *
  *  This program is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU General Public License
@@ -576,7 +576,7 @@ flush_count_cache:
  * the fork code also.
  *
  * The code which creates the new task context is in 'copy_thread'
- * in arch/powerpc/kernel/process.c 
+* in arch/powerpc/kernel/process.c
  */
 	.align	7
 _GLOBAL(_switch)
@@ -605,7 +605,7 @@ _GLOBAL(_switch)
 	 *
 	 * Uncacheable stores in the case of involuntary preemption must
 	 * be taken care of. The smp_mb__before_spin_lock() in __schedule()
-	 * is implemented as hwsync on powerpc, which orders MMIO too. So
+* is implemented as hwsync on powerpc, which orders MMIO too. So
 	 * long as there is an hwsync in the context switch path, it will
 	 * be executed on the source CPU after the task has performed
 	 * all MMIO ops on that CPU, and on the destination CPU before the
@@ -674,7 +674,7 @@ END_MMU_FTR_SECTION_IFSET(MMU_FTR_1T_SEGMENT)
 
 	isync
 	slbie	r6
-	slbie	r6		/* Workaround POWER5 < DD2.1 issue */
+slbie	r6		/* Workaround POWER5 < DD2.1 issue */
 	slbmte	r7,r0
 	isync
 2:
@@ -909,7 +909,7 @@ restore:
 	/*
 	 * Clear the reservation. If we know the CPU tracks the address of
 	 * the reservation then we can potentially save some cycles and use
-	 * a larx. On POWER6 and POWER7 this is significantly faster.
+* a larx. On POWER6 and POWER7 this is significantly faster.
 	 */
 BEGIN_FTR_SECTION
 	stdcx.	r0,0,r1		/* to clear the reservation */

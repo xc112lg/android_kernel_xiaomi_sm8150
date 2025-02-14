@@ -41,10 +41,10 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			model = "PowerPC,apm8018x";
+model = "PowerPC,apm8018x";
 			reg = <0x00000000>;
-			clock-frequency = <300000000>; /* Filled in by U-Boot */
-			timebase-frequency = <300000000>; /* Filled in by U-Boot */
+clock-frequency = <300000000>; /* Filled in by U-Boot */
+timebase-frequency = <300000000>; /* Filled in by U-Boot */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <16384>; /* 16 kB */
@@ -110,7 +110,7 @@
 		#address-cells = <1>;
 		#size-cells = <1>;
 		ranges;
-		clock-frequency = <0>; /* Filled in by U-Boot */
+clock-frequency = <0>; /* Filled in by U-Boot */
 
 		SDRAM0: memory-controller {
 			compatible = "ibm,sdram-apm8018x";
@@ -141,7 +141,7 @@
 				  0x60000000 0x60000000 0x10000000
 				  0xFE000000 0xFE000000 0x00010000>;
 			dcr-reg = <0x100 0x020>;
-			clock-frequency = <300000000>; /* Filled in by U-Boot */
+clock-frequency = <300000000>; /* Filled in by U-Boot */
 
 			RGMII0: emac-rgmii@400a2000 {
 				compatible = "ibm,rgmii";

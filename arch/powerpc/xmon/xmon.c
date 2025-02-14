@@ -1,5 +1,5 @@
 /*
- * Routines providing a simple monitor for use on the PowerMac.
+* Routines providing a simple monitor for use on the PowerMac.
  *
  * Copyright (C) 1996-2005 Paul Mackerras.
  * Copyright (C) 2001 PPC64 Team, IBM Corp
@@ -1109,8 +1109,8 @@ static void bootcmds(void)
 	else if (cmd == 'h')
 		ppc_md.halt();
 	else if (cmd == 'p')
-		if (pm_power_off)
-			pm_power_off();
+if (pm_power_off)
+pm_power_off();
 }
 
 static int cpu_cmd(void)
@@ -1256,7 +1256,7 @@ static char *breakpoint_help_string =
     "b <addr> [cnt]   set breakpoint at given instr addr\n"
     "bc               clear all breakpoints\n"
     "bc <n/addr>      clear breakpoint number n or at addr\n"
-    "bi <addr> [cnt]  set hardware instr breakpoint (POWER8 only)\n"
+"bi <addr> [cnt]  set hardware instr breakpoint (POWER8 only)\n"
     "bd <addr> [cnt]  set hardware data breakpoint\n"
     "";
 
@@ -2714,7 +2714,7 @@ generic_inst_dump(unsigned long adr, long count, int praddr,
 static int
 ppc_inst_dump(unsigned long adr, long count, int praddr)
 {
-	return generic_inst_dump(adr, count, praddr, print_insn_powerpc);
+return generic_inst_dump(adr, count, praddr, print_insn_powerpc);
 }
 
 void
@@ -3541,7 +3541,7 @@ DEFINE_SIMPLE_ATTRIBUTE(xmon_dbgfs_ops, xmon_dbgfs_get,
 
 static int __init setup_xmon_dbgfs(void)
 {
-	debugfs_create_file("xmon", 0600, powerpc_debugfs_root, NULL,
+debugfs_create_file("xmon", 0600, powerpc_debugfs_root, NULL,
 				&xmon_dbgfs_ops);
 	return 0;
 }

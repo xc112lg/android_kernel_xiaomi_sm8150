@@ -67,16 +67,16 @@ static acpi_status intel_pmic_power_handler(u32 function,
 	if (function == ACPI_WRITE && !(*value64 == 0 || *value64 == 1))
 		return AE_BAD_PARAMETER;
 
-	result = pmic_get_reg_bit(address, d->power_table,
-				  d->power_table_count, &reg, &bit);
+result = pmic_get_reg_bit(address, d->power_table,
+d->power_table_count, &reg, &bit);
 	if (result == -ENOENT)
 		return AE_BAD_PARAMETER;
 
 	mutex_lock(&opregion->lock);
 
 	result = function == ACPI_READ ?
-		d->get_power(regmap, reg, bit, value64) :
-		d->update_power(regmap, reg, bit, *value64 == 1);
+d->get_power(regmap, reg, bit, value64) :
+d->update_power(regmap, reg, bit, *value64 == 1);
 
 	mutex_unlock(&opregion->lock);
 
@@ -281,8 +281,8 @@ int intel_pmic_install_opregion_handler(struct device *dev, acpi_handle handle,
 	opregion->lpat_table = acpi_lpat_get_conversion_table(handle);
 
 	status = acpi_install_address_space_handler(handle,
-						    PMIC_POWER_OPREGION_ID,
-						    intel_pmic_power_handler,
+PMIC_POWER_OPREGION_ID,
+intel_pmic_power_handler,
 						    NULL, opregion);
 	if (ACPI_FAILURE(status)) {
 		ret = -ENODEV;
@@ -294,10 +294,10 @@ int intel_pmic_install_opregion_handler(struct device *dev, acpi_handle handle,
 						    intel_pmic_thermal_handler,
 						    NULL, opregion);
 	if (ACPI_FAILURE(status)) {
-		acpi_remove_address_space_handler(handle, PMIC_POWER_OPREGION_ID,
-						  intel_pmic_power_handler);
+acpi_remove_address_space_handler(handle, PMIC_POWER_OPREGION_ID,
+intel_pmic_power_handler);
 		ret = -ENODEV;
-		goto out_remove_power_handler;
+goto out_remove_power_handler;
 	}
 
 	status = acpi_install_address_space_handler(handle,
@@ -316,8 +316,8 @@ out_remove_thermal_handler:
 					  intel_pmic_thermal_handler);
 
 out_remove_power_handler:
-	acpi_remove_address_space_handler(handle, PMIC_POWER_OPREGION_ID,
-					  intel_pmic_power_handler);
+acpi_remove_address_space_handler(handle, PMIC_POWER_OPREGION_ID,
+intel_pmic_power_handler);
 
 out_error:
 	acpi_lpat_free_conversion_table(opregion->lpat_table);

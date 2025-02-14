@@ -1,5 +1,5 @@
 /*
- * Common powerpc suspend code for 32 and 64 bits
+* Common powerpc suspend code for 32 and 64 bits
  *
  * Copyright 2007	Johannes Berg <johannes@sipsolutions.net>
  *

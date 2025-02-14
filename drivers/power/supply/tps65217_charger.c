@@ -42,7 +42,7 @@
 struct tps65217_charger {
 	struct tps65217 *tps;
 	struct device *dev;
-	struct power_supply *psy;
+struct power_supply *psy;
 
 	int	online;
 	int	prev_online;
@@ -51,7 +51,7 @@ struct tps65217_charger {
 };
 
 static enum power_supply_property tps65217_charger_props[] = {
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static int tps65217_config_charger(struct tps65217_charger *charger)
@@ -114,12 +114,12 @@ static int tps65217_enable_charging(struct tps65217_charger *charger)
 }
 
 static int tps65217_charger_get_property(struct power_supply *psy,
-					 enum power_supply_property psp,
-					 union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct tps65217_charger *charger = power_supply_get_drvdata(psy);
+struct tps65217_charger *charger = power_supply_get_drvdata(psy);
 
-	if (psp == POWER_SUPPLY_PROP_ONLINE) {
+if (psp == POWER_SUPPLY_PROP_ONLINE) {
 		val->intval = charger->online;
 		return 0;
 	}
@@ -155,7 +155,7 @@ static irqreturn_t tps65217_charger_irq(int irq, void *dev)
 	}
 
 	if (charger->prev_online != charger->online)
-		power_supply_changed(charger->psy);
+power_supply_changed(charger->psy);
 
 	ret = tps65217_reg_read(charger->tps, TPS65217_REG_CHGCONFIG0, &val);
 	if (ret < 0) {
@@ -187,7 +187,7 @@ static int tps65217_charger_poll_task(void *data)
 
 static const struct power_supply_desc tps65217_charger_desc = {
 	.name			= "tps65217-charger",
-	.type			= POWER_SUPPLY_TYPE_MAINS,
+.type			= POWER_SUPPLY_TYPE_MAINS,
 	.get_property		= tps65217_charger_get_property,
 	.properties		= tps65217_charger_props,
 	.num_properties		= ARRAY_SIZE(tps65217_charger_props),
@@ -197,7 +197,7 @@ static int tps65217_charger_probe(struct platform_device *pdev)
 {
 	struct tps65217 *tps = dev_get_drvdata(pdev->dev.parent);
 	struct tps65217_charger *charger;
-	struct power_supply_config cfg = {};
+struct power_supply_config cfg = {};
 	struct task_struct *poll_task;
 	int irq[NUM_CHARGER_IRQS];
 	int ret;
@@ -214,11 +214,11 @@ static int tps65217_charger_probe(struct platform_device *pdev)
 	cfg.of_node = pdev->dev.of_node;
 	cfg.drv_data = charger;
 
-	charger->psy = devm_power_supply_register(&pdev->dev,
+charger->psy = devm_power_supply_register(&pdev->dev,
 						  &tps65217_charger_desc,
 						  &cfg);
 	if (IS_ERR(charger->psy)) {
-		dev_err(&pdev->dev, "failed: power supply register\n");
+dev_err(&pdev->dev, "failed: power supply register\n");
 		return PTR_ERR(charger->psy);
 	}
 

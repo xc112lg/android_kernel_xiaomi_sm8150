@@ -11,7 +11,7 @@
  *  Derived from arch/ppc/mm/init.c:
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
- *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
+*  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
  *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
  *    Copyright (C) 1996 Paul Mackerras
  *
@@ -102,7 +102,7 @@ unsigned long p_block_mapped(phys_addr_t pa)
 
 /*
  * Set up a variable-size TLB entry (tlbcam). The parameters are not checked;
- * in particular size must be a power of 4 between 4k and the max supported by
+* in particular size must be a power of 4 between 4k and the max supported by
  * an implementation; max may further be limited by what can be represented in
  * an unsigned long (for example, 32-bit implementations cannot support a 4GB
  * size).

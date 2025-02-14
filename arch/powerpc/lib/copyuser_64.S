@@ -23,7 +23,7 @@ _GLOBAL_TOC(__copy_tofrom_user)
 BEGIN_FTR_SECTION
 	nop
 FTR_SECTION_ELSE
-	b	__copy_tofrom_user_power7
+b	__copy_tofrom_user_power7
 ALT_FTR_SECTION_END_IFCLR(CPU_FTR_VMX_COPY)
 _GLOBAL(__copy_tofrom_user_base)
 	/* first check for a whole page copy on a page boundary */
@@ -45,7 +45,7 @@ _GLOBAL(__copy_tofrom_user_base)
  * CPU_FTR_UNALIGNED_LD_STD bit set and the CPU_FTR_CP_USE_DCBTZ bit
  * cleared.
  * At the time of writing the only CPU that has this combination of bits
- * set is Power6.
+* set is Power6.
  */
 BEGIN_FTR_SECTION
 	nop
@@ -427,8 +427,8 @@ END_FTR_SECTION_IFCLR(CPU_FTR_UNALIGNED_LD_STD)
 	EX_TABLE(89b,189b)
 
 /*
- * Routine to copy a whole page of data, optimized for POWER4.
- * On POWER4 it is more than 50% faster than the simple loop
+* Routine to copy a whole page of data, optimized for POWER4.
+* On POWER4 it is more than 50% faster than the simple loop
  * above (following the .Ldst_aligned label).
  */
 .Lcopy_page_4K:

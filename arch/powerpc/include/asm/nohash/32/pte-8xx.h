@@ -4,7 +4,7 @@
 #ifdef __KERNEL__
 
 /*
- * The PowerPC MPC8xx uses a TLB with hardware assisted, software tablewalk.
+* The PowerPC MPC8xx uses a TLB with hardware assisted, software tablewalk.
  * We also use the two level tables, but we can put the real bits in them
  * needed for the TLB and tablewalk.  These definitions require Mx_CTR.PPM = 0,
  * Mx_CTR.PPCS = 0, and MD_CTR.TWAM = 1.  The level 2 descriptor has

@@ -44,8 +44,8 @@
 #define BQ24735_DEVICE_ID		0xff
 
 struct bq24735 {
-	struct power_supply		*charger;
-	struct power_supply_desc	charger_desc;
+struct power_supply		*charger;
+struct power_supply_desc	charger_desc;
 	struct i2c_client		*client;
 	struct bq24735_platform		*pdata;
 	struct mutex			lock;
@@ -57,19 +57,19 @@ struct bq24735 {
 
 static inline struct bq24735 *to_bq24735(struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static enum power_supply_property bq24735_charger_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_ONLINE,
 };
 
 static int bq24735_charger_property_is_writeable(struct power_supply *psy,
-						 enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		return 1;
 	default:
 		break;
@@ -127,14 +127,14 @@ static int bq24735_config_charger(struct bq24735 *charger)
 		}
 	}
 
-	if (pdata->charge_voltage) {
-		value = pdata->charge_voltage & BQ24735_CHARGE_VOLTAGE_MASK;
+if (pdata->charge_voltage) {
+value = pdata->charge_voltage & BQ24735_CHARGE_VOLTAGE_MASK;
 
 		ret = bq24735_write_word(charger->client,
-					 BQ24735_CHARGE_VOLTAGE, value);
+BQ24735_CHARGE_VOLTAGE, value);
 		if (ret < 0) {
 			dev_err(&charger->client->dev,
-				"Failed to write charger voltage : %d\n",
+"Failed to write charger voltage : %d\n",
 				ret);
 			return ret;
 		}
@@ -226,12 +226,12 @@ static void bq24735_update(struct bq24735 *charger)
 
 	mutex_unlock(&charger->lock);
 
-	power_supply_changed(charger->charger);
+power_supply_changed(charger->charger);
 }
 
 static irqreturn_t bq24735_charger_isr(int irq, void *devid)
 {
-	struct power_supply *psy = devid;
+struct power_supply *psy = devid;
 	struct bq24735 *charger = to_bq24735(psy);
 
 	bq24735_update(charger);
@@ -250,25 +250,25 @@ static void bq24735_poll(struct work_struct *work)
 }
 
 static int bq24735_charger_get_property(struct power_supply *psy,
-					enum power_supply_property psp,
-					union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct bq24735 *charger = to_bq24735(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = bq24735_charger_is_present(charger) ? 1 : 0;
 		break;
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		switch (bq24735_charger_is_charging(charger)) {
 		case 1:
-			val->intval = POWER_SUPPLY_STATUS_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_CHARGING;
 			break;
 		case 0:
-			val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
+val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
 			break;
 		default:
-			val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
+val->intval = POWER_SUPPLY_STATUS_UNKNOWN;
 			break;
 		}
 		break;
@@ -280,16 +280,16 @@ static int bq24735_charger_get_property(struct power_supply *psy,
 }
 
 static int bq24735_charger_set_property(struct power_supply *psy,
-					enum power_supply_property psp,
-					const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
 	struct bq24735 *charger = to_bq24735(psy);
 	int ret;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		switch (val->intval) {
-		case POWER_SUPPLY_STATUS_CHARGING:
+case POWER_SUPPLY_STATUS_CHARGING:
 			mutex_lock(&charger->lock);
 			charger->charging = true;
 			ret = bq24735_enable_charging(charger);
@@ -297,8 +297,8 @@ static int bq24735_charger_set_property(struct power_supply *psy,
 			if (ret)
 				return ret;
 			break;
-		case POWER_SUPPLY_STATUS_DISCHARGING:
-		case POWER_SUPPLY_STATUS_NOT_CHARGING:
+case POWER_SUPPLY_STATUS_DISCHARGING:
+case POWER_SUPPLY_STATUS_NOT_CHARGING:
 			mutex_lock(&charger->lock);
 			charger->charging = false;
 			ret = bq24735_disable_charging(charger);
@@ -309,7 +309,7 @@ static int bq24735_charger_set_property(struct power_supply *psy,
 		default:
 			return -EINVAL;
 		}
-		power_supply_changed(psy);
+power_supply_changed(psy);
 		break;
 	default:
 		return -EPERM;
@@ -336,9 +336,9 @@ static struct bq24735_platform *bq24735_parse_dt_data(struct i2c_client *client)
 	if (!ret)
 		pdata->charge_current = val;
 
-	ret = of_property_read_u32(np, "ti,charge-voltage", &val);
+ret = of_property_read_u32(np, "ti,charge-voltage", &val);
 	if (!ret)
-		pdata->charge_voltage = val;
+pdata->charge_voltage = val;
 
 	ret = of_property_read_u32(np, "ti,input-current", &val);
 	if (!ret)
@@ -354,8 +354,8 @@ static int bq24735_charger_probe(struct i2c_client *client,
 {
 	int ret;
 	struct bq24735 *charger;
-	struct power_supply_desc *supply_desc;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_desc *supply_desc;
+struct power_supply_config psy_cfg = {};
 	char *name;
 
 	charger = devm_kzalloc(&client->dev, sizeof(*charger), GFP_KERNEL);
@@ -390,7 +390,7 @@ static int bq24735_charger_probe(struct i2c_client *client,
 	supply_desc = &charger->charger_desc;
 
 	supply_desc->name = name;
-	supply_desc->type = POWER_SUPPLY_TYPE_MAINS;
+supply_desc->type = POWER_SUPPLY_TYPE_MAINS;
 	supply_desc->properties = bq24735_charger_properties;
 	supply_desc->num_properties = ARRAY_SIZE(bq24735_charger_properties);
 	supply_desc->get_property = bq24735_charger_get_property;
@@ -443,11 +443,11 @@ static int bq24735_charger_probe(struct i2c_client *client,
 		}
 	}
 
-	charger->charger = devm_power_supply_register(&client->dev, supply_desc,
+charger->charger = devm_power_supply_register(&client->dev, supply_desc,
 						      &psy_cfg);
 	if (IS_ERR(charger->charger)) {
 		ret = PTR_ERR(charger->charger);
-		dev_err(&client->dev, "Failed to register power supply: %d\n",
+dev_err(&client->dev, "Failed to register power supply: %d\n",
 			ret);
 		return ret;
 	}

@@ -1,5 +1,5 @@
 /*
- *  arch/powerpc/kernel/mpic.c
+*  arch/powerpc/kernel/mpic.c
  *
  *  Driver for interrupt controllers following the OpenPIC standard, the
  *  common implementation being IBM's MPIC. This driver also can deal
@@ -75,7 +75,7 @@ static u32 mpic_infos[][MPIC_IDX_END] = {
 		MPIC_GREG_IPI_VECTOR_PRI_0,
 		MPIC_GREG_IPI_STRIDE,
 		MPIC_GREG_SPURIOUS,
-		MPIC_GREG_TIMER_FREQ,
+MPIC_GREG_TIMER_FREQ,
 
 		MPIC_TIMER_BASE,
 		MPIC_TIMER_STRIDE,
@@ -114,7 +114,7 @@ static u32 mpic_infos[][MPIC_IDX_END] = {
 		TSI108_GREG_IPI_VECTOR_PRI_0,
 		TSI108_GREG_IPI_STRIDE,
 		TSI108_GREG_SPURIOUS,
-		TSI108_GREG_TIMER_FREQ,
+TSI108_GREG_TIMER_FREQ,
 
 		TSI108_TIMER_BASE,
 		TSI108_TIMER_STRIDE,
@@ -1104,7 +1104,7 @@ static int mpic_host_xlate(struct irq_domain *h, struct device_node *ct,
 		 * First two cells are as usual.  Third specifies
 		 * an "interrupt type".  Fourth is type-specific data.
 		 *
-		 * See Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
+* See Documentation/devicetree/bindings/powerpc/fsl/mpic.txt
 		 */
 		switch (intspec[2]) {
 		case 0:
@@ -1151,7 +1151,7 @@ static int mpic_host_xlate(struct irq_domain *h, struct device_node *ct,
 		 * is the level/edge bit (the only sense bit exposed by Apple),
 		 * as their bit 1 means something else.
 		 */
-		if (machine_is(powermac))
+if (machine_is(powermac))
 			mask = 0x1;
 		*out_flags = map_mpic_senses[intspec[1] & mask];
 	} else

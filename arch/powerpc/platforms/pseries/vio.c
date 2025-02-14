@@ -1,5 +1,5 @@
 /*
- * IBM PowerPC Virtual I/O Infrastructure Support.
+* IBM PowerPC Virtual I/O Infrastructure Support.
  *
  *    Copyright (c) 2003,2008 IBM Corp.
  *     Dave Engebretsen engebret@us.ibm.com

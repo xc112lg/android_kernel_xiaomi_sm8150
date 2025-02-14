@@ -45,7 +45,7 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS12",
 		.sname		= "smps1-in",
-		.vsel_addr	= PALMAS_SMPS12_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS12_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS12_CTRL,
 		.tstep_addr	= PALMAS_SMPS12_TSTEP,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS12,
@@ -53,7 +53,7 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS123",
 		.sname		= "smps1-in",
-		.vsel_addr	= PALMAS_SMPS12_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS12_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS12_CTRL,
 		.tstep_addr	= PALMAS_SMPS12_TSTEP,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS12,
@@ -61,14 +61,14 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS3",
 		.sname		= "smps3-in",
-		.vsel_addr	= PALMAS_SMPS3_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS3_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS3_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS3,
 	},
 	{
 		.name		= "SMPS45",
 		.sname		= "smps4-in",
-		.vsel_addr	= PALMAS_SMPS45_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS45_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS45_CTRL,
 		.tstep_addr	= PALMAS_SMPS45_TSTEP,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS45,
@@ -76,7 +76,7 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS457",
 		.sname		= "smps4-in",
-		.vsel_addr	= PALMAS_SMPS45_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS45_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS45_CTRL,
 		.tstep_addr	= PALMAS_SMPS45_TSTEP,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS45,
@@ -84,7 +84,7 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS6",
 		.sname		= "smps6-in",
-		.vsel_addr	= PALMAS_SMPS6_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS6_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS6_CTRL,
 		.tstep_addr	= PALMAS_SMPS6_TSTEP,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS6,
@@ -92,14 +92,14 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS7",
 		.sname		= "smps7-in",
-		.vsel_addr	= PALMAS_SMPS7_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS7_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS7_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS7,
 	},
 	{
 		.name		= "SMPS8",
 		.sname		= "smps8-in",
-		.vsel_addr	= PALMAS_SMPS8_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS8_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS8_CTRL,
 		.tstep_addr	= PALMAS_SMPS8_TSTEP,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS8,
@@ -107,7 +107,7 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "SMPS9",
 		.sname		= "smps9-in",
-		.vsel_addr	= PALMAS_SMPS9_VOLTAGE,
+.vsel_addr	= PALMAS_SMPS9_VOLTAGE,
 		.ctrl_addr	= PALMAS_SMPS9_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_SMPS9,
 	},
@@ -126,77 +126,77 @@ static struct palmas_regs_info palmas_generic_regs_info[] = {
 	{
 		.name		= "LDO1",
 		.sname		= "ldo1-in",
-		.vsel_addr	= PALMAS_LDO1_VOLTAGE,
+.vsel_addr	= PALMAS_LDO1_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO1_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO1,
 	},
 	{
 		.name		= "LDO2",
 		.sname		= "ldo2-in",
-		.vsel_addr	= PALMAS_LDO2_VOLTAGE,
+.vsel_addr	= PALMAS_LDO2_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO2_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO2,
 	},
 	{
 		.name		= "LDO3",
 		.sname		= "ldo3-in",
-		.vsel_addr	= PALMAS_LDO3_VOLTAGE,
+.vsel_addr	= PALMAS_LDO3_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO3_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO3,
 	},
 	{
 		.name		= "LDO4",
 		.sname		= "ldo4-in",
-		.vsel_addr	= PALMAS_LDO4_VOLTAGE,
+.vsel_addr	= PALMAS_LDO4_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO4_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO4,
 	},
 	{
 		.name		= "LDO5",
 		.sname		= "ldo5-in",
-		.vsel_addr	= PALMAS_LDO5_VOLTAGE,
+.vsel_addr	= PALMAS_LDO5_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO5_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO5,
 	},
 	{
 		.name		= "LDO6",
 		.sname		= "ldo6-in",
-		.vsel_addr	= PALMAS_LDO6_VOLTAGE,
+.vsel_addr	= PALMAS_LDO6_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO6_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO6,
 	},
 	{
 		.name		= "LDO7",
 		.sname		= "ldo7-in",
-		.vsel_addr	= PALMAS_LDO7_VOLTAGE,
+.vsel_addr	= PALMAS_LDO7_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO7_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO7,
 	},
 	{
 		.name		= "LDO8",
 		.sname		= "ldo8-in",
-		.vsel_addr	= PALMAS_LDO8_VOLTAGE,
+.vsel_addr	= PALMAS_LDO8_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO8_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO8,
 	},
 	{
 		.name		= "LDO9",
 		.sname		= "ldo9-in",
-		.vsel_addr	= PALMAS_LDO9_VOLTAGE,
+.vsel_addr	= PALMAS_LDO9_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDO9_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDO9,
 	},
 	{
 		.name		= "LDOLN",
 		.sname		= "ldoln-in",
-		.vsel_addr	= PALMAS_LDOLN_VOLTAGE,
+.vsel_addr	= PALMAS_LDOLN_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDOLN_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDOLN,
 	},
 	{
 		.name		= "LDOUSB",
 		.sname		= "ldousb-in",
-		.vsel_addr	= PALMAS_LDOUSB_VOLTAGE,
+.vsel_addr	= PALMAS_LDOUSB_VOLTAGE,
 		.ctrl_addr	= PALMAS_LDOUSB_CTRL,
 		.sleep_id	= PALMAS_EXTERNAL_REQSTR_ID_LDOUSB,
 	},
@@ -231,77 +231,77 @@ static struct palmas_regs_info tps65917_regs_info[] = {
 	{
 		.name		= "SMPS1",
 		.sname		= "smps1-in",
-		.vsel_addr	= TPS65917_SMPS1_VOLTAGE,
+.vsel_addr	= TPS65917_SMPS1_VOLTAGE,
 		.ctrl_addr	= TPS65917_SMPS1_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_SMPS1,
 	},
 	{
 		.name		= "SMPS2",
 		.sname		= "smps2-in",
-		.vsel_addr	= TPS65917_SMPS2_VOLTAGE,
+.vsel_addr	= TPS65917_SMPS2_VOLTAGE,
 		.ctrl_addr	= TPS65917_SMPS2_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_SMPS2,
 	},
 	{
 		.name		= "SMPS3",
 		.sname		= "smps3-in",
-		.vsel_addr	= TPS65917_SMPS3_VOLTAGE,
+.vsel_addr	= TPS65917_SMPS3_VOLTAGE,
 		.ctrl_addr	= TPS65917_SMPS3_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_SMPS3,
 	},
 	{
 		.name		= "SMPS4",
 		.sname		= "smps4-in",
-		.vsel_addr	= TPS65917_SMPS4_VOLTAGE,
+.vsel_addr	= TPS65917_SMPS4_VOLTAGE,
 		.ctrl_addr	= TPS65917_SMPS4_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_SMPS4,
 	},
 	{
 		.name		= "SMPS5",
 		.sname		= "smps5-in",
-		.vsel_addr	= TPS65917_SMPS5_VOLTAGE,
+.vsel_addr	= TPS65917_SMPS5_VOLTAGE,
 		.ctrl_addr	= TPS65917_SMPS5_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_SMPS5,
 	},
 	{
 		.name		= "SMPS12",
 		.sname		= "smps1-in",
-		.vsel_addr	= TPS65917_SMPS1_VOLTAGE,
+.vsel_addr	= TPS65917_SMPS1_VOLTAGE,
 		.ctrl_addr	= TPS65917_SMPS1_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_SMPS12,
 	},
 	{
 		.name		= "LDO1",
 		.sname		= "ldo1-in",
-		.vsel_addr	= TPS65917_LDO1_VOLTAGE,
+.vsel_addr	= TPS65917_LDO1_VOLTAGE,
 		.ctrl_addr	= TPS65917_LDO1_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_LDO1,
 	},
 	{
 		.name		= "LDO2",
 		.sname		= "ldo2-in",
-		.vsel_addr	= TPS65917_LDO2_VOLTAGE,
+.vsel_addr	= TPS65917_LDO2_VOLTAGE,
 		.ctrl_addr	= TPS65917_LDO2_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_LDO2,
 	},
 	{
 		.name		= "LDO3",
 		.sname		= "ldo3-in",
-		.vsel_addr	= TPS65917_LDO3_VOLTAGE,
+.vsel_addr	= TPS65917_LDO3_VOLTAGE,
 		.ctrl_addr	= TPS65917_LDO3_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_LDO3,
 	},
 	{
 		.name		= "LDO4",
 		.sname		= "ldo4-in",
-		.vsel_addr	= TPS65917_LDO4_VOLTAGE,
+.vsel_addr	= TPS65917_LDO4_VOLTAGE,
 		.ctrl_addr	= TPS65917_LDO4_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_LDO4,
 	},
 	{
 		.name		= "LDO5",
 		.sname		= "ldo5-in",
-		.vsel_addr	= TPS65917_LDO5_VOLTAGE,
+.vsel_addr	= TPS65917_LDO5_VOLTAGE,
 		.ctrl_addr	= TPS65917_LDO5_CTRL,
 		.sleep_id	= TPS65917_EXTERNAL_REQSTR_ID_LDO5,
 	},
@@ -545,22 +545,22 @@ static const struct regulator_ops palmas_ops_smps = {
 	.disable		= regulator_disable_regmap,
 	.set_mode		= palmas_set_mode_smps,
 	.get_mode		= palmas_get_mode_smps,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= palmas_smps_set_ramp_delay,
 };
 
 static const struct regulator_ops palmas_ops_ext_control_smps = {
 	.set_mode		= palmas_set_mode_smps,
 	.get_mode		= palmas_get_mode_smps,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_ramp_delay		= palmas_smps_set_ramp_delay,
 };
 
@@ -568,10 +568,10 @@ static const struct regulator_ops palmas_ops_smps10 = {
 	.is_enabled		= regulator_is_enabled_regmap,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.set_bypass		= regulator_set_bypass_regmap,
 	.get_bypass		= regulator_get_bypass_regmap,
 };
@@ -582,20 +582,20 @@ static const struct regulator_ops tps65917_ops_smps = {
 	.disable		= regulator_disable_regmap,
 	.set_mode		= palmas_set_mode_smps,
 	.get_mode		= palmas_get_mode_smps,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 };
 
 static const struct regulator_ops tps65917_ops_ext_control_smps = {
 	.set_mode		= palmas_set_mode_smps,
 	.get_mode		= palmas_get_mode_smps,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear_range,
-	.map_voltage		= regulator_map_voltage_linear_range,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear_range,
+.map_voltage		= regulator_map_voltage_linear_range,
 };
 
 static int palmas_is_enabled_ldo(struct regulator_dev *dev)
@@ -617,29 +617,29 @@ static const struct regulator_ops palmas_ops_ldo = {
 	.is_enabled		= palmas_is_enabled_ldo,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 };
 
 static const struct regulator_ops palmas_ops_ldo9 = {
 	.is_enabled		= palmas_is_enabled_ldo,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 	.set_bypass		= regulator_set_bypass_regmap,
 	.get_bypass		= regulator_get_bypass_regmap,
 };
 
 static const struct regulator_ops palmas_ops_ext_control_ldo = {
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
 };
 
 static const struct regulator_ops palmas_ops_extreg = {
@@ -655,22 +655,22 @@ static const struct regulator_ops tps65917_ops_ldo = {
 	.is_enabled		= palmas_is_enabled_ldo,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 };
 
 static const struct regulator_ops tps65917_ops_ldo_1_2 = {
 	.is_enabled		= palmas_is_enabled_ldo,
 	.enable			= regulator_enable_regmap,
 	.disable		= regulator_disable_regmap,
-	.get_voltage_sel	= regulator_get_voltage_sel_regmap,
-	.set_voltage_sel	= regulator_set_voltage_sel_regmap,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= regulator_get_voltage_sel_regmap,
+.set_voltage_sel	= regulator_set_voltage_sel_regmap,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_bypass		= regulator_set_bypass_regmap,
 	.get_bypass		= regulator_get_bypass_regmap,
 };
@@ -874,20 +874,20 @@ static void palmas_enable_ldo8_track(struct palmas *palmas)
 	}
 	/*
 	 * When SMPS45 is set to off and LDO8 tracking is enabled, the LDO8
-	 * output is defined by the LDO8_VOLTAGE.VSEL register divided by two,
+* output is defined by the LDO8_VOLTAGE.VSEL register divided by two,
 	 * and can be set from 0.45 to 1.65 V.
 	 */
 	addr = rinfo->vsel_addr;
 	ret = palmas_ldo_read(palmas, addr, &reg);
 	if (ret) {
-		dev_err(palmas->dev, "Error in reading ldo8 voltage reg\n");
+dev_err(palmas->dev, "Error in reading ldo8 voltage reg\n");
 		return;
 	}
 
-	reg = (reg << 1) & PALMAS_LDO8_VOLTAGE_VSEL_MASK;
+reg = (reg << 1) & PALMAS_LDO8_VOLTAGE_VSEL_MASK;
 	ret = palmas_ldo_write(palmas, addr, reg);
 	if (ret < 0)
-		dev_err(palmas->dev, "Error in setting ldo8 voltage reg\n");
+dev_err(palmas->dev, "Error in setting ldo8 voltage reg\n");
 
 	return;
 }
@@ -919,11 +919,11 @@ static int palmas_ldo_registration(struct palmas_pmic *pmic,
 		desc = &pmic->desc[id];
 		desc->name = rinfo->name;
 		desc->id = id;
-		desc->type = REGULATOR_VOLTAGE;
+desc->type = REGULATOR_VOLTAGE;
 		desc->owner = THIS_MODULE;
 
 		if (id < PALMAS_REG_REGEN1) {
-			desc->n_voltages = PALMAS_LDO_NUM_VOLTAGES;
+desc->n_voltages = PALMAS_LDO_NUM_VOLTAGES;
 			if (reg_init && reg_init->roof_floor)
 				desc->ops = &palmas_ops_ext_control_ldo;
 			else
@@ -934,7 +934,7 @@ static int palmas_ldo_registration(struct palmas_pmic *pmic,
 			desc->enable_time = 500;
 			desc->vsel_reg = PALMAS_BASE_TO_REG(PALMAS_LDO_BASE,
 							    rinfo->vsel_addr);
-			desc->vsel_mask = PALMAS_LDO1_VOLTAGE_VSEL_MASK;
+desc->vsel_mask = PALMAS_LDO1_VOLTAGE_VSEL_MASK;
 			desc->enable_reg = PALMAS_BASE_TO_REG(PALMAS_LDO_BASE,
 							      rinfo->ctrl_addr);
 			desc->enable_mask = PALMAS_LDO1_CTRL_MODE_ACTIVE;
@@ -964,7 +964,7 @@ static int palmas_ldo_registration(struct palmas_pmic *pmic,
 			if (!ddata->has_regen3 && id == PALMAS_REG_REGEN3)
 				continue;
 
-			desc->n_voltages = 1;
+desc->n_voltages = 1;
 			if (reg_init && reg_init->roof_floor)
 				desc->ops = &palmas_ops_ext_control_extreg;
 			else
@@ -1040,11 +1040,11 @@ static int tps65917_ldo_registration(struct palmas_pmic *pmic,
 		desc = &pmic->desc[id];
 		desc->name = rinfo->name;
 		desc->id = id;
-		desc->type = REGULATOR_VOLTAGE;
+desc->type = REGULATOR_VOLTAGE;
 		desc->owner = THIS_MODULE;
 
 		if (id < TPS65917_REG_REGEN1) {
-			desc->n_voltages = PALMAS_LDO_NUM_VOLTAGES;
+desc->n_voltages = PALMAS_LDO_NUM_VOLTAGES;
 			if (reg_init && reg_init->roof_floor)
 				desc->ops = &palmas_ops_ext_control_ldo;
 			else
@@ -1055,7 +1055,7 @@ static int tps65917_ldo_registration(struct palmas_pmic *pmic,
 			desc->enable_time = 500;
 			desc->vsel_reg = PALMAS_BASE_TO_REG(PALMAS_LDO_BASE,
 							    rinfo->vsel_addr);
-			desc->vsel_mask = PALMAS_LDO1_VOLTAGE_VSEL_MASK;
+desc->vsel_mask = PALMAS_LDO1_VOLTAGE_VSEL_MASK;
 			desc->enable_reg = PALMAS_BASE_TO_REG(PALMAS_LDO_BASE,
 							      rinfo->ctrl_addr);
 			desc->enable_mask = PALMAS_LDO1_CTRL_MODE_ACTIVE;
@@ -1074,7 +1074,7 @@ static int tps65917_ldo_registration(struct palmas_pmic *pmic,
 						TPS65917_LDO1_CTRL_BYPASS_EN;
 			}
 		} else {
-			desc->n_voltages = 1;
+desc->n_voltages = 1;
 			if (reg_init && reg_init->roof_floor)
 				desc->ops = &palmas_ops_ext_control_extreg;
 			else
@@ -1208,7 +1208,7 @@ static int palmas_smps_registration(struct palmas_pmic *pmic,
 		switch (id) {
 		case PALMAS_REG_SMPS10_OUT1:
 		case PALMAS_REG_SMPS10_OUT2:
-			desc->n_voltages = PALMAS_SMPS10_NUM_VOLTAGES;
+desc->n_voltages = PALMAS_SMPS10_NUM_VOLTAGES;
 			desc->ops = &palmas_ops_smps10;
 			desc->vsel_reg = PALMAS_BASE_TO_REG(PALMAS_SMPS_BASE,
 							    PALMAS_SMPS10_CTRL);
@@ -1239,7 +1239,7 @@ static int palmas_smps_registration(struct palmas_pmic *pmic,
 			ret = palmas_smps_read(pmic->palmas, addr, &reg);
 			if (ret)
 				return ret;
-			if (reg & PALMAS_SMPS12_VOLTAGE_RANGE)
+if (reg & PALMAS_SMPS12_VOLTAGE_RANGE)
 				pmic->range[id] = 1;
 			if (pmic->range[id])
 				desc->linear_ranges = smps_high_ranges;
@@ -1250,10 +1250,10 @@ static int palmas_smps_registration(struct palmas_pmic *pmic,
 				desc->ops = &palmas_ops_ext_control_smps;
 			else
 				desc->ops = &palmas_ops_smps;
-			desc->n_voltages = PALMAS_SMPS_NUM_VOLTAGES;
+desc->n_voltages = PALMAS_SMPS_NUM_VOLTAGES;
 			desc->vsel_reg = PALMAS_BASE_TO_REG(PALMAS_SMPS_BASE,
 							    rinfo->vsel_addr);
-			desc->vsel_mask = PALMAS_SMPS12_VOLTAGE_VSEL_MASK;
+desc->vsel_mask = PALMAS_SMPS12_VOLTAGE_VSEL_MASK;
 
 			/* Read the smps mode for later use. */
 			addr = rinfo->ctrl_addr;
@@ -1270,7 +1270,7 @@ static int palmas_smps_registration(struct palmas_pmic *pmic,
 			desc->enable_val = SMPS_CTRL_MODE_ON;
 		}
 
-		desc->type = REGULATOR_VOLTAGE;
+desc->type = REGULATOR_VOLTAGE;
 		desc->owner = THIS_MODULE;
 
 		if (pdata)
@@ -1346,7 +1346,7 @@ static int tps65917_smps_registration(struct palmas_pmic *pmic,
 		ret = palmas_smps_read(pmic->palmas, addr, &reg);
 		if (ret)
 			return ret;
-		if (reg & TPS65917_SMPS1_VOLTAGE_RANGE)
+if (reg & TPS65917_SMPS1_VOLTAGE_RANGE)
 			pmic->range[id] = 1;
 
 		if (pmic->range[id])
@@ -1358,10 +1358,10 @@ static int tps65917_smps_registration(struct palmas_pmic *pmic,
 			desc->ops = &tps65917_ops_ext_control_smps;
 		else
 			desc->ops = &tps65917_ops_smps;
-		desc->n_voltages = PALMAS_SMPS_NUM_VOLTAGES;
+desc->n_voltages = PALMAS_SMPS_NUM_VOLTAGES;
 		desc->vsel_reg = PALMAS_BASE_TO_REG(PALMAS_SMPS_BASE,
 						    rinfo->vsel_addr);
-		desc->vsel_mask = PALMAS_SMPS12_VOLTAGE_VSEL_MASK;
+desc->vsel_mask = PALMAS_SMPS12_VOLTAGE_VSEL_MASK;
 		desc->ramp_delay = 2500;
 
 		/* Read the smps mode for later use. */
@@ -1377,7 +1377,7 @@ static int tps65917_smps_registration(struct palmas_pmic *pmic,
 		/* set_mode overrides this value */
 		desc->enable_val = SMPS_CTRL_MODE_ON;
 
-		desc->type = REGULATOR_VOLTAGE;
+desc->type = REGULATOR_VOLTAGE;
 		desc->owner = THIS_MODULE;
 
 		if (pdata)
@@ -1557,7 +1557,7 @@ static int palmas_dt_to_pdata(struct device *dev,
 
 		ret = of_property_read_bool(np, "ti,smps-range");
 		if (ret)
-			rinit->vsel = PALMAS_SMPS12_VOLTAGE_RANGE;
+rinit->vsel = PALMAS_SMPS12_VOLTAGE_RANGE;
 
 		if (idx == PALMAS_REG_LDO8)
 			pdata->enable_ldo8_tracking = of_property_read_bool(

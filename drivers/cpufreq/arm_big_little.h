@@ -1,5 +1,5 @@
 /*
- * ARM big.LITTLE platform's CPUFreq header file
+* ARM big.LITTLE platform's CPUFreq header file
  *
  * Copyright (C) 2013 ARM Ltd.
  * Sudeep KarkadaNagesha <sudeep.karkadanagesha@arm.com>
@@ -24,7 +24,7 @@
 #include <linux/types.h>
 
 struct cpufreq_arm_bL_ops {
-	char name[CPUFREQ_NAME_LEN];
+char name[CPUFREQ_NAME_LEN];
 
 	/*
 	 * This must set opp table for cpu_dev in a similar way as done by

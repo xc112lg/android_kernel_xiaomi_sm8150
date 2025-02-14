@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2014 STMicroelectronics
  *
- * Power off Restart driver, used in STMicroelectronics devices.
+* Power off Restart driver, used in STMicroelectronics devices.
  *
  * Author: Christophe Kerello <christophe.kerello@st.com>
  *

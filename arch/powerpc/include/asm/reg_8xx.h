@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 /*
- * Contains register definitions common to PowerPC 8xx CPUs.  Notice
+* Contains register definitions common to PowerPC 8xx CPUs.  Notice
  */
 #ifndef _ASM_POWERPC_REG_8xx_H
 #define _ASM_POWERPC_REG_8xx_H

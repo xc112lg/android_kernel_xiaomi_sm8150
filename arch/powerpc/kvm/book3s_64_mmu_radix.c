@@ -71,7 +71,7 @@ int kvmppc_mmu_radix_xlate(struct kvm_vcpu *vcpu, gva_t eaddr,
 
 	/* P9 DD1 interprets RTS (radix tree size) differently */
 	offset = rts + 31;
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 		offset -= 3;
 
 	/* current implementations only support 52-bit space */
@@ -172,7 +172,7 @@ unsigned long kvmppc_radix_update_pte(struct kvm *kvm, pte_t *ptep,
 {
 	unsigned long old = 0;
 
-	if (!(clr & _PAGE_PRESENT) && cpu_has_feature(CPU_FTR_POWER9_DD1) &&
+if (!(clr & _PAGE_PRESENT) && cpu_has_feature(CPU_FTR_POWER9_DD1) &&
 	    pte_present(*ptep)) {
 		/* have to invalidate it first */
 		old = __radix_pte_update(ptep, _PAGE_PRESENT, 0);

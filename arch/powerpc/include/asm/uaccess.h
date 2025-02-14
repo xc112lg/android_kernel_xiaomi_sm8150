@@ -73,7 +73,7 @@
  * accesses to the same area of user memory).
  *
  * As we use the same address space for kernel and user data on the
- * PowerPC, we can just do these as direct assignments.  (Of course, the
+* PowerPC, we can just do these as direct assignments.  (Of course, the
  * exception handling means that it's no longer "just"...)
  *
  */

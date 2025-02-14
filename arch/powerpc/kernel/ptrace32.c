@@ -1,7 +1,7 @@
 /*
  * ptrace for 32-bit processes running on a 64-bit kernel.
  *
- *  PowerPC version
+*  PowerPC version
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *
  *  Derived from "arch/m68k/kernel/ptrace.c"

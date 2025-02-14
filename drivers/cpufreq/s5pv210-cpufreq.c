@@ -2,7 +2,7 @@
  * Copyright (c) 2010 Samsung Electronics Co., Ltd.
  *		http://www.samsung.com
  *
- * CPU frequency scaling for S5PC110/S5PV210
+* CPU frequency scaling for S5PC110/S5PV210
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -99,10 +99,10 @@ static bool no_cpufreq_access;
 
 /*
  * DRAM configurations to calculate refresh counter for changing
- * frequency of memory.
+* frequency of memory.
  */
 struct dram_conf {
-	unsigned long freq;	/* HZ */
+unsigned long freq;	/* HZ */
 	unsigned long refresh;	/* DRAM refresh counter * 1000 */
 };
 
@@ -130,7 +130,7 @@ static struct cpufreq_frequency_table s5pv210_freq_table[] = {
 	{0, L2, 400*1000},
 	{0, L3, 200*1000},
 	{0, L4, 100*1000},
-	{0, 0, CPUFREQ_TABLE_END},
+{0, 0, CPUFREQ_TABLE_END},
 };
 
 static struct regulator *arm_regulator;
@@ -193,9 +193,9 @@ static u32 clkdiv_val[5][11] = {
 
 /*
  * This function set DRAM refresh counter
- * accoriding to operating frequency of DRAM
+* accoriding to operating frequency of DRAM
  * ch: DMC port number 0 or 1
- * freq: Operating frequency of DRAM(KHz)
+* freq: Operating frequency of DRAM(KHz)
  */
 static void s5pv210_set_refresh(enum s5pv210_dmc_port ch, unsigned long freq)
 {
@@ -211,10 +211,10 @@ static void s5pv210_set_refresh(enum s5pv210_dmc_port ch, unsigned long freq)
 		return;
 	}
 
-	/* Find current DRAM frequency */
-	tmp = s5pv210_dram_conf[ch].freq;
+/* Find current DRAM frequency */
+tmp = s5pv210_dram_conf[ch].freq;
 
-	tmp /= freq;
+tmp /= freq;
 
 	tmp1 = s5pv210_dram_conf[ch].refresh;
 
@@ -229,35 +229,35 @@ static int s5pv210_target(struct cpufreq_policy *policy, unsigned int index)
 	unsigned int priv_index;
 	unsigned int pll_changing = 0;
 	unsigned int bus_speed_changing = 0;
-	unsigned int old_freq, new_freq;
+unsigned int old_freq, new_freq;
 	int arm_volt, int_volt;
 	int ret = 0;
 
-	mutex_lock(&set_freq_lock);
+mutex_lock(&set_freq_lock);
 
-	if (no_cpufreq_access) {
+if (no_cpufreq_access) {
 		pr_err("Denied access to %s as it is disabled temporarily\n",
 		       __func__);
 		ret = -EINVAL;
 		goto exit;
 	}
 
-	old_freq = policy->cur;
-	new_freq = s5pv210_freq_table[index].frequency;
+old_freq = policy->cur;
+new_freq = s5pv210_freq_table[index].frequency;
 
 	/* Finding current running level index */
-	priv_index = cpufreq_table_find_index_h(policy, old_freq);
+priv_index = cpufreq_table_find_index_h(policy, old_freq);
 
 	arm_volt = dvs_conf[index].arm_volt;
 	int_volt = dvs_conf[index].int_volt;
 
-	if (new_freq > old_freq) {
-		ret = regulator_set_voltage(arm_regulator,
+if (new_freq > old_freq) {
+ret = regulator_set_voltage(arm_regulator,
 				arm_volt, arm_volt_max);
 		if (ret)
 			goto exit;
 
-		ret = regulator_set_voltage(int_regulator,
+ret = regulator_set_voltage(int_regulator,
 				int_volt, int_volt_max);
 		if (ret)
 			goto exit;
@@ -473,18 +473,18 @@ static int s5pv210_target(struct cpufreq_policy *policy, unsigned int index)
 		}
 	}
 
-	if (new_freq < old_freq) {
-		regulator_set_voltage(int_regulator,
+if (new_freq < old_freq) {
+regulator_set_voltage(int_regulator,
 				int_volt, int_volt_max);
 
-		regulator_set_voltage(arm_regulator,
+regulator_set_voltage(arm_regulator,
 				arm_volt, arm_volt_max);
 	}
 
 	printk(KERN_DEBUG "Perf changed[L%d]\n", index);
 
 exit:
-	mutex_unlock(&set_freq_lock);
+mutex_unlock(&set_freq_lock);
 	return ret;
 }
 
@@ -531,20 +531,20 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
 	mem_type = check_mem_type(dmc_base[0]);
 
 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
-		pr_err("CPUFreq doesn't support this memory type\n");
+pr_err("CPUFreq doesn't support this memory type\n");
 		ret = -EINVAL;
 		goto out_dmc1;
 	}
 
-	/* Find current refresh counter and frequency each DMC */
+/* Find current refresh counter and frequency each DMC */
 	s5pv210_dram_conf[0].refresh = (readl_relaxed(dmc_base[0] + 0x30) * 1000);
-	s5pv210_dram_conf[0].freq = clk_get_rate(dmc0_clk);
+s5pv210_dram_conf[0].freq = clk_get_rate(dmc0_clk);
 
 	s5pv210_dram_conf[1].refresh = (readl_relaxed(dmc_base[1] + 0x30) * 1000);
-	s5pv210_dram_conf[1].freq = clk_get_rate(dmc1_clk);
+s5pv210_dram_conf[1].freq = clk_get_rate(dmc1_clk);
 
-	policy->suspend_freq = SLEEP_FREQ;
-	return cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
+policy->suspend_freq = SLEEP_FREQ;
+return cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
 
 out_dmc1:
 	clk_put(dmc0_clk);
@@ -558,27 +558,27 @@ static int s5pv210_cpufreq_reboot_notifier_event(struct notifier_block *this,
 {
 	int ret;
 
-	ret = cpufreq_driver_target(cpufreq_cpu_get(0), SLEEP_FREQ, 0);
+ret = cpufreq_driver_target(cpufreq_cpu_get(0), SLEEP_FREQ, 0);
 	if (ret < 0)
 		return NOTIFY_BAD;
 
-	no_cpufreq_access = true;
+no_cpufreq_access = true;
 	return NOTIFY_DONE;
 }
 
 static struct cpufreq_driver s5pv210_driver = {
-	.flags		= CPUFREQ_STICKY | CPUFREQ_NEED_INITIAL_FREQ_CHECK,
-	.verify		= cpufreq_generic_frequency_table_verify,
+.flags		= CPUFREQ_STICKY | CPUFREQ_NEED_INITIAL_FREQ_CHECK,
+.verify		= cpufreq_generic_frequency_table_verify,
 	.target_index	= s5pv210_target,
-	.get		= cpufreq_generic_get,
+.get		= cpufreq_generic_get,
 	.init		= s5pv210_cpu_init,
 	.name		= "s5pv210",
-	.suspend	= cpufreq_generic_suspend,
-	.resume		= cpufreq_generic_suspend, /* We need to set SLEEP FREQ again */
+.suspend	= cpufreq_generic_suspend,
+.resume		= cpufreq_generic_suspend, /* We need to set SLEEP FREQ again */
 };
 
 static struct notifier_block s5pv210_cpufreq_reboot_notifier = {
-	.notifier_call = s5pv210_cpufreq_reboot_notifier_event,
+.notifier_call = s5pv210_cpufreq_reboot_notifier_event,
 };
 
 static int s5pv210_cpufreq_probe(struct platform_device *pdev)
@@ -592,7 +592,7 @@ static int s5pv210_cpufreq_probe(struct platform_device *pdev)
 	 * and dependencies on platform headers. It is necessary to enable
 	 * S5PV210 multi-platform support and will be removed together with
 	 * this whole driver as soon as S5PV210 gets migrated to use
-	 * cpufreq-dt driver.
+* cpufreq-dt driver.
 	 */
 	np = of_find_compatible_node(NULL, NULL, "samsung,s5pv210-clock");
 	if (!np) {
@@ -633,28 +633,28 @@ static int s5pv210_cpufreq_probe(struct platform_device *pdev)
 		}
 	}
 
-	arm_regulator = regulator_get(NULL, "vddarm");
+arm_regulator = regulator_get(NULL, "vddarm");
 	if (IS_ERR(arm_regulator)) {
-		pr_err("failed to get regulator vddarm\n");
+pr_err("failed to get regulator vddarm\n");
 		return PTR_ERR(arm_regulator);
 	}
 
-	int_regulator = regulator_get(NULL, "vddint");
+int_regulator = regulator_get(NULL, "vddint");
 	if (IS_ERR(int_regulator)) {
-		pr_err("failed to get regulator vddint\n");
+pr_err("failed to get regulator vddint\n");
 		regulator_put(arm_regulator);
 		return PTR_ERR(int_regulator);
 	}
 
-	register_reboot_notifier(&s5pv210_cpufreq_reboot_notifier);
+register_reboot_notifier(&s5pv210_cpufreq_reboot_notifier);
 
-	return cpufreq_register_driver(&s5pv210_driver);
+return cpufreq_register_driver(&s5pv210_driver);
 }
 
 static struct platform_driver s5pv210_cpufreq_platdrv = {
 	.driver = {
-		.name	= "s5pv210-cpufreq",
+.name	= "s5pv210-cpufreq",
 	},
-	.probe = s5pv210_cpufreq_probe,
+.probe = s5pv210_cpufreq_probe,
 };
 builtin_platform_driver(s5pv210_cpufreq_platdrv);

@@ -290,8 +290,8 @@ static struct regulator_ops qpnp_amoled_ab_ops = {
 	.enable		= qpnp_ab_regulator_enable,
 	.disable	= qpnp_ab_regulator_disable,
 	.is_enabled	= qpnp_ab_regulator_is_enabled,
-	.set_voltage	= qpnp_ab_ibb_regulator_set_voltage,
-	.get_voltage	= qpnp_ab_ibb_regulator_get_voltage,
+.set_voltage	= qpnp_ab_ibb_regulator_set_voltage,
+.get_voltage	= qpnp_ab_ibb_regulator_get_voltage,
 	.set_mode	= qpnp_ab_ibb_regulator_set_mode,
 	.get_mode	= qpnp_ab_ibb_regulator_get_mode,
 };
@@ -300,8 +300,8 @@ static struct regulator_ops qpnp_amoled_ibb_ops = {
 	.enable		= qpnp_ibb_regulator_enable,
 	.disable	= qpnp_ibb_regulator_disable,
 	.is_enabled	= qpnp_ibb_regulator_is_enabled,
-	.set_voltage	= qpnp_ab_ibb_regulator_set_voltage,
-	.get_voltage	= qpnp_ab_ibb_regulator_get_voltage,
+.set_voltage	= qpnp_ab_ibb_regulator_set_voltage,
+.get_voltage	= qpnp_ab_ibb_regulator_get_voltage,
 	.set_mode	= qpnp_ab_ibb_regulator_set_mode,
 	.get_mode	= qpnp_ab_ibb_regulator_get_mode,
 };
@@ -374,8 +374,8 @@ static struct regulator_ops qpnp_amoled_oledb_ops = {
 	.enable		= qpnp_oledb_regulator_enable,
 	.disable	= qpnp_oledb_regulator_disable,
 	.is_enabled	= qpnp_oledb_regulator_is_enabled,
-	.set_voltage	= qpnp_oledb_regulator_set_voltage,
-	.get_voltage	= qpnp_oledb_regulator_get_voltage,
+.set_voltage	= qpnp_oledb_regulator_set_voltage,
+.get_voltage	= qpnp_oledb_regulator_get_voltage,
 	.set_mode	= qpnp_oledb_regulator_set_mode,
 	.get_mode	= qpnp_oledb_regulator_get_mode,
 };
@@ -418,7 +418,7 @@ static int qpnp_amoled_regulator_register(struct qpnp_amoled *chip,
 
 	if (init_data->constraints.name) {
 		rdesc->owner	= THIS_MODULE;
-		rdesc->type	= REGULATOR_VOLTAGE;
+rdesc->type	= REGULATOR_VOLTAGE;
 		rdesc->name	= init_data->constraints.name;
 
 		cfg.dev = chip->dev;
@@ -431,7 +431,7 @@ static int qpnp_amoled_regulator_register(struct qpnp_amoled *chip,
 			init_data->supply_regulator = "parent";
 
 		init_data->constraints.valid_ops_mask
-				|= REGULATOR_CHANGE_VOLTAGE
+|= REGULATOR_CHANGE_VOLTAGE
 				| REGULATOR_CHANGE_STATUS
 				| REGULATOR_CHANGE_MODE;
 		init_data->constraints.valid_modes_mask

@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/mpc834x_itx.c
+* arch/powerpc/platforms/83xx/mpc834x_itx.c
  *
  * MPC834x ITX board specific routines
  *

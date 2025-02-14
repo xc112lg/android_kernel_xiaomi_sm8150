@@ -27,32 +27,32 @@
 
 static struct regulator_consumer_supply ab8500_vaux1_consumers[] = {
 	/* Main display, u8500 R3 uib */
-	REGULATOR_SUPPLY("vddi", "mcde_disp_sony_acx424akp.0"),
+REGULATOR_SUPPLY("vddi", "mcde_disp_sony_acx424akp.0"),
 	/* Main display, u8500 uib and ST uib */
-	REGULATOR_SUPPLY("vdd1", "samsung_s6d16d0.0"),
+REGULATOR_SUPPLY("vdd1", "samsung_s6d16d0.0"),
 	/* Secondary display, ST uib */
-	REGULATOR_SUPPLY("vdd1", "samsung_s6d16d0.1"),
+REGULATOR_SUPPLY("vdd1", "samsung_s6d16d0.1"),
 	/* SFH7741 proximity sensor */
 	REGULATOR_SUPPLY("vcc", "gpio-keys.0"),
 	/* BH1780GLS ambient light sensor */
 	REGULATOR_SUPPLY("vcc", "2-0029"),
 	/* lsm303dlh accelerometer */
-	REGULATOR_SUPPLY("vdd", "2-0018"),
+REGULATOR_SUPPLY("vdd", "2-0018"),
 	/* lsm303dlhc accelerometer */
-	REGULATOR_SUPPLY("vdd", "2-0019"),
+REGULATOR_SUPPLY("vdd", "2-0019"),
 	/* lsm303dlh magnetometer */
-	REGULATOR_SUPPLY("vdd", "2-001e"),
+REGULATOR_SUPPLY("vdd", "2-001e"),
 	/* Rohm BU21013 Touchscreen devices */
-	REGULATOR_SUPPLY("avdd", "3-005c"),
-	REGULATOR_SUPPLY("avdd", "3-005d"),
+REGULATOR_SUPPLY("avdd", "3-005c"),
+REGULATOR_SUPPLY("avdd", "3-005d"),
 	/* Synaptics RMI4 Touchscreen device */
-	REGULATOR_SUPPLY("vdd", "3-004b"),
+REGULATOR_SUPPLY("vdd", "3-004b"),
 	/* L3G4200D Gyroscope device */
-	REGULATOR_SUPPLY("vdd", "2-0068"),
+REGULATOR_SUPPLY("vdd", "2-0068"),
 	/* Ambient light sensor device */
-	REGULATOR_SUPPLY("vdd", "3-0029"),
+REGULATOR_SUPPLY("vdd", "3-0029"),
 	/* Pressure sensor device */
-	REGULATOR_SUPPLY("vdd", "2-005c"),
+REGULATOR_SUPPLY("vdd", "2-005c"),
 	/* Cypress TrueTouch Touchscreen device */
 	REGULATOR_SUPPLY("vcpin", "spi8.0"),
 	/* Camera device */
@@ -60,7 +60,7 @@ static struct regulator_consumer_supply ab8500_vaux1_consumers[] = {
 };
 
 static struct regulator_consumer_supply ab8500_vaux2_consumers[] = {
-	/* On-board eMMC power */
+/* On-board eMMC power */
 	REGULATOR_SUPPLY("vmmc", "sdi4"),
 	/* AB8500 audio codec */
 	REGULATOR_SUPPLY("vcc-N2158", "ab8500-codec.0"),
@@ -74,7 +74,7 @@ static struct regulator_consumer_supply ab8500_vaux2_consumers[] = {
 
 static struct regulator_consumer_supply ab8500_vaux3_consumers[] = {
 	REGULATOR_SUPPLY("v-SD-STM", "stm"),
-	/* External MMC slot power */
+/* External MMC slot power */
 	REGULATOR_SUPPLY("vmmc", "sdi0"),
 };
 
@@ -82,9 +82,9 @@ static struct regulator_consumer_supply ab8500_vtvout_consumers[] = {
 	/* TV-out DENC supply */
 	REGULATOR_SUPPLY("vtvout", "ab8500-denc.0"),
 	/* Internal general-purpose ADC */
-	REGULATOR_SUPPLY("vddadc", "ab8500-gpadc.0"),
+REGULATOR_SUPPLY("vddadc", "ab8500-gpadc.0"),
 	/* ADC for charger */
-	REGULATOR_SUPPLY("vddadc", "ab8500-charger.0"),
+REGULATOR_SUPPLY("vddadc", "ab8500-charger.0"),
 	/* AB8500 Tv-out device */
 	REGULATOR_SUPPLY("vtvout", "mcde_tv_ab8500.4"),
 };
@@ -113,21 +113,21 @@ static struct regulator_consumer_supply ab8500_vintcore_consumers[] = {
 	/* SoC core supply, no device */
 	REGULATOR_SUPPLY("v-intcore", NULL),
 	/* USB Transceiver */
-	REGULATOR_SUPPLY("vddulpivio18", "ab8500-usb.0"),
+REGULATOR_SUPPLY("vddulpivio18", "ab8500-usb.0"),
 	/* Handled by abx500 clk driver */
 	REGULATOR_SUPPLY("v-intcore", "abx500-clk.0"),
 };
 
 static struct regulator_consumer_supply ab8500_vana_consumers[] = {
 	/* DB8500 DSI */
-	REGULATOR_SUPPLY("vdddsi1v2", "mcde"),
-	REGULATOR_SUPPLY("vdddsi1v2", "b2r2_core"),
-	REGULATOR_SUPPLY("vdddsi1v2", "b2r2_1_core"),
-	REGULATOR_SUPPLY("vdddsi1v2", "dsilink.0"),
-	REGULATOR_SUPPLY("vdddsi1v2", "dsilink.1"),
-	REGULATOR_SUPPLY("vdddsi1v2", "dsilink.2"),
+REGULATOR_SUPPLY("vdddsi1v2", "mcde"),
+REGULATOR_SUPPLY("vdddsi1v2", "b2r2_core"),
+REGULATOR_SUPPLY("vdddsi1v2", "b2r2_1_core"),
+REGULATOR_SUPPLY("vdddsi1v2", "dsilink.0"),
+REGULATOR_SUPPLY("vdddsi1v2", "dsilink.1"),
+REGULATOR_SUPPLY("vdddsi1v2", "dsilink.2"),
 	/* DB8500 CSI */
-	REGULATOR_SUPPLY("vddcsi1v2", "mmio_camera"),
+REGULATOR_SUPPLY("vddcsi1v2", "mmio_camera"),
 };
 
 /* ab8500 regulator register initialization */
@@ -310,7 +310,7 @@ static struct regulator_init_data ab8500_regulators[AB8500_NUM_REGULATORS] = {
 			.name = "V-DISPLAY",
 			.min_uV = 2800000,
 			.max_uV = 3300000,
-			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
+.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
 					  REGULATOR_CHANGE_STATUS,
 			.boot_on = 1, /* display is on at boot */
 		},
@@ -324,7 +324,7 @@ static struct regulator_init_data ab8500_regulators[AB8500_NUM_REGULATORS] = {
 			.name = "V-eMMC1",
 			.min_uV = 1100000,
 			.max_uV = 3300000,
-			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
+.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
 					  REGULATOR_CHANGE_STATUS |
 					  REGULATOR_CHANGE_MODE,
 			.valid_modes_mask = REGULATOR_MODE_NORMAL |
@@ -340,7 +340,7 @@ static struct regulator_init_data ab8500_regulators[AB8500_NUM_REGULATORS] = {
 			.name = "V-MMC-SD",
 			.min_uV = 1100000,
 			.max_uV = 3300000,
-			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
+.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
 					  REGULATOR_CHANGE_STATUS |
 					  REGULATOR_CHANGE_MODE,
 			.valid_modes_mask = REGULATOR_MODE_NORMAL |
@@ -401,7 +401,7 @@ static struct regulator_init_data ab8500_regulators[AB8500_NUM_REGULATORS] = {
 			.min_uV = 1250000,
 			.max_uV = 1350000,
 			.input_uV = 1800000,
-			.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
+.valid_ops_mask = REGULATOR_CHANGE_VOLTAGE |
 					  REGULATOR_CHANGE_STATUS |
 					  REGULATOR_CHANGE_MODE |
 					  REGULATOR_CHANGE_DRMS,
@@ -486,9 +486,9 @@ static struct ab8500_regulator_platform_data ab8500_regulator_plat_data = {
  * @update_mask: mask to enable/disable and set mode of regulator
  * @update_val: bits holding the regulator current mode
  * @update_val_hp: bits to set EN pin active (LPn pin deactive)
- *                 normally this means high power mode
+*                 normally this means high power mode
  * @update_val_lp: bits to set EN pin active and LPn pin active
- *                 normally this means low power mode
+*                 normally this means low power mode
  * @update_val_hw: bits to set regulator pins in HW control
  *                 SysClkReq pins and logic will choose mode
  */
@@ -518,8 +518,8 @@ static int ab8500_ext_regulator_enable(struct regulator_dev *rdev)
 	}
 
 	/*
-	 * To satisfy both HW high power request and SW request, the regulator
-	 * must be on in high power.
+* To satisfy both HW high power request and SW request, the regulator
+* must be on in high power.
 	 */
 	if (info->cfg && info->cfg->hwreq)
 		regval = info->update_val_hp;
@@ -635,7 +635,7 @@ static int ab8500_ext_regulator_set_mode(struct regulator_dev *rdev,
 	}
 
 	/* If regulator is enabled and info->cfg->hwreq is set, the regulator
-	   must be on in high power, so we don't need to write the register with
+must be on in high power, so we don't need to write the register with
 	   the same value.
 	 */
 	if (ab8500_ext_regulator_is_enabled(rdev) &&
@@ -726,8 +726,8 @@ static struct regulator_ops ab8500_ext_regulator_ops = {
 	.is_enabled		= ab8500_ext_regulator_is_enabled,
 	.set_mode		= ab8500_ext_regulator_set_mode,
 	.get_mode		= ab8500_ext_regulator_get_mode,
-	.set_voltage		= ab8500_ext_set_voltage,
-	.list_voltage		= ab8500_ext_list_voltage,
+.set_voltage		= ab8500_ext_set_voltage,
+.list_voltage		= ab8500_ext_list_voltage,
 };
 
 static struct ab8500_ext_regulator_info
@@ -736,10 +736,10 @@ static struct ab8500_ext_regulator_info
 		.desc = {
 			.name		= "VEXTSUPPLY1",
 			.ops		= &ab8500_ext_regulator_ops,
-			.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 			.id		= AB8500_EXT_SUPPLY1,
 			.owner		= THIS_MODULE,
-			.n_voltages	= 1,
+.n_voltages	= 1,
 		},
 		.update_bank		= 0x04,
 		.update_reg		= 0x08,
@@ -753,10 +753,10 @@ static struct ab8500_ext_regulator_info
 		.desc = {
 			.name		= "VEXTSUPPLY2",
 			.ops		= &ab8500_ext_regulator_ops,
-			.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 			.id		= AB8500_EXT_SUPPLY2,
 			.owner		= THIS_MODULE,
-			.n_voltages	= 1,
+.n_voltages	= 1,
 		},
 		.update_bank		= 0x04,
 		.update_reg		= 0x08,
@@ -770,10 +770,10 @@ static struct ab8500_ext_regulator_info
 		.desc = {
 			.name		= "VEXTSUPPLY3",
 			.ops		= &ab8500_ext_regulator_ops,
-			.type		= REGULATOR_VOLTAGE,
+.type		= REGULATOR_VOLTAGE,
 			.id		= AB8500_EXT_SUPPLY3,
 			.owner		= THIS_MODULE,
-			.n_voltages	= 1,
+.n_voltages	= 1,
 		},
 		.update_bank		= 0x04,
 		.update_reg		= 0x08,

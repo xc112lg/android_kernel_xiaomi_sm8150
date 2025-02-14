@@ -49,8 +49,8 @@
 		reg = <0xf 0xfe140000 0 0x480>;
 		fsl,qe-num-riscs = <1>;
 		fsl,qe-num-snums = <28>;
-		brg-frequency = <0>;
-		bus-frequency = <0>;
+brg-frequency = <0>;
+bus-frequency = <0>;
 	};
 };
 

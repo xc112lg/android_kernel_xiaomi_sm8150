@@ -125,7 +125,7 @@
 				#size-cells = <1>;
 				compatible = "spansion,s25sl12801", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <40000000>; /* input clock */
+spi-max-frequency = <40000000>; /* input clock */
 
 				partition@u-boot {
 					label = "u-boot-spi";
@@ -275,8 +275,8 @@
 	qe: qe@ffe80000 {
 		ranges = <0x0 0x0 0xffe80000 0x40000>;
 		reg = <0 0xffe80000 0 0x480>;
-		brg-frequency = <0>;
-		bus-frequency = <0>;
+brg-frequency = <0>;
+bus-frequency = <0>;
 		status = "disabled"; /* no firmware loaded */
 
 		enet3: ucc@2000 {

@@ -406,7 +406,7 @@ static void mpc512x_clk_preset_data(void)
 }
 
 /*
- * - receives the "bus frequency" from the caller (that's the IPS clock
+* - receives the "bus frequency" from the caller (that's the IPS clock
  *   rate, the historical source of clock information)
  * - fetches the system PLL multiplier and divider values as well as the
  *   IPS divider value from hardware
@@ -424,7 +424,7 @@ static void mpc512x_clk_setup_ref_clock(struct device_node *np, int bus_freq,
 					int *ips_div)
 {
 	struct clk *osc_clk;
-	int calc_freq;
+int calc_freq;
 
 	/* fetch mul/div factors from the hardware */
 	*sys_mul = get_spmf_mult();
@@ -445,21 +445,21 @@ static void mpc512x_clk_setup_ref_clock(struct device_node *np, int bus_freq,
 	 */
 	if (!IS_ERR(osc_clk)) {
 		clks[MPC512x_CLK_REF] = mpc512x_clk_factor("ref", "osc", 1, 1);
-		calc_freq = clk_get_rate(clks[MPC512x_CLK_REF]);
-		calc_freq *= *sys_mul;
-		calc_freq /= *sys_div;
-		calc_freq /= 2;
-		calc_freq /= *ips_div;
-		if (bus_freq && calc_freq != bus_freq)
+calc_freq = clk_get_rate(clks[MPC512x_CLK_REF]);
+calc_freq *= *sys_mul;
+calc_freq /= *sys_div;
+calc_freq /= 2;
+calc_freq /= *ips_div;
+if (bus_freq && calc_freq != bus_freq)
 			pr_warn("calc rate %d != OF spec %d\n",
-				calc_freq, bus_freq);
+calc_freq, bus_freq);
 	} else {
-		calc_freq = bus_freq;	/* start with IPS */
-		calc_freq *= *ips_div;	/* IPS -> CSB */
-		calc_freq *= 2;		/* CSB -> SYS */
-		calc_freq *= *sys_div;	/* SYS -> PLL out */
-		calc_freq /= *sys_mul;	/* PLL out -> REF == OSC */
-		clks[MPC512x_CLK_REF] = mpc512x_clk_fixed("ref", calc_freq);
+calc_freq = bus_freq;	/* start with IPS */
+calc_freq *= *ips_div;	/* IPS -> CSB */
+calc_freq *= 2;		/* CSB -> SYS */
+calc_freq *= *sys_div;	/* SYS -> PLL out */
+calc_freq /= *sys_mul;	/* PLL out -> REF == OSC */
+clks[MPC512x_CLK_REF] = mpc512x_clk_fixed("ref", calc_freq);
 	}
 }
 
@@ -707,7 +707,7 @@ static void mpc512x_clk_setup_clock_tree(struct device_node *np, int busfreq)
 	int sys_mul, sys_div, ips_div;
 	int mul, div;
 	size_t mclk_idx;
-	int freq;
+int freq;
 
 	/*
 	 * developer's notes:
@@ -722,7 +722,7 @@ static void mpc512x_clk_setup_clock_tree(struct device_node *np, int busfreq)
 	 *   specific and cannot get mapped to composites (at least not
 	 *   a single one, maybe two of them, but then some of these
 	 *   intermediate clock signals get referenced elsewhere (e.g.
-	 *   in the clock frequency measurement, CFM) and thus need
+*   in the clock frequency measurement, CFM) and thus need
 	 *   publicly available names
 	 * - the current source layout appropriately reflects the
 	 *   hardware setup, and it works, so it's questionable whether
@@ -730,7 +730,7 @@ static void mpc512x_clk_setup_clock_tree(struct device_node *np, int busfreq)
 	 */
 
 	/* regardless of whether XTAL/OSC exists, have REF created */
-	mpc512x_clk_setup_ref_clock(np, busfreq, &sys_mul, &sys_div, &ips_div);
+mpc512x_clk_setup_ref_clock(np, busfreq, &sys_mul, &sys_div, &ips_div);
 
 	/* now setup the REF -> SYS -> CSB -> IPS hierarchy */
 	clks[MPC512x_CLK_SYS] = mpc512x_clk_factor("sys", "ref",
@@ -770,7 +770,7 @@ static void mpc512x_clk_setup_clock_tree(struct device_node *np, int busfreq)
 						       CLK_DIVIDER_ONE_BASED);
 
 	/*
-	 * the "power architecture PLL" was setup from data which was
+* the "power architecture PLL" was setup from data which was
 	 * sampled from the reset config word, at this point in time the
 	 * configuration can be considered fixed and read only (i.e. no
 	 * longer adjustable, or no longer in need of adjustment), which
@@ -901,24 +901,24 @@ static void mpc512x_clk_setup_clock_tree(struct device_node *np, int busfreq)
 	 * externally provided clocks (when implemented in hardware,
 	 * device tree may specify values which otherwise were unknown)
 	 */
-	freq = get_freq_from_dt("psc_mclk_in");
-	if (!freq)
-		freq = 25000000;
-	clks[MPC512x_CLK_PSC_MCLK_IN] = mpc512x_clk_fixed("psc_mclk_in", freq);
+freq = get_freq_from_dt("psc_mclk_in");
+if (!freq)
+freq = 25000000;
+clks[MPC512x_CLK_PSC_MCLK_IN] = mpc512x_clk_fixed("psc_mclk_in", freq);
 	if (soc_has_mclk_mux0_canin()) {
-		freq = get_freq_from_dt("can_clk_in");
+freq = get_freq_from_dt("can_clk_in");
 		clks[MPC512x_CLK_CAN_CLK_IN] = mpc512x_clk_fixed(
-				"can_clk_in", freq);
+"can_clk_in", freq);
 	} else {
-		freq = get_freq_from_dt("spdif_tx_in");
+freq = get_freq_from_dt("spdif_tx_in");
 		clks[MPC512x_CLK_SPDIF_TX_IN] = mpc512x_clk_fixed(
-				"spdif_tx_in", freq);
-		freq = get_freq_from_dt("spdif_rx_in");
+"spdif_tx_in", freq);
+freq = get_freq_from_dt("spdif_rx_in");
 		clks[MPC512x_CLK_SPDIF_TX_IN] = mpc512x_clk_fixed(
-				"spdif_rx_in", freq);
+"spdif_rx_in", freq);
 	}
 
-	/* fixed frequency for AC97, always 24.567MHz */
+/* fixed frequency for AC97, always 24.567MHz */
 	clks[MPC512x_CLK_AC97] = mpc512x_clk_fixed("ac97", 24567000);
 
 	/*
@@ -927,7 +927,7 @@ static void mpc512x_clk_setup_clock_tree(struct device_node *np, int busfreq)
 	 * subsystem disable them late at startup
 	 */
 	clk_prepare_enable(clks[MPC512x_CLK_DUMMY]);
-	clk_prepare_enable(clks[MPC512x_CLK_E300]);	/* PowerPC CPU */
+clk_prepare_enable(clks[MPC512x_CLK_E300]);	/* PowerPC CPU */
 	clk_prepare_enable(clks[MPC512x_CLK_DDR]);	/* DRAM */
 	clk_prepare_enable(clks[MPC512x_CLK_MEM]);	/* SRAM */
 	clk_prepare_enable(clks[MPC512x_CLK_IPS]);	/* SoC periph */
@@ -1177,7 +1177,7 @@ static void mpc5121_clk_provide_backwards_compat(void)
 int __init mpc5121_clk_init(void)
 {
 	struct device_node *clk_np;
-	int busfreq;
+int busfreq;
 
 	/* map the clock control registers */
 	clk_np = of_find_compatible_node(NULL, NULL, "fsl,mpc5121-clock");
@@ -1203,8 +1203,8 @@ int __init mpc5121_clk_init(void)
 	 * down to all leaves, either starting from the OSC node or from
 	 * a REF root that was created from the IPS bus clock input
 	 */
-	busfreq = get_freq_from_dt("bus-frequency");
-	mpc512x_clk_setup_clock_tree(clk_np, busfreq);
+busfreq = get_freq_from_dt("bus-frequency");
+mpc512x_clk_setup_clock_tree(clk_np, busfreq);
 
 	/* register as an OF clock provider */
 	mpc5121_clk_register_of_provider(clk_np);

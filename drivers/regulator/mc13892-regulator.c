@@ -167,7 +167,7 @@ static const unsigned int mc13892_sw1[] = {
 /*
  * Note: this table is used to derive SWxVSEL by index into
  * the array. Offset the values by the index of 1100000uV
- * to get the actual register value for that voltage selector
+* to get the actual register value for that voltage selector
  * if the HI bit is to be set as well.
  */
 #define MC13892_SWxHI_SEL_OFFSET		20
@@ -251,23 +251,23 @@ static struct regulator_ops mc13892_sw_regulator_ops;
 
 
 #define MC13892_FIXED_DEFINE(name, reg, voltages)		\
-	MC13xxx_FIXED_DEFINE(MC13892_, name, reg, voltages,	\
+MC13xxx_FIXED_DEFINE(MC13892_, name, reg, voltages,	\
 			mc13xxx_fixed_regulator_ops)
 
 #define MC13892_GPO_DEFINE(name, reg, voltages)			\
-	MC13xxx_GPO_DEFINE(MC13892_, name, reg, voltages,	\
+MC13xxx_GPO_DEFINE(MC13892_, name, reg, voltages,	\
 			mc13892_gpo_regulator_ops)
 
 #define MC13892_SW_DEFINE(name, reg, vsel_reg, voltages)	\
-	MC13xxx_DEFINE(MC13892_, name, reg, vsel_reg, voltages, \
+MC13xxx_DEFINE(MC13892_, name, reg, vsel_reg, voltages, \
 			mc13892_sw_regulator_ops)
 
 #define MC13892_DEFINE_REGU(name, reg, vsel_reg, voltages)	\
-	MC13xxx_DEFINE(MC13892_, name, reg, vsel_reg, voltages, \
+MC13xxx_DEFINE(MC13892_, name, reg, vsel_reg, voltages, \
 			mc13xxx_regulator_ops)
 
 static struct mc13xxx_regulator mc13892_regulators[] = {
-	MC13892_DEFINE_REGU(VCOINCELL, POWERCTL0, POWERCTL0, mc13892_vcoincell),
+MC13892_DEFINE_REGU(VCOINCELL, POWERCTL0, POWERCTL0, mc13892_vcoincell),
 	MC13892_SW_DEFINE(SW1, SWITCHERS0, SWITCHERS0, mc13892_sw1),
 	MC13892_SW_DEFINE(SW2, SWITCHERS1, SWITCHERS1, mc13892_sw),
 	MC13892_SW_DEFINE(SW3, SWITCHERS2, SWITCHERS2, mc13892_sw),
@@ -295,12 +295,12 @@ static struct mc13xxx_regulator mc13892_regulators[] = {
 	MC13892_DEFINE_REGU(VGEN3, REGULATORMODE1, REGULATORSETTING0,
 		mc13892_vgen3),
 	MC13892_FIXED_DEFINE(VUSB, USB1, mc13892_vusb),
-	MC13892_GPO_DEFINE(GPO1, POWERMISC, mc13892_gpo),
-	MC13892_GPO_DEFINE(GPO2, POWERMISC, mc13892_gpo),
-	MC13892_GPO_DEFINE(GPO3, POWERMISC, mc13892_gpo),
-	MC13892_GPO_DEFINE(GPO4, POWERMISC, mc13892_gpo),
-	MC13892_GPO_DEFINE(PWGT1SPI, POWERMISC, mc13892_pwgtdrv),
-	MC13892_GPO_DEFINE(PWGT2SPI, POWERMISC, mc13892_pwgtdrv),
+MC13892_GPO_DEFINE(GPO1, POWERMISC, mc13892_gpo),
+MC13892_GPO_DEFINE(GPO2, POWERMISC, mc13892_gpo),
+MC13892_GPO_DEFINE(GPO3, POWERMISC, mc13892_gpo),
+MC13892_GPO_DEFINE(GPO4, POWERMISC, mc13892_gpo),
+MC13892_GPO_DEFINE(PWGT1SPI, POWERMISC, mc13892_pwgtdrv),
+MC13892_GPO_DEFINE(PWGT2SPI, POWERMISC, mc13892_pwgtdrv),
 };
 
 static int mc13892_powermisc_rmw(struct mc13xxx_regulator_priv *priv, u32 mask,
@@ -313,22 +313,22 @@ static int mc13892_powermisc_rmw(struct mc13xxx_regulator_priv *priv, u32 mask,
 	BUG_ON(val & ~mask);
 
 	mc13xxx_lock(priv->mc13xxx);
-	ret = mc13xxx_reg_read(mc13892, MC13892_POWERMISC, &valread);
+ret = mc13xxx_reg_read(mc13892, MC13892_POWERMISC, &valread);
 	if (ret)
 		goto out;
 
-	/* Update the stored state for Power Gates. */
-	priv->powermisc_pwgt_state =
-		(priv->powermisc_pwgt_state & ~mask) | val;
-	priv->powermisc_pwgt_state &= MC13892_POWERMISC_PWGTSPI_M;
+/* Update the stored state for Power Gates. */
+priv->powermisc_pwgt_state =
+(priv->powermisc_pwgt_state & ~mask) | val;
+priv->powermisc_pwgt_state &= MC13892_POWERMISC_PWGTSPI_M;
 
 	/* Construct the new register value */
 	valread = (valread & ~mask) | val;
 	/* Overwrite the PWGTxEN with the stored version */
-	valread = (valread & ~MC13892_POWERMISC_PWGTSPI_M) |
-		priv->powermisc_pwgt_state;
+valread = (valread & ~MC13892_POWERMISC_PWGTSPI_M) |
+priv->powermisc_pwgt_state;
 
-	ret = mc13xxx_reg_write(mc13892, MC13892_POWERMISC, valread);
+ret = mc13xxx_reg_write(mc13892, MC13892_POWERMISC, valread);
 out:
 	mc13xxx_unlock(priv->mc13xxx);
 	return ret;
@@ -343,14 +343,14 @@ static int mc13892_gpo_regulator_enable(struct regulator_dev *rdev)
 
 	dev_dbg(rdev_get_dev(rdev), "%s id: %d\n", __func__, id);
 
-	/* Power Gate enable value is 0 */
+/* Power Gate enable value is 0 */
 	if (id == MC13892_PWGT1SPI || id == MC13892_PWGT2SPI)
 		en_val = 0;
 
 	if (id == MC13892_GPO4)
-		mask |= MC13892_POWERMISC_GPO4ADINEN;
+mask |= MC13892_POWERMISC_GPO4ADINEN;
 
-	return mc13892_powermisc_rmw(priv, mask, en_val);
+return mc13892_powermisc_rmw(priv, mask, en_val);
 }
 
 static int mc13892_gpo_regulator_disable(struct regulator_dev *rdev)
@@ -361,11 +361,11 @@ static int mc13892_gpo_regulator_disable(struct regulator_dev *rdev)
 
 	dev_dbg(rdev_get_dev(rdev), "%s id: %d\n", __func__, id);
 
-	/* Power Gate disable value is 1 */
+/* Power Gate disable value is 1 */
 	if (id == MC13892_PWGT1SPI || id == MC13892_PWGT2SPI)
 		dis_val = mc13892_regulators[id].enable_bit;
 
-	return mc13892_powermisc_rmw(priv, mc13892_regulators[id].enable_bit,
+return mc13892_powermisc_rmw(priv, mc13892_regulators[id].enable_bit,
 		dis_val);
 }
 
@@ -382,10 +382,10 @@ static int mc13892_gpo_regulator_is_enabled(struct regulator_dev *rdev)
 	if (ret)
 		return ret;
 
-	/* Power Gates state is stored in powermisc_pwgt_state
+/* Power Gates state is stored in powermisc_pwgt_state
 	 * where the meaning of bits is negated */
-	val = (val & ~MC13892_POWERMISC_PWGTSPI_M) |
-		(priv->powermisc_pwgt_state ^ MC13892_POWERMISC_PWGTSPI_M);
+val = (val & ~MC13892_POWERMISC_PWGTSPI_M) |
+(priv->powermisc_pwgt_state ^ MC13892_POWERMISC_PWGTSPI_M);
 
 	return (val & mc13892_regulators[id].enable_bit) != 0;
 }
@@ -395,8 +395,8 @@ static struct regulator_ops mc13892_gpo_regulator_ops = {
 	.enable = mc13892_gpo_regulator_enable,
 	.disable = mc13892_gpo_regulator_disable,
 	.is_enabled = mc13892_gpo_regulator_is_enabled,
-	.list_voltage = regulator_list_voltage_table,
-	.set_voltage = mc13xxx_fixed_regulator_set_voltage,
+.list_voltage = regulator_list_voltage_table,
+.set_voltage = mc13xxx_fixed_regulator_set_voltage,
 };
 
 static int mc13892_sw_regulator_get_voltage_sel(struct regulator_dev *rdev)
@@ -451,14 +451,14 @@ static int mc13892_sw_regulator_set_voltage_sel(struct regulator_dev *rdev,
 	reg_value = selector;
 
 	/*
-	 * Don't mess with the HI bit or support HI voltage offsets for SW1.
+* Don't mess with the HI bit or support HI voltage offsets for SW1.
 	 *
-	 * Since the get_voltage_sel callback has given a fudged value for
+* Since the get_voltage_sel callback has given a fudged value for
 	 * the selector offset, we need to back out that offset if HI is
 	 * to be set so we write the correct value to the register.
 	 *
 	 * The HI bit addition and selector offset handling COULD be more
-	 * complicated by shifting and masking off the voltage selector part
+* complicated by shifting and masking off the voltage selector part
 	 * of the register then logical OR it back in, but since the selector
 	 * is at bits 4:0 there is very little point. This makes the whole
 	 * thing more readable and we do far less work.
@@ -484,10 +484,10 @@ static int mc13892_sw_regulator_set_voltage_sel(struct regulator_dev *rdev,
 }
 
 static struct regulator_ops mc13892_sw_regulator_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_ascend,
-	.set_voltage_sel = mc13892_sw_regulator_set_voltage_sel,
-	.get_voltage_sel = mc13892_sw_regulator_get_voltage_sel,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_ascend,
+.set_voltage_sel = mc13892_sw_regulator_set_voltage_sel,
+.get_voltage_sel = mc13892_sw_regulator_get_voltage_sel,
 };
 
 static int mc13892_vcam_set_mode(struct regulator_dev *rdev, unsigned int mode)

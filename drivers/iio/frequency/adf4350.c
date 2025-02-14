@@ -26,9 +26,9 @@
 #include <linux/iio/frequency/adf4350.h>
 
 enum {
-	ADF4350_FREQ,
-	ADF4350_FREQ_REFIN,
-	ADF4350_FREQ_RESOLUTION,
+ADF4350_FREQ,
+ADF4350_FREQ_REFIN,
+ADF4350_FREQ_RESOLUTION,
 	ADF4350_PWRDOWN,
 };
 
@@ -39,15 +39,15 @@ struct adf4350_state {
 	struct clk			*clk;
 	unsigned long			clkin;
 	unsigned long			chspc; /* Channel Spacing */
-	unsigned long			fpfd; /* Phase Frequency Detector */
-	unsigned long			min_out_freq;
+unsigned long			fpfd; /* Phase Frequency Detector */
+unsigned long			min_out_freq;
 	unsigned			r0_fract;
 	unsigned			r0_int;
 	unsigned			r1_mod;
 	unsigned			r4_rf_div_sel;
 	unsigned long			regs[6];
 	unsigned long			regs_hw[6];
-	unsigned long long		freq_req;
+unsigned long long		freq_req;
 	/*
 	 * DMA (thus cache coherency maintenance) requires the
 	 * transfer buffers to live in their own cache lines.
@@ -122,7 +122,7 @@ static int adf4350_tune_r_cnt(struct adf4350_state *st, unsigned short r_cnt)
 		r_cnt++;
 		st->fpfd = (st->clkin * (pdata->ref_doubler_en ? 2 : 1)) /
 			   (r_cnt * (pdata->ref_div2_en ? 2 : 1));
-	} while (st->fpfd > ADF4350_MAX_FREQ_PFD);
+} while (st->fpfd > ADF4350_MAX_FREQ_PFD);
 
 	return r_cnt;
 }
@@ -135,10 +135,10 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
 	u16 mdiv, r_cnt = 0;
 	u8 band_sel_div;
 
-	if (freq > ADF4350_MAX_OUT_FREQ || freq < st->min_out_freq)
+if (freq > ADF4350_MAX_OUT_FREQ || freq < st->min_out_freq)
 		return -EINVAL;
 
-	if (freq > ADF4350_MAX_FREQ_45_PRESC) {
+if (freq > ADF4350_MAX_FREQ_45_PRESC) {
 		prescaler = ADF4350_REG1_PRESCALER;
 		mdiv = 75;
 	} else {
@@ -148,8 +148,8 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
 
 	st->r4_rf_div_sel = 0;
 
-	while (freq < ADF4350_MIN_VCO_FREQ) {
-		freq <<= 1;
+while (freq < ADF4350_MIN_VCO_FREQ) {
+freq <<= 1;
 		st->r4_rf_div_sel++;
 	}
 
@@ -175,7 +175,7 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
 			} while ((st->r1_mod > ADF4350_MAX_MODULUS) && r_cnt);
 		} while (r_cnt == 0);
 
-		tmp = freq * (u64)st->r1_mod + (st->fpfd >> 1);
+tmp = freq * (u64)st->r1_mod + (st->fpfd >> 1);
 		do_div(tmp, st->fpfd); /* Div round closest (n + d/2)/d */
 		st->r0_fract = do_div(tmp, st->r1_mod);
 		st->r0_int = tmp;
@@ -195,7 +195,7 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
 	dev_dbg(&st->spi->dev, "VCO: %llu Hz, PFD %lu Hz\n"
 		"REF_DIV %d, R0_INT %d, R0_FRACT %d\n"
 		"R1_MOD %d, RF_DIV %d\nPRESCALER %s, BAND_SEL_DIV %d\n",
-		freq, st->fpfd, r_cnt, st->r0_int, st->r0_fract, st->r1_mod,
+freq, st->fpfd, r_cnt, st->r0_int, st->r0_fract, st->r1_mod,
 		1 << st->r4_rf_div_sel, prescaler ? "8/9" : "4/5",
 		band_sel_div);
 
@@ -237,7 +237,7 @@ static int adf4350_set_freq(struct adf4350_state *st, unsigned long long freq)
 		ADF4350_REG4_MUTE_TILL_LOCK_EN));
 
 	st->regs[ADF4350_REG5] = ADF4350_REG5_LD_PIN_MODE_DIGITAL;
-	st->freq_req = freq;
+st->freq_req = freq;
 
 	return adf4350_sync_config(st);
 }
@@ -258,11 +258,11 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
 
 	mutex_lock(&indio_dev->mlock);
 	switch ((u32)private) {
-	case ADF4350_FREQ:
-		ret = adf4350_set_freq(st, readin);
+case ADF4350_FREQ:
+ret = adf4350_set_freq(st, readin);
 		break;
-	case ADF4350_FREQ_REFIN:
-		if (readin > ADF4350_MAX_FREQ_REFIN) {
+case ADF4350_FREQ_REFIN:
+if (readin > ADF4350_MAX_FREQ_REFIN) {
 			ret = -EINVAL;
 			break;
 		}
@@ -278,9 +278,9 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
 				break;
 		}
 		st->clkin = readin;
-		ret = adf4350_set_freq(st, st->freq_req);
+ret = adf4350_set_freq(st, st->freq_req);
 		break;
-	case ADF4350_FREQ_RESOLUTION:
+case ADF4350_FREQ_RESOLUTION:
 		if (readin == 0)
 			ret = -EINVAL;
 		else
@@ -288,9 +288,9 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
 		break;
 	case ADF4350_PWRDOWN:
 		if (readin)
-			st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
+st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
 		else
-			st->regs[ADF4350_REG2] &= ~ADF4350_REG2_POWER_DOWN_EN;
+st->regs[ADF4350_REG2] &= ~ADF4350_REG2_POWER_DOWN_EN;
 
 		adf4350_sync_config(st);
 		break;
@@ -313,7 +313,7 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
 
 	mutex_lock(&indio_dev->mlock);
 	switch ((u32)private) {
-	case ADF4350_FREQ:
+case ADF4350_FREQ:
 		val = (u64)((st->r0_int * st->r1_mod) + st->r0_fract) *
 			(u64)st->fpfd;
 		do_div(val, st->r1_mod * (1 << st->r4_rf_div_sel));
@@ -324,17 +324,17 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
 				ret = -EBUSY;
 			}
 		break;
-	case ADF4350_FREQ_REFIN:
+case ADF4350_FREQ_REFIN:
 		if (st->clk)
 			st->clkin = clk_get_rate(st->clk);
 
 		val = st->clkin;
 		break;
-	case ADF4350_FREQ_RESOLUTION:
+case ADF4350_FREQ_RESOLUTION:
 		val = st->chspc;
 		break;
 	case ADF4350_PWRDOWN:
-		val = !!(st->regs[ADF4350_REG2] & ADF4350_REG2_POWER_DOWN_EN);
+val = !!(st->regs[ADF4350_REG2] & ADF4350_REG2_POWER_DOWN_EN);
 		break;
 	default:
 		ret = -EINVAL;
@@ -354,19 +354,19 @@ static ssize_t adf4350_read(struct iio_dev *indio_dev,
 }
 
 static const struct iio_chan_spec_ext_info adf4350_ext_info[] = {
-	/* Ideally we use IIO_CHAN_INFO_FREQUENCY, but there are
-	 * values > 2^32 in order to support the entire frequency range
+/* Ideally we use IIO_CHAN_INFO_FREQUENCY, but there are
+* values > 2^32 in order to support the entire frequency range
 	 * in Hz. Using scale is a bit ugly.
 	 */
-	_ADF4350_EXT_INFO("frequency", ADF4350_FREQ),
-	_ADF4350_EXT_INFO("frequency_resolution", ADF4350_FREQ_RESOLUTION),
-	_ADF4350_EXT_INFO("refin_frequency", ADF4350_FREQ_REFIN),
-	_ADF4350_EXT_INFO("powerdown", ADF4350_PWRDOWN),
+_ADF4350_EXT_INFO("frequency", ADF4350_FREQ),
+_ADF4350_EXT_INFO("frequency_resolution", ADF4350_FREQ_RESOLUTION),
+_ADF4350_EXT_INFO("refin_frequency", ADF4350_FREQ_REFIN),
+_ADF4350_EXT_INFO("powerdown", ADF4350_PWRDOWN),
 	{ },
 };
 
 static const struct iio_chan_spec adf4350_chan = {
-	.type = IIO_ALTVOLTAGE,
+.type = IIO_ALTVOLTAGE,
 	.indexed = 1,
 	.output = 1,
 	.ext_info = adf4350_ext_info,
@@ -396,8 +396,8 @@ static struct adf4350_platform_data *adf4350_parse_dt(struct device *dev)
 	pdata->channel_spacing = tmp;
 
 	tmp = 0;
-	of_property_read_u32(np, "adi,power-up-frequency", &tmp);
-	pdata->power_up_frequency = tmp;
+of_property_read_u32(np, "adi,power-up-frequency", &tmp);
+pdata->power_up_frequency = tmp;
 
 	tmp = 0;
 	of_property_read_u32(np, "adi,reference-div-factor", &tmp);
@@ -474,11 +474,11 @@ static struct adf4350_platform_data *adf4350_parse_dt(struct device *dev)
 			ADF4350_REG4_MUTE_TILL_LOCK_EN : 0;
 
 	tmp = 0;
-	of_property_read_u32(np, "adi,output-power", &tmp);
+of_property_read_u32(np, "adi,output-power", &tmp);
 	pdata->r4_user_settings |= ADF4350_REG4_OUTPUT_PWR(tmp);
 
 	tmp = 0;
-	of_property_read_u32(np, "adi,aux-output-power", &tmp);
+of_property_read_u32(np, "adi,aux-output-power", &tmp);
 	pdata->r4_user_settings |= ADF4350_REG4_AUX_OUTPUT_PWR(tmp);
 
 	return pdata;
@@ -558,8 +558,8 @@ static int adf4350_probe(struct spi_device *spi)
 		st->clkin = pdata->clkin;
 	}
 
-	st->min_out_freq = spi_get_device_id(spi)->driver_data == 4351 ?
-		ADF4351_MIN_OUT_FREQ : ADF4350_MIN_OUT_FREQ;
+st->min_out_freq = spi_get_device_id(spi)->driver_data == 4351 ?
+ADF4351_MIN_OUT_FREQ : ADF4350_MIN_OUT_FREQ;
 
 	memset(st->regs_hw, 0xFF, sizeof(st->regs_hw));
 
@@ -574,8 +574,8 @@ static int adf4350_probe(struct spi_device *spi)
 		gpio_direction_input(pdata->gpio_lock_detect);
 	}
 
-	if (pdata->power_up_frequency) {
-		ret = adf4350_set_freq(st, pdata->power_up_frequency);
+if (pdata->power_up_frequency) {
+ret = adf4350_set_freq(st, pdata->power_up_frequency);
 		if (ret)
 			goto error_disable_reg;
 	}
@@ -602,7 +602,7 @@ static int adf4350_remove(struct spi_device *spi)
 	struct adf4350_state *st = iio_priv(indio_dev);
 	struct regulator *reg = st->reg;
 
-	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
+st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
 	adf4350_sync_config(st);
 
 	iio_device_unregister(indio_dev);

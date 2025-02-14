@@ -13,7 +13,7 @@
  * that the overall structure is a multiple of 16 bytes in length.
  *
  * Note that the offsets of the fields in this struct correspond with
- * the PT_* values below.  This simplifies arch/powerpc/kernel/ptrace.c.
+* the PT_* values below.  This simplifies arch/powerpc/kernel/ptrace.c.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

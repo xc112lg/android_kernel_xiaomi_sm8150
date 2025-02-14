@@ -5,7 +5,7 @@
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *  Updated and modified by Cort Dougan <cort@fsmlabs.com>
  *    Copyright (C) 1996-2001 Cort Dougan
- *  Adapted for Power Macintosh by Paul Mackerras
+*  Adapted for Power Macintosh by Paul Mackerras
  *    Copyright (C) 1996 Paul Mackerras (paulus@cs.anu.edu.au)
  *
  * This program is free software; you can redistribute it and/or
@@ -314,13 +314,13 @@ void notrace restore_interrupts(void)
 }
 
 /*
- * This is a helper to use when about to go into idle low-power
+* This is a helper to use when about to go into idle low-power
  * when the latter has the side effect of re-enabling interrupts
  * (such as calling H_CEDE under pHyp).
  *
  * You call this function with interrupts soft-disabled (this is
- * already the case when ppc_md.power_save is called). The function
- * will return whether to enter power save or just return.
+* already the case when ppc_md.power_save is called). The function
+* will return whether to enter power save or just return.
  *
  * In the former case, it will have notified lockdep of interrupts
  * being re-enabled and generally sanitized the lazy irq state,
@@ -332,14 +332,14 @@ bool prep_irq_for_idle(void)
 {
 	/*
 	 * First we need to hard disable to ensure no interrupt
-	 * occurs before we effectively enter the low power state
+* occurs before we effectively enter the low power state
 	 */
 	__hard_irq_disable();
 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
 
 	/*
 	 * If anything happened while we were soft-disabled,
-	 * we return now and do not enter the low power state.
+* we return now and do not enter the low power state.
 	 */
 	if (lazy_irq_pending())
 		return false;
@@ -351,12 +351,12 @@ bool prep_irq_for_idle(void)
 	 * Mark interrupts as soft-enabled and clear the
 	 * PACA_IRQ_HARD_DIS from the pending mask since we
 	 * are about to hard enable as well as a side effect
-	 * of entering the low power state.
+* of entering the low power state.
 	 */
 	local_paca->irq_happened &= ~PACA_IRQ_HARD_DIS;
 	local_paca->soft_enabled = 1;
 
-	/* Tell the caller to enter the low power state */
+/* Tell the caller to enter the low power state */
 	return true;
 }
 
@@ -373,14 +373,14 @@ bool prep_irq_for_idle_irqsoff(void)
 
 	/*
 	 * First we need to hard disable to ensure no interrupt
-	 * occurs before we effectively enter the low power state
+* occurs before we effectively enter the low power state
 	 */
 	__hard_irq_disable();
 	local_paca->irq_happened |= PACA_IRQ_HARD_DIS;
 
 	/*
 	 * If anything happened while we were soft-disabled,
-	 * we return now and do not enter the low power state.
+* we return now and do not enter the low power state.
 	 */
 	if (lazy_irq_pending())
 		return false;
@@ -453,7 +453,7 @@ int arch_show_interrupts(struct seq_file *p, int prec)
 		seq_printf(p, "%*s: ", prec, "TAU");
 		for_each_online_cpu(j)
 			seq_printf(p, "%10u ", tau_interrupts(j));
-		seq_puts(p, "  PowerPC             Thermal Assist (cpu temp)\n");
+seq_puts(p, "  PowerPC             Thermal Assist (cpu temp)\n");
 	}
 #endif /* CONFIG_PPC32 && CONFIG_TAU_INT */
 

@@ -59,7 +59,7 @@ static int reg_set_min_state(struct thermal_cooling_device *cdev,
 	if (reg_dev->min_reg_state == state)
 		return ret;
 
-	ret = regulator_set_voltage(reg_dev->reg,
+ret = regulator_set_voltage(reg_dev->reg,
 			reg_dev->lvl[state], INT_MAX);
 	if (ret) {
 		dev_err(&cdev->device,
@@ -99,7 +99,7 @@ static int reg_get_cur_state(struct thermal_cooling_device *cdev,
 static int reg_set_cur_state(struct thermal_cooling_device *cdev,
 				 unsigned long state)
 {
-	/* regulator cooling device doesn't support voltage ceil */
+/* regulator cooling device doesn't support voltage ceil */
 	return 0;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Old U-boot compatibility for PowerQUICC II
+* Old U-boot compatibility for PowerQUICC II
  * (a.k.a. 82xx with CPM, not the 8240 family of chips)
  *
  * Author: Scott Wood <scottwood@freescale.com>
@@ -213,7 +213,7 @@ static void fixup_pci(void)
 
 	/* If PCI is disabled, drive RST high to enable. */
 	if (!(in_le32(&pci_regs[0][32]) & 1)) {
-		 /* Tpvrh (Power valid to RST# high) 100 ms */
+/* Tpvrh (Power valid to RST# high) 100 ms */
 		udelay(100000);
 
 		out_le32(&pci_regs[0][32], 1);
@@ -248,15 +248,15 @@ static void pq2_platform_fixups(void)
 
 	dt_fixup_memory(bd.bi_memstart, bd.bi_memsize);
 	dt_fixup_mac_addresses(bd.bi_enetaddr, bd.bi_enet1addr);
-	dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
+dt_fixup_cpu_clocks(bd.bi_intfreq, bd.bi_busfreq / 4, bd.bi_busfreq);
 
 	node = finddevice("/soc/cpm");
 	if (node)
-		setprop(node, "clock-frequency", &bd.bi_cpmfreq, 4);
+setprop(node, "clock-frequency", &bd.bi_cpmfreq, 4);
 
 	node = finddevice("/soc/cpm/brg");
 	if (node)
-		setprop(node, "clock-frequency",  &bd.bi_brgfreq, 4);
+setprop(node, "clock-frequency",  &bd.bi_brgfreq, 4);
 
 	update_cs_ranges();
 	fixup_pci();

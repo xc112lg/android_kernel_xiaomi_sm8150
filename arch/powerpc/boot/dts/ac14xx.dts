@@ -26,10 +26,10 @@
 	};
 
 	cpus {
-		PowerPC,5121@0 {
-			timebase-frequency = <40000000>;	/*  40 MHz (csb/4) */
-			bus-frequency = <160000000>;		/* 160 MHz csb bus */
-			clock-frequency = <400000000>;		/* 400 MHz ppc core */
+PowerPC,5121@0 {
+timebase-frequency = <40000000>;	/*  40 MHz (csb/4) */
+bus-frequency = <160000000>;		/* 160 MHz csb bus */
+clock-frequency = <400000000>;		/* 400 MHz ppc core */
 		};
 	};
 
@@ -141,12 +141,12 @@
 
 	clocks {
 		osc {
-			clock-frequency = <25000000>;
+clock-frequency = <25000000>;
 		};
 	};
 
 	soc@80000000 {
-		bus-frequency = <80000000>;	/* 80 MHz ips bus */
+bus-frequency = <80000000>;	/* 80 MHz ips bus */
 
 		clock@f00 {
 			compatible = "fsl,mpc5121rev2-clock", "fsl,mpc5121-clock";
@@ -173,7 +173,7 @@
 
 		i2c@1700 {
 			/* use Fast-mode */
-			clock-frequency = <400000>;
+clock-frequency = <400000>;
 
 			at24@30 {
 				compatible = "at24,24c01";
@@ -317,7 +317,7 @@
 
 			flash: m25p128@0 {
 				compatible = "st,m25p128";
-				spi-max-frequency = <20000000>;
+spi-max-frequency = <20000000>;
 				reg = <0>;
 				#address-cells = <1>;
 				#size-cells = <1>;
@@ -341,7 +341,7 @@
 			lcd@0 {
 				compatible = "ilitek,ili922x";
 				reg = <0>;
-				spi-max-frequency = <100000>;
+spi-max-frequency = <100000>;
 				spi-cpol;
 				spi-cpha;
 			};

@@ -7,7 +7,7 @@ config PPC_XIVE
 config PPC_XIVE_NATIVE
 	bool
 	select PPC_XIVE
-	depends on PPC_POWERNV
+depends on PPC_POWERNV
 
 config PPC_XIVE_SPAPR
 	bool

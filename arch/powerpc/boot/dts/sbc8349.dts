@@ -33,16 +33,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8349@0 {
+PowerPC,8349@0 {
 			device_type = "cpu";
 			reg = <0x0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <32768>;
 			i-cache-size = <32768>;
-			timebase-frequency = <0>;	// from bootloader
-			bus-frequency = <0>;		// from bootloader
-			clock-frequency = <0>;		// from bootloader
+timebase-frequency = <0>;	// from bootloader
+bus-frequency = <0>;		// from bootloader
+clock-frequency = <0>;		// from bootloader
 		};
 	};
 
@@ -57,7 +57,7 @@
 		device_type = "soc";
 		ranges = <0x0 0xe0000000 0x00100000>;
 		reg = <0xe0000000 0x00000200>;
-		bus-frequency = <0>;
+bus-frequency = <0>;
 
 		wdt@200 {
 			compatible = "mpc83xx_wdt";
@@ -222,7 +222,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4500 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <9 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -232,7 +232,7 @@
 			device_type = "serial";
 			compatible = "fsl,ns16550", "ns16550";
 			reg = <0x4600 0x100>;
-			clock-frequency = <0>;
+clock-frequency = <0>;
 			interrupts = <10 0x8>;
 			interrupt-parent = <&ipic>;
 		};
@@ -319,7 +319,7 @@
 		ranges = <0x02000000 0x0 0x90000000 0x90000000 0x0 0x10000000
 			  0x42000000 0x0 0x80000000 0x80000000 0x0 0x10000000
 			  0x01000000 0x0 0x00000000 0xe2000000 0x0 0x00100000>;
-		clock-frequency = <66666666>;
+clock-frequency = <66666666>;
 		#interrupt-cells = <1>;
 		#size-cells = <2>;
 		#address-cells = <3>;

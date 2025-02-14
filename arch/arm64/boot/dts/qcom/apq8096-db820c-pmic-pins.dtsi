@@ -10,7 +10,7 @@
 		pinconf {
 			pins = "gpio5";
 			output-low;
-			power-source = <2>; // PM8994_GPIO_S4, 1.8V
+power-source = <2>; // PM8994_GPIO_S4, 1.8V
 		};
 	};
 
@@ -22,7 +22,7 @@
 			drive-push-pull;
 			bias-pull-up;
 			qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
-			power-source = <PM8994_GPIO_S4>; // 1.8V
+power-source = <PM8994_GPIO_S4>; // 1.8V
 		};
 	};
 
@@ -33,7 +33,7 @@
 			input-enable;
 			bias-pull-down;
 			qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
-			power-source = <PM8994_GPIO_S4>; // 1.8V
+power-source = <PM8994_GPIO_S4>; // 1.8V
 		};
 	};
 };
@@ -46,7 +46,7 @@
 			input-enable;
 			bias-pull-down;
 			qcom,drive-strength = <PMIC_GPIO_STRENGTH_NO>;
-			power-source = <PM8994_GPIO_S4>; // 1.8V
+power-source = <PM8994_GPIO_S4>; // 1.8V
 		};
 	};
 };

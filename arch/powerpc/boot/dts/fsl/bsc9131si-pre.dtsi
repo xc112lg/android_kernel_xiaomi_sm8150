@@ -52,7 +52,7 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,BSC9131@0 {
+PowerPC,BSC9131@0 {
 			device_type = "cpu";
 			compatible = "fsl,e500v2";
 			reg = <0x0>;

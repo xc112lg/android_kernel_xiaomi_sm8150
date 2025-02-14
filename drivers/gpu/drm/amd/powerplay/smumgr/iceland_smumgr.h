@@ -33,8 +33,8 @@
 
 struct iceland_pt_defaults {
 	uint8_t   svi_load_line_en;
-	uint8_t   svi_load_line_vddc;
-	uint8_t   tdc_vddc_throttle_release_limit_perc;
+uint8_t   svi_load_line_vddc;
+uint8_t   tdc_vddc_throttle_release_limit_perc;
 	uint8_t   tdc_mawt;
 	uint8_t   tdc_waterfall_ctl;
 	uint8_t   dte_ambient_temp_base;
@@ -60,9 +60,9 @@ struct iceland_mc_reg_table {
 struct iceland_smumgr {
 	struct smu7_smumgr smu7_data;
 	struct SMU71_Discrete_DpmTable       smc_state_table;
-	struct SMU71_Discrete_PmFuses  power_tune_table;
+struct SMU71_Discrete_PmFuses  power_tune_table;
 	struct SMU71_Discrete_Ulv            ulv_setting;
-	const struct iceland_pt_defaults  *power_tune_defaults;
+const struct iceland_pt_defaults  *power_tune_defaults;
 	SMU71_Discrete_MCRegisters      mc_regs;
 	struct iceland_mc_reg_table mc_reg_table;
 	uint32_t        activity_target[SMU71_MAX_LEVELS_GRAPHICS];

@@ -51,7 +51,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0 255>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <16 2 0 0>;
 
 	pcie@0 {
@@ -79,7 +79,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0 255>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <16 2 0 0>;
 
 	pcie@0 {
@@ -108,7 +108,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0 255>;
-	clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 	interrupts = <16 2 0 0>;
 
 	pcie@0 {
@@ -135,7 +135,7 @@
 	#size-cells = <1>;
 	device_type = "soc";
 	compatible = "fsl,p1022-immr", "simple-bus";
-	bus-frequency = <0>;		// Filled out by uboot.
+bus-frequency = <0>;		// Filled out by uboot.
 
 	ecm-law@0 {
 		compatible = "fsl,ecm-law";
@@ -238,7 +238,7 @@
 		fsl,has-rstcr;
 	};
 
-	power@e0070{
+power@e0070{
 		compatible = "fsl,mpc8536-pmc", "fsl,mpc8548-pmc";
 		reg = <0xe0070 0x20>;
 	};

@@ -109,7 +109,7 @@ struct vega10_power_state {
 	uint16_t                  performance_level_count;
 	bool                      dc_compatible;
 	uint32_t                  sclk_threshold;
-	struct vega10_performance_level  performance_levels[VEGA10_MAX_HARDWARE_POWERLEVELS];
+struct vega10_performance_level  performance_levels[VEGA10_MAX_HARDWARE_POWERLEVELS];
 };
 
 struct vega10_dpm_level {
@@ -161,7 +161,7 @@ struct vega10_dpm_table {
 struct vega10_leakage_voltage {
 	uint16_t  count;
 	uint16_t  leakage_id[VEGA10_MAX_LEAKAGE_COUNT];
-	uint16_t  actual_voltage[VEGA10_MAX_LEAKAGE_COUNT];
+uint16_t  actual_voltage[VEGA10_MAX_LEAKAGE_COUNT];
 };
 
 struct vega10_display_timing {
@@ -179,11 +179,11 @@ struct vega10_dpmlevel_enable_mask {
 };
 
 struct vega10_vbios_boot_state {
-	bool        bsoc_vddc_lock;
-	uint16_t    vddc;
-	uint16_t    vddci;
-	uint16_t    mvddc;
-	uint16_t    vdd_gfx;
+bool        bsoc_vddc_lock;
+uint16_t    vddc;
+uint16_t    vddci;
+uint16_t    mvddc;
+uint16_t    vdd_gfx;
 	uint32_t    gfx_clock;
 	uint32_t    mem_clock;
 	uint32_t    soc_clock;
@@ -217,7 +217,7 @@ struct vega10_smc_state_table {
 };
 
 struct vega10_mclk_latency_entries {
-	uint32_t  frequency;
+uint32_t  frequency;
 	uint32_t  latency;
 };
 
@@ -249,7 +249,7 @@ struct vega10_registry_data {
 	uint32_t  pcieClockOverride;
 	uint8_t   pcie_dpm_key_disabled;
 	uint8_t   dcefclk_dpm_key_disabled;
-	uint8_t   power_containment_support;
+uint8_t   power_containment_support;
 	uint8_t   ppt_support;
 	uint8_t   prefetcher_dpm_key_disabled;
 	uint8_t   quick_transition_support;
@@ -276,7 +276,7 @@ struct vega10_registry_data {
 	uint8_t   fan_control_support;
 	uint8_t   ulps_support;
 	uint8_t   ulv_support;
-	uint32_t  vddc_vddci_delta;
+uint32_t  vddc_vddci_delta;
 	uint8_t   odn_feature_enable;
 	uint8_t   disable_water_mark;
 	uint8_t   zrpm_stop_temp;
@@ -288,15 +288,15 @@ struct vega10_registry_data {
 
 struct vega10_odn_clock_voltage_dependency_table {
 	uint32_t count;
-	struct phm_ppt_v1_clock_voltage_dependency_record
+struct phm_ppt_v1_clock_voltage_dependency_record
 		entries[MAX_REGULAR_DPM_NUMBER];
 };
 
 struct vega10_odn_dpm_table {
 	struct phm_odn_clock_levels		odn_core_clock_dpm_levels;
 	struct phm_odn_clock_levels		odn_memory_clock_dpm_levels;
-	struct vega10_odn_clock_voltage_dependency_table		vdd_dependency_on_sclk;
-	struct vega10_odn_clock_voltage_dependency_table		vdd_dependency_on_mclk;
+struct vega10_odn_clock_voltage_dependency_table		vdd_dependency_on_sclk;
+struct vega10_odn_clock_voltage_dependency_table		vdd_dependency_on_mclk;
 };
 
 struct vega10_odn_fan_table {
@@ -313,14 +313,14 @@ struct vega10_hwmgr {
 	struct vega10_vbios_boot_state   vbios_boot_state;
 	struct vega10_mclk_latency_table mclk_latency_table;
 
-	struct vega10_leakage_voltage    vddc_leakage;
+struct vega10_leakage_voltage    vddc_leakage;
 
-	uint32_t                           vddc_control;
-	struct pp_atomfwctrl_voltage_table vddc_voltage_table;
-	uint32_t                           mvdd_control;
-	struct pp_atomfwctrl_voltage_table mvdd_voltage_table;
-	uint32_t                           vddci_control;
-	struct pp_atomfwctrl_voltage_table vddci_voltage_table;
+uint32_t                           vddc_control;
+struct pp_atomfwctrl_voltage_table vddc_voltage_table;
+uint32_t                           mvdd_control;
+struct pp_atomfwctrl_voltage_table mvdd_voltage_table;
+uint32_t                           vddci_control;
+struct pp_atomfwctrl_voltage_table vddci_voltage_table;
 
 	uint32_t                           active_auto_throttle_sources;
 	uint32_t                           water_marks_bitmap;
@@ -350,7 +350,7 @@ struct vega10_hwmgr {
 	uint32_t                       socclk_average_alpha;
 	uint32_t                       uclk_average_alpha;
 	uint32_t                       gfx_activity_average_alpha;
-	uint32_t                       display_voltage_mode;
+uint32_t                       display_voltage_mode;
 	uint32_t                       dcef_clk_quad_eqn_a;
 	uint32_t                       dcef_clk_quad_eqn_b;
 	uint32_t                       dcef_clk_quad_eqn_c;
@@ -367,13 +367,13 @@ struct vega10_hwmgr {
 	/* ---- Thermal Temperature Setting ---- */
 	struct vega10_dpmlevel_enable_mask     dpm_level_enable_mask;
 
-	/* ---- Power Gating States ---- */
-	bool                           uvd_power_gated;
-	bool                           vce_power_gated;
-	bool                           samu_power_gated;
+/* ---- Power Gating States ---- */
+bool                           uvd_power_gated;
+bool                           vce_power_gated;
+bool                           samu_power_gated;
 	bool                           need_long_memory_training;
 
-	/* Internal settings to apply the application power optimization parameters */
+/* Internal settings to apply the application power optimization parameters */
 	bool                           apply_optimized_settings;
 	uint32_t                       disable_dpm_mask;
 

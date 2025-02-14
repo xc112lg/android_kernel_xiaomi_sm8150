@@ -100,18 +100,18 @@ static const struct regulator_ops hi655x_regulator_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = hi655x_disable,
 	.is_enabled = hi655x_is_enabled,
-	.list_voltage = regulator_list_voltage_table,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 };
 
 static const struct regulator_ops hi655x_ldo_linear_ops = {
 	.enable = regulator_enable_regmap,
 	.disable = hi655x_disable,
 	.is_enabled = hi655x_is_enabled,
-	.list_voltage = regulator_list_voltage_linear,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 };
 
 #define HI655X_LDO(_ID, vreg, vmask, ereg, dreg,                 \
@@ -121,10 +121,10 @@ static const struct regulator_ops hi655x_ldo_linear_ops = {
 		.of_match        = of_match_ptr(#_ID),           \
 		.ops             = &hi655x_regulator_ops,        \
 		.regulators_node = of_match_ptr("regulators"),   \
-		.type            = REGULATOR_VOLTAGE,            \
+.type            = REGULATOR_VOLTAGE,            \
 		.id              = HI655X_##_ID,                 \
 		.owner           = THIS_MODULE,                  \
-		.n_voltages      = ARRAY_SIZE(vtable),           \
+.n_voltages      = ARRAY_SIZE(vtable),           \
 		.volt_table      = vtable,                       \
 		.vsel_reg        = HI655X_BUS_ADDR(vreg),        \
 		.vsel_mask       = vmask,                        \
@@ -143,11 +143,11 @@ static const struct regulator_ops hi655x_ldo_linear_ops = {
 		.of_match        = of_match_ptr(#_ID),           \
 		.ops             = &hi655x_ldo_linear_ops,       \
 		.regulators_node = of_match_ptr("regulators"),   \
-		.type            = REGULATOR_VOLTAGE,            \
+.type            = REGULATOR_VOLTAGE,            \
 		.id              = HI655X_##_ID,                 \
 		.owner           = THIS_MODULE,                  \
 		.min_uV          = minv,                         \
-		.n_voltages      = nvolt,                        \
+.n_voltages      = nvolt,                        \
 		.uV_step         = vstep,                        \
 		.vsel_reg        = HI655X_BUS_ADDR(vreg),        \
 		.vsel_mask       = vmask,                        \
@@ -162,8 +162,8 @@ static const struct regulator_ops hi655x_ldo_linear_ops = {
 static struct hi655x_regulator regulators[] = {
 	HI655X_LDO_LINEAR(LDO2, 0x72, 0x07, 0x29, 0x2a, 0x2b, 0x01,
 			  2500000, 8, 100000),
-	HI655X_LDO(LDO7, 0x78, 0x07, 0x29, 0x2a, 0x2b, 0x06, ldo7_voltages),
-	HI655X_LDO(LDO10, 0x78, 0x07, 0x29, 0x2a, 0x2b, 0x01, ldo7_voltages),
+HI655X_LDO(LDO7, 0x78, 0x07, 0x29, 0x2a, 0x2b, 0x06, ldo7_voltages),
+HI655X_LDO(LDO10, 0x78, 0x07, 0x29, 0x2a, 0x2b, 0x01, ldo7_voltages),
 	HI655X_LDO_LINEAR(LDO13, 0x7e, 0x07, 0x2c, 0x2d, 0x2e, 0x04,
 			  1600000, 8, 50000),
 	HI655X_LDO_LINEAR(LDO14, 0x7f, 0x07, 0x2c, 0x2d, 0x2e, 0x05,
@@ -172,10 +172,10 @@ static struct hi655x_regulator regulators[] = {
 			  1600000, 8, 50000),
 	HI655X_LDO_LINEAR(LDO17, 0x82, 0x07, 0x2f, 0x30, 0x31, 0x00,
 			  2500000, 8, 100000),
-	HI655X_LDO(LDO19, 0x84, 0x07, 0x2f, 0x30, 0x31, 0x02, ldo19_voltages),
+HI655X_LDO(LDO19, 0x84, 0x07, 0x2f, 0x30, 0x31, 0x02, ldo19_voltages),
 	HI655X_LDO_LINEAR(LDO21, 0x86, 0x07, 0x2f, 0x30, 0x31, 0x04,
 			  1650000, 8, 50000),
-	HI655X_LDO(LDO22, 0x87, 0x07, 0x2f, 0x30, 0x31, 0x05, ldo22_voltages),
+HI655X_LDO(LDO22, 0x87, 0x07, 0x2f, 0x30, 0x31, 0x05, ldo22_voltages),
 };
 
 static int hi655x_regulator_probe(struct platform_device *pdev)

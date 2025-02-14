@@ -11,7 +11,7 @@
  * we don't have access to hypervisor mode, and we run the guest
  * in problem state (user mode).
  *
- * This file is derived from arch/powerpc/kvm/44x.c,
+* This file is derived from arch/powerpc/kvm/44x.c,
  * by Hollis Blanchard <hollisb@us.ibm.com>.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -438,19 +438,19 @@ void kvmppc_set_pvr_pr(struct kvm_vcpu *vcpu, u32 pvr)
 		to_book3s(vcpu)->msr_mask &= ~(MSR_FE0 | MSR_FE1);
 
 	/*
-	 * If they're asking for POWER6 or later, set the flag
+* If they're asking for POWER6 or later, set the flag
 	 * indicating that we can do multiple large page sizes
 	 * and 1TB segments.
 	 * Also set the flag that indicates that tlbie has the large
 	 * page bit in the RB operand instead of the instruction.
 	 */
 	switch (PVR_VER(pvr)) {
-	case PVR_POWER6:
-	case PVR_POWER7:
-	case PVR_POWER7p:
-	case PVR_POWER8:
-	case PVR_POWER8E:
-	case PVR_POWER8NVL:
+case PVR_POWER6:
+case PVR_POWER7:
+case PVR_POWER7p:
+case PVR_POWER8:
+case PVR_POWER8E:
+case PVR_POWER8NVL:
 		vcpu->arch.hflags |= BOOK3S_HFLAG_MULTI_PGSIZE |
 			BOOK3S_HFLAG_NEW_TLBIE;
 		break;
@@ -1738,7 +1738,7 @@ static void kvmppc_core_destroy_vm_pr(struct kvm *kvm)
 static int kvmppc_core_check_processor_compat_pr(void)
 {
 	/*
-	 * Disable KVM for Power9 untill the required bits merged.
+* Disable KVM for Power9 untill the required bits merged.
 	 */
 	if (cpu_has_feature(CPU_FTR_ARCH_300))
 		return -EIO;

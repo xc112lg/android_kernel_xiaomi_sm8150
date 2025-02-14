@@ -811,7 +811,7 @@ static long dev_nvram_ioctl(struct file *file, unsigned int cmd,
 	case IOC_NVRAM_GET_OFFSET: {
 		int part, offset;
 
-		if (!machine_is(powermac))
+if (!machine_is(powermac))
 			return -EINVAL;
 		if (copy_from_user(&part, (void __user*)arg, sizeof(part)) != 0)
 			return -EFAULT;

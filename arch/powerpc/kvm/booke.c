@@ -906,7 +906,7 @@ static void kvmppc_fill_pt_regs(struct pt_regs *regs)
  * For interrupts needed to be handled by host interrupt handlers,
  * corresponding host handler are called from here in similar way
  * (but not exact) as they are called from low level handler
- * (such as from arch/powerpc/kernel/head_fsl_booke.S).
+* (such as from arch/powerpc/kernel/head_fsl_booke.S).
  */
 static void kvmppc_restart_interrupt(struct kvm_vcpu *vcpu,
 				     unsigned int exit_nr)

@@ -105,7 +105,7 @@ static void mpc512x_set_pixel_clock(unsigned int pixclock)
 	 */
 	pr_debug("DIU pixclock in ps - %u\n", pixclock);
 	pixclock = (1000000000 / pixclock) * 1000;
-	pr_debug("DIU pixclock freq  - %u\n", pixclock);
+pr_debug("DIU pixclock freq  - %u\n", pixclock);
 	epsilon = pixclock / 20; /* pixclock * 0.05 */
 	pr_debug("DIU deviation      - %lu\n", epsilon);
 	minpixclock = pixclock - epsilon;
@@ -119,10 +119,10 @@ static void mpc512x_set_pixel_clock(unsigned int pixclock)
 	 * - simply request the desired clock and see what the
 	 *   platform's clock driver will make of it, assuming that it
 	 *   will setup the best approximation of the requested value
-	 * - try other candidate frequencies in the order of decreasing
+* - try other candidate frequencies in the order of decreasing
 	 *   preference (i.e. with increasing distance from the desired
-	 *   pixel clock, and checking the lower frequency before the
-	 *   higher frequency to not overload the hardware) until the
+*   pixel clock, and checking the lower frequency before the
+*   higher frequency to not overload the hardware) until the
 	 *   first match is found -- any potential subsequent match
 	 *   would only be as good as the former match or typically
 	 *   would be less preferrable
@@ -130,7 +130,7 @@ static void mpc512x_set_pixel_clock(unsigned int pixclock)
 	 * the offset increment of pixelclock divided by 64 is an
 	 * arbitrary choice -- it's simple to calculate, in the typical
 	 * case we expect the first check to succeed already, in the
-	 * worst case seven frequencies get tested (the exact center and
+* worst case seven frequencies get tested (the exact center and
 	 * three more values each to the left and to the right) before
 	 * the 5% tolerance window is exceeded, resulting in fast enough
 	 * execution yet high enough probability of finding a suitable

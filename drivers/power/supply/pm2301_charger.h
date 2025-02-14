@@ -1,7 +1,7 @@
 /*
  * Copyright (C) ST-Ericsson SA 2012
  *
- * PM2301 power supply interface
+* PM2301 power supply interface
  *
  * License terms:  GNU General Public License (GPL), version 2
  */
@@ -464,7 +464,7 @@ struct pm2xxx_irq {
 struct pm2xxx_charger {
 	struct device *dev;
 	u8 chip_id;
-	bool vddadc_en_ac;
+bool vddadc_en_ac;
 	struct pm2xxx_config config;
 	bool ac_conn;
 	unsigned int gpio_irq;
@@ -486,7 +486,7 @@ struct pm2xxx_charger {
 	struct work_struct check_main_thermal_prot_work;
 	struct delayed_work check_hw_failure_work;
 	struct ux500_charger ac_chg;
-	struct power_supply_desc ac_chg_desc;
+struct power_supply_desc ac_chg_desc;
 	struct pm2xxx_charger_event_flags flags;
 };
 

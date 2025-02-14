@@ -158,7 +158,7 @@ setup_7410_workarounds:
 /* 740/750/7400/7410
  * Enable Store Gathering (SGE), Address Broadcast (ABE),
  * Branch History Table (BHTE), Branch Target ICache (BTIC)
- * Dynamic Power Management (DPM), Speculative (SPD)
+* Dynamic Power Management (DPM), Speculative (SPD)
  * Clear Instruction cache throttling (ICTC)
  */
 setup_750_7400_hid0:
@@ -169,7 +169,7 @@ BEGIN_FTR_SECTION
 	xori	r11,r11,HID0_BTIC
 END_FTR_SECTION_IFSET(CPU_FTR_NO_BTIC)
 BEGIN_FTR_SECTION
-	xoris	r11,r11,HID0_DPM@h	/* disable dynamic power mgmt */
+xoris	r11,r11,HID0_DPM@h	/* disable dynamic power mgmt */
 END_FTR_SECTION_IFSET(CPU_FTR_NO_DPM)
 	li	r3,HID0_SPD
 	andc	r11,r11,r3		/* clear SPD: enable speculative */
@@ -208,7 +208,7 @@ setup_750fx:
 /* MPC 745x
  * Enable Store Gathering (SGE), Branch Folding (FOLD)
  * Branch History Table (BHTE), Branch Target ICache (BTIC)
- * Dynamic Power Management (DPM), Speculative (SPD)
+* Dynamic Power Management (DPM), Speculative (SPD)
  * Ensure our data cache instructions really operate.
  * Timebase has to be running or we wouldn't have made it here,
  * just ensure we don't disable it.
@@ -246,7 +246,7 @@ BEGIN_FTR_SECTION
 	xori	r11,r11,HID0_BTIC
 END_FTR_SECTION_IFSET(CPU_FTR_NO_BTIC)
 BEGIN_FTR_SECTION
-	xoris	r11,r11,HID0_DPM@h	/* disable dynamic power mgmt */
+xoris	r11,r11,HID0_DPM@h	/* disable dynamic power mgmt */
 END_FTR_SECTION_IFSET(CPU_FTR_NO_DPM)
 
 	/* All of the bits we have to clear....
@@ -277,7 +277,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_NO_DPM)
 /*
  * Initialize the FPU registers. This is needed to work around an errata
  * in some 750 cpus where using a not yet initialized FPU register after
- * power on reset may hang the CPU
+* power on reset may hang the CPU
  */
 _GLOBAL(__init_fpu_registers)
 	mfmsr	r10
@@ -462,7 +462,7 @@ _GLOBAL(__restore_cpu_setup)
 	 * that is restore HID2 on rev 2.x and PLL config & switch
 	 * to PLL 0 on all
 	 */
-	/* If rev 2.x, restore HID2 with low voltage bit cleared */
+/* If rev 2.x, restore HID2 with low voltage bit cleared */
 	mfspr	r3,SPRN_PVR
 	andi.	r3,r3,0xff00
 	cmpwi	cr0,r3,0x0200

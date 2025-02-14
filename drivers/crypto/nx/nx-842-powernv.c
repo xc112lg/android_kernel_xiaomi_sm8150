@@ -1,5 +1,5 @@
 /*
- * Driver for IBM PowerNV 842 compression accelerator
+* Driver for IBM PowerNV 842 compression accelerator
  *
  * Copyright (C) 2015 Dan Streetman, IBM Corp
  *
@@ -426,7 +426,7 @@ static int nx842_config_crb(const unsigned char *in, unsigned int inlen,
 /**
  * nx842_exec_icswx - compress/decompress data using the 842 algorithm
  *
- * (De)compression provided by the NX842 coprocessor on IBM PowerNV systems.
+* (De)compression provided by the NX842 coprocessor on IBM PowerNV systems.
  * This compresses or decompresses the provided input buffer into the provided
  * output buffer.
  *
@@ -441,7 +441,7 @@ static int nx842_config_crb(const unsigned char *in, unsigned int inlen,
  * @out: output buffer pointer
  * @outlenp: output buffer size pointer
  * @workmem: working memory buffer pointer, size determined by
- *           nx842_powernv_driver.workmem_size
+*           nx842_powernv_driver.workmem_size
  * @fc: function code, see CCW Function Codes in nx-842.h
  *
  * Returns:
@@ -528,7 +528,7 @@ static int nx842_exec_icswx(const unsigned char *in, unsigned int inlen,
 /**
  * nx842_exec_vas - compress/decompress data using the 842 algorithm
  *
- * (De)compression provided by the NX842 coprocessor on IBM PowerNV systems.
+* (De)compression provided by the NX842 coprocessor on IBM PowerNV systems.
  * This compresses or decompresses the provided input buffer into the provided
  * output buffer.
  *
@@ -543,7 +543,7 @@ static int nx842_exec_icswx(const unsigned char *in, unsigned int inlen,
  * @out: output buffer pointer
  * @outlenp: output buffer size pointer
  * @workmem: working memory buffer pointer, size determined by
- *           nx842_powernv_driver.workmem_size
+*           nx842_powernv_driver.workmem_size
  * @fc: function code, see CCW Function Codes in nx-842.h
  *
  * Returns:
@@ -624,9 +624,9 @@ static int nx842_exec_vas(const unsigned char *in, unsigned int inlen,
 }
 
 /**
- * nx842_powernv_compress - Compress data using the 842 algorithm
+* nx842_powernv_compress - Compress data using the 842 algorithm
  *
- * Compression provided by the NX842 coprocessor on IBM PowerNV systems.
+* Compression provided by the NX842 coprocessor on IBM PowerNV systems.
  * The input buffer is compressed and the result is stored in the
  * provided output buffer.
  *
@@ -639,22 +639,22 @@ static int nx842_exec_vas(const unsigned char *in, unsigned int inlen,
  * @out: output buffer pointer
  * @outlenp: output buffer size pointer
  * @workmem: working memory buffer pointer, size determined by
- *           nx842_powernv_driver.workmem_size
+*           nx842_powernv_driver.workmem_size
  *
- * Returns: see @nx842_powernv_exec()
+* Returns: see @nx842_powernv_exec()
  */
 static int nx842_powernv_compress(const unsigned char *in, unsigned int inlen,
 				  unsigned char *out, unsigned int *outlenp,
 				  void *wmem)
 {
-	return nx842_powernv_exec(in, inlen, out, outlenp,
+return nx842_powernv_exec(in, inlen, out, outlenp,
 				      wmem, CCW_FC_842_COMP_CRC);
 }
 
 /**
- * nx842_powernv_decompress - Decompress data using the 842 algorithm
+* nx842_powernv_decompress - Decompress data using the 842 algorithm
  *
- * Decompression provided by the NX842 coprocessor on IBM PowerNV systems.
+* Decompression provided by the NX842 coprocessor on IBM PowerNV systems.
  * The input buffer is decompressed and the result is stored in the
  * provided output buffer.
  *
@@ -667,15 +667,15 @@ static int nx842_powernv_compress(const unsigned char *in, unsigned int inlen,
  * @out: output buffer pointer
  * @outlenp: output buffer size pointer
  * @workmem: working memory buffer pointer, size determined by
- *           nx842_powernv_driver.workmem_size
+*           nx842_powernv_driver.workmem_size
  *
- * Returns: see @nx842_powernv_exec()
+* Returns: see @nx842_powernv_exec()
  */
 static int nx842_powernv_decompress(const unsigned char *in, unsigned int inlen,
 				    unsigned char *out, unsigned int *outlenp,
 				    void *wmem)
 {
-	return nx842_powernv_exec(in, inlen, out, outlenp,
+return nx842_powernv_exec(in, inlen, out, outlenp,
 				      wmem, CCW_FC_842_DECOMP_CRC);
 }
 
@@ -849,7 +849,7 @@ static int __init nx842_powernv_probe_vas(struct device_node *pn)
 		return -EINVAL;
 	}
 
-	for_each_compatible_node(dn, NULL, "ibm,power9-vas-x") {
+for_each_compatible_node(dn, NULL, "ibm,power9-vas-x") {
 		if (of_get_ibm_chip_id(dn) == chip_id)
 			break;
 	}
@@ -951,9 +951,9 @@ static struct nx842_driver nx842_powernv_driver = {
 	.name =		KBUILD_MODNAME,
 	.owner =	THIS_MODULE,
 	.workmem_size =	sizeof(struct nx842_workmem),
-	.constraints =	&nx842_powernv_constraints,
-	.compress =	nx842_powernv_compress,
-	.decompress =	nx842_powernv_decompress,
+.constraints =	&nx842_powernv_constraints,
+.compress =	nx842_powernv_compress,
+.decompress =	nx842_powernv_decompress,
 };
 
 static int nx842_powernv_crypto_init_vas(struct crypto_tfm *tfm)
@@ -963,7 +963,7 @@ static int nx842_powernv_crypto_init_vas(struct crypto_tfm *tfm)
 	struct nx842_coproc *coproc;
 	int ret;
 
-	ret = nx842_crypto_init(tfm, &nx842_powernv_driver);
+ret = nx842_crypto_init(tfm, &nx842_powernv_driver);
 
 	if (ret)
 		return ret;
@@ -998,7 +998,7 @@ void nx842_powernv_crypto_exit_vas(struct crypto_tfm *tfm)
 
 static int nx842_powernv_crypto_init(struct crypto_tfm *tfm)
 {
-	return nx842_crypto_init(tfm, &nx842_powernv_driver);
+return nx842_crypto_init(tfm, &nx842_powernv_driver);
 }
 
 static struct crypto_alg nx842_powernv_alg = {
@@ -1008,7 +1008,7 @@ static struct crypto_alg nx842_powernv_alg = {
 	.cra_flags		= CRYPTO_ALG_TYPE_COMPRESS,
 	.cra_ctxsize		= sizeof(struct nx842_crypto_ctx),
 	.cra_module		= THIS_MODULE,
-	.cra_init		= nx842_powernv_crypto_init,
+.cra_init		= nx842_powernv_crypto_init,
 	.cra_exit		= nx842_crypto_exit,
 	.cra_u			= { .compress = {
 	.coa_compress		= nx842_crypto_compress,
@@ -1029,8 +1029,8 @@ static __init int nx842_powernv_init(void)
 	BUILD_BUG_ON(DDE_BUFFER_ALIGN % DDE_BUFFER_SIZE_MULT);
 	BUILD_BUG_ON(DDE_BUFFER_SIZE_MULT % DDE_BUFFER_LAST_MULT);
 
-	for_each_compatible_node(dn, NULL, "ibm,power9-nx") {
-		ret = nx842_powernv_probe_vas(dn);
+for_each_compatible_node(dn, NULL, "ibm,power9-nx") {
+ret = nx842_powernv_probe_vas(dn);
 		if (ret) {
 			nx842_delete_coprocs();
 			return ret;
@@ -1038,20 +1038,20 @@ static __init int nx842_powernv_init(void)
 	}
 
 	if (list_empty(&nx842_coprocs)) {
-		for_each_compatible_node(dn, NULL, "ibm,power-nx")
-			nx842_powernv_probe(dn);
+for_each_compatible_node(dn, NULL, "ibm,power-nx")
+nx842_powernv_probe(dn);
 
 		if (!nx842_ct)
 			return -ENODEV;
 
-		nx842_powernv_exec = nx842_exec_icswx;
+nx842_powernv_exec = nx842_exec_icswx;
 	} else {
-		nx842_powernv_exec = nx842_exec_vas;
-		nx842_powernv_alg.cra_init = nx842_powernv_crypto_init_vas;
-		nx842_powernv_alg.cra_exit = nx842_powernv_crypto_exit_vas;
+nx842_powernv_exec = nx842_exec_vas;
+nx842_powernv_alg.cra_init = nx842_powernv_crypto_init_vas;
+nx842_powernv_alg.cra_exit = nx842_powernv_crypto_exit_vas;
 	}
 
-	ret = crypto_register_alg(&nx842_powernv_alg);
+ret = crypto_register_alg(&nx842_powernv_alg);
 	if (ret) {
 		nx842_delete_coprocs();
 		return ret;
@@ -1063,7 +1063,7 @@ module_init(nx842_powernv_init);
 
 static void __exit nx842_powernv_exit(void)
 {
-	crypto_unregister_alg(&nx842_powernv_alg);
+crypto_unregister_alg(&nx842_powernv_alg);
 
 	nx842_delete_coprocs();
 }

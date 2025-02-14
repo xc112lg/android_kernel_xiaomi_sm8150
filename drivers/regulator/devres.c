@@ -1,5 +1,5 @@
 /*
- * devres.c  --  Voltage/Current Regulator framework devres implementation.
+* devres.c  --  Voltage/Current Regulator framework devres implementation.
  *
  * Copyright 2013 Linaro Ltd
  *

@@ -344,7 +344,7 @@ int __init icp_native_init(void)
 			found = 1;
 	if (!found) {
 		for_each_node_by_type(np,
-			"PowerPC-External-Interrupt-Presentation") {
+"PowerPC-External-Interrupt-Presentation") {
 				if (icp_native_init_one_node(np, &indx) == 0)
 					found = 1;
 		}

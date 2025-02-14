@@ -144,7 +144,7 @@ static int refgen_probe(struct platform_device *pdev)
 	rdesc->ops = &refgen_ops;
 	rdesc->id = pdev->id;
 	rdesc->owner = THIS_MODULE;
-	rdesc->type = REGULATOR_VOLTAGE;
+rdesc->type = REGULATOR_VOLTAGE;
 
 	config.dev = dev;
 	config.init_data = init_data;

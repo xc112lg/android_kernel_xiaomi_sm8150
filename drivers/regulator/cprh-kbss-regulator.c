@@ -42,8 +42,8 @@
  * struct cprh_kbss_fuses - KBSS specific fuse data
  * @ro_sel:		Ring oscillator select fuse parameter value for each
  *			fuse corner
- * @init_voltage:	Initial (i.e. open-loop) voltage fuse parameter value
- *			for each fuse corner (raw, not converted to a voltage)
+* @init_voltage:	Initial (i.e. open-loop) voltage fuse parameter value
+*			for each fuse corner (raw, not converted to a voltage)
  * @target_quot:	CPR target quotient fuse parameter value for each fuse
  *			corner
  * @quot_offset:	CPR target quotient offset fuse parameter value for each
@@ -53,7 +53,7 @@
  *			the given chip
  * @cpr_fusing_rev:	CPR fusing revision fuse parameter value
  * @force_highest_corner:	Flag indicating that all corners must operate
- *			at the voltage of the highest corner.  This is
+*			at the voltage of the highest corner.  This is
  *			applicable to MSM8998 only.
  * @aging_init_quot_diff:	Initial quotient difference between CPR aging
  *			min and max sensors measured at time of manufacturing
@@ -62,7 +62,7 @@
  */
 struct cprh_kbss_fuses {
 	u64	*ro_sel;
-	u64	*init_voltage;
+u64	*init_voltage;
 	u64	*target_quot;
 	u64	*quot_offset;
 	u64	speed_bin;
@@ -99,19 +99,19 @@ static const char * const cprh_msm8998_kbss_fuse_corner_name[] = {
 };
 
 enum cprh_sdm660_power_kbss_fuse_corner {
-	CPRH_SDM660_POWER_KBSS_FUSE_CORNER_LOWSVS	= 0,
-	CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVS		= 1,
-	CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVSPLUS	= 2,
-	CPRH_SDM660_POWER_KBSS_FUSE_CORNER_NOM		= 3,
-	CPRH_SDM660_POWER_KBSS_FUSE_CORNER_TURBO_L1	= 4,
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_LOWSVS	= 0,
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVS		= 1,
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVSPLUS	= 2,
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_NOM		= 3,
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_TURBO_L1	= 4,
 };
 
 static const char * const cprh_sdm660_power_kbss_fuse_corner_name[] = {
-	[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_LOWSVS]	= "LowSVS",
-	[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVS]	= "SVS",
-	[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVSPLUS]	= "SVSPLUS",
-	[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_NOM]	= "NOM",
-	[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_TURBO_L1]	= "TURBO_L1",
+[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_LOWSVS]	= "LowSVS",
+[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVS]	= "SVS",
+[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_SVSPLUS]	= "SVSPLUS",
+[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_NOM]	= "NOM",
+[CPRH_SDM660_POWER_KBSS_FUSE_CORNER_TURBO_L1]	= "TURBO_L1",
 };
 
 enum cprh_sdm660_perf_kbss_fuse_corner {
@@ -142,7 +142,7 @@ static const char * const cprh_sdm660_perf_kbss_fuse_corner_name[] = {
  * MSM8998 KBSS fuse parameter locations:
  *
  * Structs are organized with the following dimensions:
- *	Outer:  0 or 1 for power or performance cluster
+*	Outer:  0 or 1 for power or performance cluster
  *	Middle: 0 to 3 for fuse corners from lowest to highest corner
  *	Inner:  large enough to hold the longest set of parameter segments which
  *		fully defines a fuse parameter, +1 (for NULL termination).
@@ -154,7 +154,7 @@ static const char * const cprh_sdm660_perf_kbss_fuse_corner_name[] = {
  */
 static const struct cpr3_fuse_param
 msm8998_kbss_ro_sel_param[2][MSM8998_KBSS_FUSE_CORNERS][2] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{67, 12, 15}, {} },
 		{{67,  8, 11}, {} },
 		{{67,  4,  7}, {} },
@@ -170,7 +170,7 @@ msm8998_kbss_ro_sel_param[2][MSM8998_KBSS_FUSE_CORNERS][2] = {
 
 static const struct cpr3_fuse_param
 sdm660_kbss_ro_sel_param[2][SDM660_KBSS_FUSE_CORNERS][3] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{67, 12, 15}, {} },
 		{{67,  8, 11}, {} },
 		{{65, 56, 59}, {} },
@@ -188,7 +188,7 @@ sdm660_kbss_ro_sel_param[2][SDM660_KBSS_FUSE_CORNERS][3] = {
 
 static const struct cpr3_fuse_param
 msm8998_kbss_init_voltage_param[2][MSM8998_KBSS_FUSE_CORNERS][2] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{67, 34, 39}, {} },
 		{{67, 28, 33}, {} },
 		{{67, 22, 27}, {} },
@@ -204,7 +204,7 @@ msm8998_kbss_init_voltage_param[2][MSM8998_KBSS_FUSE_CORNERS][2] = {
 
 static const struct cpr3_fuse_param
 sdm660_kbss_init_voltage_param[2][SDM660_KBSS_FUSE_CORNERS][2] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{67, 34, 39}, {} },
 		{{67, 28, 33}, {} },
 		{{71,  3,  8}, {} },
@@ -222,7 +222,7 @@ sdm660_kbss_init_voltage_param[2][SDM660_KBSS_FUSE_CORNERS][2] = {
 
 static const struct cpr3_fuse_param
 msm8998_kbss_target_quot_param[2][MSM8998_KBSS_FUSE_CORNERS][3] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{68, 18, 29}, {} },
 		{{68,  6, 17}, {} },
 		{{67, 58, 63}, {68,  0,  5} },
@@ -238,7 +238,7 @@ msm8998_kbss_target_quot_param[2][MSM8998_KBSS_FUSE_CORNERS][3] = {
 
 static const struct cpr3_fuse_param
 sdm660_kbss_target_quot_param[2][SDM660_KBSS_FUSE_CORNERS][3] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{68, 12, 23}, {} },
 		{{68,  0, 11}, {} },
 		{{71,  9, 20}, {} },
@@ -256,7 +256,7 @@ sdm660_kbss_target_quot_param[2][SDM660_KBSS_FUSE_CORNERS][3] = {
 
 static const struct cpr3_fuse_param
 msm8998_kbss_quot_offset_param[2][MSM8998_KBSS_FUSE_CORNERS][3] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{} },
 		{{68, 63, 63}, {69, 0, 5}, {} },
 		{{68, 56, 62}, {} },
@@ -272,7 +272,7 @@ msm8998_kbss_quot_offset_param[2][MSM8998_KBSS_FUSE_CORNERS][3] = {
 
 static const struct cpr3_fuse_param
 sdm660_kbss_quot_offset_param[2][SDM660_KBSS_FUSE_CORNERS][3] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{{} },
 		{{68, 38, 44}, {} },
 		{{71, 21, 27}, {} },
@@ -311,7 +311,7 @@ msm8998_cpr_force_highest_corner_param[] = {
 
 static const struct cpr3_fuse_param
 msm8998_kbss_aging_init_quot_diff_param[2][2] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{69, 6, 13},
 		{},
 	},
@@ -323,7 +323,7 @@ msm8998_kbss_aging_init_quot_diff_param[2][2] = {
 
 static const struct cpr3_fuse_param
 sdm660_kbss_aging_init_quot_diff_param[2][2] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		{68, 45, 52},
 		{},
 	},
@@ -334,7 +334,7 @@ sdm660_kbss_aging_init_quot_diff_param[2][2] = {
 };
 
 /*
- * Open loop voltage fuse reference voltages in microvolts for MSM8998 v1
+* Open loop voltage fuse reference voltages in microvolts for MSM8998 v1
  */
 static const int
 msm8998_v1_kbss_fuse_ref_volt[MSM8998_KBSS_FUSE_CORNERS] = {
@@ -345,11 +345,11 @@ msm8998_v1_kbss_fuse_ref_volt[MSM8998_KBSS_FUSE_CORNERS] = {
 };
 
 /*
- * Open loop voltage fuse reference voltages in microvolts for MSM8998 v2
+* Open loop voltage fuse reference voltages in microvolts for MSM8998 v2
  */
 static const int
 msm8998_v2_kbss_fuse_ref_volt[2][MSM8998_KBSS_FUSE_CORNERS] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		688000,
 		756000,
 		828000,
@@ -364,11 +364,11 @@ msm8998_v2_kbss_fuse_ref_volt[2][MSM8998_KBSS_FUSE_CORNERS] = {
 };
 
 /*
- * Open loop voltage fuse reference voltages in microvolts for SDM660
+* Open loop voltage fuse reference voltages in microvolts for SDM660
  */
 static const int
 sdm660_kbss_fuse_ref_volt[2][SDM660_KBSS_FUSE_CORNERS] = {
-	[CPRH_KBSS_POWER_CLUSTER_ID] = {
+[CPRH_KBSS_POWER_CLUSTER_ID] = {
 		644000,
 		724000,
 		788000,
@@ -471,10 +471,10 @@ static int cprh_msm8998_kbss_read_fuse_data(struct cpr3_regulator *vreg,
 	id = vreg->thread->ctrl->ctrl_id;
 	for (i = 0; i < MSM8998_KBSS_FUSE_CORNERS; i++) {
 		rc = cpr3_read_fuse_param(base,
-				msm8998_kbss_init_voltage_param[id][i],
-				&fuse->init_voltage[i]);
+msm8998_kbss_init_voltage_param[id][i],
+&fuse->init_voltage[i]);
 		if (rc) {
-			cpr3_err(vreg, "Unable to read fuse-corner %d initial voltage fuse, rc=%d\n",
+cpr3_err(vreg, "Unable to read fuse-corner %d initial voltage fuse, rc=%d\n",
 				i, rc);
 			return rc;
 		}
@@ -568,10 +568,10 @@ static int cprh_sdm660_kbss_read_fuse_data(struct cpr3_regulator *vreg,
 	id = vreg->thread->ctrl->ctrl_id;
 	for (i = 0; i < SDM660_KBSS_FUSE_CORNERS; i++) {
 		rc = cpr3_read_fuse_param(base,
-				sdm660_kbss_init_voltage_param[id][i],
-				&fuse->init_voltage[i]);
+sdm660_kbss_init_voltage_param[id][i],
+&fuse->init_voltage[i]);
 		if (rc) {
-			cpr3_err(vreg, "Unable to read fuse-corner %d initial voltage fuse, rc=%d\n",
+cpr3_err(vreg, "Unable to read fuse-corner %d initial voltage fuse, rc=%d\n",
 				i, rc);
 			return rc;
 		}
@@ -660,14 +660,14 @@ static int cprh_kbss_read_fuse_data(struct cpr3_regulator *vreg)
 
 	fuse->ro_sel = devm_kcalloc(vreg->thread->ctrl->dev, fuse_corners,
 			sizeof(*fuse->ro_sel), GFP_KERNEL);
-	fuse->init_voltage = devm_kcalloc(vreg->thread->ctrl->dev, fuse_corners,
-			sizeof(*fuse->init_voltage), GFP_KERNEL);
+fuse->init_voltage = devm_kcalloc(vreg->thread->ctrl->dev, fuse_corners,
+sizeof(*fuse->init_voltage), GFP_KERNEL);
 	fuse->target_quot = devm_kcalloc(vreg->thread->ctrl->dev, fuse_corners,
 			sizeof(*fuse->target_quot), GFP_KERNEL);
 	fuse->quot_offset = devm_kcalloc(vreg->thread->ctrl->dev, fuse_corners,
 			sizeof(*fuse->quot_offset), GFP_KERNEL);
 
-	if (!fuse->ro_sel || !fuse->init_voltage || !fuse->target_quot
+if (!fuse->ro_sel || !fuse->init_voltage || !fuse->target_quot
 			|| !fuse->quot_offset)
 		return -ENOMEM;
 
@@ -729,7 +729,7 @@ static int cprh_kbss_parse_corner_data(struct cpr3_regulator *vreg)
 	/*
 	 * A total of CPRH_KBSS_MAX_CORNER_COUNT - 1 corners
 	 * may be specified in device tree as an additional corner
-	 * must be allocated to correspond to the APM crossover voltage.
+* must be allocated to correspond to the APM crossover voltage.
 	 */
 	if (vreg->corner_count > CPRH_KBSS_MAX_CORNER_COUNT - 1) {
 		cpr3_err(vreg, "corner count %d exceeds supported maximum %d\n",
@@ -741,18 +741,18 @@ static int cprh_kbss_parse_corner_data(struct cpr3_regulator *vreg)
 }
 
 /**
- * cprh_kbss_calculate_open_loop_voltages() - calculate the open-loop
- *		voltage for each corner of a CPR3 regulator
+* cprh_kbss_calculate_open_loop_voltages() - calculate the open-loop
+*		voltage for each corner of a CPR3 regulator
  * @vreg:		Pointer to the CPR3 regulator
  *
- * If open-loop voltage interpolation is allowed in device tree, then this
- * function calculates the open-loop voltage for a given corner using linear
+* If open-loop voltage interpolation is allowed in device tree, then this
+* function calculates the open-loop voltage for a given corner using linear
  * interpolation.  This interpolation is performed using the processor
- * frequencies of the lower and higher Fmax corners along with their fused
- * open-loop voltages.
+* frequencies of the lower and higher Fmax corners along with their fused
+* open-loop voltages.
  *
- * If open-loop voltage interpolation is not allowed, then this function uses
- * the Fmax fused open-loop voltage for all of the corners associated with a
+* If open-loop voltage interpolation is not allowed, then this function uses
+* the Fmax fused open-loop voltage for all of the corners associated with a
  * given fuse corner.
  *
  * Return: 0 on success, errno on failure
@@ -763,7 +763,7 @@ static int cprh_kbss_calculate_open_loop_voltages(struct cpr3_regulator *vreg)
 	struct cprh_kbss_fuses *fuse = vreg->platform_fuses;
 	int i, j, id, rc = 0;
 	bool allow_interpolation;
-	u64 freq_low, volt_low, freq_high, volt_high;
+u64 freq_low, volt_low, freq_high, volt_high;
 	const int *ref_volt;
 	int *fuse_volt;
 	int *fmax_corner;
@@ -785,8 +785,8 @@ static int cprh_kbss_calculate_open_loop_voltages(struct cpr3_regulator *vreg)
 	switch (soc_revision) {
 	case SDM660_SOC_ID:
 		ref_volt = sdm660_kbss_fuse_ref_volt[id];
-		if (id == CPRH_KBSS_POWER_CLUSTER_ID)
-			corner_name = cprh_sdm660_power_kbss_fuse_corner_name;
+if (id == CPRH_KBSS_POWER_CLUSTER_ID)
+corner_name = cprh_sdm660_power_kbss_fuse_corner_name;
 		else
 			corner_name = cprh_sdm660_perf_kbss_fuse_corner_name;
 		break;
@@ -805,9 +805,9 @@ static int cprh_kbss_calculate_open_loop_voltages(struct cpr3_regulator *vreg)
 	}
 
 	for (i = 0; i < vreg->fuse_corner_count; i++) {
-		fuse_volt[i] = cpr3_convert_open_loop_voltage_fuse(ref_volt[i],
-			CPRH_KBSS_FUSE_STEP_VOLT, fuse->init_voltage[i],
-			CPRH_KBSS_VOLTAGE_FUSE_SIZE);
+fuse_volt[i] = cpr3_convert_open_loop_voltage_fuse(ref_volt[i],
+CPRH_KBSS_FUSE_STEP_VOLT, fuse->init_voltage[i],
+CPRH_KBSS_VOLTAGE_FUSE_SIZE);
 
 		/* SDM660 speed bin #3 does not support TURBO_L1/L2 */
 		if (soc_revision == SDM660_SOC_ID && vreg->speed_bin_fuse == 3
@@ -815,24 +815,24 @@ static int cprh_kbss_calculate_open_loop_voltages(struct cpr3_regulator *vreg)
 		    && (i == CPRH_SDM660_PERF_KBSS_FUSE_CORNER_TURBO_L2))
 			continue;
 
-		/* Log fused open-loop voltage values for debugging purposes. */
+/* Log fused open-loop voltage values for debugging purposes. */
 		cpr3_info(vreg, "fused %8s: open-loop=%7d uV\n", corner_name[i],
 			  fuse_volt[i]);
 	}
 
-	rc = cpr3_adjust_fused_open_loop_voltages(vreg, fuse_volt);
+rc = cpr3_adjust_fused_open_loop_voltages(vreg, fuse_volt);
 	if (rc) {
-		cpr3_err(vreg, "fused open-loop voltage adjustment failed, rc=%d\n",
+cpr3_err(vreg, "fused open-loop voltage adjustment failed, rc=%d\n",
 			rc);
 		goto done;
 	}
 
 	allow_interpolation = of_property_read_bool(node,
-				"qcom,allow-voltage-interpolation");
+"qcom,allow-voltage-interpolation");
 
 	for (i = 1; i < vreg->fuse_corner_count; i++) {
 		if (fuse_volt[i] < fuse_volt[i - 1]) {
-			cpr3_info(vreg, "fuse corner %d voltage=%d uV < fuse corner %d voltage=%d uV; overriding: fuse corner %d voltage=%d\n",
+cpr3_info(vreg, "fuse corner %d voltage=%d uV < fuse corner %d voltage=%d uV; overriding: fuse corner %d voltage=%d\n",
 				i, fuse_volt[i], i - 1, fuse_volt[i - 1],
 				i, fuse_volt[i - 1]);
 			fuse_volt[i] = fuse_volt[i - 1];
@@ -840,7 +840,7 @@ static int cprh_kbss_calculate_open_loop_voltages(struct cpr3_regulator *vreg)
 	}
 
 	if (!allow_interpolation) {
-		/* Use fused open-loop voltage for lower frequencies. */
+/* Use fused open-loop voltage for lower frequencies. */
 		for (i = 0; i < vreg->corner_count; i++)
 			vreg->corner[i].open_loop_volt
 				= fuse_volt[vreg->corner[i].cpr_fuse_corner];
@@ -868,29 +868,29 @@ static int cprh_kbss_calculate_open_loop_voltages(struct cpr3_regulator *vreg)
 	for (i = 0; i <= fmax_corner[0]; i++)
 		vreg->corner[i].open_loop_volt = fuse_volt[0];
 
-	/* Interpolate voltages for the higher fuse corners. */
+/* Interpolate voltages for the higher fuse corners. */
 	for (i = 1; i < vreg->fuse_corner_count; i++) {
-		freq_low = vreg->corner[fmax_corner[i - 1]].proc_freq;
+freq_low = vreg->corner[fmax_corner[i - 1]].proc_freq;
 		volt_low = fuse_volt[i - 1];
-		freq_high = vreg->corner[fmax_corner[i]].proc_freq;
+freq_high = vreg->corner[fmax_corner[i]].proc_freq;
 		volt_high = fuse_volt[i];
 
 		for (j = fmax_corner[i - 1] + 1; j <= fmax_corner[i]; j++)
 			vreg->corner[j].open_loop_volt = cpr3_interpolate(
-				freq_low, volt_low, freq_high, volt_high,
-				vreg->corner[j].proc_freq);
+freq_low, volt_low, freq_high, volt_high,
+vreg->corner[j].proc_freq);
 	}
 
 done:
 	if (rc == 0) {
-		cpr3_debug(vreg, "unadjusted per-corner open-loop voltages:\n");
+cpr3_debug(vreg, "unadjusted per-corner open-loop voltages:\n");
 		for (i = 0; i < vreg->corner_count; i++)
 			cpr3_debug(vreg, "open-loop[%2d] = %d uV\n", i,
 				vreg->corner[i].open_loop_volt);
 
-		rc = cpr3_adjust_open_loop_voltages(vreg);
+rc = cpr3_adjust_open_loop_voltages(vreg);
 		if (rc)
-			cpr3_err(vreg, "open-loop voltage adjustment failed, rc=%d\n",
+cpr3_err(vreg, "open-loop voltage adjustment failed, rc=%d\n",
 				rc);
 	}
 
@@ -900,14 +900,14 @@ done:
 }
 
 /**
- * cprh_msm8998_partial_binning_override() - override the voltage and quotient
+* cprh_msm8998_partial_binning_override() - override the voltage and quotient
  *		settings for low corners based upon special partial binning
  *		fuse values
  *
  * @vreg:		Pointer to the CPR3 regulator
  *
- * Some parts are not able to operate at low voltages.  The force highest
- * corner fuse specifies if a given part must operate with voltages
+* Some parts are not able to operate at low voltages.  The force highest
+* corner fuse specifies if a given part must operate with voltages
  * corresponding to the highest corner.
  *
  * Return: 0 on success, errno on failure
@@ -918,14 +918,14 @@ static int cprh_msm8998_partial_binning_override(struct cpr3_regulator *vreg)
 	struct cpr3_corner *corner;
 	struct cpr4_sdelta *sdelta;
 	int i;
-	u32 proc_freq;
+u32 proc_freq;
 
 	if (fuse->force_highest_corner) {
-		cpr3_info(vreg, "overriding CPR parameters for corners 0 to %d with quotients and voltages of corner %d\n",
+cpr3_info(vreg, "overriding CPR parameters for corners 0 to %d with quotients and voltages of corner %d\n",
 			  vreg->corner_count - 2, vreg->corner_count - 1);
 		corner = &vreg->corner[vreg->corner_count - 1];
 		for (i = 0; i < vreg->corner_count - 1; i++) {
-			proc_freq = vreg->corner[i].proc_freq;
+proc_freq = vreg->corner[i].proc_freq;
 			sdelta = vreg->corner[i].sdelta;
 			if (sdelta) {
 				if (sdelta->table)
@@ -938,7 +938,7 @@ static int cprh_msm8998_partial_binning_override(struct cpr3_regulator *vreg)
 					   sdelta);
 			}
 			vreg->corner[i] = *corner;
-			vreg->corner[i].proc_freq = proc_freq;
+vreg->corner[i].proc_freq = proc_freq;
 		}
 
 		return 0;
@@ -950,7 +950,7 @@ static int cprh_msm8998_partial_binning_override(struct cpr3_regulator *vreg)
 /**
  * cprh_kbss_parse_core_count_temp_adj_properties() - load device tree
  *		properties associated with per-corner-band and temperature
- *		voltage adjustments.
+*		voltage adjustments.
  * @vreg:	Pointer to the CPR3 regulator
  *
  * Return: 0 on success, errno on failure
@@ -1165,23 +1165,23 @@ static int cprh_kbss_parse_core_count_temp_adj_properties(
 	switch (ctrl->soc_revision) {
 	case SDM660_SOC_ID:
 		ctrl->temp_sensor_id_start = ctrl->ctrl_id ==
-			CPRH_KBSS_POWER_CLUSTER_ID
-			? SDM660_KBSS_POWER_TEMP_SENSOR_ID_START :
+CPRH_KBSS_POWER_CLUSTER_ID
+? SDM660_KBSS_POWER_TEMP_SENSOR_ID_START :
 			SDM660_KBSS_PERFORMANCE_TEMP_SENSOR_ID_START;
 		ctrl->temp_sensor_id_end = ctrl->ctrl_id ==
-			CPRH_KBSS_POWER_CLUSTER_ID
-			? SDM660_KBSS_POWER_TEMP_SENSOR_ID_END :
+CPRH_KBSS_POWER_CLUSTER_ID
+? SDM660_KBSS_POWER_TEMP_SENSOR_ID_END :
 			SDM660_KBSS_PERFORMANCE_TEMP_SENSOR_ID_END;
 		break;
 	case MSM8998_V1_SOC_ID:
 	case MSM8998_V2_SOC_ID:
 		ctrl->temp_sensor_id_start = ctrl->ctrl_id ==
-			CPRH_KBSS_POWER_CLUSTER_ID
-			? MSM8998_KBSS_POWER_TEMP_SENSOR_ID_START :
+CPRH_KBSS_POWER_CLUSTER_ID
+? MSM8998_KBSS_POWER_TEMP_SENSOR_ID_START :
 			MSM8998_KBSS_PERFORMANCE_TEMP_SENSOR_ID_START;
 		ctrl->temp_sensor_id_end = ctrl->ctrl_id ==
-			CPRH_KBSS_POWER_CLUSTER_ID
-			? MSM8998_KBSS_POWER_TEMP_SENSOR_ID_END :
+CPRH_KBSS_POWER_CLUSTER_ID
+? MSM8998_KBSS_POWER_TEMP_SENSOR_ID_END :
 			MSM8998_KBSS_PERFORMANCE_TEMP_SENSOR_ID_END;
 		break;
 	default:
@@ -1199,12 +1199,12 @@ free_temp:
 
 /**
  * cprh_kbss_apm_crossover_as_corner() - introduce a corner whose floor,
- *		open-loop, and ceiling voltages correspond to the APM
- *		crossover voltage.
+*		open-loop, and ceiling voltages correspond to the APM
+*		crossover voltage.
  * @vreg:		Pointer to the CPR3 regulator
  *
  * The APM corner is utilized as a crossover corner by OSM and CPRh
- * hardware to set the VDD supply voltage during the APM switch
+* hardware to set the VDD supply voltage during the APM switch
  * routine.
  *
  * Return: 0 on success, errno on failure
@@ -1215,7 +1215,7 @@ static int cprh_kbss_apm_crossover_as_corner(struct cpr3_regulator *vreg)
 	struct cpr3_corner *corner;
 
 	if (!ctrl->apm_crossover_volt) {
-		/* APM voltage crossover corner not required. */
+/* APM voltage crossover corner not required. */
 		return 0;
 	}
 
@@ -1224,7 +1224,7 @@ static int cprh_kbss_apm_crossover_as_corner(struct cpr3_regulator *vreg)
 	 * 0 MHz indicates this corner is not to be
 	 * used as active DCVS set point.
 	 */
-	corner->proc_freq = 0;
+corner->proc_freq = 0;
 	corner->floor_volt = ctrl->apm_crossover_volt;
 	corner->ceiling_volt = ctrl->apm_crossover_volt;
 	corner->open_loop_volt = ctrl->apm_crossover_volt;
@@ -1237,12 +1237,12 @@ static int cprh_kbss_apm_crossover_as_corner(struct cpr3_regulator *vreg)
 
 /**
  * cprh_kbss_mem_acc_crossover_as_corner() - introduce a corner whose floor,
- *		open-loop, and ceiling voltages correspond to the MEM ACC
- *		crossover voltage.
+*		open-loop, and ceiling voltages correspond to the MEM ACC
+*		crossover voltage.
  * @vreg:		Pointer to the CPR3 regulator
  *
  * The MEM ACC corner is utilized as a crossover corner by OSM and CPRh
- * hardware to set the VDD supply voltage during the MEM ACC switch
+* hardware to set the VDD supply voltage during the MEM ACC switch
  * routine.
  *
  * Return: 0 on success, errno on failure
@@ -1253,7 +1253,7 @@ static int cprh_kbss_mem_acc_crossover_as_corner(struct cpr3_regulator *vreg)
 	struct cpr3_corner *corner;
 
 	if (!ctrl->mem_acc_crossover_volt) {
-		/* MEM ACC voltage crossover corner not required. */
+/* MEM ACC voltage crossover corner not required. */
 		return 0;
 	}
 
@@ -1262,7 +1262,7 @@ static int cprh_kbss_mem_acc_crossover_as_corner(struct cpr3_regulator *vreg)
 	 * 0 MHz indicates this corner is not to be
 	 * used as active DCVS set point.
 	 */
-	corner->proc_freq = 0;
+corner->proc_freq = 0;
 	corner->floor_volt = ctrl->mem_acc_crossover_volt;
 	corner->ceiling_volt = ctrl->mem_acc_crossover_volt;
 	corner->open_loop_volt = ctrl->mem_acc_crossover_volt;
@@ -1275,12 +1275,12 @@ static int cprh_kbss_mem_acc_crossover_as_corner(struct cpr3_regulator *vreg)
 
 /**
  * cprh_kbss_set_no_interpolation_quotients() - use the fused target quotient
- *		values for lower frequencies.
+*		values for lower frequencies.
  * @vreg:		Pointer to the CPR3 regulator
  * @volt_adjust:	Pointer to array of per-corner closed-loop adjustment
- *			voltages
+*			voltages
  * @volt_adjust_fuse:	Pointer to array of per-fuse-corner closed-loop
- *			adjustment voltages
+*			adjustment voltages
  * @ro_scale:		Pointer to array of per-fuse-corner RO scaling factor
  *			values with units of QUOT/V
  *
@@ -1323,7 +1323,7 @@ static int cprh_kbss_set_no_interpolation_quotients(struct cpr3_regulator *vreg,
  * If target quotient interpolation is allowed in device tree, then this
  * function calculates the target quotient for a given corner using linear
  * interpolation.  This interpolation is performed using the processor
- * frequencies of the lower and higher Fmax corners along with the fused
+* frequencies of the lower and higher Fmax corners along with the fused
  * target quotient and quotient offset of the higher Fmax corner.
  *
  * If target quotient interpolation is not allowed, then this function uses
@@ -1337,7 +1337,7 @@ static int cprh_kbss_calculate_target_quotients(struct cpr3_regulator *vreg)
 	struct cprh_kbss_fuses *fuse = vreg->platform_fuses;
 	int rc;
 	bool allow_interpolation;
-	u64 freq_low, freq_high, prev_quot;
+u64 freq_low, freq_high, prev_quot;
 	u64 *quot_low;
 	u64 *quot_high;
 	u32 quot, ro;
@@ -1349,12 +1349,12 @@ static int cprh_kbss_calculate_target_quotients(struct cpr3_regulator *vreg)
 
 	switch (vreg->thread->ctrl->soc_revision) {
 	case SDM660_SOC_ID:
-		if (vreg->thread->ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID) {
-			corner_name = cprh_sdm660_power_kbss_fuse_corner_name;
+if (vreg->thread->ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID) {
+corner_name = cprh_sdm660_power_kbss_fuse_corner_name;
 			lowest_fuse_corner =
-				CPRH_SDM660_POWER_KBSS_FUSE_CORNER_LOWSVS;
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_LOWSVS;
 			highest_fuse_corner =
-				CPRH_SDM660_POWER_KBSS_FUSE_CORNER_TURBO_L1;
+CPRH_SDM660_POWER_KBSS_FUSE_CORNER_TURBO_L1;
 		} else {
 			corner_name = cprh_sdm660_perf_kbss_fuse_corner_name;
 			lowest_fuse_corner =
@@ -1414,16 +1414,16 @@ static int cprh_kbss_calculate_target_quotients(struct cpr3_regulator *vreg)
 		goto done;
 	}
 
-	rc = cpr3_parse_closed_loop_voltage_adjustments(vreg, &fuse->ro_sel[0],
+rc = cpr3_parse_closed_loop_voltage_adjustments(vreg, &fuse->ro_sel[0],
 				volt_adjust, volt_adjust_fuse, ro_scale);
 	if (rc) {
-		cpr3_err(vreg, "could not load closed-loop voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "could not load closed-loop voltage adjustments, rc=%d\n",
 			rc);
 		goto done;
 	}
 
 	if (!allow_interpolation) {
-		/* Use fused target quotients for lower frequencies. */
+/* Use fused target quotients for lower frequencies. */
 		return cprh_kbss_set_no_interpolation_quotients(vreg,
 				volt_adjust, volt_adjust_fuse, ro_scale);
 	}
@@ -1500,16 +1500,16 @@ static int cprh_kbss_calculate_target_quotients(struct cpr3_regulator *vreg)
 		}
 	}
 
-	/* Interpolate voltages for the higher fuse corners. */
+/* Interpolate voltages for the higher fuse corners. */
 	for (i = 1; i < vreg->fuse_corner_count; i++) {
-		freq_low = vreg->corner[fmax_corner[i - 1]].proc_freq;
-		freq_high = vreg->corner[fmax_corner[i]].proc_freq;
+freq_low = vreg->corner[fmax_corner[i - 1]].proc_freq;
+freq_high = vreg->corner[fmax_corner[i]].proc_freq;
 
 		ro = fuse->ro_sel[i];
 		for (j = fmax_corner[i - 1] + 1; j <= fmax_corner[i]; j++)
 			vreg->corner[j].target_quot[ro] = cpr3_interpolate(
-				freq_low, quot_low[i], freq_high, quot_high[i],
-				vreg->corner[j].proc_freq);
+freq_low, quot_low[i], freq_high, quot_high[i],
+vreg->corner[j].proc_freq);
 	}
 
 	/* Perform per-corner target quotient adjustment */
@@ -1563,11 +1563,11 @@ static void cprh_kbss_print_settings(struct cpr3_regulator *vreg)
 	struct cpr3_corner *corner;
 	int i;
 
-	cpr3_debug(vreg, "Corner: Frequency (Hz), Fuse Corner, Floor (uV), Open-Loop (uV), Ceiling (uV)\n");
+cpr3_debug(vreg, "Corner: Frequency (Hz), Fuse Corner, Floor (uV), Open-Loop (uV), Ceiling (uV)\n");
 	for (i = 0; i < vreg->corner_count; i++) {
 		corner = &vreg->corner[i];
 		cpr3_debug(vreg, "%3d: %10u, %2d, %7d, %7d, %7d\n",
-			i, corner->proc_freq, corner->cpr_fuse_corner,
+i, corner->proc_freq, corner->cpr_fuse_corner,
 			corner->floor_volt, corner->open_loop_volt,
 			corner->ceiling_volt);
 	}
@@ -1621,28 +1621,28 @@ static int cprh_kbss_init_regulator(struct cpr3_regulator *vreg)
 		return rc;
 	}
 
-	rc = cprh_kbss_calculate_open_loop_voltages(vreg);
+rc = cprh_kbss_calculate_open_loop_voltages(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to calculate open-loop voltages, rc=%d\n",
+cpr3_err(vreg, "unable to calculate open-loop voltages, rc=%d\n",
 			rc);
 		return rc;
 	}
 
-	rc = cpr3_limit_open_loop_voltages(vreg);
+rc = cpr3_limit_open_loop_voltages(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to limit open-loop voltages, rc=%d\n",
+cpr3_err(vreg, "unable to limit open-loop voltages, rc=%d\n",
 			rc);
 		return rc;
 	}
 
-	cprh_adjust_voltages_for_apm(vreg);
-	cprh_adjust_voltages_for_mem_acc(vreg);
+cprh_adjust_voltages_for_apm(vreg);
+cprh_adjust_voltages_for_mem_acc(vreg);
 
-	cpr3_open_loop_voltage_as_ceiling(vreg);
+cpr3_open_loop_voltage_as_ceiling(vreg);
 
-	rc = cpr3_limit_floor_voltages(vreg);
+rc = cpr3_limit_floor_voltages(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to limit floor voltages, rc=%d\n", rc);
+cpr3_err(vreg, "unable to limit floor voltages, rc=%d\n", rc);
 		return rc;
 	}
 
@@ -1660,9 +1660,9 @@ static int cprh_kbss_init_regulator(struct cpr3_regulator *vreg)
 		return rc;
 	}
 
-	rc = cpr4_parse_core_count_temp_voltage_adj(vreg, true);
+rc = cpr4_parse_core_count_temp_voltage_adj(vreg, true);
 	if (rc) {
-		cpr3_err(vreg, "unable to parse temperature and core count voltage adjustments, rc=%d\n",
+cpr3_err(vreg, "unable to parse temperature and core count voltage adjustments, rc=%d\n",
 			 rc);
 		return rc;
 	}
@@ -1684,14 +1684,14 @@ static int cprh_kbss_init_regulator(struct cpr3_regulator *vreg)
 
 	rc = cprh_kbss_apm_crossover_as_corner(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to introduce APM voltage crossover corner, rc=%d\n",
+cpr3_err(vreg, "unable to introduce APM voltage crossover corner, rc=%d\n",
 			rc);
 		return rc;
 	}
 
 	rc = cprh_kbss_mem_acc_crossover_as_corner(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to introduce MEM ACC voltage crossover corner, rc=%d\n",
+cpr3_err(vreg, "unable to introduce MEM ACC voltage crossover corner, rc=%d\n",
 			rc);
 		return rc;
 	}
@@ -1740,8 +1740,8 @@ static int cprh_kbss_init_aging(struct cpr3_controller *ctrl)
 		return -EINVAL;
 	}
 
-	ctrl->aging_vdd_mode = REGULATOR_MODE_NORMAL;
-	ctrl->aging_complete_vdd_mode = REGULATOR_MODE_IDLE;
+ctrl->aging_vdd_mode = REGULATOR_MODE_NORMAL;
+ctrl->aging_complete_vdd_mode = REGULATOR_MODE_IDLE;
 
 	ctrl->aging_sensor_count = 1;
 	ctrl->aging_sensor = devm_kzalloc(ctrl->dev,
@@ -1752,11 +1752,11 @@ static int cprh_kbss_init_aging(struct cpr3_controller *ctrl)
 
 	switch (ctrl->soc_revision) {
 	case SDM660_SOC_ID:
-		if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID) {
+if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID) {
 			ctrl->aging_sensor->sensor_id
-				= SDM660_KBSS_POWER_AGING_SENSOR_ID;
+= SDM660_KBSS_POWER_AGING_SENSOR_ID;
 			ctrl->aging_sensor->bypass_mask[0]
-				= SDM660_KBSS_POWER_AGING_BYPASS_MASK0;
+= SDM660_KBSS_POWER_AGING_BYPASS_MASK0;
 		} else  {
 			ctrl->aging_sensor->sensor_id
 				= SDM660_KBSS_PERFORMANCE_AGING_SENSOR_ID;
@@ -1766,11 +1766,11 @@ static int cprh_kbss_init_aging(struct cpr3_controller *ctrl)
 		break;
 	case MSM8998_V1_SOC_ID:
 	case MSM8998_V2_SOC_ID:
-		if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID) {
+if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID) {
 			ctrl->aging_sensor->sensor_id
-				= MSM8998_KBSS_POWER_AGING_SENSOR_ID;
+= MSM8998_KBSS_POWER_AGING_SENSOR_ID;
 			ctrl->aging_sensor->bypass_mask[0]
-				= MSM8998_KBSS_POWER_AGING_BYPASS_MASK0;
+= MSM8998_KBSS_POWER_AGING_BYPASS_MASK0;
 		} else  {
 			ctrl->aging_sensor->sensor_id
 				= MSM8998_KBSS_PERFORMANCE_AGING_SENSOR_ID;
@@ -1785,7 +1785,7 @@ static int cprh_kbss_init_aging(struct cpr3_controller *ctrl)
 	ctrl->aging_sensor->ro_scale = aging_ro_scale;
 
 	ctrl->aging_sensor->init_quot_diff
-		= cpr3_convert_open_loop_voltage_fuse(0,
+= cpr3_convert_open_loop_voltage_fuse(0,
 			CPRH_KBSS_AGING_INIT_QUOT_DIFF_SCALE,
 			fuse->aging_init_quot_diff,
 			CPRH_KBSS_AGING_INIT_QUOT_DIFF_SIZE);
@@ -1851,10 +1851,10 @@ static int cprh_kbss_init_controller(struct cpr3_controller *ctrl)
 	}
 
 	rc = of_property_read_u32(ctrl->dev->of_node,
-				  "qcom,voltage-base",
+"qcom,voltage-base",
 				  &ctrl->base_volt);
 	if (rc) {
-		cpr3_err(ctrl, "error reading property qcom,voltage-base, rc=%d\n",
+cpr3_err(ctrl, "error reading property qcom,voltage-base, rc=%d\n",
 			rc);
 		return rc;
 	}
@@ -1869,22 +1869,22 @@ static int cprh_kbss_init_controller(struct cpr3_controller *ctrl)
 	}
 
 	rc = of_property_read_u32(ctrl->dev->of_node,
-				  "qcom,apm-threshold-voltage",
+"qcom,apm-threshold-voltage",
 				  &ctrl->apm_threshold_volt);
 	if (rc) {
-		cpr3_debug(ctrl, "qcom,apm-threshold-voltage not specified\n");
+cpr3_debug(ctrl, "qcom,apm-threshold-voltage not specified\n");
 	} else {
 		rc = of_property_read_u32(ctrl->dev->of_node,
-					  "qcom,apm-crossover-voltage",
+"qcom,apm-crossover-voltage",
 					  &ctrl->apm_crossover_volt);
 		if (rc) {
-			cpr3_err(ctrl, "error reading property qcom,apm-crossover-voltage, rc=%d\n",
+cpr3_err(ctrl, "error reading property qcom,apm-crossover-voltage, rc=%d\n",
 				 rc);
 			return rc;
 		}
 	}
 
-	of_property_read_u32(ctrl->dev->of_node, "qcom,apm-hysteresis-voltage",
+of_property_read_u32(ctrl->dev->of_node, "qcom,apm-hysteresis-voltage",
 				&ctrl->apm_adj_volt);
 	ctrl->apm_adj_volt = CPR3_ROUND(ctrl->apm_adj_volt, ctrl->step_volt);
 
@@ -1892,17 +1892,17 @@ static int cprh_kbss_init_controller(struct cpr3_controller *ctrl)
 					"qcom,cpr-saw-use-unit-mV");
 
 	rc = of_property_read_u32(ctrl->dev->of_node,
-				  "qcom,mem-acc-threshold-voltage",
+"qcom,mem-acc-threshold-voltage",
 				  &ctrl->mem_acc_threshold_volt);
 	if (!rc) {
 		ctrl->mem_acc_threshold_volt
 		    = CPR3_ROUND(ctrl->mem_acc_threshold_volt, ctrl->step_volt);
 
 		rc = of_property_read_u32(ctrl->dev->of_node,
-					  "qcom,mem-acc-crossover-voltage",
+"qcom,mem-acc-crossover-voltage",
 					  &ctrl->mem_acc_crossover_volt);
 		if (rc) {
-			cpr3_err(ctrl, "error reading property qcom,mem-acc-crossover-voltage, rc=%d\n",
+cpr3_err(ctrl, "error reading property qcom,mem-acc-crossover-voltage, rc=%d\n",
 				 rc);
 			return rc;
 		}
@@ -1919,8 +1919,8 @@ static int cprh_kbss_init_controller(struct cpr3_controller *ctrl)
 	ctrl->use_dynamic_step_quot = !ctrl->step_quot_fixed;
 
 	of_property_read_u32(ctrl->dev->of_node,
-			"qcom,cpr-voltage-settling-time",
-			&ctrl->voltage_settling_time);
+"qcom,cpr-voltage-settling-time",
+&ctrl->voltage_settling_time);
 
 	of_property_read_u32(ctrl->dev->of_node,
 			     "qcom,cpr-corner-switch-delay-time",
@@ -1928,18 +1928,18 @@ static int cprh_kbss_init_controller(struct cpr3_controller *ctrl)
 
 	switch (ctrl->soc_revision) {
 	case SDM660_SOC_ID:
-		if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID)
+if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID)
 			ctrl->sensor_count =
-				SDM660_KBSS_POWER_CPR_SENSOR_COUNT;
+SDM660_KBSS_POWER_CPR_SENSOR_COUNT;
 		else
 			ctrl->sensor_count =
 				SDM660_KBSS_PERFORMANCE_CPR_SENSOR_COUNT;
 		break;
 	case MSM8998_V1_SOC_ID:
 	case MSM8998_V2_SOC_ID:
-		if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID)
+if (ctrl->ctrl_id == CPRH_KBSS_POWER_CLUSTER_ID)
 			ctrl->sensor_count =
-				MSM8998_KBSS_POWER_CPR_SENSOR_COUNT;
+MSM8998_KBSS_POWER_CPR_SENSOR_COUNT;
 		else
 			ctrl->sensor_count =
 				MSM8998_KBSS_PERFORMANCE_CPR_SENSOR_COUNT;
@@ -1968,9 +1968,9 @@ static int cprh_kbss_init_controller(struct cpr3_controller *ctrl)
 
 /**
  * cprh_kbss_populate_opp_table() - populate an Operating Performance Point
- *		table with the frequencies associated with each corner.
- *		This table may be used to resolve corner to frequency to
- *		open-loop voltage mappings.
+*		table with the frequencies associated with each corner.
+*		This table may be used to resolve corner to frequency to
+*		open-loop voltage mappings.
  * @pdev:		Pointer to the platform device
  *
  * Return: 0 on success, errno on failure
@@ -1984,7 +1984,7 @@ static int cprh_kbss_populate_opp_table(struct cpr3_controller *ctrl)
 
 	for (i = 0; i < vreg->corner_count; i++) {
 		corner = &vreg->corner[i];
-		if (!corner->proc_freq) {
+if (!corner->proc_freq) {
 			/*
 			 * 0 MHz indicates this corner is not to be
 			 * used as active DCVS set point. Don't add it
@@ -1992,10 +1992,10 @@ static int cprh_kbss_populate_opp_table(struct cpr3_controller *ctrl)
 			 */
 			continue;
 		}
-		rc = dev_pm_opp_add(dev, corner->proc_freq, i + 1);
+rc = dev_pm_opp_add(dev, corner->proc_freq, i + 1);
 		if (rc) {
-			cpr3_err(ctrl, "could not add OPP for corner %d with frequency %u MHz, rc=%d\n",
-				 i + 1, corner->proc_freq, rc);
+cpr3_err(ctrl, "could not add OPP for corner %d with frequency %u MHz, rc=%d\n",
+i + 1, corner->proc_freq, rc);
 			return rc;
 		}
 	}

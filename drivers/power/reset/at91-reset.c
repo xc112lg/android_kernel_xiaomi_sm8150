@@ -64,7 +64,7 @@ static int at91sam9260_restart(struct notifier_block *this, unsigned long mode,
 		/* Disable SDRAM accesses */
 		"str	%2, [%0, #" __stringify(AT91_SDRAMC_TR) "]\n\t"
 
-		/* Power down SDRAM */
+/* Power down SDRAM */
 		"str	%3, [%0, #" __stringify(AT91_SDRAMC_LPR) "]\n\t"
 
 		/* Reset CPU */
@@ -75,7 +75,7 @@ static int at91sam9260_restart(struct notifier_block *this, unsigned long mode,
 		: "r" (at91_ramc_base[0]),
 		  "r" (at91_rstc_base),
 		  "r" (1),
-		  "r" cpu_to_le32(AT91_SDRAMC_LPCB_POWER_DOWN),
+"r" cpu_to_le32(AT91_SDRAMC_LPCB_POWER_DOWN),
 		  "r" cpu_to_le32(AT91_RSTC_KEY | AT91_RSTC_PERRST | AT91_RSTC_PROCRST));
 
 	return NOTIFY_DONE;
@@ -103,11 +103,11 @@ static int at91sam9g45_restart(struct notifier_block *this, unsigned long mode,
 
 		/* Disable SDRAM0 accesses */
 		"1:	str	%3, [%0, #" __stringify(AT91_DDRSDRC_RTR) "]\n\t"
-		/* Power down SDRAM0 */
+/* Power down SDRAM0 */
 		"	str	%4, [%0, #" __stringify(AT91_DDRSDRC_LPR) "]\n\t"
 		/* Disable SDRAM1 accesses */
 		"	strne	%3, [%1, #" __stringify(AT91_DDRSDRC_RTR) "]\n\t"
-		/* Power down SDRAM1 */
+/* Power down SDRAM1 */
 		"	strne	%4, [%1, #" __stringify(AT91_DDRSDRC_LPR) "]\n\t"
 		/* Reset CPU */
 		"	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
@@ -118,7 +118,7 @@ static int at91sam9g45_restart(struct notifier_block *this, unsigned long mode,
 		  "r" (at91_ramc_base[1]),
 		  "r" (at91_rstc_base),
 		  "r" (1),
-		  "r" cpu_to_le32(AT91_DDRSDRC_LPCB_POWER_DOWN),
+"r" cpu_to_le32(AT91_DDRSDRC_LPCB_POWER_DOWN),
 		  "r" cpu_to_le32(AT91_RSTC_KEY | AT91_RSTC_PERRST | AT91_RSTC_PROCRST)
 		: "r0");
 

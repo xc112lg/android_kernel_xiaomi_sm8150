@@ -28,7 +28,7 @@
  * @qi: Mask for query enable signal status of regulators
  * @vselon_reg: Register sections for hardware control mode of bucks
  * @vselctrl_reg: Register for controlling the buck control mode.
- * @vselctrl_mask: Mask for query buck's voltage control mode.
+* @vselctrl_mask: Mask for query buck's voltage control mode.
  */
 struct mt6323_regulator_info {
 	struct regulator_desc desc;
@@ -47,10 +47,10 @@ struct mt6323_regulator_info {
 		.name = #vreg,						\
 		.of_match = of_match_ptr(match),			\
 		.ops = &mt6323_volt_range_ops,				\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = MT6323_ID_##vreg,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = (max - min)/step + 1,			\
+.n_voltages = (max - min)/step + 1,			\
 		.linear_ranges = volt_ranges,				\
 		.n_linear_ranges = ARRAY_SIZE(volt_ranges),		\
 		.vsel_reg = vosel,					\
@@ -71,10 +71,10 @@ struct mt6323_regulator_info {
 		.name = #vreg,						\
 		.of_match = of_match_ptr(match),			\
 		.ops = &mt6323_volt_table_ops,				\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = MT6323_ID_##vreg,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = ARRAY_SIZE(ldo_volt_table),		\
+.n_voltages = ARRAY_SIZE(ldo_volt_table),		\
 		.volt_table = ldo_volt_table,				\
 		.vsel_reg = vosel,					\
 		.vsel_mask = vosel_mask,				\
@@ -93,10 +93,10 @@ struct mt6323_regulator_info {
 		.name = #vreg,						\
 		.of_match = of_match_ptr(match),			\
 		.ops = &mt6323_volt_fixed_ops,				\
-		.type = REGULATOR_VOLTAGE,				\
+.type = REGULATOR_VOLTAGE,				\
 		.id = MT6323_ID_##vreg,					\
 		.owner = THIS_MODULE,					\
-		.n_voltages = 1,					\
+.n_voltages = 1,					\
 		.enable_reg = enreg,					\
 		.enable_mask = BIT(enbit),				\
 		.min_uV = volt,						\
@@ -232,11 +232,11 @@ static unsigned int mt6323_ldo_get_mode(struct regulator_dev *rdev)
 }
 
 static const struct regulator_ops mt6323_volt_range_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -244,11 +244,11 @@ static const struct regulator_ops mt6323_volt_range_ops = {
 };
 
 static const struct regulator_ops mt6323_volt_table_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.map_voltage = regulator_map_voltage_iterate,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_time_sel = regulator_set_voltage_time_sel,
+.list_voltage = regulator_list_voltage_table,
+.map_voltage = regulator_map_voltage_iterate,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_time_sel = regulator_set_voltage_time_sel,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -258,7 +258,7 @@ static const struct regulator_ops mt6323_volt_table_ops = {
 };
 
 static const struct regulator_ops mt6323_volt_fixed_ops = {
-	.list_voltage = regulator_list_voltage_linear,
+.list_voltage = regulator_list_voltage_linear,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -378,11 +378,11 @@ static int mt6323_regulator_probe(struct platform_device *pdev)
 	int i;
 	u32 reg_value;
 
-	/* Query buck controller to select activated voltage register part */
+/* Query buck controller to select activated voltage register part */
 	if (mt6323_set_buck_vosel_reg(pdev))
 		return -EIO;
 
-	/* Read PMIC chip revision to update constraints and voltage table */
+/* Read PMIC chip revision to update constraints and voltage table */
 	if (regmap_read(mt6323->regmap, MT6323_CID, &reg_value) < 0) {
 		dev_err(&pdev->dev, "Failed to read Chip ID\n");
 		return -EIO;

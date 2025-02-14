@@ -1,5 +1,5 @@
 /*
- * PowerNV OPAL IPMI driver
+* PowerNV OPAL IPMI driver
  *
  * Copyright 2014 IBM Corp.
  *
@@ -40,7 +40,7 @@ struct ipmi_smi_powernv {
 
 static int ipmi_powernv_start_processing(void *send_info, ipmi_smi_t intf)
 {
-	struct ipmi_smi_powernv *smi = send_info;
+struct ipmi_smi_powernv *smi = send_info;
 
 	smi->intf = intf;
 	return 0;
@@ -58,7 +58,7 @@ static void send_error_reply(struct ipmi_smi_powernv *smi,
 
 static void ipmi_powernv_send(void *send_info, struct ipmi_smi_msg *msg)
 {
-	struct ipmi_smi_powernv *smi = send_info;
+struct ipmi_smi_powernv *smi = send_info;
 	struct opal_ipmi_msg *opal_msg;
 	unsigned long flags;
 	int comp, rc;
@@ -191,31 +191,31 @@ static void ipmi_powernv_set_run_to_completion(void *send_info,
 
 static void ipmi_powernv_poll(void *send_info)
 {
-	struct ipmi_smi_powernv *smi = send_info;
+struct ipmi_smi_powernv *smi = send_info;
 
-	ipmi_powernv_recv(smi);
+ipmi_powernv_recv(smi);
 }
 
 static const struct ipmi_smi_handlers ipmi_powernv_smi_handlers = {
 	.owner			= THIS_MODULE,
-	.start_processing	= ipmi_powernv_start_processing,
-	.sender			= ipmi_powernv_send,
-	.request_events		= ipmi_powernv_request_events,
-	.set_run_to_completion	= ipmi_powernv_set_run_to_completion,
-	.poll			= ipmi_powernv_poll,
+.start_processing	= ipmi_powernv_start_processing,
+.sender			= ipmi_powernv_send,
+.request_events		= ipmi_powernv_request_events,
+.set_run_to_completion	= ipmi_powernv_set_run_to_completion,
+.poll			= ipmi_powernv_poll,
 };
 
 static irqreturn_t ipmi_opal_event(int irq, void *data)
 {
-	struct ipmi_smi_powernv *smi = data;
+struct ipmi_smi_powernv *smi = data;
 
-	ipmi_powernv_recv(smi);
+ipmi_powernv_recv(smi);
 	return IRQ_HANDLED;
 }
 
 static int ipmi_powernv_probe(struct platform_device *pdev)
 {
-	struct ipmi_smi_powernv *ipmi;
+struct ipmi_smi_powernv *ipmi;
 	struct device *dev;
 	u32 prop;
 	int rc;
@@ -267,7 +267,7 @@ static int ipmi_powernv_probe(struct platform_device *pdev)
 	}
 
 	/* todo: query actual ipmi_device_id */
-	rc = ipmi_register_smi(&ipmi_powernv_smi_handlers, ipmi,
+rc = ipmi_register_smi(&ipmi_powernv_smi_handlers, ipmi,
 			&ipmi->ipmi_id, dev, 0);
 	if (rc) {
 		dev_warn(dev, "IPMI SMI registration failed (%d)\n", rc);
@@ -290,7 +290,7 @@ err_free:
 
 static int ipmi_powernv_remove(struct platform_device *pdev)
 {
-	struct ipmi_smi_powernv *smi = dev_get_drvdata(&pdev->dev);
+struct ipmi_smi_powernv *smi = dev_get_drvdata(&pdev->dev);
 
 	ipmi_unregister_smi(smi->intf);
 	free_irq(smi->irq, smi);
@@ -307,11 +307,11 @@ static const struct of_device_id ipmi_powernv_match[] = {
 
 static struct platform_driver powernv_ipmi_driver = {
 	.driver = {
-		.name		= "ipmi-powernv",
-		.of_match_table	= ipmi_powernv_match,
+.name		= "ipmi-powernv",
+.of_match_table	= ipmi_powernv_match,
 	},
-	.probe	= ipmi_powernv_probe,
-	.remove	= ipmi_powernv_remove,
+.probe	= ipmi_powernv_probe,
+.remove	= ipmi_powernv_remove,
 };
 
 

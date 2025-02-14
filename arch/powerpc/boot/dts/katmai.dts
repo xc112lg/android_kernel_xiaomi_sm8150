@@ -34,10 +34,10 @@
 
 		cpu@0 {
 			device_type = "cpu";
-			model = "PowerPC,440SPe";
+model = "PowerPC,440SPe";
 			reg = <0x00000000>;
-			clock-frequency = <0>; /* Filled in by zImage */
-			timebase-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
+timebase-frequency = <0>; /* Filled in by zImage */
 			i-cache-line-size = <32>;
 			d-cache-line-size = <32>;
 			i-cache-size = <32768>;
@@ -129,7 +129,7 @@
 			  0xe 0x80000000 0xe 0x80000000 0x80000000
 			  0xf 0x00000000 0xf 0x00000000 0x80000000
 			  0xf 0x80000000 0xf 0x80000000 0x80000000>;
-		clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 
 		SDRAM0: sdram {
 			compatible = "ibm,sdram-440spe", "ibm,sdram-405gp";
@@ -158,14 +158,14 @@
 			#address-cells = <1>;
 			#size-cells = <1>;
 			ranges = <0xe0000000 0x00000004 0xe0000000 0x20000000>;
-			clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 
 			EBC0: ebc {
 				compatible = "ibm,ebc-440spe", "ibm,ebc-440gp", "ibm,ebc";
 				dcr-reg = <0x012 0x002>;
 				#address-cells = <2>;
 				#size-cells = <1>;
-				clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 				/* ranges property is supplied by U-Boot */
 				interrupts = <0x5 0x1>;
 				interrupt-parent = <&UIC1>;
@@ -208,7 +208,7 @@
 				compatible = "ns16550";
 				reg = <0xf0000200 0x00000008>;
 				virtual-reg = <0xa0000200>;
-				clock-frequency = <0>; /* Filled in by zImage */
+clock-frequency = <0>; /* Filled in by zImage */
 				current-speed = <115200>;
 				interrupt-parent = <&UIC0>;
 				interrupts = <0x0 0x4>;
@@ -219,7 +219,7 @@
 				compatible = "ns16550";
 				reg = <0xf0000300 0x00000008>;
 				virtual-reg = <0xa0000300>;
-				clock-frequency = <0>;
+clock-frequency = <0>;
 				current-speed = <0>;
 				interrupt-parent = <&UIC0>;
 				interrupts = <0x1 0x4>;
@@ -231,7 +231,7 @@
 				compatible = "ns16550";
 				reg = <0xf0000600 0x00000008>;
 				virtual-reg = <0xa0000600>;
-				clock-frequency = <0>;
+clock-frequency = <0>;
 				current-speed = <0>;
 				interrupt-parent = <&UIC1>;
 				interrupts = <0x5 0x4>;

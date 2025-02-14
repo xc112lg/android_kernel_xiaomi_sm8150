@@ -54,7 +54,7 @@
 				compatible = "wlf,wm8960";
 				reg = <0x1a>;
 				/* MCLK source is a stand-alone oscillator */
-				clock-frequency = <12288000>;
+clock-frequency = <12288000>;
 			};
 			rtc@68 {
 				compatible = "st,m41t62";
@@ -88,7 +88,7 @@
 				#size-cells = <1>;
 				compatible = "spansion,m25p80", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <1000000>;
+spi-max-frequency = <1000000>;
 				partition@0 {
 					label = "full-spi-flash";
 					reg = <0x00000000 0x00100000>;

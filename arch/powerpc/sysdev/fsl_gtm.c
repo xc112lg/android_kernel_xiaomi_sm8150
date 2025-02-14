@@ -182,7 +182,7 @@ static int gtm_set_ref_timer16(struct gtm_timer *tmr, int frequency,
 	if (!tmr->gtpsr)
 		max_prescaler /= 256;
 
-	prescaler = gtm->clock / frequency;
+prescaler = gtm->clock / frequency;
 	/*
 	 * We have two 8 bit prescalers -- primary and secondary (psr, sps),
 	 * plus "slow go" mode (clk / 16). So, total prescale value is
@@ -246,20 +246,20 @@ static int gtm_set_ref_timer16(struct gtm_timer *tmr, int frequency,
  */
 int gtm_set_timer16(struct gtm_timer *tmr, unsigned long usec, bool reload)
 {
-	/* quite obvious, frequency which is enough for µSec precision */
-	int freq = 1000000;
+/* quite obvious, frequency which is enough for µSec precision */
+int freq = 1000000;
 	unsigned int bit;
 
 	bit = fls_long(usec);
 	if (bit > 15) {
-		freq >>= bit - 15;
+freq >>= bit - 15;
 		usec >>= bit - 15;
 	}
 
-	if (!freq)
+if (!freq)
 		return -EINVAL;
 
-	return gtm_set_ref_timer16(tmr, freq, usec, reload);
+return gtm_set_ref_timer16(tmr, freq, usec, reload);
 }
 EXPORT_SYMBOL(gtm_set_timer16);
 
@@ -282,17 +282,17 @@ EXPORT_SYMBOL(gtm_set_timer16);
  */
 int gtm_set_exact_timer16(struct gtm_timer *tmr, u16 usec, bool reload)
 {
-	/* quite obvious, frequency which is enough for µSec precision */
-	const int freq = 1000000;
+/* quite obvious, frequency which is enough for µSec precision */
+const int freq = 1000000;
 
 	/*
-	 * We can lower the frequency (and probably power consumption) by
-	 * dividing both frequency and usec by 2 until there is no remainder.
+* We can lower the frequency (and probably power consumption) by
+* dividing both frequency and usec by 2 until there is no remainder.
 	 * But we won't bother with this unless savings are measured, so just
 	 * run the timer as is.
 	 */
 
-	return gtm_set_ref_timer16(tmr, freq, usec, reload);
+return gtm_set_ref_timer16(tmr, freq, usec, reload);
 }
 EXPORT_SYMBOL(gtm_set_exact_timer16);
 
@@ -395,9 +395,9 @@ static int __init fsl_gtm_init(void)
 
 		spin_lock_init(&gtm->lock);
 
-		clock = of_get_property(np, "clock-frequency", &size);
+clock = of_get_property(np, "clock-frequency", &size);
 		if (!clock || size != sizeof(*clock)) {
-			pr_err("%pOF: no clock-frequency\n", np);
+pr_err("%pOF: no clock-frequency\n", np);
 			goto err;
 		}
 		gtm->clock = *clock;

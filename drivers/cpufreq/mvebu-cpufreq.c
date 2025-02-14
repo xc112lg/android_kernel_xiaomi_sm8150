@@ -1,5 +1,5 @@
 /*
- * CPUFreq support for Armada 370/XP platforms.
+* CPUFreq support for Armada 370/XP platforms.
  *
  * Copyright (C) 2012-2016 Marvell
  *
@@ -33,10 +33,10 @@ static int __init armada_xp_pmsu_cpufreq_init(void)
 		return 0;
 
 	/*
-	 * In order to have proper cpufreq handling, we need to ensure
+* In order to have proper cpufreq handling, we need to ensure
 	 * that the Device Tree description of the CPU clock includes
 	 * the definition of the PMU DFS registers. If not, we do not
-	 * register the clock notifier and the cpufreq driver. This
+* register the clock notifier and the cpufreq driver. This
 	 * piece of code is only for compatibility with old Device
 	 * Trees.
 	 */
@@ -46,7 +46,7 @@ static int __init armada_xp_pmsu_cpufreq_init(void)
 
 	ret = of_address_to_resource(np, 1, &res);
 	if (ret) {
-		pr_warn(FW_WARN "not enabling cpufreq, deprecated armada-xp-cpu-clock binding\n");
+pr_warn(FW_WARN "not enabling cpufreq, deprecated armada-xp-cpu-clock binding\n");
 		of_node_put(np);
 		return 0;
 	}
@@ -55,9 +55,9 @@ static int __init armada_xp_pmsu_cpufreq_init(void)
 
 	/*
 	 * For each CPU, this loop registers the operating points
-	 * supported (which are the nominal CPU frequency and half of
+* supported (which are the nominal CPU frequency and half of
 	 * it), and registers the clock notifier that will take care
-	 * of doing the PMSU part of a frequency transition.
+* of doing the PMSU part of a frequency transition.
 	 */
 	for_each_possible_cpu(cpu) {
 		struct device *cpu_dev;
@@ -80,7 +80,7 @@ static int __init armada_xp_pmsu_cpufreq_init(void)
 		 * In case of a failure of dev_pm_opp_add(), we don't
 		 * bother with cleaning up the registered OPP (there's
 		 * no function to do so), and simply cancel the
-		 * registration of the cpufreq device.
+* registration of the cpufreq device.
 		 */
 		ret = dev_pm_opp_add(cpu_dev, clk_get_rate(clk), 0);
 		if (ret) {
@@ -101,7 +101,7 @@ static int __init armada_xp_pmsu_cpufreq_init(void)
 				__func__, ret);
 	}
 
-	platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
+platform_device_register_simple("cpufreq-dt", -1, NULL, 0);
 	return 0;
 }
 device_initcall(armada_xp_pmsu_cpufreq_init);

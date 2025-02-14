@@ -95,7 +95,7 @@ pm8150_1_gpios: &pm8150_gpios {
 			function = "normal";
 			input-enable;
 			bias-pull-up;
-			power-source = <0>;
+power-source = <0>;
 		};
 	};
 
@@ -105,7 +105,7 @@ pm8150_1_gpios: &pm8150_gpios {
 			function = "normal";
 			input-enable;
 			bias-pull-up;
-			power-source = <1>;
+power-source = <1>;
 		};
 	};
 };

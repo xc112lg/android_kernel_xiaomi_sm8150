@@ -240,13 +240,13 @@ void __init setup_power_save(void)
 #ifdef CONFIG_6xx
 	if (cpu_has_feature(CPU_FTR_CAN_DOZE) ||
 	    cpu_has_feature(CPU_FTR_CAN_NAP))
-		ppc_md.power_save = ppc6xx_idle;
+ppc_md.power_save = ppc6xx_idle;
 #endif
 
 #ifdef CONFIG_E500
 	if (cpu_has_feature(CPU_FTR_CAN_DOZE) ||
 	    cpu_has_feature(CPU_FTR_CAN_NAP))
-		ppc_md.power_save = e500_idle;
+ppc_md.power_save = e500_idle;
 #endif
 }
 

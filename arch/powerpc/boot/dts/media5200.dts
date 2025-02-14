@@ -29,10 +29,10 @@
 	};
 
 	cpus {
-		PowerPC,5200@0 {
-			timebase-frequency = <33000000>;	// 33 MHz, these were configured by U-Boot
-			bus-frequency = <132000000>;		// 132 MHz
-			clock-frequency = <396000000>;		// 396 MHz
+PowerPC,5200@0 {
+timebase-frequency = <33000000>;	// 33 MHz, these were configured by U-Boot
+bus-frequency = <132000000>;		// 132 MHz
+clock-frequency = <396000000>;		// 396 MHz
 		};
 	};
 
@@ -41,7 +41,7 @@
 	};
 
 	soc5200@f0000000 {
-		bus-frequency = <132000000>;// 132 MHz
+bus-frequency = <132000000>;// 132 MHz
 
 		psc@2000 {	// PSC1
 			status = "disabled";

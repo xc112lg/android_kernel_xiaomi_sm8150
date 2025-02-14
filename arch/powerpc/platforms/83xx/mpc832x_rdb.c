@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/83xx/mpc832x_rdb.c
+* arch/powerpc/platforms/83xx/mpc832x_rdb.c
  *
  * Copyright (C) Freescale Semiconductor, Inc. 2007. All rights reserved.
  *
@@ -130,9 +130,9 @@ static int __init fsl_spi_init(struct spi_board_info *board_infos,
 	int ret;
 
 	/* SPI controller is either clocked from QE or SoC clock */
-	sysclk = get_brgfreq();
+sysclk = get_brgfreq();
 	if (sysclk == -1) {
-		sysclk = fsl_get_sys_freq();
+sysclk = fsl_get_sys_freq();
 		if (sysclk == -1)
 			return -ENODEV;
 	}
@@ -153,7 +153,7 @@ static void mpc83xx_spi_cs_control(struct spi_device *spi, bool on)
 }
 
 static struct mmc_spi_platform_data mpc832x_mmc_pdata = {
-	.ocr_mask = MMC_VDD_33_34,
+.ocr_mask = MMC_VDD_33_34,
 };
 
 static struct spi_board_info mpc832x_spi_boardinfo = {

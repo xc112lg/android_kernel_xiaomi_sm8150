@@ -72,12 +72,12 @@
 			flash@0 {
 				compatible = "atmel,at25df641", "jedec,spi-nor";
 				reg = <0>;
-				spi-max-frequency = <10000000>;
+spi-max-frequency = <10000000>;
 			};
 			flash@1 {
 				compatible = "atmel,at25df641", "jedec,spi-nor";
 				reg = <1>;
-				spi-max-frequency = <10000000>;
+spi-max-frequency = <10000000>;
 			};
 		};
 
@@ -165,7 +165,7 @@
 			device_type = "serial";
 			compatible = "ns16550";
 			reg = <0x1 0x0 0x100>;
-			clock-frequency = <1843200>;
+clock-frequency = <1843200>;
 			interrupts = <11 2 0 0>;
 		};
 
@@ -173,7 +173,7 @@
 			device_type = "serial";
 			compatible = "ns16550";
 			reg = <0x2 0x0 0x100>;
-			clock-frequency = <1843200>;
+clock-frequency = <1843200>;
 			interrupts = <1 2 0 0>;
 		};
 
@@ -181,7 +181,7 @@
 			device_type = "serial";
 			compatible = "ns16550";
 			reg = <0x3 0x0 0x100>;
-			clock-frequency = <1843200>;
+clock-frequency = <1843200>;
 			interrupts = <2 2 0 0>;
 		};
 
@@ -189,7 +189,7 @@
 			device_type = "serial";
 			compatible = "ns16550";
 			reg = <0x4 0x0 0x100>;
-			clock-frequency = <1843200>;
+clock-frequency = <1843200>;
 			interrupts = <3 2 0 0>;
 		};
 

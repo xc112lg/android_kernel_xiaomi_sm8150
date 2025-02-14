@@ -100,13 +100,13 @@ static void cpufeatures_flush_tlb(void)
 	 * cputable based setup code.
 	 */
 	switch (PVR_VER(mfspr(SPRN_PVR))) {
-	case PVR_POWER8:
-	case PVR_POWER8E:
-	case PVR_POWER8NVL:
-		__flush_tlb_power8(TLB_INVAL_SCOPE_GLOBAL);
+case PVR_POWER8:
+case PVR_POWER8E:
+case PVR_POWER8NVL:
+__flush_tlb_power8(TLB_INVAL_SCOPE_GLOBAL);
 		break;
-	case PVR_POWER9:
-		__flush_tlb_power9(TLB_INVAL_SCOPE_GLOBAL);
+case PVR_POWER9:
+__flush_tlb_power9(TLB_INVAL_SCOPE_GLOBAL);
 		break;
 	default:
 		pr_err("unknown CPU version for boot TLB flush\n");
@@ -119,7 +119,7 @@ static void __restore_cpu_cpufeatures(void)
 	u64 lpcr;
 
 	/*
-	 * LPCR is restored by the power on engine already. It can be changed
+* LPCR is restored by the power on engine already. It can be changed
 	 * after early init e.g., by radix enable, and we have no unified API
 	 * for saving and restoring such SPRs.
 	 *
@@ -426,8 +426,8 @@ static void init_pmu_power8(void)
 
 static int __init feat_enable_mce_power8(struct dt_cpu_feature *f)
 {
-	cur_cpu_spec->platform = "power8";
-	cur_cpu_spec->flush_tlb = __flush_tlb_power8;
+cur_cpu_spec->platform = "power8";
+cur_cpu_spec->flush_tlb = __flush_tlb_power8;
 	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p8;
 
 	return 1;
@@ -437,17 +437,17 @@ static int __init feat_enable_pmu_power8(struct dt_cpu_feature *f)
 {
 	hfscr_pmu_enable();
 
-	init_pmu_power8();
-	init_pmu_registers = init_pmu_power8;
+init_pmu_power8();
+init_pmu_registers = init_pmu_power8;
 
 	cur_cpu_spec->cpu_features |= CPU_FTR_MMCRA;
 	cur_cpu_spec->cpu_user_features |= PPC_FEATURE_PSERIES_PERFMON_COMPAT;
-	if (pvr_version_is(PVR_POWER8E))
+if (pvr_version_is(PVR_POWER8E))
 		cur_cpu_spec->cpu_features |= CPU_FTR_PMAO_BUG;
 
 	cur_cpu_spec->num_pmcs		= 6;
 	cur_cpu_spec->pmc_type		= PPC_PMC_IBM;
-	cur_cpu_spec->oprofile_cpu_type	= "ppc64/power8";
+cur_cpu_spec->oprofile_cpu_type	= "ppc64/power8";
 
 	return 1;
 }
@@ -465,8 +465,8 @@ static void init_pmu_power9(void)
 
 static int __init feat_enable_mce_power9(struct dt_cpu_feature *f)
 {
-	cur_cpu_spec->platform = "power9";
-	cur_cpu_spec->flush_tlb = __flush_tlb_power9;
+cur_cpu_spec->platform = "power9";
+cur_cpu_spec->flush_tlb = __flush_tlb_power9;
 	cur_cpu_spec->machine_check_early = __machine_check_early_realmode_p9;
 
 	return 1;
@@ -476,15 +476,15 @@ static int __init feat_enable_pmu_power9(struct dt_cpu_feature *f)
 {
 	hfscr_pmu_enable();
 
-	init_pmu_power9();
-	init_pmu_registers = init_pmu_power9;
+init_pmu_power9();
+init_pmu_registers = init_pmu_power9;
 
 	cur_cpu_spec->cpu_features |= CPU_FTR_MMCRA;
 	cur_cpu_spec->cpu_user_features |= PPC_FEATURE_PSERIES_PERFMON_COMPAT;
 
 	cur_cpu_spec->num_pmcs		= 6;
 	cur_cpu_spec->pmc_type		= PPC_PMC_IBM;
-	cur_cpu_spec->oprofile_cpu_type	= "ppc64/power9";
+cur_cpu_spec->oprofile_cpu_type	= "ppc64/power9";
 
 	return 1;
 }
@@ -574,7 +574,7 @@ static int __init feat_enable_hvi(struct dt_cpu_feature *f)
 	u64 lpcr;
 
 	/*
-	 * POWER9 XIVE interrupts including in OPAL XICS compatibility
+* POWER9 XIVE interrupts including in OPAL XICS compatibility
 	 * are always delivered as hypervisor virtualization interrupts (HVI)
 	 * rather than EE.
 	 *
@@ -636,8 +636,8 @@ static struct dt_cpu_feature_match __initdata
 	{"idle-nap", feat_enable_idle_nap, 0},
 	{"alignment-interrupt-dsisr", feat_enable_align_dsisr, 0},
 	{"idle-stop", feat_enable_idle_stop, 0},
-	{"machine-check-power8", feat_enable_mce_power8, 0},
-	{"performance-monitor-power8", feat_enable_pmu_power8, 0},
+{"machine-check-power8", feat_enable_mce_power8, 0},
+{"performance-monitor-power8", feat_enable_pmu_power8, 0},
 	{"data-stream-control-register", feat_enable_dscr, CPU_FTR_DSCR},
 	{"event-based-branch", feat_enable_ebb, 0},
 	{"target-address-register", feat_enable, 0},
@@ -662,8 +662,8 @@ static struct dt_cpu_feature_match __initdata
 	{"floating-point-v3", feat_enable, 0},
 	{"group-start-register", feat_enable, 0},
 	{"pc-relative-addressing", feat_enable, 0},
-	{"machine-check-power9", feat_enable_mce_power9, 0},
-	{"performance-monitor-power9", feat_enable_pmu_power9, 0},
+{"machine-check-power9", feat_enable_mce_power9, 0},
+{"performance-monitor-power9", feat_enable_pmu_power9, 0},
 	{"event-based-branch-v3", feat_enable, 0},
 	{"random-number-generator", feat_enable, 0},
 	{"system-call-vectored", feat_disable, 0},
@@ -739,12 +739,12 @@ static bool __init cpufeatures_process_feature(struct dt_cpu_feature *f)
 }
 
 /*
- * Handle POWER9 broadcast tlbie invalidation issue using
+* Handle POWER9 broadcast tlbie invalidation issue using
  * cpu feature flag.
  */
 static __init void update_tlbie_feature_flag(unsigned long pvr)
 {
-	if (PVR_VER(pvr) == PVR_POWER9) {
+if (PVR_VER(pvr) == PVR_POWER9) {
 		/*
 		 * Set the tlbie feature flag for anything below
 		 * Nimbus DD 2.3 and Cumulus DD 1.3
@@ -774,7 +774,7 @@ static __init void cpufeatures_cpu_quirks(void)
 	 * Not all quirks can be derived from the cpufeatures device tree.
 	 */
 	if ((version & 0xffffff00) == 0x004e0100)
-		cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD1;
+cur_cpu_spec->cpu_features |= CPU_FTR_POWER9_DD1;
 
 	update_tlbie_feature_flag(version);
 }
@@ -821,7 +821,7 @@ static int __init disabled_on_cmdline(void)
 static int __init fdt_find_cpu_features(unsigned long node, const char *uname,
 					int depth, void *data)
 {
-	if (of_flat_dt_is_compatible(node, "ibm,powerpc-cpu-features")
+if (of_flat_dt_is_compatible(node, "ibm,powerpc-cpu-features")
 	    && of_get_flat_dt_prop(node, "isa", NULL))
 		return 1;
 
@@ -1045,8 +1045,8 @@ static int __init dt_cpu_ftrs_scan_callback(unsigned long node, const char
 	int count, i;
 	u32 isa;
 
-	/* We are scanning "ibm,powerpc-cpu-features" nodes only */
-	if (!of_flat_dt_is_compatible(node, "ibm,powerpc-cpu-features"))
+/* We are scanning "ibm,powerpc-cpu-features" nodes only */
+if (!of_flat_dt_is_compatible(node, "ibm,powerpc-cpu-features"))
 		return 0;
 
 	prop = of_get_flat_dt_prop(node, "isa", NULL);

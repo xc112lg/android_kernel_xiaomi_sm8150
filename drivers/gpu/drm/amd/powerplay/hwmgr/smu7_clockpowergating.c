@@ -28,8 +28,8 @@
 static int smu7_enable_disable_uvd_dpm(struct pp_hwmgr *hwmgr, bool enable)
 {
 	return smum_send_msg_to_smc(hwmgr->smumgr, enable ?
-			PPSMC_MSG_UVDDPM_Enable :
-			PPSMC_MSG_UVDDPM_Disable);
+PPSMC_MSG_UVDDPM_Enable :
+PPSMC_MSG_UVDDPM_Disable);
 }
 
 static int smu7_enable_disable_vce_dpm(struct pp_hwmgr *hwmgr, bool enable)
@@ -69,22 +69,22 @@ static int smu7_update_samu_dpm(struct pp_hwmgr *hwmgr, bool bgate)
 
 int smu7_powerdown_uvd(struct pp_hwmgr *hwmgr)
 {
-	if (phm_cf_want_uvd_power_gating(hwmgr))
+if (phm_cf_want_uvd_power_gating(hwmgr))
 		return smum_send_msg_to_smc(hwmgr->smumgr,
-				PPSMC_MSG_UVDPowerOFF);
+PPSMC_MSG_UVDPowerOFF);
 	return 0;
 }
 
 static int smu7_powerup_uvd(struct pp_hwmgr *hwmgr)
 {
-	if (phm_cf_want_uvd_power_gating(hwmgr)) {
+if (phm_cf_want_uvd_power_gating(hwmgr)) {
 		if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-				  PHM_PlatformCaps_UVDDynamicPowerGating)) {
+PHM_PlatformCaps_UVDDynamicPowerGating)) {
 			return smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_UVDPowerON, 1);
+PPSMC_MSG_UVDPowerON, 1);
 		} else {
 			return smum_send_msg_to_smc_with_parameter(hwmgr->smumgr,
-					PPSMC_MSG_UVDPowerON, 0);
+PPSMC_MSG_UVDPowerON, 0);
 		}
 	}
 
@@ -93,35 +93,35 @@ static int smu7_powerup_uvd(struct pp_hwmgr *hwmgr)
 
 static int smu7_powerdown_vce(struct pp_hwmgr *hwmgr)
 {
-	if (phm_cf_want_vce_power_gating(hwmgr))
+if (phm_cf_want_vce_power_gating(hwmgr))
 		return smum_send_msg_to_smc(hwmgr->smumgr,
-				PPSMC_MSG_VCEPowerOFF);
+PPSMC_MSG_VCEPowerOFF);
 	return 0;
 }
 
 static int smu7_powerup_vce(struct pp_hwmgr *hwmgr)
 {
-	if (phm_cf_want_vce_power_gating(hwmgr))
+if (phm_cf_want_vce_power_gating(hwmgr))
 		return smum_send_msg_to_smc(hwmgr->smumgr,
-				PPSMC_MSG_VCEPowerON);
+PPSMC_MSG_VCEPowerON);
 	return 0;
 }
 
 static int smu7_powerdown_samu(struct pp_hwmgr *hwmgr)
 {
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_SamuPowerGating))
+PHM_PlatformCaps_SamuPowerGating))
 		return smum_send_msg_to_smc(hwmgr->smumgr,
-				PPSMC_MSG_SAMPowerOFF);
+PPSMC_MSG_SAMPowerOFF);
 	return 0;
 }
 
 static int smu7_powerup_samu(struct pp_hwmgr *hwmgr)
 {
 	if (phm_cap_enabled(hwmgr->platform_descriptor.platformCaps,
-			PHM_PlatformCaps_SamuPowerGating))
+PHM_PlatformCaps_SamuPowerGating))
 		return smum_send_msg_to_smc(hwmgr->smumgr,
-				PPSMC_MSG_SAMPowerON);
+PPSMC_MSG_SAMPowerON);
 	return 0;
 }
 
@@ -129,13 +129,13 @@ int smu7_disable_clock_power_gating(struct pp_hwmgr *hwmgr)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-	data->uvd_power_gated = false;
-	data->vce_power_gated = false;
-	data->samu_power_gated = false;
+data->uvd_power_gated = false;
+data->vce_power_gated = false;
+data->samu_power_gated = false;
 
-	smu7_powerup_uvd(hwmgr);
-	smu7_powerup_vce(hwmgr);
-	smu7_powerup_samu(hwmgr);
+smu7_powerup_uvd(hwmgr);
+smu7_powerup_vce(hwmgr);
+smu7_powerup_samu(hwmgr);
 
 	return 0;
 }
@@ -144,23 +144,23 @@ int smu7_powergate_uvd(struct pp_hwmgr *hwmgr, bool bgate)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-	data->uvd_power_gated = bgate;
+data->uvd_power_gated = bgate;
 
 	if (bgate) {
-		cgs_set_powergating_state(hwmgr->device,
+cgs_set_powergating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_UVD,
 						AMD_PG_STATE_GATE);
 		cgs_set_clockgating_state(hwmgr->device,
 				AMD_IP_BLOCK_TYPE_UVD,
 				AMD_CG_STATE_GATE);
 		smu7_update_uvd_dpm(hwmgr, true);
-		smu7_powerdown_uvd(hwmgr);
+smu7_powerdown_uvd(hwmgr);
 	} else {
-		smu7_powerup_uvd(hwmgr);
+smu7_powerup_uvd(hwmgr);
 		cgs_set_clockgating_state(hwmgr->device,
 				AMD_IP_BLOCK_TYPE_UVD,
 				AMD_CG_STATE_UNGATE);
-		cgs_set_powergating_state(hwmgr->device,
+cgs_set_powergating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_UVD,
 						AMD_PG_STATE_UNGATE);
 		smu7_update_uvd_dpm(hwmgr, false);
@@ -173,23 +173,23 @@ int smu7_powergate_vce(struct pp_hwmgr *hwmgr, bool bgate)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-	data->vce_power_gated = bgate;
+data->vce_power_gated = bgate;
 
 	if (bgate) {
-		cgs_set_powergating_state(hwmgr->device,
+cgs_set_powergating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_VCE,
 						AMD_PG_STATE_GATE);
 		cgs_set_clockgating_state(hwmgr->device,
 				AMD_IP_BLOCK_TYPE_VCE,
 				AMD_CG_STATE_GATE);
 		smu7_update_vce_dpm(hwmgr, true);
-		smu7_powerdown_vce(hwmgr);
+smu7_powerdown_vce(hwmgr);
 	} else {
-		smu7_powerup_vce(hwmgr);
+smu7_powerup_vce(hwmgr);
 		cgs_set_clockgating_state(hwmgr->device,
 				AMD_IP_BLOCK_TYPE_VCE,
 				AMD_CG_STATE_UNGATE);
-		cgs_set_powergating_state(hwmgr->device,
+cgs_set_powergating_state(hwmgr->device,
 						AMD_IP_BLOCK_TYPE_VCE,
 						AMD_PG_STATE_UNGATE);
 		smu7_update_vce_dpm(hwmgr, false);
@@ -201,16 +201,16 @@ int smu7_powergate_samu(struct pp_hwmgr *hwmgr, bool bgate)
 {
 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
 
-	if (data->samu_power_gated == bgate)
+if (data->samu_power_gated == bgate)
 		return 0;
 
-	data->samu_power_gated = bgate;
+data->samu_power_gated = bgate;
 
 	if (bgate) {
 		smu7_update_samu_dpm(hwmgr, true);
-		smu7_powerdown_samu(hwmgr);
+smu7_powerdown_samu(hwmgr);
 	} else {
-		smu7_powerup_samu(hwmgr);
+smu7_powerup_samu(hwmgr);
 		smu7_update_samu_dpm(hwmgr, false);
 	}
 
@@ -469,8 +469,8 @@ int smu7_update_clock_gatings(struct pp_hwmgr *hwmgr,
 }
 
 /* This function is for Polaris11 only for now,
- * Powerplay will only control the static per CU Power Gating.
- * Dynamic per CU Power Gating will be done in gfx.
+* Powerplay will only control the static per CU Power Gating.
+* Dynamic per CU Power Gating will be done in gfx.
  */
 int smu7_enable_per_cu_power_gating(struct pp_hwmgr *hwmgr, bool enable)
 {

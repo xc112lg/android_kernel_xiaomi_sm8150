@@ -1,5 +1,5 @@
 /*
- *  Implementation of various system calls for Linux/PowerPC
+*  Implementation of various system calls for Linux/PowerPC
  *
  *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
  *

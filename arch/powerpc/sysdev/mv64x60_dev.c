@@ -179,9 +179,9 @@ static int __init mv64x60_mpsc_device_setup(struct device_node *np, int id)
 	if (prop)
 		pdata.brg_clk_src = *prop;
 
-	prop = of_get_property(brg, "clock-frequency", NULL);
+prop = of_get_property(brg, "clock-frequency", NULL);
 	if (prop)
-		pdata.brg_clk_freq = *prop;
+pdata.brg_clk_freq = *prop;
 
 	pdev = platform_device_alloc(MPSC_CTLR_NAME, port_number);
 	if (!pdev)
@@ -353,15 +353,15 @@ static int __init mv64x60_i2c_device_setup(struct device_node *np, int id)
 
 	memset(&pdata, 0, sizeof(pdata));
 
-	pdata.freq_m = 8;	/* default */
-	prop = of_get_property(np, "freq_m", NULL);
+pdata.freq_m = 8;	/* default */
+prop = of_get_property(np, "freq_m", NULL);
 	if (prop)
-		pdata.freq_m = *prop;
+pdata.freq_m = *prop;
 
-	pdata.freq_n = 3;	/* default */
-	prop = of_get_property(np, "freq_n", NULL);
+pdata.freq_n = 3;	/* default */
+prop = of_get_property(np, "freq_n", NULL);
 	if (prop)
-		pdata.freq_n = *prop;
+pdata.freq_n = *prop;
 
 	pdata.timeout = 1000;				/* default: 1 second */
 
@@ -411,11 +411,11 @@ static int __init mv64x60_wdt_device_setup(struct device_node *np, int id)
 	if (!np)
 		return -ENODEV;
 
-	prop = of_get_property(np, "clock-frequency", NULL);
+prop = of_get_property(np, "clock-frequency", NULL);
 	of_node_put(np);
 	if (!prop)
 		return -ENODEV;
-	pdata.bus_clk = *prop / 1000000; /* wdt driver wants freq in MHz */
+pdata.bus_clk = *prop / 1000000; /* wdt driver wants freq in MHz */
 
 	pdev = platform_device_alloc(MV64x60_WDT_NAME, id);
 	if (!pdev)

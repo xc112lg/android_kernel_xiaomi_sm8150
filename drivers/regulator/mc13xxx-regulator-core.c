@@ -98,7 +98,7 @@ static int mc13xxx_regulator_get_voltage(struct regulator_dev *rdev)
 
 	dev_dbg(rdev_get_dev(rdev), "%s id: %d val: %d\n", __func__, id, val);
 
-	BUG_ON(val >= mc13xxx_regulators[id].desc.n_voltages);
+BUG_ON(val >= mc13xxx_regulators[id].desc.n_voltages);
 
 	return rdev->desc->volt_table[val];
 }
@@ -107,9 +107,9 @@ struct regulator_ops mc13xxx_regulator_ops = {
 	.enable = mc13xxx_regulator_enable,
 	.disable = mc13xxx_regulator_disable,
 	.is_enabled = mc13xxx_regulator_is_enabled,
-	.list_voltage = regulator_list_voltage_table,
-	.set_voltage_sel = mc13xxx_regulator_set_voltage_sel,
-	.get_voltage = mc13xxx_regulator_get_voltage,
+.list_voltage = regulator_list_voltage_table,
+.set_voltage_sel = mc13xxx_regulator_set_voltage_sel,
+.get_voltage = mc13xxx_regulator_get_voltage,
 };
 EXPORT_SYMBOL_GPL(mc13xxx_regulator_ops);
 
@@ -135,8 +135,8 @@ struct regulator_ops mc13xxx_fixed_regulator_ops = {
 	.enable = mc13xxx_regulator_enable,
 	.disable = mc13xxx_regulator_disable,
 	.is_enabled = mc13xxx_regulator_is_enabled,
-	.list_voltage = regulator_list_voltage_table,
-	.set_voltage = mc13xxx_fixed_regulator_set_voltage,
+.list_voltage = regulator_list_voltage_table,
+.set_voltage = mc13xxx_fixed_regulator_set_voltage,
 };
 EXPORT_SYMBOL_GPL(mc13xxx_fixed_regulator_ops);
 

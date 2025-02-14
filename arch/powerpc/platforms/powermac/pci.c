@@ -1,5 +1,5 @@
 /*
- * Support for PCI bridges found on Power Macintoshes.
+* Support for PCI bridges found on Power Macintoshes.
  *
  * Copyright (C) 2003-2005 Benjamin Herrenschmuidt (benh@kernel.crashing.org)
  * Copyright (C) 1997 Paul Mackerras (paulus@samba.org)
@@ -105,7 +105,7 @@ static void __init fixup_bus_range(struct device_node *bridge)
 /*
  * Apple MacRISC (U3, UniNorth, Bandit, Chaos) PCI controllers.
  *
- * The "Bandit" version is present in all early PCI PowerMacs,
+* The "Bandit" version is present in all early PCI PowerMacs,
  * and up to the first ones using Grackle. Some machines may
  * have 2 bandit controllers (2 PCI busses).
  *
@@ -253,7 +253,7 @@ static int u3_ht_skip_device(struct pci_controller *hose,
 		return -1;
 
 	/*
-	 * When a device in K2 is powered down, we die on config
+* When a device in K2 is powered down, we die on config
 	 * cycle accesses. Fix that here.
 	 */
 	for (i=0; i<2; i++)
@@ -770,7 +770,7 @@ static void __init setup_u3_ht(struct pci_controller* hose)
 #endif /* CONFIG_PPC64 */
 
 /*
- * We assume that if we have a G3 powermac, we have one bridge called
+* We assume that if we have a G3 powermac, we have one bridge called
  * "pci" (a MPC106) and no bandit or chaos bridges, and contrariwise,
  * if we have one or more bandit or chaos bridges, we don't have a MPC106.
  */
@@ -987,7 +987,7 @@ static bool pmac_pci_enable_device_hook(struct pci_dev *dev)
 	    (of_device_is_compatible(node, "pci106b,18") ||
 	     of_device_is_compatible(node, "pci106b,30") ||
 	     of_device_is_compatible(node, "pci11c1,5811"))) {
-		pmac_call_feature(PMAC_FTR_1394_CABLE_POWER, node, 0, 1);
+pmac_call_feature(PMAC_FTR_1394_CABLE_POWER, node, 0, 1);
 		pmac_call_feature(PMAC_FTR_1394_ENABLE, node, 0, 1);
 		updatecfg = 1;
 	}
@@ -1032,7 +1032,7 @@ void pmac_pci_fixup_ohci(struct pci_dev *dev)
 DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_APPLE, PCI_ANY_ID, pmac_pci_fixup_ohci);
 
 /* We power down some devices after they have been probed. They'll
- * be powered back on later on
+* be powered back on later on
  */
 void __init pmac_pcibios_after_init(void)
 {
@@ -1044,7 +1044,7 @@ void __init pmac_pcibios_after_init(void)
 				   of_device_is_compatible(nd, "pci11c1,5811"))
 		    && of_device_is_compatible(nd->parent, "uni-north")) {
 			pmac_call_feature(PMAC_FTR_1394_ENABLE, nd, 0, 0);
-			pmac_call_feature(PMAC_FTR_1394_CABLE_POWER, nd, 0, 0);
+pmac_call_feature(PMAC_FTR_1394_CABLE_POWER, nd, 0, 0);
 		}
 	}
 	for_each_node_by_name(nd, "ethernet") {
@@ -1056,11 +1056,11 @@ void __init pmac_pcibios_after_init(void)
 
 void pmac_pci_fixup_cardbus(struct pci_dev* dev)
 {
-	if (!machine_is(powermac))
+if (!machine_is(powermac))
 		return;
 	/*
 	 * Fix the interrupt routing on the various cardbus bridges
-	 * used on powerbooks
+* used on powerbooks
 	 */
 	if (dev->vendor != PCI_VENDOR_ID_TI)
 		return;
@@ -1096,10 +1096,10 @@ void pmac_pci_fixup_pciata(struct pci_dev* dev)
        u8 progif = 0;
 
        /*
-        * On PowerMacs, we try to switch any PCI ATA controller to
+* On PowerMacs, we try to switch any PCI ATA controller to
 	* fully native mode
         */
-	if (!machine_is(powermac))
+if (!machine_is(powermac))
 		return;
 
 	/* Some controllers don't have the class IDE */
@@ -1201,8 +1201,8 @@ static void fixup_u4_pcie(struct pci_dev* dev)
 	u32 reg;
 	int i;
 
-	/* Only do that on PowerMac */
-	if (!machine_is(powermac))
+/* Only do that on PowerMac */
+if (!machine_is(powermac))
 		return;
 
 	/* Find the largest MMIO region */

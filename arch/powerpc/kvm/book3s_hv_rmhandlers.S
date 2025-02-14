@@ -336,7 +336,7 @@ kvm_start_guest:
 	li	r0,KVM_HWTHREAD_IN_KVM
 	stb	r0,HSTATE_HWTHREAD_STATE(r13)
 
-	/* NV GPR values from power7_idle() will no longer be valid */
+/* NV GPR values from power7_idle() will no longer be valid */
 	li	r0,1
 	stb	r0,PACA_NAPSTATELOST(r13)
 
@@ -451,8 +451,8 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	bne	54f
 /*
  * We jump to pnv_wakeup_loss, which will return to the caller
- * of power7_nap in the powernv cpu offline loop.  The value we
- * put in r3 becomes the return value for power7_nap. pnv_wakeup_loss
+* of power7_nap in the powernv cpu offline loop.  The value we
+* put in r3 becomes the return value for power7_nap. pnv_wakeup_loss
  * requires SRR1 in r12.
  */
 	li	r3, LPCR_PECE0
@@ -589,7 +589,7 @@ kvmppc_hv_entry:
 	ptesync
 2:
 	/*
-	 * POWER7/POWER8 host -> guest partition switch code.
+* POWER7/POWER8 host -> guest partition switch code.
 	 * We don't have to lock against concurrent tlbies,
 	 * but we do have to coordinate across hardware threads.
 	 */
@@ -623,7 +623,7 @@ END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
 	lhz	r6,PACAPACAINDEX(r13)	/* test_bit(cpu, need_tlb_flush) */
 BEGIN_FTR_SECTION
 	/*
-	 * On POWER9, individual threads can come in here, but the
+* On POWER9, individual threads can come in here, but the
 	 * TLB is shared between the 4 threads in a core, hence
 	 * invalidating on one thread invalidates for all.
 	 * Thus we make all 4 threads use the same bit here.
@@ -855,10 +855,10 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_207S)
 	mtspr	SPRN_DSCR, r5
 
 BEGIN_FTR_SECTION
-	/* Skip next section on POWER7 */
+/* Skip next section on POWER7 */
 	b	8f
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
-	/* Load up POWER8-specific registers */
+/* Load up POWER8-specific registers */
 	ld	r5, VCPU_IAMR(r4)
 	lwz	r6, VCPU_PSPB(r4)
 	ld	r7, VCPU_FSCR(r4)
@@ -889,7 +889,7 @@ BEGIN_FTR_SECTION
 	PPC_INVALIDATE_ERAT
 END_FTR_SECTION_IFSET(CPU_FTR_POWER9_DD1)
 BEGIN_FTR_SECTION
-	/* POWER8-only registers */
+/* POWER8-only registers */
 	ld	r5, VCPU_TCSCR(r4)
 	ld	r6, VCPU_ACOP(r4)
 	ld	r7, VCPU_CSIGR(r4)
@@ -899,7 +899,7 @@ BEGIN_FTR_SECTION
 	mtspr	SPRN_CSIGR, r7
 	mtspr	SPRN_TACR, r8
 FTR_SECTION_ELSE
-	/* POWER9-only registers */
+/* POWER9-only registers */
 	ld	r5, VCPU_TID(r4)
 	ld	r6, VCPU_PSSCR(r4)
 	oris	r6, r6, PSSCR_EC@h	/* This makes stop trap to HV */
@@ -1035,7 +1035,7 @@ kvmppc_cede_reentry:		/* r4 = vcpu, r13 = paca */
 	bne	cr1, 12f
 	mfspr	r0, SPRN_DEC
 BEGIN_FTR_SECTION
-	/* On POWER9 check whether the guest has large decrementer enabled */
+/* On POWER9 check whether the guest has large decrementer enabled */
 	andis.	r8, r8, LPCR_LD@h
 	bne	15f
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
@@ -1053,7 +1053,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 BEGIN_FTR_SECTION
 	b	fast_guest_return
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_300)
-	/* On POWER9, check for pending doorbell requests */
+/* On POWER9, check for pending doorbell requests */
 	lbz	r0, VCPU_DBELL_REQ(r4)
 	cmpwi	r0, 0
 	beq	fast_guest_return
@@ -1252,7 +1252,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_HAS_PPR)
 	 * Now that we have saved away SRR0/1 and HSRR0/1,
 	 * interrupts are recoverable in principle, so set MSR_RI.
 	 * This becomes important for relocation-on interrupts from
-	 * the guest, which we can get in radix mode on POWER9.
+* the guest, which we can get in radix mode on POWER9.
 	 */
 	li	r0, MSR_RI
 	mtmsrd	r0, 1
@@ -1538,7 +1538,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 BEGIN_FTR_SECTION
 	b	8f
 END_FTR_SECTION_IFCLR(CPU_FTR_ARCH_207S)
-	/* Save POWER8-specific registers */
+/* Save POWER8-specific registers */
 	mfspr	r5, SPRN_IAMR
 	mfspr	r6, SPRN_PSPB
 	mfspr	r7, SPRN_FSCR
@@ -1669,7 +1669,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_TM)
 	/* r8 and cr0.eq are live here */
 BEGIN_FTR_SECTION
 	/*
-	 * POWER8 seems to have a hardware bug where setting
+* POWER8 seems to have a hardware bug where setting
 	 * MMCR0[PMAE] along with MMCR0[PMC1CE] and/or MMCR0[PMCjCE]
 	 * when some counters are already negative doesn't seem
 	 * to cause a performance monitor alert (and hence interrupt).
@@ -1680,7 +1680,7 @@ BEGIN_FTR_SECTION
 	 * To work around this, we need a way to freeze the counters
 	 * before reading MMCR0.  Normally, freezing the counters
 	 * is done by writing MMCR0 (to set MMCR0[FC]) which
-	 * unavoidably writes MMCR0[PMA0] as well.  On POWER8,
+* unavoidably writes MMCR0[PMA0] as well.  On POWER8,
 	 * we can also freeze the counters using MMCR2, by writing
 	 * 1s to all the counter freeze condition bits (there are
 	 * 9 bits each for 6 counters).
@@ -1818,7 +1818,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_POWER9_DD1)
 	ptesync
 4:
 	/*
-	 * POWER7/POWER8 guest -> host partition switch code.
+* POWER7/POWER8 guest -> host partition switch code.
 	 * We don't have to lock against tlbies but we do
 	 * have to coordinate the hardware threads.
 	 * Here STACK_SLOT_TRAP(r1) contains the trap number.
@@ -1968,12 +1968,12 @@ kvm_flush_link_stack:
 	/* Save LR into r0 */
 	mflr	r0
 
-	/* Flush the link stack. On Power8 it's up to 32 entries in size. */
+/* Flush the link stack. On Power8 it's up to 32 entries in size. */
 	.rept 32
 	bl	.+4
 	.endr
 
-	/* And on Power9 it's up to 64. */
+/* And on Power9 it's up to 64. */
 BEGIN_FTR_SECTION
 	.rept 32
 	bl	.+4
@@ -2009,7 +2009,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	andi.	r0, r11, MSR_DR		/* data relocation enabled? */
 	beq	3f
 BEGIN_FTR_SECTION
-	mfspr	r5, SPRN_ASDR		/* on POWER9, use ASDR to get VSID */
+mfspr	r5, SPRN_ASDR		/* on POWER9, use ASDR to get VSID */
 	b	4f
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	clrrdi	r0, r4, 28
@@ -2101,7 +2101,7 @@ kvmppc_hisi:
 	andi.	r0, r11, MSR_IR		/* instruction relocation enabled? */
 	beq	3f
 BEGIN_FTR_SECTION
-	mfspr	r5, SPRN_ASDR		/* on POWER9, use ASDR to get VSID */
+mfspr	r5, SPRN_ASDR		/* on POWER9, use ASDR to get VSID */
 	b	4f
 END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	clrrdi	r0, r10, 28
@@ -2488,7 +2488,7 @@ _GLOBAL(kvmppc_h_cede)		/* r3 = vcpu pointer, r11 = msr, r13 = paca */
 	bge	33f		/* another thread already exiting */
 
 /*
- * Although not specifically required by the architecture, POWER7
+* Although not specifically required by the architecture, POWER7
  * preserves the following registers in nap mode, even if an SMT mode
  * switch occurs: SLB entries, PURR, SPURR, AMOR, UAMOR, AMR, SPRG0-3,
  * DAR, DSISR, DABR, DABRX, DSCR, PMCx, MMCRx, SIAR, SDAR.
@@ -2566,7 +2566,7 @@ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 	/*
 	 * Take a nap until a decrementer or external or doobell interrupt
 	 * occurs, with PECE1 and PECE0 set in LPCR.
-	 * On POWER8, set PECEDH, and if we are ceding, also set PECEDP.
+* On POWER8, set PECEDH, and if we are ceding, also set PECEDP.
 	 * Also clear the runlatch bit before napping.
 	 */
 kvm_do_nap:
@@ -3192,7 +3192,7 @@ kvmppc_msr_interrupt:
 	blr
 
 /*
- * This works around a hardware bug on POWER8E processors, where
+* This works around a hardware bug on POWER8E processors, where
  * writing a 1 to the MMCR0[PMAO] bit doesn't generate a
  * performance monitor interrupt.  Instead, when we need to have
  * an interrupt pending, we have to arrange for a counter to overflow.

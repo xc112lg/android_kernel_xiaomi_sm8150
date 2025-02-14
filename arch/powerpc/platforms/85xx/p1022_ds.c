@@ -373,7 +373,7 @@ void p1022ds_set_pixel_clock(unsigned int pixclock)
 {
 	struct device_node *guts_np = NULL;
 	struct ccsr_guts __iomem *guts;
-	unsigned long freq;
+unsigned long freq;
 	u64 temp;
 	u32 pxclk;
 
@@ -391,17 +391,17 @@ void p1022ds_set_pixel_clock(unsigned int pixclock)
 		return;
 	}
 
-	/* Convert pixclock from a wavelength to a frequency */
+/* Convert pixclock from a wavelength to a frequency */
 	temp = 1000000000000ULL;
 	do_div(temp, pixclock);
-	freq = temp;
+freq = temp;
 
 	/*
 	 * 'pxclk' is the ratio of the platform clock to the pixel clock.
 	 * This number is programmed into the CLKDVDR register, and the valid
 	 * range of values is 2-255.
 	 */
-	pxclk = DIV_ROUND_CLOSEST(fsl_get_sys_freq(), freq);
+pxclk = DIV_ROUND_CLOSEST(fsl_get_sys_freq(), freq);
 	pxclk = clamp_t(u32, pxclk, 2, 255);
 
 	/* Disable the pixel clock, and set it to non-inverted and no delay */

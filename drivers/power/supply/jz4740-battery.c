@@ -42,12 +42,12 @@ struct jz_battery {
 	const struct mfd_cell *cell;
 
 	int status;
-	long voltage;
+long voltage;
 
 	struct completion read_completion;
 
-	struct power_supply *battery;
-	struct power_supply_desc battery_desc;
+struct power_supply *battery;
+struct power_supply_desc battery_desc;
 	struct delayed_work work;
 
 	struct mutex lock;
@@ -55,7 +55,7 @@ struct jz_battery {
 
 static inline struct jz_battery *psy_to_jz_battery(struct power_supply *psy)
 {
-	return power_supply_get_drvdata(psy);
+return power_supply_get_drvdata(psy);
 }
 
 static irqreturn_t jz_battery_irq_handler(int irq, void *devid)
@@ -70,7 +70,7 @@ static long jz_battery_read_voltage(struct jz_battery *battery)
 {
 	long t;
 	unsigned long val;
-	long voltage;
+long voltage;
 
 	mutex_lock(&battery->lock);
 
@@ -85,13 +85,13 @@ static long jz_battery_read_voltage(struct jz_battery *battery)
 	if (t > 0) {
 		val = readw(battery->base) & 0xfff;
 
-		if (battery->pdata->info.voltage_max_design <= 2500000)
+if (battery->pdata->info.voltage_max_design <= 2500000)
 			val = (val * 78125UL) >> 7UL;
 		else
 			val = ((val * 924375UL) >> 9UL) + 33000;
-		voltage = (long)val;
+voltage = (long)val;
 	} else {
-		voltage = t ? t : -ETIMEDOUT;
+voltage = t ? t : -ETIMEDOUT;
 	}
 
 	battery->cell->disable(battery->pdev);
@@ -99,24 +99,24 @@ static long jz_battery_read_voltage(struct jz_battery *battery)
 
 	mutex_unlock(&battery->lock);
 
-	return voltage;
+return voltage;
 }
 
 static int jz_battery_get_capacity(struct power_supply *psy)
 {
 	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
-	struct power_supply_info *info = &jz_battery->pdata->info;
-	long voltage;
+struct power_supply_info *info = &jz_battery->pdata->info;
+long voltage;
 	int ret;
-	int voltage_span;
+int voltage_span;
 
-	voltage = jz_battery_read_voltage(jz_battery);
+voltage = jz_battery_read_voltage(jz_battery);
 
-	if (voltage < 0)
-		return voltage;
+if (voltage < 0)
+return voltage;
 
-	voltage_span = info->voltage_max_design - info->voltage_min_design;
-	ret = ((voltage - info->voltage_min_design) * 100) / voltage_span;
+voltage_span = info->voltage_max_design - info->voltage_min_design;
+ret = ((voltage - info->voltage_min_design) * 100) / voltage_span;
 
 	if (ret > 100)
 		ret = 100;
@@ -127,41 +127,41 @@ static int jz_battery_get_capacity(struct power_supply *psy)
 }
 
 static int jz_battery_get_property(struct power_supply *psy,
-	enum power_supply_property psp, union power_supply_propval *val)
+enum power_supply_property psp, union power_supply_propval *val)
 {
 	struct jz_battery *jz_battery = psy_to_jz_battery(psy);
-	struct power_supply_info *info = &jz_battery->pdata->info;
-	long voltage;
+struct power_supply_info *info = &jz_battery->pdata->info;
+long voltage;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = jz_battery->status;
 		break;
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = jz_battery->pdata->info.technology;
 		break;
-	case POWER_SUPPLY_PROP_HEALTH:
-		voltage = jz_battery_read_voltage(jz_battery);
-		if (voltage < info->voltage_min_design)
-			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+case POWER_SUPPLY_PROP_HEALTH:
+voltage = jz_battery_read_voltage(jz_battery);
+if (voltage < info->voltage_min_design)
+val->intval = POWER_SUPPLY_HEALTH_DEAD;
 		else
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 		break;
-	case POWER_SUPPLY_PROP_CAPACITY:
+case POWER_SUPPLY_PROP_CAPACITY:
 		val->intval = jz_battery_get_capacity(psy);
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		val->intval = jz_battery_read_voltage(jz_battery);
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+val->intval = jz_battery_read_voltage(jz_battery);
 		if (val->intval < 0)
 			return val->intval;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
-		val->intval = info->voltage_max_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+val->intval = info->voltage_max_design;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
-		val->intval = info->voltage_min_design;
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+val->intval = info->voltage_min_design;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = 1;
 		break;
 	default:
@@ -189,7 +189,7 @@ static irqreturn_t jz_battery_charge_irq(int irq, void *data)
 static void jz_battery_update(struct jz_battery *jz_battery)
 {
 	int status;
-	long voltage;
+long voltage;
 	bool has_changed = false;
 	int is_charging;
 
@@ -197,9 +197,9 @@ static void jz_battery_update(struct jz_battery *jz_battery)
 		is_charging = gpio_get_value(jz_battery->pdata->gpio_charge);
 		is_charging ^= jz_battery->pdata->gpio_charge_active_low;
 		if (is_charging)
-			status = POWER_SUPPLY_STATUS_CHARGING;
+status = POWER_SUPPLY_STATUS_CHARGING;
 		else
-			status = POWER_SUPPLY_STATUS_NOT_CHARGING;
+status = POWER_SUPPLY_STATUS_NOT_CHARGING;
 
 		if (status != jz_battery->status) {
 			jz_battery->status = status;
@@ -207,25 +207,25 @@ static void jz_battery_update(struct jz_battery *jz_battery)
 		}
 	}
 
-	voltage = jz_battery_read_voltage(jz_battery);
-	if (voltage >= 0 && abs(voltage - jz_battery->voltage) > 50000) {
-		jz_battery->voltage = voltage;
+voltage = jz_battery_read_voltage(jz_battery);
+if (voltage >= 0 && abs(voltage - jz_battery->voltage) > 50000) {
+jz_battery->voltage = voltage;
 		has_changed = true;
 	}
 
 	if (has_changed)
-		power_supply_changed(jz_battery->battery);
+power_supply_changed(jz_battery->battery);
 }
 
 static enum power_supply_property jz_battery_properties[] = {
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_CAPACITY,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_CAPACITY,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_PRESENT,
 };
 
 static void jz_battery_work(struct work_struct *work)
@@ -243,9 +243,9 @@ static int jz_battery_probe(struct platform_device *pdev)
 {
 	int ret = 0;
 	struct jz_battery_platform_data *pdata = pdev->dev.parent->platform_data;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct jz_battery *jz_battery;
-	struct power_supply_desc *battery_desc;
+struct power_supply_desc *battery_desc;
 	struct resource *mem;
 
 	if (!pdata) {
@@ -275,12 +275,12 @@ static int jz_battery_probe(struct platform_device *pdev)
 
 	battery_desc = &jz_battery->battery_desc;
 	battery_desc->name = pdata->info.name;
-	battery_desc->type = POWER_SUPPLY_TYPE_BATTERY;
+battery_desc->type = POWER_SUPPLY_TYPE_BATTERY;
 	battery_desc->properties	= jz_battery_properties;
 	battery_desc->num_properties	= ARRAY_SIZE(jz_battery_properties);
 	battery_desc->get_property	= jz_battery_get_property;
-	battery_desc->external_power_changed =
-					jz_battery_external_power_changed;
+battery_desc->external_power_changed =
+jz_battery_external_power_changed;
 	battery_desc->use_for_apm	= 1;
 
 	psy_cfg.drv_data = jz_battery;
@@ -329,16 +329,16 @@ static int jz_battery_probe(struct platform_device *pdev)
 		jz_battery->charge_irq = -1;
 	}
 
-	if (jz_battery->pdata->info.voltage_max_design <= 2500000)
+if (jz_battery->pdata->info.voltage_max_design <= 2500000)
 		jz4740_adc_set_config(pdev->dev.parent, JZ_ADC_CONFIG_BAT_MB,
 			JZ_ADC_CONFIG_BAT_MB);
 	else
 		jz4740_adc_set_config(pdev->dev.parent, JZ_ADC_CONFIG_BAT_MB, 0);
 
-	jz_battery->battery = power_supply_register(&pdev->dev, battery_desc,
+jz_battery->battery = power_supply_register(&pdev->dev, battery_desc,
 							&psy_cfg);
 	if (IS_ERR(jz_battery->battery)) {
-		dev_err(&pdev->dev, "power supply battery register failed.\n");
+dev_err(&pdev->dev, "power supply battery register failed.\n");
 		ret = PTR_ERR(jz_battery->battery);
 		goto err_free_charge_irq;
 	}
@@ -371,7 +371,7 @@ static int jz_battery_remove(struct platform_device *pdev)
 		gpio_free(jz_battery->pdata->gpio_charge);
 	}
 
-	power_supply_unregister(jz_battery->battery);
+power_supply_unregister(jz_battery->battery);
 
 	free_irq(jz_battery->irq, jz_battery);
 
@@ -384,7 +384,7 @@ static int jz_battery_suspend(struct device *dev)
 	struct jz_battery *jz_battery = dev_get_drvdata(dev);
 
 	cancel_delayed_work_sync(&jz_battery->work);
-	jz_battery->status = POWER_SUPPLY_STATUS_UNKNOWN;
+jz_battery->status = POWER_SUPPLY_STATUS_UNKNOWN;
 
 	return 0;
 }

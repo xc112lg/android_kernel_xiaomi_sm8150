@@ -6,7 +6,7 @@
  *
  * Maintained by: Olof Johansson <olof@lixom.net>
  *
- * Based on arch/powerpc/platforms/cell/cbe_cpufreq.c:
+* Based on arch/powerpc/platforms/cell/cbe_cpufreq.c:
  * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
  *
  * This program is free software; you can redistribute it and/or modify
@@ -65,7 +65,7 @@ static struct cpufreq_frequency_table pas_freqs[] = {
 	{0, 2,	0},
 	{0, 3,	0},
 	{0, 4,	0},
-	{0, 0,	CPUFREQ_TABLE_END},
+{0, 0,	CPUFREQ_TABLE_END},
 };
 
 /*
@@ -131,14 +131,14 @@ void restore_astate(int cpu)
 }
 
 /*
- * cpufreq functions
+* cpufreq functions
  */
 
 static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
-	struct cpufreq_frequency_table *pos;
-	const u32 *max_freqp;
-	u32 max_freq;
+struct cpufreq_frequency_table *pos;
+const u32 *max_freqp;
+u32 max_freq;
 	int cur_astate;
 	struct resource res;
 	struct device_node *cpu, *dn;
@@ -148,15 +148,15 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	if (!cpu)
 		goto out;
 
-	max_freqp = of_get_property(cpu, "clock-frequency", NULL);
+max_freqp = of_get_property(cpu, "clock-frequency", NULL);
 	of_node_put(cpu);
-	if (!max_freqp) {
+if (!max_freqp) {
 		err = -EINVAL;
 		goto out;
 	}
 
-	/* we need the freq in kHz */
-	max_freq = *max_freqp / 1000;
+/* we need the freq in kHz */
+max_freq = *max_freqp / 1000;
 
 	dn = of_find_compatible_node(NULL, NULL, "1682m-sdc");
 	if (!dn)
@@ -192,23 +192,23 @@ static int pas_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		goto out_unmap_sdcasr;
 	}
 
-	pr_debug("init cpufreq on CPU %d\n", policy->cpu);
-	pr_debug("max clock-frequency is at %u kHz\n", max_freq);
-	pr_debug("initializing frequency table\n");
+pr_debug("init cpufreq on CPU %d\n", policy->cpu);
+pr_debug("max clock-frequency is at %u kHz\n", max_freq);
+pr_debug("initializing frequency table\n");
 
-	/* initialize frequency table */
-	cpufreq_for_each_entry(pos, pas_freqs) {
-		pos->frequency = get_astate_freq(pos->driver_data) * 100000;
-		pr_debug("%d: %d\n", (int)(pos - pas_freqs), pos->frequency);
+/* initialize frequency table */
+cpufreq_for_each_entry(pos, pas_freqs) {
+pos->frequency = get_astate_freq(pos->driver_data) * 100000;
+pr_debug("%d: %d\n", (int)(pos - pas_freqs), pos->frequency);
 	}
 
 	cur_astate = get_cur_astate(policy->cpu);
 	pr_debug("current astate is at %d\n",cur_astate);
 
-	policy->cur = pas_freqs[cur_astate].frequency;
-	ppc_proc_freq = policy->cur * 1000ul;
+policy->cur = pas_freqs[cur_astate].frequency;
+ppc_proc_freq = policy->cur * 1000ul;
 
-	return cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
+return cpufreq_generic_init(policy, pas_freqs, get_gizmo_latency());
 
 out_unmap_sdcasr:
 	iounmap(sdcasr_mapbase);
@@ -238,28 +238,28 @@ static int pas_cpufreq_target(struct cpufreq_policy *policy,
 {
 	int i;
 
-	pr_debug("setting frequency for cpu %d to %d kHz, 1/%d of max frequency\n",
+pr_debug("setting frequency for cpu %d to %d kHz, 1/%d of max frequency\n",
 		 policy->cpu,
-		 pas_freqs[pas_astate_new].frequency,
-		 pas_freqs[pas_astate_new].driver_data);
+pas_freqs[pas_astate_new].frequency,
+pas_freqs[pas_astate_new].driver_data);
 
 	current_astate = pas_astate_new;
 
 	for_each_online_cpu(i)
 		set_astate(i, pas_astate_new);
 
-	ppc_proc_freq = pas_freqs[pas_astate_new].frequency * 1000ul;
+ppc_proc_freq = pas_freqs[pas_astate_new].frequency * 1000ul;
 	return 0;
 }
 
 static struct cpufreq_driver pas_cpufreq_driver = {
-	.name		= "pas-cpufreq",
-	.flags		= CPUFREQ_CONST_LOOPS,
-	.init		= pas_cpufreq_cpu_init,
-	.exit		= pas_cpufreq_cpu_exit,
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= pas_cpufreq_target,
-	.attr		= cpufreq_generic_attr,
+.name		= "pas-cpufreq",
+.flags		= CPUFREQ_CONST_LOOPS,
+.init		= pas_cpufreq_cpu_init,
+.exit		= pas_cpufreq_cpu_exit,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= pas_cpufreq_target,
+.attr		= cpufreq_generic_attr,
 };
 
 /*
@@ -272,12 +272,12 @@ static int __init pas_cpufreq_init(void)
 	    !of_machine_is_compatible("pasemi,pwrficient"))
 		return -ENODEV;
 
-	return cpufreq_register_driver(&pas_cpufreq_driver);
+return cpufreq_register_driver(&pas_cpufreq_driver);
 }
 
 static void __exit pas_cpufreq_exit(void)
 {
-	cpufreq_unregister_driver(&pas_cpufreq_driver);
+cpufreq_unregister_driver(&pas_cpufreq_driver);
 }
 
 module_init(pas_cpufreq_init);

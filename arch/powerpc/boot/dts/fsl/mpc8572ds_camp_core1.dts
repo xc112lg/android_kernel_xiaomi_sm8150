@@ -22,10 +22,10 @@
 	compatible = "fsl,MPC8572DS", "fsl,MPC8572DS-CAMP";
 
 	cpus {
-		PowerPC,8572@0 {
+PowerPC,8572@0 {
 			status = "disabled";
 		};
-		PowerPC,8572@1 {
+PowerPC,8572@1 {
 		};
 	};
 

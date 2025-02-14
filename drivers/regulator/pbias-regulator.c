@@ -42,7 +42,7 @@ struct pbias_regulator_data {
 	struct regulator_dev *dev;
 	struct regmap *syscon;
 	const struct pbias_reg_info *info;
-	int voltage;
+int voltage;
 };
 
 struct pbias_of_data {
@@ -55,9 +55,9 @@ static const unsigned int pbias_volt_table[] = {
 };
 
 static const struct regulator_ops pbias_regulator_voltage_ops = {
-	.list_voltage = regulator_list_voltage_table,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_table,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -197,10 +197,10 @@ static int pbias_regulator_probe(struct platform_device *pdev)
 		drvdata[data_idx].info = info;
 		drvdata[data_idx].desc.name = info->name;
 		drvdata[data_idx].desc.owner = THIS_MODULE;
-		drvdata[data_idx].desc.type = REGULATOR_VOLTAGE;
-		drvdata[data_idx].desc.ops = &pbias_regulator_voltage_ops;
+drvdata[data_idx].desc.type = REGULATOR_VOLTAGE;
+drvdata[data_idx].desc.ops = &pbias_regulator_voltage_ops;
 		drvdata[data_idx].desc.volt_table = pbias_volt_table;
-		drvdata[data_idx].desc.n_voltages = 2;
+drvdata[data_idx].desc.n_voltages = 2;
 		drvdata[data_idx].desc.enable_time = info->enable_time;
 		drvdata[data_idx].desc.vsel_reg = offset;
 		drvdata[data_idx].desc.vsel_mask = info->vmode;

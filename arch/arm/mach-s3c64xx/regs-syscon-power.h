@@ -4,7 +4,7 @@
  *      http://armlinux.simtec.co.uk/
  *      Ben Dooks <ben@simtec.co.uk>
  *
- * S3C64XX - syscon power and sleep control registers
+* S3C64XX - syscon power and sleep control registers
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as

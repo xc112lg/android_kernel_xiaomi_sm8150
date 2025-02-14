@@ -53,7 +53,7 @@
 /*
  * IMPORTANT!
  * All future PPC_FEATURE definitions should be allocated in cooperation with
- * OPAL / skiboot firmware, in accordance with the ibm,powerpc-cpu-features
+* OPAL / skiboot firmware, in accordance with the ibm,powerpc-cpu-features
  * device tree binding.
  */
 

@@ -1,6 +1,6 @@
 /*
  * Common boot and setup code for both 32-bit and 64-bit.
- * Extracted from arch/powerpc/kernel/setup_64.c.
+* Extracted from arch/powerpc/kernel/setup_64.c.
  *
  * Copyright (C) 2001 PPC64 Team, IBM Corp
  *
@@ -147,7 +147,7 @@ void machine_shutdown(void)
 
 static void machine_hang(void)
 {
-	pr_emerg("System Halted, OK to turn off power\n");
+pr_emerg("System Halted, OK to turn off power\n");
 	local_irq_disable();
 	while (1)
 		;
@@ -170,8 +170,8 @@ void machine_restart(char *cmd)
 void machine_power_off(void)
 {
 	machine_shutdown();
-	if (pm_power_off)
-		pm_power_off();
+if (pm_power_off)
+pm_power_off();
 
 	smp_send_stop();
 	machine_hang();
@@ -214,7 +214,7 @@ static void show_cpuinfo_summary(struct seq_file *m)
 	seq_printf(m, "total bogomips\t: %lu.%02lu\n",
 		   bogosum/(500000/HZ), bogosum/(5000/HZ) % 100);
 #endif /* CONFIG_SMP && CONFIG_PPC32 */
-	seq_printf(m, "timebase\t: %lu\n", ppc_tb_freq);
+seq_printf(m, "timebase\t: %lu\n", ppc_tb_freq);
 	if (ppc_md.name)
 		seq_printf(m, "platform\t: %s\n", ppc_md.name);
 	root = of_find_node_by_path("/");
@@ -238,7 +238,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
 {
 	unsigned long cpu_id = (unsigned long)v - 1;
 	unsigned int pvr;
-	unsigned long proc_freq;
+unsigned long proc_freq;
 	unsigned short maj;
 	unsigned short min;
 
@@ -283,18 +283,18 @@ static int show_cpuinfo(struct seq_file *m, void *v)
 
 	/*
 	 * Platforms that have variable clock rates, should implement
-	 * the method ppc_md.get_proc_freq() that reports the clock
-	 * rate of a given cpu. The rest can use ppc_proc_freq to
+* the method ppc_md.get_proc_freq() that reports the clock
+* rate of a given cpu. The rest can use ppc_proc_freq to
 	 * report the clock rate that is same across all cpus.
 	 */
-	if (ppc_md.get_proc_freq)
-		proc_freq = ppc_md.get_proc_freq(cpu_id);
+if (ppc_md.get_proc_freq)
+proc_freq = ppc_md.get_proc_freq(cpu_id);
 	else
-		proc_freq = ppc_proc_freq;
+proc_freq = ppc_proc_freq;
 
-	if (proc_freq)
+if (proc_freq)
 		seq_printf(m, "clock\t\t: %lu.%06luMHz\n",
-			   proc_freq / 1000000, proc_freq % 1000000);
+proc_freq / 1000000, proc_freq % 1000000);
 
 	if (ppc_md.show_percpuinfo != NULL)
 		ppc_md.show_percpuinfo(m, cpu_id);
@@ -327,7 +327,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
 				maj = ((pvr >> 8) & 0xFF) - 1;
 				min = pvr & 0xFF;
 				break;
-			case 0x004e: /* POWER9 bits 12-15 give chip type */
+case 0x004e: /* POWER9 bits 12-15 give chip type */
 				maj = (pvr >> 8) & 0x0F;
 				min = pvr & 0xFF;
 				break;
@@ -424,7 +424,7 @@ static void __init cpu_init_thread_core_maps(int tpc)
 	threads_per_subcore = tpc;
 	cpumask_clear(&threads_core_mask);
 
-	/* This implementation only supports power of 2 number of threads
+/* This implementation only supports power of 2 number of threads
 	 * for simplicity and performance
 	 */
 	threads_shift = ilog2(tpc);
@@ -764,9 +764,9 @@ EXPORT_SYMBOL(powerpc_debugfs_root);
 
 static int powerpc_debugfs_init(void)
 {
-	powerpc_debugfs_root = debugfs_create_dir("powerpc", NULL);
+powerpc_debugfs_root = debugfs_create_dir("powerpc", NULL);
 
-	return powerpc_debugfs_root == NULL;
+return powerpc_debugfs_root == NULL;
 }
 arch_initcall(powerpc_debugfs_init);
 #endif
@@ -810,7 +810,7 @@ static __init void print_system_info(void)
 		cur_cpu_spec->cpu_user_features2);
 	pr_info("mmu_features      = 0x%08x\n", cur_cpu_spec->mmu_features);
 #ifdef CONFIG_PPC64
-	pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
+pr_info("firmware_features = 0x%016lx\n", powerpc_firmware_features);
 #endif
 
 #ifdef CONFIG_PPC_STD_MMU_64
@@ -865,10 +865,10 @@ void __init setup_arch(char **cmdline_p)
 	setup_panic();
 
 	/*
-	 * Configure ppc_md.power_save (ppc32 only, 64-bit machines do
+* Configure ppc_md.power_save (ppc32 only, 64-bit machines do
 	 * it from their respective probe() function.
 	 */
-	setup_power_save();
+setup_power_save();
 
 	/* Discover standard serial ports. */
 	find_legacy_serial_ports();

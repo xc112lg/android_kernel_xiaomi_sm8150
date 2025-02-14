@@ -29,11 +29,11 @@
 		.name = _name,					\
 		.id = PCF50633_REGULATOR_##_id,			\
 		.ops = &pcf50633_regulator_ops,			\
-		.n_voltages = _n,				\
+.n_voltages = _n,				\
 		.min_uV = _min_uV,				\
 		.uV_step = _uV_step,				\
 		.linear_min_sel = _min_sel,			\
-		.type = REGULATOR_VOLTAGE,			\
+.type = REGULATOR_VOLTAGE,			\
 		.owner = THIS_MODULE,				\
 		.vsel_reg = PCF50633_REG_##_id##OUT,		\
 		.vsel_mask = 0xff,				\
@@ -42,10 +42,10 @@
 	}
 
 static const struct regulator_ops pcf50633_regulator_ops = {
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,

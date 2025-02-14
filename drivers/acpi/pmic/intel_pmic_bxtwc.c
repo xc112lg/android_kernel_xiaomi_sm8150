@@ -37,17 +37,17 @@ static struct pmic_table power_table[] = {
 		.address = 0x0,
 		.reg = 0x63,
 		.bit = VR_MODE_AUTO,
-	}, /* VDD1 -> VDD1CNT */
+}, /* VDD1 -> VDD1CNT */
 	{
 		.address = 0x04,
 		.reg = 0x65,
 		.bit = VR_MODE_AUTO,
-	}, /* VDD2 -> VDD2CNT */
+}, /* VDD2 -> VDD2CNT */
 	{
 		.address = 0x08,
 		.reg = 0x67,
 		.bit = VR_MODE_AUTO,
-	}, /* VDD3 -> VDD3CNT */
+}, /* VDD3 -> VDD3CNT */
 	{
 		.address = 0x0c,
 		.reg = 0x6d,
@@ -378,14 +378,14 @@ intel_bxtwc_pmic_update_policy(struct regmap *regmap,
 }
 
 static struct intel_pmic_opregion_data intel_bxtwc_pmic_opregion_data = {
-	.get_power      = intel_bxtwc_pmic_get_power,
-	.update_power   = intel_bxtwc_pmic_update_power,
+.get_power      = intel_bxtwc_pmic_get_power,
+.update_power   = intel_bxtwc_pmic_update_power,
 	.get_raw_temp   = intel_bxtwc_pmic_get_raw_temp,
 	.update_aux     = intel_bxtwc_pmic_update_aux,
 	.get_policy     = intel_bxtwc_pmic_get_policy,
 	.update_policy  = intel_bxtwc_pmic_update_policy,
-	.power_table      = power_table,
-	.power_table_count = ARRAY_SIZE(power_table),
+.power_table      = power_table,
+.power_table_count = ARRAY_SIZE(power_table),
 	.thermal_table     = thermal_table,
 	.thermal_table_count = ARRAY_SIZE(thermal_table),
 };

@@ -228,10 +228,10 @@ static int nforce2_set_fsb(unsigned int fsb)
 }
 
 /**
- * nforce2_get - get the CPU frequency
+* nforce2_get - get the CPU frequency
  * @cpu: CPU number
  *
- * Returns the CPU frequency
+* Returns the CPU frequency
  */
 static unsigned int nforce2_get(unsigned int cpu)
 {
@@ -241,36 +241,36 @@ static unsigned int nforce2_get(unsigned int cpu)
 }
 
 /**
- * nforce2_target - set a new CPUFreq policy
+* nforce2_target - set a new CPUFreq policy
  * @policy: new policy
- * @target_freq: the target frequency
- * @relation: how that frequency relates to achieved frequency
- *  (CPUFREQ_RELATION_L or CPUFREQ_RELATION_H)
+* @target_freq: the target frequency
+* @relation: how that frequency relates to achieved frequency
+*  (CPUFREQ_RELATION_L or CPUFREQ_RELATION_H)
  *
- * Sets a new CPUFreq policy.
+* Sets a new CPUFreq policy.
  */
 static int nforce2_target(struct cpufreq_policy *policy,
-			  unsigned int target_freq, unsigned int relation)
+unsigned int target_freq, unsigned int relation)
 {
 /*        unsigned long         flags; */
-	struct cpufreq_freqs freqs;
+struct cpufreq_freqs freqs;
 	unsigned int target_fsb;
 
-	if ((target_freq > policy->max) || (target_freq < policy->min))
+if ((target_freq > policy->max) || (target_freq < policy->min))
 		return -EINVAL;
 
-	target_fsb = target_freq / (fid * 100);
+target_fsb = target_freq / (fid * 100);
 
-	freqs.old = nforce2_get(policy->cpu);
-	freqs.new = target_fsb * fid * 100;
+freqs.old = nforce2_get(policy->cpu);
+freqs.new = target_fsb * fid * 100;
 
-	if (freqs.old == freqs.new)
+if (freqs.old == freqs.new)
 		return 0;
 
-	pr_debug("Old CPU frequency %d kHz, new %d kHz\n",
-	       freqs.old, freqs.new);
+pr_debug("Old CPU frequency %d kHz, new %d kHz\n",
+freqs.old, freqs.new);
 
-	cpufreq_freq_transition_begin(policy, &freqs);
+cpufreq_freq_transition_begin(policy, &freqs);
 
 	/* Disable IRQs */
 	/* local_irq_save(flags); */
@@ -284,13 +284,13 @@ static int nforce2_target(struct cpufreq_policy *policy,
 	/* Enable IRQs */
 	/* local_irq_restore(flags); */
 
-	cpufreq_freq_transition_end(policy, &freqs, 0);
+cpufreq_freq_transition_end(policy, &freqs, 0);
 
 	return 0;
 }
 
 /**
- * nforce2_verify - verifies a new CPUFreq policy
+* nforce2_verify - verifies a new CPUFreq policy
  * @policy: new policy
  */
 static int nforce2_verify(struct cpufreq_policy *policy)
@@ -302,7 +302,7 @@ static int nforce2_verify(struct cpufreq_policy *policy)
 	if (policy->min < (fsb_pol_max * fid * 100))
 		policy->max = (fsb_pol_max + 1) * fid * 100;
 
-	cpufreq_verify_within_cpu_limits(policy);
+cpufreq_verify_within_cpu_limits(policy);
 	return 0;
 }
 
@@ -355,8 +355,8 @@ static int nforce2_cpu_init(struct cpufreq_policy *policy)
 		min_fsb = NFORCE2_MIN_FSB;
 
 	/* cpuinfo and default policy values */
-	policy->min = policy->cpuinfo.min_freq = min_fsb * fid * 100;
-	policy->max = policy->cpuinfo.max_freq = max_fsb * fid * 100;
+policy->min = policy->cpuinfo.min_freq = min_fsb * fid * 100;
+policy->max = policy->cpuinfo.max_freq = max_fsb * fid * 100;
 
 	return 0;
 }
@@ -368,7 +368,7 @@ static int nforce2_cpu_exit(struct cpufreq_policy *policy)
 
 static struct cpufreq_driver nforce2_driver = {
 	.name = "nforce2",
-	.flags = CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
+.flags = CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING,
 	.verify = nforce2_verify,
 	.target = nforce2_target,
 	.get = nforce2_get,
@@ -407,7 +407,7 @@ static int nforce2_detect_chipset(void)
 }
 
 /**
- * nforce2_init - initializes the nForce2 CPUFreq driver
+* nforce2_init - initializes the nForce2 CPUFreq driver
  *
  * Initializes the nForce2 FSB support. Returns -ENODEV on unsupported
  * devices, -EINVAL on problems during initialization, and zero on
@@ -423,17 +423,17 @@ static int __init nforce2_init(void)
 		return -ENODEV;
 	}
 
-	return cpufreq_register_driver(&nforce2_driver);
+return cpufreq_register_driver(&nforce2_driver);
 }
 
 /**
- * nforce2_exit - unregisters cpufreq module
+* nforce2_exit - unregisters cpufreq module
  *
  *   Unregisters nForce2 FSB change support.
  */
 static void __exit nforce2_exit(void)
 {
-	cpufreq_unregister_driver(&nforce2_driver);
+cpufreq_unregister_driver(&nforce2_driver);
 }
 
 module_init(nforce2_init);

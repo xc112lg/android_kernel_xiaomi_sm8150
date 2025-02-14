@@ -1,5 +1,5 @@
 /*
- * PowerNV nvram code.
+* PowerNV nvram code.
  *
  * Copyright 2011 IBM Corp.
  *

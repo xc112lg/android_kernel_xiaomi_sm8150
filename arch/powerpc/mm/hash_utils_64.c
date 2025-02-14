@@ -1,5 +1,5 @@
 /*
- * PowerPC64 port by Mike Corrigan and Dave Engebretsen
+* PowerPC64 port by Mike Corrigan and Dave Engebretsen
  *   {mikejc|engebret}@us.ibm.com
  *
  *    Copyright (c) 2000 Mike Corrigan <mikejc@us.ibm.com>
@@ -10,7 +10,7 @@
  *    Module name: htab.c
  *
  *    Description:
- *      PowerPC Hashed Page Table functions
+*      PowerPC Hashed Page Table functions
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -82,7 +82,7 @@
 
 /*
  * Note:  pte   --> Linux PTE
- *        HPTE  --> PowerPC Hashed Page Table Entry
+*        HPTE  --> PowerPC Hashed Page Table Entry
  *
  * Execution context:
  *   htab_initialize is called with the MMU off (of course), but
@@ -729,7 +729,7 @@ unsigned htab_shift_for_mem_size(unsigned long mem_size)
 	unsigned pshift = mmu_psize_defs[mmu_virtual_psize].shift;
 	unsigned pteg_shift;
 
-	/* round mem_size up to next power of 2 */
+/* round mem_size up to next power of 2 */
 	if ((1UL << memshift) < mem_size)
 		memshift += 1;
 
@@ -826,12 +826,12 @@ static void update_hid_for_hash(void)
 	 * now switch the HID
 	 */
 	hid0  = mfspr(SPRN_HID0);
-	hid0 &= ~HID0_POWER9_RADIX;
+hid0 &= ~HID0_POWER9_RADIX;
 	mtspr(SPRN_HID0, hid0);
 	asm volatile("isync": : :"memory");
 
 	/* Wait for it to happen */
-	while ((mfspr(SPRN_HID0) & HID0_POWER9_RADIX))
+while ((mfspr(SPRN_HID0) & HID0_POWER9_RADIX))
 		cpu_relax();
 }
 
@@ -847,7 +847,7 @@ static void __init hash_init_partition_table(phys_addr_t hash_table,
 	htab_size =  __ilog2(htab_size) - 18;
 	mmu_partition_table_set_entry(0, hash_table | htab_size, 0);
 	pr_info("Partition table %p\n", partition_tb);
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 		update_hid_for_hash();
 }
 
@@ -882,7 +882,7 @@ static void __init htab_initialize(void)
 		htab_address = NULL;
 		_SDR1 = 0; 
 		/*
-		 * On POWER9, we need to do a H_REGISTER_PROC_TBL hcall
+* On POWER9, we need to do a H_REGISTER_PROC_TBL hcall
 		 * to inform the hypervisor that we wish to use the HPT.
 		 */
 		if (cpu_has_feature(CPU_FTR_ARCH_300))
@@ -1071,7 +1071,7 @@ void hash__early_init_mmu_secondary(void)
 	/* Initialize hash table for that CPU */
 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
 
-		if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 			update_hid_for_hash();
 
 		if (!cpu_has_feature(CPU_FTR_ARCH_300))
@@ -1877,7 +1877,7 @@ DEFINE_SIMPLE_ATTRIBUTE(fops_hpt_order, hpt_order_get, hpt_order_set, "%llu\n");
 
 static int __init hash64_debugfs(void)
 {
-	if (!debugfs_create_file("hpt_order", 0600, powerpc_debugfs_root,
+if (!debugfs_create_file("hpt_order", 0600, powerpc_debugfs_root,
 				 NULL, &fops_hpt_order)) {
 		pr_err("lpar: unable to create hpt_order debugsfs file\n");
 	}

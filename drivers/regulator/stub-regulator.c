@@ -30,7 +30,7 @@
 struct regulator_stub {
 	struct regulator_desc	rdesc;
 	struct regulator_dev	*rdev;
-	int			voltage;
+int			voltage;
 	bool			enabled;
 	int			mode;
 	int			hpm_min_load;
@@ -43,7 +43,7 @@ static int regulator_stub_set_voltage(struct regulator_dev *rdev, int min_uV,
 {
 	struct regulator_stub *vreg_priv = rdev_get_drvdata(rdev);
 
-	vreg_priv->voltage = min_uV;
+vreg_priv->voltage = min_uV;
 	return 0;
 }
 
@@ -51,7 +51,7 @@ static int regulator_stub_get_voltage(struct regulator_dev *rdev)
 {
 	struct regulator_stub *vreg_priv = rdev_get_drvdata(rdev);
 
-	return vreg_priv->voltage;
+return vreg_priv->voltage;
 }
 
 static int regulator_stub_list_voltage(struct regulator_dev *rdev,
@@ -130,9 +130,9 @@ static struct regulator_ops regulator_stub_ops = {
 	.enable			= regulator_stub_enable,
 	.disable		= regulator_stub_disable,
 	.is_enabled		= regulator_stub_is_enabled,
-	.set_voltage		= regulator_stub_set_voltage,
-	.get_voltage		= regulator_stub_get_voltage,
-	.list_voltage		= regulator_stub_list_voltage,
+.set_voltage		= regulator_stub_set_voltage,
+.get_voltage		= regulator_stub_get_voltage,
+.list_voltage		= regulator_stub_list_voltage,
 	.set_mode		= regulator_stub_set_mode,
 	.get_mode		= regulator_stub_get_mode,
 	.get_optimum_mode	= regulator_stub_get_optimum_mode,
@@ -190,7 +190,7 @@ static int regulator_stub_probe(struct platform_device *pdev)
 		init_data->constraints.valid_ops_mask
 			|= REGULATOR_CHANGE_STATUS;
 		init_data->constraints.valid_ops_mask
-			|= REGULATOR_CHANGE_VOLTAGE;
+|= REGULATOR_CHANGE_VOLTAGE;
 		init_data->constraints.valid_ops_mask
 			|= REGULATOR_CHANGE_MODE | REGULATOR_CHANGE_DRMS;
 		init_data->constraints.valid_modes_mask
@@ -218,20 +218,20 @@ static int regulator_stub_probe(struct platform_device *pdev)
 	rdesc->ops = &regulator_stub_ops;
 
 	/*
-	 * Ensure that voltage set points are handled correctly for regulators
-	 * which have a specified voltage constraint range, as well as those
+* Ensure that voltage set points are handled correctly for regulators
+* which have a specified voltage constraint range, as well as those
 	 * that do not.
 	 */
 	if (init_data->constraints.min_uV == 0 &&
 	    init_data->constraints.max_uV == 0)
-		rdesc->n_voltages = 0;
+rdesc->n_voltages = 0;
 	else
-		rdesc->n_voltages = 2;
+rdesc->n_voltages = 2;
 
 	rdesc->id    = pdev->id;
 	rdesc->owner = THIS_MODULE;
-	rdesc->type  = REGULATOR_VOLTAGE;
-	vreg_priv->voltage = init_data->constraints.min_uV;
+rdesc->type  = REGULATOR_VOLTAGE;
+vreg_priv->voltage = init_data->constraints.min_uV;
 	if (vreg_priv->system_uA >= vreg_priv->hpm_min_load)
 		vreg_priv->mode = REGULATOR_MODE_NORMAL;
 	else

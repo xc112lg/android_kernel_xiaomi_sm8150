@@ -37,23 +37,23 @@ extern const struct amd_powerplay_funcs pp_dpm_funcs;
 
 enum amd_pp_sensors {
 	AMDGPU_PP_SENSOR_GFX_SCLK = 0,
-	AMDGPU_PP_SENSOR_VDDNB,
-	AMDGPU_PP_SENSOR_VDDGFX,
+AMDGPU_PP_SENSOR_VDDNB,
+AMDGPU_PP_SENSOR_VDDGFX,
 	AMDGPU_PP_SENSOR_UVD_VCLK,
 	AMDGPU_PP_SENSOR_UVD_DCLK,
 	AMDGPU_PP_SENSOR_VCE_ECCLK,
 	AMDGPU_PP_SENSOR_GPU_LOAD,
 	AMDGPU_PP_SENSOR_GFX_MCLK,
 	AMDGPU_PP_SENSOR_GPU_TEMP,
-	AMDGPU_PP_SENSOR_VCE_POWER,
-	AMDGPU_PP_SENSOR_UVD_POWER,
-	AMDGPU_PP_SENSOR_GPU_POWER,
+AMDGPU_PP_SENSOR_VCE_POWER,
+AMDGPU_PP_SENSOR_UVD_POWER,
+AMDGPU_PP_SENSOR_GPU_POWER,
 };
 
 enum amd_pp_event {
 	AMD_PP_EVENT_INITIALIZE = 0,
 	AMD_PP_EVENT_UNINITIALIZE,
-	AMD_PP_EVENT_POWER_SOURCE_CHANGE,
+AMD_PP_EVENT_POWER_SOURCE_CHANGE,
 	AMD_PP_EVENT_SUSPEND,
 	AMD_PP_EVENT_RESUME,
 	AMD_PP_EVENT_ENTER_REST_STATE,
@@ -71,9 +71,9 @@ enum amd_pp_event {
 	AMD_PP_EVENT_EXIT_SCREEN_SAVER,
 	AMD_PP_EVENT_VPU_RECOVERY_BEGIN,
 	AMD_PP_EVENT_VPU_RECOVERY_END,
-	AMD_PP_EVENT_ENABLE_POWER_PLAY,
-	AMD_PP_EVENT_DISABLE_POWER_PLAY,
-	AMD_PP_EVENT_CHANGE_POWER_SOURCE_UI_LABEL,
+AMD_PP_EVENT_ENABLE_POWER_PLAY,
+AMD_PP_EVENT_DISABLE_POWER_PLAY,
+AMD_PP_EVENT_CHANGE_POWER_SOURCE_UI_LABEL,
 	AMD_PP_EVENT_ENABLE_USER2D_PERFORMANCE,
 	AMD_PP_EVENT_DISABLE_USER2D_PERFORMANCE,
 	AMD_PP_EVENT_ENABLE_USER3D_PERFORMANCE,
@@ -92,7 +92,7 @@ enum amd_pp_event {
 	AMD_PP_EVENT_VIDEO_STOP,
 	AMD_PP_EVENT_ENABLE_USER_STATE,
 	AMD_PP_EVENT_DISABLE_USER_STATE,
-	AMD_PP_EVENT_READJUST_POWER_STATE,
+AMD_PP_EVENT_READJUST_POWER_STATE,
 	AMD_PP_EVENT_START_INACTIVITY,
 	AMD_PP_EVENT_STOP_INACTIVITY,
 	AMD_PP_EVENT_LINKED_ADAPTERS_READY,
@@ -102,8 +102,8 @@ enum amd_pp_event {
 	AMD_PP_EVENT_BACKLIGHT_CHANGED,
 	AMD_PP_EVENT_ENABLE_VARI_BRIGHT,
 	AMD_PP_EVENT_DISABLE_VARI_BRIGHT,
-	AMD_PP_EVENT_ENABLE_VARI_BRIGHT_ON_POWER_XPRESS,
-	AMD_PP_EVENT_DISABLE_VARI_BRIGHT_ON_POWER_XPRESS,
+AMD_PP_EVENT_ENABLE_VARI_BRIGHT_ON_POWER_XPRESS,
+AMD_PP_EVENT_DISABLE_VARI_BRIGHT_ON_POWER_XPRESS,
 	AMD_PP_EVENT_SET_VARI_BRIGHT_LEVEL,
 	AMD_PP_EVENT_VARI_BRIGHT_MONITOR_MEASUREMENT,
 	AMD_PP_EVENT_SCREEN_ON,
@@ -126,7 +126,7 @@ enum amd_pp_event {
 	AMD_PP_EVENT_POST_DISPLAY_PHY_CCESS,
 	AMD_PP_EVENT_START_COMPUTE_APPLICATION,
 	AMD_PP_EVENT_STOP_COMPUTE_APPLICATION,
-	AMD_PP_EVENT_REDUCE_POWER_LIMIT,
+AMD_PP_EVENT_REDUCE_POWER_LIMIT,
 	AMD_PP_EVENT_ENTER_FRAME_LOCK,
 	AMD_PP_EVENT_EXIT_FRAME_LOOCK,
 	AMD_PP_EVENT_LONG_IDLE_REQUEST_BACO,
@@ -238,20 +238,20 @@ struct amd_pp_simple_clock_info {
 };
 
 enum PP_DAL_POWERLEVEL {
-	PP_DAL_POWERLEVEL_INVALID = 0,
-	PP_DAL_POWERLEVEL_ULTRALOW,
-	PP_DAL_POWERLEVEL_LOW,
-	PP_DAL_POWERLEVEL_NOMINAL,
-	PP_DAL_POWERLEVEL_PERFORMANCE,
+PP_DAL_POWERLEVEL_INVALID = 0,
+PP_DAL_POWERLEVEL_ULTRALOW,
+PP_DAL_POWERLEVEL_LOW,
+PP_DAL_POWERLEVEL_NOMINAL,
+PP_DAL_POWERLEVEL_PERFORMANCE,
 
-	PP_DAL_POWERLEVEL_0 = PP_DAL_POWERLEVEL_ULTRALOW,
-	PP_DAL_POWERLEVEL_1 = PP_DAL_POWERLEVEL_LOW,
-	PP_DAL_POWERLEVEL_2 = PP_DAL_POWERLEVEL_NOMINAL,
-	PP_DAL_POWERLEVEL_3 = PP_DAL_POWERLEVEL_PERFORMANCE,
-	PP_DAL_POWERLEVEL_4 = PP_DAL_POWERLEVEL_3+1,
-	PP_DAL_POWERLEVEL_5 = PP_DAL_POWERLEVEL_4+1,
-	PP_DAL_POWERLEVEL_6 = PP_DAL_POWERLEVEL_5+1,
-	PP_DAL_POWERLEVEL_7 = PP_DAL_POWERLEVEL_6+1,
+PP_DAL_POWERLEVEL_0 = PP_DAL_POWERLEVEL_ULTRALOW,
+PP_DAL_POWERLEVEL_1 = PP_DAL_POWERLEVEL_LOW,
+PP_DAL_POWERLEVEL_2 = PP_DAL_POWERLEVEL_NOMINAL,
+PP_DAL_POWERLEVEL_3 = PP_DAL_POWERLEVEL_PERFORMANCE,
+PP_DAL_POWERLEVEL_4 = PP_DAL_POWERLEVEL_3+1,
+PP_DAL_POWERLEVEL_5 = PP_DAL_POWERLEVEL_4+1,
+PP_DAL_POWERLEVEL_6 = PP_DAL_POWERLEVEL_5+1,
+PP_DAL_POWERLEVEL_7 = PP_DAL_POWERLEVEL_6+1,
 };
 
 struct amd_pp_clock_info {
@@ -263,7 +263,7 @@ struct amd_pp_clock_info {
 	uint32_t max_bus_bandwidth;
 	uint32_t max_engine_clock_in_sr;
 	uint32_t min_engine_clock_in_sr;
-	enum PP_DAL_POWERLEVEL max_clocks_state;
+enum PP_DAL_POWERLEVEL max_clocks_state;
 };
 
 enum amd_pp_clock_type {
@@ -307,15 +307,15 @@ struct pp_states_info {
 };
 
 struct pp_gpu_power {
-	uint32_t vddc_power;
-	uint32_t vddci_power;
-	uint32_t max_gpu_power;
-	uint32_t average_gpu_power;
+uint32_t vddc_power;
+uint32_t vddci_power;
+uint32_t max_gpu_power;
+uint32_t average_gpu_power;
 };
 
 struct pp_display_clock_request {
 	enum amd_pp_clock_type clock_type;
-	uint32_t clock_freq_in_khz;
+uint32_t clock_freq_in_khz;
 };
 
 #define PP_GROUP_MASK        0xF0000000
@@ -361,11 +361,11 @@ struct amd_powerplay_funcs {
 	int (*wait_for_fw_loading_complete)(void *handle);
 	int (*force_performance_level)(void *handle, enum amd_dpm_forced_level level);
 	enum amd_dpm_forced_level (*get_performance_level)(void *handle);
-	enum amd_pm_state_type (*get_current_power_state)(void *handle);
+enum amd_pm_state_type (*get_current_power_state)(void *handle);
 	int (*get_sclk)(void *handle, bool low);
 	int (*get_mclk)(void *handle, bool low);
-	int (*powergate_vce)(void *handle, bool gate);
-	int (*powergate_uvd)(void *handle, bool gate);
+int (*powergate_vce)(void *handle, bool gate);
+int (*powergate_uvd)(void *handle, bool gate);
 	int (*dispatch_tasks)(void *handle, enum amd_pp_event event_id,
 				   void *input, void *output);
 	int (*set_fan_control_mode)(void *handle, uint32_t mode);
@@ -384,20 +384,20 @@ struct amd_powerplay_funcs {
 	int (*set_mclk_od)(void *handle, uint32_t value);
 	int (*read_sensor)(void *handle, int idx, void *value, int *size);
 	struct amd_vce_state* (*get_vce_clock_state)(void *handle, unsigned idx);
-	int (*reset_power_profile_state)(void *handle,
+int (*reset_power_profile_state)(void *handle,
 			struct amd_pp_profile *request);
-	int (*get_power_profile_state)(void *handle,
+int (*get_power_profile_state)(void *handle,
 			struct amd_pp_profile *query);
-	int (*set_power_profile_state)(void *handle,
+int (*set_power_profile_state)(void *handle,
 			struct amd_pp_profile *request);
-	int (*switch_power_profile)(void *handle,
+int (*switch_power_profile)(void *handle,
 			enum amd_pp_profile_type type);
 };
 
 struct amd_powerplay {
 	void *pp_handle;
 	const struct amd_ip_funcs *ip_funcs;
-	const struct amd_powerplay_funcs *pp_funcs;
+const struct amd_powerplay_funcs *pp_funcs;
 };
 
 int amd_powerplay_create(struct amd_pp_init *pp_init,
@@ -426,7 +426,7 @@ int amd_powerplay_get_clock_by_type_with_latency(void *handle,
 
 int amd_powerplay_get_clock_by_type_with_voltage(void *handle,
 		enum amd_pp_clock_type type,
-		struct pp_clock_levels_with_voltage *clocks);
+struct pp_clock_levels_with_voltage *clocks);
 
 int amd_powerplay_set_watermarks_for_clocks_ranges(void *handle,
 		struct pp_wm_sets_with_clock_ranges_soc15 *wm_with_clock_ranges);

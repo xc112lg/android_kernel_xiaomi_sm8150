@@ -1,5 +1,5 @@
 /*
- * drivers/base/power/wakeup.c - System wakeup events framework
+* drivers/base/power/wakeup.c - System wakeup events framework
  *
  * Copyright (c) 2010 Rafael J. Wysocki <rjw@sisk.pl>, Novell Inc.
  *
@@ -295,15 +295,15 @@ EXPORT_SYMBOL_GPL(wakeup_source_unregister);
  */
 static int device_wakeup_attach(struct device *dev, struct wakeup_source *ws)
 {
-	spin_lock_irq(&dev->power.lock);
-	if (dev->power.wakeup) {
-		spin_unlock_irq(&dev->power.lock);
+spin_lock_irq(&dev->power.lock);
+if (dev->power.wakeup) {
+spin_unlock_irq(&dev->power.lock);
 		return -EEXIST;
 	}
-	dev->power.wakeup = ws;
-	if (dev->power.wakeirq)
-		device_wakeup_attach_irq(dev, dev->power.wakeirq);
-	spin_unlock_irq(&dev->power.lock);
+dev->power.wakeup = ws;
+if (dev->power.wakeirq)
+device_wakeup_attach_irq(dev, dev->power.wakeirq);
+spin_unlock_irq(&dev->power.lock);
 	return 0;
 }
 
@@ -318,7 +318,7 @@ int device_wakeup_enable(struct device *dev)
 	struct wakeup_source *ws;
 	int ret;
 
-	if (!dev || !dev->power.can_wakeup)
+if (!dev || !dev->power.can_wakeup)
 		return -EINVAL;
 
 	if (pm_suspend_target_state != PM_SUSPEND_ON)
@@ -345,14 +345,14 @@ EXPORT_SYMBOL_GPL(device_wakeup_enable);
  * wake IRQ can be configured automatically for suspend and
  * resume.
  *
- * Call under the device's power.lock lock.
+* Call under the device's power.lock lock.
  */
 int device_wakeup_attach_irq(struct device *dev,
 			     struct wake_irq *wakeirq)
 {
 	struct wakeup_source *ws;
 
-	ws = dev->power.wakeup;
+ws = dev->power.wakeup;
 	if (!ws) {
 		dev_err(dev, "forgot to call call device_init_wakeup?\n");
 		return -EINVAL;
@@ -371,13 +371,13 @@ int device_wakeup_attach_irq(struct device *dev,
  *
  * Removes a device wakeirq from the wakeup source.
  *
- * Call under the device's power.lock lock.
+* Call under the device's power.lock lock.
  */
 void device_wakeup_detach_irq(struct device *dev)
 {
 	struct wakeup_source *ws;
 
-	ws = dev->power.wakeup;
+ws = dev->power.wakeup;
 	if (ws)
 		ws->wakeirq = NULL;
 }
@@ -424,10 +424,10 @@ static struct wakeup_source *device_wakeup_detach(struct device *dev)
 {
 	struct wakeup_source *ws;
 
-	spin_lock_irq(&dev->power.lock);
-	ws = dev->power.wakeup;
-	dev->power.wakeup = NULL;
-	spin_unlock_irq(&dev->power.lock);
+spin_lock_irq(&dev->power.lock);
+ws = dev->power.wakeup;
+dev->power.wakeup = NULL;
+spin_unlock_irq(&dev->power.lock);
 	return ws;
 }
 
@@ -442,7 +442,7 @@ int device_wakeup_disable(struct device *dev)
 {
 	struct wakeup_source *ws;
 
-	if (!dev || !dev->power.can_wakeup)
+if (!dev || !dev->power.can_wakeup)
 		return -EINVAL;
 
 	ws = device_wakeup_detach(dev);
@@ -456,20 +456,20 @@ EXPORT_SYMBOL_GPL(device_wakeup_disable);
  * @dev: Device to handle.
  * @capable: Whether or not @dev is capable of waking up the system from sleep.
  *
- * If @capable is set, set the @dev's power.can_wakeup flag and add its
+* If @capable is set, set the @dev's power.can_wakeup flag and add its
  * wakeup-related attributes to sysfs.  Otherwise, unset the @dev's
- * power.can_wakeup flag and remove its wakeup-related attributes from sysfs.
+* power.can_wakeup flag and remove its wakeup-related attributes from sysfs.
  *
  * This function may sleep and it can't be called from any context where
  * sleeping is not allowed.
  */
 void device_set_wakeup_capable(struct device *dev, bool capable)
 {
-	if (!!dev->power.can_wakeup == !!capable)
+if (!!dev->power.can_wakeup == !!capable)
 		return;
 
-	dev->power.can_wakeup = capable;
-	if (device_is_registered(dev) && !list_empty(&dev->power.entry)) {
+dev->power.can_wakeup = capable;
+if (device_is_registered(dev) && !list_empty(&dev->power.entry)) {
 		if (capable) {
 			int ret = wakeup_sysfs_add(dev);
 
@@ -488,7 +488,7 @@ EXPORT_SYMBOL_GPL(device_set_wakeup_capable);
  * @enable: Whether or not to enable @dev as a wakeup device.
  *
  * By default, most devices should leave wakeup disabled.  The exceptions are
- * devices that everyone expects to be wakeup sources: keyboards, power buttons,
+* devices that everyone expects to be wakeup sources: keyboards, power buttons,
  * possibly network interfaces, etc.  Also, devices that don't generate their
  * own wakeup requests but merely forward requests from one bus to another
  * (like PCI bridges) should have wakeup enabled by default.
@@ -504,7 +504,7 @@ int device_init_wakeup(struct device *dev, bool enable)
 		device_set_wakeup_capable(dev, true);
 		ret = device_wakeup_enable(dev);
 	} else {
-		if (dev->power.can_wakeup)
+if (dev->power.can_wakeup)
 			device_wakeup_disable(dev);
 
 		device_set_wakeup_capable(dev, false);
@@ -520,7 +520,7 @@ EXPORT_SYMBOL_GPL(device_init_wakeup);
  */
 int device_set_wakeup_enable(struct device *dev, bool enable)
 {
-	if (!dev || !dev->power.can_wakeup)
+if (!dev || !dev->power.can_wakeup)
 		return -EINVAL;
 
 	return enable ? device_wakeup_enable(dev) : device_wakeup_disable(dev);
@@ -657,9 +657,9 @@ void pm_stay_awake(struct device *dev)
 	if (!dev)
 		return;
 
-	spin_lock_irqsave(&dev->power.lock, flags);
-	__pm_stay_awake(dev->power.wakeup);
-	spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_lock_irqsave(&dev->power.lock, flags);
+__pm_stay_awake(dev->power.wakeup);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 }
 EXPORT_SYMBOL_GPL(pm_stay_awake);
 
@@ -766,9 +766,9 @@ void pm_relax(struct device *dev)
 	if (!dev)
 		return;
 
-	spin_lock_irqsave(&dev->power.lock, flags);
-	__pm_relax(dev->power.wakeup);
-	spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_lock_irqsave(&dev->power.lock, flags);
+__pm_relax(dev->power.wakeup);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 }
 EXPORT_SYMBOL_GPL(pm_relax);
 
@@ -855,9 +855,9 @@ void pm_wakeup_dev_event(struct device *dev, unsigned int msec, bool hard)
 	if (!dev)
 		return;
 
-	spin_lock_irqsave(&dev->power.lock, flags);
-	pm_wakeup_ws_event(dev->power.wakeup, msec, hard);
-	spin_unlock_irqrestore(&dev->power.lock, flags);
+spin_lock_irqsave(&dev->power.lock, flags);
+pm_wakeup_ws_event(dev->power.wakeup, msec, hard);
+spin_unlock_irqrestore(&dev->power.lock, flags);
 }
 EXPORT_SYMBOL_GPL(pm_wakeup_dev_event);
 
@@ -920,7 +920,7 @@ void pm_print_active_wakeup_sources(void)
 EXPORT_SYMBOL_GPL(pm_print_active_wakeup_sources);
 
 /**
- * pm_wakeup_pending - Check if power transition in progress should be aborted.
+* pm_wakeup_pending - Check if power transition in progress should be aborted.
  *
  * Compare the current number of registered wakeup events with its preserved
  * value from the past and return true if new wakeup events have been registered

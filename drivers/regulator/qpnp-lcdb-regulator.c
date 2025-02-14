@@ -188,8 +188,8 @@ struct ldo_regulator {
 	int				ilim_ma;
 	int				soft_start_us;
 	int				vreg_ok_dbc_us;
-	int				voltage_mv;
-	int				prev_voltage_mv;
+int				voltage_mv;
+int				prev_voltage_mv;
 };
 
 struct ncp_regulator {
@@ -203,8 +203,8 @@ struct ncp_regulator {
 	int				ilim_ma;
 	int				soft_start_us;
 	int				vreg_ok_dbc_us;
-	int				voltage_mv;
-	int				prev_voltage_mv;
+int				voltage_mv;
+int				prev_voltage_mv;
 };
 
 struct bst_params {
@@ -218,7 +218,7 @@ struct bst_params {
 	int				ps_threshold;
 	int				soft_start_us;
 	int				vreg_ok_dbc_us;
-	int				voltage_mv;
+int				voltage_mv;
 	u16				headroom_mv;
 };
 
@@ -241,7 +241,7 @@ struct qpnp_lcdb {
 	bool				lcdb_enabled;
 	bool				settings_saved;
 	bool				lcdb_sc_disable;
-	bool				voltage_step_ramp;
+bool				voltage_step_ramp;
 	/* Tracks the secure UI mode entry/exit */
 	bool				secure_mode;
 	int				sc_count;
@@ -346,10 +346,10 @@ static const u32 pwrup_pwrdn_ms[] = {
 	}					\
 
 static int qpnp_lcdb_set_voltage_step(struct qpnp_lcdb *lcdb,
-				      int voltage_start_mv, u8 type);
+int voltage_start_mv, u8 type);
 
 static int qpnp_lcdb_set_voltage(struct qpnp_lcdb *lcdb,
-				 int voltage_mv, u8 type);
+int voltage_mv, u8 type);
 
 static bool is_between(int value, int min, int max)
 {
@@ -818,7 +818,7 @@ static int qpnp_lcdb_enable_wa(struct qpnp_lcdb *lcdb)
 static int qpnp_lcdb_enable(struct qpnp_lcdb *lcdb)
 {
 	int rc = 0, timeout, delay;
-	int voltage_mv = VOLTAGE_START_MV;
+int voltage_mv = VOLTAGE_START_MV;
 	u8 val = 0;
 
 	if (lcdb->lcdb_enabled || lcdb->lcdb_sc_disable) {
@@ -841,18 +841,18 @@ static int qpnp_lcdb_enable(struct qpnp_lcdb *lcdb)
 		return rc;
 	}
 
-	if (lcdb->voltage_step_ramp) {
-		if (lcdb->ldo.voltage_mv < VOLTAGE_START_MV)
-			voltage_mv = lcdb->ldo.voltage_mv;
+if (lcdb->voltage_step_ramp) {
+if (lcdb->ldo.voltage_mv < VOLTAGE_START_MV)
+voltage_mv = lcdb->ldo.voltage_mv;
 
-		rc = qpnp_lcdb_set_voltage(lcdb, voltage_mv, LDO);
+rc = qpnp_lcdb_set_voltage(lcdb, voltage_mv, LDO);
 		if (rc < 0)
 			return rc;
 
-		if (lcdb->ncp.voltage_mv < VOLTAGE_START_MV)
-			voltage_mv = lcdb->ncp.voltage_mv;
+if (lcdb->ncp.voltage_mv < VOLTAGE_START_MV)
+voltage_mv = lcdb->ncp.voltage_mv;
 
-		rc = qpnp_lcdb_set_voltage(lcdb, voltage_mv, NCP);
+rc = qpnp_lcdb_set_voltage(lcdb, voltage_mv, NCP);
 		if (rc < 0)
 			return rc;
 	}
@@ -893,13 +893,13 @@ static int qpnp_lcdb_enable(struct qpnp_lcdb *lcdb)
 	}
 
 	lcdb->lcdb_enabled = true;
-	if (lcdb->voltage_step_ramp) {
+if (lcdb->voltage_step_ramp) {
 		usleep_range(10000, 11000);
-		rc = qpnp_lcdb_set_voltage_step(lcdb,
-						voltage_mv + VOLTAGE_STEP_MV,
+rc = qpnp_lcdb_set_voltage_step(lcdb,
+voltage_mv + VOLTAGE_STEP_MV,
 						LDO_NCP);
 		if (rc < 0) {
-			pr_err("Failed to set LCDB voltage rc=%d\n", rc);
+pr_err("Failed to set LCDB voltage rc=%d\n", rc);
 			return rc;
 		}
 	}
@@ -1089,52 +1089,52 @@ irq_handled:
 #define VOLTAGE_STEP_25_MV			25
 #define VOLTAGE_STEP_50MV_OFFSET		0xA
 static int qpnp_lcdb_set_bst_voltage(struct qpnp_lcdb *lcdb,
-					int voltage_mv, u8 type)
+int voltage_mv, u8 type)
 {
 	int rc = 0;
-	u8 val, voltage_step, mask = 0;
-	int bst_voltage_mv;
+u8 val, voltage_step, mask = 0;
+int bst_voltage_mv;
 	u16 pmic_subtype = lcdb->pmic_rev_id->pmic_subtype;
 	struct ldo_regulator *ldo = &lcdb->ldo;
 	struct ncp_regulator *ncp = &lcdb->ncp;
 	struct bst_params *bst = &lcdb->bst;
 
 	/* Vout_Boost = headroom_mv + max( Vout_LDO, abs (Vout_NCP)) */
-	bst_voltage_mv = max(voltage_mv, max(ldo->voltage_mv, ncp->voltage_mv));
-	bst_voltage_mv += bst->headroom_mv;
+bst_voltage_mv = max(voltage_mv, max(ldo->voltage_mv, ncp->voltage_mv));
+bst_voltage_mv += bst->headroom_mv;
 
-	if (bst_voltage_mv < MIN_BST_VOLTAGE_MV)
-		bst_voltage_mv = MIN_BST_VOLTAGE_MV;
+if (bst_voltage_mv < MIN_BST_VOLTAGE_MV)
+bst_voltage_mv = MIN_BST_VOLTAGE_MV;
 
 	if (pmic_subtype == PM660L_SUBTYPE) {
-		if (bst_voltage_mv > PM660_MAX_BST_VOLTAGE_MV)
-			bst_voltage_mv = PM660_MAX_BST_VOLTAGE_MV;
+if (bst_voltage_mv > PM660_MAX_BST_VOLTAGE_MV)
+bst_voltage_mv = PM660_MAX_BST_VOLTAGE_MV;
 	} else {
-		if (bst_voltage_mv > MAX_BST_VOLTAGE_MV)
-			bst_voltage_mv = MAX_BST_VOLTAGE_MV;
+if (bst_voltage_mv > MAX_BST_VOLTAGE_MV)
+bst_voltage_mv = MAX_BST_VOLTAGE_MV;
 	}
 
-	if (bst_voltage_mv != bst->voltage_mv) {
+if (bst_voltage_mv != bst->voltage_mv) {
 		if (pmic_subtype == PM660L_SUBTYPE) {
-			mask = PM660_BST_OUTPUT_VOLTAGE_MASK;
-			voltage_step = VOLTAGE_STEP_50_MV;
+mask = PM660_BST_OUTPUT_VOLTAGE_MASK;
+voltage_step = VOLTAGE_STEP_50_MV;
 		} else {
-			mask =  BST_OUTPUT_VOLTAGE_MASK;
-			voltage_step = VOLTAGE_STEP_25_MV;
+mask =  BST_OUTPUT_VOLTAGE_MASK;
+voltage_step = VOLTAGE_STEP_25_MV;
 		}
 
-		val = DIV_ROUND_UP(bst_voltage_mv - MIN_BST_VOLTAGE_MV,
-							voltage_step);
+val = DIV_ROUND_UP(bst_voltage_mv - MIN_BST_VOLTAGE_MV,
+voltage_step);
 		rc = qpnp_lcdb_masked_write(lcdb, lcdb->base +
-					LCDB_BST_OUTPUT_VOLTAGE_REG,
+LCDB_BST_OUTPUT_VOLTAGE_REG,
 					mask, val);
 		if (rc < 0) {
-			pr_err("Failed to set boost voltage %d mv rc=%d\n",
-				bst_voltage_mv, rc);
+pr_err("Failed to set boost voltage %d mv rc=%d\n",
+bst_voltage_mv, rc);
 		} else {
-			pr_debug("Boost voltage set = %d mv (0x%02x = 0x%02x)\n",
-			      bst_voltage_mv, LCDB_BST_OUTPUT_VOLTAGE_REG, val);
-			bst->voltage_mv = bst_voltage_mv;
+pr_debug("Boost voltage set = %d mv (0x%02x = 0x%02x)\n",
+bst_voltage_mv, LCDB_BST_OUTPUT_VOLTAGE_REG, val);
+bst->voltage_mv = bst_voltage_mv;
 		}
 	}
 
@@ -1142,117 +1142,117 @@ static int qpnp_lcdb_set_bst_voltage(struct qpnp_lcdb *lcdb,
 }
 
 static int qpnp_lcdb_get_bst_voltage(struct qpnp_lcdb *lcdb,
-					int *voltage_mv)
+int *voltage_mv)
 {
 	int rc;
-	u8 val, voltage_step, mask = 0;
+u8 val, voltage_step, mask = 0;
 	u16 pmic_subtype = lcdb->pmic_rev_id->pmic_subtype;
 
-	rc = qpnp_lcdb_read(lcdb, lcdb->base + LCDB_BST_OUTPUT_VOLTAGE_REG,
+rc = qpnp_lcdb_read(lcdb, lcdb->base + LCDB_BST_OUTPUT_VOLTAGE_REG,
 						&val, 1);
 	if (rc < 0) {
-		pr_err("Failed to reat BST voltage rc=%d\n", rc);
+pr_err("Failed to reat BST voltage rc=%d\n", rc);
 		return rc;
 	}
 
 	if (pmic_subtype == PM660L_SUBTYPE) {
-		mask = PM660_BST_OUTPUT_VOLTAGE_MASK;
-		voltage_step = VOLTAGE_STEP_50_MV;
+mask = PM660_BST_OUTPUT_VOLTAGE_MASK;
+voltage_step = VOLTAGE_STEP_50_MV;
 	} else {
-		mask =  BST_OUTPUT_VOLTAGE_MASK;
-		voltage_step = VOLTAGE_STEP_25_MV;
+mask =  BST_OUTPUT_VOLTAGE_MASK;
+voltage_step = VOLTAGE_STEP_25_MV;
 	}
 
 	val &= mask;
-	*voltage_mv = (val * voltage_step) + MIN_BST_VOLTAGE_MV;
+*voltage_mv = (val * voltage_step) + MIN_BST_VOLTAGE_MV;
 
 	return 0;
 }
 
 static int qpnp_lcdb_set_voltage(struct qpnp_lcdb *lcdb,
-					int voltage_mv, u8 type)
+int voltage_mv, u8 type)
 {
 	int rc = 0;
-	u16 offset = LCDB_LDO_OUTPUT_VOLTAGE_REG;
+u16 offset = LCDB_LDO_OUTPUT_VOLTAGE_REG;
 	u8 val = 0;
 
-	if (!is_between(voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV)) {
-		pr_err("Invalid voltage %dmv (min=%d max=%d)\n",
-			voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV);
+if (!is_between(voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV)) {
+pr_err("Invalid voltage %dmv (min=%d max=%d)\n",
+voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV);
 		return -EINVAL;
 	}
 
-	rc = qpnp_lcdb_set_bst_voltage(lcdb, voltage_mv, type);
+rc = qpnp_lcdb_set_bst_voltage(lcdb, voltage_mv, type);
 	if (rc < 0) {
-		pr_err("Failed to set boost voltage rc=%d\n", rc);
+pr_err("Failed to set boost voltage rc=%d\n", rc);
 		return rc;
 	}
 
 	/* Below logic is only valid for LDO and NCP type */
-	if (voltage_mv < VOLTAGE_MIN_STEP_50_MV) {
-		val = DIV_ROUND_UP(voltage_mv - VOLTAGE_MIN_STEP_100_MV,
-						VOLTAGE_STEP_100_MV);
+if (voltage_mv < VOLTAGE_MIN_STEP_50_MV) {
+val = DIV_ROUND_UP(voltage_mv - VOLTAGE_MIN_STEP_100_MV,
+VOLTAGE_STEP_100_MV);
 	} else {
-		val = DIV_ROUND_UP(voltage_mv - VOLTAGE_MIN_STEP_50_MV,
-						VOLTAGE_STEP_50_MV);
-		val += VOLTAGE_STEP_50MV_OFFSET;
+val = DIV_ROUND_UP(voltage_mv - VOLTAGE_MIN_STEP_50_MV,
+VOLTAGE_STEP_50_MV);
+val += VOLTAGE_STEP_50MV_OFFSET;
 	}
 
 	if (type == NCP)
-		offset = LCDB_NCP_OUTPUT_VOLTAGE_REG;
+offset = LCDB_NCP_OUTPUT_VOLTAGE_REG;
 
 	rc = qpnp_lcdb_masked_write(lcdb, lcdb->base + offset,
-				SET_OUTPUT_VOLTAGE_MASK, val);
+SET_OUTPUT_VOLTAGE_MASK, val);
 	if (rc < 0)
-		pr_err("Failed to set output voltage %d mv for %s rc=%d\n",
-			voltage_mv, (type == LDO) ? "LDO" : "NCP", rc);
+pr_err("Failed to set output voltage %d mv for %s rc=%d\n",
+voltage_mv, (type == LDO) ? "LDO" : "NCP", rc);
 	else
-		pr_debug("%s voltage set = %d mv (0x%02x = 0x%02x)\n",
-			(type == LDO) ? "LDO" : "NCP", voltage_mv, offset, val);
+pr_debug("%s voltage set = %d mv (0x%02x = 0x%02x)\n",
+(type == LDO) ? "LDO" : "NCP", voltage_mv, offset, val);
 
 	return rc;
 }
 
 static int qpnp_lcdb_set_voltage_step(struct qpnp_lcdb *lcdb,
-				      int voltage_start_mv, u8 type)
+int voltage_start_mv, u8 type)
 {
-	int i, ldo_voltage, ncp_voltage, voltage, rc = 0;
+int i, ldo_voltage, ncp_voltage, voltage, rc = 0;
 
-	for (i = voltage_start_mv; i <= (MAX_VOLTAGE_MV + VOLTAGE_STEP_MV);
-						i += VOLTAGE_STEP_MV) {
+for (i = voltage_start_mv; i <= (MAX_VOLTAGE_MV + VOLTAGE_STEP_MV);
+i += VOLTAGE_STEP_MV) {
 
-		ldo_voltage = (lcdb->ldo.voltage_mv < i) ?
-					lcdb->ldo.voltage_mv : i;
+ldo_voltage = (lcdb->ldo.voltage_mv < i) ?
+lcdb->ldo.voltage_mv : i;
 
-		ncp_voltage = (lcdb->ncp.voltage_mv < i) ?
-					lcdb->ncp.voltage_mv : i;
+ncp_voltage = (lcdb->ncp.voltage_mv < i) ?
+lcdb->ncp.voltage_mv : i;
 		if (type == LDO_NCP) {
-			rc = qpnp_lcdb_set_voltage(lcdb, ldo_voltage, LDO);
+rc = qpnp_lcdb_set_voltage(lcdb, ldo_voltage, LDO);
 			if (rc < 0)
 				return rc;
 
-			rc = qpnp_lcdb_set_voltage(lcdb, ncp_voltage, NCP);
+rc = qpnp_lcdb_set_voltage(lcdb, ncp_voltage, NCP);
 			if (rc < 0)
 				return rc;
 
-			pr_debug(" LDO voltage step %d NCP voltage step %d\n",
-					ldo_voltage, ncp_voltage);
+pr_debug(" LDO voltage step %d NCP voltage step %d\n",
+ldo_voltage, ncp_voltage);
 
-			if ((i >= lcdb->ncp.voltage_mv) &&
-					(i >= lcdb->ldo.voltage_mv))
+if ((i >= lcdb->ncp.voltage_mv) &&
+(i >= lcdb->ldo.voltage_mv))
 				break;
 		} else {
-			voltage = (type == LDO) ? ldo_voltage : ncp_voltage;
-			rc = qpnp_lcdb_set_voltage(lcdb, voltage, type);
+voltage = (type == LDO) ? ldo_voltage : ncp_voltage;
+rc = qpnp_lcdb_set_voltage(lcdb, voltage, type);
 			if (rc < 0)
 				return rc;
 
-			pr_debug("%s voltage step %d\n",
-				 (type == LDO) ? "LDO" : "NCP", voltage);
-			if ((type == LDO) && (i >= lcdb->ldo.voltage_mv))
+pr_debug("%s voltage step %d\n",
+(type == LDO) ? "LDO" : "NCP", voltage);
+if ((type == LDO) && (i >= lcdb->ldo.voltage_mv))
 				break;
 
-			if ((type == NCP) && (i >= lcdb->ncp.voltage_mv))
+if ((type == NCP) && (i >= lcdb->ncp.voltage_mv))
 				break;
 
 		}
@@ -1264,17 +1264,17 @@ static int qpnp_lcdb_set_voltage_step(struct qpnp_lcdb *lcdb,
 }
 
 static int qpnp_lcdb_get_voltage(struct qpnp_lcdb *lcdb,
-					u32 *voltage_mv, u8 type)
+u32 *voltage_mv, u8 type)
 {
 	int rc = 0;
-	u16 offset = LCDB_LDO_OUTPUT_VOLTAGE_REG;
+u16 offset = LCDB_LDO_OUTPUT_VOLTAGE_REG;
 	u8 val = 0;
 
 	if (type == BST)
-		return qpnp_lcdb_get_bst_voltage(lcdb, voltage_mv);
+return qpnp_lcdb_get_bst_voltage(lcdb, voltage_mv);
 
 	if (type == NCP)
-		offset = LCDB_NCP_OUTPUT_VOLTAGE_REG;
+offset = LCDB_NCP_OUTPUT_VOLTAGE_REG;
 
 	rc = qpnp_lcdb_read(lcdb, lcdb->base + offset, &val, 1);
 	if (rc < 0) {
@@ -1286,7 +1286,7 @@ static int qpnp_lcdb_get_voltage(struct qpnp_lcdb *lcdb,
 #ifdef CONFIG_MACH_XIAOMI_SM8150
 	if ((val & 0x80) && (type == NCP))//NCP follow 0x71 LDO
 	{
-		offset = LCDB_LDO_OUTPUT_VOLTAGE_REG;
+offset = LCDB_LDO_OUTPUT_VOLTAGE_REG;
 
 		rc = qpnp_lcdb_read(lcdb, lcdb->base + offset, &val, 1);
 		if (rc < 0) {
@@ -1296,19 +1296,19 @@ static int qpnp_lcdb_get_voltage(struct qpnp_lcdb *lcdb,
 	}
 #endif
 
-	val &= SET_OUTPUT_VOLTAGE_MASK;
-	if (val < VOLTAGE_STEP_50MV_OFFSET) {
-		*voltage_mv = VOLTAGE_MIN_STEP_100_MV +
-				(val * VOLTAGE_STEP_100_MV);
+val &= SET_OUTPUT_VOLTAGE_MASK;
+if (val < VOLTAGE_STEP_50MV_OFFSET) {
+*voltage_mv = VOLTAGE_MIN_STEP_100_MV +
+(val * VOLTAGE_STEP_100_MV);
 	} else {
-		*voltage_mv = VOLTAGE_MIN_STEP_50_MV +
-			((val - VOLTAGE_STEP_50MV_OFFSET) * VOLTAGE_STEP_50_MV);
+*voltage_mv = VOLTAGE_MIN_STEP_50_MV +
+((val - VOLTAGE_STEP_50MV_OFFSET) * VOLTAGE_STEP_50_MV);
 	}
 
 	if (!rc)
-		pr_debug("%s voltage read-back = %d mv (0x%02x = 0x%02x)\n",
+pr_debug("%s voltage read-back = %d mv (0x%02x = 0x%02x)\n",
 					(type == LDO) ? "LDO" : "NCP",
-					*voltage_mv, offset, val);
+*voltage_mv, offset, val);
 
 	return rc;
 }
@@ -1393,17 +1393,17 @@ static int qpnp_lcdb_ldo_regulator_set_voltage(struct regulator_dev *rdev,
 	if (lcdb->secure_mode)
 		return 0;
 
-	lcdb->ldo.voltage_mv = min_uV / 1000;
-	if (lcdb->voltage_step_ramp)
-		rc = qpnp_lcdb_set_voltage_step(lcdb,
-			lcdb->ldo.prev_voltage_mv + VOLTAGE_STEP_MV, LDO);
+lcdb->ldo.voltage_mv = min_uV / 1000;
+if (lcdb->voltage_step_ramp)
+rc = qpnp_lcdb_set_voltage_step(lcdb,
+lcdb->ldo.prev_voltage_mv + VOLTAGE_STEP_MV, LDO);
 	else
-		rc = qpnp_lcdb_set_voltage(lcdb, lcdb->ldo.voltage_mv, LDO);
+rc = qpnp_lcdb_set_voltage(lcdb, lcdb->ldo.voltage_mv, LDO);
 
 	if (rc < 0)
-		pr_err("Failed to set LDO voltage rc=%c\n", rc);
+pr_err("Failed to set LDO voltage rc=%c\n", rc);
 	else
-		lcdb->ldo.prev_voltage_mv = lcdb->ldo.voltage_mv;
+lcdb->ldo.prev_voltage_mv = lcdb->ldo.voltage_mv;
 
 	return rc;
 }
@@ -1411,24 +1411,24 @@ static int qpnp_lcdb_ldo_regulator_set_voltage(struct regulator_dev *rdev,
 static int qpnp_lcdb_ldo_regulator_get_voltage(struct regulator_dev *rdev)
 {
 	int rc = 0;
-	u32 voltage_mv = 0;
+u32 voltage_mv = 0;
 	struct qpnp_lcdb *lcdb  = rdev_get_drvdata(rdev);
 
-	rc = qpnp_lcdb_get_voltage(lcdb, &voltage_mv, LDO);
+rc = qpnp_lcdb_get_voltage(lcdb, &voltage_mv, LDO);
 	if (rc < 0) {
-		pr_err("Failed to get ldo voltage rc=%d\n", rc);
+pr_err("Failed to get ldo voltage rc=%d\n", rc);
 		return rc;
 	}
 
-	return voltage_mv * 1000;
+return voltage_mv * 1000;
 }
 
 static struct regulator_ops qpnp_lcdb_ldo_ops = {
 	.enable			= qpnp_lcdb_ldo_regulator_enable,
 	.disable		= qpnp_lcdb_ldo_regulator_disable,
 	.is_enabled		= qpnp_lcdb_ldo_regulator_is_enabled,
-	.set_voltage		= qpnp_lcdb_ldo_regulator_set_voltage,
-	.get_voltage		= qpnp_lcdb_ldo_regulator_get_voltage,
+.set_voltage		= qpnp_lcdb_ldo_regulator_set_voltage,
+.get_voltage		= qpnp_lcdb_ldo_regulator_get_voltage,
 };
 
 static int qpnp_lcdb_ncp_regulator_enable(struct regulator_dev *rdev)
@@ -1481,17 +1481,17 @@ static int qpnp_lcdb_ncp_regulator_set_voltage(struct regulator_dev *rdev,
 	if (lcdb->secure_mode)
 		return 0;
 
-	lcdb->ncp.voltage_mv = min_uV / 1000;
-	if (lcdb->voltage_step_ramp)
-		rc = qpnp_lcdb_set_voltage_step(lcdb,
-			lcdb->ncp.prev_voltage_mv + VOLTAGE_STEP_MV, NCP);
+lcdb->ncp.voltage_mv = min_uV / 1000;
+if (lcdb->voltage_step_ramp)
+rc = qpnp_lcdb_set_voltage_step(lcdb,
+lcdb->ncp.prev_voltage_mv + VOLTAGE_STEP_MV, NCP);
 	else
-		rc = qpnp_lcdb_set_voltage(lcdb, lcdb->ncp.voltage_mv, NCP);
+rc = qpnp_lcdb_set_voltage(lcdb, lcdb->ncp.voltage_mv, NCP);
 
 	if (rc < 0)
-		pr_err("Failed to set NCP voltage rc=%c\n", rc);
+pr_err("Failed to set NCP voltage rc=%c\n", rc);
 	else
-		lcdb->ncp.prev_voltage_mv = lcdb->ncp.voltage_mv;
+lcdb->ncp.prev_voltage_mv = lcdb->ncp.voltage_mv;
 
 	return rc;
 }
@@ -1499,24 +1499,24 @@ static int qpnp_lcdb_ncp_regulator_set_voltage(struct regulator_dev *rdev,
 static int qpnp_lcdb_ncp_regulator_get_voltage(struct regulator_dev *rdev)
 {
 	int rc;
-	u32 voltage_mv = 0;
+u32 voltage_mv = 0;
 	struct qpnp_lcdb *lcdb  = rdev_get_drvdata(rdev);
 
-	rc = qpnp_lcdb_get_voltage(lcdb, &voltage_mv, NCP);
+rc = qpnp_lcdb_get_voltage(lcdb, &voltage_mv, NCP);
 	if (rc < 0) {
-		pr_err("Failed to get ncp voltage rc=%d\n", rc);
+pr_err("Failed to get ncp voltage rc=%d\n", rc);
 		return rc;
 	}
 
-	return voltage_mv * 1000;
+return voltage_mv * 1000;
 }
 
 static struct regulator_ops qpnp_lcdb_ncp_ops = {
 	.enable			= qpnp_lcdb_ncp_regulator_enable,
 	.disable		= qpnp_lcdb_ncp_regulator_disable,
 	.is_enabled		= qpnp_lcdb_ncp_regulator_is_enabled,
-	.set_voltage		= qpnp_lcdb_ncp_regulator_set_voltage,
-	.get_voltage		= qpnp_lcdb_ncp_regulator_get_voltage,
+.set_voltage		= qpnp_lcdb_ncp_regulator_set_voltage,
+.get_voltage		= qpnp_lcdb_ncp_regulator_get_voltage,
 };
 
 static int qpnp_lcdb_regulator_register(struct qpnp_lcdb *lcdb, u8 type)
@@ -1557,7 +1557,7 @@ static int qpnp_lcdb_regulator_register(struct qpnp_lcdb *lcdb, u8 type)
 
 	if (init_data->constraints.name) {
 		rdesc->owner		= THIS_MODULE;
-		rdesc->type		= REGULATOR_VOLTAGE;
+rdesc->type		= REGULATOR_VOLTAGE;
 		rdesc->name		= init_data->constraints.name;
 
 		cfg.dev = lcdb->dev;
@@ -1569,7 +1569,7 @@ static int qpnp_lcdb_regulator_register(struct qpnp_lcdb *lcdb, u8 type)
 			init_data->supply_regulator = "parent";
 
 		init_data->constraints.valid_ops_mask
-				|= REGULATOR_CHANGE_VOLTAGE
+|= REGULATOR_CHANGE_VOLTAGE
 				| REGULATOR_CHANGE_STATUS;
 
 		rdev = devm_regulator_register(lcdb->dev, rdesc, &cfg);
@@ -1640,14 +1640,14 @@ static int qpnp_lcdb_ldo_dt_init(struct qpnp_lcdb *lcdb)
 	int rc = 0;
 	struct device_node *node = lcdb->ldo.node;
 
-	/* LDO output voltage */
-	lcdb->ldo.voltage_mv = -EINVAL;
-	rc = of_property_read_u32(node, "qcom,ldo-voltage-mv",
-					&lcdb->ldo.voltage_mv);
-	if (!rc && !is_between(lcdb->ldo.voltage_mv, MIN_VOLTAGE_MV,
-						MAX_VOLTAGE_MV)) {
-		pr_err("Invalid LDO voltage %dmv (min=%d max=%d)\n",
-			lcdb->ldo.voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV);
+/* LDO output voltage */
+lcdb->ldo.voltage_mv = -EINVAL;
+rc = of_property_read_u32(node, "qcom,ldo-voltage-mv",
+&lcdb->ldo.voltage_mv);
+if (!rc && !is_between(lcdb->ldo.voltage_mv, MIN_VOLTAGE_MV,
+MAX_VOLTAGE_MV)) {
+pr_err("Invalid LDO voltage %dmv (min=%d max=%d)\n",
+lcdb->ldo.voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV);
 		return -EINVAL;
 	}
 
@@ -1683,14 +1683,14 @@ static int qpnp_lcdb_ncp_dt_init(struct qpnp_lcdb *lcdb)
 	int rc = 0;
 	struct device_node *node = lcdb->ncp.node;
 
-	/* NCP output voltage */
-	lcdb->ncp.voltage_mv = -EINVAL;
-	rc = of_property_read_u32(node, "qcom,ncp-voltage-mv",
-					&lcdb->ncp.voltage_mv);
-	if (!rc && !is_between(lcdb->ncp.voltage_mv, MIN_VOLTAGE_MV,
-						MAX_VOLTAGE_MV)) {
-		pr_err("Invalid NCP voltage %dmv (min=%d max=%d)\n",
-			lcdb->ldo.voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV);
+/* NCP output voltage */
+lcdb->ncp.voltage_mv = -EINVAL;
+rc = of_property_read_u32(node, "qcom,ncp-voltage-mv",
+&lcdb->ncp.voltage_mv);
+if (!rc && !is_between(lcdb->ncp.voltage_mv, MIN_VOLTAGE_MV,
+MAX_VOLTAGE_MV)) {
+pr_err("Invalid NCP voltage %dmv (min=%d max=%d)\n",
+lcdb->ldo.voltage_mv, MIN_VOLTAGE_MV, MAX_VOLTAGE_MV);
 		return -EINVAL;
 	}
 
@@ -1778,11 +1778,11 @@ static int qpnp_lcdb_init_ldo(struct qpnp_lcdb *lcdb)
 
 	/* configure parameters only if LCDB is disabled */
 	if (!is_lcdb_enabled(lcdb)) {
-		if (lcdb->ldo.voltage_mv != -EINVAL) {
-			rc = qpnp_lcdb_set_voltage(lcdb,
-					lcdb->ldo.voltage_mv, LDO);
+if (lcdb->ldo.voltage_mv != -EINVAL) {
+rc = qpnp_lcdb_set_voltage(lcdb,
+lcdb->ldo.voltage_mv, LDO);
 			if (rc < 0) {
-				pr_err("Failed to set voltage rc=%d\n", rc);
+pr_err("Failed to set voltage rc=%d\n", rc);
 				return rc;
 			}
 		}
@@ -1847,13 +1847,13 @@ static int qpnp_lcdb_init_ldo(struct qpnp_lcdb *lcdb)
 		}
 	}
 
-	rc = qpnp_lcdb_get_voltage(lcdb, &lcdb->ldo.voltage_mv, LDO);
+rc = qpnp_lcdb_get_voltage(lcdb, &lcdb->ldo.voltage_mv, LDO);
 	if (rc < 0) {
 		pr_err("Failed to get LDO volatge rc=%d\n", rc);
 		return rc;
 	}
 
-	lcdb->ldo.prev_voltage_mv = lcdb->ldo.voltage_mv;
+lcdb->ldo.prev_voltage_mv = lcdb->ldo.voltage_mv;
 
 	rc = qpnp_lcdb_read(lcdb, lcdb->base +
 			LCDB_LDO_VREG_OK_CTL_REG, &val, 1);
@@ -1885,11 +1885,11 @@ static int qpnp_lcdb_init_ncp(struct qpnp_lcdb *lcdb)
 
 	/* configure parameters only if LCDB is disabled */
 	if (!is_lcdb_enabled(lcdb)) {
-		if (lcdb->ncp.voltage_mv != -EINVAL) {
-			rc = qpnp_lcdb_set_voltage(lcdb,
-					lcdb->ncp.voltage_mv, NCP);
+if (lcdb->ncp.voltage_mv != -EINVAL) {
+rc = qpnp_lcdb_set_voltage(lcdb,
+lcdb->ncp.voltage_mv, NCP);
 			if (rc < 0) {
-				pr_err("Failed to set voltage rc=%d\n", rc);
+pr_err("Failed to set voltage rc=%d\n", rc);
 				return rc;
 			}
 		}
@@ -1954,13 +1954,13 @@ static int qpnp_lcdb_init_ncp(struct qpnp_lcdb *lcdb)
 		}
 	}
 
-	rc = qpnp_lcdb_get_voltage(lcdb, &lcdb->ncp.voltage_mv, NCP);
+rc = qpnp_lcdb_get_voltage(lcdb, &lcdb->ncp.voltage_mv, NCP);
 	if (rc < 0) {
 		pr_err("Failed to get NCP volatge rc=%d\n", rc);
 		return rc;
 	}
 
-	lcdb->ncp.prev_voltage_mv = lcdb->ncp.voltage_mv;
+lcdb->ncp.prev_voltage_mv = lcdb->ncp.voltage_mv;
 
 	rc = qpnp_lcdb_read(lcdb, lcdb->base +
 			LCDB_NCP_VREG_OK_CTL_REG, &val, 1);
@@ -2057,7 +2057,7 @@ static int qpnp_lcdb_init_bst(struct qpnp_lcdb *lcdb)
 		}
 	}
 
-	rc = qpnp_lcdb_get_voltage(lcdb, &lcdb->bst.voltage_mv, BST);
+rc = qpnp_lcdb_get_voltage(lcdb, &lcdb->bst.voltage_mv, BST);
 	if (rc < 0) {
 		pr_err("Failed to get BST volatge rc=%d\n", rc);
 		return rc;
@@ -2109,7 +2109,7 @@ static void qpnp_lcdb_pmic_config(struct qpnp_lcdb *lcdb)
 		break;
 	case PM8150L_SUBTYPE:
 		if (lcdb->pmic_rev_id->rev4 >= PM8150L_V3P0_REV4)
-			lcdb->voltage_step_ramp = false;
+lcdb->voltage_step_ramp = false;
 
 		lcdb->wa_flags |= FORCE_PD_ENABLE_WA;
 		break;
@@ -2256,8 +2256,8 @@ static int qpnp_lcdb_parse_dt(struct qpnp_lcdb *lcdb)
 	if (lcdb->sc_irq < 0)
 		pr_debug("sc irq is not defined\n");
 
-	lcdb->voltage_step_ramp =
-			of_property_read_bool(node, "qcom,voltage-step-ramp");
+lcdb->voltage_step_ramp =
+of_property_read_bool(node, "qcom,voltage-step-ramp");
 
 	lcdb->pwrdn_delay_ms = -EINVAL;
 	rc = of_property_read_u32(node, "qcom,pwrdn-delay-ms", &tmp);
@@ -2371,9 +2371,9 @@ static int qpnp_lcdb_regulator_probe(struct platform_device *pdev)
 	if (rc < 0)
 		pr_err("Failed to initialize LCDB module rc=%d\n", rc);
 	else
-		pr_info("LCDB module successfully registered! lcdb_en=%d ldo_voltage=%dmV ncp_voltage=%dmV bst_voltage=%dmV\n",
-			lcdb->lcdb_enabled, lcdb->ldo.voltage_mv,
-			lcdb->ncp.voltage_mv, lcdb->bst.voltage_mv);
+pr_info("LCDB module successfully registered! lcdb_en=%d ldo_voltage=%dmV ncp_voltage=%dmV bst_voltage=%dmV\n",
+lcdb->lcdb_enabled, lcdb->ldo.voltage_mv,
+lcdb->ncp.voltage_mv, lcdb->bst.voltage_mv);
 
 	return rc;
 }

@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/embedded6xx/wii.c
+* arch/powerpc/platforms/embedded6xx/wii.c
  *
  * Nintendo Wii board-specific support
  * Copyright (C) 2008-2009 The GameCube Linux Team
@@ -69,7 +69,7 @@ void __init wii_memory_fixups(void)
 	/*
 	 * This is part of a workaround to allow the use of two
 	 * discontinuous RAM ranges on the Wii, even if this is
-	 * currently unsupported on 32-bit PowerPC Linux.
+* currently unsupported on 32-bit PowerPC Linux.
 	 *
 	 * We coalesce the two memory ranges of the Wii into a
 	 * single range, then create a reservation for the "hole"
@@ -180,10 +180,10 @@ static void wii_power_off(void)
 	local_irq_disable();
 
 	if (hw_gpio) {
-		/* make sure that the poweroff GPIO is configured as output */
+/* make sure that the poweroff GPIO is configured as output */
 		setbits32(hw_gpio + HW_GPIO_DIR(1), HW_GPIO_SHUTDOWN);
 
-		/* drive the poweroff GPIO high */
+/* drive the poweroff GPIO high */
 		setbits32(hw_gpio + HW_GPIO_OUT(1), HW_GPIO_SHUTDOWN);
 	}
 	wii_spin();
@@ -207,7 +207,7 @@ static int __init wii_probe(void)
 	if (!of_machine_is_compatible("nintendo,wii"))
 		return 0;
 
-	pm_power_off = wii_power_off;
+pm_power_off = wii_power_off;
 
 	ug_udbg_init();
 

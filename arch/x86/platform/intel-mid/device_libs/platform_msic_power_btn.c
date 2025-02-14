@@ -1,5 +1,5 @@
 /*
- * platform_msic_power_btn.c: MSIC power btn platform data initialization file
+* platform_msic_power_btn.c: MSIC power btn platform data initialization file
  *
  * (C) Copyright 2013 Intel Corporation
  * Author: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@intel.com>
@@ -21,15 +21,15 @@
 
 static void __init *msic_power_btn_platform_data(void *info)
 {
-	return msic_generic_platform_data(info, INTEL_MSIC_BLOCK_POWER_BTN);
+return msic_generic_platform_data(info, INTEL_MSIC_BLOCK_POWER_BTN);
 }
 
 static const struct devs_id msic_power_btn_dev_id __initconst = {
-	.name = "msic_power_btn",
+.name = "msic_power_btn",
 	.type = SFI_DEV_TYPE_IPC,
 	.delay = 1,
 	.msic = 1,
-	.get_platform_data = &msic_power_btn_platform_data,
+.get_platform_data = &msic_power_btn_platform_data,
 };
 
 sfi_device(msic_power_btn_dev_id);

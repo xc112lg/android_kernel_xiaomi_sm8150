@@ -136,7 +136,7 @@ static inline bool pte_user(pte_t pte)
 
 /* Permission masks used to generate the __P and __S table,
  *
- * Note:__pgprot is defined in arch/powerpc/include/asm/page.h
+* Note:__pgprot is defined in arch/powerpc/include/asm/page.h
  *
  * Write permissions imply read permissions for now (we could make write-only
  * pages on BookE but we don't bother for now). Execute permission control is

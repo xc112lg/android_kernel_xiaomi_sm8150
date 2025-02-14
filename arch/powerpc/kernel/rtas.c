@@ -551,13 +551,13 @@ static int rtas_error_rc(int rtas_rc)
 
 int rtas_get_power_level(int powerdomain, int *level)
 {
-	int token = rtas_token("get-power-level");
+int token = rtas_token("get-power-level");
 	int rc;
 
 	if (token == RTAS_UNKNOWN_SERVICE)
 		return -ENOENT;
 
-	while ((rc = rtas_call(token, 1, 2, level, powerdomain)) == RTAS_BUSY)
+while ((rc = rtas_call(token, 1, 2, level, powerdomain)) == RTAS_BUSY)
 		udelay(1);
 
 	if (rc < 0)
@@ -568,14 +568,14 @@ EXPORT_SYMBOL(rtas_get_power_level);
 
 int rtas_set_power_level(int powerdomain, int level, int *setlevel)
 {
-	int token = rtas_token("set-power-level");
+int token = rtas_token("set-power-level");
 	int rc;
 
 	if (token == RTAS_UNKNOWN_SERVICE)
 		return -ENOENT;
 
 	do {
-		rc = rtas_call(token, 2, 2, setlevel, powerdomain, level);
+rc = rtas_call(token, 2, 2, setlevel, powerdomain, level);
 	} while (rtas_busy_delay(rc));
 
 	if (rc < 0)
@@ -697,10 +697,10 @@ void __noreturn rtas_restart(char *cmd)
 void rtas_power_off(void)
 {
 	if (rtas_flash_term_hook)
-		rtas_flash_term_hook(SYS_POWER_OFF);
-	/* allow power on only with power button press */
-	printk("RTAS power-off returned %d\n",
-	       rtas_call(rtas_token("power-off"), 2, 1, NULL, -1, -1));
+rtas_flash_term_hook(SYS_POWER_OFF);
+/* allow power on only with power button press */
+printk("RTAS power-off returned %d\n",
+rtas_call(rtas_token("power-off"), 2, 1, NULL, -1, -1));
 	for (;;);
 }
 
@@ -708,9 +708,9 @@ void __noreturn rtas_halt(void)
 {
 	if (rtas_flash_term_hook)
 		rtas_flash_term_hook(SYS_HALT);
-	/* allow power on only with power button press */
-	printk("RTAS power-off returned %d\n",
-	       rtas_call(rtas_token("power-off"), 2, 1, NULL, -1, -1));
+/* allow power on only with power button press */
+printk("RTAS power-off returned %d\n",
+rtas_call(rtas_token("power-off"), 2, 1, NULL, -1, -1));
 	for (;;);
 }
 
@@ -1103,7 +1103,7 @@ static struct rtas_filter rtas_filters[] __ro_after_init = {
 	{ "ibm,get-config-addr-info2", -1, -1, -1, -1, -1 },
 	{ "ibm,get-dynamic-sensor-state", -1, 1, -1, -1, -1 },
 	{ "ibm,get-indices", -1, 2, 3, -1, -1 },
-	{ "get-power-level", -1, -1, -1, -1, -1 },
+{ "get-power-level", -1, -1, -1, -1, -1 },
 	{ "get-sensor-state", -1, -1, -1, -1, -1 },
 	{ "ibm,get-system-parameter", -1, 1, 2, -1, -1 },
 	{ "get-time-of-day", -1, -1, -1, -1, -1 },
@@ -1115,8 +1115,8 @@ static struct rtas_filter rtas_filters[] __ro_after_init = {
 	{ "ibm,set-dynamic-indicator", -1, 2, -1, -1, -1 },
 	{ "ibm,set-eeh-option", -1, -1, -1, -1, -1 },
 	{ "set-indicator", -1, -1, -1, -1, -1 },
-	{ "set-power-level", -1, -1, -1, -1, -1 },
-	{ "set-time-for-power-on", -1, -1, -1, -1, -1 },
+{ "set-power-level", -1, -1, -1, -1, -1 },
+{ "set-time-for-power-on", -1, -1, -1, -1, -1 },
 	{ "ibm,set-system-parameter", -1, 1, -1, -1, -1 },
 	{ "set-time-of-day", -1, -1, -1, -1, -1 },
 	{ "ibm,suspend-me", -1, -1, -1, -1, -1 },
@@ -1380,7 +1380,7 @@ int __init early_init_dt_scan_rtas(unsigned long node,
 #ifdef CONFIG_PPC64
 	/* need this feature to decide the crashkernel offset */
 	if (of_get_flat_dt_prop(node, "ibm,hypertas-functions", NULL))
-		powerpc_firmware_features |= FW_FEATURE_LPAR;
+powerpc_firmware_features |= FW_FEATURE_LPAR;
 #endif
 
 	if (basep && entryp && sizep) {

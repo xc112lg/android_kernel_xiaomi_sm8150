@@ -90,7 +90,7 @@ static const char *domain_name(unsigned domain)
 
 static bool catalog_entry_domain_is_valid(unsigned domain)
 {
-	/* POWER8 doesn't support virtual domains. */
+/* POWER8 doesn't support virtual domains. */
 	if (interface_version == 1)
 		return is_physical_domain(domain);
 	else
@@ -1581,13 +1581,13 @@ static int hv_24x7_init(void)
 	} else if (!cur_cpu_spec->oprofile_cpu_type)
 		return -ENODEV;
 
-	/* POWER8 only supports v1, while POWER9 only supports v2. */
-	if (!strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power8"))
+/* POWER8 only supports v1, while POWER9 only supports v2. */
+if (!strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power8"))
 		interface_version = 1;
 	else {
 		interface_version = 2;
 
-		/* SMT8 in POWER9 needs to aggregate result elements. */
+/* SMT8 in POWER9 needs to aggregate result elements. */
 		if (threads_per_core == 8)
 			aggregate_result_elements = true;
 	}

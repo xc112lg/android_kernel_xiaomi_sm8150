@@ -1,6 +1,6 @@
 /*
  * OPAL IMC interface detection driver
- * Supported on POWERNV platform
+* Supported on POWERNV platform
  *
  * Copyright	(C) 2017 Madhavan Srinivasan, IBM Corporation.
  *		(C) 2017 Anju T Sudhakar, IBM Corporation.

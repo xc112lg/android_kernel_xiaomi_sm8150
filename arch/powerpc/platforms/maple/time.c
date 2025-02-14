@@ -82,7 +82,7 @@ void maple_get_rtc_time(struct rtc_time *tm)
 
 int maple_set_rtc_time(struct rtc_time *tm)
 {
-	unsigned char save_control, save_freq_select;
+unsigned char save_control, save_freq_select;
 	int sec, min, hour, mon, mday, year;
 
 	spin_lock(&rtc_lock);
@@ -91,9 +91,9 @@ int maple_set_rtc_time(struct rtc_time *tm)
 
 	maple_clock_write((save_control|RTC_SET), RTC_CONTROL);
 
-	save_freq_select = maple_clock_read(RTC_FREQ_SELECT); /* stop and reset prescaler */
+save_freq_select = maple_clock_read(RTC_FREQ_SELECT); /* stop and reset prescaler */
 
-	maple_clock_write((save_freq_select|RTC_DIV_RESET2), RTC_FREQ_SELECT);
+maple_clock_write((save_freq_select|RTC_DIV_RESET2), RTC_FREQ_SELECT);
 
 	sec = tm->tm_sec;
 	min = tm->tm_min;
@@ -125,7 +125,7 @@ int maple_set_rtc_time(struct rtc_time *tm)
 	 * sheets anyway ...                           -- Markus Kuhn
 	 */
 	maple_clock_write(save_control, RTC_CONTROL);
-	maple_clock_write(save_freq_select, RTC_FREQ_SELECT);
+maple_clock_write(save_freq_select, RTC_FREQ_SELECT);
 
 	spin_unlock(&rtc_lock);
 

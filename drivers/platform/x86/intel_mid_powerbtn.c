@@ -1,5 +1,5 @@
 /*
- * Power button driver for Intel MID platforms.
+* Power button driver for Intel MID platforms.
  *
  * Copyright (C) 2010,2017 Intel Corp
  *
@@ -35,7 +35,7 @@
 
 /*
  * MSIC document ti_datasheet defines the 1st bit reg 0x21 is used to mask
- * power button interrupt
+* power button interrupt
  */
 #define MSIC_PWRBTNM    (1 << 0)
 
@@ -100,7 +100,7 @@ static irqreturn_t mid_pb_isr(int irq, void *dev_id)
 		dev_err(input->dev.parent,
 			"Read error %d while reading MSIC_PB_STATUS\n", ret);
 	} else {
-		input_event(input, EV_KEY, KEY_POWER, value);
+input_event(input, EV_KEY, KEY_POWER, value);
 		input_sync(input);
 	}
 
@@ -152,11 +152,11 @@ static int mid_pb_probe(struct platform_device *pdev)
 		return -ENOMEM;
 
 	input->name = pdev->name;
-	input->phys = "power-button/input0";
+input->phys = "power-button/input0";
 	input->id.bustype = BUS_HOST;
 	input->dev.parent = &pdev->dev;
 
-	input_set_capability(input, EV_KEY, KEY_POWER);
+input_set_capability(input, EV_KEY, KEY_POWER);
 
 	ddata = devm_kmemdup(&pdev->dev, (void *)id->driver_data,
 			     sizeof(*ddata), GFP_KERNEL);
@@ -177,7 +177,7 @@ static int mid_pb_probe(struct platform_device *pdev)
 					  IRQF_ONESHOT, DRIVER_NAME, ddata);
 	if (error) {
 		dev_err(&pdev->dev,
-			"Unable to request irq %d for MID power button\n", irq);
+"Unable to request irq %d for MID power button\n", irq);
 		return error;
 	}
 
@@ -191,19 +191,19 @@ static int mid_pb_probe(struct platform_device *pdev)
 	platform_set_drvdata(pdev, ddata);
 
 	/*
-	 * SCU firmware might send power button interrupts to IA core before
+* SCU firmware might send power button interrupts to IA core before
 	 * kernel boots and doesn't get EOI from IA core. The first bit of
 	 * MSIC reg 0x21 is kept masked, and SCU firmware doesn't send new
-	 * power interrupt to Android kernel. Unmask the bit when probing
-	 * power button in kernel.
-	 * There is a very narrow race between irq handler and power button
+* power interrupt to Android kernel. Unmask the bit when probing
+* power button in kernel.
+* There is a very narrow race between irq handler and power button
 	 * initialization. The race happens rarely. So we needn't worry
 	 * about it.
 	 */
 	error = mid_irq_ack(ddata);
 	if (error) {
 		dev_err(&pdev->dev,
-			"Unable to clear power button interrupt, error: %d\n",
+"Unable to clear power button interrupt, error: %d\n",
 			error);
 		return error;
 	}

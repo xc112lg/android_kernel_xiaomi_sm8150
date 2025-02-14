@@ -209,7 +209,7 @@ static int da9055_regulator_get_voltage_sel(struct regulator_dev *rdev)
 	int ret, sel;
 
 	/*
-	 * There are two voltage register set A & B for voltage ramping but
+* There are two voltage register set A & B for voltage ramping but
 	 * either one of then can be active therefore we first determine
 	 * the active register set.
 	 */
@@ -219,7 +219,7 @@ static int da9055_regulator_get_voltage_sel(struct regulator_dev *rdev)
 
 	ret &= info->conf.sel_mask;
 
-	/* Get the voltage for the active register set A/B */
+/* Get the voltage for the active register set A/B */
 	if (ret == DA9055_REGUALTOR_SET_A)
 		ret = da9055_reg_read(regulator->da9055, volt.reg_a);
 	else
@@ -241,7 +241,7 @@ static int da9055_regulator_set_voltage_sel(struct regulator_dev *rdev,
 
 	/*
 	 * Regulator register set A/B is not selected through GPIO therefore
-	 * we use default register set A for voltage ramping.
+* we use default register set A for voltage ramping.
 	 */
 	if (regulator->reg_rselect == NO_GPIO) {
 		/* Select register set A */
@@ -250,7 +250,7 @@ static int da9055_regulator_set_voltage_sel(struct regulator_dev *rdev,
 		if (ret < 0)
 			return ret;
 
-		/* Set the voltage */
+/* Set the voltage */
 		return da9055_reg_update(regulator->da9055, info->volt.reg_a,
 					 info->volt.v_mask, selector);
 	}
@@ -258,7 +258,7 @@ static int da9055_regulator_set_voltage_sel(struct regulator_dev *rdev,
 	/*
 	 * Here regulator register set A/B is selected through GPIO.
 	 * Therefore we first determine the selected register set A/B and
-	 * then set the desired voltage for that register set A/B.
+* then set the desired voltage for that register set A/B.
 	 */
 	ret = da9055_reg_read(regulator->da9055, info->conf.reg);
 	if (ret < 0)
@@ -266,7 +266,7 @@ static int da9055_regulator_set_voltage_sel(struct regulator_dev *rdev,
 
 	ret &= info->conf.sel_mask;
 
-	/* Set the voltage */
+/* Set the voltage */
 	if (ret == DA9055_REGUALTOR_SET_A)
 		return da9055_reg_update(regulator->da9055, info->volt.reg_a,
 					 info->volt.v_mask, selector);
@@ -282,7 +282,7 @@ static int da9055_regulator_set_suspend_voltage(struct regulator_dev *rdev,
 	struct da9055_regulator_info *info = regulator->info;
 	int ret;
 
-	/* Select register set B for suspend voltage ramping. */
+/* Select register set B for suspend voltage ramping. */
 	if (regulator->reg_rselect == NO_GPIO) {
 		ret = da9055_reg_update(regulator->da9055, info->conf.reg,
 					info->conf.sel_mask, DA9055_SEL_REG_B);
@@ -290,7 +290,7 @@ static int da9055_regulator_set_suspend_voltage(struct regulator_dev *rdev,
 			return ret;
 	}
 
-	ret = regulator_map_voltage_linear(rdev, uV, uV);
+ret = regulator_map_voltage_linear(rdev, uV, uV);
 	if (ret < 0)
 		return ret;
 
@@ -303,7 +303,7 @@ static int da9055_suspend_enable(struct regulator_dev *rdev)
 	struct da9055_regulator *regulator = rdev_get_drvdata(rdev);
 	struct da9055_regulator_info *info = regulator->info;
 
-	/* Select register set B for voltage ramping. */
+/* Select register set B for voltage ramping. */
 	if (regulator->reg_rselect == NO_GPIO)
 		return da9055_reg_update(regulator->da9055, info->conf.reg,
 					info->conf.sel_mask, DA9055_SEL_REG_B);
@@ -331,15 +331,15 @@ static const struct regulator_ops da9055_buck_ops = {
 	.get_current_limit = da9055_buck_get_current_limit,
 	.set_current_limit = da9055_buck_set_current_limit,
 
-	.get_voltage_sel = da9055_regulator_get_voltage_sel,
-	.set_voltage_sel = da9055_regulator_set_voltage_sel,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = da9055_regulator_get_voltage_sel,
+.set_voltage_sel = da9055_regulator_set_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 
-	.set_suspend_voltage = da9055_regulator_set_suspend_voltage,
+.set_suspend_voltage = da9055_regulator_set_suspend_voltage,
 	.set_suspend_enable = da9055_suspend_enable,
 	.set_suspend_disable = da9055_suspend_disable,
 	.set_suspend_mode = da9055_buck_set_mode,
@@ -349,15 +349,15 @@ static const struct regulator_ops da9055_ldo_ops = {
 	.get_mode = da9055_ldo_get_mode,
 	.set_mode = da9055_ldo_set_mode,
 
-	.get_voltage_sel = da9055_regulator_get_voltage_sel,
-	.set_voltage_sel = da9055_regulator_set_voltage_sel,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = da9055_regulator_get_voltage_sel,
+.set_voltage_sel = da9055_regulator_set_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
 	.is_enabled = regulator_is_enabled_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 
-	.set_suspend_voltage = da9055_regulator_set_suspend_voltage,
+.set_suspend_voltage = da9055_regulator_set_suspend_voltage,
 	.set_suspend_enable = da9055_suspend_enable,
 	.set_suspend_disable = da9055_suspend_disable,
 	.set_suspend_mode = da9055_ldo_set_mode,
@@ -369,9 +369,9 @@ static const struct regulator_ops da9055_ldo_ops = {
 	.reg_desc = {\
 		.name = #_id,\
 		.ops = &da9055_ldo_ops,\
-		.type = REGULATOR_VOLTAGE,\
+.type = REGULATOR_VOLTAGE,\
 		.id = DA9055_ID_##_id,\
-		.n_voltages = (max - min) / step + 1 + (voffset), \
+.n_voltages = (max - min) / step + 1 + (voffset), \
 		.enable_reg = DA9055_REG_BCORE_CONT + DA9055_ID_##_id, \
 		.enable_mask = 1, \
 		.min_uV = (min) * 1000,\
@@ -397,9 +397,9 @@ static const struct regulator_ops da9055_ldo_ops = {
 	.reg_desc = {\
 		.name = #_id,\
 		.ops = &da9055_buck_ops,\
-		.type = REGULATOR_VOLTAGE,\
+.type = REGULATOR_VOLTAGE,\
 		.id = DA9055_ID_##_id,\
-		.n_voltages = (max - min) / step + 1 + (voffset), \
+.n_voltages = (max - min) / step + 1 + (voffset), \
 		.enable_reg = DA9055_REG_BCORE_CONT + DA9055_ID_##_id, \
 		.enable_mask = 1,\
 		.min_uV = (min) * 1000,\
@@ -439,7 +439,7 @@ static struct da9055_regulator_info da9055_regulator_info[] = {
 /*
  * Configures regulator to be controlled either through GPIO 1 or 2.
  * GPIO can control regulator state and/or select the regulator register
- * set A/B for voltage ramping.
+* set A/B for voltage ramping.
  */
 static int da9055_gpio_init(struct da9055_regulator *regulator,
 			    struct regulator_config *config,
@@ -489,7 +489,7 @@ static int da9055_gpio_init(struct da9055_regulator *regulator,
 
 		/*
 		 * GPI pin is muxed with regulator to select the
-		 * regulator register set A/B for voltage ramping.
+* regulator register set A/B for voltage ramping.
 		 */
 		sprintf(name, "DA9055 GPI %d", gpio_mux);
 		ret = devm_gpio_request_one(config->dev, gpio_mux, GPIOF_DIR_IN,
@@ -499,7 +499,7 @@ static int da9055_gpio_init(struct da9055_regulator *regulator,
 
 		/*
 		 * Let the regulator know that its register set A/B
-		 * will be selected through GPI for voltage ramping.
+* will be selected through GPI for voltage ramping.
 		 */
 		ret = da9055_reg_update(regulator->da9055, info->conf.reg,
 					DA9055_V_GPI_MASK,

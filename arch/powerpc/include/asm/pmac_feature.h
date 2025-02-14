@@ -1,5 +1,5 @@
 /*
- * Definition of platform feature hooks for PowerMacs
+* Definition of platform feature hooks for PowerMacs
  *
  * This file is subject to the terms and conditions of the GNU General Public
  * License.  See the file "COPYING" in the main directory of this archive
@@ -146,7 +146,7 @@ struct device_node;
 static inline long pmac_call_feature(int selector, struct device_node* node,
 					long param, long value)
 {
-	if (!ppc_md.feature_call || !machine_is(powermac))
+if (!ppc_md.feature_call || !machine_is(powermac))
 		return -ENODEV;
 	return ppc_md.feature_call(selector, node, param, value);
 }
@@ -227,7 +227,7 @@ static inline long pmac_call_feature(int selector, struct device_node* node,
 #define PMAC_FTR_RESET_CPU		PMAC_FTR_DEF(11)
 
 /* PMAC_FTR_USB_ENABLE		(struct device_node* node, 0, int value)
- * enable/disable an USB cell, along with the power of the USB "pad"
+* enable/disable an USB cell, along with the power of the USB "pad"
  * on keylargo based machines
  */
 #define PMAC_FTR_USB_ENABLE		PMAC_FTR_DEF(12)
@@ -238,7 +238,7 @@ static inline long pmac_call_feature(int selector, struct device_node* node,
 #define PMAC_FTR_1394_ENABLE		PMAC_FTR_DEF(13)
 
 /* PMAC_FTR_1394_CABLE_POWER	(struct device_node* node, 0, int value)
- * enable/disable the firewire cable power supply of the uninorth
+* enable/disable the firewire cable power supply of the uninorth
  * firewire cell
  */
 #define PMAC_FTR_1394_CABLE_POWER	PMAC_FTR_DEF(14)

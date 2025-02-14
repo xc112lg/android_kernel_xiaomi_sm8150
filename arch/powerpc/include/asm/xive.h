@@ -19,7 +19,7 @@
  * This is a global MMIO region divided in 4 pages of varying access
  * permissions, providing access to per-cpu interrupt management
  * functions. It always identifies the CPU doing the access based
- * on the PowerBus initiator ID, thus we always access via the
+* on the PowerBus initiator ID, thus we always access via the
  * same offset regardless of where the code is executing
  */
 extern void __iomem *xive_tima;

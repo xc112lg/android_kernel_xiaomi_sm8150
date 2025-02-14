@@ -12,18 +12,18 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * File: power.c
+* File: power.c
  *
- * Purpose: Handles 802.11 power management  functions
+* Purpose: Handles 802.11 power management  functions
  *
  * Author: Lyndon Chen
  *
  * Date: July 17, 2002
  *
  * Functions:
- *      PSvEnablePowerSaving - Enable Power Saving Mode
- *      PSvDiasblePowerSaving - Disable Power Saving Mode
- *      PSbConsiderPowerDown - Decide if we can Power Down
+*      PSvEnablePowerSaving - Enable Power Saving Mode
+*      PSvDiasblePowerSaving - Disable Power Saving Mode
+*      PSbConsiderPowerDown - Decide if we can Power Down
  *      PSvSendPSPOLL - Send PS-POLL packet
  *      PSbSendNullPacket - Send Null packet
  *      PSbIsNextTBTTWakeUp - Decide if we need to wake up at next Beacon
@@ -50,7 +50,7 @@
 /*
  *
  * Routine Description:
- * Enable hw power saving functions
+* Enable hw power saving functions
  *
  * Return Value:
  *    None.
@@ -65,7 +65,7 @@ PSvEnablePowerSaving(
 {
 	u16 wAID = priv->current_aid | BIT(14) | BIT(15);
 
-	/* set period of power up before TBTT */
+/* set period of power up before TBTT */
 	VNSvOutPortW(priv->PortOffset + MAC_REG_PWBT, C_PWBT);
 	if (priv->op_mode != NL80211_IFTYPE_ADHOC) {
 		/* set AID */
@@ -91,18 +91,18 @@ PSvEnablePowerSaving(
 		MACvRegBitsOn(priv->PortOffset, MAC_REG_PSCTL, PSCTL_ALBCN);
 	}
 
-	/* enable power saving hw function */
+/* enable power saving hw function */
 	MACvRegBitsOn(priv->PortOffset, MAC_REG_PSCTL, PSCTL_PSEN);
 	priv->bEnablePSMode = true;
 
 	priv->bPWBitOn = true;
-	pr_debug("PS:Power Saving Mode Enable...\n");
+pr_debug("PS:Power Saving Mode Enable...\n");
 }
 
 /*
  *
  * Routine Description:
- * Disable hw power saving functions
+* Disable hw power saving functions
  *
  * Return Value:
  *    None.
@@ -114,7 +114,7 @@ PSvDisablePowerSaving(
 	struct vnt_private *priv
 )
 {
-	/* disable power saving hw function */
+/* disable power saving hw function */
 	MACbPSWakeup(priv);
 	/* clear AutoSleep */
 	MACvRegBitsOff(priv->PortOffset, MAC_REG_PSCFG, PSCFG_AUTOSLEEP);

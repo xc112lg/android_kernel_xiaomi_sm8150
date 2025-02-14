@@ -47,7 +47,7 @@ static bool proxy_consumers_removed;
  * success, ERR_PTR() if an error occurred, or NULL if no proxy consumer is
  * needed for the regulator.  This function calls
  * regulator_get(reg_dev, "proxy") after first checking if any proxy consumer
- * properties are present in the reg_node device node.  After that, the voltage,
+* properties are present in the reg_node device node.  After that, the voltage,
  * minimum current, and/or the enable state will be set based upon the device
  * node property values.
  */
@@ -56,12 +56,12 @@ struct proxy_consumer *regulator_proxy_consumer_register(struct device *reg_dev,
 {
 	struct proxy_consumer *consumer = NULL;
 	const char *reg_name = "";
-	u32 voltage[2] = {0};
+u32 voltage[2] = {0};
 	int rc;
 
 	/* Return immediately if no proxy consumer properties are specified. */
 	if (!of_find_property(reg_node, "qcom,proxy-consumer-enable", NULL)
-	    && !of_find_property(reg_node, "qcom,proxy-consumer-voltage", NULL)
+&& !of_find_property(reg_node, "qcom,proxy-consumer-voltage", NULL)
 	    && !of_find_property(reg_node, "qcom,proxy-consumer-current", NULL))
 		return NULL;
 
@@ -86,14 +86,14 @@ struct proxy_consumer *regulator_proxy_consumer_register(struct device *reg_dev,
 		= of_property_read_bool(reg_node, "qcom,proxy-consumer-enable");
 	of_property_read_u32(reg_node, "qcom,proxy-consumer-current",
 				&consumer->current_uA);
-	rc = of_property_read_u32_array(reg_node, "qcom,proxy-consumer-voltage",
-					voltage, 2);
+rc = of_property_read_u32_array(reg_node, "qcom,proxy-consumer-voltage",
+voltage, 2);
 	if (!rc) {
-		consumer->min_uV = voltage[0];
-		consumer->max_uV = voltage[1];
+consumer->min_uV = voltage[0];
+consumer->max_uV = voltage[1];
 	}
 
-	dev_dbg(reg_dev, "proxy consumer request: enable=%d, voltage_range=[%d, %d] uV, min_current=%d uA\n",
+dev_dbg(reg_dev, "proxy consumer request: enable=%d, voltage_range=[%d, %d] uV, min_current=%d uA\n",
 		consumer->enable, consumer->min_uV, consumer->max_uV,
 		consumer->current_uA);
 
@@ -105,10 +105,10 @@ struct proxy_consumer *regulator_proxy_consumer_register(struct device *reg_dev,
 	}
 
 	if (consumer->max_uV > 0 && consumer->min_uV <= consumer->max_uV) {
-		rc = regulator_set_voltage(consumer->reg, consumer->min_uV,
+rc = regulator_set_voltage(consumer->reg, consumer->min_uV,
 						consumer->max_uV);
 		if (rc) {
-			pr_err("regulator_set_voltage %s failed, rc=%d\n",
+pr_err("regulator_set_voltage %s failed, rc=%d\n",
 				reg_name, rc);
 			goto free_regulator;
 		}
@@ -120,7 +120,7 @@ struct proxy_consumer *regulator_proxy_consumer_register(struct device *reg_dev,
 		if (rc < 0) {
 			pr_err("regulator_set_load %s failed, rc=%d\n",
 				reg_name, rc);
-			goto remove_voltage;
+goto remove_voltage;
 		}
 	}
 
@@ -141,7 +141,7 @@ struct proxy_consumer *regulator_proxy_consumer_register(struct device *reg_dev,
 remove_current:
 	regulator_set_load(consumer->reg, 0);
 remove_voltage:
-	regulator_set_voltage(consumer->reg, 0, INT_MAX);
+regulator_set_voltage(consumer->reg, 0, INT_MAX);
 free_regulator:
 	regulator_put(consumer->reg);
 unlock:
@@ -169,9 +169,9 @@ static int regulator_proxy_consumer_remove(struct proxy_consumer *consumer)
 	}
 
 	if (consumer->max_uV > 0 && consumer->min_uV <= consumer->max_uV) {
-		rc = regulator_set_voltage(consumer->reg, 0, INT_MAX);
+rc = regulator_set_voltage(consumer->reg, 0, INT_MAX);
 		if (rc)
-			pr_err("regulator_set_voltage failed, rc=%d\n", rc);
+pr_err("regulator_set_voltage failed, rc=%d\n", rc);
 	}
 
 	regulator_put(consumer->reg);

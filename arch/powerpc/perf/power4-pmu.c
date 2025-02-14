@@ -1,5 +1,5 @@
 /*
- * Performance counter support for POWER4 (GP) and POWER4+ (GQ) processors.
+* Performance counter support for POWER4 (GP) and POWER4+ (GQ) processors.
  *
  * Copyright 2009 Paul Mackerras, IBM Corporation.
  *
@@ -15,7 +15,7 @@
 #include <asm/cputable.h>
 
 /*
- * Bits in event code for POWER4
+* Bits in event code for POWER4
  */
 #define PM_PMC_SH	12	/* PMC number (1-based) for direct events */
 #define PM_PMC_MSK	0xf
@@ -43,14 +43,14 @@
 #define PM_GPS		0xf
 
 /*
- * Bits in MMCR0 for POWER4
+* Bits in MMCR0 for POWER4
  */
 #define MMCR0_PMC1SEL_SH	8
 #define MMCR0_PMC2SEL_SH	1
 #define MMCR_PMCSEL_MSK		0x1f
 
 /*
- * Bits in MMCR1 for POWER4
+* Bits in MMCR1 for POWER4
  */
 #define MMCR1_TTM0SEL_SH	62
 #define MMCR1_TTC0SEL_SH	61
@@ -595,7 +595,7 @@ static int power4_cache_events[C(MAX)][C(OP_MAX)][C(RESULT_MAX)] = {
 };
 
 static struct power_pmu power4_pmu = {
-	.name			= "POWER4/4+",
+.name			= "POWER4/4+",
 	.n_counter		= 8,
 	.max_alternatives	= 5,
 	.add_fields		= 0x0000001100005555ul,
@@ -606,17 +606,17 @@ static struct power_pmu power4_pmu = {
 	.disable_pmc		= p4_disable_pmc,
 	.n_generic		= ARRAY_SIZE(p4_generic_events),
 	.generic_events		= p4_generic_events,
-	.cache_events		= &power4_cache_events,
+.cache_events		= &power4_cache_events,
 	.flags			= PPMU_NO_SIPR | PPMU_NO_CONT_SAMPLING,
 };
 
 static int __init init_power4_pmu(void)
 {
 	if (!cur_cpu_spec->oprofile_cpu_type ||
-	    strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power4"))
+strcmp(cur_cpu_spec->oprofile_cpu_type, "ppc64/power4"))
 		return -ENODEV;
 
-	return register_power_pmu(&power4_pmu);
+return register_power_pmu(&power4_pmu);
 }
 
 early_initcall(init_power4_pmu);

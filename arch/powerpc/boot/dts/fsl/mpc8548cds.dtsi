@@ -269,7 +269,7 @@
 			  0x1000000 0x0 0x0
 			  0x1000000 0x0 0x0
 			  0x0 0x80000>;
-		clock-frequency = <33333333>;
+clock-frequency = <33333333>;
 
 		isa@4 {
 			device_type = "isa";

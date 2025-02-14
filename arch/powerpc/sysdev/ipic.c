@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/sysdev/ipic.c
+* arch/powerpc/sysdev/ipic.c
  *
  * IPIC routines implementations.
  *

@@ -71,9 +71,9 @@ V_FUNCTION_END(__kernel_get_syscall_map)
 
 
 /*
- * void unsigned long  __kernel_get_tbfreq(void);
+* void unsigned long  __kernel_get_tbfreq(void);
  *
- * returns the timebase frequency in HZ
+* returns the timebase frequency in HZ
  */
 V_FUNCTION_BEGIN(__kernel_get_tbfreq)
   .cfi_startproc

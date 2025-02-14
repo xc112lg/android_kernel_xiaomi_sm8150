@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 ST Ericsson.
  *
- * Power supply driver for ST Ericsson pm2xxx_charger charger
+* Power supply driver for ST Ericsson pm2xxx_charger charger
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -46,10 +46,10 @@ static int pm2xxx_interrupt_registers[] = {
 };
 
 static enum power_supply_property pm2xxx_charger_ac_props[] = {
-	POWER_SUPPLY_PROP_HEALTH,
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_ONLINE,
-	POWER_SUPPLY_PROP_VOLTAGE_AVG,
+POWER_SUPPLY_PROP_HEALTH,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_ONLINE,
+POWER_SUPPLY_PROP_VOLTAGE_AVG,
 };
 
 static int pm2xxx_charger_voltage_map[] = {
@@ -214,9 +214,9 @@ static int pm2xxx_charger_die_therm_mngt(struct pm2xxx_charger *pm2, int val)
 
 static int pm2xxx_charger_ovv_mngt(struct pm2xxx_charger *pm2, int val)
 {
-	dev_err(pm2->dev, "Overvoltage detected\n");
+dev_err(pm2->dev, "Overvoltage detected\n");
 	pm2->flags.ovv = true;
-	power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 
 	/* Schedule a new HW failure check */
 	queue_delayed_work(pm2->charger_wq, &pm2->check_hw_failure_work, 0);
@@ -229,7 +229,7 @@ static int pm2xxx_charger_wd_exp_mngt(struct pm2xxx_charger *pm2, int val)
 	dev_dbg(pm2->dev , "20 minutes watchdog expired\n");
 
 	pm2->ac.wd_expired = true;
-	power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 
 	return 0;
 }
@@ -419,7 +419,7 @@ static int pm2_int_reg3(void *pm2_data, int val)
 		pm2->failure_case = VPWR_OVV;
 		ret = pm2xxx_charger_ovv_mngt(pm2, val &
 			(PM2XXX_INT4_ITVPWR2OVV | PM2XXX_INT4_ITVPWR1OVV));
-		dev_dbg(pm2->dev, "VPWR/VSYSTEM overvoltage detected\n");
+dev_dbg(pm2->dev, "VPWR/VSYSTEM overvoltage detected\n");
 	}
 
 	if (val & (PM2XXX_INT4_S_ITBATTEMPCOLD |
@@ -442,7 +442,7 @@ static int pm2_int_reg4(void *pm2_data, int val)
 		pm2->failure_case = VSYSTEM_OVV;
 		ret = pm2xxx_charger_ovv_mngt(pm2, val &
 						PM2XXX_INT5_ITVSYSTEMOVV);
-		dev_dbg(pm2->dev, "VSYSTEM overvoltage detected\n");
+dev_dbg(pm2->dev, "VSYSTEM overvoltage detected\n");
 	}
 
 	if (val & (PM2XXX_INT5_ITTHERMALWARNINGFALL |
@@ -550,16 +550,16 @@ static int pm2xxx_voltage_to_regval(int curr)
 {
 	int i;
 
-	if (curr < pm2xxx_charger_voltage_map[0])
+if (curr < pm2xxx_charger_voltage_map[0])
 		return 0;
 
-	for (i = 1; i < ARRAY_SIZE(pm2xxx_charger_voltage_map); i++) {
-		if (curr < pm2xxx_charger_voltage_map[i])
+for (i = 1; i < ARRAY_SIZE(pm2xxx_charger_voltage_map); i++) {
+if (curr < pm2xxx_charger_voltage_map[i])
 			return i - 1;
 	}
 
-	i = ARRAY_SIZE(pm2xxx_charger_voltage_map) - 1;
-	if (curr == pm2xxx_charger_voltage_map[i])
+i = ARRAY_SIZE(pm2xxx_charger_voltage_map) - 1;
+if (curr == pm2xxx_charger_voltage_map[i])
 		return i;
 	else
 		return -EINVAL;
@@ -573,7 +573,7 @@ static int pm2xxx_charger_update_charger_current(struct ux500_charger *charger,
 	struct pm2xxx_charger *pm2;
 	u8 val;
 
-	if (charger->psy->desc->type == POWER_SUPPLY_TYPE_MAINS)
+if (charger->psy->desc->type == POWER_SUPPLY_TYPE_MAINS)
 		pm2 = to_pm2xxx_charger_ac_device_info(charger);
 	else
 		return -ENXIO;
@@ -602,33 +602,33 @@ static int pm2xxx_charger_update_charger_current(struct ux500_charger *charger,
 }
 
 static int pm2xxx_charger_ac_get_property(struct power_supply *psy,
-	enum power_supply_property psp,
-	union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
 	struct pm2xxx_charger *pm2;
 
 	pm2 = to_pm2xxx_charger_ac_device_info(psy_to_ux500_charger(psy));
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_HEALTH:
+case POWER_SUPPLY_PROP_HEALTH:
 		if (pm2->flags.mainextchnotok)
-			val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
+val->intval = POWER_SUPPLY_HEALTH_UNSPEC_FAILURE;
 		else if (pm2->ac.wd_expired)
-			val->intval = POWER_SUPPLY_HEALTH_DEAD;
+val->intval = POWER_SUPPLY_HEALTH_DEAD;
 		else if (pm2->flags.main_thermal_prot)
-			val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
+val->intval = POWER_SUPPLY_HEALTH_OVERHEAT;
 		else if (pm2->flags.ovv)
-			val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
+val->intval = POWER_SUPPLY_HEALTH_OVERVOLTAGE;
 		else
-			val->intval = POWER_SUPPLY_HEALTH_GOOD;
+val->intval = POWER_SUPPLY_HEALTH_GOOD;
 		break;
-	case POWER_SUPPLY_PROP_ONLINE:
+case POWER_SUPPLY_PROP_ONLINE:
 		val->intval = pm2->ac.charger_online;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = pm2->ac.charger_connected;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_AVG:
+case POWER_SUPPLY_PROP_VOLTAGE_AVG:
 		pm2->ac.cv_active = pm2xxx_charger_get_ac_cv(pm2);
 		val->intval = pm2->ac.cv_active;
 		break;
@@ -673,17 +673,17 @@ static int pm2xxx_charging_init(struct pm2xxx_charger *pm2)
 	ret = pm2xxx_reg_write(pm2, PM2XXX_BATT_CTRL_REG7,
 		(PM2XXX_CH_PRECH_VOL_2_9 | PM2XXX_CH_VRESUME_VOL_3_8));
 
-	/* float voltage charger level = 4.2V */
+/* float voltage charger level = 4.2V */
 	ret = pm2xxx_reg_write(pm2, PM2XXX_BATT_CTRL_REG8,
 		PM2XXX_CH_VOLT_4_2);
 
-	/* Voltage drop between VBAT and VSYS in HW charging = 300mV */
+/* Voltage drop between VBAT and VSYS in HW charging = 300mV */
 	ret = pm2xxx_reg_write(pm2, PM2XXX_BATT_CTRL_REG9,
 		(PM2XXX_CH_150MV_DROP_300MV | PM2XXX_CHARCHING_INFO_DIS |
 		PM2XXX_CH_CC_REDUCED_CURRENT_IDENT |
 		PM2XXX_CH_CC_MODEDROP_DIS));
 
-	/* Input charger level of over voltage = 10V */
+/* Input charger level of over voltage = 10V */
 	ret = pm2xxx_reg_write(pm2, PM2XXX_INP_VOLT_VPWR2,
 					PM2XXX_VPWR2_OVV_10);
 	ret = pm2xxx_reg_write(pm2, PM2XXX_INP_VOLT_VPWR1,
@@ -721,13 +721,13 @@ static int pm2xxx_charger_ac_en(struct ux500_charger *charger,
 		}
 
 		dev_dbg(pm2->dev, "Enable AC: %dmV %dmA\n", vset, iset);
-		if (!pm2->vddadc_en_ac) {
+if (!pm2->vddadc_en_ac) {
 			ret = regulator_enable(pm2->regu);
 			if (ret)
 				dev_warn(pm2->dev,
-					"Failed to enable vddadc regulator\n");
+"Failed to enable vddadc regulator\n");
 			else
-				pm2->vddadc_en_ac = true;
+pm2->vddadc_en_ac = true;
 		}
 
 		ret = pm2xxx_charging_init(pm2);
@@ -737,12 +737,12 @@ static int pm2xxx_charger_ac_en(struct ux500_charger *charger,
 			goto error_occured;
 		}
 
-		volt_index = pm2xxx_voltage_to_regval(vset);
+volt_index = pm2xxx_voltage_to_regval(vset);
 		curr_index = pm2xxx_current_to_regval(iset);
 
 		if (volt_index < 0 || curr_index < 0) {
 			dev_err(pm2->dev,
-				"Charger voltage or current too high, "
+"Charger voltage or current too high, "
 				"charging not started\n");
 			return -ENXIO;
 		}
@@ -802,9 +802,9 @@ static int pm2xxx_charger_ac_en(struct ux500_charger *charger,
 		pm2->ac.wd_expired = false;
 
 		/* Disable regulator if enabled */
-		if (pm2->vddadc_en_ac) {
+if (pm2->vddadc_en_ac) {
 			regulator_disable(pm2->regu);
-			pm2->vddadc_en_ac = false;
+pm2->vddadc_en_ac = false;
 		}
 
 		ret = pm2xxx_charging_disable_mngt(pm2);
@@ -816,7 +816,7 @@ static int pm2xxx_charger_ac_en(struct ux500_charger *charger,
 
 		dev_dbg(pm2->dev, "PM2301: " "Disabled AC charging\n");
 	}
-	power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 
 error_occured:
 	return ret;
@@ -827,7 +827,7 @@ static int pm2xxx_charger_watchdog_kick(struct ux500_charger *charger)
 	int ret;
 	struct pm2xxx_charger *pm2;
 
-	if (charger->psy->desc->type == POWER_SUPPLY_TYPE_MAINS)
+if (charger->psy->desc->type == POWER_SUPPLY_TYPE_MAINS)
 		pm2 = to_pm2xxx_charger_ac_device_info(charger);
 	else
 		return -ENXIO;
@@ -845,7 +845,7 @@ static void pm2xxx_charger_ac_work(struct work_struct *work)
 		struct pm2xxx_charger, ac_work);
 
 
-	power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 	sysfs_notify(&pm2->ac_chg.psy->dev.kobj, NULL, "present");
 };
 
@@ -862,7 +862,7 @@ static void pm2xxx_charger_check_hw_failure_work(struct work_struct *work)
 		if (!(reg_value & (PM2XXX_INT4_S_ITVPWR1OVV |
 					PM2XXX_INT4_S_ITVPWR2OVV))) {
 			pm2->flags.ovv = false;
-			power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 		}
 	}
 
@@ -895,7 +895,7 @@ static void pm2xxx_charger_check_main_thermal_prot_work(
 				| PM2XXX_INT5_S_ITTHERMALSHUTDOWNFALL))
 		pm2->flags.main_thermal_prot = false;
 
-	power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 }
 
 static struct pm2xxx_interrupts pm2xxx_int = {
@@ -979,7 +979,7 @@ static int pm2xxx_wall_charger_probe(struct i2c_client *i2c_client,
 		const struct i2c_device_id *id)
 {
 	struct pm2xxx_platform_data *pl_data = i2c_client->dev.platform_data;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	struct pm2xxx_charger *pm2;
 	int ret = 0;
 	u8 val;
@@ -1032,9 +1032,9 @@ static int pm2xxx_wall_charger_probe(struct i2c_client *i2c_client,
 	i2c_set_clientdata(i2c_client, pm2);
 
 	/* AC supply */
-	/* power_supply base class */
+/* power_supply base class */
 	pm2->ac_chg_desc.name = pm2->pdata->label;
-	pm2->ac_chg_desc.type = POWER_SUPPLY_TYPE_MAINS;
+pm2->ac_chg_desc.type = POWER_SUPPLY_TYPE_MAINS;
 	pm2->ac_chg_desc.properties = pm2xxx_charger_ac_props;
 	pm2->ac_chg_desc.num_properties = ARRAY_SIZE(pm2xxx_charger_ac_props);
 	pm2->ac_chg_desc.get_property = pm2xxx_charger_ac_get_property;
@@ -1045,8 +1045,8 @@ static int pm2xxx_wall_charger_probe(struct i2c_client *i2c_client,
 	pm2->ac_chg.ops.enable = &pm2xxx_charger_ac_en;
 	pm2->ac_chg.ops.kick_wd = &pm2xxx_charger_watchdog_kick;
 	pm2->ac_chg.ops.update_curr = &pm2xxx_charger_update_charger_current;
-	pm2->ac_chg.max_out_volt = pm2xxx_charger_voltage_map[
-		ARRAY_SIZE(pm2xxx_charger_voltage_map) - 1];
+pm2->ac_chg.max_out_volt = pm2xxx_charger_voltage_map[
+ARRAY_SIZE(pm2xxx_charger_voltage_map) - 1];
 	pm2->ac_chg.max_out_curr = pm2xxx_charger_current_map[
 		ARRAY_SIZE(pm2xxx_charger_current_map) - 1];
 	pm2->ac_chg.wdt_refresh = WD_KICK_INTERVAL;
@@ -1074,19 +1074,19 @@ static int pm2xxx_wall_charger_probe(struct i2c_client *i2c_client,
 		pm2xxx_charger_check_hw_failure_work);
 
 	/*
-	 * VDD ADC supply needs to be enabled from this driver when there
+* VDD ADC supply needs to be enabled from this driver when there
 	 * is a charger connected to avoid erroneous BTEMP_HIGH/LOW
 	 * interrupts during charging
 	 */
-	pm2->regu = regulator_get(pm2->dev, "vddadc");
+pm2->regu = regulator_get(pm2->dev, "vddadc");
 	if (IS_ERR(pm2->regu)) {
 		ret = PTR_ERR(pm2->regu);
-		dev_err(pm2->dev, "failed to get vddadc regulator\n");
+dev_err(pm2->dev, "failed to get vddadc regulator\n");
 		goto free_charger_wq;
 	}
 
 	/* Register AC charger class */
-	pm2->ac_chg.psy = power_supply_register(pm2->dev, &pm2->ac_chg_desc,
+pm2->ac_chg.psy = power_supply_register(pm2->dev, &pm2->ac_chg_desc,
 						&psy_cfg);
 	if (IS_ERR(pm2->ac_chg.psy)) {
 		dev_err(pm2->dev, "failed to register AC charger\n");
@@ -1162,7 +1162,7 @@ static int pm2xxx_wall_charger_probe(struct i2c_client *i2c_client,
 		ab8500_override_turn_on_stat(~AB8500_POW_KEY_1_ON,
 					     AB8500_MAIN_CH_DET);
 		pm2->ac_conn = true;
-		power_supply_changed(pm2->ac_chg.psy);
+power_supply_changed(pm2->ac_chg.psy);
 		sysfs_notify(&pm2->ac_chg.psy->dev.kobj, NULL, "present");
 	}
 
@@ -1177,8 +1177,8 @@ unregister_pm2xxx_interrupt:
 	/* disable interrupt */
 	free_irq(gpio_to_irq(pm2->pdata->gpio_irq_number), pm2);
 unregister_pm2xxx_charger:
-	/* unregister power supply */
-	power_supply_unregister(pm2->ac_chg.psy);
+/* unregister power supply */
+power_supply_unregister(pm2->ac_chg.psy);
 free_regulator:
 	/* disable the regulator */
 	regulator_put(pm2->regu);
@@ -1213,7 +1213,7 @@ static int pm2xxx_wall_charger_remove(struct i2c_client *i2c_client)
 	/* disable the regulator */
 	regulator_put(pm2->regu);
 
-	power_supply_unregister(pm2->ac_chg.psy);
+power_supply_unregister(pm2->ac_chg.psy);
 
 	if (gpio_is_valid(pm2->lpn_pin))
 		gpio_free(pm2->lpn_pin);

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /*
  * Support for periodic interrupts (100 per second) and for getting
- * the current time from the RTC on Power Macintoshes.
+* the current time from the RTC on Power Macintoshes.
  *
  * We use the decrementer register for our periodic interrupts.
  *
@@ -46,7 +46,7 @@
 #define RTC_OFFSET	2082844800
 
 /*
- * Calibrate the decrementer frequency with the VIA timer 1.
+* Calibrate the decrementer frequency with the VIA timer 1.
  */
 #define VIA_TIMER_FREQ_6	4700000	/* time 1 frequency * 6 */
 
@@ -254,13 +254,13 @@ int pmac_set_rtc_time(struct rtc_time *tm)
 #ifdef CONFIG_PPC32
 /*
  * Calibrate the decrementer register using VIA timer 1.
- * This is used both on powermacs and CHRP machines.
+* This is used both on powermacs and CHRP machines.
  */
 int __init via_calibrate_decr(void)
 {
 	struct device_node *vias;
 	volatile unsigned char __iomem *via;
-	int count = VIA_TIMER_FREQ_6 / 100;
+int count = VIA_TIMER_FREQ_6 / 100;
 	unsigned int dstart, dend;
 	struct resource rsrc;
 
@@ -297,7 +297,7 @@ int __init via_calibrate_decr(void)
 		;
 	dend = get_dec();
 
-	ppc_tb_freq = (dstart - dend) * 100 / 6;
+ppc_tb_freq = (dstart - dend) * 100 / 6;
 
 	iounmap(via);
 
@@ -306,7 +306,7 @@ int __init via_calibrate_decr(void)
 #endif
 
 /*
- * Query the OF and get the decr frequency.
+* Query the OF and get the decr frequency.
  */
 void __init pmac_calibrate_decr(void)
 {
@@ -324,11 +324,11 @@ void __init pmac_calibrate_decr(void)
 			return;
 
 	/* Special case: QuickSilver G4s seem to have a badly calibrated
-	 * timebase-frequency in OF, VIA is much better on these. We should
+* timebase-frequency in OF, VIA is much better on these. We should
 	 * probably implement calibration based on the KL timer on these
 	 * machines anyway... -BenH
 	 */
-	if (of_machine_is_compatible("PowerMac3,5"))
+if (of_machine_is_compatible("PowerMac3,5"))
 		if (via_calibrate_decr())
 			return;
 #endif

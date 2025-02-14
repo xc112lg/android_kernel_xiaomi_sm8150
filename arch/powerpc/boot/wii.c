@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/boot/wii.c
+* arch/powerpc/boot/wii.c
  *
  * Nintendo Wii bootwrapper support
  * Copyright (C) 2008-2009 The GameCube Linux Team

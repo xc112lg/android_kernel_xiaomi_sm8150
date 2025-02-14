@@ -28,9 +28,9 @@ struct mpc512x_ccm {
 	u32	spmr;	/* System PLL Mode Register */
 	u32	sccr1;	/* System Clock Control Register 1 */
 	u32	sccr2;	/* System Clock Control Register 2 */
-	u32	scfr1;	/* System Clock Frequency Register 1 */
-	u32	scfr2;	/* System Clock Frequency Register 2 */
-	u32	scfr2s;	/* System Clock Frequency Shadow Register 2 */
+u32	scfr1;	/* System Clock Frequency Register 1 */
+u32	scfr2;	/* System Clock Frequency Register 2 */
+u32	scfr2s;	/* System Clock Frequency Shadow Register 2 */
 	u32	bcr;	/* Bread Crumb Register */
 	u32	psc_ccr[12];	/* PSC Clock Control Registers */
 	u32	spccr;	/* SPDIF Clock Control Register */
@@ -39,7 +39,7 @@ struct mpc512x_ccm {
 	u32	mscan_ccr[4];	/* MSCAN Clock Control Registers */
 	u32	out_ccr[4];	/* OUT CLK Configure Registers */
 	u32	rsv0[2];	/* Reserved */
-	u32	scfr3;		/* System Clock Frequency Register 3 */
+u32	scfr3;		/* System Clock Frequency Register 3 */
 	u32	rsv1[3];	/* Reserved */
 	u32	spll_lock_cnt;	/* System PLL Lock Counter */
 	u8	res[0x6c];	/* Reserved */

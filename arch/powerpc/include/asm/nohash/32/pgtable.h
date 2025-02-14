@@ -111,7 +111,7 @@ extern int icache_44x_need_flush;
 
 /*
  * Bits in a linux-style PTE.  These match the bits in the
- * (hardware-defined) PowerPC PTE as closely as possible.
+* (hardware-defined) PowerPC PTE as closely as possible.
  */
 
 #if defined(CONFIG_40x)

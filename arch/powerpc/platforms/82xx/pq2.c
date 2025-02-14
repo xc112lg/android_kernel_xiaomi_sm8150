@@ -1,5 +1,5 @@
 /*
- * Common PowerQUICC II code.
+* Common PowerQUICC II code.
  *
  * Author: Scott Wood <scottwood@freescale.com>
  * Copyright (c) 2007 Freescale Semiconductor

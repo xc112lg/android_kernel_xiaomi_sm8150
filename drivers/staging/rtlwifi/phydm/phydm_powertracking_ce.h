@@ -82,7 +82,7 @@ struct iqk_matrix_regs_setting {
 };
 
 struct dm_rf_calibration_struct {
-	/* for tx power tracking */
+/* for tx power tracking */
 
 	u32 rega24; /* for TempCCK */
 	s32 rege94;
@@ -90,11 +90,11 @@ struct dm_rf_calibration_struct {
 	s32 regeb4;
 	s32 regebc;
 
-	u8 tx_powercount;
-	bool is_txpowertracking_init;
-	bool is_txpowertracking;
+u8 tx_powercount;
+bool is_txpowertracking_init;
+bool is_txpowertracking;
 	/* for mp mode, turn off txpwrtracking as default */
-	u8 txpowertrack_control;
+u8 txpowertrack_control;
 	u8 tm_trigger;
 	u8 internal_pa_5g[2]; /* pathA / pathB */
 
@@ -111,20 +111,20 @@ struct dm_rf_calibration_struct {
 	u8 thermal_value_crystal;
 	u8 thermal_value_dpk_store;
 	u8 thermal_value_dpk_track;
-	bool txpowertracking_in_progress;
+bool txpowertracking_in_progress;
 
-	bool is_reloadtxpowerindex;
+bool is_reloadtxpowerindex;
 	u8 is_rf_pi_enable;
-	u32 txpowertracking_callback_cnt; /* cosa add for debug */
+u32 txpowertracking_callback_cnt; /* cosa add for debug */
 
-	/* ---------------------- Tx power Tracking ------------------------- */
+/* ---------------------- Tx power Tracking ------------------------- */
 	u8 is_cck_in_ch14;
 	u8 CCK_index;
 	u8 OFDM_index[MAX_RF_PATH];
-	s8 power_index_offset[MAX_RF_PATH];
-	s8 delta_power_index[MAX_RF_PATH];
-	s8 delta_power_index_last[MAX_RF_PATH];
-	bool is_tx_power_changed;
+s8 power_index_offset[MAX_RF_PATH];
+s8 delta_power_index[MAX_RF_PATH];
+s8 delta_power_index_last[MAX_RF_PATH];
+bool is_tx_power_changed;
 	s8 xtal_offset;
 	s8 xtal_offset_last;
 

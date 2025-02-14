@@ -14,10 +14,10 @@ struct powernow_k8_data {
 	/* these values are constant when the PSB is used to determine
 	 * vid/fid pairings, but are modified during the ->target() call
 	 * when ACPI is used */
-	u32 rvo;     /* ramp voltage offset */
+u32 rvo;     /* ramp voltage offset */
 	u32 irt;     /* isochronous relief time */
 	u32 vidmvs;  /* usable value calculated from mvs */
-	u32 vstable; /* voltage stabilization time, units 20 us */
+u32 vstable; /* voltage stabilization time, units 20 us */
 	u32 plllock; /* pll lock time, units 1 us */
 	u32 exttype; /* extended interface = 1 */
 
@@ -25,17 +25,17 @@ struct powernow_k8_data {
 	u32 currvid;
 	u32 currfid;
 
-	/* the powernow_table includes all frequency and vid/fid pairings:
+/* the powernow_table includes all frequency and vid/fid pairings:
 	 * fid are the lower 8 bits of the index, vid are the upper 8 bits.
-	 * frequency is in kHz */
-	struct cpufreq_frequency_table  *powernow_table;
+* frequency is in kHz */
+struct cpufreq_frequency_table  *powernow_table;
 
 	/* the acpi table needs to be kept. it's only available if ACPI was
-	 * used to determine valid frequency/vid/fid states */
+* used to determine valid frequency/vid/fid states */
 	struct acpi_processor_performance acpi_data;
 
-	/* we need to keep track of associated cores, but let cpufreq
-	 * handle hotplug events - so just point at cpufreq pol->cpus
+/* we need to keep track of associated cores, but let cpufreq
+* handle hotplug events - so just point at cpufreq pol->cpus
 	 * structure */
 	struct cpumask *available_cores;
 };
@@ -84,7 +84,7 @@ struct powernow_k8_data {
 #define MSR_C_HI_STP_GNT_BENIGN	  0x00000001
 
 /*
- * There are restrictions frequencies have to follow:
+* There are restrictions frequencies have to follow:
  * - only 1 entry in the low fid table ( <=1.4GHz )
  * - lowest entry in the high fid table must be >= 2 * the entry in the
  *   low fid table
@@ -92,7 +92,7 @@ struct powernow_k8_data {
  *   in the low fid table
  * - the parts can only step at <= 200 MHz intervals, odd fid values are
  *   supported in revision G and later revisions.
- * - lowest frequency must be >= interprocessor hypertransport link speed
+* - lowest frequency must be >= interprocessor hypertransport link speed
  *   (only applies to MP systems obviously)
  */
 
@@ -149,7 +149,7 @@ struct powernow_k8_data {
 
 /*
  * Version 1.4 of the PSB table. This table is constructed by BIOS and is
- * to tell the OS's power management driver which VIDs and FIDs are
+* to tell the OS's power management driver which VIDs and FIDs are
  * supported by this particular processor.
  * If the data in the PSB / PST is wrong, then this driver will program the
  * wrong values into hardware, which is very likely to lead to a crash.

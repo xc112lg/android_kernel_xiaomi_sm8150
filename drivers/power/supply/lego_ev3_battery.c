@@ -28,25 +28,25 @@ struct lego_ev3_battery {
 	struct iio_channel *iio_v;
 	struct iio_channel *iio_i;
 	struct gpio_desc *rechargeable_gpio;
-	struct power_supply *psy;
+struct power_supply *psy;
 	int technology;
 	int v_max;
 	int v_min;
 };
 
 static int lego_ev3_battery_get_property(struct power_supply *psy,
-					 enum power_supply_property psp,
-					 union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct lego_ev3_battery *batt = power_supply_get_drvdata(psy);
+struct lego_ev3_battery *batt = power_supply_get_drvdata(psy);
 	int val2;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		val->intval = batt->technology;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_NOW:
-		/* battery voltage is iio channel * 2 + Vce of transistor */
+case POWER_SUPPLY_PROP_VOLTAGE_NOW:
+/* battery voltage is iio channel * 2 + Vce of transistor */
 		iio_read_channel_processed(batt->iio_v, &val->intval);
 		val->intval *= 2000;
 		val->intval += 200000;
@@ -56,20 +56,20 @@ static int lego_ev3_battery_get_property(struct power_supply *psy,
 		val2 /= 15;
 		val->intval += val2;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN:
 		val->intval = batt->v_max;
 		break;
-	case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
+case POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN:
 		val->intval = batt->v_min;
 		break;
-	case POWER_SUPPLY_PROP_CURRENT_NOW:
+case POWER_SUPPLY_PROP_CURRENT_NOW:
 		/* battery current is iio channel / 15 / 0.05 ohms */
 		iio_read_channel_processed(batt->iio_i, &val->intval);
 		val->intval *= 20000;
 		val->intval /= 15;
 		break;
-	case POWER_SUPPLY_PROP_SCOPE:
-		val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
+case POWER_SUPPLY_PROP_SCOPE:
+val->intval = POWER_SUPPLY_SCOPE_SYSTEM;
 		break;
 	default:
 		return -EINVAL;
@@ -79,13 +79,13 @@ static int lego_ev3_battery_get_property(struct power_supply *psy,
 }
 
 static int lego_ev3_battery_set_property(struct power_supply *psy,
-					 enum power_supply_property psp,
-					 const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct lego_ev3_battery *batt = power_supply_get_drvdata(psy);
+struct lego_ev3_battery *batt = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_TECHNOLOGY:
+case POWER_SUPPLY_PROP_TECHNOLOGY:
 		/*
 		 * Only allow changing technology from Unknown to NiMH. Li-ion
 		 * batteries are automatically detected and should not be
@@ -94,11 +94,11 @@ static int lego_ev3_battery_set_property(struct power_supply *psy,
 		 * specified. This should only be set once during system init,
 		 * so there is no mechanism to go back to Unknown.
 		 */
-		if (batt->technology != POWER_SUPPLY_TECHNOLOGY_UNKNOWN)
+if (batt->technology != POWER_SUPPLY_TECHNOLOGY_UNKNOWN)
 			return -EINVAL;
 		switch (val->intval) {
-		case POWER_SUPPLY_TECHNOLOGY_NiMH:
-			batt->technology = POWER_SUPPLY_TECHNOLOGY_NiMH;
+case POWER_SUPPLY_TECHNOLOGY_NiMH:
+batt->technology = POWER_SUPPLY_TECHNOLOGY_NiMH;
 			batt->v_max = 7800000;
 			batt->v_min = 5400000;
 			break;
@@ -114,26 +114,26 @@ static int lego_ev3_battery_set_property(struct power_supply *psy,
 }
 
 static int lego_ev3_battery_property_is_writeable(struct power_supply *psy,
-						  enum power_supply_property psp)
+enum power_supply_property psp)
 {
-	struct lego_ev3_battery *batt = power_supply_get_drvdata(psy);
+struct lego_ev3_battery *batt = power_supply_get_drvdata(psy);
 
-	return psp == POWER_SUPPLY_PROP_TECHNOLOGY &&
-		batt->technology == POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+return psp == POWER_SUPPLY_PROP_TECHNOLOGY &&
+batt->technology == POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
 }
 
 static enum power_supply_property lego_ev3_battery_props[] = {
-	POWER_SUPPLY_PROP_TECHNOLOGY,
-	POWER_SUPPLY_PROP_VOLTAGE_NOW,
-	POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
-	POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
-	POWER_SUPPLY_PROP_CURRENT_NOW,
-	POWER_SUPPLY_PROP_SCOPE,
+POWER_SUPPLY_PROP_TECHNOLOGY,
+POWER_SUPPLY_PROP_VOLTAGE_NOW,
+POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN,
+POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN,
+POWER_SUPPLY_PROP_CURRENT_NOW,
+POWER_SUPPLY_PROP_SCOPE,
 };
 
 static const struct power_supply_desc lego_ev3_battery_desc = {
 	.name			= "lego-ev3-battery",
-	.type			= POWER_SUPPLY_TYPE_BATTERY,
+.type			= POWER_SUPPLY_TYPE_BATTERY,
 	.properties		= lego_ev3_battery_props,
 	.num_properties		= ARRAY_SIZE(lego_ev3_battery_props),
 	.get_property		= lego_ev3_battery_get_property,
@@ -145,7 +145,7 @@ static int lego_ev3_battery_probe(struct platform_device *pdev)
 {
 	struct device *dev = &pdev->dev;
 	struct lego_ev3_battery *batt;
-	struct power_supply_config psy_cfg = {};
+struct power_supply_config psy_cfg = {};
 	int err;
 
 	batt = devm_kzalloc(dev, sizeof(*batt), GFP_KERNEL);
@@ -154,11 +154,11 @@ static int lego_ev3_battery_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, batt);
 
-	batt->iio_v = devm_iio_channel_get(dev, "voltage");
+batt->iio_v = devm_iio_channel_get(dev, "voltage");
 	err = PTR_ERR_OR_ZERO(batt->iio_v);
 	if (err) {
 		if (err != -EPROBE_DEFER)
-			dev_err(dev, "Failed to get voltage iio channel\n");
+dev_err(dev, "Failed to get voltage iio channel\n");
 		return err;
 	}
 
@@ -184,12 +184,12 @@ static int lego_ev3_battery_probe(struct platform_device *pdev)
 	 */
 	if (gpiod_get_value(batt->rechargeable_gpio)) {
 		/* 2-cell Li-ion, 7.4V nominal */
-		batt->technology = POWER_SUPPLY_TECHNOLOGY_LION;
+batt->technology = POWER_SUPPLY_TECHNOLOGY_LION;
 		batt->v_max = 84000000;
 		batt->v_min = 60000000;
 	} else {
 		/* 6x AA Alkaline, 9V nominal */
-		batt->technology = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+batt->technology = POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
 		batt->v_max = 90000000;
 		batt->v_min = 48000000;
 	}
@@ -197,11 +197,11 @@ static int lego_ev3_battery_probe(struct platform_device *pdev)
 	psy_cfg.of_node = pdev->dev.of_node;
 	psy_cfg.drv_data = batt;
 
-	batt->psy = devm_power_supply_register(dev, &lego_ev3_battery_desc,
+batt->psy = devm_power_supply_register(dev, &lego_ev3_battery_desc,
 					       &psy_cfg);
 	err = PTR_ERR_OR_ZERO(batt->psy);
 	if (err) {
-		dev_err(dev, "failed to register power supply\n");
+dev_err(dev, "failed to register power supply\n");
 		return err;
 	}
 

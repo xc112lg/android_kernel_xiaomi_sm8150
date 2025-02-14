@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Freescale Semiconductor, Inc.
  *
- * CPU Frequency Scaling driver for Freescale QorIQ SoCs.
+* CPU Frequency Scaling driver for Freescale QorIQ SoCs.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -26,16 +26,16 @@
 /**
  * struct cpu_data
  * @pclk: the parent clock of cpu
- * @table: frequency table
+* @table: frequency table
  */
 struct cpu_data {
 	struct clk **pclk;
-	struct cpufreq_frequency_table *table;
+struct cpufreq_frequency_table *table;
 	struct thermal_cooling_device *cdev;
 };
 
 /*
- * Don't use cpufreq on this SoC -- used when the SoC would have otherwise
+* Don't use cpufreq on this SoC -- used when the SoC would have otherwise
  * matched a more generic compatible.
  */
 #define SOC_BLACKLIST		1
@@ -51,23 +51,23 @@ struct soc_data {
 static u32 get_bus_freq(void)
 {
 	struct device_node *soc;
-	u32 sysfreq;
+u32 sysfreq;
 	struct clk *pltclk;
 	int ret;
 
-	/* get platform freq by searching bus-frequency property */
+/* get platform freq by searching bus-frequency property */
 	soc = of_find_node_by_type(NULL, "soc");
 	if (soc) {
-		ret = of_property_read_u32(soc, "bus-frequency", &sysfreq);
+ret = of_property_read_u32(soc, "bus-frequency", &sysfreq);
 		of_node_put(soc);
 		if (!ret)
-			return sysfreq;
+return sysfreq;
 	}
 
-	/* get platform freq by its clock name */
+/* get platform freq by its clock name */
 	pltclk = clk_get(NULL, "cg-pll0-div1");
 	if (IS_ERR(pltclk)) {
-		pr_err("%s: can't get bus frequency %ld\n",
+pr_err("%s: can't get bus frequency %ld\n",
 		       __func__, PTR_ERR(pltclk));
 		return PTR_ERR(pltclk);
 	}
@@ -119,12 +119,12 @@ static void freq_table_redup(struct cpufreq_frequency_table *freq_table,
 
 	for (i = 1; i < count; i++) {
 		for (j = 0; j < i; j++) {
-			if (freq_table[j].frequency == CPUFREQ_ENTRY_INVALID ||
-					freq_table[j].frequency !=
-					freq_table[i].frequency)
+if (freq_table[j].frequency == CPUFREQ_ENTRY_INVALID ||
+freq_table[j].frequency !=
+freq_table[i].frequency)
 				continue;
 
-			freq_table[i].frequency = CPUFREQ_ENTRY_INVALID;
+freq_table[i].frequency = CPUFREQ_ENTRY_INVALID;
 			break;
 		}
 	}
@@ -135,29 +135,29 @@ static void freq_table_sort(struct cpufreq_frequency_table *freq_table,
 		int count)
 {
 	int i, j, ind;
-	unsigned int freq, max_freq;
-	struct cpufreq_frequency_table table;
+unsigned int freq, max_freq;
+struct cpufreq_frequency_table table;
 
 	for (i = 0; i < count - 1; i++) {
-		max_freq = freq_table[i].frequency;
+max_freq = freq_table[i].frequency;
 		ind = i;
 		for (j = i + 1; j < count; j++) {
-			freq = freq_table[j].frequency;
-			if (freq == CPUFREQ_ENTRY_INVALID ||
-					freq <= max_freq)
+freq = freq_table[j].frequency;
+if (freq == CPUFREQ_ENTRY_INVALID ||
+freq <= max_freq)
 				continue;
 			ind = j;
-			max_freq = freq;
+max_freq = freq;
 		}
 
 		if (ind != i) {
-			/* exchange the frequencies */
-			table.driver_data = freq_table[i].driver_data;
-			table.frequency = freq_table[i].frequency;
-			freq_table[i].driver_data = freq_table[ind].driver_data;
-			freq_table[i].frequency = freq_table[ind].frequency;
-			freq_table[ind].driver_data = table.driver_data;
-			freq_table[ind].frequency = table.frequency;
+/* exchange the frequencies */
+table.driver_data = freq_table[i].driver_data;
+table.frequency = freq_table[i].frequency;
+freq_table[i].driver_data = freq_table[ind].driver_data;
+freq_table[i].frequency = freq_table[ind].frequency;
+freq_table[ind].driver_data = table.driver_data;
+freq_table[ind].frequency = table.frequency;
 		}
 	}
 }
@@ -166,10 +166,10 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 {
 	struct device_node *np;
 	int i, count, ret;
-	u32 freq;
+u32 freq;
 	struct clk *clk;
 	const struct clk_hw *hwclk;
-	struct cpufreq_frequency_table *table;
+struct cpufreq_frequency_table *table;
 	struct cpu_data *data;
 	unsigned int cpu = policy->cpu;
 	u64 u64temp;
@@ -206,18 +206,18 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	for (i = 0; i < count; i++) {
 		clk = clk_hw_get_parent_by_index(hwclk, i)->clk;
 		data->pclk[i] = clk;
-		freq = clk_get_rate(clk);
-		table[i].frequency = freq / 1000;
+freq = clk_get_rate(clk);
+table[i].frequency = freq / 1000;
 		table[i].driver_data = i;
 	}
-	freq_table_redup(table, count);
-	freq_table_sort(table, count);
-	table[i].frequency = CPUFREQ_TABLE_END;
+freq_table_redup(table, count);
+freq_table_sort(table, count);
+table[i].frequency = CPUFREQ_TABLE_END;
 
-	/* set the min and max frequency properly */
-	ret = cpufreq_table_validate_and_show(policy, table);
+/* set the min and max frequency properly */
+ret = cpufreq_table_validate_and_show(policy, table);
 	if (ret) {
-		pr_err("invalid frequency table: %d\n", ret);
+pr_err("invalid frequency table: %d\n", ret);
 		goto err_nomem1;
 	}
 
@@ -229,7 +229,7 @@ static int qoriq_cpufreq_cpu_init(struct cpufreq_policy *policy)
 
 	/* Minimum transition latency is 12 platform clocks */
 	u64temp = 12ULL * NSEC_PER_SEC;
-	do_div(u64temp, get_bus_freq());
+do_div(u64temp, get_bus_freq());
 	policy->cpuinfo.transition_latency = u64temp + 1;
 
 	of_node_put(np);
@@ -252,7 +252,7 @@ static int qoriq_cpufreq_cpu_exit(struct cpufreq_policy *policy)
 {
 	struct cpu_data *data = policy->driver_data;
 
-	cpufreq_cooling_unregister(data->cdev);
+cpufreq_cooling_unregister(data->cdev);
 	kfree(data->pclk);
 	kfree(data->table);
 	kfree(data);
@@ -278,7 +278,7 @@ static void qoriq_cpufreq_ready(struct cpufreq_policy *policy)
 	struct device_node *np = of_get_cpu_node(policy->cpu, NULL);
 
 	if (of_find_property(np, "#cooling-cells", NULL)) {
-		cpud->cdev = of_cpufreq_cooling_register(np, policy);
+cpud->cdev = of_cpufreq_cooling_register(np, policy);
 
 		if (IS_ERR(cpud->cdev) && PTR_ERR(cpud->cdev) != -ENOSYS) {
 			pr_err("cpu%d is not running as cooling device: %ld\n",
@@ -292,15 +292,15 @@ static void qoriq_cpufreq_ready(struct cpufreq_policy *policy)
 }
 
 static struct cpufreq_driver qoriq_cpufreq_driver = {
-	.name		= "qoriq_cpufreq",
-	.flags		= CPUFREQ_CONST_LOOPS,
-	.init		= qoriq_cpufreq_cpu_init,
-	.exit		= qoriq_cpufreq_cpu_exit,
-	.verify		= cpufreq_generic_frequency_table_verify,
-	.target_index	= qoriq_cpufreq_target,
-	.get		= cpufreq_generic_get,
-	.ready		= qoriq_cpufreq_ready,
-	.attr		= cpufreq_generic_attr,
+.name		= "qoriq_cpufreq",
+.flags		= CPUFREQ_CONST_LOOPS,
+.init		= qoriq_cpufreq_cpu_init,
+.exit		= qoriq_cpufreq_cpu_exit,
+.verify		= cpufreq_generic_frequency_table_verify,
+.target_index	= qoriq_cpufreq_target,
+.get		= cpufreq_generic_get,
+.ready		= qoriq_cpufreq_ready,
+.attr		= cpufreq_generic_attr,
 };
 
 static const struct soc_data blacklist = {
@@ -308,7 +308,7 @@ static const struct soc_data blacklist = {
 };
 
 static const struct of_device_id node_matches[] __initconst = {
-	/* e6500 cannot use cpufreq due to erratum A-008083 */
+/* e6500 cannot use cpufreq due to erratum A-008083 */
 	{ .compatible = "fsl,b4420-clockgen", &blacklist },
 	{ .compatible = "fsl,b4860-clockgen", &blacklist },
 	{ .compatible = "fsl,t2080-clockgen", &blacklist },
@@ -345,9 +345,9 @@ static int __init qoriq_cpufreq_init(void)
 	if (data && data->flags & SOC_BLACKLIST)
 		return -ENODEV;
 
-	ret = cpufreq_register_driver(&qoriq_cpufreq_driver);
+ret = cpufreq_register_driver(&qoriq_cpufreq_driver);
 	if (!ret)
-		pr_info("Freescale QorIQ CPU frequency scaling driver\n");
+pr_info("Freescale QorIQ CPU frequency scaling driver\n");
 
 	return ret;
 }
@@ -355,7 +355,7 @@ module_init(qoriq_cpufreq_init);
 
 static void __exit qoriq_cpufreq_exit(void)
 {
-	cpufreq_unregister_driver(&qoriq_cpufreq_driver);
+cpufreq_unregister_driver(&qoriq_cpufreq_driver);
 }
 module_exit(qoriq_cpufreq_exit);
 

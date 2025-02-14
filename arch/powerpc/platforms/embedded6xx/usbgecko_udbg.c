@@ -1,5 +1,5 @@
 /*
- * arch/powerpc/platforms/embedded6xx/usbgecko_udbg.c
+* arch/powerpc/platforms/embedded6xx/usbgecko_udbg.c
  *
  * udbg serial input/output routines for the USB Gecko adapter.
  * Copyright (C) 2008-2009 The GameCube Linux Team

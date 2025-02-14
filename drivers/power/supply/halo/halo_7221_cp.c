@@ -57,7 +57,7 @@ struct halo7221_dev {
 	struct pinctrl *halo_pinctrl;
 	struct pinctrl_state *halo_gpio_active;
 	struct pinctrl_state *halo_gpio_suspend;
-	struct power_supply *halo_psy;
+struct power_supply *halo_psy;
 };
 
 /*
@@ -551,17 +551,17 @@ static int halo_set_mode(struct halo7221_dev *chip, int mode)
 }
 
 static enum power_supply_property halo_props[] = {
-	POWER_SUPPLY_PROP_DIV_2_MODE,
+POWER_SUPPLY_PROP_DIV_2_MODE,
 };
 
 static int halo_get_prop(struct power_supply *psy,
-			 enum power_supply_property psp,
-			 union power_supply_propval *val)
+enum power_supply_property psp,
+union power_supply_propval *val)
 {
-	struct halo7221_dev *chip = power_supply_get_drvdata(psy);
+struct halo7221_dev *chip = power_supply_get_drvdata(psy);
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		val->intval = halo_get_mode(chip);
 		break;
 	default:
@@ -571,14 +571,14 @@ static int halo_get_prop(struct power_supply *psy,
 }
 
 static int halo_set_prop(struct power_supply *psy,
-			 enum power_supply_property psp,
-			 const union power_supply_propval *val)
+enum power_supply_property psp,
+const union power_supply_propval *val)
 {
-	struct halo7221_dev *chip = power_supply_get_drvdata(psy);
+struct halo7221_dev *chip = power_supply_get_drvdata(psy);
 	int rc = 0;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		rc = halo_set_mode(chip, val->intval);
 		break;
 	default:
@@ -589,12 +589,12 @@ static int halo_set_prop(struct power_supply *psy,
 }
 
 static int halo_prop_is_writeable(struct power_supply *psy,
-				  enum power_supply_property psp)
+enum power_supply_property psp)
 {
 	int rc;
 
 	switch (psp) {
-	case POWER_SUPPLY_PROP_DIV_2_MODE:
+case POWER_SUPPLY_PROP_DIV_2_MODE:
 		return 1;
 	default:
 		rc = 0;
@@ -606,7 +606,7 @@ static int halo_prop_is_writeable(struct power_supply *psy,
 
 static const struct power_supply_desc halo_psy_desc = {
 	.name = "halo",
-	.type = POWER_SUPPLY_TYPE_WIRELESS,
+.type = POWER_SUPPLY_TYPE_WIRELESS,
 	.properties = halo_props,
 	.num_properties = ARRAY_SIZE(halo_props),
 	.get_property = halo_get_prop,
@@ -619,7 +619,7 @@ static int halo7221_probe(struct i2c_client *client,
 {
 	struct halo7221_dev *chip;
 	int rc = 0, ret = 0;
-	struct power_supply_config halo_cfg = {};
+struct power_supply_config halo_cfg = {};
 	//vuc chipid;
 
 	dev_info(&client->dev, "halo7221 probe!\n");
@@ -673,7 +673,7 @@ static int halo7221_probe(struct i2c_client *client,
 
 	halo_cfg.drv_data = chip;
 	chip->halo_psy =
-		power_supply_register(chip->dev, &halo_psy_desc, &halo_cfg);
+power_supply_register(chip->dev, &halo_psy_desc, &halo_cfg);
 
 	dev_info(chip->dev, "Success probe halo7221 driver\n");
 

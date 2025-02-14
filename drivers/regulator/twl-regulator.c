@@ -24,13 +24,13 @@
 #include <linux/delay.h>
 
 /*
- * The TWL4030/TW5030/TPS659x0 family chips include power management, a
+* The TWL4030/TW5030/TPS659x0 family chips include power management, a
  * USB OTG transceiver, an RTC, ADC, PWM, and lots more.  Some versions
- * include an audio codec, battery charger, and more voltage regulators.
+* include an audio codec, battery charger, and more voltage regulators.
  * These chips are often used in OMAP-based systems.
  *
  * This driver implements software-based resource control for various
- * voltage regulators.  This is usually augmented with state machine
+* voltage regulators.  This is usually augmented with state machine
  * based control.
  */
 
@@ -41,7 +41,7 @@ struct twlreg_info {
 	/* twl resource ID, for resource control state machine */
 	u8			id;
 
-	/* voltage in mV = table[VSEL]; table_len must be a power-of-two */
+/* voltage in mV = table[VSEL]; table_len must be a power-of-two */
 	u8			table_len;
 	const u16		*table;
 
@@ -54,13 +54,13 @@ struct twlreg_info {
 	/* chip specific features */
 	unsigned long		features;
 
-	/* data passed from board for external get/set voltage */
+/* data passed from board for external get/set voltage */
 	void			*data;
 };
 
 
 /* LDO control registers ... offset is from the base of its register bank.
- * The first three registers of all power resource banks help hardware to
+* The first three registers of all power resource banks help hardware to
  * manage the various resource groups.
  */
 /* Common offset in TWL4030/6030 */
@@ -161,13 +161,13 @@ static int twl4030_send_pb_msg(unsigned msg)
 	u8	val;
 	int	ret;
 
-	/* save powerbus configuration */
+/* save powerbus configuration */
 	ret = twl_i2c_read_u8(TWL_MODULE_PM_MASTER, &val,
 			      TWL4030_PM_MASTER_PB_CFG);
 	if (ret < 0)
 		return ret;
 
-	/* Enable i2c access to powerbus */
+/* Enable i2c access to powerbus */
 	ret = twl_i2c_write_u8(TWL_MODULE_PM_MASTER, val | PB_I2C_BWEN,
 			       TWL4030_PM_MASTER_PB_CFG);
 	if (ret < 0)
@@ -191,7 +191,7 @@ static int twl4030_send_pb_msg(unsigned msg)
 	if (ret < 0)
 		return ret;
 
-	/* Restore powerbus configuration */
+/* Restore powerbus configuration */
 	return twl_i2c_write_u8(TWL_MODULE_PM_MASTER, val,
 				TWL4030_PM_MASTER_PB_CFG);
 }
@@ -281,9 +281,9 @@ static inline unsigned int twl4030reg_map_mode(unsigned int mode)
 /*----------------------------------------------------------------------*/
 
 /*
- * Support for adjustable-voltage LDOs uses a four bit (or less) voltage
+* Support for adjustable-voltage LDOs uses a four bit (or less) voltage
  * select field in its control register.   We use tables indexed by VSEL
- * to record voltages in milliVolts.  (Accuracy is about three percent.)
+* to record voltages in milliVolts.  (Accuracy is about three percent.)
  *
  * Note that VSEL values for VAUX2 changed in twl5030 and newer silicon;
  * currently handled by listing two slightly different VAUX2 regulators,
@@ -376,14 +376,14 @@ twl4030ldo_set_voltage_sel(struct regulator_dev *rdev, unsigned selector)
 {
 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
 
-	return twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE,
+return twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE,
 			    selector);
 }
 
 static int twl4030ldo_get_voltage_sel(struct regulator_dev *rdev)
 {
 	struct twlreg_info	*info = rdev_get_drvdata(rdev);
-	int vsel = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE);
+int vsel = twlreg_read(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE);
 
 	if (vsel < 0)
 		return vsel;
@@ -393,10 +393,10 @@ static int twl4030ldo_get_voltage_sel(struct regulator_dev *rdev)
 }
 
 static struct regulator_ops twl4030ldo_ops = {
-	.list_voltage	= twl4030ldo_list_voltage,
+.list_voltage	= twl4030ldo_list_voltage,
 
-	.set_voltage_sel = twl4030ldo_set_voltage_sel,
-	.get_voltage_sel = twl4030ldo_get_voltage_sel,
+.set_voltage_sel = twl4030ldo_set_voltage_sel,
+.get_voltage_sel = twl4030ldo_get_voltage_sel,
 
 	.enable		= twl4030reg_enable,
 	.disable	= twl4030reg_disable,
@@ -414,7 +414,7 @@ twl4030smps_set_voltage(struct regulator_dev *rdev, int min_uV, int max_uV,
 	struct twlreg_info *info = rdev_get_drvdata(rdev);
 	int vsel = DIV_ROUND_UP(min_uV - 600000, 12500);
 
-	twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE_SMPS_4030, vsel);
+twlreg_write(info, TWL_MODULE_PM_RECEIVER, VREG_VOLTAGE_SMPS_4030, vsel);
 
 	return 0;
 }
@@ -425,20 +425,20 @@ static int twl4030smps_get_voltage(struct regulator_dev *rdev)
 	int vsel;
 
 	vsel = twlreg_read(info, TWL_MODULE_PM_RECEIVER,
-		VREG_VOLTAGE_SMPS_4030);
+VREG_VOLTAGE_SMPS_4030);
 
 	return vsel * 12500 + 600000;
 }
 
 static struct regulator_ops twl4030smps_ops = {
-	.set_voltage	= twl4030smps_set_voltage,
-	.get_voltage	= twl4030smps_get_voltage,
+.set_voltage	= twl4030smps_set_voltage,
+.get_voltage	= twl4030smps_get_voltage,
 };
 
 /*----------------------------------------------------------------------*/
 
 static struct regulator_ops twl4030fixed_ops = {
-	.list_voltage	= regulator_list_voltage_linear,
+.list_voltage	= regulator_list_voltage_linear,
 
 	.enable		= twl4030reg_enable,
 	.disable	= twl4030reg_disable,
@@ -461,9 +461,9 @@ static const struct twlreg_info TWL4030_INFO_##label = { \
 	.desc = { \
 		.name = #label, \
 		.id = TWL4030_REG_##label, \
-		.n_voltages = ARRAY_SIZE(label##_VSEL_table), \
+.n_voltages = ARRAY_SIZE(label##_VSEL_table), \
 		.ops = &twl4030ldo_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		.enable_time = turnon_delay, \
 		.of_map_mode = twl4030reg_map_mode, \
@@ -479,7 +479,7 @@ static const struct twlreg_info TWL4030_INFO_##label = { \
 		.name = #label, \
 		.id = TWL4030_REG_##label, \
 		.ops = &twl4030smps_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		.enable_time = turnon_delay, \
 		.of_map_mode = twl4030reg_map_mode, \
@@ -495,9 +495,9 @@ static const struct twlreg_info TWLFIXED_INFO_##label = { \
 	.desc = { \
 		.name = #label, \
 		.id = TWL4030##_REG_##label, \
-		.n_voltages = 1, \
+.n_voltages = 1, \
 		.ops = &twl4030fixed_ops, \
-		.type = REGULATOR_VOLTAGE, \
+.type = REGULATOR_VOLTAGE, \
 		.owner = THIS_MODULE, \
 		.min_uV = mVolts * 1000, \
 		.enable_time = turnon_delay, \
@@ -557,8 +557,8 @@ static const struct of_device_id twl_of_match[] = {
 	TWL4030_OF_MATCH("ti,twl4030-vdac", VDAC),
 	TWL4030_OF_MATCH("ti,twl4030-vintana2", VINTANA2),
 	TWL4030_OF_MATCH("ti,twl4030-vio", VIO),
-	TWL4030_OF_MATCH("ti,twl4030-vdd1", VDD1),
-	TWL4030_OF_MATCH("ti,twl4030-vdd2", VDD2),
+TWL4030_OF_MATCH("ti,twl4030-vdd1", VDD1),
+TWL4030_OF_MATCH("ti,twl4030-vdd2", VDD2),
 	TWLFIXED_OF_MATCH("ti,twl4030-vintana1", VINTANA1),
 	TWLFIXED_OF_MATCH("ti,twl4030-vintdig", VINTDIG),
 	TWLFIXED_OF_MATCH("ti,twl4030-vusb1v5", VUSB1V5),
@@ -602,13 +602,13 @@ static int twlreg_probe(struct platform_device *pdev)
 	 */
 	c = &initdata->constraints;
 	c->valid_modes_mask &= REGULATOR_MODE_NORMAL | REGULATOR_MODE_STANDBY;
-	c->valid_ops_mask &= REGULATOR_CHANGE_VOLTAGE
+c->valid_ops_mask &= REGULATOR_CHANGE_VOLTAGE
 				| REGULATOR_CHANGE_MODE
 				| REGULATOR_CHANGE_STATUS;
 	switch (id) {
 	case TWL4030_REG_VIO:
-	case TWL4030_REG_VDD1:
-	case TWL4030_REG_VDD2:
+case TWL4030_REG_VDD1:
+case TWL4030_REG_VDD2:
 	case TWL4030_REG_VPLL1:
 	case TWL4030_REG_VINTANA1:
 	case TWL4030_REG_VINTANA2:
@@ -638,7 +638,7 @@ static int twlreg_probe(struct platform_device *pdev)
 	 * as REGULATOR_OVER_CURRENT notifications?) configured via:
 	 *  - SC_CONFIG
 	 *  - SC_DETECT1 (vintana2, vmmc1/2, vaux1/2/3/4)
-	 *  - SC_DETECT2 (vusb, vdac, vio, vdd1/2, vpll2)
+*  - SC_DETECT2 (vusb, vdac, vio, vdd1/2, vpll2)
 	 *  - IT_CONFIG
 	 */
 

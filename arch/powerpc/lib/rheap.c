@@ -254,7 +254,7 @@ rh_info_t *rh_create(unsigned int alignment)
 {
 	rh_info_t *info;
 
-	/* Alignment must be a power of two */
+/* Alignment must be a power of two */
 	if ((alignment & (alignment - 1)) != 0)
 		return ERR_PTR(-EINVAL);
 
@@ -303,7 +303,7 @@ void rh_init(rh_info_t * info, unsigned int alignment, int max_blocks,
 	int i;
 	rh_block_t *blk;
 
-	/* Alignment must be a power of two */
+/* Alignment must be a power of two */
 	if ((alignment & (alignment - 1)) != 0)
 		return;
 
@@ -446,7 +446,7 @@ unsigned long rh_alloc_align(rh_info_t * info, int size, int alignment, const ch
 	rh_block_t *newblk;
 	unsigned long start, sp_size;
 
-	/* Validate size, and alignment must be power of two */
+/* Validate size, and alignment must be power of two */
 	if (size <= 0 || (alignment & (alignment - 1)) != 0)
 		return (unsigned long) -EINVAL;
 

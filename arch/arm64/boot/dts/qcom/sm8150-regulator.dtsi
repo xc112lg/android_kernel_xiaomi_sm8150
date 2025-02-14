@@ -24,15 +24,15 @@
 		compatible = "qcom,stub-regulator";
 		regulator-name = "pm8150_s4";
 		qcom,hpm-min-load = <100000>;
-		regulator-min-microvolt = <1800000>;
-		regulator-max-microvolt = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
 	};
 };
 
 &soc {
 	/* RPMh regulators: */
 
-	/* PM8150 S1 = VDD_MODEM supply */
+/* PM8150 S1 = VDD_MODEM supply */
 	rpmh-regulator-msslvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
@@ -40,11 +40,11 @@
 		S1A_LEVEL: pm8150_s1_level: regulator-pm8150-s1-level {
 			regulator-name = "pm8150_s1_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 	};
@@ -56,13 +56,13 @@
 		S2A: pm8150_s2: regulator-pm8150-s2 {
 			regulator-name = "pm8150_s2";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <600000>;
-			regulator-max-microvolt = <600000>;
-			qcom,init-voltage = <600000>;
+regulator-min-microvolt = <600000>;
+regulator-max-microvolt = <600000>;
+qcom,init-voltage = <600000>;
 		};
 	};
 
-	/* PM8150 S3 = VDD_EBI supply */
+/* PM8150 S3 = VDD_EBI supply */
 	rpmh-regulator-ebilvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
@@ -70,11 +70,11 @@
 		S3A_LEVEL: pm8150_s3_level: regulator-pm8150-s3-level {
 			regulator-name = "pm8150_s3_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 
@@ -93,9 +93,9 @@
 		S5A: pm8150_s5: regulator-pm8150-s5 {
 			regulator-name = "pm8150_s5";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1904000>;
-			regulator-max-microvolt = <2040000>;
-			qcom,init-voltage = <1904000>;
+regulator-min-microvolt = <1904000>;
+regulator-max-microvolt = <2040000>;
+qcom,init-voltage = <1904000>;
 		};
 	};
 
@@ -106,9 +106,9 @@
 		S6A: pm8150_s6: regulator-pm8150-s6 {
 			regulator-name = "pm8150_s6";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <920000>;
-			regulator-max-microvolt = <1128000>;
-			qcom,init-voltage = <920000>;
+regulator-min-microvolt = <920000>;
+regulator-max-microvolt = <1128000>;
+qcom,init-voltage = <920000>;
 		};
 	};
 
@@ -124,9 +124,9 @@
 		L1A: pm8150_l1: regulator-pm8150-l1 {
 			regulator-name = "pm8150_l1";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <752000>;
-			regulator-max-microvolt = <752000>;
-			qcom,init-voltage = <752000>;
+regulator-min-microvolt = <752000>;
+regulator-max-microvolt = <752000>;
+qcom,init-voltage = <752000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -143,9 +143,9 @@
 		L2A: pm8150_l2: regulator-pm8150-l2 {
 			regulator-name = "pm8150_l2";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <3072000>;
-			regulator-max-microvolt = <3072000>;
-			qcom,init-voltage = <3072000>;
+regulator-min-microvolt = <3072000>;
+regulator-max-microvolt = <3072000>;
+qcom,init-voltage = <3072000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -162,14 +162,14 @@
 		L3A: pm8150_l3: regulator-pm8150-l3 {
 			regulator-name = "pm8150_l3";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <480000>;
-			regulator-max-microvolt = <932000>;
-			qcom,init-voltage = <480000>;
+regulator-min-microvolt = <480000>;
+regulator-max-microvolt = <932000>;
+qcom,init-voltage = <480000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
 
-	/* PM8150 L4 = VDD_SSC_MX supply */
+/* PM8150 L4 = VDD_SSC_MX supply */
 	rpmh-regulator-lmxlvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
@@ -177,11 +177,11 @@
 		L4A_LEVEL: pm8150_l4_level: regulator-pm8150-l4-level {
 			regulator-name = "pm8150_l4_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt =
+regulator-min-microvolt =
 				<RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt =
+regulator-max-microvolt =
 				<RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 	};
@@ -199,29 +199,29 @@
 		L5A: pm8150_l5: regulator-pm8150-l5 {
 			regulator-name = "pm8150_l5";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <880000>;
-			regulator-max-microvolt = <880000>;
+regulator-min-microvolt = <880000>;
+regulator-max-microvolt = <880000>;
 			qcom,proxy-consumer-enable;
 			qcom,proxy-consumer-current = <23800>;
-			qcom,init-voltage = <880000>;
+qcom,init-voltage = <880000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 
 		L5A_AO: pm8150_l5_ao: regulator-pm8150-l5-ao {
 			regulator-name = "pm8150_l5_ao";
 			qcom,set = <RPMH_REGULATOR_SET_ACTIVE>;
-			regulator-min-microvolt = <880000>;
-			regulator-max-microvolt = <880000>;
-			qcom,init-voltage = <880000>;
+regulator-min-microvolt = <880000>;
+regulator-max-microvolt = <880000>;
+qcom,init-voltage = <880000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 
 		regulator-pm8150-l5-so {
 			regulator-name = "pm8150_l5_so";
 			qcom,set = <RPMH_REGULATOR_SET_SLEEP>;
-			regulator-min-microvolt = <880000>;
-			regulator-max-microvolt = <880000>;
-			qcom,init-voltage = <880000>;
+regulator-min-microvolt = <880000>;
+regulator-max-microvolt = <880000>;
+qcom,init-voltage = <880000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 			qcom,init-enable = <0>;
 		};
@@ -239,9 +239,9 @@
 		L6A: pm8150_l6: regulator-pm8150-l6 {
 			regulator-name = "pm8150_l6";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1200000>;
-			regulator-max-microvolt = <1200000>;
-			qcom,init-voltage = <1200000>;
+regulator-min-microvolt = <1200000>;
+regulator-max-microvolt = <1200000>;
+qcom,init-voltage = <1200000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -258,14 +258,14 @@
 		L7A: pm8150_l7: regulator-pm8150-l7 {
 			regulator-name = "pm8150_l7";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1800000>;
-			qcom,init-voltage = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
+qcom,init-voltage = <1800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
 
-	/* PM8150 L8 = VDD_SSC_CX supply */
+/* PM8150 L8 = VDD_SSC_CX supply */
 	rpmh-regulator-lcxlvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
@@ -273,11 +273,11 @@
 		L8A_LEVEL: pm8150_l8_level: regulator-pm8150-l8-level {
 			regulator-name = "pm8150_l8_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 	};
@@ -294,9 +294,9 @@
 		L9A: pm8150_l9: regulator-pm8150-l9 {
 			regulator-name = "pm8150_l9";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1200000>;
-			regulator-max-microvolt = <1200000>;
-			qcom,init-voltage = <1200000>;
+regulator-min-microvolt = <1200000>;
+regulator-max-microvolt = <1200000>;
+qcom,init-voltage = <1200000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -313,9 +313,9 @@
 		L10A: pm8150_l10: regulator-pm8150-l10 {
 			regulator-name = "pm8150_l10";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2504000>;
-			regulator-max-microvolt = <2960000>;
-			qcom,init-voltage = <2504000>;
+regulator-min-microvolt = <2504000>;
+regulator-max-microvolt = <2960000>;
+qcom,init-voltage = <2504000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -332,9 +332,9 @@
 		L11A: pm8150_l11: regulator-pm8150-l11 {
 			regulator-name = "pm8150_l11";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <800000>;
-			regulator-max-microvolt = <800000>;
-			qcom,init-voltage = <800000>;
+regulator-min-microvolt = <800000>;
+regulator-max-microvolt = <800000>;
+qcom,init-voltage = <800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -351,27 +351,27 @@
 		L12A: pm8150_l12: regulator-pm8150-l12 {
 			regulator-name = "pm8150_l12";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1800000>;
-			qcom,init-voltage = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
+qcom,init-voltage = <1800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 
 		L12A_AO: pm8150_l12_ao: regulator-pm8150-l12-ao {
 			regulator-name = "pm8150_l12_ao";
 			qcom,set = <RPMH_REGULATOR_SET_ACTIVE>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1800000>;
-			qcom,init-voltage = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
+qcom,init-voltage = <1800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 
 		regulator-pm8150-l12-so {
 			regulator-name = "pm8150_l12_so";
 			qcom,set = <RPMH_REGULATOR_SET_SLEEP>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1800000>;
-			qcom,init-voltage = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
+qcom,init-voltage = <1800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 			qcom,init-enable = <0>;
 		};
@@ -389,9 +389,9 @@
 		L13A: pm8150_l13: regulator-pm8150-l13 {
 			regulator-name = "pm8150_l13";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2704000>;
-			regulator-max-microvolt = <2704000>;
-			qcom,init-voltage = <2704000>;
+regulator-min-microvolt = <2704000>;
+regulator-max-microvolt = <2704000>;
+qcom,init-voltage = <2704000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -409,11 +409,11 @@
 		L14A: pm8150_l14: regulator-pm8150-l14 {
 			regulator-name = "pm8150_l14";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1880000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1880000>;
 			qcom,proxy-consumer-enable;
 			qcom,proxy-consumer-current = <115000>;
-			qcom,init-voltage = <1800000>;
+qcom,init-voltage = <1800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -430,9 +430,9 @@
 		L15A: pm8150_l15: regulator-pm8150-l15 {
 			regulator-name = "pm8150_l15";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1704000>;
-			regulator-max-microvolt = <1704000>;
-			qcom,init-voltage = <1704000>;
+regulator-min-microvolt = <1704000>;
+regulator-max-microvolt = <1704000>;
+qcom,init-voltage = <1704000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -449,9 +449,9 @@
 		L16A: pm8150_l16: regulator-pm8150-l16 {
 			regulator-name = "pm8150_l16";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2704000>;
-			regulator-max-microvolt = <2960000>;
-			qcom,init-voltage = <2704000>;
+regulator-min-microvolt = <2704000>;
+regulator-max-microvolt = <2960000>;
+qcom,init-voltage = <2704000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -468,9 +468,9 @@
 		L17A: pm8150_l17: regulator-pm8150-l17 {
 			regulator-name = "pm8150_l17";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2856000>;
-			regulator-max-microvolt = <3008000>;
-			qcom,init-voltage = <2856000>;
+regulator-min-microvolt = <2856000>;
+regulator-max-microvolt = <3008000>;
+qcom,init-voltage = <2856000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -487,9 +487,9 @@
 		L18A: pm8150_l18: regulator-pm8150-l18 {
 			regulator-name = "pm8150_l18";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <880000>;
-			regulator-max-microvolt = <912000>;
-			qcom,init-voltage = <880000>;
+regulator-min-microvolt = <880000>;
+regulator-max-microvolt = <912000>;
+qcom,init-voltage = <880000>;
 		};
 	};
 
@@ -500,13 +500,13 @@
 		S1C: pm8150l_s1: regulator-pm8150l-s1 {
 			regulator-name = "pm8150l_s1";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1128000>;
-			regulator-max-microvolt = <1128000>;
-			qcom,init-voltage = <1128000>;
+regulator-min-microvolt = <1128000>;
+regulator-max-microvolt = <1128000>;
+qcom,init-voltage = <1128000>;
 		};
 	};
 
-	/* PM8150L S2 + S3 = 2 phase VDD_GFX supply */
+/* PM8150L S2 + S3 = 2 phase VDD_GFX supply */
 	rpmh-regulator-gfxlvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
@@ -514,170 +514,170 @@
 		S2C_LEVEL: pm8150l_s2_level: regulator-pm8150l-s2-level {
 			regulator-name = "pm8150l_s2_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 	};
 
-	/* PM8150L S4 = VDD_MX supply */
+/* PM8150L S4 = VDD_MX supply */
 	rpmh-regulator-mxlvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
 		qcom,resource-name = "mx.lvl";
 		pm8150l_s4_mmcx_sup_level-parent-supply =
-						<&VDD_CX_MMCX_SUPPLY_LEVEL>;
+<&VDD_CX_MMCX_SUPPLY_LEVEL>;
 
-		VDD_MX_LEVEL: S4C_LEVEL:
+VDD_MX_LEVEL: S4C_LEVEL:
 		pm8150l_s4_level: regulator-pm8150l-s4-level {
 			regulator-name = "pm8150l_s4_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 
-		VDD_MX_LEVEL_AO: S4C_LEVEL_AO:
+VDD_MX_LEVEL_AO: S4C_LEVEL_AO:
 		pm8150l_s4_level_ao: regulator-pm8150l-s4-level-ao {
 			regulator-name = "pm8150l_s4_level_ao";
 			qcom,set = <RPMH_REGULATOR_SET_ACTIVE>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 
-		VDD_MX_MMCX_SUPPLY_LEVEL: regulator-pm8150l-s4-mmcx-sup-level {
+VDD_MX_MMCX_SUPPLY_LEVEL: regulator-pm8150l-s4-mmcx-sup-level {
 			regulator-name = "pm8150l_s4_mmcx_sup_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt =
+regulator-min-microvolt =
 				<RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt =
+regulator-max-microvolt =
 				<RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level =
+qcom,init-voltage-level =
 				<RPMH_REGULATOR_LEVEL_RETENTION>;
 		};
 
 		mx_cdev: mx-cdev-lvl {
 			compatible = "qcom,regulator-cooling-device";
-			regulator-cdev-supply = <&VDD_MX_LEVEL>;
+regulator-cdev-supply = <&VDD_MX_LEVEL>;
 			regulator-levels = <RPMH_REGULATOR_LEVEL_NOM
 					RPMH_REGULATOR_LEVEL_OFF>;
 			#cooling-cells = <2>;
 		};
 	};
 
-	/* PM8150L S5 = VDD_MM_CX supply */
+/* PM8150L S5 = VDD_MM_CX supply */
 	rpmh-regulator-mmcxlvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
 		qcom,resource-name = "mmcx.lvl";
-		pm8150l_s5_level-parent-supply = <&VDD_MX_MMCX_SUPPLY_LEVEL>;
-		proxy-supply = <&VDD_MMCX_LEVEL>;
+pm8150l_s5_level-parent-supply = <&VDD_MX_MMCX_SUPPLY_LEVEL>;
+proxy-supply = <&VDD_MMCX_LEVEL>;
 
-		VDD_MMCX_LEVEL: S5C_LEVEL:
+VDD_MMCX_LEVEL: S5C_LEVEL:
 		pm8150l_s5_level: regulator-pm8150l-s5-level {
 			regulator-name = "pm8150l_s5_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_LOW_SVS>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_LOW_SVS>;
-			qcom,min-dropout-voltage-level = <(-1)>;
+qcom,min-dropout-voltage-level = <(-1)>;
 			qcom,proxy-consumer-enable;
-			qcom,proxy-consumer-voltage
+qcom,proxy-consumer-voltage
 				= <RPMH_REGULATOR_LEVEL_TURBO
 				   RPMH_REGULATOR_LEVEL_MAX>;
 		};
 
-		VDD_MMCX_LEVEL_AO: S5C_LEVEL_AO:
+VDD_MMCX_LEVEL_AO: S5C_LEVEL_AO:
 		pm8150l_s5_level_ao: regulator-pm8150l-s5-level-ao {
 			regulator-name = "pm8150l_s5_level_ao";
 			qcom,set = <RPMH_REGULATOR_SET_ACTIVE>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_LOW_SVS>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_LOW_SVS>;
 		};
 
 		regulator-pm8150l-s5-level-so {
 			regulator-name = "pm8150l_s5_level_so";
 			qcom,set = <RPMH_REGULATOR_SET_SLEEP>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_LOW_SVS>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_LOW_SVS>;
 		};
 
 		mm_cx_cdev: mm-cx-cdev-lvl {
 			compatible = "qcom,regulator-cooling-device";
-			regulator-cdev-supply = <&VDD_MMCX_LEVEL_AO>;
+regulator-cdev-supply = <&VDD_MMCX_LEVEL_AO>;
 			regulator-levels = <RPMH_REGULATOR_LEVEL_NOM
 					RPMH_REGULATOR_LEVEL_OFF>;
 			#cooling-cells = <2>;
 		};
 	};
 
-	/* PM8150L S6 + S7 = VDD_CX supply */
+/* PM8150L S6 + S7 = VDD_CX supply */
 	rpmh-regulator-cxlvl {
 		compatible = "qcom,rpmh-arc-regulator";
 		mboxes = <&apps_rsc 0>;
 		qcom,resource-name = "cx.lvl";
-		pm8150l_s6_level-parent-supply = <&VDD_MX_LEVEL>;
-		pm8150l_s6_level_ao-parent-supply = <&VDD_MX_LEVEL_AO>;
-		proxy-supply = <&VDD_CX_MMCX_SUPPLY_LEVEL>;
+pm8150l_s6_level-parent-supply = <&VDD_MX_LEVEL>;
+pm8150l_s6_level_ao-parent-supply = <&VDD_MX_LEVEL_AO>;
+proxy-supply = <&VDD_CX_MMCX_SUPPLY_LEVEL>;
 
-		VDD_CX_LEVEL: S6C_LEVEL:
+VDD_CX_LEVEL: S6C_LEVEL:
 		pm8150l_s6_level: regulator-pm8150l-s6-level {
 			regulator-name = "pm8150l_s6_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			qcom,min-dropout-voltage-level = <(-1)>;
+qcom,min-dropout-voltage-level = <(-1)>;
 		};
 
-		VDD_CX_LEVEL_AO: S6C_LEVEL_AO:
+VDD_CX_LEVEL_AO: S6C_LEVEL_AO:
 		pm8150l_s6_level_ao: regulator-pm8150l-s6-level-ao {
 			regulator-name = "pm8150l_s6_level_ao";
 			qcom,set = <RPMH_REGULATOR_SET_ACTIVE>;
-			regulator-min-microvolt
+regulator-min-microvolt
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			regulator-max-microvolt
+regulator-max-microvolt
 				= <RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level
+qcom,init-voltage-level
 				= <RPMH_REGULATOR_LEVEL_RETENTION>;
-			qcom,min-dropout-voltage-level = <(-1)>;
+qcom,min-dropout-voltage-level = <(-1)>;
 		};
 
-		VDD_CX_MMCX_SUPPLY_LEVEL: regulator-pm8150l-s6-mmcx-sup-level {
+VDD_CX_MMCX_SUPPLY_LEVEL: regulator-pm8150l-s6-mmcx-sup-level {
 			regulator-name = "pm8150l_s6_mmcx_sup_level";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt =
+regulator-min-microvolt =
 				<RPMH_REGULATOR_LEVEL_MIN_SVS>;
-			regulator-max-microvolt =
+regulator-max-microvolt =
 				<RPMH_REGULATOR_LEVEL_MAX>;
-			qcom,init-voltage-level =
+qcom,init-voltage-level =
 				<RPMH_REGULATOR_LEVEL_MIN_SVS>;
 			qcom,proxy-consumer-enable;
-			qcom,proxy-consumer-voltage
+qcom,proxy-consumer-voltage
 				= <RPMH_REGULATOR_LEVEL_TURBO
 				   RPMH_REGULATOR_LEVEL_MAX>;
 		};
@@ -702,9 +702,9 @@
 		S8C: pm8150l_s8: regulator-pm8150l-s8 {
 			regulator-name = "pm8150l_s8";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1352000>;
-			regulator-max-microvolt = <1352000>;
-			qcom,init-voltage = <1352000>;
+regulator-min-microvolt = <1352000>;
+regulator-max-microvolt = <1352000>;
+qcom,init-voltage = <1352000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_RET>;
 		};
 	};
@@ -716,8 +716,8 @@
 		L1C: pm8150l_l1: regulator-pm8150l-l1 {
 			regulator-name = "pm8150l_l1";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
 		};
 	};
 
@@ -733,9 +733,9 @@
 		L2C: pm8150l_l2: regulator-pm8150l-l2 {
 			regulator-name = "pm8150l_l2";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1304000>;
-			regulator-max-microvolt = <1304000>;
-			qcom,init-voltage = <1304000>;
+regulator-min-microvolt = <1304000>;
+regulator-max-microvolt = <1304000>;
+qcom,init-voltage = <1304000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -753,11 +753,11 @@
 		L3C: pm8150l_l3: regulator-pm8150l-l3 {
 			regulator-name = "pm8150l_l3";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1200000>;
-			regulator-max-microvolt = <1200000>;
+regulator-min-microvolt = <1200000>;
+regulator-max-microvolt = <1200000>;
 			qcom,proxy-consumer-enable;
 			qcom,proxy-consumer-current = <51800>;
-			qcom,init-voltage = <1200000>;
+qcom,init-voltage = <1200000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -774,9 +774,9 @@
 		L4C: pm8150l_l4: regulator-pm8150l-l4 {
 			regulator-name = "pm8150l_l4";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1704000>;
-			regulator-max-microvolt = <2928000>;
-			qcom,init-voltage = <1704000>;
+regulator-min-microvolt = <1704000>;
+regulator-max-microvolt = <2928000>;
+qcom,init-voltage = <1704000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -793,9 +793,9 @@
 		L5C: pm8150l_l5: regulator-pm8150l-l5 {
 			regulator-name = "pm8150l_l5";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1704000>;
-			regulator-max-microvolt = <2928000>;
-			qcom,init-voltage = <1704000>;
+regulator-min-microvolt = <1704000>;
+regulator-max-microvolt = <2928000>;
+qcom,init-voltage = <1704000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -812,9 +812,9 @@
 		L6C: pm8150l_l6: regulator-pm8150l-l6 {
 			regulator-name = "pm8150l_l6";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <2960000>;
-			qcom,init-voltage = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <2960000>;
+qcom,init-voltage = <1800000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -831,9 +831,9 @@
 		L7C: pm8150l_l7: regulator-pm8150l-l7 {
 			regulator-name = "pm8150l_l7";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2856000>;
-			regulator-max-microvolt = <3104000>;
-			qcom,init-voltage = <2856000>;
+regulator-min-microvolt = <2856000>;
+regulator-max-microvolt = <3104000>;
+qcom,init-voltage = <2856000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -845,8 +845,8 @@
 		L8C: pm8150l_l8: regulator-pm8150l-l8 {
 			regulator-name = "pm8150l_l8";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1800000>;
-			regulator-max-microvolt = <1800000>;
+regulator-min-microvolt = <1800000>;
+regulator-max-microvolt = <1800000>;
 		};
 	};
 
@@ -862,9 +862,9 @@
 		L9C: pm8150l_l9: regulator-pm8150l-l9 {
 			regulator-name = "pm8150l_l9";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2704000>;
-			regulator-max-microvolt = <2960000>;
-			qcom,init-voltage = <2704000>;
+regulator-min-microvolt = <2704000>;
+regulator-max-microvolt = <2960000>;
+qcom,init-voltage = <2704000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -881,9 +881,9 @@
 		L10C: pm8150l_l10: regulator-pm8150l-l10 {
 			regulator-name = "pm8150l_l10";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <3000000>;
-			regulator-max-microvolt = <3312000>;
-			qcom,init-voltage = <3000000>;
+regulator-min-microvolt = <3000000>;
+regulator-max-microvolt = <3312000>;
+qcom,init-voltage = <3000000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -900,9 +900,9 @@
 		L11C: pm8150l_l11: regulator-pm8150l-l11 {
 			regulator-name = "pm8150l_l11";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <3000000>;
-			regulator-max-microvolt = <3312000>;
-			qcom,init-voltage = <3000000>;
+regulator-min-microvolt = <3000000>;
+regulator-max-microvolt = <3312000>;
+qcom,init-voltage = <3000000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_LPM>;
 		};
 	};
@@ -922,18 +922,18 @@
 		BOB: pm8150l_bob: regulator-pm8150l-bob {
 			regulator-name = "pm8150l_bob";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <3008000>;
-			regulator-max-microvolt = <4000000>;
-			qcom,init-voltage = <3312000>;
+regulator-min-microvolt = <3008000>;
+regulator-max-microvolt = <4000000>;
+qcom,init-voltage = <3312000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_PASS>;
 		};
 
 		BOB_AO: pm8150l_bob_ao: regulator-pm8150l-bob-ao {
 			regulator-name = "pm8150l_bob_ao";
 			qcom,set = <RPMH_REGULATOR_SET_ACTIVE>;
-			regulator-min-microvolt = <3008000>;
-			regulator-max-microvolt = <4000000>;
-			qcom,init-voltage = <3008000>;
+regulator-min-microvolt = <3008000>;
+regulator-max-microvolt = <4000000>;
+qcom,init-voltage = <3008000>;
 			qcom,init-mode = <RPMH_REGULATOR_MODE_AUTO>;
 		};
 	};
@@ -945,8 +945,8 @@
 		S2F: pm8009_s2: regulator-pm8009-s2 {
 			regulator-name = "pm8009_s2";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2856000>;
-			regulator-max-microvolt = <2856000>;
+regulator-min-microvolt = <2856000>;
+regulator-max-microvolt = <2856000>;
 		};
 	};
 
@@ -957,8 +957,8 @@
 		L2F: pm8009_l2: regulator-pm8009-l2 {
 			regulator-name = "pm8009_l2";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <1200000>;
-			regulator-max-microvolt = <1200000>;
+regulator-min-microvolt = <1200000>;
+regulator-max-microvolt = <1200000>;
 		};
 	};
 
@@ -969,8 +969,8 @@
 		L5F: pm8009_l5: regulator-pm8009-l5 {
 			regulator-name = "pm8009_l5";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2800000>;
-			regulator-max-microvolt = <2800000>;
+regulator-min-microvolt = <2800000>;
+regulator-max-microvolt = <2800000>;
 		};
 	};
 
@@ -981,8 +981,8 @@
 		L6F: pm8009_l6: regulator-pm8009-l6 {
 			regulator-name = "pm8009_l6";
 			qcom,set = <RPMH_REGULATOR_SET_ALL>;
-			regulator-min-microvolt = <2856000>;
-			regulator-max-microvolt = <2856000>;
+regulator-min-microvolt = <2856000>;
+regulator-max-microvolt = <2856000>;
 		};
 	};
 

@@ -67,7 +67,7 @@ struct tps62360_chip {
 	struct regmap *regmap;
 	int vsel0_gpio;
 	int vsel1_gpio;
-	u8 voltage_reg_mask;
+u8 voltage_reg_mask;
 	bool en_internal_pulldn;
 	bool en_discharge;
 	bool valid_gpios;
@@ -77,17 +77,17 @@ struct tps62360_chip {
 };
 
 /*
- * find_voltage_set_register: Find new voltage configuration register
+* find_voltage_set_register: Find new voltage configuration register
  * (VSET) id.
  * The finding of the new VSET register will be based on the LRU mechanism.
- * Each VSET register will have different voltage configured . This
- * Function will look if any of the VSET register have requested voltage set
+* Each VSET register will have different voltage configured . This
+* Function will look if any of the VSET register have requested voltage set
  * or not.
  *     - If it is already there then it will make that register as most
  *       recently used and return as found so that caller need not to set
  *       the VSET register but need to set the proper gpios to select this
  *       VSET register.
- *     - If requested voltage is not found then it will use the least
+*     - If requested voltage is not found then it will use the least
  *       recently mechanism to get new VSET register for new configuration
  *       and will return not_found so that caller need to set new VSET
  *       register and then gpios (both).
@@ -131,7 +131,7 @@ static int tps62360_dcdc_get_voltage_sel(struct regulator_dev *dev)
 			__func__, REG_VSET0 + tps->curr_vset_id, ret);
 		return ret;
 	}
-	vsel = (int)data & tps->voltage_reg_mask;
+vsel = (int)data & tps->voltage_reg_mask;
 	return vsel;
 }
 
@@ -148,11 +148,11 @@ static int tps62360_dcdc_set_voltage_sel(struct regulator_dev *dev,
 	 * recently used register for new configuration.
 	 */
 	if (tps->valid_gpios)
-		found = find_voltage_set_register(tps, selector, &new_vset_id);
+found = find_voltage_set_register(tps, selector, &new_vset_id);
 
 	if (!found) {
 		ret = regmap_update_bits(tps->regmap, REG_VSET0 + new_vset_id,
-				tps->voltage_reg_mask, selector);
+tps->voltage_reg_mask, selector);
 		if (ret < 0) {
 			dev_err(tps->dev,
 				"%s(): register %d update failed with err %d\n",
@@ -234,11 +234,11 @@ static unsigned int tps62360_get_mode(struct regulator_dev *rdev)
 }
 
 static struct regulator_ops tps62360_dcdc_ops = {
-	.get_voltage_sel	= tps62360_dcdc_get_voltage_sel,
-	.set_voltage_sel	= tps62360_dcdc_set_voltage_sel,
-	.list_voltage		= regulator_list_voltage_linear,
-	.map_voltage		= regulator_map_voltage_linear,
-	.set_voltage_time_sel	= regulator_set_voltage_time_sel,
+.get_voltage_sel	= tps62360_dcdc_get_voltage_sel,
+.set_voltage_sel	= tps62360_dcdc_set_voltage_sel,
+.list_voltage		= regulator_list_voltage_linear,
+.map_voltage		= regulator_map_voltage_linear,
+.set_voltage_time_sel	= regulator_set_voltage_time_sel,
 	.set_mode		= tps62360_set_mode,
 	.get_mode		= tps62360_get_mode,
 };
@@ -261,7 +261,7 @@ static int tps62360_init_dcdc(struct tps62360_chip *tps,
 		return ret;
 	}
 
-	/* Reset output discharge path to reduce power consumption */
+/* Reset output discharge path to reduce power consumption */
 	ret = regmap_update_bits(tps->regmap, REG_RAMPCTRL, BIT(2), 0);
 	if (ret < 0) {
 		dev_err(tps->dev,
@@ -359,7 +359,7 @@ static int tps62360_probe(struct i2c_client *client,
 	tps->desc.name = client->name;
 	tps->desc.id = 0;
 	tps->desc.ops = &tps62360_dcdc_ops;
-	tps->desc.type = REGULATOR_VOLTAGE;
+tps->desc.type = REGULATOR_VOLTAGE;
 	tps->desc.owner = THIS_MODULE;
 	tps->desc.uV_step = 10000;
 
@@ -397,15 +397,15 @@ static int tps62360_probe(struct i2c_client *client,
 	switch (chip_id) {
 	case TPS62360:
 	case TPS62362:
-		tps->desc.min_uV = TPS62360_BASE_VOLTAGE;
-		tps->voltage_reg_mask = 0x3F;
-		tps->desc.n_voltages = TPS62360_N_VOLTAGES;
+tps->desc.min_uV = TPS62360_BASE_VOLTAGE;
+tps->voltage_reg_mask = 0x3F;
+tps->desc.n_voltages = TPS62360_N_VOLTAGES;
 		break;
 	case TPS62361:
 	case TPS62363:
-		tps->desc.min_uV = TPS62361_BASE_VOLTAGE;
-		tps->voltage_reg_mask = 0x7F;
-		tps->desc.n_voltages = TPS62361_N_VOLTAGES;
+tps->desc.min_uV = TPS62361_BASE_VOLTAGE;
+tps->voltage_reg_mask = 0x7F;
+tps->desc.n_voltages = TPS62361_N_VOLTAGES;
 		break;
 	default:
 		return -ENODEV;

@@ -1,5 +1,5 @@
 /*
- * drivers/base/power/generic_ops.c - Generic PM callbacks for subsystems
+* drivers/base/power/generic_ops.c - Generic PM callbacks for subsystems
  *
  * Copyright (c) 2010 Rafael J. Wysocki <rjw@sisk.pl>, Novell Inc.
  *
@@ -53,10 +53,10 @@ EXPORT_SYMBOL_GPL(pm_generic_runtime_resume);
 
 #ifdef CONFIG_PM_SLEEP
 /**
- * pm_generic_prepare - Generic routine preparing a device for power transition.
+* pm_generic_prepare - Generic routine preparing a device for power transition.
  * @dev: Device to prepare.
  *
- * Prepare a device for a system-wide power transition.
+* Prepare a device for a system-wide power transition.
  */
 int pm_generic_prepare(struct device *dev)
 {
@@ -142,38 +142,38 @@ int pm_generic_freeze(struct device *dev)
 EXPORT_SYMBOL_GPL(pm_generic_freeze);
 
 /**
- * pm_generic_poweroff_noirq - Generic poweroff_noirq callback for subsystems.
+* pm_generic_poweroff_noirq - Generic poweroff_noirq callback for subsystems.
  * @dev: Device to handle.
  */
 int pm_generic_poweroff_noirq(struct device *dev)
 {
 	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
 
-	return pm && pm->poweroff_noirq ? pm->poweroff_noirq(dev) : 0;
+return pm && pm->poweroff_noirq ? pm->poweroff_noirq(dev) : 0;
 }
 EXPORT_SYMBOL_GPL(pm_generic_poweroff_noirq);
 
 /**
- * pm_generic_poweroff_late - Generic poweroff_late callback for subsystems.
+* pm_generic_poweroff_late - Generic poweroff_late callback for subsystems.
  * @dev: Device to handle.
  */
 int pm_generic_poweroff_late(struct device *dev)
 {
 	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
 
-	return pm && pm->poweroff_late ? pm->poweroff_late(dev) : 0;
+return pm && pm->poweroff_late ? pm->poweroff_late(dev) : 0;
 }
 EXPORT_SYMBOL_GPL(pm_generic_poweroff_late);
 
 /**
- * pm_generic_poweroff - Generic poweroff callback for subsystems.
+* pm_generic_poweroff - Generic poweroff callback for subsystems.
  * @dev: Device to handle.
  */
 int pm_generic_poweroff(struct device *dev)
 {
 	const struct dev_pm_ops *pm = dev->driver ? dev->driver->pm : NULL;
 
-	return pm && pm->poweroff ? pm->poweroff(dev) : 0;
+return pm && pm->poweroff ? pm->poweroff(dev) : 0;
 }
 EXPORT_SYMBOL_GPL(pm_generic_poweroff);
 
@@ -286,10 +286,10 @@ int pm_generic_restore(struct device *dev)
 EXPORT_SYMBOL_GPL(pm_generic_restore);
 
 /**
- * pm_generic_complete - Generic routine completing a device power transition.
+* pm_generic_complete - Generic routine completing a device power transition.
  * @dev: Device to handle.
  *
- * Complete a device power transition during a system-wide power transition.
+* Complete a device power transition during a system-wide power transition.
  */
 void pm_generic_complete(struct device *dev)
 {
@@ -300,13 +300,13 @@ void pm_generic_complete(struct device *dev)
 }
 
 /**
- * pm_complete_with_resume_check - Complete a device power transition.
+* pm_complete_with_resume_check - Complete a device power transition.
  * @dev: Device to handle.
  *
- * Complete a device power transition during a system-wide power transition and
+* Complete a device power transition during a system-wide power transition and
  * optionally schedule a runtime resume of the device if the system resume in
  * progress has been initated by the platform firmware and the device had its
- * power.direct_complete flag set.
+* power.direct_complete flag set.
  */
 void pm_complete_with_resume_check(struct device *dev)
 {
@@ -314,9 +314,9 @@ void pm_complete_with_resume_check(struct device *dev)
 	/*
 	 * If the device had been runtime-suspended before the system went into
 	 * the sleep state it is going out of and it has never been resumed till
-	 * now, resume it in case the firmware powered it up.
+* now, resume it in case the firmware powered it up.
 	 */
-	if (dev->power.direct_complete && pm_resume_via_firmware())
+if (dev->power.direct_complete && pm_resume_via_firmware())
 		pm_request_resume(dev);
 }
 EXPORT_SYMBOL_GPL(pm_complete_with_resume_check);

@@ -1,10 +1,10 @@
 /*
- * Common powerdomain framework functions
+* Common powerdomain framework functions
  *
  * Copyright (C) 2010-2011 Texas Instruments, Inc.
  * Copyright (C) 2010 Nokia Corporation
  *
- * Derived from mach-omap2/powerdomain.c written by Paul Walmsley
+* Derived from mach-omap2/powerdomain.c written by Paul Walmsley
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 
 /*
  * OMAP3 and OMAP4 specific register bit initialisations
- * Notice that the names here are not according to each power
+* Notice that the names here are not according to each power
  * domain but the bit mapping used applies to all of them
  */
 /* OMAP3 and OMAP4 Memory Onstate Masks (common across all power domains) */

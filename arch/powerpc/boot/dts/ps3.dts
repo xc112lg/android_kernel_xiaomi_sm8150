@@ -42,7 +42,7 @@
 	/*
 	 * The boot cpu is always zero for PS3.
 	 *
-	 * dtc expects a clock-frequency and timebase-frequency entries, so
+* dtc expects a clock-frequency and timebase-frequency entries, so
 	 * we'll put a null entries here.  These will be initialized after
 	 * startup with data from lv1.
 	 *
@@ -59,8 +59,8 @@
 			device_type = "cpu";
 			reg = <0x00000000>;
 			ibm,ppc-interrupt-server#s = <0x0 0x1>;
-			clock-frequency = <0>;
-			timebase-frequency = <0>;
+clock-frequency = <0>;
+timebase-frequency = <0>;
 			i-cache-size = <32768>;
 			d-cache-size = <32768>;
 			i-cache-line-size = <128>;

@@ -26,16 +26,16 @@
 		#address-cells = <1>;
 		#size-cells = <0>;
 
-		PowerPC,8247@0 {
+PowerPC,8247@0 {
 			device_type = "cpu";
 			reg = <0>;
 			d-cache-line-size = <32>;
 			i-cache-line-size = <32>;
 			d-cache-size = <16384>;
 			i-cache-size = <16384>;
-			timebase-frequency = <0>; /* Filled in by U-Boot */
-			clock-frequency = <0>; /* Filled in by U-Boot */
-			bus-frequency = <0>; /* Filled in by U-Boot */
+timebase-frequency = <0>; /* Filled in by U-Boot */
+clock-frequency = <0>; /* Filled in by U-Boot */
+bus-frequency = <0>; /* Filled in by U-Boot */
 		};
 	};
 
@@ -234,7 +234,7 @@
 				ds3106@1 {
 					compatible = "gen,spidev";
 					reg = <0>;
-					spi-max-frequency = <8000000>;
+spi-max-frequency = <8000000>;
 				};
 			};
 

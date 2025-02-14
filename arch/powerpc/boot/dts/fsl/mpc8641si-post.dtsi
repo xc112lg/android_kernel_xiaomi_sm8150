@@ -22,7 +22,7 @@
 	#size-cells = <1>;
 	device_type = "soc";
 	compatible = "fsl,mpc8641-soc", "simple-bus";
-	bus-frequency = <0>;
+bus-frequency = <0>;
 
 	mcm-law@0 {
 		compatible = "fsl,mcm-law";
@@ -100,7 +100,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0x0 0xff>;
-	clock-frequency = <100000000>;
+clock-frequency = <100000000>;
 	interrupts = <24 2 0 0>;
 
 	pcie@0 {
@@ -126,7 +126,7 @@
 	#size-cells = <2>;
 	#address-cells = <3>;
 	bus-range = <0x0 0xff>;
-	clock-frequency = <100000000>;
+clock-frequency = <100000000>;
 	interrupts = <25 2 0 0>;
 
 	pcie@0 {

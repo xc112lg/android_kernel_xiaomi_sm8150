@@ -8,7 +8,7 @@
  *         Alexander Graf, agraf@suse.de
  *
  * Description:
- * This file is based on arch/powerpc/kvm/44x_tlb.c,
+* This file is based on arch/powerpc/kvm/44x_tlb.c,
  * by Hollis Blanchard <hollisb@us.ibm.com>.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -764,11 +764,11 @@ int kvm_vcpu_ioctl_config_tlb(struct kvm_vcpu *vcpu,
 	if (params.tlb_ways[2] != 0 || params.tlb_ways[3] != 0)
 		return -EINVAL;
 
-	if (!is_power_of_2(params.tlb_ways[0]))
+if (!is_power_of_2(params.tlb_ways[0]))
 		return -EINVAL;
 
 	sets = params.tlb_sizes[0] >> ilog2(params.tlb_ways[0]);
-	if (!is_power_of_2(sets))
+if (!is_power_of_2(sets))
 		return -EINVAL;
 
 	array_len = params.tlb_sizes[0] + params.tlb_sizes[1];

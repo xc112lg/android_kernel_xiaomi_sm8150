@@ -20,9 +20,9 @@
 #define __WLAN_HDD_POWER_H
 
 /**
- * DOC: wlan_hdd_power.h
+* DOC: wlan_hdd_power.h
  *
- * HDD Power Management API
+* HDD Power Management API
  */
 
 #include "wlan_hdd_main.h"
@@ -132,11 +132,11 @@ struct pkt_filter_cfg {
 #ifdef FEATURE_ANI_LEVEL_REQUEST
 /**
  * ani_priv - structure to store the priv data for get ani request
- * @num_freq: number of freq received from the FW
+* @num_freq: number of freq received from the FW
  * @ani: data received from the FW
  */
 struct ani_priv {
-	uint32_t num_freq;
+uint32_t num_freq;
 	struct wmi_host_ani_level_event *ani;
 };
 #endif
@@ -352,13 +352,13 @@ void hdd_disable_ns_offload(struct hdd_adapter *adapter,
 void hdd_ipv6_notifier_work_queue(struct work_struct *work);
 
 /**
- * wlan_hdd_cfg80211_get_txpower() - cfg80211 get power handler function
+* wlan_hdd_cfg80211_get_txpower() - cfg80211 get power handler function
  * @wiphy: Pointer to wiphy structure.
  * @wdev: Pointer to wireless_dev structure.
  * @dbm: dbm
  *
- * This is the cfg80211 get txpower handler function which invokes
- * the internal function @__wlan_hdd_cfg80211_get_txpower with
+* This is the cfg80211 get txpower handler function which invokes
+* the internal function @__wlan_hdd_cfg80211_get_txpower with
  * SSR protection.
  *
  * Return: 0 for success, error number on failure.
@@ -368,31 +368,31 @@ int wlan_hdd_cfg80211_get_txpower(struct wiphy *wiphy,
 				  int *dbm);
 
 /**
- * wlan_hdd_cfg80211_set_txpower() - set TX power
+* wlan_hdd_cfg80211_set_txpower() - set TX power
  * @wiphy: Pointer to wiphy
  * @wdev: Pointer to network device
- * @type: TX power setting type
- * @dbm: TX power in dbm
+* @type: TX power setting type
+* @dbm: TX power in dbm
  *
  * Return: 0 for success, non-zero for failure
  */
 int wlan_hdd_cfg80211_set_txpower(struct wiphy *wiphy,
 				  struct wireless_dev *wdev,
-				  enum nl80211_tx_power_setting type,
+enum nl80211_tx_power_setting type,
 				  int dbm);
 
 /**
- * wlan_hdd_cfg80211_set_power_mgmt() - set cfg80211 power management config
+* wlan_hdd_cfg80211_set_power_mgmt() - set cfg80211 power management config
  * @wiphy: Pointer to wiphy
  * @dev: Pointer to network device
- * @allow_power_save: is wlan allowed to go into power save mode
+* @allow_power_save: is wlan allowed to go into power save mode
  * @timeout: Timeout value
  *
  * Return: 0 for success, non-zero for failure
  */
 int wlan_hdd_cfg80211_set_power_mgmt(struct wiphy *wiphy,
 				     struct net_device *dev,
-				     bool allow_power_save,
+bool allow_power_save,
 				     int timeout);
 
 /**
@@ -441,15 +441,15 @@ int wlan_hdd_ipv6_changed(struct notifier_block *nb,
 			  unsigned long data, void *arg);
 
 /**
- * hdd_set_power_config() - set power config to firmware
+* hdd_set_power_config() - set power config to firmware
  * @hddctx: HDD context
  * @adapter: HDD adapter
- * @power: new power config value
+* @power: new power config value
  *
  * Return: 0 on success; Errno on failure
  */
 int hdd_set_power_config(struct hdd_context *hddctx,
-			 struct hdd_adapter *adapter, uint8_t power);
+struct hdd_adapter *adapter, uint8_t power);
 
 #ifdef FEATURE_WLAN_DIAG_SUPPORT
 /**
@@ -468,15 +468,15 @@ void hdd_wlan_suspend_resume_event(uint8_t state) {}
 #endif /* FEATURE_WLAN_DIAG_SUPPORT */
 
 /**
- * wlan_hdd_set_powersave() - Set powersave mode
+* wlan_hdd_set_powersave() - Set powersave mode
  * @adapter: adapter upon which the request was received
- * @allow_power_save: is wlan allowed to go into power save mode
+* @allow_power_save: is wlan allowed to go into power save mode
  * @timeout: timeout period in ms
  *
  * Return: 0 on success, non-zero on any error
  */
 int wlan_hdd_set_powersave(struct hdd_adapter *adapter,
-			   bool allow_power_save, uint32_t timeout);
+bool allow_power_save, uint32_t timeout);
 
 /**
  * wlan_hdd_inc_suspend_stats() - Prints, then increments, then prints suspend
@@ -614,14 +614,14 @@ static inline int wlan_hdd_rx_thread_suspend(struct hdd_context *hdd_ctx)
  * wlan_hdd_get_ani_level() - Wrapper to call API to fetch ani level
  * @adapter: pointer to HDD adapter
  * @ani: pointer to structure storing ani level for channels
- * @parsed_freqs: parsed freqs from the get ani command
- * @num_freqs: number of parsed channels
+* @parsed_freqs: parsed freqs from the get ani command
+* @num_freqs: number of parsed channels
  *
  * Return: QDF_STATUS
  */
 QDF_STATUS wlan_hdd_get_ani_level(struct hdd_adapter *adapter,
 				  struct wmi_host_ani_level_event *ani,
-				  uint32_t *parsed_freqs,
-				  uint8_t num_freqs);
+uint32_t *parsed_freqs,
+uint8_t num_freqs);
 #endif /* FEATURE_ANI_LEVEL_REQUEST */
 #endif /* __WLAN_HDD_POWER_H */

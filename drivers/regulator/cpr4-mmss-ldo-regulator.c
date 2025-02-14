@@ -40,24 +40,24 @@
 
 /**
  * struct cpr4_sdm660_mmss_fuses - MMSS specific fuse data for SDM660
- * @init_voltage:	Initial (i.e. open-loop) voltage fuse parameter value
- *			for each fuse corner (raw, not converted to a voltage)
- * @offset_voltage:	The closed-loop voltage margin adjustment fuse parameter
+* @init_voltage:	Initial (i.e. open-loop) voltage fuse parameter value
+*			for each fuse corner (raw, not converted to a voltage)
+* @offset_voltage:	The closed-loop voltage margin adjustment fuse parameter
  *			value for each fuse corner (raw, not converted to a
- *			voltage)
+*			voltage)
  * @cpr_fusing_rev:	CPR fusing revision fuse parameter value
  * @ldo_enable:		The ldo enable fuse parameter for each fuse corner
- *			indicates that VDD_GFX can be configured to LDO mode in
+*			indicates that VDD_GFX can be configured to LDO mode in
  *			the corresponding fuse corner.
  * @ldo_cpr_cl_enable:	A fuse parameter indicates that GFX CPR can be
- *			configured to operate in closed-loop mode when VDD_GFX
+*			configured to operate in closed-loop mode when VDD_GFX
  *			is configured for LDO sub-regulated mode.
  *
  * This struct holds the values for all of the fuses read from memory.
  */
 struct cpr4_sdm660_mmss_fuses {
-	u64	init_voltage[SDM660_MMSS_FUSE_CORNERS];
-	u64	offset_voltage[SDM660_MMSS_FUSE_CORNERS];
+u64	init_voltage[SDM660_MMSS_FUSE_CORNERS];
+u64	offset_voltage[SDM660_MMSS_FUSE_CORNERS];
 	u64	cpr_fusing_rev;
 	u64	ldo_enable[SDM660_MMSS_FUSE_CORNERS];
 	u64	ldo_cpr_cl_enable;
@@ -178,19 +178,19 @@ static int cpr4_sdm660_mmss_read_fuse_data(struct cpr3_regulator *vreg)
 
 	for (i = 0; i < SDM660_MMSS_FUSE_CORNERS; i++) {
 		rc = cpr3_read_fuse_param(base,
-			sdm660_mmss_init_voltage_param[i],
-			&fuse->init_voltage[i]);
+sdm660_mmss_init_voltage_param[i],
+&fuse->init_voltage[i]);
 		if (rc) {
-			cpr3_err(vreg, "Unable to read fuse-corner %d initial voltage fuse, rc=%d\n",
+cpr3_err(vreg, "Unable to read fuse-corner %d initial voltage fuse, rc=%d\n",
 				i, rc);
 			return rc;
 		}
 
 		rc = cpr3_read_fuse_param(base,
-			sdm660_mmss_offset_voltage_param[i],
-			&fuse->offset_voltage[i]);
+sdm660_mmss_offset_voltage_param[i],
+&fuse->offset_voltage[i]);
 		if (rc) {
-			cpr3_err(vreg, "Unable to read fuse-corner %d offset voltage fuse, rc=%d\n",
+cpr3_err(vreg, "Unable to read fuse-corner %d offset voltage fuse, rc=%d\n",
 				i, rc);
 			return rc;
 		}
@@ -221,8 +221,8 @@ static int cpr4_sdm660_mmss_read_fuse_data(struct cpr3_regulator *vreg)
 }
 
 /**
- * cpr3_sdm660_mmss_calculate_open_loop_voltages() - calculate the open-loop
- *		voltage for each corner of a CPR3 regulator
+* cpr3_sdm660_mmss_calculate_open_loop_voltages() - calculate the open-loop
+*		voltage for each corner of a CPR3 regulator
  * @vreg:		Pointer to the CPR3 regulator
  *
  * Return: 0 on success, errno on failure
@@ -242,23 +242,23 @@ static int cpr4_sdm660_mmss_calculate_open_loop_voltages(
 
 	ref_volt = sdm660_mmss_fuse_ref_volt;
 	for (i = 0; i < vreg->fuse_corner_count; i++) {
-		fuse_volt[i] = cpr3_convert_open_loop_voltage_fuse(ref_volt[i],
-			SDM660_MMSS_FUSE_STEP_VOLT, fuse->init_voltage[i],
-			SDM660_MMSS_VOLTAGE_FUSE_SIZE);
+fuse_volt[i] = cpr3_convert_open_loop_voltage_fuse(ref_volt[i],
+SDM660_MMSS_FUSE_STEP_VOLT, fuse->init_voltage[i],
+SDM660_MMSS_VOLTAGE_FUSE_SIZE);
 		cpr3_info(vreg, "fuse_corner[%d] open-loop=%7d uV\n",
 			i, fuse_volt[i]);
 	}
 
-	rc = cpr3_adjust_fused_open_loop_voltages(vreg, fuse_volt);
+rc = cpr3_adjust_fused_open_loop_voltages(vreg, fuse_volt);
 	if (rc) {
-		cpr3_err(vreg, "fused open-loop voltage adjustment failed, rc=%d\n",
+cpr3_err(vreg, "fused open-loop voltage adjustment failed, rc=%d\n",
 			rc);
 		goto done;
 	}
 
 	for (i = 1; i < vreg->fuse_corner_count; i++) {
 		if (fuse_volt[i] < fuse_volt[i - 1]) {
-			cpr3_debug(vreg, "fuse corner %d voltage=%d uV < fuse corner %d voltage=%d uV; overriding: fuse corner %d voltage=%d\n",
+cpr3_debug(vreg, "fuse corner %d voltage=%d uV < fuse corner %d voltage=%d uV; overriding: fuse corner %d voltage=%d\n",
 				i, fuse_volt[i], i - 1, fuse_volt[i - 1],
 				i, fuse_volt[i - 1]);
 			fuse_volt[i] = fuse_volt[i - 1];
@@ -269,14 +269,14 @@ static int cpr4_sdm660_mmss_calculate_open_loop_voltages(
 		vreg->corner[i].open_loop_volt
 			= fuse_volt[vreg->corner[i].cpr_fuse_corner];
 
-	cpr3_debug(vreg, "unadjusted per-corner open-loop voltages:\n");
+cpr3_debug(vreg, "unadjusted per-corner open-loop voltages:\n");
 	for (i = 0; i < vreg->corner_count; i++)
 		cpr3_debug(vreg, "open-loop[%2d] = %d uV\n", i,
 			vreg->corner[i].open_loop_volt);
 
-	rc = cpr3_adjust_open_loop_voltages(vreg);
+rc = cpr3_adjust_open_loop_voltages(vreg);
 	if (rc)
-		cpr3_err(vreg, "open-loop voltage adjustment failed, rc=%d\n",
+cpr3_err(vreg, "open-loop voltage adjustment failed, rc=%d\n",
 			rc);
 
 done:
@@ -435,13 +435,13 @@ static int cpr4_sdm660_mmss_adjust_target_quotients(struct cpr3_regulator *vreg)
 	if (!volt_offset)
 		return -ENOMEM;
 
-	offset_param = sdm660_mmss_offset_voltage_param;
+offset_param = sdm660_mmss_offset_voltage_param;
 	for (i = 0; i < vreg->fuse_corner_count; i++) {
 		fuse_len = offset_param[i][0].bit_end + 1
 			   - offset_param[i][0].bit_start;
-		volt_offset[i] = cpr3_convert_open_loop_voltage_fuse(
+volt_offset[i] = cpr3_convert_open_loop_voltage_fuse(
 			0, SDM660_MMSS_OFFSET_FUSE_STEP_VOLT,
-			fuse->offset_voltage[i], fuse_len);
+fuse->offset_voltage[i], fuse_len);
 		if (volt_offset[i])
 			cpr3_info(vreg, "fuse_corner[%d] offset=%7d uV\n",
 				i, volt_offset[i]);
@@ -465,11 +465,11 @@ static void cpr4_mmss_print_settings(struct cpr3_regulator *vreg)
 	struct cpr3_corner *corner;
 	int i;
 
-	cpr3_debug(vreg, "Corner: Frequency (Hz), Fuse Corner, Floor (uV), Open-Loop (uV), Ceiling (uV)\n");
+cpr3_debug(vreg, "Corner: Frequency (Hz), Fuse Corner, Floor (uV), Open-Loop (uV), Ceiling (uV)\n");
 	for (i = 0; i < vreg->corner_count; i++) {
 		corner = &vreg->corner[i];
 		cpr3_debug(vreg, "%3d: %10u, %2d, %7d, %7d, %7d\n",
-			i, corner->proc_freq, corner->cpr_fuse_corner,
+i, corner->proc_freq, corner->cpr_fuse_corner,
 			corner->floor_volt, corner->open_loop_volt,
 			corner->ceiling_volt);
 	}
@@ -495,17 +495,17 @@ static int cpr4_mmss_init_thread(struct cpr3_thread *thread)
 		return rc;
 	}
 
-	if (!of_find_property(ctrl->dev->of_node, "vdd-thread0-ldo-supply",
+if (!of_find_property(ctrl->dev->of_node, "vdd-thread0-ldo-supply",
 		NULL)) {
 		cpr3_err(vreg, "ldo supply regulator is not specified\n");
 		return -EINVAL;
 	}
 
-	vreg->ldo_regulator = devm_regulator_get(ctrl->dev, "vdd-thread0-ldo");
+vreg->ldo_regulator = devm_regulator_get(ctrl->dev, "vdd-thread0-ldo");
 	if (IS_ERR(vreg->ldo_regulator)) {
 		rc = PTR_ERR(vreg->ldo_regulator);
 		if (rc != -EPROBE_DEFER)
-			cpr3_err(vreg, "unable to request vdd-thread0-ldo regulator, rc=%d\n",
+cpr3_err(vreg, "unable to request vdd-thread0-ldo regulator, rc=%d\n",
 				rc);
 		return rc;
 	}
@@ -535,25 +535,25 @@ static int cpr4_mmss_init_thread(struct cpr3_thread *thread)
 		return rc;
 	}
 
-	rc = cpr4_sdm660_mmss_calculate_open_loop_voltages(vreg);
+rc = cpr4_sdm660_mmss_calculate_open_loop_voltages(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to calculate open-loop voltages, rc=%d\n",
+cpr3_err(vreg, "unable to calculate open-loop voltages, rc=%d\n",
 			rc);
 		return rc;
 	}
 
-	rc = cpr3_limit_open_loop_voltages(vreg);
+rc = cpr3_limit_open_loop_voltages(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to limit open-loop voltages, rc=%d\n",
+cpr3_err(vreg, "unable to limit open-loop voltages, rc=%d\n",
 			rc);
 		return rc;
 	}
 
-	cpr3_open_loop_voltage_as_ceiling(vreg);
+cpr3_open_loop_voltage_as_ceiling(vreg);
 
-	rc = cpr3_limit_floor_voltages(vreg);
+rc = cpr3_limit_floor_voltages(vreg);
 	if (rc) {
-		cpr3_err(vreg, "unable to limit floor voltages, rc=%d\n", rc);
+cpr3_err(vreg, "unable to limit floor voltages, rc=%d\n", rc);
 		return rc;
 	}
 

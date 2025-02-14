@@ -92,7 +92,7 @@ struct mpc52xx_gpt_priv {
 	struct mpc52xx_gpt __iomem *regs;
 	spinlock_t lock;
 	struct irq_domain *irqhost;
-	u32 ipb_freq;
+u32 ipb_freq;
 	u8 wdt_mode;
 
 #if defined(CONFIG_GPIOLIB)
@@ -407,8 +407,8 @@ static int mpc52xx_gpt_do_start(struct mpc52xx_gpt_priv *gpt, u64 period,
 	/* Determine the number of clocks in the requested period.  64 bit
 	 * arithmatic is done here to preserve the precision until the value
 	 * is scaled back down into the u32 range.  Period is in 'ns', bus
-	 * frequency is in Hz. */
-	clocks = period * (u64)gpt->ipb_freq;
+* frequency is in Hz. */
+clocks = period * (u64)gpt->ipb_freq;
 	do_div(clocks, 1000000000); /* Scale it down to ns range */
 
 	/* This device cannot handle a clock count greater than 32 bits */
@@ -509,7 +509,7 @@ u64 mpc52xx_gpt_timer_period(struct mpc52xx_gpt_priv *gpt)
 	if (prescale == 0)
 		prescale = 0x10000;
 	period = period * prescale * 1000000000ULL;
-	do_div(period, (u64)gpt->ipb_freq);
+do_div(period, (u64)gpt->ipb_freq);
 	return period;
 }
 EXPORT_SYMBOL(mpc52xx_gpt_timer_period);
@@ -725,7 +725,7 @@ static int mpc52xx_gpt_probe(struct platform_device *ofdev)
 
 	spin_lock_init(&gpt->lock);
 	gpt->dev = &ofdev->dev;
-	gpt->ipb_freq = mpc5xxx_get_bus_frequency(ofdev->dev.of_node);
+gpt->ipb_freq = mpc5xxx_get_bus_frequency(ofdev->dev.of_node);
 	gpt->regs = of_iomap(ofdev->dev.of_node, 0);
 	if (!gpt->regs)
 		return -ENOMEM;

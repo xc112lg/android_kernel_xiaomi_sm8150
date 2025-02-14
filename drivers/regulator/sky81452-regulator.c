@@ -35,10 +35,10 @@
 #define SKY81452_LOUT	0x1F
 
 static struct regulator_ops sky81452_reg_ops = {
-	.list_voltage = regulator_list_voltage_linear_range,
-	.map_voltage = regulator_map_voltage_linear_range,
-	.get_voltage_sel = regulator_get_voltage_sel_regmap,
-	.set_voltage_sel = regulator_set_voltage_sel_regmap,
+.list_voltage = regulator_list_voltage_linear_range,
+.map_voltage = regulator_map_voltage_linear_range,
+.get_voltage_sel = regulator_get_voltage_sel_regmap,
+.set_voltage_sel = regulator_set_voltage_sel_regmap,
 	.enable = regulator_enable_regmap,
 	.disable = regulator_disable_regmap,
 	.is_enabled = regulator_is_enabled_regmap,
@@ -54,9 +54,9 @@ static const struct regulator_desc sky81452_reg = {
 	.of_match = of_match_ptr("lout"),
 	.regulators_node = of_match_ptr("regulator"),
 	.ops = &sky81452_reg_ops,
-	.type = REGULATOR_VOLTAGE,
+.type = REGULATOR_VOLTAGE,
 	.owner = THIS_MODULE,
-	.n_voltages = SKY81452_LOUT + 1,
+.n_voltages = SKY81452_LOUT + 1,
 	.linear_ranges = sky81452_reg_ranges,
 	.n_linear_ranges = ARRAY_SIZE(sky81452_reg_ranges),
 	.vsel_reg = SKY81452_REG3,

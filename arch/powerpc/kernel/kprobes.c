@@ -69,7 +69,7 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
 		unsigned long faddr;
 		/*
 		 * Per livepatch.h, ftrace location is always within the first
-		 * 16 bytes of a function on powerpc with -mprofile-kernel.
+* 16 bytes of a function on powerpc with -mprofile-kernel.
 		 */
 		faddr = ftrace_location_range((unsigned long)addr,
 					      (unsigned long)addr + 16);
@@ -81,7 +81,7 @@ kprobe_opcode_t *kprobe_lookup_name(const char *name, unsigned int offset)
 	}
 #elif defined(PPC64_ELF_ABI_v1)
 	/*
-	 * 64bit powerpc ABIv1 uses function descriptors:
+* 64bit powerpc ABIv1 uses function descriptors:
 	 * - Check for the dot variant of the symbol first.
 	 * - If that fails, try looking up the symbol provided.
 	 *
@@ -188,7 +188,7 @@ static nokprobe_inline void prepare_singlestep(struct kprobe *p, struct pt_regs 
 	enable_single_step(regs);
 
 	/*
-	 * On powerpc we should single step on the original
+* On powerpc we should single step on the original
 	 * instruction even if the probed insn is a trap
 	 * variant as values in regs could play a part in
 	 * if the trap is taken or not
@@ -350,7 +350,7 @@ int kprobe_handler(struct pt_regs *regs)
 	if (!p) {
 		if (*addr != BREAKPOINT_INSTRUCTION) {
 			/*
-			 * PowerPC has multiple variants of the "trap"
+* PowerPC has multiple variants of the "trap"
 			 * instruction. If the current instruction is a
 			 * trap variant, it could belong to someone else
 			 */

@@ -69,8 +69,8 @@ enum {
 		FW_FEATURE_TYPE1_AFFINITY | FW_FEATURE_PRRN |
 		FW_FEATURE_HPT_RESIZE,
 	FW_FEATURE_PSERIES_ALWAYS = 0,
-	FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL,
-	FW_FEATURE_POWERNV_ALWAYS = 0,
+FW_FEATURE_POWERNV_POSSIBLE = FW_FEATURE_OPAL,
+FW_FEATURE_POWERNV_ALWAYS = 0,
 	FW_FEATURE_PS3_POSSIBLE = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
 	FW_FEATURE_PS3_ALWAYS = FW_FEATURE_LPAR | FW_FEATURE_PS3_LV1,
 	FW_FEATURE_NATIVE_POSSIBLE = 0,
@@ -80,7 +80,7 @@ enum {
 		FW_FEATURE_PSERIES_POSSIBLE |
 #endif
 #ifdef CONFIG_PPC_POWERNV
-		FW_FEATURE_POWERNV_POSSIBLE |
+FW_FEATURE_POWERNV_POSSIBLE |
 #endif
 #ifdef CONFIG_PPC_PS3
 		FW_FEATURE_PS3_POSSIBLE |
@@ -94,7 +94,7 @@ enum {
 		FW_FEATURE_PSERIES_ALWAYS &
 #endif
 #ifdef CONFIG_PPC_POWERNV
-		FW_FEATURE_POWERNV_ALWAYS &
+FW_FEATURE_POWERNV_ALWAYS &
 #endif
 #ifdef CONFIG_PPC_PS3
 		FW_FEATURE_PS3_ALWAYS &
@@ -117,7 +117,7 @@ extern unsigned long	powerpc_firmware_features;
 
 #define firmware_has_feature(feature)					\
 	((FW_FEATURE_ALWAYS & (feature)) ||				\
-		(FW_FEATURE_POSSIBLE & powerpc_firmware_features & (feature)))
+(FW_FEATURE_POSSIBLE & powerpc_firmware_features & (feature)))
 
 extern void system_reset_fwnmi(void);
 extern void machine_check_fwnmi(void);

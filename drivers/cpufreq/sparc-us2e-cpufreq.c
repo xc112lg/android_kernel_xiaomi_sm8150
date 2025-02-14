@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2003 David S. Miller (davem@redhat.com)
  *
- * Many thanks to Dominik Brodowski for fixing up the cpufreq
+* Many thanks to Dominik Brodowski for fixing up the cpufreq
  * infrastructure in order to make this driver easier to implement.
  */
 
@@ -22,7 +22,7 @@
 static struct cpufreq_driver *cpufreq_us2e_driver;
 
 struct us2e_freq_percpu_info {
-	struct cpufreq_frequency_table table[6];
+struct cpufreq_frequency_table table[6];
 };
 
 /* Indexed by cpu number. */
@@ -235,7 +235,7 @@ static unsigned int us2e_freq_get(unsigned int cpu)
 	unsigned long clock_tick, estar;
 
 	clock_tick = sparc64_get_clock_tick(cpu) / 1000;
-	if (smp_call_function_single(cpu, __us2e_freq_get, &estar, 1))
+if (smp_call_function_single(cpu, __us2e_freq_get, &estar, 1))
 		return 0;
 
 	return clock_tick / estar_to_divisor(estar);
@@ -245,13 +245,13 @@ static void __us2e_freq_target(void *arg)
 {
 	unsigned int cpu = smp_processor_id();
 	unsigned int *index = arg;
-	unsigned long new_bits, new_freq;
+unsigned long new_bits, new_freq;
 	unsigned long clock_tick, divisor, old_divisor, estar;
 
-	new_freq = clock_tick = sparc64_get_clock_tick(cpu) / 1000;
+new_freq = clock_tick = sparc64_get_clock_tick(cpu) / 1000;
 	new_bits = index_to_estar_mode(*index);
 	divisor = index_to_divisor(*index);
-	new_freq /= divisor;
+new_freq /= divisor;
 
 	estar = read_hbreg(HBIRD_ESTAR_MODE_ADDR);
 
@@ -267,39 +267,39 @@ static int us2e_freq_target(struct cpufreq_policy *policy, unsigned int index)
 {
 	unsigned int cpu = policy->cpu;
 
-	return smp_call_function_single(cpu, __us2e_freq_target, &index, 1);
+return smp_call_function_single(cpu, __us2e_freq_target, &index, 1);
 }
 
 static int __init us2e_freq_cpu_init(struct cpufreq_policy *policy)
 {
 	unsigned int cpu = policy->cpu;
 	unsigned long clock_tick = sparc64_get_clock_tick(cpu) / 1000;
-	struct cpufreq_frequency_table *table =
-		&us2e_freq_table[cpu].table[0];
+struct cpufreq_frequency_table *table =
+&us2e_freq_table[cpu].table[0];
 
 	table[0].driver_data = 0;
-	table[0].frequency = clock_tick / 1;
+table[0].frequency = clock_tick / 1;
 	table[1].driver_data = 1;
-	table[1].frequency = clock_tick / 2;
+table[1].frequency = clock_tick / 2;
 	table[2].driver_data = 2;
-	table[2].frequency = clock_tick / 4;
+table[2].frequency = clock_tick / 4;
 	table[2].driver_data = 3;
-	table[2].frequency = clock_tick / 6;
+table[2].frequency = clock_tick / 6;
 	table[2].driver_data = 4;
-	table[2].frequency = clock_tick / 8;
+table[2].frequency = clock_tick / 8;
 	table[2].driver_data = 5;
-	table[3].frequency = CPUFREQ_TABLE_END;
+table[3].frequency = CPUFREQ_TABLE_END;
 
 	policy->cpuinfo.transition_latency = 0;
 	policy->cur = clock_tick;
 
-	return cpufreq_table_validate_and_show(policy, table);
+return cpufreq_table_validate_and_show(policy, table);
 }
 
 static int us2e_freq_cpu_exit(struct cpufreq_policy *policy)
 {
-	if (cpufreq_us2e_driver)
-		us2e_freq_target(policy, 0);
+if (cpufreq_us2e_driver)
+us2e_freq_target(policy, 0);
 
 	return 0;
 }
@@ -317,27 +317,27 @@ static int __init us2e_freq_init(void)
 	impl  = ((ver >> 32) & 0xffff);
 
 	if (manuf == 0x17 && impl == 0x13) {
-		struct cpufreq_driver *driver;
+struct cpufreq_driver *driver;
 
 		ret = -ENOMEM;
 		driver = kzalloc(sizeof(*driver), GFP_KERNEL);
 		if (!driver)
 			goto err_out;
 
-		us2e_freq_table = kzalloc((NR_CPUS * sizeof(*us2e_freq_table)),
+us2e_freq_table = kzalloc((NR_CPUS * sizeof(*us2e_freq_table)),
 			GFP_KERNEL);
-		if (!us2e_freq_table)
+if (!us2e_freq_table)
 			goto err_out;
 
-		driver->init = us2e_freq_cpu_init;
-		driver->verify = cpufreq_generic_frequency_table_verify;
-		driver->target_index = us2e_freq_target;
-		driver->get = us2e_freq_get;
-		driver->exit = us2e_freq_cpu_exit;
+driver->init = us2e_freq_cpu_init;
+driver->verify = cpufreq_generic_frequency_table_verify;
+driver->target_index = us2e_freq_target;
+driver->get = us2e_freq_get;
+driver->exit = us2e_freq_cpu_exit;
 		strcpy(driver->name, "UltraSPARC-IIe");
 
-		cpufreq_us2e_driver = driver;
-		ret = cpufreq_register_driver(driver);
+cpufreq_us2e_driver = driver;
+ret = cpufreq_register_driver(driver);
 		if (ret)
 			goto err_out;
 
@@ -346,10 +346,10 @@ static int __init us2e_freq_init(void)
 err_out:
 		if (driver) {
 			kfree(driver);
-			cpufreq_us2e_driver = NULL;
+cpufreq_us2e_driver = NULL;
 		}
-		kfree(us2e_freq_table);
-		us2e_freq_table = NULL;
+kfree(us2e_freq_table);
+us2e_freq_table = NULL;
 		return ret;
 	}
 
@@ -358,12 +358,12 @@ err_out:
 
 static void __exit us2e_freq_exit(void)
 {
-	if (cpufreq_us2e_driver) {
-		cpufreq_unregister_driver(cpufreq_us2e_driver);
-		kfree(cpufreq_us2e_driver);
-		cpufreq_us2e_driver = NULL;
-		kfree(us2e_freq_table);
-		us2e_freq_table = NULL;
+if (cpufreq_us2e_driver) {
+cpufreq_unregister_driver(cpufreq_us2e_driver);
+kfree(cpufreq_us2e_driver);
+cpufreq_us2e_driver = NULL;
+kfree(us2e_freq_table);
+us2e_freq_table = NULL;
 	}
 }
 

@@ -1,5 +1,5 @@
 /*
- * PowerNV cpuidle code
+* PowerNV cpuidle code
  *
  * Copyright 2015 IBM Corp.
  *
@@ -37,7 +37,7 @@
 static u32 supported_cpuidle_states;
 
 /*
- * The default stop state that will be used by ppc_md.power_save
+* The default stop state that will be used by ppc_md.power_save
  * function on platforms that support stop instruction.
  */
 static u64 pnv_default_stop_val;
@@ -176,7 +176,7 @@ static void pnv_alloc_idle_core_states(void)
 			paca[cpu].core_idle_state_ptr = core_idle_state;
 			paca[cpu].thread_idle_state = PNV_THREAD_RUNNING;
 			paca[cpu].thread_mask = 1 << j;
-			if (!cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (!cpu_has_feature(CPU_FTR_POWER9_DD1))
 				continue;
 			paca[cpu].thread_sibling_pacas =
 				kmalloc_node(paca_ptr_array_size,
@@ -198,8 +198,8 @@ static void pnv_alloc_idle_core_states(void)
 		 * lose full context. So disable such states.
 		 */
 		supported_cpuidle_states &= ~OPAL_PM_LOSE_FULL_CONTEXT;
-		pr_warn("cpuidle-powernv: Disabling idle states that lose full context\n");
-		pr_warn("cpuidle-powernv: Idle power-savings, CPU-Hotplug affected\n");
+pr_warn("cpuidle-powernv: Disabling idle states that lose full context\n");
+pr_warn("cpuidle-powernv: Idle power-savings, CPU-Hotplug affected\n");
 
 		if (cpu_has_feature(CPU_FTR_ARCH_300) &&
 		    (pnv_deepest_stop_flag & OPAL_PM_LOSE_FULL_CONTEXT)) {
@@ -212,11 +212,11 @@ static void pnv_alloc_idle_core_states(void)
 					pnv_default_stop_val;
 				pnv_deepest_stop_psscr_mask =
 					pnv_default_stop_mask;
-				pr_warn("cpuidle-powernv: Offlined CPUs will stop with psscr = 0x%016llx\n",
+pr_warn("cpuidle-powernv: Offlined CPUs will stop with psscr = 0x%016llx\n",
 					pnv_deepest_stop_psscr_val);
 			} else { /* Fallback to snooze loop for CPU-Hotplug */
 				deepest_stop_found = false;
-				pr_warn("cpuidle-powernv: Offlined CPUs will busy wait\n");
+pr_warn("cpuidle-powernv: Offlined CPUs will busy wait\n");
 			}
 		}
 	}
@@ -325,7 +325,7 @@ static unsigned long __power7_idle_type(unsigned long type)
 		return 0;
 
 	__ppc64_runlatch_off();
-	srr1 = power7_idle_insn(type);
+srr1 = power7_idle_insn(type);
 	__ppc64_runlatch_on();
 
 	fini_irq_for_idle_irqsoff();
@@ -337,16 +337,16 @@ void power7_idle_type(unsigned long type)
 {
 	unsigned long srr1;
 
-	srr1 = __power7_idle_type(type);
+srr1 = __power7_idle_type(type);
 	irq_set_pending_from_srr1(srr1);
 }
 
 void power7_idle(void)
 {
-	if (!powersave_nap)
+if (!powersave_nap)
 		return;
 
-	power7_idle_type(PNV_THREAD_NAP);
+power7_idle_type(PNV_THREAD_NAP);
 }
 
 static unsigned long __power9_idle_type(unsigned long stop_psscr_val,
@@ -362,7 +362,7 @@ static unsigned long __power9_idle_type(unsigned long stop_psscr_val,
 	psscr = (psscr & ~stop_psscr_mask) | stop_psscr_val;
 
 	__ppc64_runlatch_off();
-	srr1 = power9_idle_stop(psscr);
+srr1 = power9_idle_stop(psscr);
 	__ppc64_runlatch_on();
 
 	fini_irq_for_idle_irqsoff();
@@ -375,16 +375,16 @@ void power9_idle_type(unsigned long stop_psscr_val,
 {
 	unsigned long srr1;
 
-	srr1 = __power9_idle_type(stop_psscr_val, stop_psscr_mask);
+srr1 = __power9_idle_type(stop_psscr_val, stop_psscr_mask);
 	irq_set_pending_from_srr1(srr1);
 }
 
 /*
- * Used for ppc_md.power_save which needs a function with no parameters
+* Used for ppc_md.power_save which needs a function with no parameters
  */
 void power9_idle(void)
 {
-	power9_idle_type(pnv_default_stop_val, pnv_default_stop_mask);
+power9_idle_type(pnv_default_stop_val, pnv_default_stop_mask);
 }
 
 #ifdef CONFIG_HOTPLUG_CPU
@@ -434,16 +434,16 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
 		psscr = mfspr(SPRN_PSSCR);
 		psscr = (psscr & ~pnv_deepest_stop_psscr_mask) |
 						pnv_deepest_stop_psscr_val;
-		srr1 = power9_idle_stop(psscr);
+srr1 = power9_idle_stop(psscr);
 
 	} else if ((idle_states & OPAL_PM_WINKLE_ENABLED) &&
 		   (idle_states & OPAL_PM_LOSE_FULL_CONTEXT)) {
-		srr1 = power7_idle_insn(PNV_THREAD_WINKLE);
+srr1 = power7_idle_insn(PNV_THREAD_WINKLE);
 	} else if ((idle_states & OPAL_PM_SLEEP_ENABLED) ||
 		   (idle_states & OPAL_PM_SLEEP_ENABLED_ER1)) {
-		srr1 = power7_idle_insn(PNV_THREAD_SLEEP);
+srr1 = power7_idle_insn(PNV_THREAD_SLEEP);
 	} else if (idle_states & OPAL_PM_NAP_ENABLED) {
-		srr1 = power7_idle_insn(PNV_THREAD_NAP);
+srr1 = power7_idle_insn(PNV_THREAD_NAP);
 	} else {
 		/* This is the fallback method. We emulate snooze */
 		while (!generic_check_cpu_restart(cpu)) {
@@ -471,9 +471,9 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
 #endif
 
 /*
- * Power ISA 3.0 idle initialization.
+* Power ISA 3.0 idle initialization.
  *
- * POWER ISA 3.0 defines a new SPR Processor stop Status and Control
+* POWER ISA 3.0 defines a new SPR Processor stop Status and Control
  * Register (PSSCR) to control idle behavior.
  *
  * PSSCR layout:
@@ -483,8 +483,8 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
  * 0      4     41   42    43   44     48    54   56    60
  *
  * PSSCR key fields:
- *	Bits 0:3  - Power-Saving Level Status (PLS). This field indicates the
- *	lowest power-saving state the thread entered since stop instruction was
+*	Bits 0:3  - Power-Saving Level Status (PLS). This field indicates the
+*	lowest power-saving state the thread entered since stop instruction was
  *	last executed.
  *
  *	Bit 41 - Status Disable(SD)
@@ -496,14 +496,14 @@ unsigned long pnv_cpu_offline(unsigned int cpu)
  *	1 - Allows state loss
  *
  *	Bit 43 - Exit Criterion
- *	0 - Exit from power-save mode on any interrupt
- *	1 - Exit from power-save mode controlled by LPCR's PECE bits
+*	0 - Exit from power-save mode on any interrupt
+*	1 - Exit from power-save mode controlled by LPCR's PECE bits
  *
- *	Bits 44:47 - Power-Saving Level Limit
- *	This limits the power-saving level that can be entered into.
+*	Bits 44:47 - Power-Saving Level Limit
+*	This limits the power-saving level that can be entered into.
  *
  *	Bits 60:63 - Requested Level
- *	Used to specify which power-saving level must be entered on executing
+*	Used to specify which power-saving level must be entered on executing
  *	stop instruction
  */
 
@@ -544,7 +544,7 @@ int validate_psscr_val_mask(u64 *psscr_val, u64 *psscr_mask, u32 flags)
  *                        deep idle state and deepest idle state on
  *                        ISA 3.0 CPUs.
  *
- * @np: /ibm,opal/power-mgt device node
+* @np: /ibm,opal/power-mgt device node
  * @flags: cpu-idle-state-flags array
  * @dt_idle_states: Number of idle state entries
  * Returns 0 on success
@@ -571,7 +571,7 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 	if (of_property_read_u64_array(np,
 		"ibm,cpu-idle-state-psscr",
 		psscr_val, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr in DT\n");
+pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr in DT\n");
 		rc = -1;
 		goto out;
 	}
@@ -579,7 +579,7 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 	if (of_property_read_u64_array(np,
 				       "ibm,cpu-idle-state-psscr-mask",
 				       psscr_mask, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr-mask in DT\n");
+pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-psscr-mask in DT\n");
 		rc = -1;
 		goto out;
 	}
@@ -587,7 +587,7 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 	if (of_property_read_u32_array(np,
 				       "ibm,cpu-idle-state-residency-ns",
 					residency_ns, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-residency-ns in DT\n");
+pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-residency-ns in DT\n");
 		rc = -1;
 		goto out;
 	}
@@ -638,22 +638,22 @@ static int __init pnv_power9_idle_init(struct device_node *np, u32 *flags,
 	}
 
 	if (unlikely(!default_stop_found)) {
-		pr_warn("cpuidle-powernv: No suitable default stop state found. Disabling platform idle.\n");
+pr_warn("cpuidle-powernv: No suitable default stop state found. Disabling platform idle.\n");
 	} else {
-		ppc_md.power_save = power9_idle;
-		pr_info("cpuidle-powernv: Default stop: psscr = 0x%016llx,mask=0x%016llx\n",
+ppc_md.power_save = power9_idle;
+pr_info("cpuidle-powernv: Default stop: psscr = 0x%016llx,mask=0x%016llx\n",
 			pnv_default_stop_val, pnv_default_stop_mask);
 	}
 
 	if (unlikely(!deepest_stop_found)) {
-		pr_warn("cpuidle-powernv: No suitable stop state for CPU-Hotplug. Offlined CPUs will busy wait");
+pr_warn("cpuidle-powernv: No suitable stop state for CPU-Hotplug. Offlined CPUs will busy wait");
 	} else {
-		pr_info("cpuidle-powernv: Deepest stop: psscr = 0x%016llx,mask=0x%016llx\n",
+pr_info("cpuidle-powernv: Deepest stop: psscr = 0x%016llx,mask=0x%016llx\n",
 			pnv_deepest_stop_psscr_val,
 			pnv_deepest_stop_psscr_mask);
 	}
 
-	pr_info("cpuidle-powernv: Requested Level (RL) value of first deep stop = 0x%llx\n",
+pr_info("cpuidle-powernv: Requested Level (RL) value of first deep stop = 0x%llx\n",
 		pnv_first_deep_stop_state);
 out:
 	kfree(psscr_val);
@@ -672,15 +672,15 @@ static void __init pnv_probe_idle_states(void)
 	u32 *flags = NULL;
 	int i;
 
-	np = of_find_node_by_path("/ibm,opal/power-mgt");
+np = of_find_node_by_path("/ibm,opal/power-mgt");
 	if (!np) {
-		pr_warn("opal: PowerMgmt Node not found\n");
+pr_warn("opal: PowerMgmt Node not found\n");
 		goto out;
 	}
 	dt_idle_states = of_property_count_u32_elems(np,
 			"ibm,cpu-idle-state-flags");
 	if (dt_idle_states < 0) {
-		pr_warn("cpuidle-powernv: no idle states found in the DT\n");
+pr_warn("cpuidle-powernv: no idle states found in the DT\n");
 		goto out;
 	}
 
@@ -688,12 +688,12 @@ static void __init pnv_probe_idle_states(void)
 
 	if (of_property_read_u32_array(np,
 			"ibm,cpu-idle-state-flags", flags, dt_idle_states)) {
-		pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-flags in DT\n");
+pr_warn("cpuidle-powernv: missing ibm,cpu-idle-state-flags in DT\n");
 		goto out;
 	}
 
 	if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-		if (pnv_power9_idle_init(np, flags, dt_idle_states))
+if (pnv_power9_idle_init(np, flags, dt_idle_states))
 			goto out;
 	}
 
@@ -737,10 +737,10 @@ static int __init pnv_init_idle_states(void)
 	 * sibling thread's PACA at the slot corresponding to this
 	 * CPU's index in the core.
 	 */
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 		int cpu;
 
-		pr_info("powernv: idle: Saving PACA pointers of all CPUs in their thread sibling PACA\n");
+pr_info("powernv: idle: Saving PACA pointers of all CPUs in their thread sibling PACA\n");
 		for_each_present_cpu(cpu) {
 			int base_cpu = cpu_first_thread_sibling(cpu);
 			int idx = cpu_thread_in_core(cpu);
@@ -755,7 +755,7 @@ static int __init pnv_init_idle_states(void)
 	}
 
 	if (supported_cpuidle_states & OPAL_PM_NAP_ENABLED)
-		ppc_md.power_save = power7_idle;
+ppc_md.power_save = power7_idle;
 
 out:
 	return 0;

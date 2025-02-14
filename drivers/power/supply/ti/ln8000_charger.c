@@ -762,7 +762,7 @@ static int ln8000_init_device(struct ln8000_info *info)
 }
 
 /**
- * Support power_supply platform for charger block. 
+* Support power_supply platform for charger block.
  * propertis are compatible by Xiaomi platform
  */
 static int ln8000_get_adc_data(struct ln8000_info *info, unsigned int ch,
@@ -866,7 +866,7 @@ static int psy_chg_get_ti_alarm_status(struct ln8000_info *info)
 			ln_info("enabled rcp\n");
 		}
 	}
-	/* If an unplug event occurs when vbus voltage lower then vin_start_up_th, switch to standby mode. */
+/* If an unplug event occurs when vbus voltage lower then vin_start_up_th, switch to standby mode. */
 	if (info->chg_en && !(info->rcp_en)) {
 		if (v_offset < 100000) {
 			ln8000_change_opmode(info, LN8000_OPMODE_STANDBY);
@@ -914,28 +914,28 @@ static int psy_chg_get_ti_fault_status(struct ln8000_info *info)
 }
 
 static int ln8000_charger_get_property(struct power_supply *psy,
-				       enum power_supply_property prop,
-				       union power_supply_propval *val)
+enum power_supply_property prop,
+union power_supply_propval *val)
 {
-	struct ln8000_info *info = power_supply_get_drvdata(psy);
+struct ln8000_info *info = power_supply_get_drvdata(psy);
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		val->intval = psy_chg_get_charging_enabled(info);
 		break;
-	case POWER_SUPPLY_PROP_STATUS:
+case POWER_SUPPLY_PROP_STATUS:
 		val->intval = 0;
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		val->intval = info->usb_present;
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		val->intval = ln8000_get_vbat_float(info);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		val->intval = ln8000_get_iin_limit(info);
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_PRESENT:
+case POWER_SUPPLY_PROP_TI_BATTERY_PRESENT:
 		ln8000_get_adc_data(info, LN8000_ADC_CH_VBAT, &info->vbat_uV);
 		if (info->vbat_uV > LN8000_ADC_VBAT_MIN) {
 			val->intval = 1; /* detected battery */
@@ -943,20 +943,20 @@ static int ln8000_charger_get_property(struct power_supply *psy,
 			val->intval = 0; /* non-detected battery */
 		}
 		break;
-	case POWER_SUPPLY_PROP_TI_VBUS_PRESENT:
+case POWER_SUPPLY_PROP_TI_VBUS_PRESENT:
 		ln8000_check_status(info);
 		val->intval = !(info->vac_unplug);
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE:
+case POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE:
 		ln8000_get_adc_data(info, LN8000_ADC_CH_VBAT, &info->vbat_uV);
 		val->intval = info->vbat_uV / 1000;
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_CURRENT: /* ln8000 not support IBAT_ADC */
+case POWER_SUPPLY_PROP_TI_BATTERY_CURRENT: /* ln8000 not support IBAT_ADC */
 		ln8000_get_adc_data(info, LN8000_ADC_CH_IIN, &info->iin_uA);
 		val->intval =
 			(info->iin_uA * 2) / 1000; /* return to IBUS_ADC x 2 */
 		break;
-	case POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE:
+case POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE:
 		if (info->pdata->tbat_mon_disable) {
 			val->intval = 0;
 		} else {
@@ -967,15 +967,15 @@ static int ln8000_charger_get_property(struct power_supply *psy,
 				val->intval);
 		}
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_VOLTAGE:
+case POWER_SUPPLY_PROP_TI_BUS_VOLTAGE:
 		ln8000_get_adc_data(info, LN8000_ADC_CH_VIN, &info->vbus_uV);
 		val->intval = info->vbus_uV / 1000;
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_CURRENT:
+case POWER_SUPPLY_PROP_TI_BUS_CURRENT:
 		ln8000_get_adc_data(info, LN8000_ADC_CH_IIN, &info->iin_uA);
 		val->intval = info->iin_uA / 1000;
 		break;
-	case POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE:
+case POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE:
 		if (info->pdata->tbus_mon_disable) {
 			val->intval = 0;
 		} else {
@@ -986,19 +986,19 @@ static int ln8000_charger_get_property(struct power_supply *psy,
 				val->intval);
 		}
 		break;
-	case POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE:
+case POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE:
 		ln8000_get_adc_data(info, LN8000_ADC_CH_DIETEMP,
 				    &info->tdie_dC);
 		val->intval = info->tdie_dC;
 		ln_info("ti_die_temperature: adc_tdie=%d\n", val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TI_ALARM_STATUS:
+case POWER_SUPPLY_PROP_TI_ALARM_STATUS:
 		val->intval = psy_chg_get_ti_alarm_status(info);
 		break;
-	case POWER_SUPPLY_PROP_TI_FAULT_STATUS:
+case POWER_SUPPLY_PROP_TI_FAULT_STATUS:
 		val->intval = psy_chg_get_ti_fault_status(info);
 		break;
-	case POWER_SUPPLY_PROP_TI_REG_STATUS:
+case POWER_SUPPLY_PROP_TI_REG_STATUS:
 		ln8000_check_status(info);
 		val->intval =
 			((info->vbat_regulated << VBAT_REG_STATUS_SHIFT) |
@@ -1008,7 +1008,7 @@ static int ln8000_charger_get_property(struct power_supply *psy,
 			ln_info("ti_reg_status: intavl=0x%x\n", val->intval);
 		}
 		break;
-	case POWER_SUPPLY_PROP_MODEL_NAME:
+case POWER_SUPPLY_PROP_MODEL_NAME:
 		val->strval = "ln8000";
 		break;
 	default:
@@ -1101,26 +1101,26 @@ static int psy_chg_set_bus_protection_for_qc3(struct ln8000_info *info,
 }
 
 static int ln8000_charger_set_property(struct power_supply *psy,
-				       enum power_supply_property prop,
-				       const union power_supply_propval *val)
+enum power_supply_property prop,
+const union power_supply_propval *val)
 {
-	struct ln8000_info *info = power_supply_get_drvdata(psy);
+struct ln8000_info *info = power_supply_get_drvdata(psy);
 	int ret = 0;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
 		ret = psy_chg_set_charging_enable(info, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_PRESENT:
 		ret = psy_chg_set_present(info, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
+case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
 		ret = psy_chg_set_bus_protection_for_qc3(info, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
 		ret = ln8000_set_vbat_float(info, val->intval);
 		break;
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
 		ret = ln8000_set_iin_limit(info, val->intval);
 		break;
 	default:
@@ -1132,16 +1132,16 @@ static int ln8000_charger_set_property(struct power_supply *psy,
 }
 
 static int ln8000_charger_is_writeable(struct power_supply *psy,
-				       enum power_supply_property prop)
+enum power_supply_property prop)
 {
 	int ret;
 
 	switch (prop) {
-	case POWER_SUPPLY_PROP_PRESENT:
-	case POWER_SUPPLY_PROP_CHARGING_ENABLED:
-	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
-	case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
-	case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
+case POWER_SUPPLY_PROP_PRESENT:
+case POWER_SUPPLY_PROP_CHARGING_ENABLED:
+case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+case POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT:
+case POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3:
 		ret = 1;
 		break;
 	default:
@@ -1153,26 +1153,26 @@ static int ln8000_charger_is_writeable(struct power_supply *psy,
 }
 
 static enum power_supply_property ln8000_charger_props[] = {
-	POWER_SUPPLY_PROP_PRESENT,
-	POWER_SUPPLY_PROP_CHARGING_ENABLED,
-	POWER_SUPPLY_PROP_STATUS,
-	POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
-	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
+POWER_SUPPLY_PROP_PRESENT,
+POWER_SUPPLY_PROP_CHARGING_ENABLED,
+POWER_SUPPLY_PROP_STATUS,
+POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE,
+POWER_SUPPLY_PROP_INPUT_CURRENT_LIMIT,
 	/* support TI extended propertis */
-	POWER_SUPPLY_PROP_TI_BATTERY_PRESENT,
-	POWER_SUPPLY_PROP_TI_VBUS_PRESENT,
-	POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE,
-	POWER_SUPPLY_PROP_TI_BATTERY_CURRENT,
-	POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE,
-	POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
-	POWER_SUPPLY_PROP_TI_BUS_CURRENT,
-	POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE,
-	POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE,
-	POWER_SUPPLY_PROP_TI_ALARM_STATUS,
-	POWER_SUPPLY_PROP_TI_FAULT_STATUS,
-	POWER_SUPPLY_PROP_TI_REG_STATUS,
-	POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3,
-	POWER_SUPPLY_PROP_MODEL_NAME,
+POWER_SUPPLY_PROP_TI_BATTERY_PRESENT,
+POWER_SUPPLY_PROP_TI_VBUS_PRESENT,
+POWER_SUPPLY_PROP_TI_BATTERY_VOLTAGE,
+POWER_SUPPLY_PROP_TI_BATTERY_CURRENT,
+POWER_SUPPLY_PROP_TI_BATTERY_TEMPERATURE,
+POWER_SUPPLY_PROP_TI_BUS_VOLTAGE,
+POWER_SUPPLY_PROP_TI_BUS_CURRENT,
+POWER_SUPPLY_PROP_TI_BUS_TEMPERATURE,
+POWER_SUPPLY_PROP_TI_DIE_TEMPERATURE,
+POWER_SUPPLY_PROP_TI_ALARM_STATUS,
+POWER_SUPPLY_PROP_TI_FAULT_STATUS,
+POWER_SUPPLY_PROP_TI_REG_STATUS,
+POWER_SUPPLY_PROP_TI_SET_BUS_PROTECTION_FOR_QC3,
+POWER_SUPPLY_PROP_MODEL_NAME,
 };
 
 static int read_reg(void *data, u64 *val)
@@ -1354,7 +1354,7 @@ static irqreturn_t ln8000_interrupt_handler(int irq, void *data)
 
 	if (masked_int & LN8000_MASK_FAULT_INT) { /* FAULT_INT */
 		if (info->volt_qual) {
-			ln_info("connected to power_supplier\n");
+ln_info("connected to power_supplier\n");
 		} else {
 			ln_info("FAULT_INT has occurred\n");
 		}
@@ -1634,21 +1634,21 @@ static int ln8000_psy_register(struct ln8000_info *info)
 	info->psy_cfg.drv_data = info;
 	info->psy_cfg.of_node = info->client->dev.of_node;
 	info->psy_desc.name = "bq2597x-standalone";
-	info->psy_desc.type = POWER_SUPPLY_TYPE_MAINS;
+info->psy_desc.type = POWER_SUPPLY_TYPE_MAINS;
 	info->psy_desc.properties = ln8000_charger_props;
 	info->psy_desc.num_properties = ARRAY_SIZE(ln8000_charger_props);
 	info->psy_desc.get_property = ln8000_charger_get_property;
 	info->psy_desc.set_property = ln8000_charger_set_property;
 	info->psy_desc.property_is_writeable = ln8000_charger_is_writeable;
-	info->psy_chg = devm_power_supply_register(
+info->psy_chg = devm_power_supply_register(
 		&info->client->dev, &info->psy_desc, &info->psy_cfg);
 	if (IS_ERR(info->psy_chg)) {
-		ln_err("(%s) failed to register power supply\n",
+ln_err("(%s) failed to register power supply\n",
 		       LN8000_ROLE(info));
 		return PTR_ERR(info->psy_chg);
 	}
 
-	ln_info("(%s) successfully registered power supply\n",
+ln_info("(%s) successfully registered power supply\n",
 		LN8000_ROLE(info));
 
 	return 0;
@@ -1764,7 +1764,7 @@ err_wakeup:
 		}
 	}
 err_psy:
-	power_supply_unregister(info->psy_chg);
+power_supply_unregister(info->psy_chg);
 
 err_cleanup:
 	i2c_set_clientdata(client, NULL);
@@ -1793,7 +1793,7 @@ static int ln8000_remove(struct i2c_client *client)
 		}
 	}
 
-	power_supply_unregister(info->psy_chg);
+power_supply_unregister(info->psy_chg);
 	i2c_set_clientdata(info->client, NULL);
 
 	mutex_destroy(&info->data_lock);

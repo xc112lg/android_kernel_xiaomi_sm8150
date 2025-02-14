@@ -46,7 +46,7 @@ void kvmppc_emulate_dec(struct kvm_vcpu *vcpu)
 	/* mtdec lowers the interrupt line when positive. */
 	kvmppc_core_dequeue_dec(vcpu);
 
-	/* POWER4+ triggers a dec interrupt if the value is < 0 */
+/* POWER4+ triggers a dec interrupt if the value is < 0 */
 	if (vcpu->arch.dec & 0x80000000) {
 		kvmppc_core_queue_dec(vcpu);
 		return;
@@ -67,7 +67,7 @@ void kvmppc_emulate_dec(struct kvm_vcpu *vcpu)
 
 	dec_time = vcpu->arch.dec;
 	/*
-	 * Guest timebase ticks at the same frequency as host decrementer.
+* Guest timebase ticks at the same frequency as host decrementer.
 	 * So use the host decrementer calculations for decrementer emulation.
 	 */
 	dec_time = dec_time << decrementer_clockevent.shift;
@@ -284,7 +284,7 @@ int kvmppc_emulate_instruction(struct kvm_run *run, struct kvm_vcpu *vcpu)
 
 	case 0:
 		/*
-		 * Instruction with primary opcode 0. Based on PowerISA
+* Instruction with primary opcode 0. Based on PowerISA
 		 * these are illegal instructions.
 		 */
 		if (inst == KVMPPC_INST_SW_BREAKPOINT) {

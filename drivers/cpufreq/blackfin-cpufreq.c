@@ -23,19 +23,19 @@
 /* .driver_data is the entry in the auxiliary dpm_state_table[] */
 static struct cpufreq_frequency_table bfin_freq_table[] = {
 	{
-		.frequency = CPUFREQ_TABLE_END,
+.frequency = CPUFREQ_TABLE_END,
 		.driver_data = 0,
 	},
 	{
-		.frequency = CPUFREQ_TABLE_END,
+.frequency = CPUFREQ_TABLE_END,
 		.driver_data = 1,
 	},
 	{
-		.frequency = CPUFREQ_TABLE_END,
+.frequency = CPUFREQ_TABLE_END,
 		.driver_data = 2,
 	},
 	{
-		.frequency = CPUFREQ_TABLE_END,
+.frequency = CPUFREQ_TABLE_END,
 		.driver_data = 0,
 	},
 };
@@ -47,7 +47,7 @@ static struct bfin_dpm_state {
 
 #if defined(CONFIG_CYCLES_CLOCKSOURCE)
 /*
- * normalized to maximum frequency offset for CYCLES,
+* normalized to maximum frequency offset for CYCLES,
  * used in time-ts cycles clock source, but could be used
  * somewhere also.
  */
@@ -78,7 +78,7 @@ static void __init bfin_init_tables(unsigned long cclk, unsigned long sclk)
 #endif
 
 	for (index = 0;  (cclk >> index) >= min_cclk && csel <= 3 && index < 3; index++, csel++) {
-		bfin_freq_table[index].frequency = cclk >> index;
+bfin_freq_table[index].frequency = cclk >> index;
 #ifndef CONFIG_BF60x
 		dpm_state_table[index].csel = csel << 4; /* Shift now into PLL_DIV bitpos */
 #else
@@ -86,8 +86,8 @@ static void __init bfin_init_tables(unsigned long cclk, unsigned long sclk)
 #endif
 		dpm_state_table[index].tscale =  (TIME_SCALE >> index) - 1;
 
-		pr_debug("cpufreq: freq:%d csel:0x%x tscale:%d\n",
-						 bfin_freq_table[index].frequency,
+pr_debug("cpufreq: freq:%d csel:0x%x tscale:%d\n",
+bfin_freq_table[index].frequency,
 						 dpm_state_table[index].csel,
 						 dpm_state_table[index].tscale);
 	}
@@ -133,24 +133,24 @@ static int bfin_target(struct cpufreq_policy *policy, unsigned int index)
 	unsigned int plldiv;
 #endif
 	static unsigned long lpj_ref;
-	static unsigned int  lpj_ref_freq;
-	unsigned int old_freq, new_freq;
+static unsigned int  lpj_ref_freq;
+unsigned int old_freq, new_freq;
 	int ret = 0;
 
 #if defined(CONFIG_CYCLES_CLOCKSOURCE)
 	cycles_t cycles;
 #endif
 
-	old_freq = bfin_getfreq_khz(0);
-	new_freq = bfin_freq_table[index].frequency;
+old_freq = bfin_getfreq_khz(0);
+new_freq = bfin_freq_table[index].frequency;
 
 #ifndef CONFIG_BF60x
 	plldiv = (bfin_read_PLL_DIV() & SSEL) | dpm_state_table[index].csel;
 	bfin_write_PLL_DIV(plldiv);
 #else
-	ret = cpu_set_cclk(policy->cpu, new_freq * 1000);
+ret = cpu_set_cclk(policy->cpu, new_freq * 1000);
 	if (ret != 0) {
-		WARN_ONCE(ret, "cpufreq set freq failed %d\n", ret);
+WARN_ONCE(ret, "cpufreq set freq failed %d\n", ret);
 		return ret;
 	}
 #endif
@@ -162,13 +162,13 @@ static int bfin_target(struct cpufreq_policy *policy, unsigned int index)
 	__bfin_cycles_off += (cycles << __bfin_cycles_mod) - (cycles << index);
 	__bfin_cycles_mod = index;
 #endif
-	if (!lpj_ref_freq) {
+if (!lpj_ref_freq) {
 		lpj_ref = loops_per_jiffy;
-		lpj_ref_freq = old_freq;
+lpj_ref_freq = old_freq;
 	}
-	if (new_freq != old_freq) {
-		loops_per_jiffy = cpufreq_scale(lpj_ref,
-				lpj_ref_freq, new_freq);
+if (new_freq != old_freq) {
+loops_per_jiffy = cpufreq_scale(lpj_ref,
+lpj_ref_freq, new_freq);
 	}
 
 	return ret;
@@ -182,31 +182,31 @@ static int __bfin_cpu_init(struct cpufreq_policy *policy)
 	cclk = get_cclk() / 1000;
 	sclk = get_sclk() / 1000;
 
-	if (policy->cpu == CPUFREQ_CPU)
+if (policy->cpu == CPUFREQ_CPU)
 		bfin_init_tables(cclk, sclk);
 
 	policy->cpuinfo.transition_latency = 50000; /* 50us assumed */
 
-	return cpufreq_table_validate_and_show(policy, bfin_freq_table);
+return cpufreq_table_validate_and_show(policy, bfin_freq_table);
 }
 
 static struct cpufreq_driver bfin_driver = {
-	.verify = cpufreq_generic_frequency_table_verify,
+.verify = cpufreq_generic_frequency_table_verify,
 	.target_index = bfin_target,
-	.get = bfin_getfreq_khz,
+.get = bfin_getfreq_khz,
 	.init = __bfin_cpu_init,
-	.name = "bfin cpufreq",
-	.attr = cpufreq_generic_attr,
+.name = "bfin cpufreq",
+.attr = cpufreq_generic_attr,
 };
 
 static int __init bfin_cpu_init(void)
 {
-	return cpufreq_register_driver(&bfin_driver);
+return cpufreq_register_driver(&bfin_driver);
 }
 
 static void __exit bfin_cpu_exit(void)
 {
-	cpufreq_unregister_driver(&bfin_driver);
+cpufreq_unregister_driver(&bfin_driver);
 }
 
 MODULE_AUTHOR("Michael Hennerich <hennerich@blackfin.uclinux.org>");

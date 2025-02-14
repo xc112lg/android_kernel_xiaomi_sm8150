@@ -138,7 +138,7 @@
 #define UNI_N_CPU_NUMBER		0x0050
 
 /* This register appear to be read by the bootROM to decide what
- *  to do on a non-recoverable reset (powerup or wakeup)
+*  to do on a non-recoverable reset (powerup or wakeup)
  */
 #define UNI_N_HWINIT_STATE		0x0070
 #define UNI_N_HWINIT_STATE_SLEEPING	0x01

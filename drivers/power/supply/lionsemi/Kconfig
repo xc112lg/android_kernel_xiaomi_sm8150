@@ -7,7 +7,7 @@ config LN8282
 	  Say Y to include support for LN8282 charger pump.
 	  LN8282 is a charger pump chip.
 	  The driver supports charger enable/disable.
-	  The driver reports the charger status via the power supply framework.
+The driver reports the charger status via the power supply framework.
 	  The driver controls 8282 via I2C and
 	  supports device-tree interface.
 

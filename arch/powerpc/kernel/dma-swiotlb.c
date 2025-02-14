@@ -60,7 +60,7 @@ const struct dma_map_ops swiotlb_dma_ops = {
 	.sync_sg_for_cpu = swiotlb_sync_sg_for_cpu,
 	.sync_sg_for_device = swiotlb_sync_sg_for_device,
 	.mapping_error = swiotlb_dma_mapping_error,
-	.get_required_mask = swiotlb_powerpc_get_required,
+.get_required_mask = swiotlb_powerpc_get_required,
 };
 
 void pci_dma_dev_setup_swiotlb(struct pci_dev *pdev)

@@ -175,7 +175,7 @@ void radix__mark_rodata_ro(void)
 	 * Due to DD1 workaround in radix__pte_update(), we'll end up with
 	 * an invalid pte and the system will crash quite severly.
 	 */
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
+if (cpu_has_feature(CPU_FTR_POWER9_DD1)) {
 		pr_warn("Warning: Unable to mark rodata read only on P9 DD1\n");
 		return;
 	}
@@ -465,12 +465,12 @@ static void update_hid_for_radix(void)
 	 * now switch the HID
 	 */
 	hid0  = mfspr(SPRN_HID0);
-	hid0 |= HID0_POWER9_RADIX;
+hid0 |= HID0_POWER9_RADIX;
 	mtspr(SPRN_HID0, hid0);
 	asm volatile("isync": : :"memory");
 
 	/* Wait for it to happen */
-	while (!(mfspr(SPRN_HID0) & HID0_POWER9_RADIX))
+while (!(mfspr(SPRN_HID0) & HID0_POWER9_RADIX))
 		cpu_relax();
 }
 
@@ -493,7 +493,7 @@ static void radix_init_iamr(void)
 	/*
 	 * The IAMR should set to 0 on DD1.
 	 */
-	if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 		iamr = 0;
 	else
 		iamr = (1ul << 62);
@@ -564,7 +564,7 @@ void __init radix__early_init_mmu(void)
 
 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
 		radix_init_native();
-		if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 			update_hid_for_radix();
 		lpcr = mfspr(SPRN_LPCR);
 		mtspr(SPRN_LPCR, lpcr | LPCR_UPRT | LPCR_HR);
@@ -588,7 +588,7 @@ void radix__early_init_mmu_secondary(void)
 	 */
 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
 
-		if (cpu_has_feature(CPU_FTR_POWER9_DD1))
+if (cpu_has_feature(CPU_FTR_POWER9_DD1))
 			update_hid_for_radix();
 
 		lpcr = mfspr(SPRN_LPCR);
@@ -609,7 +609,7 @@ void radix__mmu_cleanup_all(void)
 		lpcr = mfspr(SPRN_LPCR);
 		mtspr(SPRN_LPCR, lpcr & ~LPCR_UPRT);
 		mtspr(SPRN_PTCR, 0);
-		powernv_set_nmmu_ptcr(0);
+powernv_set_nmmu_ptcr(0);
 		radix__flush_tlb_all();
 	}
 }

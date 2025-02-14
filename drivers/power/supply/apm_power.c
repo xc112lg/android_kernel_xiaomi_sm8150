@@ -16,7 +16,7 @@
 
 
 #define PSY_PROP(psy, prop, val) (power_supply_get_property(psy, \
-			 POWER_SUPPLY_PROP_##prop, val))
+POWER_SUPPLY_PROP_##prop, val))
 
 #define _MPSY_PROP(prop, val) (power_supply_get_property(main_battery, \
 							 prop, val))
@@ -29,15 +29,15 @@ static struct power_supply *main_battery;
 enum apm_source {
 	SOURCE_ENERGY,
 	SOURCE_CHARGE,
-	SOURCE_VOLTAGE,
+SOURCE_VOLTAGE,
 };
 
 struct find_bat_param {
-	struct power_supply *main;
-	struct power_supply *bat;
-	struct power_supply *max_charge_bat;
-	struct power_supply *max_energy_bat;
-	union power_supply_propval full;
+struct power_supply *main;
+struct power_supply *bat;
+struct power_supply *max_charge_bat;
+struct power_supply *max_energy_bat;
+union power_supply_propval full;
 	int max_charge;
 	int max_energy;
 };
@@ -79,7 +79,7 @@ static void find_main_battery(void)
 	main_battery = NULL;
 	bp.main = main_battery;
 
-	error = class_for_each_device(power_supply_class, NULL, &bp,
+error = class_for_each_device(power_supply_class, NULL, &bp,
 				      __find_main_battery);
 	if (error) {
 		main_battery = bp.main;
@@ -89,13 +89,13 @@ static void find_main_battery(void)
 	if ((bp.max_energy_bat && bp.max_charge_bat) &&
 			(bp.max_energy_bat != bp.max_charge_bat)) {
 		/* try guess battery with more capacity */
-		if (!PSY_PROP(bp.max_charge_bat, VOLTAGE_MAX_DESIGN,
+if (!PSY_PROP(bp.max_charge_bat, VOLTAGE_MAX_DESIGN,
 			      &bp.full)) {
 			if (bp.max_energy > bp.max_charge * bp.full.intval)
 				main_battery = bp.max_energy_bat;
 			else
 				main_battery = bp.max_charge_bat;
-		} else if (!PSY_PROP(bp.max_energy_bat, VOLTAGE_MAX_DESIGN,
+} else if (!PSY_PROP(bp.max_energy_bat, VOLTAGE_MAX_DESIGN,
 								  &bp.full)) {
 			if (bp.max_charge > bp.max_energy / bp.full.intval)
 				main_battery = bp.max_charge_bat;
@@ -117,16 +117,16 @@ static void find_main_battery(void)
 
 static int do_calculate_time(int status, enum apm_source source)
 {
-	union power_supply_propval full;
-	union power_supply_propval empty;
-	union power_supply_propval cur;
-	union power_supply_propval I;
-	enum power_supply_property full_prop;
-	enum power_supply_property full_design_prop;
-	enum power_supply_property empty_prop;
-	enum power_supply_property empty_design_prop;
-	enum power_supply_property cur_avg_prop;
-	enum power_supply_property cur_now_prop;
+union power_supply_propval full;
+union power_supply_propval empty;
+union power_supply_propval cur;
+union power_supply_propval I;
+enum power_supply_property full_prop;
+enum power_supply_property full_design_prop;
+enum power_supply_property empty_prop;
+enum power_supply_property empty_design_prop;
+enum power_supply_property cur_avg_prop;
+enum power_supply_property cur_now_prop;
 
 	if (MPSY_PROP(CURRENT_AVG, &I)) {
 		/* if battery can't report average value, use momentary */
@@ -139,28 +139,28 @@ static int do_calculate_time(int status, enum apm_source source)
 
 	switch (source) {
 	case SOURCE_CHARGE:
-		full_prop = POWER_SUPPLY_PROP_CHARGE_FULL;
-		full_design_prop = POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN;
-		empty_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
-		empty_design_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
-		cur_avg_prop = POWER_SUPPLY_PROP_CHARGE_AVG;
-		cur_now_prop = POWER_SUPPLY_PROP_CHARGE_NOW;
+full_prop = POWER_SUPPLY_PROP_CHARGE_FULL;
+full_design_prop = POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN;
+empty_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
+empty_design_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
+cur_avg_prop = POWER_SUPPLY_PROP_CHARGE_AVG;
+cur_now_prop = POWER_SUPPLY_PROP_CHARGE_NOW;
 		break;
 	case SOURCE_ENERGY:
-		full_prop = POWER_SUPPLY_PROP_ENERGY_FULL;
-		full_design_prop = POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN;
-		empty_prop = POWER_SUPPLY_PROP_ENERGY_EMPTY;
-		empty_design_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
-		cur_avg_prop = POWER_SUPPLY_PROP_ENERGY_AVG;
-		cur_now_prop = POWER_SUPPLY_PROP_ENERGY_NOW;
+full_prop = POWER_SUPPLY_PROP_ENERGY_FULL;
+full_design_prop = POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN;
+empty_prop = POWER_SUPPLY_PROP_ENERGY_EMPTY;
+empty_design_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
+cur_avg_prop = POWER_SUPPLY_PROP_ENERGY_AVG;
+cur_now_prop = POWER_SUPPLY_PROP_ENERGY_NOW;
 		break;
-	case SOURCE_VOLTAGE:
-		full_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX;
-		full_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN;
-		empty_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN;
-		empty_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN;
-		cur_avg_prop = POWER_SUPPLY_PROP_VOLTAGE_AVG;
-		cur_now_prop = POWER_SUPPLY_PROP_VOLTAGE_NOW;
+case SOURCE_VOLTAGE:
+full_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX;
+full_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN;
+empty_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN;
+empty_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN;
+cur_avg_prop = POWER_SUPPLY_PROP_VOLTAGE_AVG;
+cur_now_prop = POWER_SUPPLY_PROP_VOLTAGE_NOW;
 		break;
 	default:
 		printk(KERN_ERR "Unsupported source: %d\n", source);
@@ -185,7 +185,7 @@ static int do_calculate_time(int status, enum apm_source source)
 			return -1;
 	}
 
-	if (status == POWER_SUPPLY_STATUS_CHARGING)
+if (status == POWER_SUPPLY_STATUS_CHARGING)
 		return ((cur.intval - full.intval) * 60L) / I.intval;
 	else
 		return -((cur.intval - empty.intval) * 60L) / I.intval;
@@ -203,7 +203,7 @@ static int calculate_time(int status)
 	if (time != -1)
 		return time;
 
-	time = do_calculate_time(status, SOURCE_VOLTAGE);
+time = do_calculate_time(status, SOURCE_VOLTAGE);
 	if (time != -1)
 		return time;
 
@@ -212,36 +212,36 @@ static int calculate_time(int status)
 
 static int calculate_capacity(enum apm_source source)
 {
-	enum power_supply_property full_prop, empty_prop;
-	enum power_supply_property full_design_prop, empty_design_prop;
-	enum power_supply_property now_prop, avg_prop;
-	union power_supply_propval empty, full, cur;
+enum power_supply_property full_prop, empty_prop;
+enum power_supply_property full_design_prop, empty_design_prop;
+enum power_supply_property now_prop, avg_prop;
+union power_supply_propval empty, full, cur;
 	int ret;
 
 	switch (source) {
 	case SOURCE_CHARGE:
-		full_prop = POWER_SUPPLY_PROP_CHARGE_FULL;
-		empty_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
-		full_design_prop = POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN;
-		empty_design_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN;
-		now_prop = POWER_SUPPLY_PROP_CHARGE_NOW;
-		avg_prop = POWER_SUPPLY_PROP_CHARGE_AVG;
+full_prop = POWER_SUPPLY_PROP_CHARGE_FULL;
+empty_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY;
+full_design_prop = POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN;
+empty_design_prop = POWER_SUPPLY_PROP_CHARGE_EMPTY_DESIGN;
+now_prop = POWER_SUPPLY_PROP_CHARGE_NOW;
+avg_prop = POWER_SUPPLY_PROP_CHARGE_AVG;
 		break;
 	case SOURCE_ENERGY:
-		full_prop = POWER_SUPPLY_PROP_ENERGY_FULL;
-		empty_prop = POWER_SUPPLY_PROP_ENERGY_EMPTY;
-		full_design_prop = POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN;
-		empty_design_prop = POWER_SUPPLY_PROP_ENERGY_EMPTY_DESIGN;
-		now_prop = POWER_SUPPLY_PROP_ENERGY_NOW;
-		avg_prop = POWER_SUPPLY_PROP_ENERGY_AVG;
+full_prop = POWER_SUPPLY_PROP_ENERGY_FULL;
+empty_prop = POWER_SUPPLY_PROP_ENERGY_EMPTY;
+full_design_prop = POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN;
+empty_design_prop = POWER_SUPPLY_PROP_ENERGY_EMPTY_DESIGN;
+now_prop = POWER_SUPPLY_PROP_ENERGY_NOW;
+avg_prop = POWER_SUPPLY_PROP_ENERGY_AVG;
 		break;
-	case SOURCE_VOLTAGE:
-		full_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX;
-		empty_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN;
-		full_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN;
-		empty_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN;
-		now_prop = POWER_SUPPLY_PROP_VOLTAGE_NOW;
-		avg_prop = POWER_SUPPLY_PROP_VOLTAGE_AVG;
+case SOURCE_VOLTAGE:
+full_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX;
+empty_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN;
+full_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MAX_DESIGN;
+empty_design_prop = POWER_SUPPLY_PROP_VOLTAGE_MIN_DESIGN;
+now_prop = POWER_SUPPLY_PROP_VOLTAGE_NOW;
+avg_prop = POWER_SUPPLY_PROP_VOLTAGE_AVG;
 		break;
 	default:
 		printk(KERN_ERR "Unsupported source: %d\n", source);
@@ -282,8 +282,8 @@ static int calculate_capacity(enum apm_source source)
 
 static void apm_battery_apm_get_power_status(struct apm_power_info *info)
 {
-	union power_supply_propval status;
-	union power_supply_propval capacity, time_to_full, time_to_empty;
+union power_supply_propval status;
+union power_supply_propval capacity, time_to_full, time_to_empty;
 
 	mutex_lock(&apm_mutex);
 	find_main_battery();
@@ -295,13 +295,13 @@ static void apm_battery_apm_get_power_status(struct apm_power_info *info)
 	/* status */
 
 	if (MPSY_PROP(STATUS, &status))
-		status.intval = POWER_SUPPLY_STATUS_UNKNOWN;
+status.intval = POWER_SUPPLY_STATUS_UNKNOWN;
 
 	/* ac line status */
 
-	if ((status.intval == POWER_SUPPLY_STATUS_CHARGING) ||
-	    (status.intval == POWER_SUPPLY_STATUS_NOT_CHARGING) ||
-	    (status.intval == POWER_SUPPLY_STATUS_FULL))
+if ((status.intval == POWER_SUPPLY_STATUS_CHARGING) ||
+(status.intval == POWER_SUPPLY_STATUS_NOT_CHARGING) ||
+(status.intval == POWER_SUPPLY_STATUS_FULL))
 		info->ac_line_status = APM_AC_ONLINE;
 	else
 		info->ac_line_status = APM_AC_OFFLINE;
@@ -317,12 +317,12 @@ static void apm_battery_apm_get_power_status(struct apm_power_info *info)
 		if (info->battery_life == -1)
 			info->battery_life = calculate_capacity(SOURCE_CHARGE);
 		if (info->battery_life == -1)
-			info->battery_life = calculate_capacity(SOURCE_VOLTAGE);
+info->battery_life = calculate_capacity(SOURCE_VOLTAGE);
 	}
 
 	/* charging status */
 
-	if (status.intval == POWER_SUPPLY_STATUS_CHARGING) {
+if (status.intval == POWER_SUPPLY_STATUS_CHARGING) {
 		info->battery_status = APM_BATTERY_STATUS_CHARGING;
 	} else {
 		if (info->battery_life > 50)
@@ -338,7 +338,7 @@ static void apm_battery_apm_get_power_status(struct apm_power_info *info)
 
 	info->units = APM_UNITS_MINS;
 
-	if (status.intval == POWER_SUPPLY_STATUS_CHARGING) {
+if (status.intval == POWER_SUPPLY_STATUS_CHARGING) {
 		if (!MPSY_PROP(TIME_TO_FULL_AVG, &time_to_full) ||
 				!MPSY_PROP(TIME_TO_FULL_NOW, &time_to_full))
 			info->time = time_to_full.intval / 60;
@@ -359,13 +359,13 @@ static int __init apm_battery_init(void)
 {
 	printk(KERN_INFO "APM Battery Driver\n");
 
-	apm_get_power_status = apm_battery_apm_get_power_status;
+apm_get_power_status = apm_battery_apm_get_power_status;
 	return 0;
 }
 
 static void __exit apm_battery_exit(void)
 {
-	apm_get_power_status = NULL;
+apm_get_power_status = NULL;
 }
 
 module_init(apm_battery_init);

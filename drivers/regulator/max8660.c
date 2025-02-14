@@ -1,5 +1,5 @@
 /*
- * max8660.c  --  Voltage regulation for the Maxim 8660/8661
+* max8660.c  --  Voltage regulation for the Maxim 8660/8661
  *
  * based on max1586.c and wm8400-regulator.c
  *
@@ -154,17 +154,17 @@ static int max8660_dcdc_set_voltage_sel(struct regulator_dev *rdev,
 	if (ret)
 		return ret;
 
-	/* Select target voltage register and activate regulation */
+/* Select target voltage register and activate regulation */
 	bits = (rdev_get_id(rdev) == MAX8660_V3) ? 0x03 : 0x30;
 	return max8660_write(max8660, MAX8660_VCC1, 0xff, bits);
 }
 
 static struct regulator_ops max8660_dcdc_ops = {
 	.is_enabled = max8660_dcdc_is_enabled,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.set_voltage_sel = max8660_dcdc_set_voltage_sel,
-	.get_voltage_sel = max8660_dcdc_get_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.set_voltage_sel = max8660_dcdc_set_voltage_sel,
+.get_voltage_sel = max8660_dcdc_get_voltage_sel,
 };
 
 
@@ -190,15 +190,15 @@ static int max8660_ldo5_set_voltage_sel(struct regulator_dev *rdev,
 	if (ret)
 		return ret;
 
-	/* Select target voltage register and activate regulation */
+/* Select target voltage register and activate regulation */
 	return max8660_write(max8660, MAX8660_VCC1, 0xff, 0xc0);
 }
 
 static const struct regulator_ops max8660_ldo5_ops = {
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.set_voltage_sel = max8660_ldo5_set_voltage_sel,
-	.get_voltage_sel = max8660_ldo5_get_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.set_voltage_sel = max8660_ldo5_set_voltage_sel,
+.get_voltage_sel = max8660_ldo5_get_voltage_sel,
 };
 
 
@@ -256,10 +256,10 @@ static const struct regulator_ops max8660_ldo67_ops = {
 	.is_enabled = max8660_ldo67_is_enabled,
 	.enable = max8660_ldo67_enable,
 	.disable = max8660_ldo67_disable,
-	.list_voltage = regulator_list_voltage_linear,
-	.map_voltage = regulator_map_voltage_linear,
-	.get_voltage_sel = max8660_ldo67_get_voltage_sel,
-	.set_voltage_sel = max8660_ldo67_set_voltage_sel,
+.list_voltage = regulator_list_voltage_linear,
+.map_voltage = regulator_map_voltage_linear,
+.get_voltage_sel = max8660_ldo67_get_voltage_sel,
+.set_voltage_sel = max8660_ldo67_set_voltage_sel,
 };
 
 static const struct regulator_desc max8660_reg[] = {
@@ -267,8 +267,8 @@ static const struct regulator_desc max8660_reg[] = {
 		.name = "V3(DCDC)",
 		.id = MAX8660_V3,
 		.ops = &max8660_dcdc_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX8660_DCDC_MAX_SEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX8660_DCDC_MAX_SEL + 1,
 		.owner = THIS_MODULE,
 		.min_uV = MAX8660_DCDC_MIN_UV,
 		.uV_step = MAX8660_DCDC_STEP,
@@ -277,8 +277,8 @@ static const struct regulator_desc max8660_reg[] = {
 		.name = "V4(DCDC)",
 		.id = MAX8660_V4,
 		.ops = &max8660_dcdc_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX8660_DCDC_MAX_SEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX8660_DCDC_MAX_SEL + 1,
 		.owner = THIS_MODULE,
 		.min_uV = MAX8660_DCDC_MIN_UV,
 		.uV_step = MAX8660_DCDC_STEP,
@@ -287,8 +287,8 @@ static const struct regulator_desc max8660_reg[] = {
 		.name = "V5(LDO)",
 		.id = MAX8660_V5,
 		.ops = &max8660_ldo5_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX8660_LDO5_MAX_SEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX8660_LDO5_MAX_SEL + 1,
 		.owner = THIS_MODULE,
 		.min_uV = MAX8660_LDO5_MIN_UV,
 		.uV_step = MAX8660_LDO5_STEP,
@@ -297,8 +297,8 @@ static const struct regulator_desc max8660_reg[] = {
 		.name = "V6(LDO)",
 		.id = MAX8660_V6,
 		.ops = &max8660_ldo67_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX8660_LDO67_MAX_SEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX8660_LDO67_MAX_SEL + 1,
 		.owner = THIS_MODULE,
 		.min_uV = MAX8660_LDO67_MIN_UV,
 		.uV_step = MAX8660_LDO67_STEP,
@@ -307,8 +307,8 @@ static const struct regulator_desc max8660_reg[] = {
 		.name = "V7(LDO)",
 		.id = MAX8660_V7,
 		.ops = &max8660_ldo67_ops,
-		.type = REGULATOR_VOLTAGE,
-		.n_voltages = MAX8660_LDO67_MAX_SEL + 1,
+.type = REGULATOR_VOLTAGE,
+.n_voltages = MAX8660_LDO67_MAX_SEL + 1,
 		.owner = THIS_MODULE,
 		.min_uV = MAX8660_LDO67_MIN_UV,
 		.uV_step = MAX8660_LDO67_STEP,

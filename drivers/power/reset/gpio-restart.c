@@ -12,7 +12,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
- * Based on the gpio-poweroff driver.
+* Based on the gpio-poweroff driver.
  */
 #include <linux/reboot.h>
 #include <linux/kernel.h>

@@ -65,7 +65,7 @@ static int __init get_freq(char *name, unsigned long *val)
 	const unsigned int *fp;
 	int found = 0;
 
-	/* The cpu node should have timebase and clock frequency properties */
+/* The cpu node should have timebase and clock frequency properties */
 	cpu = of_find_node_by_type(NULL, "cpu");
 
 	if (cpu) {
@@ -106,26 +106,26 @@ void __init mpc8xx_calibrate_decr(void)
 	setbits32(&clk_r2->car_sccr, 0x02000000);
 	immr_unmap(clk_r2);
 
-	/* Processor frequency is MHz.
+/* Processor frequency is MHz.
 	 */
-	ppc_proc_freq = 50000000;
-	if (!get_freq("clock-frequency", &ppc_proc_freq))
-		printk(KERN_ERR "WARNING: Estimating processor frequency "
+ppc_proc_freq = 50000000;
+if (!get_freq("clock-frequency", &ppc_proc_freq))
+printk(KERN_ERR "WARNING: Estimating processor frequency "
 		                "(not found)\n");
 
-	ppc_tb_freq = ppc_proc_freq / 16;
-	printk("Decrementer Frequency = 0x%lx\n", ppc_tb_freq);
+ppc_tb_freq = ppc_proc_freq / 16;
+printk("Decrementer Frequency = 0x%lx\n", ppc_tb_freq);
 
 	/* Perform some more timer/timebase initialization.  This used
 	 * to be done elsewhere, but other changes caused it to get
 	 * called more than once....that is a bad thing.
 	 *
 	 * First, unlock all of the registers we are going to modify.
-	 * To protect them from corruption during power down, registers
-	 * that are maintained by keep alive power are "locked".  To
+* To protect them from corruption during power down, registers
+* that are maintained by keep alive power are "locked".  To
 	 * modify these registers we have to write the key value to
 	 * the key location associated with the register.
-	 * Some boards power up with these unlocked, while others
+* Some boards power up with these unlocked, while others
 	 * are locked.  Writing anything (including the unlock code?)
 	 * to the unlocked registers will lock them again.  So, here
 	 * we guarantee the registers are locked, then we unlock them
@@ -161,7 +161,7 @@ void __init mpc8xx_calibrate_decr(void)
 }
 
 /* The RTC on the MPC8xx is an internal register.
- * We want to protect this during power down, so we need to unlock,
+* We want to protect this during power down, so we need to unlock,
  * modify, and re-lock.
  */
 

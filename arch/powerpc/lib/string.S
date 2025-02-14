@@ -1,5 +1,5 @@
 /*
- * String handling functions for PowerPC.
+* String handling functions for PowerPC.
  *
  * Copyright (C) 1996 Paul Mackerras.
  *
