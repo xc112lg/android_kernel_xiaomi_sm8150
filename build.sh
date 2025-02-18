@@ -66,6 +66,8 @@
 #		LGH872   (LG G6)
 #
 ################################# CONFIG #################################
+sudo apt update
+sudo apt install binutils-aarch64-linux-gnu
 
 
 git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
