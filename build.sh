@@ -69,41 +69,12 @@
 
 
 git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
-# export PATH=$(pwd)/clang-crdroid/bin:$PATH
-# export CLANG_TRIPLE=aarch64-linux-gnu-
-# export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
-# export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
-
-
-# # Use LLVM binutils instead of GNU binutils
-# export LD=lld
-# export AR=llvm-ar
-# export AS=llvm-as
-# export NM=llvm-nm
-# export OBJCOPY=llvm-objcopy
-# export OBJDUMP=llvm-objdump
-# export STRIP=llvm-strip
-# export READELF=llvm-readelf
-# export HOSTCC=clang
-# export HOSTCXX=clang++
-# export HOSTAR=llvm-ar
-# export HOSTLD=ld.lld
-
 export PATH=$(pwd)/clang-crdroid/bin:$PATH
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
 
-# Use LLVM's binutils instead of GNU binutils
-export LD=lld
-export AR=llvm-ar
-export AS=llvm-as
-export NM=llvm-nm
-export OBJCOPY=llvm-objcopy
-export OBJDUMP=llvm-objdump
-export STRIP=llvm-strip
-export READELF=llvm-readelf
-export HOSTCC=clang
-export HOSTCXX=clang++
-export HOSTAR=llvm-ar
-export HOSTLD=ld.lld
+
 
 
 
@@ -265,7 +236,9 @@ SETUP_BUILD() {
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
 	  #  make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
-		make -C "$RDIR" O=$BDIR ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
+		
+        make -C "$RDIR" O=$BDIR  ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
+        #ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
 			    || ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
@@ -277,7 +250,7 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        while ! make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 LLVM=1 LLVM_IAS=1; do
+        while ! make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi-; do
 		    read -rp "Build failed. Retry? " do_retry
 		    case $do_retry in
 			    Y|y) continue ;;

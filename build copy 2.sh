@@ -67,6 +67,17 @@
 #
 ################################# CONFIG #################################
 
+
+git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
+export PATH=$(pwd)/clang-crdroid/bin:$PATH
+export CLANG_TRIPLE=aarch64-linux-gnu-
+export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
+export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
+
+
+
+
+
 # Assume build_all is not being used, will be automatically changed if it is
 SINGLEBUILD="yes"
 
@@ -139,13 +150,7 @@ export ARCH=arm64
 export KBUILD_BUILD_USER=$KBUSER
 export KBUILD_BUILD_HOST=$KBHOST
 export LOCALVERSION="-${VER}"
-if [ "$USE_CCACHE" = "yes" ]; then
-  export CROSS_COMPILE="ccache $GCC_COMP"
-  export CROSS_COMPILE_ARM32="ccache $GCC_COMP_32"
-else
-  export CROSS_COMPILE=$GCC_COMP
-  export CROSS_COMPILE_ARM32=$GCC_COMP_32
-fi
+
 
 # In case a model isn't passed as an argument, this block acts as a fallback
 MODEL_ARRAY=("H850" "H830" "RS988" "H870" "US997" "H872" "H910" "H918" "H990" "LS997" "US996" "US996D" "VS995")
@@ -230,9 +235,9 @@ SETUP_BUILD() {
 	echo "$DEVICE" > $BDIR/DEVICE \
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
-	    ARCH=arm64 scripts/kconfig/merge_config.sh $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG
-	    make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE olddefconfig \
-		    || ABORT "Failed to set up the kernel build."
+	  #  make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
+		make -C "$RDIR" O=$BDIR ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
+			    || ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
 		    || ABORT "Failed to set up the kernel build."
@@ -243,7 +248,7 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        while ! make -C "$RDIR" O=$BDIR -j"$THREADS" CROSS_COMPILE=$CROSS_COMPILE; do
+        while ! make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 LLVM=1 LLVM_IAS=1; do
 		    read -rp "Build failed. Retry? " do_retry
 		    case $do_retry in
 			    Y|y) continue ;;
@@ -295,7 +300,7 @@ PREPARE_NEXT() {
 
 cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 echo -e $COLOR_G"Building ${DEVICE} ${VER}..."
-echo -e $COLOR_P"Using $GCC_VER..."
+
 if [ "$USE_CCACHE" = "yes" ]; then
   echo -e $COLOR_P"Using CCACHE..."
 fi
