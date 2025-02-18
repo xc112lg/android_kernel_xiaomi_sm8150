@@ -300,8 +300,6 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
     CLEAN_BUILD
-    else
-    CLEAN_BUILD
     fi
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
