@@ -252,18 +252,15 @@ class Dtbo(object):
         self._update_dt_table_header()
 
     def _read_dtbo_header(self, buf):
-        """Reads DTBO file header into metadata buffer.
+    """Reads DTBO file header into metadata buffer."""
+    # Ensure buffer is bytes (Python 3 safety)
+    if not isinstance(buf, bytes):
+        raise ValueError("Buffer must be bytes (not string) for struct operations")
 
-        Unpack and read the DTBO table header from given buffer. The
-        buffer size must exactly be equal to _DT_TABLE_HEADER_SIZE.
-
-        Args:
-            buf: Bytebuffer read directly from the file of size
-                _DT_TABLE_HEADER_SIZE.
-        """
-        (self.magic, self.total_size, self.header_size,
-         self.dt_entry_size, self.dt_entry_count, self.dt_entries_offset,
-         self.page_size, self.version) = struct.unpack_from('>8I', buf, 0)
+    # Unpack the header (rest of the code remains the same)
+    (self.magic, self.total_size, self.header_size,
+     self.dt_entry_size, self.dt_entry_count, self.dt_entries_offset,
+     self.page_size, self.version) = struct.unpack_from('>8I', buf, 0)
 
         # verify the header
         if self.magic != self._DTBO_MAGIC and self.magic != self._ACPIO_MAGIC:
@@ -303,17 +300,24 @@ class Dtbo(object):
             self.__dt_entries.append(dt_entry)
             offset += self._DT_ENTRY_HEADER_INTS
 
+
     def _read_dtbo_image(self):
         """Parse the input file and instantiate this object."""
+        
+        # Verify file is opened in binary mode (critical for Python 3)
+        if 'b' not in self.__file.mode:
+            raise ValueError("File must be opened in binary mode (use 'rb')")
 
-        # First check if we have enough to read the header
-        file_size = os.fstat(self.__file.fileno()).st_size
-        if file_size < self._DT_TABLE_HEADER_SIZE:
-            raise ValueError('Invalid DTBO file')
-
-        self.__file.seek(0)
-        buf = self.__file.read(self._DT_TABLE_HEADER_SIZE)
+        # Ensure buffer is bytes (Python 3 safety)
+        if not isinstance(buf, bytes):
+            raise TypeError("Header buffer must be bytes type")
+            
         self._read_dtbo_header(buf)
+
+
+
+
+
 
         self.__metadata_size = (self.header_size +
                                 self.dt_entry_count * self.dt_entry_size)
