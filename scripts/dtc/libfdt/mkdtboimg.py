@@ -540,7 +540,7 @@ class Dtbo(object):
         self._update_metadata()
 
         self.__file.seek(0)
-        self.__file.write(self.__metadata)
+        self.__file.write(self.__metadata.tobytes())
         self.__file.write(dt_entry_buf)
         self.__file.flush()
 
