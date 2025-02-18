@@ -68,7 +68,7 @@
 ################################# CONFIG #################################
 
 
-git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid
+git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
 export PATH=$(pwd)/clang-crdroid/bin:$PATH
 export CLANG_TRIPLE=aarch64-linux-gnu-
 export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
