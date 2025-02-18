@@ -68,6 +68,8 @@
 ################################# CONFIG #################################
 sudo apt update
 sudo apt install binutils-aarch64-linux-gnu
+
+sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio
 # Assume build_all is not being used, will be automatically changed if it is
 SINGLEBUILD="yes"
 
