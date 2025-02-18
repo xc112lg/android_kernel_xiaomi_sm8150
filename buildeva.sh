@@ -135,6 +135,10 @@ ABORT() {
 	exit 1
 }
 
+
+
+
+
 export ARCH=arm64
 export KBUILD_BUILD_USER=$KBUSER
 export KBUILD_BUILD_HOST=$KBHOST
@@ -145,6 +149,7 @@ if [ "$USE_CCACHE" = "yes" ]; then
 else
   export CROSS_COMPILE=$GCC_COMP
   export CROSS_COMPILE_ARM32=$GCC_COMP_32
+  export LD=${GCC_COMP}ld
 fi
 
 # In case a model isn't passed as an argument, this block acts as a fallback
