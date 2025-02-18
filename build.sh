@@ -239,7 +239,7 @@ SETUP_BUILD() {
 		
         make -C "$RDIR" O=$BDIR  ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
         #ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
-			    || ABORT "Failed to set up the kernel build."
+			|| ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
 		    || ABORT "Failed to set up the kernel build."
