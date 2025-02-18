@@ -244,11 +244,6 @@ BUILD_KERNEL() {
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
         while ! make -C "$RDIR" O=$BDIR -j"$THREADS" CROSS_COMPILE=$CROSS_COMPILE; do
-		    read -rp "Build failed. Retry? " do_retry
-		    case $do_retry in
-			    Y|y) continue ;;
-			    *) ABORT "Compilation aborted." ;;
-		    esac
 	    done
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
