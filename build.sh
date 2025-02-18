@@ -2,7 +2,7 @@
 # Thanks to https://t.me/itsclhex for build script and source
 sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio
 
-kernel_dir="${PWD}"
+kernel_dir=${PWD}
 CCACHE=$(command -v ccache)
 objdir="${kernel_dir}/out"
 anykernel=$HOME/workspace/Ubuntu-SSH/anykernel
