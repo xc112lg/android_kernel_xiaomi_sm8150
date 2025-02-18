@@ -63,7 +63,7 @@
 #		US997    (LG G6)
 #
 # H872		= T-Mobile (US)
-#		LGH872   (LG G6)
+#		LGH872   (LGggggg G6)
 #
 ################################# CONFIG #################################
 sudo apt update
