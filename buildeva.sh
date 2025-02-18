@@ -144,7 +144,7 @@ ABORT() {
 
 
 
-export PYTHON=python3
+
 export ARCH=arm64
 export KBUILD_BUILD_USER=$KBUSER
 export KBUILD_BUILD_HOST=$KBHOST
