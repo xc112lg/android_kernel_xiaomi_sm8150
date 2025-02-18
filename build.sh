@@ -69,10 +69,43 @@
 
 
 git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
+# export PATH=$(pwd)/clang-crdroid/bin:$PATH
+# export CLANG_TRIPLE=aarch64-linux-gnu-
+# export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
+# export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
+
+
+# # Use LLVM binutils instead of GNU binutils
+# export LD=lld
+# export AR=llvm-ar
+# export AS=llvm-as
+# export NM=llvm-nm
+# export OBJCOPY=llvm-objcopy
+# export OBJDUMP=llvm-objdump
+# export STRIP=llvm-strip
+# export READELF=llvm-readelf
+# export HOSTCC=clang
+# export HOSTCXX=clang++
+# export HOSTAR=llvm-ar
+# export HOSTLD=ld.lld
+
 export PATH=$(pwd)/clang-crdroid/bin:$PATH
-export CLANG_TRIPLE=aarch64-linux-gnu-
-export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
-export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
+
+# Use LLVM's binutils instead of GNU binutils
+export LD=lld
+export AR=llvm-ar
+export AS=llvm-as
+export NM=llvm-nm
+export OBJCOPY=llvm-objcopy
+export OBJDUMP=llvm-objdump
+export STRIP=llvm-strip
+export READELF=llvm-readelf
+export HOSTCC=clang
+export HOSTCXX=clang++
+export HOSTAR=llvm-ar
+export HOSTLD=ld.lld
+
+
 
 # Assume build_all is not being used, will be automatically changed if it is
 SINGLEBUILD="yes"
@@ -244,7 +277,7 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        while ! make -C "$RDIR" O=$BDIR -j"$THREADS"; do
+        while ! make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 LLVM=1 LLVM_IAS=1; do
 		    read -rp "Build failed. Retry? " do_retry
 		    case $do_retry in
 			    Y|y) continue ;;
