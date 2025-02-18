@@ -299,7 +299,8 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 # ask before cleaning if device
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
-    CLEAN_BUILD
+   echo -e $COLOR_P"Run"
+    #CLEAN_BUILD
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
 fi
