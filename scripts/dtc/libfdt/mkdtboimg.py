@@ -335,7 +335,7 @@ class Dtbo(object):
         num_ints = (self._DT_TABLE_HEADER_INTS +
                     self.dt_entry_count * self._DT_ENTRY_HEADER_INTS)
         if self.dt_entries_offset > self._DT_TABLE_HEADER_SIZE:
-            num_ints += (self.dt_entries_offset - self._DT_TABLE_HEADER_SIZE) / 4
+            num_ints += (self.dt_entries_offset - self._DT_TABLE_HEADER_SIZE) // 4
         format_str = '>' + str(num_ints) + 'I'
         self.__file.seek(0)
         self.__metadata = struct.unpack(format_str,
@@ -439,8 +439,7 @@ class Dtbo(object):
         }
 
         if compression_format not in compression_obj_dict:
-            ValueError("Bad compression format %d" % compression_format)
-
+            raise ValueError("Bad compression format %d" % compression_format)  # Added 'raise'
         if compression_format == CompressionFormat.NO_COMPRESSION:
             dt_entry = dt_entry_file.read()
         else:
@@ -476,7 +475,7 @@ class Dtbo(object):
         dt_offset = (self.header_size +
                      dt_entry_count * self.dt_entry_size)
 
-        dt_entry_buf = ""
+        dt_entry_buf = b""
         for dt_entry in dt_entries:
             if not isinstance(dt_entry, DtEntry):
                 raise ValueError('Adding invalid DT entry object to DTBO')
