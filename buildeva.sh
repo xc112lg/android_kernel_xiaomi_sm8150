@@ -181,11 +181,11 @@ else
 fi
 
 # link device name to lg config files
-COMMON_DEFCONFIG=vendor/xiaomi/sm8150-common.config
+COMMON_DEFCONFIG=vendor/sm8150-perf_defconfig
 
 if [ "$DEVICE" = "vayu" ]; then
   DEVICE_DEFCONFIG=vendor/xiaomi/vayu.config
-  BOARD_DEFCONFIG=vendor/sm8150-perf_defconfig
+  BOARD_DEFCONFIG=vendor/xiaomi/sm8150-common.config
   DEBUG_DEFCONFIG=vendor/debugfs.config
 elif [ "$DEVICE" = "H830" ]; then
   DEVICE_DEFCONFIG=vendor/lge/h830.config
@@ -235,7 +235,7 @@ SETUP_BUILD() {
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
 	    #ARCH=arm64 scripts/kconfig/merge_config.sh 
-	    make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEBUG_DEFCONFIG $DEVICE_DEFCONFIG \
+	    make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG \
 		    || ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
