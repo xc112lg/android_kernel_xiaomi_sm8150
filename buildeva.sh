@@ -66,7 +66,8 @@
 #		LGH872   (LG G6)
 #
 ################################# CONFIG #################################
-
+sudo apt update
+sudo apt install binutils-aarch64-linux-gnu
 # Assume build_all is not being used, will be automatically changed if it is
 SINGLEBUILD="yes"
 
