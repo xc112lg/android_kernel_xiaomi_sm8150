@@ -44,7 +44,7 @@ make_defconfig()
 }
 compile()
 {
-    cd ${kernel_dir}
+   #cd ${kernel_dir}
     echo -e ${LGR} "######### Compiling kernel #########${NC}"
     make -j$(nproc --all) \
     O=out \
