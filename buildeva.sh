@@ -149,7 +149,6 @@ if [ "$USE_CCACHE" = "yes" ]; then
 else
   export CROSS_COMPILE=$GCC_COMP
   export CROSS_COMPILE_ARM32=$GCC_COMP_32
-  export LD=${GCC_COMP}ld --emulation=aarch64elf
 fi
 
 # In case a model isn't passed as an argument, this block acts as a fallback
@@ -248,7 +247,7 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR -j"$THREADS " LDFLAGS="-maarch64elf"
+        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf"
 	
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
