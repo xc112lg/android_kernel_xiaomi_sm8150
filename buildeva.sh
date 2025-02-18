@@ -299,17 +299,7 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 # ask before cleaning if device
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
-    if [ "$ASK_CLEAN" = "yes" ]; then
-      while true; do
-        echo -e $COLOR_Y
-        read -p "Same device as the last build. Do you wish to clean the build directory?" yn
-        echo -e $COLOR_N
-        case $yn in
-          [Yy]* ) CLEAN_BUILD && break ;;
-          [Nn]* ) break ;;
-          * ) echo -e $COLOR_R"Please answer 'y' or 'n'"$COLOR_N ;;
-        esac
-      done
+    CLEAN_BUILD
     else
     CLEAN_BUILD
     fi
