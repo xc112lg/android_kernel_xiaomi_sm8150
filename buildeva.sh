@@ -149,7 +149,7 @@ if [ "$USE_CCACHE" = "yes" ]; then
 else
   export CROSS_COMPILE=$GCC_COMP
   export CROSS_COMPILE_ARM32=$GCC_COMP_32
-  export LD=${GCC_COMP}ld
+  export LD="${GCC_COMP}ld --emulation=aarch64elf"
 fi
 
 # In case a model isn't passed as an argument, this block acts as a fallback
