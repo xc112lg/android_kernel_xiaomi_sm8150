@@ -230,8 +230,8 @@ SETUP_BUILD() {
 	echo "$DEVICE" > $BDIR/DEVICE \
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
-	    ARCH=arm64 scripts/kconfig/merge_config.sh $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG
-	    make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE olddefconfig \
+	    #ARCH=arm64 scripts/kconfig/merge_config.sh 
+	    make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
 		    || ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
