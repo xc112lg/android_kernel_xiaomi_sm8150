@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python
 # Copyright 2017, The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -244,7 +244,7 @@ class Dtbo(object):
         Tree table entries and update the DTBO header.
         """
 
-        self.__metadata = array('b', b' ' * self.__metadata_size)
+        self.__metadata = array('B', b' ' * self.__metadata_size)
         metadata_offset = self.header_size
         for dt_entry in self.__dt_entries:
             self._update_dt_entry_header(dt_entry, metadata_offset)
@@ -290,7 +290,7 @@ class Dtbo(object):
         if self.__dt_entries:
             raise ValueError('DTBO DT entries can be added only once')
 
-        offset = self.dt_entries_offset / 4
+        offset = self.dt_entries_offset // 4
         params = {}
         params['dt_file'] = None
         for i in range(0, self.dt_entry_count):
@@ -430,7 +430,7 @@ class Dtbo(object):
         if compression_format not in compression_obj_dict:
             ValueError("Bad compression format %d" % compression_format)
 
-        if compression_format is CompressionFormat.NO_COMPRESSION:
+        if compression_format == CompressionFormat.NO_COMPRESSION:
             dt_entry = dt_entry_file.read()
         else:
             compression_object = compression_obj_dict[compression_format]
@@ -465,7 +465,7 @@ class Dtbo(object):
         dt_offset = (self.header_size +
                      dt_entry_count * self.dt_entry_size)
 
-        dt_entry_buf = b""
+        dt_entry_buf = ""
         for dt_entry in dt_entries:
             if not isinstance(dt_entry, DtEntry):
                 raise ValueError('Adding invalid DT entry object to DTBO')
@@ -645,7 +645,7 @@ def parse_config_option(line, is_global, dt_keys, global_key_types):
         the key to make sure its valid.
     """
 
-    if line.find('=') == -1:
+    if '=' not in line:
         raise ValueError('Invalid line (%s) in configuration file' % line)
 
     key, value = (x.strip() for x in line.split('='))
@@ -962,7 +962,7 @@ def print_usage(cmd, _):
             if cmd != 'all':
                 return
 
-    print('Unsupported help command: %s' % cmd, end='\n\n')
+    print('Unsupported help command: %s' % cmd)
     print_default_usage(prog_name)
     return
 
