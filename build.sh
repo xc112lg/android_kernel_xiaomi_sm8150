@@ -237,8 +237,7 @@ SETUP_BUILD() {
     if [ $SINGLEBUILD = "yes" ]; then
 	  #  make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
 		
-        make -C "$RDIR" O=$BDIR  ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
- 		    || ABORT "Failed to set up the kernel build."
+        make -C "$RDIR" O=$BDIR  ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG
         #ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
@@ -310,20 +309,8 @@ fi
 # ask before cleaning if device
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
-    if [ "$ASK_CLEAN" = "yes" ]; then
-      while true; do
-        echo -e $COLOR_Y
-        read -p "Same device as the last build. Do you wish to clean the build directory?" yn
-        echo -e $COLOR_N
-        case $yn in
-          [Yy]* ) CLEAN_BUILD && break ;;
-          [Nn]* ) break ;;
-          * ) echo -e $COLOR_R"Please answer 'y' or 'n'"$COLOR_N ;;
-        esac
-      done
-    else
+
     CLEAN_BUILD
-    fi
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
 fi
