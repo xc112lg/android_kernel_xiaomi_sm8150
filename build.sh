@@ -75,7 +75,7 @@ export PATH=$(pwd)/clang-crdroid/bin:$PATH
 export CLANG_TRIPLE=aarch64-linux-gnu-
 export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
 export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
-export LD=ld.lld
+
 
 
 
