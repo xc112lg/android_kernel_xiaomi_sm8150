@@ -177,11 +177,11 @@ else
 fi
 
 # link device name to lg config files
-COMMON_DEFCONFIG=vendor/xiaomi/sm8150-common.config
+COMMON_DEFCONFIG=vendor/sm8150-perf_defconfig
 
 if [ "$DEVICE" = "vayu" ]; then
   DEVICE_DEFCONFIG=vendor/xiaomi/vayu.config
-  BOARD_DEFCONFIG=vendor/sm8150-perf_defconfig
+  BOARD_DEFCONFIG=vendor/xiaomi/sm8150-common.config
   DEBUG_DEFCONFIG=vendor/debugfs.config
 elif [ "$DEVICE" = "H830" ]; then
   DEVICE_DEFCONFIG=vendor/lge/h830.config
