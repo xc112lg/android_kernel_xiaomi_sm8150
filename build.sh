@@ -329,7 +329,7 @@ PREPARE_NEXT() {
 
 cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 echo -e $COLOR_G"Building ${DEVICE} ${VER}..."
-echo -e $COLOR_P"Using $GCC_VER..."
+
 if [ "$USE_CCACHE" = "yes" ]; then
   echo -e $COLOR_P"Using CCACHE..."
 fi
