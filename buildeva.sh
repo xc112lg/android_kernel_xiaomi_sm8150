@@ -276,11 +276,12 @@ INSTALL_MODULES() {
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
 		echo "BDIR is set to: $BDIR"
+
+		scripts/depmod.sh -F System.map build
         make -C "$RDIR" O="$BDIR" \
    		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
 			INSTALL_MOD_STRIP=1 \
 			modules_prepare \
-			LDFLAGS="-maarch64elf" \
 			KCFLAGS="-Wno-error" \
 			modules \
 			modules_install

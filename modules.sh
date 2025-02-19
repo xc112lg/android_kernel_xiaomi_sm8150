@@ -249,51 +249,79 @@ SETUP_BUILD() {
     fi
 }
 
-make -C "$BDIR" modules_prepare
-make -C "$BDIR" modules
-cat "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin" | awk '{print "builtin "$0}' > "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin.modinfo"
-
-BDIR=build
-
-# INSTALL_MODULES() {
-# 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
-# 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
-#     if [ $SINGLEBUILD = "yes" ]; then
-# 		echo "BDIR is set to: $BDIR"
-#         make -C "$RDIR" O="$BDIR" \
-#    		    INSTALL_MOD_PATH="$BDIR" \
-# 			INSTALL_MOD_STRIP=1 \
-# 			modules_install
-#     else # build_all will send module logs to a file
-#         make -C "$RDIR" O=$BDIR \
-#             INSTALL_MOD_PATH="$BDIR" \
-#             INSTALL_MOD_STRIP=1 \
-#             modules_install &> zBuild_all.log
-#     fi
-# 	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
-# }
-
-# PREPARE_NEXT() {
-# 	if grep -q 'CONFIG_KERNEL_LZ4=y' $BDIR/.config; then
-# 	  echo lz4 > $BDIR/COMPRESSION \
-# 		|| echo -e $COLOR_R"Failed to reflect compression method!"
-# 	else
-# 	  echo gz > $BDIR/COMPRESSION \
-# 		|| echo -e $COLOR_R"Failed to reflect compression method!"
-# 	fi
-# 	git log --oneline -50 > $BDIR/GITCOMMITS \
-# 		|| echo -e $COLOR_R"Failed to reflect commit log!"
-# }
-
-# cd "$RDIR" || ABORT "Failed to enter $RDIR!"
+BUILD_KERNEL() {
+	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
+	    TIMESTAMP1=$(date +%s)
+    if [ $SINGLEBUILD = "yes" ]; then
+        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" 
+	
+    else # build_all will send compile logs to a file
+	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
+		    read -rp "Build failed. Retry? " do_retry
+		    case $do_retry in
+			    Y|y) continue ;;
+			    *) ABORT "Compilation aborted." ;;
+		    esac
+	    done
+    fi
+	    TIMESTAMP2=$(date +%s)
+	    BSEC=$((TIMESTAMP2-TIMESTAMP1))
+	    BTIME=$(printf '%02dm:%02ds' $(($BSEC/60)) $(($BSEC%60)))
+}
 
 
 
-# SETUP_BUILD
-# INSTALL_MODULES
-# PREPARE_NEXT
-# echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
+INSTALL_MODULES() {
+	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
+	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
+    if [ $SINGLEBUILD = "yes" ]; then
+		echo "BDIR is set to: $BDIR"
 
-# if [ $SINGLEBUILD = "yes" ]; then
-#     echo -e $COLOR_P"Run './copy_finished.sh' to create the flashable AnyKernel zip."
-# fi
+		scripts/depmod.sh -F System.map build
+        make -C "$RDIR" O="$BDIR" \
+   		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
+			INSTALL_MOD_STRIP=1 \
+			modules_prepare \
+			KCFLAGS="-Wno-error" \
+			modules \
+			modules_install
+    else # build_all will send module logs to a file
+        make -C "$RDIR" O=$BDIR \
+            INSTALL_MOD_PATH="$(realpath "$BDIR")" \
+            INSTALL_MOD_STRIP=1 \
+            modules_install &> zBuild_all.log
+    fi
+	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+}
+
+PREPARE_NEXT() {
+	if grep -q 'CONFIG_KERNEL_LZ4=y' $BDIR/.config; then
+	  echo lz4 > $BDIR/COMPRESSION \
+		|| echo -e $COLOR_R"Failed to reflect compression method!"
+	else
+	  echo gz > $BDIR/COMPRESSION \
+		|| echo -e $COLOR_R"Failed to reflect compression method!"
+	fi
+	git log --oneline -50 > $BDIR/GITCOMMITS \
+		|| echo -e $COLOR_R"Failed to reflect commit log!"
+}
+
+cd "$RDIR" || ABORT "Failed to enter $RDIR!"
+
+
+# ask before cleaning if device
+# is the same as previous build
+if [ $SINGLEBUILD = "yes" ]; then
+   echo -e $COLOR_P"Run"
+    CLEAN_BUILD
+else # Always clean build folder for next build on build_all
+    CLEAN_BUILD
+fi
+SETUP_BUILD
+INSTALL_MODULES
+PREPARE_NEXT
+echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
+
+if [ $SINGLEBUILD = "yes" ]; then
+    echo -e $COLOR_P"Run './copy_finished.sh' to create the flashable AnyKernel zip."
+fi

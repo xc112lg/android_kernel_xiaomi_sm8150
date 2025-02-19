@@ -120,7 +120,8 @@ COPY_KERNEL() {
     if [ $SINGLEBUILD = "yes" ]; then
 	    echo "Copying kernel image..."
     fi
-	cp $KERN_DIR/dtbo.img $DDIR \
+	cp $KERN_DIR/dtbo.img $KERN_DIR/IMAGE  $DDIR \
+
 		|| ABORT "Failed to copy kernel image"
 	if grep -q 'CONFIG_MODULES=y' $BDIR/.config; then
       if [ $SINGLEBUILD = "yes" ]; then
@@ -150,7 +151,7 @@ fi
 CLEAN_DIR
 SETUP_DIR
 COPY_AK
-COPY_INIT
+#COPY_INIT
 COPY_KERNEL
 ZIP_UP
 echo -e $COLOR_G"Finished! -- Flashable zip is located at: ${OUTZIP}"
