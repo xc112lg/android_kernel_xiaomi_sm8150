@@ -251,7 +251,8 @@ SETUP_BUILD() {
 
 make -C "$BDIR" modules_prepare
 make -C "$BDIR" modules
-ls "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin.modinfo"
+cat "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin" | awk '{print "builtin "$0}' > "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin.modinfo"
+
 
 
 # INSTALL_MODULES() {
