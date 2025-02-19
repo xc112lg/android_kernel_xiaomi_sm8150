@@ -67,7 +67,6 @@
 #
 ################################# CONFIG #################################
 sudo apt update
-sudo apt install binutils-aarch64-linux-gnu
 sudo apt install kmod -y
 #sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio
 
@@ -253,7 +252,8 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" 
+        
+		make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" 
 	
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
@@ -276,12 +276,13 @@ INSTALL_MODULES() {
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
 		echo "BDIR is set to: $BDIR"
+		depmod -b build
 
-		scripts/depmod.sh -F System.map build
-        make -C "$RDIR" O="$BDIR" \
-            INSTALL_MOD_PATH="$(realpath "$BDIR")" \
-            INSTALL_MOD_STRIP=1 \
-            modules_install
+		# scripts/depmod.sh -F System.map build
+        # make -C "$RDIR" O="$BDIR" \
+        #     INSTALL_MOD_PATH="$(realpath "$BDIR")" \
+        #     INSTALL_MOD_STRIP=1 \
+        #     modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
             INSTALL_MOD_PATH="$(realpath "$BDIR")" \
@@ -315,7 +316,7 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 #     CLEAN_BUILD
 # fi
 SETUP_BUILD
-BUILD_KERNEL
+#BUILD_KERNEL
 INSTALL_MODULES
 PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
