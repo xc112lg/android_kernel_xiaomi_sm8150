@@ -120,7 +120,7 @@ COPY_KERNEL() {
     if [ $SINGLEBUILD = "yes" ]; then
 	    echo "Copying kernel image..."
     fi
-	cp $KERN_DIR/Image.${COMP}-dtb $DDIR \
+	cp $KERN_DIR/dtbo.img $DDIR \
 		|| ABORT "Failed to copy kernel image"
 	if grep -q 'CONFIG_MODULES=y' $BDIR/.config; then
       if [ $SINGLEBUILD = "yes" ]; then
