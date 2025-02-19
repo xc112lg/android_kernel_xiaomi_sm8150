@@ -277,14 +277,11 @@ INSTALL_MODULES() {
     if [ $SINGLEBUILD = "yes" ]; then
 		echo "BDIR is set to: $BDIR"
 
-		scripts/depmod.sh -F System.map build
+		scripts/depmod.sh -F System.map buildZ
         make -C "$RDIR" O="$BDIR" \
    		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
-			INSTALL_MOD_STRIP=1 \
-			modules_prepare \
-			KCFLAGS="-Wno-error" \
-			modules \
-			modules_install
+            INSTALL_MOD_STRIP=1 \
+            modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
             INSTALL_MOD_PATH="$(realpath "$BDIR")" \
