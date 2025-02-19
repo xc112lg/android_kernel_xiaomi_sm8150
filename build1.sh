@@ -1,6 +1,6 @@
 #!/bin/bash
 # Thanks to https://t.me/itsclhex for build script and source
-sudo apt update && sudo -H apt-get install bc ccache binutils-aarch64-linux-gnu cpio -y
+sudo apt update && sudo -H apt-get install bc ccache binutils-aarch64-linux-gnu cpio  -y
 
 kernel_dir="${PWD}"
 CCACHE=$(command -v ccache)
