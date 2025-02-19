@@ -249,47 +249,50 @@ SETUP_BUILD() {
     fi
 }
 
+make -C "$BDIR" modules_prepare
+make -C "$BDIR" modules
+ls "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin.modinfo"
 
 
-INSTALL_MODULES() {
-	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
-	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
-    if [ $SINGLEBUILD = "yes" ]; then
-		echo "BDIR is set to: $BDIR"
-        make -C "$RDIR" O="$BDIR" \
-   		    INSTALL_MOD_PATH="$BDIR" \
-			INSTALL_MOD_STRIP=1 \
-			modules_install
-    else # build_all will send module logs to a file
-        make -C "$RDIR" O=$BDIR \
-            INSTALL_MOD_PATH="$BDIR" \
-            INSTALL_MOD_STRIP=1 \
-            modules_install &> zBuild_all.log
-    fi
-	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
-}
+# INSTALL_MODULES() {
+# 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
+# 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
+#     if [ $SINGLEBUILD = "yes" ]; then
+# 		echo "BDIR is set to: $BDIR"
+#         make -C "$RDIR" O="$BDIR" \
+#    		    INSTALL_MOD_PATH="$BDIR" \
+# 			INSTALL_MOD_STRIP=1 \
+# 			modules_install
+#     else # build_all will send module logs to a file
+#         make -C "$RDIR" O=$BDIR \
+#             INSTALL_MOD_PATH="$BDIR" \
+#             INSTALL_MOD_STRIP=1 \
+#             modules_install &> zBuild_all.log
+#     fi
+# 	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+# }
 
-PREPARE_NEXT() {
-	if grep -q 'CONFIG_KERNEL_LZ4=y' $BDIR/.config; then
-	  echo lz4 > $BDIR/COMPRESSION \
-		|| echo -e $COLOR_R"Failed to reflect compression method!"
-	else
-	  echo gz > $BDIR/COMPRESSION \
-		|| echo -e $COLOR_R"Failed to reflect compression method!"
-	fi
-	git log --oneline -50 > $BDIR/GITCOMMITS \
-		|| echo -e $COLOR_R"Failed to reflect commit log!"
-}
+# PREPARE_NEXT() {
+# 	if grep -q 'CONFIG_KERNEL_LZ4=y' $BDIR/.config; then
+# 	  echo lz4 > $BDIR/COMPRESSION \
+# 		|| echo -e $COLOR_R"Failed to reflect compression method!"
+# 	else
+# 	  echo gz > $BDIR/COMPRESSION \
+# 		|| echo -e $COLOR_R"Failed to reflect compression method!"
+# 	fi
+# 	git log --oneline -50 > $BDIR/GITCOMMITS \
+# 		|| echo -e $COLOR_R"Failed to reflect commit log!"
+# }
 
-cd "$RDIR" || ABORT "Failed to enter $RDIR!"
+# cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 
 
 
-SETUP_BUILD
-INSTALL_MODULES
-PREPARE_NEXT
-echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
+# SETUP_BUILD
+# INSTALL_MODULES
+# PREPARE_NEXT
+# echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
 
-if [ $SINGLEBUILD = "yes" ]; then
-    echo -e $COLOR_P"Run './copy_finished.sh' to create the flashable AnyKernel zip."
-fi
+# if [ $SINGLEBUILD = "yes" ]; then
+#     echo -e $COLOR_P"Run './copy_finished.sh' to create the flashable AnyKernel zip."
+# fi
