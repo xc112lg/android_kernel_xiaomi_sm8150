@@ -305,7 +305,7 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
    echo -e $COLOR_P"Run"
-    #CLEAN_BUILD
+    CLEAN_BUILD
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
 fi
