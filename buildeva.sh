@@ -68,7 +68,7 @@
 ################################# CONFIG #################################
 sudo apt update
 sudo apt install binutils-aarch64-linux-gnu
-sudo apt install kmod
+sudo apt install kmod -y
 #sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio
 
 #sudo ln -s $(which python3) /usr/bin/python2
