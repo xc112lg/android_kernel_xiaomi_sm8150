@@ -17,6 +17,14 @@ export ARCH="arm64"
 export KBUILD_BUILD_HOST=rizalbrambe
 export KBUILD_BUILD_USER=t.me
 
+COMMON_DEFCONFIG=vendor/sm8150-perf_defconfig
+
+
+DEVICE_DEFCONFIG=vendor/xiaomi/vayu.config
+BOARD_DEFCONFIG=vendor/xiaomi/sm8150-common.config
+DEBUG_DEFCONFIG=vendor/debugfs.config
+
+
 export PATH="$CLANG_DIR/bin:$PATH"
 
 if ! [ -d "$CLANG_DIR" ]; then
@@ -37,7 +45,7 @@ make_defconfig()
 {
     START=$(date +"%s")
     echo -e ${LGR} "########### Generating Defconfig ############${NC}"
-    make -s ARCH=${ARCH} O=${objdir} ${CONFIG_FILE} -j$(nproc --all)
+    make -s ARCH=${ARCH} O=${objdir} $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG -j$(nproc --all)
 }
 compile()
 {
@@ -46,7 +54,7 @@ compile()
     make -j$(nproc --all) \
     O=out \
     ARCH=${ARCH}\
-    CC="ccache clang" \
+    CC="clang" \
     CLANG_TRIPLE="aarch64-linux-gnu-" \
     CROSS_COMPILE="aarch64-linux-gnu-" \
     CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
