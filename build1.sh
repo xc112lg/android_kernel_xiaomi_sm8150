@@ -60,7 +60,8 @@ compile()
     CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
     LLVM=1 \
     LLVM_IAS=1 \
-	LD=ld.lld
+	LD=aarch64-linux-gnu-ld.gold
+
 }
 
 completion()
