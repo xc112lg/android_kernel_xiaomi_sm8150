@@ -262,7 +262,7 @@ INSTALL_MODULES() {
 			modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
-            INSTALL_MOD_PATH="." \
+            INSTALL_MOD_PATH="$BDIR" \
             INSTALL_MOD_STRIP=1 \
             modules_install &> zBuild_all.log
     fi
