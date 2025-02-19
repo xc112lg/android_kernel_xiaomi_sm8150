@@ -181,28 +181,7 @@ else
   ABORT "Invalid device '${DEVICE}' specified! Make sure to use upper-case."
 fi
 
-SWAN2000_DEFCONFIG=vendor/lge/swan2000.config
 
-# check for stuff
-[ -f "$RDIR/arch/$ARCH/configs/${COMMON_DEFCONFIG}" ] \
-	|| ABORT "$COMMON_DEFCONFIG not found in $ARCH configs!"
-
-[ -f "$RDIR/arch/$ARCH/configs/${BOARD_DEFCONFIG}" ] \
-	|| ABORT "$BOARD_DEFCONFIG not found in $ARCH configs!"
-
-[ -f "$RDIR/arch/$ARCH/configs/${DEVICE_DEFCONFIG}" ] \
-	|| ABORT "$DEVICE_DEFCONFIG not found in $ARCH configs!"
-
-[ -x "${GCC_COMP}gcc" ] \
-	|| ABORT "Cross-compiler not found at: ${GCC_COMP}gcc"
-
-[ -x "${GCC_COMP_32}gcc" ] \
-	|| echo -e $COLOR_R"32-bit compiler not found, required for COMPAT_VDSO (VDSO32)."
-
-if [ "$USE_CCACHE" = "yes" ]; then
-	command -v ccache >/dev/null 2>&1 \
-	|| ABORT "Do you have ccache installed?"
-fi
 
 if [ -f "$BDIR/DEVICE" ] && \
 	[ "$(cat $BDIR/DEVICE)" = "$DEVICE" ]; then
