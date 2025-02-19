@@ -280,6 +280,8 @@ INSTALL_MODULES() {
    		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
 			INSTALL_MOD_STRIP=1 \
 			modules_prepare \
+			LDFLAGS="-maarch64elf" \
+			KCFLAGS="-Wno-error" \
 			modules \
 			modules_install
     else # build_all will send module logs to a file
@@ -316,7 +318,7 @@ else # Always clean build folder for next build on build_all
 fi
 SETUP_BUILD
 BUILD_KERNEL
-#INSTALL_MODULES
+INSTALL_MODULES
 PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
 
