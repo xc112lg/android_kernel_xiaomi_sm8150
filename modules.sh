@@ -277,7 +277,7 @@ INSTALL_MODULES() {
     if [ $SINGLEBUILD = "yes" ]; then
 		echo "BDIR is set to: $BDIR"
 
-		scripts/depmod.sh -F System.map buildZ
+		scripts/depmod.sh -F System.map build
         make -C "$RDIR" O="$BDIR" \
    		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
             INSTALL_MOD_STRIP=1 \

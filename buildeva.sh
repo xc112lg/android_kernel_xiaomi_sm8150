@@ -279,12 +279,9 @@ INSTALL_MODULES() {
 
 		scripts/depmod.sh -F System.map build
         make -C "$RDIR" O="$BDIR" \
-   		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
-			INSTALL_MOD_STRIP=1 \
-			modules_prepare \
-			KCFLAGS="-Wno-error" \
-			modules \
-			modules_install
+            INSTALL_MOD_PATH="$(realpath "$BDIR")" \
+            INSTALL_MOD_STRIP=1 \
+            modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
             INSTALL_MOD_PATH="$(realpath "$BDIR")" \
@@ -311,12 +308,12 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 
 # ask before cleaning if device
 # is the same as previous build
-if [ $SINGLEBUILD = "yes" ]; then
-   echo -e $COLOR_P"Run"
-    CLEAN_BUILD
-else # Always clean build folder for next build on build_all
-    CLEAN_BUILD
-fi
+# if [ $SINGLEBUILD = "yes" ]; then
+#    echo -e $COLOR_P"Run"
+#     CLEAN_BUILD
+# else # Always clean build folder for next build on build_all
+#     CLEAN_BUILD
+# fi
 SETUP_BUILD
 BUILD_KERNEL
 INSTALL_MODULES
