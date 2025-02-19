@@ -269,21 +269,25 @@ BUILD_KERNEL() {
 	    BTIME=$(printf '%02dm:%02ds' $(($BSEC/60)) $(($BSEC%60)))
 }
 
+depmod -b "$BDIR"
+find "$BDIR" -type d -name "modules"
+ls "$BDIR/lib/modules/"
+
 INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR \
-	        INSTALL_MOD_PATH="$BDIR" \
-	        INSTALL_MOD_STRIP=1 \
-	        modules_install
+        make -C "$RDIR" O="$BDIR" \
+   		    INSTALL_MOD_PATH="$BDIR" \
+			INSTALL_MOD_STRIP=1 \
+			modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
-            INSTALL_MOD_PATH="." \
+            INSTALL_MOD_PATH="$BDIR" \
             INSTALL_MOD_STRIP=1 \
             modules_install &> zBuild_all.log
     fi
-	rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
 }
 
 PREPARE_NEXT() {
