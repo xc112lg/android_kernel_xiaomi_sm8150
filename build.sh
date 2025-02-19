@@ -67,8 +67,10 @@
 #
 ################################# CONFIG #################################
 
-sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio -y
-sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git -y
+# sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio  -y
+# sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git -y
+# sudo apt-get update
+# sudo apt-get install binutils -y
 git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 ../clang-crdroid --depth 1
 export PATH="$(pwd)/../clang-crdroid/bin:$PATH"
 export ARCH=arm64
@@ -82,11 +84,6 @@ export OBJDUMP=llvm-objdump
 export STRIP=llvm-strip
 
 
-clang --version
-clang --version
-clang --version
-clang --version
-clang --version
 clang --version
 
 
@@ -197,7 +194,7 @@ fi
 # build commands
 CLEAN_BUILD() {
 	echo -e $COLOR_G"Cleaning build folder..."$COLOR_N
-	rm -rf $BDIR && sleep 5
+	rm -rf out
 }
 
 SETUP_BUILD() {
@@ -228,8 +225,20 @@ BUILD_KERNEL() {
 		# 	CLANG_TRIPLE=aarch64-linux-gnu- \
 		# 	LLVM=1 \
     	# 	LLVM_IAS=1
-		make O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc)
-		
+		make O=out ARCH=arm64 CC="ccache clang" \
+			CLANG_TRIPLE="aarch64-linux-gnu-" \
+			CROSS_COMPILE="aarch64-linux-gnu-" \
+			CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
+			LLVM=1 \
+			LLVM_IAS=1 \
+			LD=ld.lld \
+			AR=llvm-ar \
+			NM=llvm-nm \
+			OBJCOPY=llvm-objcopy \
+			OBJDUMP=llvm-objdump \
+			STRIP=llvm-strip \
+			HOSTCC=clang \
+			HOSTCXX=clang++
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
 		    read -rp "Build failed. Retry? " do_retry
@@ -288,7 +297,9 @@ if [ $SINGLEBUILD = "yes" ]; then
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
 fi
+CLEAN_BUILD
 SETUP_BUILD
+
 BUILD_KERNEL
 INSTALL_MODULES
 PREPARE_NEXT
