@@ -275,6 +275,7 @@ INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
+		echo "BDIR is set to: $BDIR"
         make -C "$RDIR" O="$BDIR" \
    		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
 			INSTALL_MOD_STRIP=1 \
