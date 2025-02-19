@@ -243,7 +243,7 @@ SETUP_BUILD() {
 	    make -C "$RDIR" O=$BDIR ARCH=arm64 CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG \
 		    || ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
-        make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
+        make -C "$RDIR" O=$BDIR $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
 		    || ABORT "Failed to set up the kernel build."
     fi
 }
@@ -253,9 +253,9 @@ BUILD_KERNEL() {
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
         
-		make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" 
+		make -C "$RDIR" O=$BDIR -j"$THREADS" CROSS_COMPILE=$CROSS_COMPILE  KCFLAGS="-Wno-error" 
 	
-    else # build_all will send compile logs to a file
+    else # build_all will send compile logs to a file LDFLAGS="-maarch64elf"
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
 		    read -rp "Build failed. Retry? " do_retry
 		    case $do_retry in
