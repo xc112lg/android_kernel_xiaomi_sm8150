@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3  # Updated shebang
 # Copyright 2017, The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -124,7 +124,7 @@ class DtEntry(object):
                 version: Version of DTBO header, compression is only
                          supported from version 1.
         """
-        if version is 0:
+        if version == 0:
             return CompressionFormat.NO_COMPRESSION
         return self.flags & self._COMPRESSION_FORMAT_MASK
 
@@ -244,7 +244,7 @@ class Dtbo(object):
         Tree table entries and update the DTBO header.
         """
 
-        self.__metadata = array('c', ' ' * self.__metadata_size)
+        self.__metadata = array('B', b' ' * self.__metadata_size)
         metadata_offset = self.header_size
         for dt_entry in self.__dt_entries:
             self._update_dt_entry_header(dt_entry, metadata_offset)
@@ -252,18 +252,15 @@ class Dtbo(object):
         self._update_dt_table_header()
 
     def _read_dtbo_header(self, buf):
-        """Reads DTBO file header into metadata buffer.
+        """Reads DTBO file header into metadata buffer."""
+        # Ensure buffer is bytes (Python 3 safety)
+        if not isinstance(buf, bytes):
+            raise ValueError("Buffer must be bytes (not string) for struct operations")
 
-        Unpack and read the DTBO table header from given buffer. The
-        buffer size must exactly be equal to _DT_TABLE_HEADER_SIZE.
-
-        Args:
-            buf: Bytebuffer read directly from the file of size
-                _DT_TABLE_HEADER_SIZE.
-        """
+        # Unpack the header (rest of the code remains the same)
         (self.magic, self.total_size, self.header_size,
-         self.dt_entry_size, self.dt_entry_count, self.dt_entries_offset,
-         self.page_size, self.version) = struct.unpack_from('>8I', buf, 0)
+        self.dt_entry_size, self.dt_entry_count, self.dt_entries_offset,
+        self.page_size, self.version) = struct.unpack_from('>8I', buf, 0)
 
         # verify the header
         if self.magic != self._DTBO_MAGIC and self.magic != self._ACPIO_MAGIC:
@@ -290,7 +287,7 @@ class Dtbo(object):
         if self.__dt_entries:
             raise ValueError('DTBO DT entries can be added only once')
 
-        offset = self.dt_entries_offset / 4
+        offset = self.dt_entries_offset // 4
         params = {}
         params['dt_file'] = None
         for i in range(0, self.dt_entry_count):
@@ -303,17 +300,31 @@ class Dtbo(object):
             self.__dt_entries.append(dt_entry)
             offset += self._DT_ENTRY_HEADER_INTS
 
+
     def _read_dtbo_image(self):
         """Parse the input file and instantiate this object."""
+        # Verify file is opened in binary mode (critical for Python 3)
+        if 'b' not in self.__file.mode:
+            raise ValueError("File must be opened in binary mode (use 'rb')")
 
-        # First check if we have enough to read the header
+        # Check file size
         file_size = os.fstat(self.__file.fileno()).st_size
         if file_size < self._DT_TABLE_HEADER_SIZE:
             raise ValueError('Invalid DTBO file')
 
         self.__file.seek(0)
         buf = self.__file.read(self._DT_TABLE_HEADER_SIZE)
+        
+        # Ensure buffer is bytes (Python 3 safety)
+        if not isinstance(buf, bytes):
+            raise TypeError("Header buffer must be bytes type")
+            
         self._read_dtbo_header(buf)
+
+
+
+
+
 
         self.__metadata_size = (self.header_size +
                                 self.dt_entry_count * self.dt_entry_size)
@@ -324,11 +335,11 @@ class Dtbo(object):
         num_ints = (self._DT_TABLE_HEADER_INTS +
                     self.dt_entry_count * self._DT_ENTRY_HEADER_INTS)
         if self.dt_entries_offset > self._DT_TABLE_HEADER_SIZE:
-            num_ints += (self.dt_entries_offset - self._DT_TABLE_HEADER_SIZE) / 4
+            num_ints += (self.dt_entries_offset - self._DT_TABLE_HEADER_SIZE) // 4
         format_str = '>' + str(num_ints) + 'I'
         self.__file.seek(0)
-        self.__metadata = struct.unpack(format_str,
-                                        self.__file.read(self.__metadata_size))
+        metadata_bytes = self.__file.read(self.__metadata_size)
+        self.__metadata = array('B', metadata_bytes)
         self._read_dt_entries_from_metadata()
 
     def _find_dt_entry_with_same_file(self, dt_entry):
@@ -428,9 +439,8 @@ class Dtbo(object):
         }
 
         if compression_format not in compression_obj_dict:
-            ValueError("Bad compression format %d" % compression_format)
-
-        if compression_format is CompressionFormat.NO_COMPRESSION:
+            raise ValueError("Bad compression format %d" % compression_format)  # Added 'raise'
+        if compression_format == CompressionFormat.NO_COMPRESSION:
             dt_entry = dt_entry_file.read()
         else:
             compression_object = compression_obj_dict[compression_format]
@@ -465,7 +475,7 @@ class Dtbo(object):
         dt_offset = (self.header_size +
                      dt_entry_count * self.dt_entry_size)
 
-        dt_entry_buf = ""
+        dt_entry_buf = b""
         for dt_entry in dt_entries:
             if not isinstance(dt_entry, DtEntry):
                 raise ValueError('Adding invalid DT entry object to DTBO')
@@ -540,7 +550,7 @@ class Dtbo(object):
         self._update_metadata()
 
         self.__file.seek(0)
-        self.__file.write(self.__metadata)
+        self.__file.write(self.__metadata.tobytes())
         self.__file.write(dt_entry_buf)
         self.__file.flush()
 
@@ -612,7 +622,7 @@ def parse_dt_entries(global_args, arg_list):
         raise ValueError('Input DT images must be provided')
 
     total_images = len(img_file_idx)
-    for idx in xrange(total_images):
+    for idx in range(total_images):
         start_idx = img_file_idx[idx]
         if idx == total_images - 1:
             argv = arg_list[start_idx:]
@@ -645,7 +655,7 @@ def parse_config_option(line, is_global, dt_keys, global_key_types):
         the key to make sure its valid.
     """
 
-    if line.find('=') == -1:
+    if '=' not in line:
         raise ValueError('Invalid line (%s) in configuration file' % line)
 
     key, value = (x.strip() for x in line.split('='))
@@ -789,7 +799,7 @@ def parse_config_create_cmd_args(arglist):
     """
     parser = argparse.ArgumentParser(prog='cfg_create')
     parser.add_argument('conf_file', nargs='?',
-                        type=argparse.FileType('rb'),
+                        type=argparse.FileType('r'),
                         default=None)
     cwd = os.getcwd()
     parser.add_argument('--dtb-dir', '-d', nargs='?', type=str,
@@ -853,7 +863,7 @@ def create_dtbo_image_from_config(fout, argv):
     params = {}
     dt_entries = []
     for dt_arg in dt_args:
-        filepath = args.dtbdir + os.sep + dt_arg['filename']
+        filepath = os.path.join(args.dtbdir, dt_arg['filename'])
         params['dt_file'] = open(filepath, 'rb')
         params['dt_offset'] = 0
         params['dt_size'] = os.fstat(params['dt_file'].fileno()).st_size
@@ -962,7 +972,7 @@ def print_usage(cmd, _):
             if cmd != 'all':
                 return
 
-    print('Unsupported help command: %s' % cmd, end='\n\n')
+    print('Unsupported help command: %s' % cmd)
     print_default_usage(prog_name)
     return
 
