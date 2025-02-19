@@ -253,7 +253,7 @@ make -C "$BDIR" modules_prepare
 make -C "$BDIR" modules
 cat "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin" | awk '{print "builtin "$0}' > "$BDIR/lib/modules/$(make -s -C $BDIR kernelrelease)/modules.builtin.modinfo"
 
-
+BDIR=build
 
 # INSTALL_MODULES() {
 # 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0

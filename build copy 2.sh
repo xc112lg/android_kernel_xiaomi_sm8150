@@ -66,17 +66,12 @@
 #		LGH872   (LG G6)
 #
 ################################# CONFIG #################################
+sudo apt update
+sudo apt install binutils-aarch64-linux-gnu
+sudo apt install kmod -y
+#sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio
 
-
-git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
-export PATH=$(pwd)/clang-crdroid/bin:$PATH
-export CLANG_TRIPLE=aarch64-linux-gnu-
-export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
-export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
-
-
-
-
+#sudo ln -s $(which python3) /usr/bin/python2
 
 # Assume build_all is not being used, will be automatically changed if it is
 SINGLEBUILD="yes"
@@ -146,11 +141,21 @@ ABORT() {
 	exit 1
 }
 
+
+
+
+
 export ARCH=arm64
 export KBUILD_BUILD_USER=$KBUSER
 export KBUILD_BUILD_HOST=$KBHOST
 export LOCALVERSION="-${VER}"
-
+if [ "$USE_CCACHE" = "yes" ]; then
+  export CROSS_COMPILE="ccache $GCC_COMP"
+  export CROSS_COMPILE_ARM32="ccache $GCC_COMP_32"
+else
+  export CROSS_COMPILE=$GCC_COMP
+  export CROSS_COMPILE_ARM32=$GCC_COMP_32
+fi
 
 # In case a model isn't passed as an argument, this block acts as a fallback
 MODEL_ARRAY=("H850" "H830" "RS988" "H870" "US997" "H872" "H910" "H918" "H990" "LS997" "US996" "US996D" "VS995")
@@ -235,9 +240,9 @@ SETUP_BUILD() {
 	echo "$DEVICE" > $BDIR/DEVICE \
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
-	  #  make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
-		make -C "$RDIR" O=$BDIR ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
-			    || ABORT "Failed to set up the kernel build."
+	    #ARCH=arm64 scripts/kconfig/merge_config.sh 
+	    make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG \
+		    || ABORT "Failed to set up the kernel build."
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
 		    || ABORT "Failed to set up the kernel build."
@@ -248,13 +253,8 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        while ! make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 LLVM=1 LLVM_IAS=1; do
-		    read -rp "Build failed. Retry? " do_retry
-		    case $do_retry in
-			    Y|y) continue ;;
-			    *) ABORT "Compilation aborted." ;;
-		    esac
-	    done
+        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" modules
+	
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
 		    read -rp "Build failed. Retry? " do_retry
@@ -269,21 +269,24 @@ BUILD_KERNEL() {
 	    BTIME=$(printf '%02dm:%02ds' $(($BSEC/60)) $(($BSEC%60)))
 }
 
+
+
 INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR \
-	        INSTALL_MOD_PATH="." \
-	        INSTALL_MOD_STRIP=1 \
-	        modules_install
+		echo "BDIR is set to: $BDIR"
+        make -C "$RDIR" O="$BDIR" \
+   		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
+			INSTALL_MOD_STRIP=1 \
+			modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
-            INSTALL_MOD_PATH="." \
+            INSTALL_MOD_PATH="$(realpath "$BDIR")" \
             INSTALL_MOD_STRIP=1 \
             modules_install &> zBuild_all.log
     fi
-	rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
 }
 
 PREPARE_NEXT() {
@@ -299,29 +302,13 @@ PREPARE_NEXT() {
 }
 
 cd "$RDIR" || ABORT "Failed to enter $RDIR!"
-echo -e $COLOR_G"Building ${DEVICE} ${VER}..."
 
-if [ "$USE_CCACHE" = "yes" ]; then
-  echo -e $COLOR_P"Using CCACHE..."
-fi
 
 # ask before cleaning if device
 # is the same as previous build
 if [ $SINGLEBUILD = "yes" ]; then
-    if [ "$ASK_CLEAN" = "yes" ]; then
-      while true; do
-        echo -e $COLOR_Y
-        read -p "Same device as the last build. Do you wish to clean the build directory?" yn
-        echo -e $COLOR_N
-        case $yn in
-          [Yy]* ) CLEAN_BUILD && break ;;
-          [Nn]* ) break ;;
-          * ) echo -e $COLOR_R"Please answer 'y' or 'n'"$COLOR_N ;;
-        esac
-      done
-    else
+   echo -e $COLOR_P"Run"
     CLEAN_BUILD
-    fi
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
 fi

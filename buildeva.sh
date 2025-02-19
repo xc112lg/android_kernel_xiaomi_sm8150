@@ -249,27 +249,8 @@ SETUP_BUILD() {
     fi
 }
 
-BUILD_KERNEL() {
-	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
-	    TIMESTAMP1=$(date +%s)
-    if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" modules
-	
-    else # build_all will send compile logs to a file
-	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
-		    read -rp "Build failed. Retry? " do_retry
-		    case $do_retry in
-			    Y|y) continue ;;
-			    *) ABORT "Compilation aborted." ;;
-		    esac
-	    done
-    fi
-	    TIMESTAMP2=$(date +%s)
-	    BSEC=$((TIMESTAMP2-TIMESTAMP1))
-	    BTIME=$(printf '%02dm:%02ds' $(($BSEC/60)) $(($BSEC%60)))
-}
-
-
+make -C "$BDIR" modules_prepare
+make -C "$BDIR" modules
 
 INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
@@ -286,7 +267,8 @@ INSTALL_MODULES() {
             INSTALL_MOD_STRIP=1 \
             modules_install &> zBuild_all.log
     fi
-	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+	rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+}
 }
 
 PREPARE_NEXT() {
@@ -304,16 +286,8 @@ PREPARE_NEXT() {
 cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 
 
-# ask before cleaning if device
-# is the same as previous build
-if [ $SINGLEBUILD = "yes" ]; then
-   echo -e $COLOR_P"Run"
-    CLEAN_BUILD
-else # Always clean build folder for next build on build_all
-    CLEAN_BUILD
-fi
+
 SETUP_BUILD
-BUILD_KERNEL
 INSTALL_MODULES
 PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
