@@ -68,7 +68,7 @@
 ################################# CONFIG #################################
 
 sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio -y
-sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git
+sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git -y
 git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 ../clang-crdroid --depth 1
 export PATH="$(pwd)/../clang-crdroid/bin:$PATH"
 export ARCH=arm64
