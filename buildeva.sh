@@ -249,8 +249,6 @@ SETUP_BUILD() {
     fi
 }
 
-make -C "$BDIR" modules_prepare
-make -C "$BDIR" modules
 
 INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
@@ -260,6 +258,8 @@ INSTALL_MODULES() {
         make -C "$RDIR" O="$BDIR" \
    		    INSTALL_MOD_PATH="$(realpath "$BDIR")" \
 			INSTALL_MOD_STRIP=1 \
+			modules_prepare \
+			modules \
 			modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
