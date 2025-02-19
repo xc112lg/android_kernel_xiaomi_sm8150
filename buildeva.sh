@@ -253,7 +253,7 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error"
+        make -C "$RDIR" O=$BDIR -j"$THREADS" LDFLAGS="-maarch64elf" KCFLAGS="-Wno-error" modules
 	
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
