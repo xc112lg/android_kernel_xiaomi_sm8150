@@ -316,7 +316,7 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 #     CLEAN_BUILD
 # fi
 SETUP_BUILD
-#BUILD_KERNEL
+BUILD_KERNEL
 INSTALL_MODULES
 PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
