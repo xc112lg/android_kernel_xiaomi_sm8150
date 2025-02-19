@@ -338,8 +338,8 @@ class Dtbo(object):
             num_ints += (self.dt_entries_offset - self._DT_TABLE_HEADER_SIZE) // 4
         format_str = '>' + str(num_ints) + 'I'
         self.__file.seek(0)
-        self.__metadata = struct.unpack(format_str,
-                                        self.__file.read(self.__metadata_size))
+        metadata_bytes = self.__file.read(self.__metadata_size)
+        self.__metadata = array('B', metadata_bytes)
         self._read_dt_entries_from_metadata()
 
     def _find_dt_entry_with_same_file(self, dt_entry):
@@ -799,7 +799,7 @@ def parse_config_create_cmd_args(arglist):
     """
     parser = argparse.ArgumentParser(prog='cfg_create')
     parser.add_argument('conf_file', nargs='?',
-                        type=argparse.FileType('rb'),
+                        type=argparse.FileType('r'),
                         default=None)
     cwd = os.getcwd()
     parser.add_argument('--dtb-dir', '-d', nargs='?', type=str,
@@ -863,7 +863,7 @@ def create_dtbo_image_from_config(fout, argv):
     params = {}
     dt_entries = []
     for dt_arg in dt_args:
-        filepath = args.dtbdir + os.sep + dt_arg['filename']
+        filepath = os.path.join(args.dtbdir, dt_arg['filename'])
         params['dt_file'] = open(filepath, 'rb')
         params['dt_offset'] = 0
         params['dt_size'] = os.fstat(params['dt_file'].fileno()).st_size
