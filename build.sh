@@ -68,12 +68,18 @@
 ################################# CONFIG #################################
 
 sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio -y
-
-git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 clang-crdroid --depth 1
-export PATH=$(pwd)/clang-crdroid/bin:$PATH
+sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git
+git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 ../clang-crdroid --depth 1
+export PATH="$(pwd)/../clang-crdroid/bin:$PATH"
+export ARCH=arm64
 export CLANG_TRIPLE=aarch64-linux-gnu-
-export CROSS_COMPILE=$(pwd)/clang-crdroid/bin/aarch64-linux-gnu-
-export CROSS_COMPILE_ARM32=$(pwd)/clang-crdroid/bin/arm-linux-gnueabi-
+export CC=clang
+export LD=ld.lld
+export AR=llvm-ar
+export NM=llvm-nm
+export OBJCOPY=llvm-objcopy
+export OBJDUMP=llvm-objdump
+export STRIP=llvm-strip
 
 
 clang --version
@@ -201,8 +207,9 @@ SETUP_BUILD() {
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
 	  #  make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
-		
-        make -C "$RDIR" O=$BDIR  ARCH=arm64  $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG
+	mkdir -p out
+	make O=out ARCH=arm64 $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG
+       # make -C "$RDIR" O=$BDIR  ARCH=arm64  
         #ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
     else # build_all will send make output to a file
         make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $SWAN2000_DEFCONFIG &> zBuild_all.log \
@@ -214,14 +221,14 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 \
-			CC=clang \
-			CROSS_COMPILE=$CROSS_COMPILE \
-			CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-			CLANG_TRIPLE=aarch64-linux-gnu- \
-			LLVM=1 \
-    		LLVM_IAS=1
-
+        # make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 \
+		# 	CC=clang \
+		# 	CROSS_COMPILE=$CROSS_COMPILE \
+		# 	CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+		# 	CLANG_TRIPLE=aarch64-linux-gnu- \
+		# 	LLVM=1 \
+    	# 	LLVM_IAS=1
+		make O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc)
 		
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
