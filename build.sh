@@ -115,30 +115,8 @@ USE_CCACHE=no
 # select cpu threads
 THREADS=$(grep -c "processor" /proc/cpuinfo)
 
-# directory containing cross-compiler
-# a newer toolchain (gcc8+) is recommended due to changes made
-# to the kernel.
-GCC_COMP=$HOME/gcc-arm64/bin/aarch64-elf-
-# directory containing 32bit cross-compiler for CONFIG_COMPAT_VDSO
-GCC_COMP_32=$HOME/gcc-arm/bin/arm-eabi-
 
-# -------------------------------- END -----------------------------------
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# compiler version
-# gnu gcc or newer arm (linaro) gcc
-if $(${GCC_COMP}gcc --version | grep -q '(GCC)') || 
-$(${GCC_COMP}gcc --version | grep -q '(Eva GCC)'); then
-	GCC_STRING=$(${GCC_COMP}gcc --version | head -n1 | cut -f2 -d')')
-	GCC_VER="GCC$GCC_STRING"
-else # old linaro gcc
-	GCC_VER="$(${GCC_COMP}gcc --version | head -n1 | cut -f1 -d')' | \
-	cut -f2 -d'(')"
-	
-	if $(echo $GCC_VER | grep -q '~dev'); then
-  		GCC_VER="$(echo $GCC_VER | cut -f1 -d'~')+"
-fi
-fi
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # --------------------------- RIGID PORTION ------------------------------
