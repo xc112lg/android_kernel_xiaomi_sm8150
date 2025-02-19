@@ -249,9 +249,7 @@ SETUP_BUILD() {
     fi
 }
 
-depmod -b "$BDIR"
-find "$BDIR" -type d -name "modules"
-ls "$BDIR/lib/modules/"
+
 
 INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
