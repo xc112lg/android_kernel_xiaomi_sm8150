@@ -249,12 +249,15 @@ SETUP_BUILD() {
     fi
 }
 
+depmod -b "$BDIR"
+find "$BDIR" -type d -name "modules"
+
 INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
         make -C "$RDIR" O="$BDIR" \
-			INSTALL_MOD_PATH="$(pwd)/build/lib/modules" \
+   		    INSTALL_MOD_PATH="$BDIR" \
 			INSTALL_MOD_STRIP=1 \
 			modules_install
     else # build_all will send module logs to a file
