@@ -276,13 +276,11 @@ INSTALL_MODULES() {
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
 		echo "BDIR is set to: $BDIR"
-		depmod -b build
 
-		# scripts/depmod.sh -F System.map build
-        # make -C "$RDIR" O="$BDIR" \
-        #     INSTALL_MOD_PATH="$(realpath "$BDIR")" \
-        #     INSTALL_MOD_STRIP=1 \
-        #     modules_install
+        make -C "$RDIR" O="$BDIR" \
+             INSTALL_MOD_PATH="$(realpath "$BDIR")" \
+             INSTALL_MOD_STRIP=1 \
+             modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
             INSTALL_MOD_PATH="$(realpath "$BDIR")" \
