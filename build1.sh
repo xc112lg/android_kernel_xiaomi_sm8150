@@ -31,7 +31,7 @@ if ! [ -d "$CLANG_DIR" ]; then
     echo "Toolchain not found! Cloning to $CLANG_DIR..."
     if ! git clone -q --depth=1 --single-branch https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379.git -b 15.0 $TC_DIR; then
         echo "Cloning failed! Aborting..."
-        exit 1
+    
     fi
 fi
 
