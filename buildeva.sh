@@ -269,7 +269,7 @@ INSTALL_MODULES() {
     fi
 	rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
 }
-}
+
 
 PREPARE_NEXT() {
 	if grep -q 'CONFIG_KERNEL_LZ4=y' $BDIR/.config; then
