@@ -299,7 +299,7 @@ if [ $SINGLEBUILD = "yes" ]; then
 else # Always clean build folder for next build on build_all
     CLEAN_BUILD
 fi
-CLEAN_BUILD
+#CLEAN_BUILD
 SETUP_BUILD
 
 BUILD_KERNEL
