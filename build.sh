@@ -196,10 +196,10 @@ if [ -f "$BDIR/DEVICE" ] && \
 fi
 
 # build commands
-CLEAN_BUILD() {
-	echo -e $COLOR_G"Cleaning build folder..."$COLOR_N
-	rm -rf out
-}
+# CLEAN_BUILD() {
+# 	echo -e $COLOR_G"Cleaning build folder..."$COLOR_N
+# 	rm -rf out
+# }
 
 SETUP_BUILD() {
 	echo -e $COLOR_G"Creating kernel config..."$COLOR_N
@@ -256,7 +256,7 @@ INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
-        make -C "$RDIR" O=$BDIR \
+        make O=out \
 	        INSTALL_MOD_PATH="." \
 	        INSTALL_MOD_STRIP=1 \
 	        modules_install
@@ -290,12 +290,12 @@ fi
 
 # ask before cleaning if device
 # is the same as previous build
-if [ $SINGLEBUILD = "yes" ]; then
+# if [ $SINGLEBUILD = "yes" ]; then
 
-    CLEAN_BUILD
-else # Always clean build folder for next build on build_all
-    CLEAN_BUILD
-fi
+#     CLEAN_BUILD
+# else # Always clean build folder for next build on build_all
+#     CLEAN_BUILD
+# fi
 #CLEAN_BUILD
 SETUP_BUILD
 
