@@ -83,6 +83,10 @@ export OBJCOPY=llvm-objcopy
 export OBJDUMP=llvm-objdump
 export STRIP=llvm-strip
 
+export HOSTCC=clang
+export HOSTCXX=clang++
+export KCFLAGS="-O2 -mcpu=cortex-a76 -mtune=cortex-a76"
+
 
 clang --version
 
