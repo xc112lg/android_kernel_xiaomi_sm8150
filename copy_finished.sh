@@ -121,7 +121,7 @@ COPY_KERNEL() {
 	    echo "Copying kernel image..."
     fi
 	cp $KERN_DIR/dtbo.img $KERN_DIR/IMAGE  $DDIR \; \
-
+    
 		|| ABORT "Failed to copy kernel image"
 	if grep -q 'CONFIG_MODULES=y' $BDIR/.config; then
       if [ $SINGLEBUILD = "yes" ]; then
@@ -130,6 +130,7 @@ COPY_KERNEL() {
 	  find $MOD_DIR/ -name '*.ko' -exec cp {} $DDIR/$MDIR \; \
 		|| ABORT "Failed to copy the kernel's modules"
 	fi
+	ls $DDIR
 }
 
 ZIP_UP() {
