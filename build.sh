@@ -208,8 +208,8 @@ SETUP_BUILD() {
 		|| echo -e $COLOR_R"Failed to reflect device!"
     if [ $SINGLEBUILD = "yes" ]; then
 	  #  make -C "$RDIR" O=$BDIR CROSS_COMPILE=$CROSS_COMPILE $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
-	mkdir -p out
-	make O=out ARCH=arm64 $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG
+	
+	make -C "$RDIR" O=$BDIR ARCH=arm64 $COMMON_DEFCONFIG $DEBUG_DEFCONFIG $BOARD_DEFCONFIG  $DEVICE_DEFCONFIG
        # make -C "$RDIR" O=$BDIR  ARCH=arm64  
         #ARCH=arm64 LLVM=1 LLVM_IAS=1 $COMMON_DEFCONFIG $BOARD_DEFCONFIG $DEVICE_DEFCONFIG $DEBUG_DEFCONFIG \
     else # build_all will send make output to a file
@@ -222,7 +222,7 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-		make O=out ARCH=arm64 CC=clang \
+		make -C "$RDIR" O=$BDIR ARCH=arm64 CC=clang \
 			CLANG_TRIPLE="aarch64-linux-gnu-" \
 			CROSS_COMPILE="aarch64-linux-gnu-" \
 			CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
@@ -256,7 +256,7 @@ INSTALL_MODULES() {
 	grep -q 'CONFIG_MODULES=y' $BDIR/.config || return 0
 	echo -e $COLOR_G"Installing kernel modules..."$COLOR_N
     if [ $SINGLEBUILD = "yes" ]; then
-        make O=out \
+        make -C "$RDIR" O=$BDIR \
 	        INSTALL_MOD_PATH="." \
 	        INSTALL_MOD_STRIP=1 \
 	        modules_install
