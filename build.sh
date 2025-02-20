@@ -67,10 +67,10 @@
 #
 ################################# CONFIG #################################
 
-# sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio  -y
-# sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git -y
-# sudo apt-get update
-# sudo apt-get install binutils -y
+sudo apt update && sudo -H apt-get install bc python2 ccache binutils-aarch64-linux-gnu cpio  -y
+sudo apt-get install build-essential ncurses-dev libssl-dev libelf-dev bison flex git -y
+sudo apt-get update
+sudo apt-get install binutils kmod -y
 git clone https://gitlab.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-r547379 ../clang-crdroid --depth 1
 export PATH="$(pwd)/../clang-crdroid/bin:$PATH"
 export ARCH=arm64
@@ -222,13 +222,6 @@ BUILD_KERNEL() {
 	    echo -e $COLOR_G"Compiling kernel for ${DEVICE}..."$COLOR_N
 	    TIMESTAMP1=$(date +%s)
     if [ $SINGLEBUILD = "yes" ]; then
-        # make -C "$RDIR" O=$BDIR -j"$THREADS" ARCH=arm64 \
-		# 	CC=clang \
-		# 	CROSS_COMPILE=$CROSS_COMPILE \
-		# 	CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-		# 	CLANG_TRIPLE=aarch64-linux-gnu- \
-		# 	LLVM=1 \
-    	# 	LLVM_IAS=1
 		make O=out ARCH=arm64 CC=clang \
 			CLANG_TRIPLE="aarch64-linux-gnu-" \
 			CROSS_COMPILE="aarch64-linux-gnu-" \
