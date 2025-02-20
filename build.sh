@@ -266,7 +266,7 @@ INSTALL_MODULES() {
             INSTALL_MOD_STRIP=1 \
             modules_install &> zBuild_all.log
     fi
-	rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
+	#rm $BDIR/lib/modules/*/build $BDIR/lib/modules/*/source
 }
 
 PREPARE_NEXT() {
