@@ -239,7 +239,8 @@ BUILD_KERNEL() {
 			STRIP=llvm-strip \
 			HOSTCC=clang \
 			HOSTCXX=clang++ \
-			KCFLAGS="-O2 -mcpu=cortex-a76 -mtune=cortex-a76" 
+			KCFLAGS="-O2 -mcpu=cortex-a76 -mtune=cortex-a76" \
+			-j$(nproc)
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
 		    read -rp "Build failed. Retry? " do_retry
