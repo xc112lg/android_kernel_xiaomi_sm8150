@@ -196,10 +196,10 @@ if [ -f "$BDIR/DEVICE" ] && \
 fi
 
 # build commands
-# CLEAN_BUILD() {
-# 	echo -e $COLOR_G"Cleaning build folder..."$COLOR_N
-# 	rm -rf out
-# }
+CLEAN_BUILD() {
+	echo -e $COLOR_G"Cleaning build folder..."$COLOR_N
+	rm -rf $BDIR 
+}
 
 SETUP_BUILD() {
 	echo -e $COLOR_G"Creating kernel config..."$COLOR_N
@@ -305,16 +305,16 @@ fi
 
 # ask before cleaning if device
 # is the same as previous build
-# if [ $SINGLEBUILD = "yes" ]; then
+if [ $SINGLEBUILD = "yes" ]; then
 
-#     CLEAN_BUILD
-# else # Always clean build folder for next build on build_all
-#     CLEAN_BUILD
-# fi
-#CLEAN_BUILD
+    CLEAN_BUILD
+else # Always clean build folder for next build on build_all
+    CLEAN_BUILD
+fi
+CLEAN_BUILD
 SETUP_BUILD
 
-#BUILD_KERNEL
+BUILD_KERNEL
 INSTALL_MODULES
 PREPARE_NEXT
 echo -e $COLOR_G"Finished building ${DEVICE} ${VER} -- Kernel compilation took"$COLOR_R $BTIME
