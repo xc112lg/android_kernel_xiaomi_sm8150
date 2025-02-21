@@ -236,6 +236,7 @@ BUILD_KERNEL() {
 			STRIP=llvm-strip \
 			HOSTCC=clang \
 			HOSTCXX=clang++ \
+			KCFLAGS="-O2 -mcpu=cortex-a76 -mtune=cortex-a76" \
 			-j$(nproc)
     else # build_all will send compile logs to a file
 	    while ! make -C "$RDIR" O=$BDIR -j"$THREADS" &> zBuild_all.log; do
@@ -272,6 +273,7 @@ INSTALL_MODULES() {
 			STRIP=llvm-strip \
 			HOSTCC=clang \
 			HOSTCXX=clang++ \
+			KCFLAGS="-O2 -mcpu=cortex-a76 -mtune=cortex-a76" \
 	        modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
