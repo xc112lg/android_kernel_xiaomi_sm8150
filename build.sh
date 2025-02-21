@@ -259,6 +259,21 @@ INSTALL_MODULES() {
         make -C "$RDIR" O=$BDIR \
 	        INSTALL_MOD_PATH="$(realpath "$BDIR")" \
 	        INSTALL_MOD_STRIP=1 \
+			ARCH=arm64 CC=clang \
+			CLANG_TRIPLE="aarch64-linux-gnu-" \
+			CROSS_COMPILE="aarch64-linux-gnu-" \
+			CROSS_COMPILE_ARM32="arm-linux-gnueabi-" \
+			LLVM=1 \
+			LLVM_IAS=1 \
+			LD=ld.lld \
+			AR=llvm-ar \
+			NM=llvm-nm \
+			OBJCOPY=llvm-objcopy \
+			OBJDUMP=llvm-objdump \
+			STRIP=llvm-strip \
+			HOSTCC=clang \
+			HOSTCXX=clang++ \
+			KCFLAGS="-O2 -mcpu=cortex-a76 -mtune=cortex-a76" \
 	        modules_install
     else # build_all will send module logs to a file
         make -C "$RDIR" O=$BDIR \
