@@ -37,8 +37,8 @@ DEVICE=$(cat "${BDIR}/DEVICE") \
 VER=$(cat "${RDIR}/VERSION") \
 		|| ABORT "No version file found in ${RDIR}"
 
-COMP=$(cat "${BDIR}/COMPRESSION") \
-		|| ABORT "No compression file found in ${BDIR}"
+# COMP=$(cat "${BDIR}/COMPRESSION") \
+# 		|| ABORT "No compression file found in ${BDIR}"
 
 BVER=$(cat ${RDIR}/VERSION | cut -f1 -d'-')
 BDATE=$(LC_ALL='en_US.utf8' date '+%b %d %Y')
