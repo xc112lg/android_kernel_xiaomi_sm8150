@@ -230,7 +230,7 @@ fi
 # build commands
 CLEAN_BUILD() {
 	echo -e $COLOR_G"Cleaning build folder..."$COLOR_N
-#	rm -rf $BDIR && sleep 5
+	rm -rf $BDIR
 }
 
 SETUP_BUILD() {
@@ -307,12 +307,13 @@ cd "$RDIR" || ABORT "Failed to enter $RDIR!"
 
 # ask before cleaning if device
 # is the same as previous build
-# if [ $SINGLEBUILD = "yes" ]; then
-#    echo -e $COLOR_P"Run"
-#     CLEAN_BUILD
-# else # Always clean build folder for next build on build_all
-#     CLEAN_BUILD
-# fi
+if [ $SINGLEBUILD = "yes" ]; then
+   echo -e $COLOR_P"Run"
+    CLEAN_BUILD
+else # Always clean build folder for next build on build_all
+    CLEAN_BUILD
+fi
+CLEAN_BUILD
 SETUP_BUILD
 BUILD_KERNEL
 INSTALL_MODULES
