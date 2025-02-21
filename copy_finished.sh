@@ -28,7 +28,6 @@ ADROID="Android 13/14"
 
 ABORT() {
 	echo -e $COLOR_R"Error: $*"
-	exit 1
 }
 
 DEVICE=$(cat "${BDIR}/DEVICE") \
